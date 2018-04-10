@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+
+  <!-- ========================================================= -->
+  <!-- 在启动Web容器时，自动装配Spring applicationContext.xml的配置 -->
+  <!-- ========================================================= -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath:spring/monitor/monitoring-spring-datasource.xml
+      classpath:applicationContext.xml
+    </param-value>
+  </context-param>
+
+  <!-- ====================== -->
+  <!-- 加载spring-mvc的配置 -->
+  <!-- ====================== -->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <description>spring mvc 配置文件</description>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:/mvc/spring-mvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+  <!-- ========================================== -->
+  <!-- 开启put\delete-->
+  <!-- ========================================== -->
+  <filter>
+    <filter-name>httpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>httpMethodFilter</filter-name>
+    <servlet-name>springmvc</servlet-name>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>httpPutFormFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>httpPutFormFilter</filter-name>
+    <servlet-name>springmvc</servlet-name>
+  </filter-mapping>
+
+  <!-- shiro filter-->
+  <filter>
+    <filter-name>shiroFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    <init-param>
+      <param-name>targetFilterLifecycle</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>shiroFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- ========================================== -->
+  <!-- 字符集过滤器，对request和response中的字符编码 -->
+  <!-- 因为 ServletWatcher 里边调用了 getParameter,请将瞎编的filter放置在 ServletWatcher 之前-->
+  <!-- ========================================== -->
+  <filter>
+    <description>字符集过滤器</description>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <description>字符集编码</description>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <!-- ====================================================================== -->
+  <!-- 静态资源不进行过滤 (REST 风格过滤了所有路径,所以需要把静态资源做为不进行过滤配置) -->
+  <!-- ====================================================================== -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.htm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.png</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.ico</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.woff2</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.gif</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.ttf</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.woff</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.xml</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.pdf</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.properties</url-pattern>
+  </servlet-mapping>
+  <!-- PageOffice Begin -->
+  <servlet>
+    <servlet-name>poserver</servlet-name>
+    <servlet-class>com.zhuozhengsoft.pageoffice.poserver.Server</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/poserver.zz</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/poserver.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/pageoffice.cab</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/popdf.cab</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/sealsetup.exe</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>poserver</servlet-name>
+    <url-pattern>/posetup.exe</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>adminseal</servlet-name>
+    <servlet-class>com.zhuozhengsoft.pageoffice.poserver.AdminSeal</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>adminseal</servlet-name>
+    <url-pattern>/adminseal.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>adminseal</servlet-name>
+    <url-pattern>/loginseal.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>adminseal</servlet-name>
+    <url-pattern>/sealimage.do</url-pattern>
+  </servlet-mapping>
+
+  <!-- ========================== -->
+  <!-- ico、错误页面配置 -->
+  <!-- ========================== -->
+  <mime-mapping>
+    <extension>ico</extension>
+    <mime-type>image/x-icon</mime-type>
+  </mime-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/views/status/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>405</error-code>
+    <location>/views/status/405.jsp</location>
+  </error-page>
+
+  <!-- ========================== -->
+  <!-- 如果欢迎页面是个action，一定要在webapp根路径下放置一个空文件，比如此处在home文件夹下放置了main空文件 -->
+  <!-- ========================== -->
+  <welcome-file-list>
+    <welcome-file>/home/main</welcome-file>
+  </welcome-file-list>
+
+</web-app>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseAttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseAttachment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="file_path_pdf" property="filePathPdf" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="ftp_files_name" property="ftpFilesName" jdbcType="VARCHAR" />
+    <result column="file_extension" property="fileExtension" jdbcType="VARCHAR" />
+    <result column="file_size" property="fileSize" jdbcType="VARCHAR" />
+    <result column="re_name" property="reName" jdbcType="VARCHAR" />
+    <result column="re_activity_name" property="reActivityName" jdbcType="VARCHAR" />
+    <result column="fields_name" property="fieldsName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="bis_last_edit" property="bisLastEdit" jdbcType="BIT" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="process_task_id" property="processTaskId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, table_name, table_id, process_ins_id, file_path, file_path_pdf, file_name, ftp_files_name, 
+    file_extension, file_size, re_name, re_activity_name, fields_name, project_id, bis_last_edit, 
+    creater, created, modified, modifier, process_task_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_base_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_base_attachment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_base_attachment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentExample" >
+    delete from tb_base_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_attachment (table_name, table_id, process_ins_id, 
+      file_path, file_path_pdf, file_name, 
+      ftp_files_name, file_extension, file_size, 
+      re_name, re_activity_name, fields_name, 
+      project_id, bis_last_edit, creater, 
+      created, modified, modifier, 
+      process_task_id)
+    values (#{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{filePathPdf,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{ftpFilesName,jdbcType=VARCHAR}, #{fileExtension,jdbcType=VARCHAR}, #{fileSize,jdbcType=VARCHAR}, 
+      #{reName,jdbcType=VARCHAR}, #{reActivityName,jdbcType=VARCHAR}, #{fieldsName,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=INTEGER}, #{bisLastEdit,jdbcType=BIT}, #{creater,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+      #{processTaskId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tableName != null" >
+        table_name,
+      </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="filePathPdf != null" >
+        file_path_pdf,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="ftpFilesName != null" >
+        ftp_files_name,
+      </if>
+      <if test="fileExtension != null" >
+        file_extension,
+      </if>
+      <if test="fileSize != null" >
+        file_size,
+      </if>
+      <if test="reName != null" >
+        re_name,
+      </if>
+      <if test="reActivityName != null" >
+        re_activity_name,
+      </if>
+      <if test="fieldsName != null" >
+        fields_name,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="bisLastEdit != null" >
+        bis_last_edit,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="processTaskId != null" >
+        process_task_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="filePathPdf != null" >
+        #{filePathPdf,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFilesName != null" >
+        #{ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileExtension != null" >
+        #{fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="reName != null" >
+        #{reName,jdbcType=VARCHAR},
+      </if>
+      <if test="reActivityName != null" >
+        #{reActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldsName != null" >
+        #{fieldsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="bisLastEdit != null" >
+        #{bisLastEdit,jdbcType=BIT},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="processTaskId != null" >
+        #{processTaskId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_base_attachment
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tableName != null" >
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableId != null" >
+        table_id = #{record.tableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePathPdf != null" >
+        file_path_pdf = #{record.filePathPdf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ftpFilesName != null" >
+        ftp_files_name = #{record.ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileExtension != null" >
+        file_extension = #{record.fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileSize != null" >
+        file_size = #{record.fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reName != null" >
+        re_name = #{record.reName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reActivityName != null" >
+        re_activity_name = #{record.reActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fieldsName != null" >
+        fields_name = #{record.fieldsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisLastEdit != null" >
+        bis_last_edit = #{record.bisLastEdit,jdbcType=BIT},
+      </if>
+      <if test="record.creater != null" >
+        creater = #{record.creater,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modified != null" >
+        modified = #{record.modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifier != null" >
+        modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processTaskId != null" >
+        process_task_id = #{record.processTaskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_base_attachment
+    set id = #{record.id,jdbcType=INTEGER},
+      table_name = #{record.tableName,jdbcType=VARCHAR},
+      table_id = #{record.tableId,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      file_path_pdf = #{record.filePathPdf,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      ftp_files_name = #{record.ftpFilesName,jdbcType=VARCHAR},
+      file_extension = #{record.fileExtension,jdbcType=VARCHAR},
+      file_size = #{record.fileSize,jdbcType=VARCHAR},
+      re_name = #{record.reName,jdbcType=VARCHAR},
+      re_activity_name = #{record.reActivityName,jdbcType=VARCHAR},
+      fields_name = #{record.fieldsName,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      bis_last_edit = #{record.bisLastEdit,jdbcType=BIT},
+      creater = #{record.creater,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      modified = #{record.modified,jdbcType=TIMESTAMP},
+      modifier = #{record.modifier,jdbcType=VARCHAR},
+      process_task_id = #{record.processTaskId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachment" >
+    update tb_base_attachment
+    <set >
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="filePathPdf != null" >
+        file_path_pdf = #{filePathPdf,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFilesName != null" >
+        ftp_files_name = #{ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileExtension != null" >
+        file_extension = #{fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        file_size = #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="reName != null" >
+        re_name = #{reName,jdbcType=VARCHAR},
+      </if>
+      <if test="reActivityName != null" >
+        re_activity_name = #{reActivityName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldsName != null" >
+        fields_name = #{fieldsName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="bisLastEdit != null" >
+        bis_last_edit = #{bisLastEdit,jdbcType=BIT},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="processTaskId != null" >
+        process_task_id = #{processTaskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachment" >
+    update tb_base_attachment
+    set table_name = #{tableName,jdbcType=VARCHAR},
+      table_id = #{tableId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      file_path_pdf = #{filePathPdf,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      ftp_files_name = #{ftpFilesName,jdbcType=VARCHAR},
+      file_extension = #{fileExtension,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=VARCHAR},
+      re_name = #{reName,jdbcType=VARCHAR},
+      re_activity_name = #{reActivityName,jdbcType=VARCHAR},
+      fields_name = #{fieldsName,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
+      bis_last_edit = #{bisLastEdit,jdbcType=BIT},
+      creater = #{creater,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      process_task_id = #{processTaskId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseAttachmentKeepMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="ftp_files_name" property="ftpFilesName" jdbcType="VARCHAR" />
+    <result column="file_extension" property="fileExtension" jdbcType="VARCHAR" />
+    <result column="file_size" property="fileSize" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="mdified" property="mdified" jdbcType="TIMESTAMP" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, attachment_id, file_path, file_name, ftp_files_name, file_extension, file_size, 
+    created, mdified, owner
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeepExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_base_attachment_keep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_base_attachment_keep
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_base_attachment_keep
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeepExample" >
+    delete from tb_base_attachment_keep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_attachment_keep (attachment_id, file_path, file_name, 
+      ftp_files_name, file_extension, file_size, 
+      created, mdified, owner
+      )
+    values (#{attachmentId,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{ftpFilesName,jdbcType=VARCHAR}, #{fileExtension,jdbcType=VARCHAR}, #{fileSize,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{mdified,jdbcType=TIMESTAMP}, #{owner,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_attachment_keep
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="ftpFilesName != null" >
+        ftp_files_name,
+      </if>
+      <if test="fileExtension != null" >
+        file_extension,
+      </if>
+      <if test="fileSize != null" >
+        file_size,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="mdified != null" >
+        mdified,
+      </if>
+      <if test="owner != null" >
+        owner,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFilesName != null" >
+        #{ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileExtension != null" >
+        #{fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdified != null" >
+        #{mdified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeepExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base_attachment_keep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_base_attachment_keep
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ftpFilesName != null" >
+        ftp_files_name = #{record.ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileExtension != null" >
+        file_extension = #{record.fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileSize != null" >
+        file_size = #{record.fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mdified != null" >
+        mdified = #{record.mdified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.owner != null" >
+        owner = #{record.owner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_base_attachment_keep
+    set id = #{record.id,jdbcType=INTEGER},
+      attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      ftp_files_name = #{record.ftpFilesName,jdbcType=VARCHAR},
+      file_extension = #{record.fileExtension,jdbcType=VARCHAR},
+      file_size = #{record.fileSize,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      mdified = #{record.mdified,jdbcType=TIMESTAMP},
+      owner = #{record.owner,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep" >
+    update tb_base_attachment_keep
+    <set >
+      <if test="attachmentId != null" >
+        attachment_id = #{attachmentId,jdbcType=INTEGER},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ftpFilesName != null" >
+        ftp_files_name = #{ftpFilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileExtension != null" >
+        file_extension = #{fileExtension,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        file_size = #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mdified != null" >
+        mdified = #{mdified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owner != null" >
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep" >
+    update tb_base_attachment_keep
+    set attachment_id = #{attachmentId,jdbcType=INTEGER},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      ftp_files_name = #{ftpFilesName,jdbcType=VARCHAR},
+      file_extension = #{fileExtension,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      mdified = #{mdified,jdbcType=TIMESTAMP},
+      owner = #{owner,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

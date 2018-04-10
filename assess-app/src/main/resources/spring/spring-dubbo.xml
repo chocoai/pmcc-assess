@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="${app.key}"/>
+    <dubbo:protocol name="dubbo" port="${dubbo.port}"/>
+    <dubbo:registry address="N/A"/> <!-- 直连 -->
+    <!--<dubbo:registry address="${dubbo.zk.server}"/>--> <!-- 建议zk注册中心管理 -->
+
+    <!-- ======================provider========================== -->
+
+    <!-- ======================erp - consumer========================== -->
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.SessionService" id="sessionService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcUserService" id="erpRpcUserService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcToolsService" id="erpRpcToolsService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcReportPageService" id="erpRpcReportPageService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcMenuService" id="erpRpcMenuService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService" id="erpRpcDepartmentService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcCustomReportService" id="erpRpcCustomReportService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcProjectService" id="erpRpcProjectService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <!-- ======================bpm - consumer========================== -->
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxService" id="bpmRpcBoxService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService" id="bpmRpcProcessInsManagerService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService" id="bpmRpcActivitiProcessManageService" check="false" retries="0" timeout="10000"
+                     url="${bpm.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService" id="bpmRpcProcessMapService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService" id="bpmRpcProcessExecutionService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService" id="bpmRpcBoxRoleUserService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
+
+    <!-- ======================hr - consumer========================== -->
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcUserService" id="hrRpcUserService" check="false" retries="0" timeout="10000" url="${hr.api.url}"/>
+
+
+</beans>

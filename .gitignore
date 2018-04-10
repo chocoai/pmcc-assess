@@ -1,0 +1,44 @@
+# kdiff3 ignore
+*.orig
+
+# maven ignore
+target/
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+.metadata
+
+# idea ignore
+.idea/
+.IDEA/
+*.ipr
+*.iml
+*.iws
+
+# apidoc generator
+doc/apidoc/
+#*.zip
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+MANIFEST.MF
+Thumbs.db
+
+# package ignore (optional)
+# *.jar
+# *.war
+# *.zip
+# *.tar
+# *.tar.gz
+
+# personal ignore
+rebel.xml

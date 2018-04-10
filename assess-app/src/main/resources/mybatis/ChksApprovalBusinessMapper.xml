@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ChksApprovalBusinessMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ChksApprovalBusiness" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="appkey" property="appkey" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="business_process_ins_id" property="businessProcessInsId" jdbcType="VARCHAR" />
+    <result column="business_details_url" property="businessDetailsUrl" jdbcType="VARCHAR" />
+    <result column="business_box_id" property="businessBoxId" jdbcType="INTEGER" />
+    <result column="bis_check" property="bisCheck" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="first_chks" property="firstChks" jdbcType="VARCHAR" />
+    <result column="process_cn_name" property="processCnName" jdbcType="VARCHAR" />
+    <result column="process_title" property="processTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, appkey, process_ins_id, status, business_process_ins_id, business_details_url, 
+    business_box_id, bis_check, bis_enable, first_chks, process_cn_name, process_title
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusinessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_chks_approval_business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_chks_approval_business
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_chks_approval_business
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusinessExample" >
+    delete from tb_chks_approval_business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusiness" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_chks_approval_business (appkey, process_ins_id, status, 
+      business_process_ins_id, business_details_url, 
+      business_box_id, bis_check, bis_enable, 
+      first_chks, process_cn_name, process_title
+      )
+    values (#{appkey,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{businessProcessInsId,jdbcType=VARCHAR}, #{businessDetailsUrl,jdbcType=VARCHAR}, 
+      #{businessBoxId,jdbcType=INTEGER}, #{bisCheck,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{firstChks,jdbcType=VARCHAR}, #{processCnName,jdbcType=VARCHAR}, #{processTitle,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusiness" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_chks_approval_business
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appkey != null" >
+        appkey,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="businessProcessInsId != null" >
+        business_process_ins_id,
+      </if>
+      <if test="businessDetailsUrl != null" >
+        business_details_url,
+      </if>
+      <if test="businessBoxId != null" >
+        business_box_id,
+      </if>
+      <if test="bisCheck != null" >
+        bis_check,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="firstChks != null" >
+        first_chks,
+      </if>
+      <if test="processCnName != null" >
+        process_cn_name,
+      </if>
+      <if test="processTitle != null" >
+        process_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appkey != null" >
+        #{appkey,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProcessInsId != null" >
+        #{businessProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDetailsUrl != null" >
+        #{businessDetailsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessBoxId != null" >
+        #{businessBoxId,jdbcType=INTEGER},
+      </if>
+      <if test="bisCheck != null" >
+        #{bisCheck,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="firstChks != null" >
+        #{firstChks,jdbcType=VARCHAR},
+      </if>
+      <if test="processCnName != null" >
+        #{processCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="processTitle != null" >
+        #{processTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusinessExample" resultType="java.lang.Integer" >
+    select count(*) from tb_chks_approval_business
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_chks_approval_business
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.appkey != null" >
+        appkey = #{record.appkey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessProcessInsId != null" >
+        business_process_ins_id = #{record.businessProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessDetailsUrl != null" >
+        business_details_url = #{record.businessDetailsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessBoxId != null" >
+        business_box_id = #{record.businessBoxId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisCheck != null" >
+        bis_check = #{record.bisCheck,jdbcType=BIT},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.firstChks != null" >
+        first_chks = #{record.firstChks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processCnName != null" >
+        process_cn_name = #{record.processCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processTitle != null" >
+        process_title = #{record.processTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_chks_approval_business
+    set id = #{record.id,jdbcType=INTEGER},
+      appkey = #{record.appkey,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      business_process_ins_id = #{record.businessProcessInsId,jdbcType=VARCHAR},
+      business_details_url = #{record.businessDetailsUrl,jdbcType=VARCHAR},
+      business_box_id = #{record.businessBoxId,jdbcType=INTEGER},
+      bis_check = #{record.bisCheck,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      first_chks = #{record.firstChks,jdbcType=VARCHAR},
+      process_cn_name = #{record.processCnName,jdbcType=VARCHAR},
+      process_title = #{record.processTitle,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusiness" >
+    update tb_chks_approval_business
+    <set >
+      <if test="appkey != null" >
+        appkey = #{appkey,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProcessInsId != null" >
+        business_process_ins_id = #{businessProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessDetailsUrl != null" >
+        business_details_url = #{businessDetailsUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessBoxId != null" >
+        business_box_id = #{businessBoxId,jdbcType=INTEGER},
+      </if>
+      <if test="bisCheck != null" >
+        bis_check = #{bisCheck,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="firstChks != null" >
+        first_chks = #{firstChks,jdbcType=VARCHAR},
+      </if>
+      <if test="processCnName != null" >
+        process_cn_name = #{processCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="processTitle != null" >
+        process_title = #{processTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ChksApprovalBusiness" >
+    update tb_chks_approval_business
+    set appkey = #{appkey,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      business_process_ins_id = #{businessProcessInsId,jdbcType=VARCHAR},
+      business_details_url = #{businessDetailsUrl,jdbcType=VARCHAR},
+      business_box_id = #{businessBoxId,jdbcType=INTEGER},
+      bis_check = #{bisCheck,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      first_chks = #{firstChks,jdbcType=VARCHAR},
+      process_cn_name = #{processCnName,jdbcType=VARCHAR},
+      process_title = #{processTitle,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

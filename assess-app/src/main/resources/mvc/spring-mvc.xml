@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <description>Spring MVC视图解析配置</description>
+
+    <!-- ======================================= -->
+    <!-- spring组件扫描 -->
+    <!-- ======================================= -->
+     <ctx:component-scan base-package="com.copower.pmcc.assess.**.controller" use-default-filters="false">
+        <ctx:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <ctx:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </ctx:component-scan>
+
+    <!-- ======================================= -->
+    <!-- 默认的注解映射的支持 -->
+    <!-- ======================================= -->
+    <ctx:annotation-config/>
+
+    <!-- 启动对@AspectJ注解的支持  -->
+    <aop:aspectj-autoproxy/>
+
+    <!-- ======================================= -->
+    <!-- Spring属性占位符 -->
+    <!-- ======================================= -->
+    <ctx:property-placeholder ignore-resource-not-found="true" location="classpath:props/*.properties"/>
+
+    <!-- ======================================= -->
+    <!-- responseBody json 支持 -->
+    <!-- ======================================= -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="com.copower.pmcc.erp.common.support.mvc.converter.PlainStringHttpMessageConverter"/>
+                <bean class="com.copower.pmcc.erp.common.support.mvc.converter.JacksonHttpMessageConverter">
+                    <property name="prettyPrinting" value="false"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+    <!-- ============================================================== -->
+    <!-- mvc全局的异常仲裁器 -->
+    <!-- ControllerDataException直接返回符合规范的错误信息（JSON格式） -->
+    <!-- 其余Exception统一跳转到error.vm页面 -->
+    <!-- ============================================================== -->
+    <bean id="exceptionResolver"
+          class="com.copower.pmcc.erp.common.exception.resolver.ControllerExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">/status/error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 文件解析 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize">
+            <value>104857600</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+    </bean>
+
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=utf-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- ======================================= -->
+    <!-- spring 拦截器 -->
+    <!-- ======================================= -->
+    <bean id="requestBaseInterceptor" class="com.copower.pmcc.erp.common.support.mvc.request.interceptor.RequestBaseInterceptor"/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean="requestBaseInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <ref bean="requestTraceInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+</beans>
