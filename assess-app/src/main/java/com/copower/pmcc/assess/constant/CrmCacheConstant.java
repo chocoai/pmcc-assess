@@ -9,14 +9,17 @@ package com.copower.pmcc.assess.constant;
  */
 public class CrmCacheConstant {
     //数据字典
-    public static final String PMCC_CHKS_DATA_DIC = "pmcc:chks:data:dic";
-    public static final String PMCC_CHKS_DATA_DIC_ID = "pmcc:chks:data:dic:id";
-    public static final String PMCC_CHKS_DATA_DIC_PID = "pmcc:chks:data:dic:pid";
-    public static final String PMCC_CHKS_DATA_DIC_FIELD = "pmcc:chks:data:dic:field";
-    public static final String PMCC_CHKS_DATA_DIC_FIELD_ITEM = "pmcc:chks:data:dic:field:item";
+    public static final String PMCC_ASSESS_DATA_DIC = "pmcc:assess:data:dic";
+    public static final String PMCC_ASSESS_DATA_DIC_ID = "pmcc:assess:data:dic:id";
+    public static final String PMCC_ASSESS_DATA_DIC_PID = "pmcc:assess:data:dic:pid";
+    public static final String PMCC_ASSESS_DATA_DIC_FIELD = "pmcc:assess:data:dic:field";
+    public static final String PMCC_ASSESS_DATA_DIC_FIELD_ITEM = "pmcc:assess:data:dic:field:item";
     //参数
-    public static final String PMCC_CHKS_PARAMETER_KEY = "pmcc:chks:parameter:key";
+    public static final String PMCC_ASSESS_PARAMETER_KEY = "pmcc:assess:parameter:key";
     //考核数据
-    public static final String PMCC_CHKS_APPROVAL_INFO = "pmcc:chks:approval:info";
+    public static final String PMCC_ASSESS_APPROVAL_INFO = "pmcc:assess:approval:info";
 
+    //动态表单
+    public static final String PMCC_ASSESS_DYNAMIC_FORM_DATASOURCE = "pmcc:assess:dynamic:form:datasource"; //数据源
+    public static final String PMCC_ASSESS_DYNAMIC_FORM_TEXT = "pmcc:assess:dynamic:form:text"; //显示值
 }

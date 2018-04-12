@@ -8,8 +8,7 @@ package com.copower.pmcc.assess.constant;
  * @time: 11:25
  */
 public class BaseConstant {
-    public static final String CHKS_BOX_RE_GROUP_KEY = "chks";//知识分享系统模型分组
-
-    public static final String CHKS_BASE_ASSESS_BOX_NAME = "baseAssessBoxName";//默认考核流程
+    public static final String HR_BOX_RE_GROUP_KEY = "assess";//考核系统模型分组
+    public static final String CURRENT_DATABASE_NAME = "pmcc_assess";//数据库名称
 
 }

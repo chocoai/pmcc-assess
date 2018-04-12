@@ -113,7 +113,7 @@ public class BaseDataDicService {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         }
-        serviceComponent.RemoveRedisKeyValues(CrmCacheConstant.PMCC_CHKS_DATA_DIC, "");
+        serviceComponent.RemoveRedisKeyValues(CrmCacheConstant.PMCC_ASSESS_DATA_DIC, "");
     }
     //endregion
 
@@ -130,7 +130,7 @@ public class BaseDataDicService {
             sysDataDic.setBisDelete(true);
             if (!cmsBaseDataDicDao.updateObject(sysDataDic))
                 throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
-            serviceComponent.RemoveRedisKeyValues(CrmCacheConstant.PMCC_CHKS_DATA_DIC, "");
+            serviceComponent.RemoveRedisKeyValues(CrmCacheConstant.PMCC_ASSESS_DATA_DIC, "");
         }
     }
     //endregion
@@ -146,7 +146,7 @@ public class BaseDataDicService {
 
         try {
 
-            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_CHKS_DATA_DIC_FIELD, fieldName);
+            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_ASSESS_DATA_DIC_FIELD, fieldName);
             List<BaseDataDic> dataDics = LangUtils.listCache(costsKeyPrefix, fieldName, BaseDataDic.class, input -> cmsBaseDataDicDao.getEnableList(input));
             return dataDics;
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class BaseDataDicService {
     }
 
     public BaseDataDic getCacheDataDicByFieldName(String fieldName) {
-        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_CHKS_DATA_DIC_FIELD_ITEM, fieldName);
+        String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_ASSESS_DATA_DIC_FIELD_ITEM, fieldName);
 
         try {
             BaseDataDic sysDataDic = LangUtils.singleCache(costsKeyPrefix, fieldName, BaseDataDic.class, o -> cmsBaseDataDicDao.getSingleObject(o));
@@ -175,7 +175,7 @@ public class BaseDataDicService {
      * @return
      */
     public List<BaseDataDic> getCacheDataDicListByPid(Integer pid) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_CHKS_DATA_DIC_PID, String.valueOf(pid));
+        String rdsKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_ASSESS_DATA_DIC_PID, String.valueOf(pid));
 
         try {
             List<BaseDataDic> sysDataDics = LangUtils.listCache(rdsKey, pid, BaseDataDic.class, input -> cmsBaseDataDicDao.getEnableListByPid(input));
@@ -191,7 +191,7 @@ public class BaseDataDicService {
      * @return
      */
     public BaseDataDic getCacheDataDicById(Integer id) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_CHKS_DATA_DIC_ID, String.valueOf(id));
+        String rdsKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_ASSESS_DATA_DIC_ID, String.valueOf(id));
 
         try {
             BaseDataDic sysDataDic = LangUtils.singleCache(rdsKey, id, BaseDataDic.class, o -> cmsBaseDataDicDao.getSingleObject(o));

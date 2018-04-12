@@ -12,7 +12,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_chks"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -22,34 +22,36 @@
 
         <!-- entity 位置-->
         <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.entity"
-                            targetProject="D:\IdeaProjects\pmcc-chks\chks-app\src\main\java">
+                            targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- mapper xml 位置 -->
         <sqlMapGenerator targetPackage="mybatis"
-                         targetProject="D:\IdeaProjects\pmcc-chks\chks-app\src\main\resources/">
+                         targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources/">
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.mapper"
-                             targetProject="D:\IdeaProjects\pmcc-chks\chks-app\src\main\java">
+                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <table tableName="tb_chks_approval_business" domainObjectName="ChksApprovalBusiness">
+        <table tableName="tb_base_form" domainObjectName="BaseForm">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="tb_chks_approval_info" domainObjectName="ChksApprovalInfo">
+        <table tableName="tb_base_form_list" domainObjectName="BaseFormList">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="tb_chks_approval_assess" domainObjectName="ChksApprovalAssess">
+        <table tableName="tb_base_form_list_field" domainObjectName="BaseFormListField">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="tb_chks_approval_assess_details" domainObjectName="ChksApprovalAssessDetails">
+        <table tableName="tb_base_process" domainObjectName="BaseProcess">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_base_process_form" domainObjectName="BaseProcessForm">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

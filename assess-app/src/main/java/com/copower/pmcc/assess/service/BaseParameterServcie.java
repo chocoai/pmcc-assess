@@ -33,7 +33,7 @@ public class BaseParameterServcie {
     public String getParameterValues(String key) {
         BaseParameter baseParameter;
         try {
-            String cacheKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_CHKS_PARAMETER_KEY, key);
+            String cacheKey = CacheConstant.getCostsKeyPrefix(CrmCacheConstant.PMCC_ASSESS_PARAMETER_KEY, key);
             baseParameter = LangUtils.singleCache(cacheKey, key, BaseParameter.class, input -> cmsBaseParameterDao.getBaseParameter(input));
 
         } catch (Exception e) {
