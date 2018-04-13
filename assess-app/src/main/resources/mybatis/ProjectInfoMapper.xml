@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ProjectInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
+    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
+    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
+    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="department_next_ids" property="departmentNextIds" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="complete_date_plan" property="completeDatePlan" jdbcType="TIMESTAMP" />
+    <result column="complete_date_actual" property="completeDateActual" jdbcType="TIMESTAMP" />
+    <result column="complete_date_start" property="completeDateStart" jdbcType="TIMESTAMP" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="print_share" property="printShare" jdbcType="INTEGER" />
+    <result column="print_page_number" property="printPageNumber" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+    <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_name, project_class_id, project_type_id, project_category_id, department_id, 
+    department_next_ids, remarks, customer_id, created, modified, creator, complete_date_plan, 
+    complete_date_actual, complete_date_start, process_ins_id, print_share, print_page_number, 
+    status, project_status, public_project_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_project_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
+    delete from tb_project_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_info (project_name, project_class_id, project_type_id, 
+      project_category_id, department_id, department_next_ids, 
+      remarks, customer_id, created, 
+      modified, creator, complete_date_plan, 
+      complete_date_actual, complete_date_start, 
+      process_ins_id, print_share, print_page_number, 
+      status, project_status, public_project_id
+      )
+    values (#{projectName,jdbcType=VARCHAR}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
+      #{projectCategoryId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{departmentNextIds,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
+      #{modified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, 
+      #{completeDateActual,jdbcType=TIMESTAMP}, #{completeDateStart,jdbcType=TIMESTAMP}, 
+      #{processInsId,jdbcType=VARCHAR}, #{printShare,jdbcType=INTEGER}, #{printPageNumber,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectClassId != null" >
+        project_class_id,
+      </if>
+      <if test="projectTypeId != null" >
+        project_type_id,
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="departmentNextIds != null" >
+        department_next_ids,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="completeDatePlan != null" >
+        complete_date_plan,
+      </if>
+      <if test="completeDateActual != null" >
+        complete_date_actual,
+      </if>
+      <if test="completeDateStart != null" >
+        complete_date_start,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="printShare != null" >
+        print_share,
+      </if>
+      <if test="printPageNumber != null" >
+        print_page_number,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="projectStatus != null" >
+        project_status,
+      </if>
+      <if test="publicProjectId != null" >
+        public_project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectClassId != null" >
+        #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null" >
+        #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        #{projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentNextIds != null" >
+        #{departmentNextIds,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="completeDatePlan != null" >
+        #{completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateActual != null" >
+        #{completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateStart != null" >
+        #{completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="printShare != null" >
+        #{printShare,jdbcType=INTEGER},
+      </if>
+      <if test="printPageNumber != null" >
+        #{printPageNumber,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null" >
+        #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="publicProjectId != null" >
+        #{publicProjectId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_project_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectClassId != null" >
+        project_class_id = #{record.projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectTypeId != null" >
+        project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectCategoryId != null" >
+        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.departmentId != null" >
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.departmentNextIds != null" >
+        department_next_ids = #{record.departmentNextIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerId != null" >
+        customer_id = #{record.customerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modified != null" >
+        modified = #{record.modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completeDatePlan != null" >
+        complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDateActual != null" >
+        complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDateStart != null" >
+        complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.printShare != null" >
+        print_share = #{record.printShare,jdbcType=INTEGER},
+      </if>
+      <if test="record.printPageNumber != null" >
+        print_page_number = #{record.printPageNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectStatus != null" >
+        project_status = #{record.projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicProjectId != null" >
+        public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_project_info
+    set id = #{record.id,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_class_id = #{record.projectClassId,jdbcType=INTEGER},
+      project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      department_id = #{record.departmentId,jdbcType=INTEGER},
+      department_next_ids = #{record.departmentNextIds,jdbcType=VARCHAR},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      customer_id = #{record.customerId,jdbcType=INTEGER},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      modified = #{record.modified,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
+      complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
+      complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      print_share = #{record.printShare,jdbcType=INTEGER},
+      print_page_number = #{record.printPageNumber,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      project_status = #{record.projectStatus,jdbcType=VARCHAR},
+      public_project_id = #{record.publicProjectId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
+    update tb_project_info
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectClassId != null" >
+        project_class_id = #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null" >
+        project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentNextIds != null" >
+        department_next_ids = #{departmentNextIds,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="completeDatePlan != null" >
+        complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateActual != null" >
+        complete_date_actual = #{completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateStart != null" >
+        complete_date_start = #{completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="printShare != null" >
+        print_share = #{printShare,jdbcType=INTEGER},
+      </if>
+      <if test="printPageNumber != null" >
+        print_page_number = #{printPageNumber,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null" >
+        project_status = #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="publicProjectId != null" >
+        public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
+    update tb_project_info
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      project_class_id = #{projectClassId,jdbcType=INTEGER},
+      project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      department_next_ids = #{departmentNextIds,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
+      complete_date_actual = #{completeDateActual,jdbcType=TIMESTAMP},
+      complete_date_start = #{completeDateStart,jdbcType=TIMESTAMP},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      print_share = #{printShare,jdbcType=INTEGER},
+      print_page_number = #{printPageNumber,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      project_status = #{projectStatus,jdbcType=VARCHAR},
+      public_project_id = #{publicProjectId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

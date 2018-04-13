@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.dal.dao;
 
 
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dal.mapper.BaseFormListFieldMapper;
-import com.copower.pmcc.assess.dal.mapper.BaseFormListMapper;
 import com.copower.pmcc.assess.dal.mapper.BaseFormMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseFormModuleFieldMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseFormModuleMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ public class BaseFormDao {
     @Autowired
     private BaseFormMapper hrBaseFormMapper;
     @Autowired
-    private BaseFormListMapper hrBaseFormListMapper;
+    private BaseFormModuleMapper hrBaseFormModuleMapper;
     @Autowired
-    private BaseFormListFieldMapper hrBaseFormListFieldMapper;
+    private BaseFormModuleFieldMapper hrBaseFormModuleFieldMapper;
 
     //BaseForm=========================================================
 
@@ -48,66 +48,49 @@ public class BaseFormDao {
         example.createCriteria().andNameEqualTo(name);
         return hrBaseFormMapper.updateByExampleSelective(hrBaseForm, example) == 1;
     }
-    //BaseFormList======================================================
-
-    public BaseFormList getBaseFormList(Integer id){
-        return hrBaseFormListMapper.selectByPrimaryKey(id);
+    //BaseFormModule======================================================
+    public BaseFormModule getBaseFormModule(Integer id) {
+        return hrBaseFormModuleMapper.selectByPrimaryKey(id);
     }
 
-    public List<BaseFormList> getbaseFormList(String formName) {
-        return getbaseFormList(formName, null);
+    public List<BaseFormModule> getBaseFormModuleList(Integer formId) {
+        if (formId == null) return null;
+        BaseFormModuleExample example = new BaseFormModuleExample();
+        BaseFormModuleExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true).andFormIdEqualTo(formId);
+        return hrBaseFormModuleMapper.selectByExample(example);
+    }
+    public List<BaseFormModule> getBaseFormModuleList(List<Integer> formModuleIds) {
+        BaseFormModuleExample example = new BaseFormModuleExample();
+        example.createCriteria().andIdIn(formModuleIds).andBisEnableEqualTo(true);
+        return hrBaseFormModuleMapper.selectByExample(example);
     }
 
-    public List<BaseFormList> getbaseFormList(String formName, String name) {
-        BaseFormListExample example = new BaseFormListExample();
-        BaseFormListExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(formName)) {
-            criteria.andFormNameEqualTo(formName);
-        }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.andNameEqualTo(name);
-        }
-        return hrBaseFormListMapper.selectByExample(example);
-    }
-
-    public List<BaseFormList> getbaseFormList(List<String> formNameList, List<String> nameList) {
-        BaseFormListExample example = new BaseFormListExample();
-        BaseFormListExample.Criteria criteria = example.createCriteria();
-        if (CollectionUtils.isNotEmpty(formNameList)) {
-            criteria.andFormNameIn(formNameList);
-        }
-        if (CollectionUtils.isNotEmpty(nameList)) {
-            criteria.andNameIn(nameList);
-        }
-        return hrBaseFormListMapper.selectByExample(example);
-    }
-
-
-    //BaseFormListField======================================================
-    public List<BaseFormListField> getBaseFormListFields(Integer formListId) {
-        BaseFormListFieldExample example = new BaseFormListFieldExample();
-        example.createCriteria().andFormListIdEqualTo(formListId).andBisDeleteEqualTo(false);
+    //BaseFormModuleField======================================================
+    public List<BaseFormModuleField> getBaseFormModuleFields(Integer formModuleId) {
+        BaseFormModuleFieldExample example = new BaseFormModuleFieldExample();
+        example.createCriteria().andFormModuleIdEqualTo(formModuleId).andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting,id");
-        return hrBaseFormListFieldMapper.selectByExample(example);
+        return hrBaseFormModuleFieldMapper.selectByExample(example);
     }
 
-    public List<BaseFormListField> getBaseFormListFields(List<Integer> formListIds) {
-        BaseFormListFieldExample example = new BaseFormListFieldExample();
-        example.createCriteria().andFormListIdIn(formListIds).andBisDeleteEqualTo(false);
+    public List<BaseFormModuleField> getBaseFormModuleFields(List<Integer> formModuleIds) {
+        BaseFormModuleFieldExample example = new BaseFormModuleFieldExample();
+        example.createCriteria().andFormModuleIdIn(formModuleIds).andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting,id");
-        return hrBaseFormListFieldMapper.selectByExample(example);
+        return hrBaseFormModuleFieldMapper.selectByExample(example);
     }
 
-    public BaseFormListField getBaseFormListField(Integer id) {
-        return hrBaseFormListFieldMapper.selectByPrimaryKey(id);
+    public BaseFormModuleField getBaseFormModuleField(Integer id) {
+        return hrBaseFormModuleFieldMapper.selectByPrimaryKey(id);
     }
 
-    public Boolean addBaseFormListField(BaseFormListField hrBaseFormListField) {
-        return hrBaseFormListFieldMapper.insertSelective(hrBaseFormListField) == 1;
+    public Boolean addBaseFormModuleField(BaseFormModuleField baseFormModuleField) {
+        return hrBaseFormModuleFieldMapper.insertSelective(baseFormModuleField) == 1;
     }
 
-    public Boolean updateBaseFormListField(BaseFormListField hrBaseFormListField) {
-        return hrBaseFormListFieldMapper.updateByPrimaryKeySelective(hrBaseFormListField) == 1;
+    public Boolean updateBaseFormModuleField(BaseFormModuleField baseFormModuleField) {
+        return hrBaseFormModuleFieldMapper.updateByPrimaryKeySelective(baseFormModuleField) == 1;
     }
 
 

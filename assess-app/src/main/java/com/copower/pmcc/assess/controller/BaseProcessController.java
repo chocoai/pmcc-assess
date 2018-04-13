@@ -2,12 +2,12 @@ package com.copower.pmcc.assess.controller;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.BaseFormList;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dal.entity.BaseProcessForm;
 import com.copower.pmcc.assess.dto.output.BaseProcessFormModelVo;
-import com.copower.pmcc.assess.service.BaseFormService;
-import com.copower.pmcc.assess.service.BaseProcessService;
+import com.copower.pmcc.assess.service.base.BaseFormService;
+import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
@@ -50,7 +50,7 @@ public class BaseProcessController {
         List<BaseForm> hrBaseForm = hrBaseFormService.getBaseForm();
         modelAndView.addObject("hrBaseForm", hrBaseForm);
 
-        BootstrapTableVo boxReDtoList = bpmRpcBoxService.getBoxReDtoList("", BaseConstant.HR_BOX_RE_GROUP_KEY, 0, 100);
+        BootstrapTableVo boxReDtoList = bpmRpcBoxService.getBoxReDtoList("", BaseConstant.ASSESS_BOX_RE_GROUP_KEY, 0, 100);
         modelAndView.addObject("boxRe", (List<BoxReDto>) boxReDtoList.getRows());
         return modelAndView;
     }
@@ -98,8 +98,8 @@ public class BaseProcessController {
 
     @ResponseBody
     @RequestMapping(value = "/getBaseProcessFormList", name = "取得业务表单列表", method = RequestMethod.GET)
-    public BootstrapTableVo getBaseProcessFormList(String process, String boxName) {
-        return hrBaseProcessService.getBaseProcessFormList(process, boxName);
+    public BootstrapTableVo getBaseProcessFormList(Integer processId) {
+        return hrBaseProcessService.getBaseProcessFormList(processId);
     }
 
     @ResponseBody
@@ -121,14 +121,14 @@ public class BaseProcessController {
 
         BaseProcess hrBaseProcess = hrBaseProcessService.getProcessById(processId);
 
-        List<BaseFormList> hrbaseFormList = hrBaseFormService.getbaseFormList(hrBaseProcess.getBaseForm());
+        List<BaseFormModule> hrbaseFormList = hrBaseFormService.getBaseFormModuleList(hrBaseProcess.getId());
 
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(hrBaseProcess.getBoxName());
         List<BoxReActivityDto> boxReActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByActivityNameSorting(boxId, ProcessActivityEnum.START.getValue());
         boxReActivityDtos.add(boxReActivityDto);
         BaseProcessFormModelVo hrBaseProcessFormModelVo = new BaseProcessFormModelVo();
-        hrBaseProcessFormModelVo.setBaseFormLists(hrbaseFormList);
+        hrBaseProcessFormModelVo.setBaseFormModules(hrbaseFormList);
         hrBaseProcessFormModelVo.setBoxReActivityDtoList(boxReActivityDtos);
 
         return HttpResult.newCorrectResult(hrBaseProcessFormModelVo);

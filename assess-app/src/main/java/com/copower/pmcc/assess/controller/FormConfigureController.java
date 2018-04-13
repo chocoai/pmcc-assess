@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.entity.BaseFormListField;
-import com.copower.pmcc.assess.service.FormConfigureService;
+import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
@@ -55,9 +55,9 @@ public class FormConfigureController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getFormModularList", method = RequestMethod.GET)
-    public BootstrapTableVo getFormModularList(String formName) {
-        return formConfigureService.getFormModularList(formName);
+    @RequestMapping(value = "/getFormModuleList", method = RequestMethod.GET)
+    public BootstrapTableVo getFormModuleList(Integer formId) {
+        return formConfigureService.getFormModuleList(formId);
     }
 
     /**
@@ -66,9 +66,9 @@ public class FormConfigureController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getFormModularFieldList", method = RequestMethod.GET)
-    public BootstrapTableVo getFormModularFieldList(Integer formListId) {
-        return formConfigureService.getFormModularFieldList(formListId);
+    @RequestMapping(value = "/getFormModuleFieldList", method = RequestMethod.GET)
+    public BootstrapTableVo getFormModuleFieldList(Integer formListId) {
+        return formConfigureService.getFormModuleFieldList(formListId);
     }
 
     /**
@@ -89,14 +89,14 @@ public class FormConfigureController {
     /**
      * 保存字段
      *
-     * @param hrBaseFormListFieldDto
+     * @param baseFormModuleField
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/saveFormListField", method = RequestMethod.POST)
-    public HttpResult saveFormListField(BaseFormListField hrBaseFormListFieldDto) {
+    public HttpResult saveFormListField(BaseFormModuleField baseFormModuleField) {
         try {
-            formConfigureService.saveFormListField(hrBaseFormListFieldDto);
+            formConfigureService.saveFormModuleField(baseFormModuleField);
         } catch (Exception e) {
             LOGGER.error("保存字段异常", e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -114,7 +114,7 @@ public class FormConfigureController {
     @RequestMapping(value = "/deleteFormListField", method = RequestMethod.POST)
     public HttpResult deleteFormListField(Integer id) {
         try {
-            formConfigureService.deleteFormListField(id);
+            formConfigureService.deleteFormModuleField(id);
         } catch (Exception e) {
             LOGGER.error("删除字段异常", e);
             return HttpResult.newErrorResult(e.getMessage());

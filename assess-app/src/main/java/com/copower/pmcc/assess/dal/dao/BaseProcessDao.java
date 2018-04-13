@@ -75,22 +75,13 @@ public class BaseProcessDao {
 
     //ProcessForm==================================================================
 
-    public List<BaseProcessForm> getProcessFormByProcess(String process) {
+    public List<BaseProcessForm> getProcessFormByProcess(Integer processId) {
         BaseProcessFormExample example = new BaseProcessFormExample();
-        example.createCriteria().andBisEnableEqualTo(true).andProcessEqualTo(process);
+        example.createCriteria().andBisEnableEqualTo(true).andProcessIdEqualTo(processId);
         example.setOrderByClause("sorting");
         return hrProcessFormMapper.selectByExample(example);
     }
-    public List<BaseProcessForm> getProcessForms(String process,String boxName) {
-        BaseProcessFormExample example = new BaseProcessFormExample();
-        BaseProcessFormExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
-        criteria.andProcessEqualTo(process);
-        if(StringUtils.isNotBlank(boxName)){
-            criteria.andBoxNameEqualTo(boxName);
-        }
-        example.setOrderByClause("sorting");
-        return hrProcessFormMapper.selectByExample(example);
-    }
+
 
     public List<BaseProcessForm> getProcessFormList(BaseProcessForm hrBaseProcessForm) {
         BaseProcessFormExample example = new BaseProcessFormExample();
@@ -100,18 +91,16 @@ public class BaseProcessDao {
         return hrProcessFormMapper.selectByExample(example);
     }
 
-    public List<BaseProcessForm> getBaseProcessFormList(String search, String process,String boxName) {
+    public List<BaseProcessForm> getBaseProcessFormList(String search, Integer procesId) {
         BaseProcessFormExample example = new BaseProcessFormExample();
-        BaseProcessFormExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andProcessEqualTo(process);
+        BaseProcessFormExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andProcessIdEqualTo(procesId);
         if (StringUtils.isNotBlank(search)) {
             criteria.andCnNameLike(String.format("%s%s%s", "%", search, "%"));
-        }
-        if(StringUtils.isNotBlank(boxName)){
-            criteria.andBoxNameEqualTo(boxName);
         }
         example.setOrderByClause(" sorting");
         return hrProcessFormMapper.selectByExample(example);
     }
+
 
     public Boolean saveBaseProcessForm(BaseProcessForm hrBaseProcess) {
         return hrProcessFormMapper.insertSelective(hrBaseProcess) == 1;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output;
 
-import com.copower.pmcc.assess.dal.entity.BaseFormList;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class BaseProcessFormModelVo {
     private List<BoxReActivityDto> boxReActivityDtoList;
 
-    private List<BaseFormList> hrBaseFormLists;
+    private List<BaseFormModule> baseFormModules;
 
     public List<BoxReActivityDto> getBoxReActivityDtoList() {
         return boxReActivityDtoList;
@@ -25,11 +25,11 @@ public class BaseProcessFormModelVo {
         this.boxReActivityDtoList = boxReActivityDtoList;
     }
 
-    public List<BaseFormList> getBaseFormLists() {
-        return hrBaseFormLists;
+    public List<BaseFormModule> getBaseFormModules() {
+        return baseFormModules;
     }
 
-    public void setBaseFormLists(List<BaseFormList> hrBaseFormLists) {
-        this.hrBaseFormLists = hrBaseFormLists;
+    public void setBaseFormModules(List<BaseFormModule> baseFormModules) {
+        this.baseFormModules = baseFormModules;
     }
 }

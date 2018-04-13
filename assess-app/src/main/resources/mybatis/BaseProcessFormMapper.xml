@@ -3,8 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseProcessFormMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="process" property="process" jdbcType="VARCHAR" />
-    <result column="box_name" property="boxName" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="INTEGER" />
+    <result column="form_module_id" property="formModuleId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="cn_name" property="cnName" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process, box_name, name, cn_name, bis_enable, sorting, box_re_activity_name
+    id, process_id, form_module_id, name, cn_name, bis_enable, sorting, box_re_activity_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessFormExample" >
     select
@@ -106,10 +106,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_process_form (process, box_name, name, 
+    insert into tb_base_process_form (process_id, form_module_id, name, 
       cn_name, bis_enable, sorting, 
       box_re_activity_name)
-    values (#{process,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    values (#{processId,jdbcType=INTEGER}, #{formModuleId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{cnName,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
       #{boxReActivityName,jdbcType=VARCHAR})
   </insert>
@@ -119,11 +119,11 @@
     </selectKey>
     insert into tb_base_process_form
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="process != null" >
-        process,
+      <if test="processId != null" >
+        process_id,
       </if>
-      <if test="boxName != null" >
-        box_name,
+      <if test="formModuleId != null" >
+        form_module_id,
       </if>
       <if test="name != null" >
         name,
@@ -142,11 +142,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="process != null" >
-        #{process,jdbcType=VARCHAR},
+      <if test="processId != null" >
+        #{processId,jdbcType=INTEGER},
       </if>
-      <if test="boxName != null" >
-        #{boxName,jdbcType=VARCHAR},
+      <if test="formModuleId != null" >
+        #{formModuleId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -177,11 +177,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.process != null" >
-        process = #{record.process,jdbcType=VARCHAR},
+      <if test="record.processId != null" >
+        process_id = #{record.processId,jdbcType=INTEGER},
       </if>
-      <if test="record.boxName != null" >
-        box_name = #{record.boxName,jdbcType=VARCHAR},
+      <if test="record.formModuleId != null" >
+        form_module_id = #{record.formModuleId,jdbcType=INTEGER},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -206,8 +206,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_base_process_form
     set id = #{record.id,jdbcType=INTEGER},
-      process = #{record.process,jdbcType=VARCHAR},
-      box_name = #{record.boxName,jdbcType=VARCHAR},
+      process_id = #{record.processId,jdbcType=INTEGER},
+      form_module_id = #{record.formModuleId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       cn_name = #{record.cnName,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -220,11 +220,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
     update tb_base_process_form
     <set >
-      <if test="process != null" >
-        process = #{process,jdbcType=VARCHAR},
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=INTEGER},
       </if>
-      <if test="boxName != null" >
-        box_name = #{boxName,jdbcType=VARCHAR},
+      <if test="formModuleId != null" >
+        form_module_id = #{formModuleId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -246,8 +246,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
     update tb_base_process_form
-    set process = #{process,jdbcType=VARCHAR},
-      box_name = #{boxName,jdbcType=VARCHAR},
+    set process_id = #{processId,jdbcType=INTEGER},
+      form_module_id = #{formModuleId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       cn_name = #{cnName,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},

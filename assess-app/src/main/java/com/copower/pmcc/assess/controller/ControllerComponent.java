@@ -261,4 +261,15 @@ public class ControllerComponent {
         modelAndView.addObject("proportion", Math.ceil(((float) j / (i - 1)) * 100));
     }
 
+    public String checkNextNodeSelectUser(String boxName, Integer currentStep) {
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        BoxReActivityDto nextBoxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, currentStep + 1);
+        if (nextBoxReActivityDto != null) {
+            if (nextBoxReActivityDto.getBisSelectUser()) {
+                return "1";
+            }
+        }
+        return "";
+    }
+
 }

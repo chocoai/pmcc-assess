@@ -164,143 +164,123 @@ public class BaseProcessFormExample {
             return (Criteria) this;
         }
 
-        public Criteria andProcessIsNull() {
-            addCriterion("process is null");
+        public Criteria andProcessIdIsNull() {
+            addCriterion("process_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andProcessIsNotNull() {
-            addCriterion("process is not null");
+        public Criteria andProcessIdIsNotNull() {
+            addCriterion("process_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProcessEqualTo(String value) {
-            addCriterion("process =", value, "process");
+        public Criteria andProcessIdEqualTo(Integer value) {
+            addCriterion("process_id =", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessNotEqualTo(String value) {
-            addCriterion("process <>", value, "process");
+        public Criteria andProcessIdNotEqualTo(Integer value) {
+            addCriterion("process_id <>", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessGreaterThan(String value) {
-            addCriterion("process >", value, "process");
+        public Criteria andProcessIdGreaterThan(Integer value) {
+            addCriterion("process_id >", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessGreaterThanOrEqualTo(String value) {
-            addCriterion("process >=", value, "process");
+        public Criteria andProcessIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("process_id >=", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessLessThan(String value) {
-            addCriterion("process <", value, "process");
+        public Criteria andProcessIdLessThan(Integer value) {
+            addCriterion("process_id <", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessLessThanOrEqualTo(String value) {
-            addCriterion("process <=", value, "process");
+        public Criteria andProcessIdLessThanOrEqualTo(Integer value) {
+            addCriterion("process_id <=", value, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessLike(String value) {
-            addCriterion("process like", value, "process");
+        public Criteria andProcessIdIn(List<Integer> values) {
+            addCriterion("process_id in", values, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessNotLike(String value) {
-            addCriterion("process not like", value, "process");
+        public Criteria andProcessIdNotIn(List<Integer> values) {
+            addCriterion("process_id not in", values, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessIn(List<String> values) {
-            addCriterion("process in", values, "process");
+        public Criteria andProcessIdBetween(Integer value1, Integer value2) {
+            addCriterion("process_id between", value1, value2, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessNotIn(List<String> values) {
-            addCriterion("process not in", values, "process");
+        public Criteria andProcessIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("process_id not between", value1, value2, "processId");
             return (Criteria) this;
         }
 
-        public Criteria andProcessBetween(String value1, String value2) {
-            addCriterion("process between", value1, value2, "process");
+        public Criteria andFormModuleIdIsNull() {
+            addCriterion("form_module_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andProcessNotBetween(String value1, String value2) {
-            addCriterion("process not between", value1, value2, "process");
+        public Criteria andFormModuleIdIsNotNull() {
+            addCriterion("form_module_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameIsNull() {
-            addCriterion("box_name is null");
+        public Criteria andFormModuleIdEqualTo(Integer value) {
+            addCriterion("form_module_id =", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameIsNotNull() {
-            addCriterion("box_name is not null");
+        public Criteria andFormModuleIdNotEqualTo(Integer value) {
+            addCriterion("form_module_id <>", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameEqualTo(String value) {
-            addCriterion("box_name =", value, "boxName");
+        public Criteria andFormModuleIdGreaterThan(Integer value) {
+            addCriterion("form_module_id >", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameNotEqualTo(String value) {
-            addCriterion("box_name <>", value, "boxName");
+        public Criteria andFormModuleIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_module_id >=", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameGreaterThan(String value) {
-            addCriterion("box_name >", value, "boxName");
+        public Criteria andFormModuleIdLessThan(Integer value) {
+            addCriterion("form_module_id <", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameGreaterThanOrEqualTo(String value) {
-            addCriterion("box_name >=", value, "boxName");
+        public Criteria andFormModuleIdLessThanOrEqualTo(Integer value) {
+            addCriterion("form_module_id <=", value, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameLessThan(String value) {
-            addCriterion("box_name <", value, "boxName");
+        public Criteria andFormModuleIdIn(List<Integer> values) {
+            addCriterion("form_module_id in", values, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameLessThanOrEqualTo(String value) {
-            addCriterion("box_name <=", value, "boxName");
+        public Criteria andFormModuleIdNotIn(List<Integer> values) {
+            addCriterion("form_module_id not in", values, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameLike(String value) {
-            addCriterion("box_name like", value, "boxName");
+        public Criteria andFormModuleIdBetween(Integer value1, Integer value2) {
+            addCriterion("form_module_id between", value1, value2, "formModuleId");
             return (Criteria) this;
         }
 
-        public Criteria andBoxNameNotLike(String value) {
-            addCriterion("box_name not like", value, "boxName");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoxNameIn(List<String> values) {
-            addCriterion("box_name in", values, "boxName");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoxNameNotIn(List<String> values) {
-            addCriterion("box_name not in", values, "boxName");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoxNameBetween(String value1, String value2) {
-            addCriterion("box_name between", value1, value2, "boxName");
-            return (Criteria) this;
-        }
-
-        public Criteria andBoxNameNotBetween(String value1, String value2) {
-            addCriterion("box_name not between", value1, value2, "boxName");
+        public Criteria andFormModuleIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_module_id not between", value1, value2, "formModuleId");
             return (Criteria) this;
         }
 

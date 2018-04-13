@@ -25,6 +25,10 @@
                             表单数据
                         </div>
                         <div class="x_content">
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                    href="#modal_form"
+                                    onclick="addForm();"> 新增
+                            </button>
                             <table id="tb_form_list" class="table table-bordered">
 
                             </table>
@@ -53,7 +57,7 @@
                 <div class="x_content">
                     <button type="button" class="btn btn-success" data-toggle="modal"
                             href="#modal_form_modular_field"
-                            onclick="addFormModularField();"> 新增
+                            onclick="addFormModuleField();"> 新增
                     </button>
                     <div class="row">
                         <div class="col-sm-12">
@@ -289,7 +293,7 @@
             </form>
             <div class='modal-footer'>
                 <button type='button' data-dismiss='modal' class='btn btn-default'>取消</button>
-                <button type='button' class='btn btn-primary save_custom_model' onclick="saveFormModularField();"
+                <button type='button' class='btn btn-primary save_custom_model' onclick="saveFormModuleField();"
                         id='btn_save_field'>保存
                 </button>
             </div>
@@ -308,7 +312,7 @@
     function loadFormList() {
         var cols = [];
         cols.push({field: 'cnName', title: '显示名称'});
-        cols.push({field: 'name', title: 'Assist名称'});
+        cols.push({field: 'name', title: '名称'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value, row, index) {
                 if (value) {
@@ -318,18 +322,117 @@
                 }
             }
         });
+        cols.push({
+            field: 'opt', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editForm(' + index + ');" ><i class="fa fa-edit">编辑</i></a>';
+                if (row.bisJson) {
+                    str += '<a class="btn btn-xs btn-warning" href="javascript:delForm(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
+                }
+                str += '</div>';
+                return str;
+            }
+        });
         $("#tb_form_list").bootstrapTable('destroy');
         TableInit("tb_form_list", "${pageContext.request.contextPath}/formConfigure/getFormList", cols, {}, {
             showColumns: false,
             onClickRow: function (row) {
                 $("#panel_form_list").show();
-                loadFormModularList(row.name);
+                loadFormModuleList(row.name);
             }
         });
     }
 
+    //新增表单
+    function addForm() {
+        //$("#frm_field").clearAll();
+        $("#fieldId").val("0");
+    }
+
+    //编辑表单
+    function editFormModuleField(index) {
+        var row = $("#tb_form_modular_field_list").bootstrapTable('getData')[index];
+        $("#frm_field").clearAll();
+        $("#frm_field").initForm(row);
+        getFieldList(row.tableName, row.name);
+        $('#modal_form_modular_field').modal();
+    }
+
+
+    //删除表单
+    function delForm(id) {
+        bootbox.confirm("确认要删除么？", function (result) {
+            if (result) {
+                Loading.progressShow();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/formConfigure/deleteFormListField",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            $('#tb_form_modular_field_list').bootstrapTable("refresh");
+                        }
+                        else {
+                            Alert("删除数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Loading.progressHide();
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            }
+        });
+    }
+
+    //保存表单信息
+    function saveForm() {
+        if ($("#frm_field").valid()) {
+            Loading.progressShow();
+            var data = formParams("frm_field");
+            data.tableName = $("#tableName").val();
+            data.formListId = $("#formListId").val();
+            data.bisJson = $("#bisJson").prop("checked");
+            data.bisCacheDataSource = $("#bisCacheDataSource").prop("checked");
+            data.bisRequired = $("#bisRequired").prop("checked");
+            data.bisShow = $("#bisShow").prop("checked");
+            data.bisListShow = $("#bisListShow").prop("checked");
+            data.bisQuery = $("#bisQuery").prop("checked");
+            data.bisEnable = $("#bisEnable").prop("checked");
+            $.ajax({
+                url: "${pageContext.request.contextPath}/formConfigure/saveFormListField",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#tb_form_modular_field_list').bootstrapTable("refresh");
+                        $('#modal_form_modular_field').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+
+
+
+
+
     //加载列表数据
-    function loadFormModularList(formName) {
+    function loadFormModuleList(formName) {
         var cols = [];
         cols.push({field: 'cnName', title: '名称'});
         cols.push({field: 'name', title: '表单key'});
@@ -374,7 +477,7 @@
             }
         });
         $("#tb_form_modular_list").bootstrapTable('destroy');
-        TableInit("tb_form_modular_list", "${pageContext.request.contextPath}/formConfigure/getFormModularList", cols, {
+        TableInit("tb_form_modular_list", "${pageContext.request.contextPath}/formConfigure/getFormModuleList", cols, {
             formName: formName
         }, {
             showColumns: false,
@@ -385,7 +488,7 @@
                 $("#panel_form_list_field").show();
                 $("#formListId").val(row.id);
                 getFieldList(row.tableName);
-                loadFormModularFieldList(row.id);
+                loadFormModuleFieldList(row.id);
                 if(row.bisMultiple){
                     $("#multipleConfig").show();
                 }else{
@@ -397,7 +500,7 @@
 
 
     //加载列表数据
-    function loadFormModularFieldList(formListId) {
+    function loadFormModuleFieldList(formListId) {
         var cols = [];
         cols.push({
             field: 'name', title: '名称', formatter: function (value, row, index) {
@@ -460,16 +563,16 @@
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editFormModularField(' + index + ');" ><i class="fa fa-edit">编辑</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editFormModuleField(' + index + ');" ><i class="fa fa-edit">编辑</i></a>';
                 if (row.bisJson) {
-                    str += '<a class="btn btn-xs btn-warning" href="javascript:delFormModularField(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
+                    str += '<a class="btn btn-xs btn-warning" href="javascript:delFormModuleField(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
                 }
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_form_modular_field_list").bootstrapTable('destroy');
-        TableInit("tb_form_modular_field_list", "${pageContext.request.contextPath}/formConfigure/getFormModularFieldList", cols, {
+        TableInit("tb_form_modular_field_list", "${pageContext.request.contextPath}/formConfigure/getFormModuleFieldList", cols, {
             formListId: formListId
         }, {
             showColumns: false,
@@ -481,13 +584,13 @@
 
 
     //新增字段
-    function addFormModularField() {
+    function addFormModuleField() {
         //$("#frm_field").clearAll();
         $("#fieldId").val("0");
     }
 
     //编辑字段
-    function editFormModularField(index) {
+    function editFormModuleField(index) {
         var row = $("#tb_form_modular_field_list").bootstrapTable('getData')[index];
         $("#frm_field").clearAll();
         $("#frm_field").initForm(row);
@@ -497,7 +600,7 @@
 
 
     //删除字段
-    function delFormModularField(id) {
+    function delFormModuleField(id) {
         bootbox.confirm("确认要删除么？", function (result) {
             if (result) {
                 Loading.progressShow();
@@ -526,7 +629,7 @@
     }
 
     //保存字段信息
-    function saveFormModularField() {
+    function saveFormModuleField() {
         if ($("#frm_field").valid()) {
             Loading.progressShow();
             var data = formParams("frm_field");

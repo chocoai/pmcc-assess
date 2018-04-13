@@ -15,25 +15,24 @@
     <!-- ======================provider========================== -->
 
     <!-- ======================erp - consumer========================== -->
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.SessionService" id="sessionService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcUserService" id="erpRpcUserService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcToolsService" id="erpRpcToolsService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcReportPageService" id="erpRpcReportPageService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcMenuService" id="erpRpcMenuService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService" id="erpRpcDepartmentService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcCustomReportService" id="erpRpcCustomReportService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcProjectService" id="erpRpcProjectService" check="false" retries="0" timeout="10000" url="${erp.api.url}"/>
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.SessionService" id="sessionService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcUserService" id="erpRpcUserService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcMenuService" id="erpRpcMenuService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService" id="erpRpcDepartmentService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcToolsService" id="erpRpcToolsService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcCustomReportService" id="erpRpcCustomReportService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.erp.api.provider.ErpRpcProjectService" id="erpRpcProjectService" check="false" retries="0" timeout="10000" url="${erp.api.url}" />
     <!-- ======================bpm - consumer========================== -->
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxService" id="bpmRpcBoxService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService" id="bpmRpcProcessInsManagerService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService" id="bpmRpcActivitiProcessManageService" check="false" retries="0" timeout="10000"
-                     url="${bpm.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService" id="bpmRpcProcessMapService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService" id="bpmRpcProcessExecutionService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
-    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService" id="bpmRpcBoxRoleUserService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
-
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxService" id="bpmRpcBoxService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService" id="bpmRpcProcessInsManagerService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService" id="bpmRpcActivitiProcessManageService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService" id="bpmRpcProcessMapService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService" id="bpmRpcProcessExecutionService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService" id="bpmRpcBoxRoleUserService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService" id="bpmRpcProjectTaskService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
     <!-- ======================hr - consumer========================== -->
-    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcUserService" id="hrRpcUserService" check="false" retries="0" timeout="10000" url="${hr.api.url}"/>
-
-
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcUserService" id="hrRpcUserService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcProfessionalService" id="hrRpcProfessionalService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcAttachmentService" id="hrRpcAttachmentService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcDataDicService" id="hrRpcDataDicService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
 </beans>

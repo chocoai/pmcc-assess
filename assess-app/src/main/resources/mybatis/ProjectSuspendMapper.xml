@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ProjectSuspendMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ProjectSuspend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="suspend_user_account" property="suspendUserAccount" jdbcType="VARCHAR" />
+    <result column="supend_date" property="supendDate" jdbcType="TIMESTAMP" />
+    <result column="suspend_reason" property="suspendReason" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="restart_date" property="restartDate" jdbcType="TIMESTAMP" />
+    <result column="restart_user_account" property="restartUserAccount" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, suspend_user_account, supend_date, suspend_reason, creator, created, 
+    bis_enable, restart_date, restart_user_account, process_ins_id, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspendExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_suspend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_suspend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_project_suspend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspendExample" >
+    delete from tb_project_suspend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspend" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_suspend (project_id, suspend_user_account, supend_date, 
+      suspend_reason, creator, created, 
+      bis_enable, restart_date, restart_user_account, 
+      process_ins_id, status)
+    values (#{projectId,jdbcType=INTEGER}, #{suspendUserAccount,jdbcType=VARCHAR}, #{supendDate,jdbcType=TIMESTAMP}, 
+      #{suspendReason,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{bisEnable,jdbcType=BIT}, #{restartDate,jdbcType=TIMESTAMP}, #{restartUserAccount,jdbcType=VARCHAR}, 
+      #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspend" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_suspend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="suspendUserAccount != null" >
+        suspend_user_account,
+      </if>
+      <if test="supendDate != null" >
+        supend_date,
+      </if>
+      <if test="suspendReason != null" >
+        suspend_reason,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="restartDate != null" >
+        restart_date,
+      </if>
+      <if test="restartUserAccount != null" >
+        restart_user_account,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="suspendUserAccount != null" >
+        #{suspendUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="supendDate != null" >
+        #{supendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendReason != null" >
+        #{suspendReason,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="restartDate != null" >
+        #{restartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="restartUserAccount != null" >
+        #{restartUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspendExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_suspend
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_project_suspend
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.suspendUserAccount != null" >
+        suspend_user_account = #{record.suspendUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supendDate != null" >
+        supend_date = #{record.supendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.suspendReason != null" >
+        suspend_reason = #{record.suspendReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.restartDate != null" >
+        restart_date = #{record.restartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.restartUserAccount != null" >
+        restart_user_account = #{record.restartUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_project_suspend
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      suspend_user_account = #{record.suspendUserAccount,jdbcType=VARCHAR},
+      supend_date = #{record.supendDate,jdbcType=TIMESTAMP},
+      suspend_reason = #{record.suspendReason,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      restart_date = #{record.restartDate,jdbcType=TIMESTAMP},
+      restart_user_account = #{record.restartUserAccount,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspend" >
+    update tb_project_suspend
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="suspendUserAccount != null" >
+        suspend_user_account = #{suspendUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="supendDate != null" >
+        supend_date = #{supendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspendReason != null" >
+        suspend_reason = #{suspendReason,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="restartDate != null" >
+        restart_date = #{restartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="restartUserAccount != null" >
+        restart_user_account = #{restartUserAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ProjectSuspend" >
+    update tb_project_suspend
+    set project_id = #{projectId,jdbcType=INTEGER},
+      suspend_user_account = #{suspendUserAccount,jdbcType=VARCHAR},
+      supend_date = #{supendDate,jdbcType=TIMESTAMP},
+      suspend_reason = #{suspendReason,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      restart_date = #{restartDate,jdbcType=TIMESTAMP},
+      restart_user_account = #{restartUserAccount,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

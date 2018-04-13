@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ProjectPlanHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ProjectPlanHistory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="plan_id" property="planId" jdbcType="INTEGER" />
+    <result column="project_phase_name" property="projectPhaseName" jdbcType="VARCHAR" />
+    <result column="before_plan_start" property="beforePlanStart" jdbcType="TIMESTAMP" />
+    <result column="before_plan_end" property="beforePlanEnd" jdbcType="TIMESTAMP" />
+    <result column="before_plan_remarks" property="beforePlanRemarks" jdbcType="VARCHAR" />
+    <result column="after_plan_start" property="afterPlanStart" jdbcType="TIMESTAMP" />
+    <result column="after_plan_end" property="afterPlanEnd" jdbcType="TIMESTAMP" />
+    <result column="after_plan_remarks" property="afterPlanRemarks" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, plan_id, project_phase_name, before_plan_start, before_plan_end, 
+    before_plan_remarks, after_plan_start, after_plan_end, after_plan_remarks, process_ins_id, 
+    status, creator, created
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_plan_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_plan_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_project_plan_history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistoryExample" >
+    delete from tb_project_plan_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_plan_history (project_id, plan_id, project_phase_name, 
+      before_plan_start, before_plan_end, before_plan_remarks, 
+      after_plan_start, after_plan_end, after_plan_remarks, 
+      process_ins_id, status, creator, 
+      created)
+    values (#{projectId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectPhaseName,jdbcType=VARCHAR}, 
+      #{beforePlanStart,jdbcType=TIMESTAMP}, #{beforePlanEnd,jdbcType=TIMESTAMP}, #{beforePlanRemarks,jdbcType=VARCHAR}, 
+      #{afterPlanStart,jdbcType=TIMESTAMP}, #{afterPlanEnd,jdbcType=TIMESTAMP}, #{afterPlanRemarks,jdbcType=VARCHAR}, 
+      #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_plan_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="projectPhaseName != null" >
+        project_phase_name,
+      </if>
+      <if test="beforePlanStart != null" >
+        before_plan_start,
+      </if>
+      <if test="beforePlanEnd != null" >
+        before_plan_end,
+      </if>
+      <if test="beforePlanRemarks != null" >
+        before_plan_remarks,
+      </if>
+      <if test="afterPlanStart != null" >
+        after_plan_start,
+      </if>
+      <if test="afterPlanEnd != null" >
+        after_plan_end,
+      </if>
+      <if test="afterPlanRemarks != null" >
+        after_plan_remarks,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null" >
+        #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="projectPhaseName != null" >
+        #{projectPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="beforePlanStart != null" >
+        #{beforePlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beforePlanEnd != null" >
+        #{beforePlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beforePlanRemarks != null" >
+        #{beforePlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="afterPlanStart != null" >
+        #{afterPlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="afterPlanEnd != null" >
+        #{afterPlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="afterPlanRemarks != null" >
+        #{afterPlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistoryExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_plan_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_project_plan_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planId != null" >
+        plan_id = #{record.planId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectPhaseName != null" >
+        project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beforePlanStart != null" >
+        before_plan_start = #{record.beforePlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.beforePlanEnd != null" >
+        before_plan_end = #{record.beforePlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.beforePlanRemarks != null" >
+        before_plan_remarks = #{record.beforePlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.afterPlanStart != null" >
+        after_plan_start = #{record.afterPlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.afterPlanEnd != null" >
+        after_plan_end = #{record.afterPlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.afterPlanRemarks != null" >
+        after_plan_remarks = #{record.afterPlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_project_plan_history
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      plan_id = #{record.planId,jdbcType=INTEGER},
+      project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
+      before_plan_start = #{record.beforePlanStart,jdbcType=TIMESTAMP},
+      before_plan_end = #{record.beforePlanEnd,jdbcType=TIMESTAMP},
+      before_plan_remarks = #{record.beforePlanRemarks,jdbcType=VARCHAR},
+      after_plan_start = #{record.afterPlanStart,jdbcType=TIMESTAMP},
+      after_plan_end = #{record.afterPlanEnd,jdbcType=TIMESTAMP},
+      after_plan_remarks = #{record.afterPlanRemarks,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistory" >
+    update tb_project_plan_history
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null" >
+        plan_id = #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="projectPhaseName != null" >
+        project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="beforePlanStart != null" >
+        before_plan_start = #{beforePlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beforePlanEnd != null" >
+        before_plan_end = #{beforePlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beforePlanRemarks != null" >
+        before_plan_remarks = #{beforePlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="afterPlanStart != null" >
+        after_plan_start = #{afterPlanStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="afterPlanEnd != null" >
+        after_plan_end = #{afterPlanEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="afterPlanRemarks != null" >
+        after_plan_remarks = #{afterPlanRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanHistory" >
+    update tb_project_plan_history
+    set project_id = #{projectId,jdbcType=INTEGER},
+      plan_id = #{planId,jdbcType=INTEGER},
+      project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
+      before_plan_start = #{beforePlanStart,jdbcType=TIMESTAMP},
+      before_plan_end = #{beforePlanEnd,jdbcType=TIMESTAMP},
+      before_plan_remarks = #{beforePlanRemarks,jdbcType=VARCHAR},
+      after_plan_start = #{afterPlanStart,jdbcType=TIMESTAMP},
+      after_plan_end = #{afterPlanEnd,jdbcType=TIMESTAMP},
+      after_plan_remarks = #{afterPlanRemarks,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

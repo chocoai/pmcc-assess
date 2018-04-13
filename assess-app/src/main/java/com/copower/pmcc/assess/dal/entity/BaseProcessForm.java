@@ -3,9 +3,9 @@ package com.copower.pmcc.assess.dal.entity;
 public class BaseProcessForm {
     private Integer id;
 
-    private String process;
+    private Integer processId;
 
-    private String boxName;
+    private Integer formModuleId;
 
     private String name;
 
@@ -25,20 +25,20 @@ public class BaseProcessForm {
         this.id = id;
     }
 
-    public String getProcess() {
-        return process;
+    public Integer getProcessId() {
+        return processId;
     }
 
-    public void setProcess(String process) {
-        this.process = process == null ? null : process.trim();
+    public void setProcessId(Integer processId) {
+        this.processId = processId;
     }
 
-    public String getBoxName() {
-        return boxName;
+    public Integer getFormModuleId() {
+        return formModuleId;
     }
 
-    public void setBoxName(String boxName) {
-        this.boxName = boxName == null ? null : boxName.trim();
+    public void setFormModuleId(Integer formModuleId) {
+        this.formModuleId = formModuleId;
     }
 
     public String getName() {

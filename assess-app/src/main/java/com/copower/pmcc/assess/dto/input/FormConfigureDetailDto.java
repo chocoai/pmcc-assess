@@ -6,7 +6,7 @@ package com.copower.pmcc.assess.dto.input;
 public class FormConfigureDetailDto {
     private Integer tableId;
     private String tableName;
-    private Integer formListId;
+    private Integer formModuleId;
     private String formData;
 
     public Integer getTableId() {
@@ -25,12 +25,13 @@ public class FormConfigureDetailDto {
         this.tableName = tableName;
     }
 
-    public Integer getFormListId() {
-        return formListId;
+
+    public Integer getFormModuleId() {
+        return formModuleId;
     }
 
-    public void setFormListId(Integer formListId) {
-        this.formListId = formListId;
+    public void setFormModuleId(Integer formModuleId) {
+        this.formModuleId = formModuleId;
     }
 
     public String getFormData() {

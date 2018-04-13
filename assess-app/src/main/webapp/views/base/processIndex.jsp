@@ -225,12 +225,10 @@
     </div>
 </div>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
     var process = "";
     var currBoxName = "";
     $(function () {
-        crmCustomer.select();
         loadProcessTable();
         loadProcessFormTable();
         $("#btn_process").click(function () {
@@ -241,7 +239,6 @@
         });
         $("#boxName").select2();
         $("#baseForm").select2();
-
     })
 
     function loadProcessTable() {
@@ -271,7 +268,7 @@
             }
         });
 
-        TableInit("tb_processList", "${pageContext.request.contextPath}/HrBaseProcess/getHrBaseProcessList", cols, {}, {
+        TableInit("tb_processList", "${pageContext.request.contextPath}/baseProcess/getBaseProcessList", cols, {}, {
             toolbar: "#procesBar"
         });
     }
@@ -297,7 +294,7 @@
     function delProcess(id) {
         var tips = "是否确认删除当前流程?";
 
-        var url = "${pageContext.request.contextPath}/HrBaseProcess/deleteHrBaseProcess";
+        var url = "${pageContext.request.contextPath}/baseProcess/deleteBaseProcess";
         Alert(tips, 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -331,7 +328,7 @@
             var data = formParams("frm_process");
             data.bisEnable = $("#bisEnable").prop("checked");
             $.ajax({
-                url: "${pageContext.request.contextPath}/HrBaseProcess/saveHrBaseProcess",
+                url: "${pageContext.request.contextPath}/baseProcess/saveBaseProcess",
                 data: data,
                 type: "post",
                 dataType: "json",
@@ -362,7 +359,7 @@
         process = row.baseForm;
         currBoxName = row.boxName;
         loadFormList(row.id);
-        TableReload("tb_processFormList", "${pageContext.request.contextPath}/HrBaseProcess/getHrBaseProcessFormList", {
+        TableReload("tb_processFormList", "${pageContext.request.contextPath}/baseProcess/getBaseProcessFormList", {
             process: row.baseForm,
             boxName: row.boxName
         });
@@ -386,7 +383,7 @@
             }
         });
 
-        TableInit("tb_processFormList", "${pageContext.request.contextPath}/HrBaseProcess/getHrBaseProcessFormList", cols, {
+        TableInit("tb_processFormList", "${pageContext.request.contextPath}/baseProcess/getBaseProcessFormList", cols, {
             process: process
         }, {
             toolbar: "#procesFormBar"
@@ -395,7 +392,7 @@
 
     function loadFormList(processId) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/HrBaseProcess/getFormListByProcess",
+            url: "${pageContext.request.contextPath}/baseProcess/getFormListByProcess",
             data: {
                 processId: processId
             },
@@ -447,7 +444,7 @@
     function delProcessForm(id) {
         var tips = "是否确认删除当前表单?";
 
-        var url = "${pageContext.request.contextPath}/HrBaseProcess/deleteHrBaseProcessForm";
+        var url = "${pageContext.request.contextPath}/baseProcess/deleteBaseProcessForm";
         Alert(tips, 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -487,7 +484,7 @@
             data["boxReActivityName"] = activity[0];
             data["sorting"] = activity[1];
             $.ajax({
-                url: "${pageContext.request.contextPath}/HrBaseProcess/saveHrBaseProcessForm",
+                url: "${pageContext.request.contextPath}/baseProcess/saveBaseProcessForm",
                 data: data,
                 type: "post",
                 dataType: "json",

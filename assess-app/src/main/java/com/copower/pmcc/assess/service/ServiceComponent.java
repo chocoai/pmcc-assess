@@ -1,13 +1,16 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.model.*;
 import com.copower.pmcc.bpm.api.dto.node.LoopTaskNodeArg;
 import com.copower.pmcc.bpm.api.enums.BoxReChksProcessEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -44,9 +47,13 @@ public class ServiceComponent {
     private ApprovalUser approvalUser;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private ErpRpcToolsService erpRpcToolsService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     /**
-     * 删除指定的KEY
+     * 删除指定的KEYE
      *
      * @param key
      * @param value
@@ -63,7 +70,9 @@ public class ServiceComponent {
     public SysUserDto getSysUserDtoByUserAccount(String userAccount) {
         return erpRpcUserService.getSysUser(userAccount);
     }
-
+    public boolean userIsAdmin(String userAccount) {
+        return erpRpcToolsService.userIsAdmin(userAccount);
+    }
     public String getThisUser() {
         return commonService.thisUserAccount();
     }
@@ -72,34 +81,31 @@ public class ServiceComponent {
         return commonService.thisUser();
     }
 
-    public String processStart(ProcessInfo processInfo, String appointUserAccount, BoxReChksProcessEnum boxReChksProcessEnum) throws BpmException {
+    public ProcessUserDto processStart(ProcessInfo processInfo, String appointUserAccount, Boolean bisSign) throws BpmException {
         String startUser;
         if (StringUtils.isNotBlank(processInfo.getStartUser())) {
             startUser = processInfo.getStartUser();
         } else {
-
             startUser = commonService.thisUserAccount();
         }
         processInfo.setStartUser(startUser);
         processInfo.setAppKey(applicationConstant.getAppKey());
+        ProcessUserDto processUserDto = getProcessNextApproval(processInfo.getBoxId(), -1, appointUserAccount, processInfo.getProjectId(), bisSign, false);
 
-        if (processInfo.getTaskNodeArg() == null) {
-            ProcessUserDto processUserDto = getProcessNextApproval(processInfo.getBoxId(), -1, appointUserAccount, processInfo.getProjectId(), false, false);
-            LoopTaskNodeArg loopTaskNodeArg = new LoopTaskNodeArg();
-            loopTaskNodeArg.setLoopCount(processUserDto.getStepCount());
-            if (processUserDto.getSkipActivity().size() > 0) {
-                loopTaskNodeArg.setUsers(Lists.newArrayList(getThisUser()));
-            } else {
-                loopTaskNodeArg.setUsers(processUserDto.getUserAccounts());
-            }
-            processInfo.setNextUser(processUserDto.getUserAccounts());
-            processInfo.setTaskNodeArg(loopTaskNodeArg);
-            processInfo.setSkipActivityIds(processUserDto.getSkipActivity());
+        LoopTaskNodeArg loopTaskNodeArg = new LoopTaskNodeArg();
+        loopTaskNodeArg.setLoopCount(processUserDto.getStepCount());
+        if (processUserDto.getSkipActivity().size() > 0) {
+            loopTaskNodeArg.setUsers(Lists.newArrayList(getThisUser()));
+        } else {
+            loopTaskNodeArg.setUsers(processUserDto.getUserAccounts());
         }
-
+        processInfo.setNextUser(processUserDto.getUserAccounts());
+        processInfo.setTaskNodeArg(loopTaskNodeArg);
+        processInfo.setSkipActivityIds(processUserDto.getSkipActivity());
         processInfo.setBisDraftStart(false);
         String processInsId = bpmRpcProcessInsManagerService.processStart(processInfo);
-        return processInsId;
+        processUserDto.setProcessInsId(processInsId);
+        return processUserDto;
     }
 
     /**
@@ -251,6 +257,45 @@ public class ServiceComponent {
             }
         }
         return users;
+    }
+
+    public void AutoprocessSubmitLoopTaskNodeArg(ProcessInfo processInfo, ProcessUserDto processUserDto) throws BpmException {
+        List<ActivitiTaskNodeDto> activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(processUserDto.getProcessInsId());
+        if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+            ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);//取得第一个任务
+
+            ApprovalModelDto approvalModelDto = new ApprovalModelDto();
+            approvalModelDto.setTaskId(activitiTaskNodeDto.getTaskId());
+            approvalModelDto.setProcessInsId(approvalModelDto.getProcessInsId());
+            approvalModelDto.setOpinions("系统自动提交");
+            approvalModelDto.setBisAuto(true);
+            approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
+            approvalModelDto.setCurrUserAccount(processInfo.getStartUser());
+            approvalModelDto.setBisNext("0");
+            approvalModelDto.setCurrentStep(activitiTaskNodeDto.getCurrentStep());
+            approvalModelDto.setAgentUserAccount("");
+            LoopTaskNodeArg taskNodeArg = (LoopTaskNodeArg) processInfo.getTaskNodeArg();
+            approvalModelDto.setStepCount(taskNodeArg.getLoopCount());
+            approvalModelDto.setProjectId(processInfo.getProjectId());
+            approvalModelDto.setBoxId(processInfo.getBoxId());
+            approvalModelDto.setActivityKey("");
+            approvalModelDto.setSkipActivity(new ArrayList<>());
+            approvalModelDto.setProjectId(processInfo.getProjectId());
+            approvalModelDto.setProcessInsId(processUserDto.getProcessInsId());
+            approvalModelDto.setWorkStage(processInfo.getWorkStage());
+            approvalModelDto.setWorkStageId(processInfo.getWorkStageId());
+            approvalModelDto.setWorkPhaseId(processInfo.getWorkPhaseId());
+            approvalModelDto.setAppKey(applicationConstant.getAppKey());
+            List<Integer> skipActivity = processUserDto.getSkipActivity();
+
+            approvalModelDto.setNextApproval(processInfo.getNextUser());
+            approvalModelDto.setActivityId(processUserDto.getSkipActivity().get(0));
+            skipActivity.remove(0);//移除第一个节点
+            approvalModelDto.setSkipActivity(skipActivity);
+            bpmRpcActivitiProcessManageService.changeUser(activitiTaskNodeDto.getTaskId(), FormatUtils.transformListString(taskNodeArg.getUsers()), getThisUser());
+            processSubmitLoopTaskNodeArg(approvalModelDto, true);
+
+        }
     }
 
 }

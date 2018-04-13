@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.controller;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.service.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

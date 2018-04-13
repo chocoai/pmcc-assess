@@ -25,7 +25,7 @@
     <dependencies>
         <dependency>
             <groupId>com.copower</groupId>
-            <artifactId>crm-api</artifactId>
+            <artifactId>assess-api</artifactId>
             <version>1.0.4</version>
         </dependency>
         <dependency>

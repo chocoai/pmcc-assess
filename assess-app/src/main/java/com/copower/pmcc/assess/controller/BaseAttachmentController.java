@@ -5,7 +5,7 @@ import com.copower.pmcc.erp.api.dto.model.AttachmentSaveVo;
 import com.copower.pmcc.erp.api.dto.model.AttachmentVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.assess.service.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
