@@ -754,73 +754,73 @@ public class BaseFormModuleExample {
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlIsNull() {
-            addCriterion("custome_display_url is null");
+        public Criteria andCustomDisplayUrlIsNull() {
+            addCriterion("custom_display_url is null");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlIsNotNull() {
-            addCriterion("custome_display_url is not null");
+        public Criteria andCustomDisplayUrlIsNotNull() {
+            addCriterion("custom_display_url is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlEqualTo(String value) {
-            addCriterion("custome_display_url =", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlEqualTo(String value) {
+            addCriterion("custom_display_url =", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlNotEqualTo(String value) {
-            addCriterion("custome_display_url <>", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlNotEqualTo(String value) {
+            addCriterion("custom_display_url <>", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlGreaterThan(String value) {
-            addCriterion("custome_display_url >", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlGreaterThan(String value) {
+            addCriterion("custom_display_url >", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("custome_display_url >=", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("custom_display_url >=", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlLessThan(String value) {
-            addCriterion("custome_display_url <", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlLessThan(String value) {
+            addCriterion("custom_display_url <", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlLessThanOrEqualTo(String value) {
-            addCriterion("custome_display_url <=", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlLessThanOrEqualTo(String value) {
+            addCriterion("custom_display_url <=", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlLike(String value) {
-            addCriterion("custome_display_url like", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlLike(String value) {
+            addCriterion("custom_display_url like", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlNotLike(String value) {
-            addCriterion("custome_display_url not like", value, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlNotLike(String value) {
+            addCriterion("custom_display_url not like", value, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlIn(List<String> values) {
-            addCriterion("custome_display_url in", values, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlIn(List<String> values) {
+            addCriterion("custom_display_url in", values, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlNotIn(List<String> values) {
-            addCriterion("custome_display_url not in", values, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlNotIn(List<String> values) {
+            addCriterion("custom_display_url not in", values, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlBetween(String value1, String value2) {
-            addCriterion("custome_display_url between", value1, value2, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlBetween(String value1, String value2) {
+            addCriterion("custom_display_url between", value1, value2, "customDisplayUrl");
             return (Criteria) this;
         }
 
-        public Criteria andCustomeDisplayUrlNotBetween(String value1, String value2) {
-            addCriterion("custome_display_url not between", value1, value2, "customeDisplayUrl");
+        public Criteria andCustomDisplayUrlNotBetween(String value1, String value2) {
+            addCriterion("custom_display_url not between", value1, value2, "customDisplayUrl");
             return (Criteria) this;
         }
 

@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.controller;
 
+import com.copower.pmcc.assess.dal.entity.BaseForm;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
@@ -50,6 +52,42 @@ public class FormConfigureController {
     }
 
     /**
+     * 保存表单
+     *
+     * @param baseForm
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST)
+    public HttpResult saveForm(BaseForm baseForm) {
+        try {
+            formConfigureService.saveForm(baseForm);
+        } catch (Exception e) {
+            LOGGER.error("保存表单异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    /**
+     * 删除表单字段
+     *
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteForm", method = RequestMethod.POST)
+    public HttpResult deleteForm(Integer id) {
+        try {
+            formConfigureService.deleteForm(id);
+        } catch (Exception e) {
+            LOGGER.error("删除表单异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    /**
      * 获取表单列表数据
      *
      * @return
@@ -61,14 +99,50 @@ public class FormConfigureController {
     }
 
     /**
+     * 保存表单模块
+     *
+     * @param baseFormModule
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/saveFormModule", method = RequestMethod.POST)
+    public HttpResult saveFormModule(BaseFormModule baseFormModule) {
+        try {
+            formConfigureService.saveFormModule(baseFormModule);
+        } catch (Exception e) {
+            LOGGER.error("保存表单模块异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    /**
+     * 删除表单模块
+     *
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteFormModule", method = RequestMethod.POST)
+    public HttpResult deleteFormModule(Integer id) {
+        try {
+            formConfigureService.deleteFormModule(id);
+        } catch (Exception e) {
+            LOGGER.error("删除表单模块异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    /**
      * 获取表单列表数据
      *
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/getFormModuleFieldList", method = RequestMethod.GET)
-    public BootstrapTableVo getFormModuleFieldList(Integer formListId) {
-        return formConfigureService.getFormModuleFieldList(formListId);
+    public BootstrapTableVo getFormModuleFieldList(Integer formModuleId) {
+        return formConfigureService.getFormModuleFieldList(formModuleId);
     }
 
     /**

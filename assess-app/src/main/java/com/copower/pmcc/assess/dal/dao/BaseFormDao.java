@@ -29,6 +29,9 @@ public class BaseFormDao {
     private BaseFormModuleFieldMapper hrBaseFormModuleFieldMapper;
 
     //BaseForm=========================================================
+    public BaseForm getBaseForm(Integer id) {
+        return hrBaseFormMapper.selectByPrimaryKey(id);
+    }
 
     public List<BaseForm> getBaseForm(String search) {
         BaseFormExample example = new BaseFormExample();
@@ -39,8 +42,16 @@ public class BaseFormDao {
         return hrBaseFormMapper.selectByExample(example);
     }
 
-    public void addBaseForm(BaseForm hrBaseForm) {
-        hrBaseFormMapper.insertSelective(hrBaseForm);
+    public Boolean updateBaseForm(BaseForm hrBaseForm) {
+        return hrBaseFormMapper.updateByPrimaryKeySelective(hrBaseForm) > 0;
+    }
+
+    public Boolean deleteBaseForm(Integer id) {
+        return hrBaseFormMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    public Boolean addBaseForm(BaseForm hrBaseForm) {
+        return hrBaseFormMapper.insertSelective(hrBaseForm) > 0;
     }
 
     public Boolean updateBaseFormByName(BaseForm hrBaseForm, String name) {
@@ -48,9 +59,22 @@ public class BaseFormDao {
         example.createCriteria().andNameEqualTo(name);
         return hrBaseFormMapper.updateByExampleSelective(hrBaseForm, example) == 1;
     }
+
     //BaseFormModule======================================================
     public BaseFormModule getBaseFormModule(Integer id) {
         return hrBaseFormModuleMapper.selectByPrimaryKey(id);
+    }
+
+    public Boolean updateBaseFormModule(BaseFormModule baseFormModule) {
+        return hrBaseFormModuleMapper.updateByPrimaryKeySelective(baseFormModule) > 0;
+    }
+
+    public Boolean deleteBaseFormModule(Integer id) {
+        return hrBaseFormModuleMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    public Boolean addBaseFormModule(BaseFormModule baseFormModule) {
+        return hrBaseFormModuleMapper.insertSelective(baseFormModule) > 0;
     }
 
     public List<BaseFormModule> getBaseFormModuleList(Integer formId) {
@@ -60,6 +84,7 @@ public class BaseFormDao {
         criteria.andBisEnableEqualTo(true).andFormIdEqualTo(formId);
         return hrBaseFormModuleMapper.selectByExample(example);
     }
+
     public List<BaseFormModule> getBaseFormModuleList(List<Integer> formModuleIds) {
         BaseFormModuleExample example = new BaseFormModuleExample();
         example.createCriteria().andIdIn(formModuleIds).andBisEnableEqualTo(true);

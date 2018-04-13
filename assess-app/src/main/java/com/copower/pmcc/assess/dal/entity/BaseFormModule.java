@@ -21,7 +21,7 @@ public class BaseFormModule {
 
     private String customUrl;
 
-    private String customeDisplayUrl;
+    private String customDisplayUrl;
 
     private Boolean bisCard;
 
@@ -105,12 +105,12 @@ public class BaseFormModule {
         this.customUrl = customUrl == null ? null : customUrl.trim();
     }
 
-    public String getCustomeDisplayUrl() {
-        return customeDisplayUrl;
+    public String getCustomDisplayUrl() {
+        return customDisplayUrl;
     }
 
-    public void setCustomeDisplayUrl(String customeDisplayUrl) {
-        this.customeDisplayUrl = customeDisplayUrl == null ? null : customeDisplayUrl.trim();
+    public void setCustomDisplayUrl(String customDisplayUrl) {
+        this.customDisplayUrl = customDisplayUrl == null ? null : customDisplayUrl.trim();
     }
 
     public Boolean getBisCard() {

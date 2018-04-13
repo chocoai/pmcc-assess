@@ -28,7 +28,7 @@ public class BaseFormService {
     //BaseForm=========================================================
 
     public List<BaseForm> getBaseForm() {
-        return baseFormDao.getBaseForm(null);
+        return baseFormDao.getBaseForm("");
     }
 
     //BaseFormList======================================================

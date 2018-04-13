@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_base_process_form" domainObjectName="BaseProcessForm">
+        <table tableName="tb_base_form_module" domainObjectName="BaseFormModule">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

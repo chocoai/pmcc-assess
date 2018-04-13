@@ -135,6 +135,99 @@ public class FormConfigureService {
     }
 
     /**
+     * 保存表单数据
+     *
+     * @param baseFormDto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveForm(BaseForm baseFormDto) throws BusinessException {
+        BaseForm baseForm = null;
+        if (baseFormDto.getId() != null && baseFormDto.getId() > 0) {
+            baseForm = hrBaseFormDao.getBaseForm(baseFormDto.getId());
+            if (baseForm != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
+            {
+                try {
+                    BeanUtils.copyProperties(baseFormDto, baseForm);
+                } catch (Exception e) {
+                    throw new BusinessException(HttpReturnEnum.COPYFAIL.getName(), e);
+                }
+                if (!hrBaseFormDao.updateBaseForm(baseForm)) {
+                    throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
+                }
+            } else {
+                throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+            }
+        } else {
+            baseForm = new BaseForm();
+            baseForm.setBisEnable(true);
+            try {
+                BeanUtils.copyProperties(baseFormDto, baseForm);
+            } catch (Exception e) {
+                throw new BusinessException(HttpReturnEnum.COPYFAIL.getName(), e);
+            }
+            if (!hrBaseFormDao.addBaseForm(baseForm)) {
+                throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
+            }
+        }
+    }
+
+
+    /**
+     * 删除表单信息
+     *
+     * @param id
+     */
+    public void deleteForm(Integer id) throws BusinessException {
+        hrBaseFormDao.deleteBaseForm(id);
+    }
+
+    /**
+     * 保存表单模块数据
+     *
+     * @param baseFormModuleDto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveFormModule(BaseFormModule baseFormModuleDto) throws BusinessException {
+        BaseFormModule baseFormModule = null;
+        if (baseFormModuleDto.getId() != null && baseFormModuleDto.getId() > 0) {
+            baseFormModule = hrBaseFormDao.getBaseFormModule(baseFormModuleDto.getId());
+            if (baseFormModule != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
+            {
+                try {
+                    BeanUtils.copyProperties(baseFormModuleDto, baseFormModule);
+                } catch (Exception e) {
+                    throw new BusinessException(HttpReturnEnum.COPYFAIL.getName(), e);
+                }
+                if (!hrBaseFormDao.updateBaseFormModule(baseFormModule)) {
+                    throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
+                }
+            } else {
+                throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+            }
+        } else {
+            baseFormModule = new BaseFormModule();
+            try {
+                BeanUtils.copyProperties(baseFormModuleDto, baseFormModule);
+            } catch (Exception e) {
+                throw new BusinessException(HttpReturnEnum.COPYFAIL.getName(), e);
+            }
+            if (!hrBaseFormDao.addBaseFormModule(baseFormModule)) {
+                throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
+            }
+        }
+    }
+
+
+    /**
+     * 删除表单模块信息
+     *
+     * @param id
+     */
+    public void deleteFormModule(Integer id) throws BusinessException {
+        hrBaseFormDao.deleteBaseFormModule(id);
+    }
+
+    /**
      * 保存字段数据
      *
      * @param hrBaseFormModuleFieldDto
