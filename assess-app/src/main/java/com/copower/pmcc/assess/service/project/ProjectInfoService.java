@@ -3,16 +3,32 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dto.input.ProcessUserDto;
+import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,12 +46,87 @@ public class ProjectInfoService {
     @Autowired
     private BaseDataDicService bidBaseDataDicService;
     @Autowired
-    private ErpRpcDepartmentService erpRpcDepartmentService;
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private ServiceComponent serviceComponent;
 
-    public ProjectInfo getProjectInfoByProcessInsId(String processInsId)
-    {
+    /**
+     * 项目立项申请
+     *
+     * @param projectInfoDto
+     */
+    public void projectApply(ProjectInfoDto projectInfoDto) throws BusinessException {
+        ProjectInfo projectInfo = new ProjectInfo();
+        BeanUtils.copyProperties(projectInfoDto, projectInfo);
+
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0);
+        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
+        if (StringUtils.isNotBlank(projectWorkStage.getReviewBoxName()))//注意是取复核模型，因为第一个阶段没有工作成果提交，所以取复核较为合理
+        {
+            startProjectProcess(projectInfo, projectWorkStage);
+        }
+    }
+
+    /**
+     * 发起立项流程
+     * @param projectInfo
+     * @param projectWorkStage
+     * @return
+     * @throws BusinessException
+     */
+    private ProcessUserDto startProjectProcess(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage) throws BusinessException {
+        ProcessUserDto processUserDto = null;
+        //发起相应的流程
+        String folio = "【立项审批】" + projectInfo.getProjectName();
+        Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectWorkStage.getReviewBoxName());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
+        ProcessInfo processInfo = new ProcessInfo();
+        processInfo.setProjectId(projectInfo.getId());
+        processInfo.setProcessName(boxReDto.getProcessName());
+        processInfo.setGroupName(boxReDto.getGroupName());
+        processInfo.setFolio(folio);//流程描述
+        processInfo.setTableName("tb_project_info");
+        processInfo.setTableId(projectInfo.getId());
+        processInfo.setBoxId(boxReDto.getId());
+        processInfo.setWorkStage(projectWorkStage.getWorkStageName());
+        processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
+        processInfo.setWorkStageId(projectWorkStage.getId());
+        try {
+            processUserDto = serviceComponent.processStart(processInfo, serviceComponent.getThisUser(), false);
+        } catch (BpmException e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return processUserDto;
+    }
+
+    /**
+     * 立项审批
+     * @param approvalModelDto
+     * @throws BusinessException
+     * @throws BpmException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
+    }
+
+    /**
+     * 返回修改
+     * @param approvalModelDto
+     * @throws BusinessException
+     * @throws BpmException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void projectEditApproval(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) throws BusinessException, BpmException {
+        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
+    }
+
+    public ProjectInfo getProjectInfoByProcessInsId(String processInsId) {
         return projectInfoDao.getProjectInfoByProcessInsId(processInsId);
     }
+
     public ProjectInfo getProjectInfoById(Integer projectId) {
         return projectInfoDao.getProjectInfoById(projectId);
     }
@@ -57,8 +148,7 @@ public class ProjectInfoService {
     }
 
 
-    public void updateProjectInfo(ProjectInfo projectInfo)
-    {
+    public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
 }

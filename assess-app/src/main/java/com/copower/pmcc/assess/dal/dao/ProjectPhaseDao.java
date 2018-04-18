@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPhaseExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPhaseMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,16 +30,14 @@ public class ProjectPhaseDao {
     }
 
 
-
-    public ProjectPhase getProjectPhaseByCategoryId(Integer categoryId,String phaseKey) {
+    public ProjectPhase getProjectPhaseByCategoryId(Integer categoryId, String phaseKey) {
         ProjectPhaseExample example = new ProjectPhaseExample();
         example.createCriteria().andProjectCategoryIdEqualTo(categoryId).andPhaseKeyEqualTo(phaseKey);
         List<ProjectPhase> projectPhases = projectPhaseMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(projectPhases))
+        if (CollectionUtils.isNotEmpty(projectPhases))
             return projectPhases.get(0);
         return null;
     }
-
 
 
     public ProjectPhase getProjectPhaseById(Integer id) {
@@ -57,8 +56,11 @@ public class ProjectPhaseDao {
 
     public List<ProjectPhase> getCustomProjectPhase(ProjectPhase projectPhase) {
 
-        ProjectPhaseExample example=new ProjectPhaseExample();
-        ProjectPhaseExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andProjectPhaseNameLike(projectPhase.getProjectPhaseName());
+        ProjectPhaseExample example = new ProjectPhaseExample();
+        ProjectPhaseExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(projectPhase.getProjectPhaseName())) {
+            criteria.andProjectPhaseNameLike(projectPhase.getProjectPhaseName());
+        }
         if (projectPhase.getProjectTypeId() != null) {
             criteria.andProjectTypeIdEqualTo(projectPhase.getProjectTypeId());
         }

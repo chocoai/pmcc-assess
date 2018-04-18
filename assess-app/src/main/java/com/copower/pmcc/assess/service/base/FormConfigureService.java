@@ -99,6 +99,11 @@ public class FormConfigureService {
         return bootstrapTableVo;
     }
 
+    public List<BaseFormModule> getFormModules(Integer formId) {
+        List<BaseFormModule> baseFormModule = hrBaseFormDao.getBaseFormModuleList(formId);
+        return baseFormModule;
+    }
+
     /**
      * 获取字段信息列表
      *
@@ -211,6 +216,7 @@ public class FormConfigureService {
             } catch (Exception e) {
                 throw new BusinessException(HttpReturnEnum.COPYFAIL.getName(), e);
             }
+            baseFormModule.setBisEnable(true);
             if (!hrBaseFormDao.addBaseFormModule(baseFormModule)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
@@ -917,33 +923,29 @@ public class FormConfigureService {
     /**
      * 获取流程配置的所有单表json数据
      *
-     * @param processId
+     * @param formId
      * @param tableId
      * @return
      */
-    public Map<String, KeyValueDto> getAllTableJsonString(Integer processId, Integer tableId) {
+    public Map<String, KeyValueDto> getAllTableJsonString(Integer formId, Integer tableId) {
         Map<String, KeyValueDto> map = Maps.newHashMap();
-        BaseProcess hrBaseProcess = hrProcessDao.getProcessById(processId);
-        if (hrBaseProcess == null)
+        BaseForm baseForm = hrBaseFormDao.getBaseForm(formId);
+        if (baseForm == null)
             return map;
-        BaseProcessForm hrBaseProcessForm = new BaseProcessForm();
-        hrBaseProcessForm.setFormModuleId(hrBaseProcess.getId());
-        List<BaseProcessForm> hrProcessFormModule = hrProcessDao.getProcessFormList(hrBaseProcessForm);
-        List<Integer> list = LangUtils.transform(hrProcessFormModule, p -> p.getId());
-        List<BaseFormModule> hrBaseFormModules = hrBaseFormDao.getBaseFormModuleList(list);
-        Map<String, Object> objectMap = formConfigureDao.getObjectSingle(hrBaseProcess.getTableName(), tableId);//
+        List<BaseFormModule> hrBaseFormModules = hrBaseFormDao.getBaseFormModuleList(formId);
+        Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseForm.getTableName(), tableId);//
         KeyValueDto keyValueDto = null;
         if (objectMap != null) {
             keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(tableId));
             keyValueDto.setValue(mapToJsonString(objectMap));
-            map.put(hrBaseProcess.getTableName(), keyValueDto);
+            map.put(baseForm.getTableName(), keyValueDto);
         }
         if (CollectionUtils.isNotEmpty(hrBaseFormModules)) {
             for (BaseFormModule hrBaseFormModule : hrBaseFormModules) {
                 boolean isConfigure = hrBaseFormModule.getBisConfigure() == null ? false : hrBaseFormModule.getBisConfigure();
                 boolean notMultiple = !(hrBaseFormModule.getBisMultiple() == null ? false : hrBaseFormModule.getBisMultiple());
-                boolean notPrimaryTable = !hrBaseProcess.getTableName().equals(hrBaseFormModule.getTableName());
+                boolean notPrimaryTable = !baseForm.getTableName().equals(hrBaseFormModule.getTableName());
                 if (isConfigure && notMultiple && notPrimaryTable) {
                     String sql = String.format("select * from %s where %s=?", hrBaseFormModule.getTableName(), hrBaseFormModule.getForeignKeyName());
                     objectMap = formConfigureDao.getObjectSingle(sql, new Object[]{tableId});//

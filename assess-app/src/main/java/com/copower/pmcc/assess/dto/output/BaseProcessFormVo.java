@@ -8,40 +8,24 @@ import java.util.List;
  * Created by kings on 2018-3-26.
  */
 public class BaseProcessFormVo extends BaseProcessForm {
-    private Integer formListId;
-    private String formCnName;
-
+    private String formModuleName;
     private Boolean bisEnable;
-
     private Boolean bisConfigure;
-
     private String tableName;
-
     private String foreignKeyName;
-
     private Boolean bisMultiple;
-
     private String customUrl;
-
     private String customeDisplayUrl;
 
     private List<FormConfigureFieldVo> fieldList;
     private String fieldListJson;
 
-    public Integer getFormListId() {
-        return formListId;
+    public String getFormModuleName() {
+        return formModuleName;
     }
 
-    public void setFormListId(Integer formListId) {
-        this.formListId = formListId;
-    }
-
-    public String getFormCnName() {
-        return formCnName;
-    }
-
-    public void setFormCnName(String formCnName) {
-        this.formCnName = formCnName;
+    public void setFormModuleName(String formModuleName) {
+        this.formModuleName = formModuleName;
     }
 
     @Override

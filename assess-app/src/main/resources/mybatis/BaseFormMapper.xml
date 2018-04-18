@@ -6,6 +6,8 @@
     <result column="cn_name" property="cnName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, cn_name, name, bis_enable
+    id, cn_name, name, bis_enable, group_id, table_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseFormExample" >
     select
@@ -102,10 +104,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_form (cn_name, name, bis_enable
-      )
-    values (#{cnName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}
-      )
+    insert into tb_base_form (cn_name, name, bis_enable, 
+      group_id, table_name)
+    values (#{cnName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, 
+      #{groupId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseForm" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -122,6 +124,12 @@
       <if test="bisEnable != null" >
         bis_enable,
       </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="tableName != null" >
+        table_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="cnName != null" >
@@ -132,6 +140,12 @@
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +170,12 @@
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tableName != null" >
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +186,9 @@
     set id = #{record.id,jdbcType=INTEGER},
       cn_name = #{record.cnName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      bis_enable = #{record.bisEnable,jdbcType=BIT}
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      group_id = #{record.groupId,jdbcType=INTEGER},
+      table_name = #{record.tableName,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +205,12 @@
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -190,7 +218,9 @@
     update tb_base_form
     set cn_name = #{cnName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      bis_enable = #{bisEnable,jdbcType=BIT}
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      group_id = #{groupId,jdbcType=INTEGER},
+      table_name = #{tableName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

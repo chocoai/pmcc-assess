@@ -34,9 +34,9 @@ public class FormConfigureController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/formConfigure");
-        modelAndView.addObject("tableList",formConfigureService.getTableList());
+        modelAndView.addObject("tableList", formConfigureService.getTableList());
         List<CustomTableTypeDto> fieldTypeList = CustomTableTypeEnum.getCustomSetType();
-        modelAndView.addObject("fieldTypeList",fieldTypeList);
+        modelAndView.addObject("fieldTypeList", fieldTypeList);
         return modelAndView;
     }
 
@@ -88,7 +88,7 @@ public class FormConfigureController {
     }
 
     /**
-     * 获取表单列表数据
+     * 获取表单模块列表数据
      *
      * @return
      */
@@ -96,6 +96,18 @@ public class FormConfigureController {
     @RequestMapping(value = "/getFormModuleList", method = RequestMethod.GET)
     public BootstrapTableVo getFormModuleList(Integer formId) {
         return formConfigureService.getFormModuleList(formId);
+    }
+
+    /**
+     * 获取表单模块列表数据
+     *
+     * @param formId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getFormModules", method = RequestMethod.GET)
+    public HttpResult getFormModules(Integer formId) {
+        return HttpResult.newCorrectResult(formConfigureService.getFormModules(formId));
     }
 
     /**
@@ -156,7 +168,7 @@ public class FormConfigureController {
         try {
             return HttpResult.newCorrectResult(formConfigureService.getFieldList(tableName));
         } catch (Exception e) {
-           return HttpResult.newErrorResult(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -205,7 +217,7 @@ public class FormConfigureController {
     @RequestMapping(value = "/getDynamicFormHtml", method = RequestMethod.POST)
     public HttpResult getDynamicFormHtml(Integer formListId, Boolean readOnly, String jsonValue) {
         try {
-            return HttpResult.newCorrectResult(formConfigureService.getDynamicFormHtml(formListId,readOnly,jsonValue));
+            return HttpResult.newCorrectResult(formConfigureService.getDynamicFormHtml(formListId, readOnly, jsonValue));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -213,6 +225,7 @@ public class FormConfigureController {
 
     /**
      * 保存子表数据
+     *
      * @param tableName
      * @param tableId
      * @param formListId
@@ -223,7 +236,7 @@ public class FormConfigureController {
     @RequestMapping(value = "/saveDetailInfo", method = RequestMethod.POST)
     public HttpResult saveDetailInfo(String tableName, Integer tableId, Integer formListId, String formData) {
         try {
-            formConfigureService.saveDetailInfo(tableName,tableId,formListId,formData);
+            formConfigureService.saveDetailInfo(tableName, tableId, formListId, formData);
         } catch (Exception e) {
             LOGGER.error("保存子表数据异常", e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -233,6 +246,7 @@ public class FormConfigureController {
 
     /**
      * 删除子表数据
+     *
      * @param tableName
      * @param tableId
      * @return
@@ -241,7 +255,7 @@ public class FormConfigureController {
     @RequestMapping(value = "/deleteDetailInfo", method = RequestMethod.POST)
     public HttpResult deleteDetailInfo(String tableName, Integer tableId) {
         try {
-            formConfigureService.deleteDetailInfo(tableName,tableId);
+            formConfigureService.deleteDetailInfo(tableName, tableId);
         } catch (Exception e) {
             LOGGER.error("删除子表数据异常", e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -257,6 +271,6 @@ public class FormConfigureController {
     @ResponseBody
     @RequestMapping(value = "/getDetailInfoList", method = RequestMethod.GET)
     public BootstrapTableVo getDetailInfoList(String tableName, String foreignKeyName, Integer foreignKeyValue, Integer formListId) {
-        return formConfigureService.getDetailInfoList(tableName,foreignKeyName,foreignKeyValue,formListId);
+        return formConfigureService.getDetailInfoList(tableName, foreignKeyName, foreignKeyValue, formListId);
     }
 }

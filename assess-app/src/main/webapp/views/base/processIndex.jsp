@@ -55,58 +55,39 @@
                     <div class="col-md-12">
                         <div class="x_content">
                             <form id="frm_process" class="form-horizontal" onsubmit="return false;">
-
+                                <input type="hidden" id="id" name="id" value="0">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            模型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="hidden" name="id" id="id" value="0">
-                                            <input type="text" required placeholder="名称" name="cnName"
-                                                   class="form-control"
+                                            <input type="hidden" id="boxName" name="boxName">
+                                            <input type="text" required placeholder="模型" readonly="readonly" id="cnName"
+                                                   name="cnName" class="form-control"
                                                    maxlength="200">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">
-                                        值
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" placeholder="值" name="name" class="form-control"
-                                               maxlength="200">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            模型
+                                            key
                                         </label>
                                         <div class="col-sm-9">
-                                            <select required name="boxName" id="boxName"
-                                                    class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${boxRe}">
-                                                    <option value="${item.name}">${item.cnName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input type="text" placeholder="key" name="name" class="form-control"
+                                                   maxlength="200">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            业务方法
+                                            监听器
                                         </label>
                                         <div class="col-sm-9">
-                                            <select required name="baseForm" id="baseForm"
-                                                    class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${hrBaseForm}">
-                                                    <option value="${item.name}">${item.cnName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input type="text" placeholder="监听器" name="executor" class="form-control"
+                                                   maxlength="200">
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +130,7 @@
                     <div class="col-md-12">
                         <div class="x_content">
                             <div id="procesFormBar">
-                                <a id="btn_add_process_form" style="display: none" class="btn btn-success"
+                                <a id="btn_add_process_form" class="btn btn-success"
                                    onclick="addProcessForm()">
                                     <i class="fa fa-plus"></i>
                                     新增节点表单
@@ -171,7 +152,7 @@
 
 <div id="model_processForm" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
      role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width: 800px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">表单编辑</h4>
@@ -181,10 +162,11 @@
                     <div class="col-md-12">
                         <div class="x_content">
                             <form id="frm_processForm" class="form-horizontal" onsubmit="return false;">
+                                <input type="hidden" id="form_id" name="id" value="0">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            填写节点
+                                            填写节点<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
                                             <select required name="boxReActivityName" id="boxReActivityName"
@@ -197,12 +179,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            表单名称
+                                            表单名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="hidden" name="id" id="form_id" value="0">
-                                            <select required name="name" id="name"
-                                                    class="form-control search-select select2">
+                                            <input type="hidden" name="formId" id="formId" value="0">
+                                            <input type="text" id="formIdName" name="formIdName" class="form-control"
+                                                   required readonly="readonly" onclick="loadSelectFormList();">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表单模块名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select required name="formModuleId" id="formModuleId"
+                                                    class="form-control ">
 
                                             </select>
                                         </div>
@@ -224,30 +217,84 @@
         </div>
     </div>
 </div>
+
+<div id="select_form_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+    <div class="modal-dialog " style="width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">表单选择</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group ">
+                        <div>
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="queryName" id="queryName"
+                                       class="form-control">
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                分组
+                            </label>
+                            <div class="col-sm-3">
+                                <select name="queryGroup" id="queryGroup" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-primary"
+                                    onclick="reloadCompanyCertSelectList();">
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <table id="select_form_tb_list" class="table table-bordered">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-    var process = "";
-    var currBoxName = "";
+    var currProcessId = 0;
     $(function () {
         loadProcessTable();
-        loadProcessFormTable();
         $("#btn_process").click(function () {
             saveProcess();
         });
         $("#btn_process_form").click(function () {
             saveProcessForm();
         });
-        $("#boxName").select2();
-        $("#baseForm").select2();
+        $("#cnName").click(function () {
+            bpmBoxRe.select(function (row) {
+                $("#boxName").val(row.name);
+                $("#cnName").val(row.cnName);
+            });
+        });
     })
 
     function loadProcessTable() {
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
         cols.push({field: 'cnName', title: '流程名称'});
-        cols.push({field: 'name', title: '值'});
         cols.push({field: 'boxName', title: '模型'});
-        cols.push({field: 'baseForm', title: '业务方法'});
+        cols.push({field: 'name', title: '值'});
+        cols.push({field: 'executor', title: '监听器'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value, row, index) {
                 if (value) {
@@ -262,7 +309,6 @@
                 var s = "";
                 s += "<a class='btn btn-xs btn-success' style='font-size: 12px;margin-right: 8px;' href='javascript:void(0)' title='编辑' onclick='editProcess(" + index + ")'><i class='fa fa-edit'></i>编辑</a>";
                 s += "<a class='btn btn-xs btn-warning' style='font-size: 12px;margin-right: 8px;' href='javascript:void(0)' title='删除' onclick='delProcess(" + row.id + ")'><i class='fa fa-trash-o'></i>删除</a>";
-
                 s += "<a class='btn btn-xs btn-success' style='font-size: 12px;margin-right: 8px;' href='javascript:void(0)' title='表单设置' onclick='setProcessForm(" + index + ")'><i class='fa fa-cog'></i>表单设置</a>";
                 return s;
             }
@@ -276,8 +322,6 @@
     function addProcess() {
         $("#frm_process").clearAll();
         $("#id").val(0);
-        $("#boxName").select2();
-        $("#baseForm").select2();
         $('#model_process').modal({backdrop: 'static', keyboard: false});
     }
 
@@ -285,8 +329,6 @@
         var row = getTableDataByIndex("tb_processList", index);
         $("#frm_process").clearAll();
         $("#frm_process").initForm(row);
-        $("#boxName").select2().val(row.boxName).trigger("change");
-        $("#baseForm").select2().val(row.baseForm).trigger("change");
         $('#model_process').modal({backdrop: 'static', keyboard: false});
         $("#id").val(row.id);
     }
@@ -356,65 +398,51 @@
 
     function setProcessForm(index) {
         var row = getTableDataByIndex("tb_processList", index);
-        process = row.baseForm;
-        currBoxName = row.boxName;
-        loadFormList(row.id);
-        TableReload("tb_processFormList", "${pageContext.request.contextPath}/baseProcess/getBaseProcessFormList", {
-            process: row.baseForm,
-            boxName: row.boxName
-        });
+        currProcessId = row.id;
+        loadBoxReActivityList(row.id);
+        loadProcessFormTable(row.id);
         $('#model_processFormList').modal({backdrop: 'static', keyboard: false});
 
     }
-    function loadProcessFormTable() {
+    function loadProcessFormTable(processId) {
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
-        cols.push({field: 'cnName', title: '名称'});
-        cols.push({field: 'name', title: '值'});
+        cols.push({field: 'formModuleName', title: '表单名称'});
         cols.push({field: 'sorting', title: '序号'});
         cols.push({field: 'boxReActivityName', title: '流程节点'});
 
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
                 var s = "";
-                s += "<a class='btn btn-xs btn-success' style='font-size: 12px;margin-right: 8px;' href='javascript:void(0)' title='编辑' onclick='editProcessForm(" + index + ")'><i class='fa fa-edit'></i>编辑</a>";
                 s += "<a class='btn btn-xs btn-warning' style='font-size: 12px;margin-right: 8px;' href='javascript:void(0)' title='删除' onclick='delProcessForm(" + row.id + ")'><i class='fa fa-trash-o'></i>删除</a>";
                 return s;
             }
         });
-
+        $("#tb_processFormList").bootstrapTable('destroy');
         TableInit("tb_processFormList", "${pageContext.request.contextPath}/baseProcess/getBaseProcessFormList", cols, {
-            process: process
+            processId: processId
         }, {
             toolbar: "#procesFormBar"
         });
     }
 
-    function loadFormList(processId) {
+    function loadBoxReActivityList(processId) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/baseProcess/getFormListByProcess",
+            url: "${pageContext.request.contextPath}/baseProcess/getBoxReActivityList",
             data: {
                 processId: processId
             },
             type: "get",
             dataType: "json",
             success: function (result) {
-                var formListHtml = "<option value=''>-选择-</option>";
                 var ativityHtml = "<option value=''>-选择-</option>";
                 if (result.ret) {
-
-                    $.each(result.data.boxReActivityDtoList, function (i, j) {
+                    $.each(result.data, function (i, j) {
                         ativityHtml += "<option value='" + j.name + "_" + j.sortMultilevel + "'>" + j.cnName + "_" + j.sortMultilevel + "</option>";
                     });
-                    $.each(result.data.hrBaseFormLists, function (i, j) {
-                        formListHtml += "<option value='" + j.name + "'>" + j.cnName + "</option>";
-                    });
                 }
-
-                $("#name").html(formListHtml);
                 $("#boxReActivityName").html(ativityHtml);
                 $("#boxReActivityName").select2();
-                $("#name").select2();
                 $("#btn_add_process_form").show();
             },
             error: function (result) {
@@ -477,9 +505,8 @@
         if ($("#frm_processForm").valid()) {
             Loading.progressShow();
             var data = formParams("frm_processForm");
-            data["process"] = process;
-            data["boxName"] = currBoxName;
-            data["cnName"] = $("#name").find("option:selected").text();
+            data.processId = currProcessId;
+            data.formModuleName=$("#formModuleId").find("option:selected").text();
             var activity = $("#boxReActivityName").val().split('_');
             data["boxReActivityName"] = activity[0];
             data["sorting"] = activity[1];
@@ -505,6 +532,64 @@
                 }
             });
         }
+    }
+
+    //加载列表数据
+    function loadSelectFormList() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'professionalDisplayName', title: '显示名称'});
+        cols.push({field: 'professionalDisplayName', title: '分组'});
+        cols.push({
+            field: 'opt', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="selectFormClick(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#select_form_tb_list").bootstrapTable('destroy');
+        TableInit("select_form_tb_list", "${pageContext.request.contextPath}/formConfigure/getFormList", cols, {
+            name: $("#queryName").val(),
+            groupId: $("#queryGroupId").val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            uniqueId: "id",
+            search: false,
+            onLoadSuccess: function () {
+                $('#select_form_modal').modal('show');
+            }
+        });
+    }
+
+    function selectFormClick(index) {
+        var row = getTableDataByIndex("select_form_tb_list", index);
+        $("#formId").val(row.id);
+        $("#formIdName").val(row.name);
+        //加载表单模块
+        loadFormModuleList(row.id);
+        $('#select_form_modal').modal('hide');
+    }
+
+    function loadFormModuleList(formId, value) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/formConfigure/getFormModules",
+            data: {formId: formId},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        var html = "";
+                        $.each(result.data, function (i, item) {
+                            html += '<option value="' + item.id + '">' + item.name + '</option>';
+                        })
+                        $("#formModuleId").append(html).val(value);
+                    }
+                }
+            }
+        });
     }
 </script>
 

@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_id" property="processId" jdbcType="INTEGER" />
+    <result column="form_id" property="formId" jdbcType="INTEGER" />
     <result column="form_module_id" property="formModuleId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="cn_name" property="cnName" jdbcType="VARCHAR" />
+    <result column="form_module_name" property="formModuleName" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="box_re_activity_name" property="boxReActivityName" jdbcType="VARCHAR" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_id, form_module_id, name, cn_name, bis_enable, sorting, box_re_activity_name
+    id, process_id, form_id, form_module_id, form_module_name, bis_enable, sorting, box_re_activity_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessFormExample" >
     select
@@ -106,11 +106,11 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_process_form (process_id, form_module_id, name, 
-      cn_name, bis_enable, sorting, 
+    insert into tb_base_process_form (process_id, form_id, form_module_id, 
+      form_module_name, bis_enable, sorting, 
       box_re_activity_name)
-    values (#{processId,jdbcType=INTEGER}, #{formModuleId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{cnName,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+    values (#{processId,jdbcType=INTEGER}, #{formId,jdbcType=INTEGER}, #{formModuleId,jdbcType=INTEGER}, 
+      #{formModuleName,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
       #{boxReActivityName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
@@ -122,14 +122,14 @@
       <if test="processId != null" >
         process_id,
       </if>
+      <if test="formId != null" >
+        form_id,
+      </if>
       <if test="formModuleId != null" >
         form_module_id,
       </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="cnName != null" >
-        cn_name,
+      <if test="formModuleName != null" >
+        form_module_name,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -145,14 +145,14 @@
       <if test="processId != null" >
         #{processId,jdbcType=INTEGER},
       </if>
+      <if test="formId != null" >
+        #{formId,jdbcType=INTEGER},
+      </if>
       <if test="formModuleId != null" >
         #{formModuleId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="cnName != null" >
-        #{cnName,jdbcType=VARCHAR},
+      <if test="formModuleName != null" >
+        #{formModuleName,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -180,14 +180,14 @@
       <if test="record.processId != null" >
         process_id = #{record.processId,jdbcType=INTEGER},
       </if>
+      <if test="record.formId != null" >
+        form_id = #{record.formId,jdbcType=INTEGER},
+      </if>
       <if test="record.formModuleId != null" >
         form_module_id = #{record.formModuleId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cnName != null" >
-        cn_name = #{record.cnName,jdbcType=VARCHAR},
+      <if test="record.formModuleName != null" >
+        form_module_name = #{record.formModuleName,jdbcType=VARCHAR},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -207,9 +207,9 @@
     update tb_base_process_form
     set id = #{record.id,jdbcType=INTEGER},
       process_id = #{record.processId,jdbcType=INTEGER},
+      form_id = #{record.formId,jdbcType=INTEGER},
       form_module_id = #{record.formModuleId,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      cn_name = #{record.cnName,jdbcType=VARCHAR},
+      form_module_name = #{record.formModuleName,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       box_re_activity_name = #{record.boxReActivityName,jdbcType=VARCHAR}
@@ -223,14 +223,14 @@
       <if test="processId != null" >
         process_id = #{processId,jdbcType=INTEGER},
       </if>
+      <if test="formId != null" >
+        form_id = #{formId,jdbcType=INTEGER},
+      </if>
       <if test="formModuleId != null" >
         form_module_id = #{formModuleId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="cnName != null" >
-        cn_name = #{cnName,jdbcType=VARCHAR},
+      <if test="formModuleName != null" >
+        form_module_name = #{formModuleName,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -247,9 +247,9 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessForm" >
     update tb_base_process_form
     set process_id = #{processId,jdbcType=INTEGER},
+      form_id = #{formId,jdbcType=INTEGER},
       form_module_id = #{formModuleId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      cn_name = #{cnName,jdbcType=VARCHAR},
+      form_module_name = #{formModuleName,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       box_re_activity_name = #{boxReActivityName,jdbcType=VARCHAR}

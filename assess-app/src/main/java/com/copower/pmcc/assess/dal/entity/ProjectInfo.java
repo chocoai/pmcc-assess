@@ -7,25 +7,21 @@ public class ProjectInfo {
 
     private String projectName;
 
+    private Integer province;
+
+    private Integer city;
+
+    private Integer district;
+
     private Integer projectClassId;
 
-    private Integer projectTypeId;
+    private Integer entrustPurpose;
 
-    private Integer projectCategoryId;
+    private Integer valueType;
 
     private Integer departmentId;
 
-    private String departmentNextIds;
-
     private String remarks;
-
-    private Integer customerId;
-
-    private Date created;
-
-    private Date modified;
-
-    private String creator;
 
     private Date completeDatePlan;
 
@@ -35,15 +31,17 @@ public class ProjectInfo {
 
     private String processInsId;
 
-    private Integer printShare;
-
-    private Integer printPageNumber;
-
     private String status;
 
     private String projectStatus;
 
     private Integer publicProjectId;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -61,6 +59,30 @@ public class ProjectInfo {
         this.projectName = projectName == null ? null : projectName.trim();
     }
 
+    public Integer getProvince() {
+        return province;
+    }
+
+    public void setProvince(Integer province) {
+        this.province = province;
+    }
+
+    public Integer getCity() {
+        return city;
+    }
+
+    public void setCity(Integer city) {
+        this.city = city;
+    }
+
+    public Integer getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(Integer district) {
+        this.district = district;
+    }
+
     public Integer getProjectClassId() {
         return projectClassId;
     }
@@ -69,20 +91,20 @@ public class ProjectInfo {
         this.projectClassId = projectClassId;
     }
 
-    public Integer getProjectTypeId() {
-        return projectTypeId;
+    public Integer getEntrustPurpose() {
+        return entrustPurpose;
     }
 
-    public void setProjectTypeId(Integer projectTypeId) {
-        this.projectTypeId = projectTypeId;
+    public void setEntrustPurpose(Integer entrustPurpose) {
+        this.entrustPurpose = entrustPurpose;
     }
 
-    public Integer getProjectCategoryId() {
-        return projectCategoryId;
+    public Integer getValueType() {
+        return valueType;
     }
 
-    public void setProjectCategoryId(Integer projectCategoryId) {
-        this.projectCategoryId = projectCategoryId;
+    public void setValueType(Integer valueType) {
+        this.valueType = valueType;
     }
 
     public Integer getDepartmentId() {
@@ -93,52 +115,12 @@ public class ProjectInfo {
         this.departmentId = departmentId;
     }
 
-    public String getDepartmentNextIds() {
-        return departmentNextIds;
-    }
-
-    public void setDepartmentNextIds(String departmentNextIds) {
-        this.departmentNextIds = departmentNextIds == null ? null : departmentNextIds.trim();
-    }
-
     public String getRemarks() {
         return remarks;
     }
 
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getCompleteDatePlan() {
@@ -173,22 +155,6 @@ public class ProjectInfo {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
-    public Integer getPrintShare() {
-        return printShare;
-    }
-
-    public void setPrintShare(Integer printShare) {
-        this.printShare = printShare;
-    }
-
-    public Integer getPrintPageNumber() {
-        return printPageNumber;
-    }
-
-    public void setPrintPageNumber(Integer printPageNumber) {
-        this.printPageNumber = printPageNumber;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -211,5 +177,29 @@ public class ProjectInfo {
 
     public void setPublicProjectId(Integer publicProjectId) {
         this.publicProjectId = publicProjectId;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

@@ -44,7 +44,7 @@ public class FormConfigureAssist implements BaseInterface {
 
     private String getTableName(Integer boxId) {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        return baseProcessService.getProcessByBoxName(boxReDto.getName()).getTableName();
+        return "";
     }
 
     private String getTableName(String processInsId) {
@@ -134,7 +134,7 @@ public class FormConfigureAssist implements BaseInterface {
         }
         formConfigureDto.setProcessInsId(processInsId);
         Integer tableId = formConfigureService.saveData(formConfigureDto);
-        return new BaseBussinessVo(tableId, hrBaseProcess.getTableName());
+        return new BaseBussinessVo(tableId,"");
     }
 
 

@@ -4,25 +4,24 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="district" property="district" jdbcType="INTEGER" />
     <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
-    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
-    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="value_type" property="valueType" jdbcType="INTEGER" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
-    <result column="department_next_ids" property="departmentNextIds" jdbcType="VARCHAR" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
-    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
-    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="complete_date_plan" property="completeDatePlan" jdbcType="TIMESTAMP" />
     <result column="complete_date_actual" property="completeDateActual" jdbcType="TIMESTAMP" />
     <result column="complete_date_start" property="completeDateStart" jdbcType="TIMESTAMP" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="print_share" property="printShare" jdbcType="INTEGER" />
-    <result column="print_page_number" property="printPageNumber" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,10 +82,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_name, project_class_id, project_type_id, project_category_id, department_id, 
-    department_next_ids, remarks, customer_id, created, modified, creator, complete_date_plan, 
-    complete_date_actual, complete_date_start, process_ins_id, print_share, print_page_number, 
-    status, project_status, public_project_id
+    id, project_name, province, city, district, project_class_id, entrust_purpose, value_type, 
+    department_id, remarks, complete_date_plan, complete_date_actual, complete_date_start, 
+    process_ins_id, status, project_status, public_project_id, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -122,22 +121,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_info (project_name, project_class_id, project_type_id, 
-      project_category_id, department_id, department_next_ids, 
-      remarks, customer_id, created, 
-      modified, creator, complete_date_plan, 
-      complete_date_actual, complete_date_start, 
-      process_ins_id, print_share, print_page_number, 
-      status, project_status, public_project_id
-      )
-    values (#{projectName,jdbcType=VARCHAR}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
-      #{projectCategoryId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{departmentNextIds,jdbcType=VARCHAR}, 
-      #{remarks,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
-      #{modified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, 
-      #{completeDateActual,jdbcType=TIMESTAMP}, #{completeDateStart,jdbcType=TIMESTAMP}, 
-      #{processInsId,jdbcType=VARCHAR}, #{printShare,jdbcType=INTEGER}, #{printPageNumber,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}
-      )
+    insert into tb_project_info (project_name, province, city, 
+      district, project_class_id, entrust_purpose, 
+      value_type, department_id, remarks, 
+      complete_date_plan, complete_date_actual, 
+      complete_date_start, process_ins_id, status, 
+      project_status, public_project_id, creator, 
+      gmt_created, gmt_modified)
+    values (#{projectName,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{district,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
+      #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,35 +145,29 @@
       <if test="projectName != null" >
         project_name,
       </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
       <if test="projectClassId != null" >
         project_class_id,
       </if>
-      <if test="projectTypeId != null" >
-        project_type_id,
+      <if test="entrustPurpose != null" >
+        entrust_purpose,
       </if>
-      <if test="projectCategoryId != null" >
-        project_category_id,
+      <if test="valueType != null" >
+        value_type,
       </if>
       <if test="departmentId != null" >
         department_id,
       </if>
-      <if test="departmentNextIds != null" >
-        department_next_ids,
-      </if>
       <if test="remarks != null" >
         remarks,
-      </if>
-      <if test="customerId != null" >
-        customer_id,
-      </if>
-      <if test="created != null" >
-        created,
-      </if>
-      <if test="modified != null" >
-        modified,
-      </if>
-      <if test="creator != null" >
-        creator,
       </if>
       <if test="completeDatePlan != null" >
         complete_date_plan,
@@ -190,12 +181,6 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="printShare != null" >
-        print_share,
-      </if>
-      <if test="printPageNumber != null" >
-        print_page_number,
-      </if>
       <if test="status != null" >
         status,
       </if>
@@ -205,40 +190,43 @@
       <if test="publicProjectId != null" >
         public_project_id,
       </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
       </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=INTEGER},
+      </if>
       <if test="projectClassId != null" >
         #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
-        #{projectTypeId,jdbcType=INTEGER},
+      <if test="entrustPurpose != null" >
+        #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
-        #{projectCategoryId,jdbcType=INTEGER},
+      <if test="valueType != null" >
+        #{valueType,jdbcType=INTEGER},
       </if>
       <if test="departmentId != null" >
         #{departmentId,jdbcType=INTEGER},
       </if>
-      <if test="departmentNextIds != null" >
-        #{departmentNextIds,jdbcType=VARCHAR},
-      </if>
       <if test="remarks != null" >
         #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="customerId != null" >
-        #{customerId,jdbcType=INTEGER},
-      </if>
-      <if test="created != null" >
-        #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modified != null" >
-        #{modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="completeDatePlan != null" >
         #{completeDatePlan,jdbcType=TIMESTAMP},
@@ -252,12 +240,6 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="printShare != null" >
-        #{printShare,jdbcType=INTEGER},
-      </if>
-      <if test="printPageNumber != null" >
-        #{printPageNumber,jdbcType=INTEGER},
-      </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
@@ -266,6 +248,15 @@
       </if>
       <if test="publicProjectId != null" >
         #{publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -284,35 +275,29 @@
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
       <if test="record.projectClassId != null" >
         project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectTypeId != null" >
-        project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      <if test="record.entrustPurpose != null" >
+        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="record.projectCategoryId != null" >
-        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      <if test="record.valueType != null" >
+        value_type = #{record.valueType,jdbcType=INTEGER},
       </if>
       <if test="record.departmentId != null" >
         department_id = #{record.departmentId,jdbcType=INTEGER},
       </if>
-      <if test="record.departmentNextIds != null" >
-        department_next_ids = #{record.departmentNextIds,jdbcType=VARCHAR},
-      </if>
       <if test="record.remarks != null" >
         remarks = #{record.remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="record.customerId != null" >
-        customer_id = #{record.customerId,jdbcType=INTEGER},
-      </if>
-      <if test="record.created != null" >
-        created = #{record.created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.modified != null" >
-        modified = #{record.modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.completeDatePlan != null" >
         complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
@@ -326,12 +311,6 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.printShare != null" >
-        print_share = #{record.printShare,jdbcType=INTEGER},
-      </if>
-      <if test="record.printPageNumber != null" >
-        print_page_number = #{record.printPageNumber,jdbcType=INTEGER},
-      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -340,6 +319,15 @@
       </if>
       <if test="record.publicProjectId != null" >
         public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -350,25 +338,24 @@
     update tb_project_info
     set id = #{record.id,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER},
       project_class_id = #{record.projectClassId,jdbcType=INTEGER},
-      project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
-      project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      value_type = #{record.valueType,jdbcType=INTEGER},
       department_id = #{record.departmentId,jdbcType=INTEGER},
-      department_next_ids = #{record.departmentNextIds,jdbcType=VARCHAR},
       remarks = #{record.remarks,jdbcType=VARCHAR},
-      customer_id = #{record.customerId,jdbcType=INTEGER},
-      created = #{record.created,jdbcType=TIMESTAMP},
-      modified = #{record.modified,jdbcType=TIMESTAMP},
-      creator = #{record.creator,jdbcType=VARCHAR},
       complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
       complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
       complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      print_share = #{record.printShare,jdbcType=INTEGER},
-      print_page_number = #{record.printPageNumber,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
-      public_project_id = #{record.publicProjectId,jdbcType=INTEGER}
+      public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -379,35 +366,29 @@
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
       </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=INTEGER},
+      </if>
       <if test="projectClassId != null" >
         project_class_id = #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
-        project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      <if test="entrustPurpose != null" >
+        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
-        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      <if test="valueType != null" >
+        value_type = #{valueType,jdbcType=INTEGER},
       </if>
       <if test="departmentId != null" >
         department_id = #{departmentId,jdbcType=INTEGER},
       </if>
-      <if test="departmentNextIds != null" >
-        department_next_ids = #{departmentNextIds,jdbcType=VARCHAR},
-      </if>
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="customerId != null" >
-        customer_id = #{customerId,jdbcType=INTEGER},
-      </if>
-      <if test="created != null" >
-        created = #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modified != null" >
-        modified = #{modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="completeDatePlan != null" >
         complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
@@ -421,12 +402,6 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="printShare != null" >
-        print_share = #{printShare,jdbcType=INTEGER},
-      </if>
-      <if test="printPageNumber != null" >
-        print_page_number = #{printPageNumber,jdbcType=INTEGER},
-      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -436,31 +411,39 @@
       <if test="publicProjectId != null" >
         public_project_id = #{publicProjectId,jdbcType=INTEGER},
       </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     update tb_project_info
     set project_name = #{projectName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
       project_class_id = #{projectClassId,jdbcType=INTEGER},
-      project_type_id = #{projectTypeId,jdbcType=INTEGER},
-      project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      value_type = #{valueType,jdbcType=INTEGER},
       department_id = #{departmentId,jdbcType=INTEGER},
-      department_next_ids = #{departmentNextIds,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
-      customer_id = #{customerId,jdbcType=INTEGER},
-      created = #{created,jdbcType=TIMESTAMP},
-      modified = #{modified,jdbcType=TIMESTAMP},
-      creator = #{creator,jdbcType=VARCHAR},
       complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
       complete_date_actual = #{completeDateActual,jdbcType=TIMESTAMP},
       complete_date_start = #{completeDateStart,jdbcType=TIMESTAMP},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      print_share = #{printShare,jdbcType=INTEGER},
-      print_page_number = #{printPageNumber,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
-      public_project_id = #{publicProjectId,jdbcType=INTEGER}
+      public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.*;
@@ -27,8 +28,11 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.enums.SysProjectEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -78,11 +82,11 @@ public class ProjectPlanService {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
-    private CommonService commonService;
+    private ErpRpcProjectService erpRpcProjectService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
     @Autowired
-    private HttpServletRequest request;
+    private ProjectInfoDao projectInfoDao;
     @Autowired
     private ApplicationConstant applicationConstant;
 
@@ -581,5 +585,75 @@ public class ProjectPlanService {
 
     public Boolean updateProjectPlan(ProjectPlan projectPlan) {
         return projectPlanDao.updateProjectPlan(projectPlan);
+    }
+
+    /**
+     * 更新项目总计划状态
+     *
+     * @param planId 当前阶段所处的总计划
+     */
+    public void updatePlanStatus(Integer planId) throws BusinessException {
+        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
+        projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+        projectPlan.setFinishDate(new Date());
+        if (projectPlan.getStageSort() == 1) {
+            projectPlan.setProjectPlanStart(new Date());
+            projectPlan.setProjectPlanEnd(new Date());
+        }
+        projectPlanDao.updateProjectPlan(projectPlan);
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+        /**
+         * 处理过程
+         * 1、判断当前同等级执行阶段是否都已执行完成，如果都完成则将下个阶段的状态设置为wait
+         * 2、如果 没有完成，则不执行相应操作
+         */
+
+        ProjectPlan projectPlanWhere = new ProjectPlan();
+        projectPlanWhere.setProjectId(projectPlan.getProjectId());
+        projectPlanWhere.setBisRestart(false);
+        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(projectPlanWhere);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+        //取当前同级
+
+        List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
+            return (o.getStageSort().equals(projectPlan.getStageSort()) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE
+                    .getName()));
+        });
+        if (CollectionUtils.isEmpty(filter))//当前同级阶段都完成任务，则进入下一阶段
+        {
+            List<ProjectPlan> filter1 = LangUtils.filter(projectPlans, o -> {
+                return o.getStageSort().intValue() == projectPlan.getStageSort().intValue() + 1;
+            });
+            if (CollectionUtils.isNotEmpty(filter1)) {
+                for (ProjectPlan item : filter1) {
+                    item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
+                    projectPlanDao.updateProjectPlan(item);
+                    //取相应计划的责任人，并分配计划任务
+                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(item.getWorkStageId());
+                    String userAccounts = projectWorkStageService.getWorkStageUserAccounts(item.getWorkStageId(), item.getProjectId());
+                    if (StringUtils.isNotBlank(userAccounts)) {
+                        List<String> strings = FormatUtils.transformString2List(userAccounts);
+                        for (String s : strings) {
+                            saveProjectPlanResponsibility(item, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                        }
+                    } else {
+                        throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
+                    }
+
+                }
+            } else //如果没有相应的阶段，则说明项目已经结束
+            {
+                //处理更新项目状态的相关事项
+
+                projectInfo.setStatus(ProcessStatusEnum.FINISH.getValue());
+                projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getName());
+                projectInfoDao.updateProjectInfo(projectInfo);
+                SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectInfo.getId(), applicationConstant.getAppKey());
+                if (sysProjectDto.getId() > 0) {
+                    sysProjectDto.setStatus(SysProjectEnum.FINISH.getValue());
+                    erpRpcProjectService.saveProject(sysProjectDto);
+                }
+            }
+        }
     }
 }

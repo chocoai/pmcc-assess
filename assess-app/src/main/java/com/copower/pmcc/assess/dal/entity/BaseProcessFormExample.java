@@ -224,6 +224,66 @@ public class BaseProcessFormExample {
             return (Criteria) this;
         }
 
+        public Criteria andFormIdIsNull() {
+            addCriterion("form_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdIsNotNull() {
+            addCriterion("form_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdEqualTo(Integer value) {
+            addCriterion("form_id =", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdNotEqualTo(Integer value) {
+            addCriterion("form_id <>", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdGreaterThan(Integer value) {
+            addCriterion("form_id >", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_id >=", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdLessThan(Integer value) {
+            addCriterion("form_id <", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("form_id <=", value, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdIn(List<Integer> values) {
+            addCriterion("form_id in", values, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdNotIn(List<Integer> values) {
+            addCriterion("form_id not in", values, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("form_id between", value1, value2, "formId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_id not between", value1, value2, "formId");
+            return (Criteria) this;
+        }
+
         public Criteria andFormModuleIdIsNull() {
             addCriterion("form_module_id is null");
             return (Criteria) this;
@@ -284,143 +344,73 @@ public class BaseProcessFormExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andFormModuleNameIsNull() {
+            addCriterion("form_module_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andFormModuleNameIsNotNull() {
+            addCriterion("form_module_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andFormModuleNameEqualTo(String value) {
+            addCriterion("form_module_name =", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andFormModuleNameNotEqualTo(String value) {
+            addCriterion("form_module_name <>", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andFormModuleNameGreaterThan(String value) {
+            addCriterion("form_module_name >", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andFormModuleNameGreaterThanOrEqualTo(String value) {
+            addCriterion("form_module_name >=", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andFormModuleNameLessThan(String value) {
+            addCriterion("form_module_name <", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andFormModuleNameLessThanOrEqualTo(String value) {
+            addCriterion("form_module_name <=", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andFormModuleNameLike(String value) {
+            addCriterion("form_module_name like", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andFormModuleNameNotLike(String value) {
+            addCriterion("form_module_name not like", value, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andFormModuleNameIn(List<String> values) {
+            addCriterion("form_module_name in", values, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
+        public Criteria andFormModuleNameNotIn(List<String> values) {
+            addCriterion("form_module_name not in", values, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
+        public Criteria andFormModuleNameBetween(String value1, String value2) {
+            addCriterion("form_module_name between", value1, value2, "formModuleName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameIsNull() {
-            addCriterion("cn_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameIsNotNull() {
-            addCriterion("cn_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameEqualTo(String value) {
-            addCriterion("cn_name =", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameNotEqualTo(String value) {
-            addCriterion("cn_name <>", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameGreaterThan(String value) {
-            addCriterion("cn_name >", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameGreaterThanOrEqualTo(String value) {
-            addCriterion("cn_name >=", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameLessThan(String value) {
-            addCriterion("cn_name <", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameLessThanOrEqualTo(String value) {
-            addCriterion("cn_name <=", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameLike(String value) {
-            addCriterion("cn_name like", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameNotLike(String value) {
-            addCriterion("cn_name not like", value, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameIn(List<String> values) {
-            addCriterion("cn_name in", values, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameNotIn(List<String> values) {
-            addCriterion("cn_name not in", values, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameBetween(String value1, String value2) {
-            addCriterion("cn_name between", value1, value2, "cnName");
-            return (Criteria) this;
-        }
-
-        public Criteria andCnNameNotBetween(String value1, String value2) {
-            addCriterion("cn_name not between", value1, value2, "cnName");
+        public Criteria andFormModuleNameNotBetween(String value1, String value2) {
+            addCriterion("form_module_name not between", value1, value2, "formModuleName");
             return (Criteria) this;
         }
 

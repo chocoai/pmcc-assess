@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
@@ -13,6 +14,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -55,8 +57,6 @@ public class ProjectInfoController {
     @Autowired
     private ControllerComponent controllerComponent;
     @Autowired
-    private ErpRpcDepartmentService erpRpcDepartmentService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
@@ -71,19 +71,73 @@ public class ProjectInfoController {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
-    
-    @RequestMapping(value = "/projectIndex", name = "项目发起", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view() {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/projectIndex", "0", 0, "0", "");
-
-
+        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
+        modelAndView.addObject("boxCnName", "项目立项223366");
+        modelAndView.addObject("thisTitle", "项目立项223366");
+        modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectSubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectSubmit(String formData) {
+    @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
+    public HttpResult projectApplySubmit(ProjectInfoDto projectInfoDto) {
+        try {
+            projectInfoService.projectApply(projectInfoDto);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 
+    @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改")
+    public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
+        //modelAndView.addObject("projectId", projectInfo.getId());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectApproval", name = "项目审批页面")
+    public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
+        //modelAndView.addObject("projectId", projectInfo.getId());
+        return modelAndView;
+    }
+
+
+    /**
+     * 审批提交
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/projectApprovalSubmit", method = RequestMethod.POST)
+    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
+        try {
+            projectInfoService.projectApproval(approvalModelDto);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    /**
+     * 返回修改
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/projectEditSubmit", method = RequestMethod.POST)
+    public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) {
+        try {
+            projectInfoService.projectEditApproval(approvalModelDto, projectInfoDto);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
         return HttpResult.newCorrectResult();
     }
 
@@ -171,17 +225,5 @@ public class ProjectInfoController {
 
         return keyValueDtos;
     }
-
-    @RequestMapping(value = "/projectInfoDetails", name = "详情页面")
-    public ModelAndView projectInfoDetails(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/projectApproval", processInsId, boxId, "-1", "");
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        modelAndView.addObject("projectId", projectInfo.getId());
-        modelAndView.addObject("boxCnName", String.format("%s%s", projectInfo.getProjectName(), "详情"));
-        modelAndView.addObject("thisTitle", String.format("%s%s", projectInfo.getProjectName(), "详情"));
-        modelAndView.addObject("flog", "details");
-        return modelAndView;
-    }
-
 
 }

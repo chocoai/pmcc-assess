@@ -363,6 +363,136 @@ public class BaseFormExample {
             addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
+
+        public Criteria andGroupIdIsNull() {
+            addCriterion("group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNotNull() {
+            addCriterion("group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdEqualTo(Integer value) {
+            addCriterion("group_id =", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotEqualTo(Integer value) {
+            addCriterion("group_id <>", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThan(Integer value) {
+            addCriterion("group_id >", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_id >=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThan(Integer value) {
+            addCriterion("group_id <", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("group_id <=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIn(List<Integer> values) {
+            addCriterion("group_id in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotIn(List<Integer> values) {
+            addCriterion("group_id not in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("group_id between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_id not between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameIsNull() {
+            addCriterion("table_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameIsNotNull() {
+            addCriterion("table_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameEqualTo(String value) {
+            addCriterion("table_name =", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameNotEqualTo(String value) {
+            addCriterion("table_name <>", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameGreaterThan(String value) {
+            addCriterion("table_name >", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("table_name >=", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameLessThan(String value) {
+            addCriterion("table_name <", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameLessThanOrEqualTo(String value) {
+            addCriterion("table_name <=", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameLike(String value) {
+            addCriterion("table_name like", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameNotLike(String value) {
+            addCriterion("table_name not like", value, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameIn(List<String> values) {
+            addCriterion("table_name in", values, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameNotIn(List<String> values) {
+            addCriterion("table_name not in", values, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameBetween(String value1, String value2) {
+            addCriterion("table_name between", value1, value2, "tableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTableNameNotBetween(String value1, String value2) {
+            addCriterion("table_name not between", value1, value2, "tableName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

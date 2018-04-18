@@ -31,11 +31,6 @@
                                        onclick="chkRadioClick()">
                                 不同意，退回上一级
                             </label>
-                                <%--<label class="radio-inline">--%>
-                                <%--<input type="radio" value="Close" required name="conclusion" class="grey"--%>
-                                <%--onclick="chkRadioClick()">--%>
-                                <%--关闭--%>
-                                <%--</label>--%>
                             <label class="radio-inline">
                                 <input type="radio" value="Back" required name="conclusion" class="grey"
                                        onclick="chkRadioClick()">

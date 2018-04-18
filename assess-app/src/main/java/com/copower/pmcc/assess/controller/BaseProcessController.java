@@ -134,4 +134,16 @@ public class BaseProcessController {
         return HttpResult.newCorrectResult(hrBaseProcessFormModelVo);
 
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBoxReActivityList", name = "取得节点数据", method = RequestMethod.GET)
+    public HttpResult getBoxReActivityList(Integer processId) {
+        BaseProcess hrBaseProcess = hrBaseProcessService.getProcessById(processId);
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(hrBaseProcess.getBoxName());
+        List<BoxReActivityDto> boxReActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByActivityNameSorting(boxId, ProcessActivityEnum.START.getValue());
+        boxReActivityDtos.add(boxReActivityDto);
+        return HttpResult.newCorrectResult(boxReActivityDtos);
+
+    }
 }

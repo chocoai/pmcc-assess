@@ -5,11 +5,11 @@ public class BaseProcessForm {
 
     private Integer processId;
 
+    private Integer formId;
+
     private Integer formModuleId;
 
-    private String name;
-
-    private String cnName;
+    private String formModuleName;
 
     private Boolean bisEnable;
 
@@ -33,6 +33,14 @@ public class BaseProcessForm {
         this.processId = processId;
     }
 
+    public Integer getFormId() {
+        return formId;
+    }
+
+    public void setFormId(Integer formId) {
+        this.formId = formId;
+    }
+
     public Integer getFormModuleId() {
         return formModuleId;
     }
@@ -41,20 +49,12 @@ public class BaseProcessForm {
         this.formModuleId = formModuleId;
     }
 
-    public String getName() {
-        return name;
+    public String getFormModuleName() {
+        return formModuleName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getCnName() {
-        return cnName;
-    }
-
-    public void setCnName(String cnName) {
-        this.cnName = cnName == null ? null : cnName.trim();
+    public void setFormModuleName(String formModuleName) {
+        this.formModuleName = formModuleName == null ? null : formModuleName.trim();
     }
 
     public Boolean getBisEnable() {

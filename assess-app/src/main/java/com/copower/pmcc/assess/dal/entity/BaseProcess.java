@@ -9,11 +9,7 @@ public class BaseProcess {
 
     private String cnName;
 
-    private String baseForm;
-
     private String boxName;
-
-    private String tableName;
 
     private String executor;
 
@@ -47,28 +43,12 @@ public class BaseProcess {
         this.cnName = cnName == null ? null : cnName.trim();
     }
 
-    public String getBaseForm() {
-        return baseForm;
-    }
-
-    public void setBaseForm(String baseForm) {
-        this.baseForm = baseForm == null ? null : baseForm.trim();
-    }
-
     public String getBoxName() {
         return boxName;
     }
 
     public void setBoxName(String boxName) {
         this.boxName = boxName == null ? null : boxName.trim();
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName == null ? null : tableName.trim();
     }
 
     public String getExecutor() {

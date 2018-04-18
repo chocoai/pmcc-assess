@@ -9,6 +9,10 @@ public class BaseForm {
 
     private Boolean bisEnable;
 
+    private Integer groupId;
+
+    private String tableName;
+
     public Integer getId() {
         return id;
     }
@@ -39,5 +43,21 @@ public class BaseForm {
 
     public void setBisEnable(Boolean bisEnable) {
         this.bisEnable = bisEnable;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName == null ? null : tableName.trim();
     }
 }

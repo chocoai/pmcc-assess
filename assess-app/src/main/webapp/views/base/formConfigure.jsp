@@ -136,7 +136,7 @@
                                 <div class="form-group">
                                     <div class='x-valid'>
                                         <label class='col-sm-2 control-label'>
-                                            名称<span class="required">*</span>
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class='col-sm-4 '>
                                             <input type="text" name='name' required class='form-control'>
@@ -144,7 +144,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            显示名称<span class="required"></span>
+                                            显示名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name='cnName' required class='form-control'>
@@ -154,7 +154,7 @@
                                 <div class="form-group">
                                     <div class='x-valid'>
                                         <label class='col-sm-2 control-label'>
-                                            表名称<span class="required">*</span>
+                                            表名称<span class="symbol required"></span>
                                         </label>
                                         <div class='col-sm-4 '>
                                             <input type="text" name='tableName' required class='form-control'>
@@ -162,7 +162,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            外键名称<span class="required"></span>
+                                            外键名称
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name='foreignKeyName' required class='form-control'>
@@ -172,18 +172,18 @@
                                 <div class="form-group">
                                     <div class='x-valid'>
                                         <label class='col-sm-2 control-label'>
-                                            自定义url<span class="required">*</span>
+                                            自定义url
                                         </label>
                                         <div class='col-sm-4 '>
-                                            <input type="text" name='customUrl' required class='form-control'>
+                                            <input type="text" name='customUrl'  class='form-control'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自定义显示url<span class="required"></span>
+                                            自定义显示url
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='customDisplayUrl' required class='form-control'>
+                                            <input type="text" name='customDisplayUrl'  class='form-control'>
                                         </div>
                                     </div>
                                 </div>

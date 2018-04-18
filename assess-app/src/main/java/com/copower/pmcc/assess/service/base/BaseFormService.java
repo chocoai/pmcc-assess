@@ -37,5 +37,8 @@ public class BaseFormService {
         return baseFormDao.getBaseFormModuleList(formId);
     }
 
+    public BaseFormModule getBaseFormModule(Integer id){
+        return baseFormDao.getBaseFormModule(id);
+    }
 
 }

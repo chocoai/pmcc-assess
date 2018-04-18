@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="work_stage_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="work_stage_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,19 +36,17 @@
                                         <div class="col-sm-10">
                                             <input class="form-control" id="workStageName" name="workStageName" required
                                                    data-rule-maxlength="255" placeholder="项目阶段名称">
-
                                         </div>
-
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             自定义服务
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id="stageName" name="stageName" class="form-control search-select select2">
+                                            <select id="stageName" name="stageName"
+                                                    class="form-control search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${sysBaseFormListStage}">
                                                     <option value="${item.assistName}">${item.name}</option>
@@ -64,12 +63,8 @@
                                             计划模型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="boxName" id="boxName" class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${boxRe}">
-                                                    <option value="${item.name}">${item.cnName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input class="form-control" name="boxName"
+                                                   data-rule-maxlength="255" placeholder="模型">
                                         </div>
                                     </div>
 
@@ -81,13 +76,8 @@
                                             复核模型
                                         </label>
                                         <div class="col-sm-10">
-
-                                            <select name="reviewBoxName" id="reviewBoxName" class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${boxRe}">
-                                                    <option value="${item.name}">${item.cnName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input class="form-control" name="reviewBoxName"
+                                                   data-rule-maxlength="255" placeholder="复核模型">
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +112,8 @@
                                             公有角色
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="boxRoleKey" id="boxRoleKey" class="form-control search-select select2">
+                                            <select name="boxRoleKey" id="boxRoleKey"
+                                                    class="form-control search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${publicRole}">
                                                     <option value="${item.name}">${item.cnName}</option>
@@ -151,7 +142,8 @@
                                             比重<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" id="specificGravity" name="specificGravity" required
+                                            <input class="form-control" id="specificGravity" name="specificGravity"
+                                                   required
                                                    data-rule-number="true" placeholder="比重、权重">
                                         </div>
                                     </div>
@@ -176,7 +168,8 @@
                                         </label>
                                         <div class="col-sm-2">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="workStagebisEnable" name="bisEnable" value="true"
+                                                <input type="checkbox" id="workStagebisEnable" name="bisEnable"
+                                                       value="true"
                                                        checked>
                                             </label>
                                         </div>
@@ -187,7 +180,8 @@
                                         </label>
                                         <div class="col-sm-2">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" id="workStagebisLoadDefalut" name="bisLoadDefalut" value="true"
+                                                <input type="checkbox" id="workStagebisLoadDefalut"
+                                                       name="bisLoadDefalut" value="true"
                                                        checked>
                                             </label>
                                         </div>
@@ -341,7 +335,7 @@
             //新增数据
             workStageObj.formWorkStage.clearAll();
 
-            if (typeId) {
+            if (typeId || true) {
                 //label显示
                 var lab = $("#typeId option:selected").text() + '项目阶段编辑';
                 $('#work_stage_label').text(lab);
@@ -467,6 +461,13 @@
                 }
             }
         });
+
+        $("#modify_work_stage_form").find('[name=boxName],[name=reviewBoxName]').click(function () {
+            var _this = this;
+            bpmBoxRe.select(function (row) {
+                $(_this).val(row.name);
+            });
+        })
     });
 </script>
 

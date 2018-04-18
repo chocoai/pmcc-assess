@@ -22,52 +22,50 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <form id="frm" class="form-horizontal">
-                                <div class="form-group ">
-                                    <div>
-                                        <label class="col-sm-1 control-label">
-                                            项目类型:
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select name="typeId" id="typeId" class="form-control">
-                                                <c:forEach var="item" items="${projectTypeId}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
+                            <%--<form id="frm" class="form-horizontal">--%>
+                            <%--<div class="form-group ">--%>
+                            <%--<div>--%>
+                            <%--<label class="col-sm-1 control-label">--%>
+                            <%--项目类型:--%>
+                            <%--</label>--%>
+                            <%--<div class="col-sm-2">--%>
+                            <%--<select name="typeId" id="typeId" class="form-control">--%>
+                            <%--<c:forEach var="item" items="${projectTypeId}">--%>
+                            <%--<option value="${item.id}">${item.name}</option>--%>
+                            <%--</c:forEach>--%>
+                            <%--</select>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
 
-                                    <div>
-                                        <label class="col-sm-1 control-label">
-                                            项目类别:
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select name="categoryId" id="categoryId" class="form-control">
-                                                <option value="" selected="selected">-请选择-</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                            <%--<div>--%>
+                            <%--<label class="col-sm-1 control-label">--%>
+                            <%--项目类别:--%>
+                            <%--</label>--%>
+                            <%--<div class="col-sm-2">--%>
+                            <%--<select name="categoryId" id="categoryId" class="form-control">--%>
+                            <%--<option value="" selected="selected">-请选择-</option>--%>
+                            <%--</select>--%>
+                            <%--</div>--%>
+                            <%--</div>--%>
 
-                                </div>
-                            </form>
-
+                            <%--</div>--%>
+                            <%--</form>--%>
+                            <input type="hidden" id="typeId" value="0">
+                            <input type="hidden" id="categoryId" value="0">
                             <div class="x_panel">
                                 <div id="work_stage_wizard" class="form_wizard wizard_horizontal">
                                 </div>
-
                                 <p id="modelListToolbar">
                                     <button id="create_work_stage" type="button" class="btn btn-primary"
-                                            data-toggle="modal" disabled>
+                                            data-toggle="modal">
                                         新增项目阶段
                                     </button>
                                     <button id="create_project_phase" type="button" class="btn btn-success"
-                                            data-toggle="modal" disabled> 新增工作事项
+                                            data-toggle="modal"> 新增工作事项
                                     </button>
                                 </p>
-                            </div>
-
                                 <table id="project_phase_list_table" class="table table-bordered"></table>
-
+                            </div>
 
 
                         </div>
@@ -90,6 +88,7 @@
 <!-- end: 编辑工作事项 -->
 
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
 <script type="application/javascript">
     var projectWorkStagePhaseObj = {
         workStageWizard: $('#work_stage_wizard'),
@@ -119,7 +118,7 @@
         //-----初始化页面显示----//
         var typeId = $('#typeId').val();
         if (typeId) {
-            projectWorkStagePhaseObj.loadCategory(typeId);
+            //projectWorkStagePhaseObj.loadCategory(typeId);
             workStageObj.renderWorkStageStep(projectWorkStagePhaseObj.workStageWizard, typeId);
             workPhaseObj.rendWorkPhaseTable(projectWorkStagePhaseObj.workPhaseTable, typeId, 0);
             $('#create_work_stage').removeAttr('disabled');
@@ -169,6 +168,30 @@
     });
 
 
+    function loadCategoryByPid(pid, fn) {
+        if (pid) {
+            $.ajax({
+                url: getContextPath()+"/ProjectPhase/getBidProjectCategoryListByPid",
+                type: "get",
+                dataType: "json",
+                data: {
+                    pid: pid
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        var retHtml = '<option value="" selected>-请选择-</option>';
+                        $.each(result.data, function (i, item) {
+                            retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                        });
+                        fn(retHtml, result.data);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+    }
 </script>
 
 </html>

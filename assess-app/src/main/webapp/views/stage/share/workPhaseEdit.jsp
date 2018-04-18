@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="project_phase_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="project_phase_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -36,7 +37,8 @@
                                             工作事项<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" id="projectPhaseName" name="projectPhaseName" required
+                                            <input class="form-control" id="projectPhaseName" name="projectPhaseName"
+                                                   required
                                                    data-rule-maxlength="255" placeholder="工作事项名称">
 
                                         </div>
@@ -46,7 +48,8 @@
                                                 自定义服务
                                             </label>
                                             <div class="col-sm-4">
-                                                <select id="phaseForm" name="phaseForm" class="form-control search-select select2">
+                                                <select id="phaseForm" name="phaseForm"
+                                                        class="form-control search-select select2">
                                                     <option value="">-选择-</option>
                                                     <c:forEach var="item" items="${sysBaseFormListMatter}">
                                                         <option value="${item.assistName}">${item.name}</option>
@@ -67,22 +70,15 @@
                                                 <option value="">-选择-</option>
                                             </select>
                                         </div>
-
-
-                                        <label class="col-sm-2 control-label" for="workPhaseBoxName">
+                                        <label class="col-sm-2 control-label">
                                             模型
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="boxName" id="workPhaseBoxName" class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${boxRe}">
-                                                    <option value="${item.name}">${item.cnName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input class="form-control" name="boxName"
+                                                   data-rule-maxlength="255" placeholder="模型">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label" for="phaseTime">
@@ -116,7 +112,8 @@
                                             工作模板
                                         </label>
                                         <div class="col-sm-10" id="workTemplate_file_co">
-                                            <input id="workTemplate_file" name="workTemplate_file" type="file" multiple="false">
+                                            <input id="workTemplate_file" name="workTemplate_file" type="file"
+                                                   multiple="false">
                                             <div id="_workTemplate_file"></div>
                                         </div>
 
@@ -129,7 +126,8 @@
                                             流程模板
                                         </label>
                                         <div class="col-sm-10" id="workProcessTemplate_file_co">
-                                            <input id="workProcessTemplate_file" name="workProcessTemplate_file" type="file"
+                                            <input id="workProcessTemplate_file" name="workProcessTemplate_file"
+                                                   type="file"
                                                    multiple="false">
                                             <div id="_workProcessTemplate_file"></div>
 
@@ -235,7 +233,7 @@
 
                     var str = "<a id='item_edit' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
                     str += "<a id='item_disable' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
-return str;
+                    return str;
                 }
 
                 ,
@@ -499,6 +497,12 @@ return str;
             });
         });
 
+        $("#modify_project_phase_form").find('[name=boxName]').click(function () {
+            var _this = this;
+            bpmBoxRe.select(function (row) {
+                $(_this).val(row.name);
+            });
+        })
 
     });
 </script>

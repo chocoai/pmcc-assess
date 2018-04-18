@@ -43,6 +43,8 @@ public class BaseProcessService {
     private BpmRpcProcessMapService bpmRpcProcessMapService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private BaseFormService baseFormService;
 
     public BaseProcess getProcessById(Integer id) {
         return hrProcessDao.getProcessById(id);
@@ -65,7 +67,7 @@ public class BaseProcessService {
         bpmProcessMapDto.setCnName(hrBaseProcess.getCnName());
         bpmProcessMapDto.setBoxName(hrBaseProcess.getBoxName());
         bpmProcessMapDto.setBisEnable(hrBaseProcess.getBisEnable());
-        if (hrBaseProcess.getId() > 0) {
+        if (hrBaseProcess.getId() != null && hrBaseProcess.getId() > 0) {
             if (!hrProcessDao.updateBaseProcess(hrBaseProcess)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
@@ -136,4 +138,19 @@ public class BaseProcessService {
         return bootstrapTableVo;
     }
 
+    private List<BaseProcessFormVo> getBaseProcessFormVos(List<BaseProcessForm> baseProcessForms) {
+        if (CollectionUtils.isEmpty(baseProcessForms)) return null;
+        return LangUtils.transform(baseProcessForms, p -> {
+            BaseProcessFormVo baseProcessFormVo = new BaseProcessFormVo();
+            BeanUtils.copyProperties(p, baseProcessFormVo);
+            if (p.getFormModuleId() != null) {
+                BaseFormModule baseFormModule = baseFormService.getBaseFormModule(p.getFormModuleId());
+                if (baseFormModule != null) {
+                    baseProcessFormVo.setFormModuleName(baseFormModule.getCnName());
+                }
+            }
+            return baseProcessFormVo;
+        });
+
+    }
 }

@@ -95,7 +95,7 @@ public class BaseProcessDao {
         BaseProcessFormExample example = new BaseProcessFormExample();
         BaseProcessFormExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andProcessIdEqualTo(procesId);
         if (StringUtils.isNotBlank(search)) {
-            criteria.andCnNameLike(String.format("%s%s%s", "%", search, "%"));
+            criteria.andFormModuleNameLike(String.format("%s%s%s", "%", search, "%"));
         }
         example.setOrderByClause(" sorting");
         return hrProcessFormMapper.selectByExample(example);
