@@ -102,7 +102,7 @@
                                         <div class="col-sm-4">
                                             <input type="hidden" id="boxRoleId" name="boxRoleId">
                                             <input data-rule-maxlength="200" placeholder="选择公用角色则部门可不填"
-                                                   onfocus="workStageObj.selDept()" id="boxRoleName"
+                                                   onfocus="workStageObj.selApprovalRole()" id="boxRoleName"
                                                    name="boxRoleName"
                                                    class="form-control">
                                         </div>
@@ -411,20 +411,16 @@
 
 
     //选择部门
-    workStageObj.selDept = function () {
-
-        loadSelectDept(1, $("#boxRoleId").val(), false, function (nodes) {
-            if (nodes || nodes.length > 0) {
-                $("#boxRoleId").val(nodes[0].id);
-                $("#boxRoleName").val(nodes[0].text);
+    workStageObj.selApprovalRole = function () {
+        bpmApprovalRole.select({
+            value: $("#boxRoleId").val(),
+            onSelected: function (node) {
+                $("#boxRoleId").val(node.id);
+                $("#boxRoleName").val(node.text);
             }
-        }, "role")
+        });
     };
 
-
-    //    function boxRoleChange(curr) {
-    //
-    //    }
 
     //-----------------document init-------------------//
     $(function () {

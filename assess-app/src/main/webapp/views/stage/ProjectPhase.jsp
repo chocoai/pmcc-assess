@@ -88,6 +88,7 @@
 <!-- end: 编辑工作事项 -->
 
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="/pmcc-bpm/js/bpm-approval-role-utils.js"></script>
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
 <script type="application/javascript">
     var projectWorkStagePhaseObj = {

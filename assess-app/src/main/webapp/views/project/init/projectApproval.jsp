@@ -14,7 +14,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 设置项目经理1
+                    <i class="fa fa-external-link-square"></i> 设置项目经理
                 </div>
                 <div class="x_content">
                     <form id="frm_set_project_manager" class="form-horizontal">
@@ -23,16 +23,16 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-11">
-                                    <input required placeholder="项目经理" id="projectName" name="projectName"
-                                           value="${projectInfo.projectName}" class="form-control">
+                                    <input required placeholder="项目经理" id="manager" name="manager"
+                                           value="" class="form-control">
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <%@include file="/views/share/form_approval.jsp" %>
-                <%@include file="/views/share/form_log.jsp" %>
             </div>
+            <%@include file="/views/share/form_approval.jsp" %>
+            <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
 </div>
@@ -49,7 +49,7 @@
         }
         var data = formParams("frm_approval");
         var dataManager = formParams("frm_set_project_manager");
-        data = $.extend({}, dataManager, approvalData);
+        data = $.extend({}, dataManager, data);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectInfo/projectApprovalSubmit",

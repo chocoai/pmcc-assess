@@ -28,15 +28,14 @@ public class ProjectInfoEvent extends BaseProcessEvent {
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
-        // super.processFinishExecute(processExecution);
+        super.processFinishExecute(processExecution);
         //
         //更新流程到下一节点
         //将下阶段设置为可编辑计划
         try {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
-
-            List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(),"");
-            //projectBidAssist.updatePlanStatus(projectPlans.get(0).getId());
+            List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
+            projectPlanService.updatePlanStatus(projectPlans.get(0).getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

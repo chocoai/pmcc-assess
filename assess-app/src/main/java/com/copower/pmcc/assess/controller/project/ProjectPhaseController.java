@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
+import com.copower.pmcc.assess.dal.entity.BaseAssist;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
+import com.copower.pmcc.assess.service.base.BaseAssistService;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
@@ -54,11 +57,17 @@ public class ProjectPhaseController {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
+    @Autowired
+    private BaseAssistService baseAssistService;
 
     @RequestMapping(value = "/view", name = "工程管理页面视图", method = RequestMethod.GET)
     public ModelAndView view() {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/stage/ProjectPhase");
-
+        //取工作内容具体项的关系表单信息
+        List<BaseAssist> sysBaseFormListStage =baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE,"");
+        modelAndView.addObject("sysBaseFormListStage", sysBaseFormListStage);
+        List<BaseAssist> sysBaseFormListMatter =baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_MATTER,"");
+        modelAndView.addObject("sysBaseFormListMatter", sysBaseFormListMatter);
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
         return modelAndView;

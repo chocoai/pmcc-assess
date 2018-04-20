@@ -38,8 +38,12 @@ public class BaseProcessEvent implements ProcessEventExecutor {
     public BoxRuDto processStatus(ProcessExecution processExecution) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processExecution.getProcessInstanceId());
         //处理流程结束的公共方法
-        String sql = String.format("update %s set status='%s' where id=%s", boxRuDto.getTableName(), processExecution.getProcessStatus().getValue(), boxRuDto.getTableId());
-        customDdlTableMapper.customTableSelect(sql);
+        try {
+            String sql = String.format("update %s set status='%s' where id=%s", boxRuDto.getTableName(), processExecution.getProcessStatus().getValue(), boxRuDto.getTableId());
+            customDdlTableMapper.customTableSelect(sql);
+        } catch (Exception e) {
+            //
+        }
         return boxRuDto;
     }
 

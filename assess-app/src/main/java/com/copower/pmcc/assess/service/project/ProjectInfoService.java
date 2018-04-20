@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
@@ -14,6 +16,7 @@ import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
@@ -30,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +55,8 @@ public class ProjectInfoService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ServiceComponent serviceComponent;
+    @Autowired
+    private ProjectPlanDao projectPlanDao;
 
     /**
      * 项目立项申请
@@ -61,7 +67,33 @@ public class ProjectInfoService {
         ProjectInfo projectInfo = new ProjectInfo();
         BeanUtils.copyProperties(projectInfoDto, projectInfo);
 
+        initProjectInfo(projectInfo);
+    }
+
+    /**
+     * 初始化项目信息
+     * @param projectInfo
+     */
+    private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0);
+        int i = 1;
+        for (ProjectWorkStage item : projectWorkStages) {
+            ProjectPlan projectPlan = new ProjectPlan();
+            projectPlan.setProjectId(projectInfo.getId());
+            projectPlan.setProcessInsId("-1");
+            projectPlan.setWorkStageId(item.getId());
+            projectPlan.setCategoryId(0);
+            projectPlan.setPlanName(item.getWorkStageName());
+            projectPlan.setCreator(serviceComponent.getThisUser());
+            projectPlan.setCreated(new Date());
+            projectPlan.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+            projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getName());
+            projectPlan.setBisRestart(false);
+            projectPlan.setStageSort(i);
+            projectPlanDao.addProjectPlan(projectPlan);
+            i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
+        }
+
         ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
         if (StringUtils.isNotBlank(projectWorkStage.getReviewBoxName()))//注意是取复核模型，因为第一个阶段没有工作成果提交，所以取复核较为合理
         {
@@ -109,7 +141,7 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
-        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
+        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
     /**

@@ -9,9 +9,7 @@
 
 <div class="x_panel">
     <div class="x_title">
-        <h2>审批日志
-        </h2>
-        <div class="clearfix"></div>
+        <i class="fa fa-external-link-square"></i> 审批日志
     </div>
     <div class="x_content">
         <table id="tb_log" class="table table-bordered" ></table>

@@ -75,8 +75,8 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view() {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
-        modelAndView.addObject("boxCnName", "项目立项223366");
-        modelAndView.addObject("thisTitle", "项目立项223366");
+        modelAndView.addObject("boxCnName", "项目立项");
+        modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
         return modelAndView;
     }
