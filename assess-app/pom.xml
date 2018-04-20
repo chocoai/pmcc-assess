@@ -342,7 +342,6 @@
         </dependency>
 
 
-
         <!--==================================== -->
         <!-- 测试 依赖包 -->
         <!--==================================== -->
@@ -386,7 +385,6 @@
     </dependencies>
 
 
-
     <build>
         <finalName>assess-app</finalName>
         <resources>
@@ -414,6 +412,18 @@
                     <target>${java_target_version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <warName>assess-app</warName>
+                    <warSourceExcludes>
+                        excludes/**
+                    </warSourceExcludes>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
