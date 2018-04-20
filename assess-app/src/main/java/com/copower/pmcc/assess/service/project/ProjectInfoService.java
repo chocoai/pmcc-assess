@@ -75,7 +75,7 @@ public class ProjectInfoService {
      * @param projectInfo
      */
     private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0,true);
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();

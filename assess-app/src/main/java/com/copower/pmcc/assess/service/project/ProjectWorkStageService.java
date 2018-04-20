@@ -52,12 +52,15 @@ public class ProjectWorkStageService {
         //   return  queryWorkStageById(id);
     }
 
-    public List<ProjectWorkStage> queryWorkStageByClassIdAndTypeId(int typeId) {
-
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE_TYPEID, String.valueOf(typeId));
-        try {
-            return LangUtils.listCache(rdsKey, typeId, ProjectWorkStage.class, o -> projectWorkStageDao.getWorkStageByTypeId(o));
-        } catch (Exception e) {
+    public List<ProjectWorkStage> queryWorkStageByClassIdAndTypeId(int typeId,Boolean formCache) {
+        if(formCache==Boolean.TRUE){
+            String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE_TYPEID, String.valueOf(typeId));
+            try {
+                return LangUtils.listCache(rdsKey, typeId, ProjectWorkStage.class, o -> projectWorkStageDao.getWorkStageByTypeId(o));
+            } catch (Exception e) {
+                return projectWorkStageDao.getWorkStageByTypeId(typeId);
+            }
+        }else {
             return projectWorkStageDao.getWorkStageByTypeId(typeId);
         }
     }

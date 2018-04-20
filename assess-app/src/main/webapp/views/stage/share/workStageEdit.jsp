@@ -286,7 +286,7 @@
                     retHtml += '</li>';
                 });
             } else {
-                retHtml += '<div class="alert alert-block alert-warning fade in"><h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>请配置项目阶段</h4></div>';
+                retHtml += '<div class="alert alert-block alert-info fade in"><h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>请配置项目阶段</h4></div>';
             }
             retHtml += '</ul>'
             documentEl.html(retHtml);

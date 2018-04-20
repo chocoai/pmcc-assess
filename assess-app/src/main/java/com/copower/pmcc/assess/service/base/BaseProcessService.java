@@ -40,8 +40,6 @@ public class BaseProcessService {
     @Autowired
     private BaseProcessDao hrProcessDao;
     @Autowired
-    private BpmRpcProcessMapService bpmRpcProcessMapService;
-    @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
     private BaseFormService baseFormService;
@@ -59,25 +57,14 @@ public class BaseProcessService {
     }
 
     public void saveBaseProcess(BaseProcess hrBaseProcess) throws BusinessException {
-        BpmProcessMapDto bpmProcessMapDto = new BpmProcessMapDto();
-        bpmProcessMapDto.setTableId(hrBaseProcess.getId());
-        bpmProcessMapDto.setTableName("tb_hr_base_process");
-        bpmProcessMapDto.setAppKey(applicationConstant.getAppKey());
-        bpmProcessMapDto.setName(hrBaseProcess.getName());
-        bpmProcessMapDto.setCnName(hrBaseProcess.getCnName());
-        bpmProcessMapDto.setBoxName(hrBaseProcess.getBoxName());
-        bpmProcessMapDto.setBisEnable(hrBaseProcess.getBisEnable());
         if (hrBaseProcess.getId() != null && hrBaseProcess.getId() > 0) {
             if (!hrProcessDao.updateBaseProcess(hrBaseProcess)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
-            bpmRpcProcessMapService.updateProcessMap(bpmProcessMapDto);
         } else {
             if (!hrProcessDao.saveBaseProcess(hrBaseProcess)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
-            bpmProcessMapDto.setTableId(hrBaseProcess.getId());
-            bpmRpcProcessMapService.addProcessMap(bpmProcessMapDto);
         }
     }
 

@@ -64,9 +64,9 @@ public class ProjectPhaseController {
     public ModelAndView view() {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/stage/ProjectPhase");
         //取工作内容具体项的关系表单信息
-        List<BaseAssist> sysBaseFormListStage =baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE,"");
+        List<BaseAssist> sysBaseFormListStage = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE, "");
         modelAndView.addObject("sysBaseFormListStage", sysBaseFormListStage);
-        List<BaseAssist> sysBaseFormListMatter =baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_MATTER,"");
+        List<BaseAssist> sysBaseFormListMatter = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_MATTER, "");
         modelAndView.addObject("sysBaseFormListMatter", sysBaseFormListMatter);
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
@@ -192,7 +192,7 @@ public class ProjectPhaseController {
         List<ProjectWorkStage> workStages = Lists.newArrayList();
         try {
             if (id == null || id.intValue() == 0) {
-                workStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(typeId);
+                workStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(typeId, false);
             } else {
                 ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(id);
                 if (projectWorkStage != null)

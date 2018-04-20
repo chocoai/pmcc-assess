@@ -85,6 +85,11 @@ public class ProjectPhaseService {
         serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
     }
 
+    public ProjectPhase getProjectPhaseById(Integer id) {
+        return projectPhaseDao.getProjectPhaseById(id);
+    }
+
+
     public ProjectPhase getCacheProjectPhaseById(Integer id) {
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_ID, String.valueOf(id));
         try {
