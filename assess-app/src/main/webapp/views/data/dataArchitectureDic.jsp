@@ -267,6 +267,7 @@
     //新增 建筑成新率数据
     function saveSubDataDic() {
             var data = {};
+            data.id = $("#id").val();
             data.buildingStructure = $("#buildingStructure").val();
             data.durableLife = $("#durableLife").val();
             // data.creator = $("#creator").val();

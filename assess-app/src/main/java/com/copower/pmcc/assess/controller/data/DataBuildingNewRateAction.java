@@ -75,9 +75,13 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/addDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate){
         try {
-            dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
-            logger.info(""+dataBuildingNewRate);
+            if (dataBuildingNewRate.getId()!=null){
+                dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
+            }else {
+                dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
+            }
         }catch (BusinessException e){
+            logger.info(""+e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -91,6 +95,7 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/updateDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult updateDataBuildingNewRate(@RequestParam(value = "dataBuildingNewRate")DataBuildingNewRate dataBuildingNewRate){
         try {
+            System.out.println("data:"+dataBuildingNewRate);
              dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
         }catch (BusinessException e){
             return HttpResult.newErrorResult(e.getMessage());

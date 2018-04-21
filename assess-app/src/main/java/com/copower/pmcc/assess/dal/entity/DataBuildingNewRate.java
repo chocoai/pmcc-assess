@@ -91,4 +91,19 @@ public class DataBuildingNewRate {
     public String getUseChange() {
         return useChange;
     }
+
+    @Override
+    public String toString() {
+        return "DataBuildingNewRate{" +
+                "useChange='" + useChange + '\'' +
+                ", id=" + id +
+                ", buildingStructure='" + buildingStructure + '\'' +
+                ", buildingUse=" + buildingUse +
+                ", durableLife=" + durableLife +
+                ", residualValue='" + residualValue + '\'' +
+                ", creator='" + creator + '\'' +
+                ", gmtCreated=" + gmtCreated +
+                ", gmtModified=" + gmtModified +
+                '}';
+    }
 }

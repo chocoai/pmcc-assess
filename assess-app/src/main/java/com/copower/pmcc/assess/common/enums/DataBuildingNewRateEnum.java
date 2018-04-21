@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.common.enums;
 
 public enum DataBuildingNewRateEnum {
-    ONE(1),TWO(2),Three(3),ProductionRoom("生产用房"),CorrodedProductionRoom("受腐蚀生产用房"),NonProductionRoom("非生产用房");
+    ONE(55),TWO(58),Three(59),ProductionRoom("生产用房"),CorrodedProductionRoom("受腐蚀生产用房"),NonProductionRoom("非生产用房");
     private Integer value;
 
     private String describe;
