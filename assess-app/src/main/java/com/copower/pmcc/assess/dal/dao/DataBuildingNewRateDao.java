@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dal.mapper.DataBuildingNewRateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,8 @@ public class DataBuildingNewRateDao {
         try {
             Object buildingStructure = map.get("buildingStructure");
             if (buildingStructure!=null&&buildingStructure.toString()!=""){
-                example.createCriteria().andDurableLifeIsNotNull().andBuildingStructureLike((String) map.get("buildingStructure"));
+                String v = "%"+(String) map.get("buildingStructure")+"%";
+                example.createCriteria().andDurableLifeIsNotNull().andBuildingStructureLike(v);
             }
             else {
                 example.createCriteria().andDurableLifeIsNotNull();

@@ -40,7 +40,7 @@ public class DataBuildingNewRateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataBuildingNewRate> dataBuildingNewRateList = change(getDataBuildingNewRateList(null,buildingStructure));
+        List<DataBuildingNewRate> dataBuildingNewRateList = change(getDataBuildingNewRateList(buildingStructure));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(dataBuildingNewRateList) ? new ArrayList<DataBuildingNewRate>() : dataBuildingNewRateList);
         return vo;
@@ -50,7 +50,6 @@ public class DataBuildingNewRateService {
 
     public List<DataBuildingNewRate> change(List<DataBuildingNewRate> dataBuildingNewRates){
         for (DataBuildingNewRate d:dataBuildingNewRates){
-//            d.setUseChange(change(d.getUsen()));
             d.setUseChange(change(d.getBuildingUse()));
         }
         return dataBuildingNewRates;
@@ -133,10 +132,9 @@ public class DataBuildingNewRateService {
     }
 
     @Transactional(readOnly = true)
-    public List<DataBuildingNewRate> getDataBuildingNewRateList(Integer usen,String buildingStructure){
+    public List<DataBuildingNewRate> getDataBuildingNewRateList(String buildingStructure){
         List<DataBuildingNewRate> dataBuildingNewRateList = null;
         Map map = new HashMap();
-        if (usen!=null) map.put("usen",usen);
         if ((buildingStructure!=null))map.put("buildingStructure",buildingStructure);
         try {
              dataBuildingNewRateList=dataBuildingNewRateDao.getDataBuildingNewRateList(map);

@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="reloadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
                                     查询
                                 </button>
 
@@ -189,9 +189,11 @@
                 return str;
             }
         });
+        $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/architecture/getArchitectureList", cols, {
             fieldName: $("#queryFieldName").val(),
-            name: $("#queryName").val()
+            buildingStructure: $("#queryName").val(),
+            buildingStructure: $("#queryName").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -200,30 +202,21 @@
     }
     //查询
     function reloadDataDicList() {
-        // alert("reloadDataDicList()");
+        alert("reloadDataDicList()");
         var cols = [];
         cols.push({field: 'buildingStructure', title: '建筑结构'});
         cols.push({field: 'useChange', title: '用途'});
         cols.push({field: 'durableLife', title: '经济耐用年限'});
         cols.push({field: 'residualValue', title: '残值率'});
 
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:removeDataBuildingNewRate(' + row.id + ',\'tb_List\')">删除</a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        // alert(""+$("#queryFieldName").val()+" "+$("#queryName").val());
+        alert(""+$("#queryFieldName").val()+" "+$("#queryName").val());
         TableInit("tb_List", "${pageContext.request.contextPath}/architecture/getArchitectureListA", cols, {
             buildingStructure: $("#queryFieldName").val(),
             buildingStructure: $("#queryName").val()
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: true
         });
     }
 

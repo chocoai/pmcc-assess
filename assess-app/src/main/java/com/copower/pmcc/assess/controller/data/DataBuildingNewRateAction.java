@@ -44,14 +44,18 @@ public class DataBuildingNewRateAction {
     }
 
     @RequestMapping(value = "/getArchitectureListA",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure){
+    public @ResponseBody BootstrapTableVo listA(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure){
         BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();
         if (buildingStructure != null && buildingStructure!="")return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructure);
+        System.out.println("buildingStructure "+buildingStructure);
         return vo;
     }
 
     @RequestMapping(value = "/getArchitectureList",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo list(){
+    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure){
+        if (buildingStructure!=null&&buildingStructure!=""){
+            return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructure);
+        }
         BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();
         return vo;
     }
@@ -75,7 +79,7 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/addDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate){
         try {
-            if (dataBuildingNewRate.getId()!=null){
+            if (dataBuildingNewRate.getId()!=null){//不再使用专门的 update controller
                 dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
             }else {
                 dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
@@ -95,7 +99,6 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/updateDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult updateDataBuildingNewRate(@RequestParam(value = "dataBuildingNewRate")DataBuildingNewRate dataBuildingNewRate){
         try {
-            System.out.println("data:"+dataBuildingNewRate);
              dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
         }catch (BusinessException e){
             return HttpResult.newErrorResult(e.getMessage());
