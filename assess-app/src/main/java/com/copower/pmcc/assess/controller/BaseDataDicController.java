@@ -143,7 +143,7 @@ public class BaseDataDicController {
     @ResponseBody
     @RequestMapping(value = "/getDataDicInfo", method = RequestMethod.GET)
     public HttpResult getDataDicInfo(Integer id) {
-        BaseDataDic dataDicInfo = baseDataDicService.getCacheDataDicById(id);
+        BaseDataDic dataDicInfo = baseDataDicService.getDataDicById(id);
         if (dataDicInfo == null)
             dataDicInfo = new BaseDataDic();
         return HttpResult.newCorrectResult(dataDicInfo);
