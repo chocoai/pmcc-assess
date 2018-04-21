@@ -91,7 +91,7 @@
                                 <div class="form-group">
                                     <div class='x-valid'>
                                         <label class='col-sm-2 control-label'>
-                                            名称<span class="required">*</span>
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class='col-sm-4 '>
                                             <input type="text" name='name' required class='form-control'>
@@ -99,10 +99,20 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            显示名称<span class="required"></span>
+                                            显示名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name='cnName' required class='form-control'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'>
+                                        <label class='col-sm-2 control-label'>
+                                            表名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class='col-sm-4 '>
+                                            <input type="text" name='tableName' required class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -162,10 +172,10 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            外键名称
+                                            外键字段名称
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='foreignKeyName' required class='form-control'>
+                                            <input type="text" name='foreignKeyName'  class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -487,8 +497,8 @@
     //加载列表数据
     function loadFormList() {
         var cols = [];
-        cols.push({field: 'cnName', title: '显示名称'});
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'cnName', title: '显示名称'});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -591,15 +601,6 @@
         cols.push({field: 'name', title: '表单key'});
         cols.push({field: 'tableName', title: '表名'});
         cols.push({field: 'foreignKeyName', title: '外键字段'});
-        cols.push({
-            field: 'bisConfigure', title: '是否为配置', formatter: function (value, row, index) {
-                if (value) {
-                    return "是";
-                } else {
-                    return "否";
-                }
-            }
-        });
         cols.push({
             field: 'bisMultiple', title: '是否为重复表', formatter: function (value, row, index) {
                 if (value) {
