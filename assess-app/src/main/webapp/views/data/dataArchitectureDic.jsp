@@ -191,9 +191,8 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/architecture/getArchitectureList", cols, {
-            fieldName: $("#queryFieldName").val(),
-            buildingStructure: $("#queryName").val(),
-            buildingStructure: $("#queryName").val()
+            buildingStructure: $("#queryFieldName").val(),
+            buildingStructureA: $("#queryName").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -259,14 +258,28 @@
     }
     //新增 建筑成新率数据
     function saveSubDataDic() {
-            var data = {};
-            data.id = $("#id").val();
-            data.buildingStructure = $("#buildingStructure").val();
-            data.durableLife = $("#durableLife").val();
-            // data.creator = $("#creator").val();
-            data.buildingUse = $("#buildingUse").val();
-            data.residualValue = $("#residualValue").val();
-            console.info(data);
+        var flag = false;
+        var data = {};
+        data.id = $("#id").val();
+        data.buildingStructure = $("#buildingStructure").val();
+        data.durableLife = $("#durableLife").val();
+        // data.creator = $("#creator").val();
+        data.buildingUse = $("#buildingUse").val();
+        data.residualValue = $("#residualValue").val();
+        //非空校验
+        if (isNot(data.buildingStructure) && isNot(data.durableLife) && isNot(buildingUse) && isNot(residualValue)){
+            flag = true;
+        }else {
+            alert("存在没有填写的内容");
+        }
+        //数字校验
+        var patrn = /^[0-9]*$/;
+        if (!patrn.test($("#durableLife").val())) {
+            flag = false;
+            alert('包含不是数字的字符');
+        }
+        if (flag){
+            console.log(data);
             $.ajax({
                 url: "${pageContext.request.contextPath}/architecture/addDataBuildingNewRate",
                 type: "post",
@@ -286,8 +299,9 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        document.getElementById("divBox").style.display = "none";
-        window.location.reload();//强制自动刷新
+            document.getElementById("divBox").style.display = "none";
+            window.location.reload();//强制自动刷新
+        }
     }
 //-------------------------------------------------------------------------------------
     //编辑字典数据
@@ -326,6 +340,15 @@
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $('#divBox').modal();
+    }
+
+    function isNot(val) {
+        if (val!=null){
+            if (val!=''){
+                return true;
+            }
+        }
+        return false;
     }
 
 

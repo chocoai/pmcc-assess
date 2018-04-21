@@ -52,9 +52,11 @@ public class DataBuildingNewRateAction {
     }
 
     @RequestMapping(value = "/getArchitectureList",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure){
+    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure,@RequestParam(value = "buildingStructureA")String buildingStructureA){
         if (buildingStructure!=null&&buildingStructure!=""){
             return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructure);
+        }else if (buildingStructureA!=null&&buildingStructureA!=""&&(buildingStructure==null||buildingStructure=="")){
+            return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructureA);
         }
         BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();
         return vo;
@@ -79,7 +81,7 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/addDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate){
         try {
-            if (dataBuildingNewRate.getId()!=null){//不再使用专门的 update controller
+            if (dataBuildingNewRate.getId()!=null&&dataBuildingNewRate.getId()!=0){//不再使用专门的 update controller
                 dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
             }else {
                 dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
