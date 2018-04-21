@@ -203,6 +203,10 @@ public class BaseDataDicService {
 
     }
 
+    public BaseDataDic getDataDicById(Integer id) {
+        return cmsBaseDataDicDao.getSingleObject(id);
+    }
+
     /**
      * 获取字典的数据层次
      *
