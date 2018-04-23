@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -25,11 +26,21 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    字段名称
+                                    开始时间
+                                </label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                           placeholder="开始时间" id="startTime" name="startTime"
+                                           class="form-control">
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    结束时间
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                           placeholder="字段名称" id="queryFieldName" name="queryFieldName"
+                                           placeholder="结束时间" id="endTime" name="endTime"
                                            class="form-control">
                                 </div>
                             </div>
@@ -62,7 +73,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h4 class="modal-title">指数</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -90,9 +101,10 @@
                                             年份<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar"
-                                                   data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
-                                                   value="<fmt:formatDate value="${hrUserSocialSecurityAndProvidentFund.paymentStartDate}" pattern="yyyy-MM"/>">
+                                            <input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar">
+                                            <%--<input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar"--%>
+                                                   <%--data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"--%>
+                                                   <%--value="<fmt:formatDate value="" pattern="yyyy-MM"/>">--%>
                                         </div>
                                     </div>
                                 </div>
@@ -115,14 +127,14 @@
 </div>
 
 
-<!--建筑成新率数据子项数据 ===========-->
+<!--子项数据 ===========-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">建筑成新率数据</h4>
+                <h4 class="modal-title" id="titleContent">子数据</h4>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered" id="tbDataDicList">
@@ -135,7 +147,6 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-
     $(function () {
         loadDataDicList();
     })
@@ -156,7 +167,8 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/housePriceIndex/list", cols, {
-            indexCalendar: $("#queryFieldName").val()
+            startTime: $("#startTime").val(),
+            endTime: $("#endTime").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -192,13 +204,23 @@
         })
     }
 
-    //对新增 建筑成新率数据处理
+    //对新增 数据处理
     function addDataDic() {
         $("#frmSub").clearAll();
         $("#indexCalendar").val("");
         $("#yearMonthCalendar").val("");
     }
-    //新增 建筑成新率数据
+    //yyyy-MM-dd被固定了
+    laydate.render({
+        elem: '#yearMonthCalendar' //指定元素 id
+    });
+    laydate.render({
+        elem: '#startTime' //指定元素 id
+    });
+    laydate.render({
+        elem: '#endTime' //指定元素 id
+    });
+    //新增 数据
     function saveSubDataDic() {
         var flag = false;
         var data = {};
@@ -233,7 +255,7 @@
                 }
             })
             document.getElementById("divBox").style.display = "none";
-            window.location.reload();//强制自动刷新
+            window.location.reload();//自动刷新
         }
     }
 

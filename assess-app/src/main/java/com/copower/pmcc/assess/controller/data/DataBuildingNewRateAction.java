@@ -52,10 +52,9 @@ public class DataBuildingNewRateAction {
     }
 
     @RequestMapping(value = "/getArchitectureList",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure,@RequestParam(value = "buildingStructureA")String buildingStructureA){
-        if (buildingStructure!=null&&buildingStructure!=""){
-            return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructure);
-        }else if (buildingStructureA!=null&&buildingStructureA!=""&&(buildingStructure==null||buildingStructure=="")){
+    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructureA")String buildingStructureA){
+        if (buildingStructureA!=null&&buildingStructureA!=""){
+            System.out.printf("-------------> "+buildingStructureA );
             return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructureA);
         }
         BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();

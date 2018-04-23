@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -16,7 +17,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                       ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -25,24 +26,15 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    名称
+                                    建筑结构名称
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="名称" id="queryName" name="queryName"
+                                           placeholder="建筑结构名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    字段名称
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                           placeholder="字段名称" id="queryFieldName" name="queryFieldName"
-                                           class="form-control">
-                                </div>
-                            </div>
+
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
                                     查询
@@ -123,8 +115,10 @@
                                             残值率
                                         </label>
                                         <div class="col-sm-10">
-                                    <textarea placeholder="残值率" id="residualValue" name="residualValue"
-                                              class="form-control"></textarea>
+                                            <input type="text" required data-rule-digits="true" placeholder="残值率"
+                                                   id="residualValue" name="residualValue" class="form-control">
+                                    <%--<textarea placeholder="残值率" id="residualValue" name="residualValue"--%>
+                                              <%--class="form-control"></textarea>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +184,6 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/architecture/getArchitectureList", cols, {
-            buildingStructure: $("#queryFieldName").val(),
             buildingStructureA: $("#queryName").val()
         }, {
             showColumns: false,
@@ -262,7 +255,7 @@
             })
         }
     }
-//-------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------
     //编辑字典数据
     function editDataDic(id) {
         $("#frm").clearAll();

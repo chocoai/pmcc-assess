@@ -10,9 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Date;
 
 @RequestMapping(value = "/housePriceIndex")
 @Controller
@@ -25,46 +28,51 @@ public class HousePriceIndexAction {
     private HousePriceIndexService housePriceIndexService;
 
     @RequestMapping(value = "/view")
-    public ModelAndView index(){
+    public ModelAndView index() {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/housePriceIndex");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list")
-    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "indexCalendar",defaultValue = "")String indexCalendar){
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public
+    @ResponseBody
+    BootstrapTableVo list(@RequestParam(value = "startTime") String startTime, @RequestParam(value = "endTime") String endTime) {
         BootstrapTableVo vo = null;
         try {
-            if (indexCalendar!=null&&indexCalendar!=""){
-                return housePriceIndexService.getListVo(indexCalendar);
+            if ((startTime == "" ) && (endTime == "" )) {
+                return housePriceIndexService.getListVo(null, null);
+            } else {
+                return housePriceIndexService.getListVo(housePriceIndexService.change(startTime), housePriceIndexService.change(endTime));
             }
-            vo = housePriceIndexService.getListVo(null);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return vo;
     }
 
     @RequestMapping(value = "/get")
-    public Object get(@RequestParam(value = "id")Integer id){
+    public Object get(@RequestParam(value = "id") Integer id) {
         HousePriceIndex housePriceIndex = null;
         try {
             housePriceIndex = housePriceIndexService.get(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
         return housePriceIndex;
     }
 
-    @RequestMapping(value = "/save")
-    public @ResponseBody HttpResult add(HousePriceIndex housePriceIndex){
+    @RequestMapping(value = "/save",method = {RequestMethod.POST,RequestMethod.GET})
+    public
+    @ResponseBody
+    HttpResult add(HousePriceIndex housePriceIndex) {
         try {
-            if (housePriceIndex.getId()!=null&&housePriceIndex.getId()!=0){//不再使用专门的 update controller
+            if (housePriceIndex.getId() != null && housePriceIndex.getId() != 0) {//不再使用专门的 update controller
                 housePriceIndexService.update(housePriceIndex);
-            }else {
+            } else {
                 housePriceIndexService.addHousePriceIndex(housePriceIndex);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -72,10 +80,12 @@ public class HousePriceIndexAction {
     }
 
     @RequestMapping(value = "/delete")
-    public @ResponseBody HttpResult delete(@RequestParam(value = "id")Integer id){
+    public
+    @ResponseBody
+    HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             housePriceIndexService.removeHousePriceIndeX(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }

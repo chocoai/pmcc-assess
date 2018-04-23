@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -42,9 +44,19 @@ public class HousePriceIndexServiceTest {
 
     @Test
     public void select()throws Exception{
-        List<HousePriceIndex> housePriceIndices = housePriceIndexService.list();
+//        List<HousePriceIndex> housePriceIndices = housePriceIndexDao.list(null);
+//        housePriceIndices.forEach(housePriceIndex -> {
+//            System.out.println("---------------------------> "+housePriceIndex);
+//        });
+
+        Date start = new Date();
+        Date end = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        start = format.parse("1896-02-29");
+        end = format.parse("2018-02-08");
+        List<HousePriceIndex> housePriceIndices = housePriceIndexService.list(null,null);
         housePriceIndices.forEach(housePriceIndex -> {
-            System.out.println(housePriceIndex);
+            System.out.println("---------------------------> "+housePriceIndex);
         });
     }
 
