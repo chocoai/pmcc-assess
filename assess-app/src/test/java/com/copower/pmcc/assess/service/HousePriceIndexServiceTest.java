@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.dao.HousePriceIndexDao;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dto.output.data.HousePriceIndexVo;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class HousePriceIndexServiceTest {
         housePriceIndex.setIndexCalendar("24");
         housePriceIndex.setGmtCreated(new Date());
         housePriceIndex.setYearMonthCalendar(new Date());
-        housePriceIndexService.addHousePriceIndex(housePriceIndex);
+        //housePriceIndexService.addHousePriceIndex(housePriceIndex);
     }
 
     @Test
@@ -34,7 +35,7 @@ public class HousePriceIndexServiceTest {
         System.out.println(housePriceIndex);
         housePriceIndex.setIndexCalendar("77");
         housePriceIndex.setYearMonthCalendar(new Date());
-        housePriceIndexService.update(housePriceIndex);
+        //housePriceIndexService.update(housePriceIndex);
     }
 
     @Test
@@ -54,7 +55,7 @@ public class HousePriceIndexServiceTest {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         start = format.parse("1896-02-29");
         end = format.parse("2018-02-08");
-        List<HousePriceIndex> housePriceIndices = housePriceIndexService.list(null,null);
+        List<HousePriceIndexVo> housePriceIndices = housePriceIndexService.list(null,null);
         housePriceIndices.forEach(housePriceIndex -> {
             System.out.println("---------------------------> "+housePriceIndex);
         });

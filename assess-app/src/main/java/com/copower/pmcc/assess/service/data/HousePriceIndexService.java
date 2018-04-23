@@ -2,14 +2,20 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.HousePriceIndexDao;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
+import com.copower.pmcc.assess.dto.output.data.HousePriceIndexVo;
+import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +27,13 @@ import java.util.*;
 public class HousePriceIndexService {
     @Autowired
     private HousePriceIndexDao housePriceIndexDao;
+    @Autowired
+    private ServiceComponent serviceComponent;
 
-    public boolean addHousePriceIndex(HousePriceIndex housePriceIndex) throws BusinessException {
+    public boolean addHousePriceIndex(HousePriceIndexDto housePriceIndexDto) throws BusinessException {
+        HousePriceIndex housePriceIndex =new HousePriceIndex();
+        BeanUtils.copyProperties(housePriceIndexDto,housePriceIndex);
+        housePriceIndex.setCreator(serviceComponent.getThisUser());
         return housePriceIndexDao.add(housePriceIndex);
     }
 
@@ -34,22 +45,27 @@ public class HousePriceIndexService {
         return housePriceIndexDao.getById(id);
     }
 
-    public boolean update(HousePriceIndex housePriceIndex) {
+    public boolean update(HousePriceIndexDto housePriceIndexDto) {
+        HousePriceIndex housePriceIndex =new HousePriceIndex();
+        BeanUtils.copyProperties(housePriceIndexDto,housePriceIndex);
         return housePriceIndexDao.updateHousePriceIndex(housePriceIndex);
     }
 
 
-    public List<HousePriceIndex> list(Date start, Date end) {
+    public List<HousePriceIndexVo> list(Date start, Date end) {
         Map<String, Object> map = new HashMap<>();
         if (start != null) {
             map.put(HousePriceIndex.START_TIME, start);
         }
         if (end != null) map.put(HousePriceIndex.END_TIME, end);
         List<HousePriceIndex> housePriceIndices = housePriceIndexDao.list(map);
-        housePriceIndices.forEach(housePriceIndex -> {
-            housePriceIndex.setYearMonthString(change(housePriceIndex.getYearMonthCalendar()));
+        return LangUtils.transform(housePriceIndices,housePriceIndex->{
+            HousePriceIndexVo housePriceIndexVo=new HousePriceIndexVo();
+            BeanUtils.copyProperties(housePriceIndex,housePriceIndexVo);
+            housePriceIndexVo.setYearMonthString(DateUtils.format(housePriceIndex.getYearMonthCalendar(),"yyyy年MM月"));
+            housePriceIndexVo.setYearMonthSource(DateUtils.format(housePriceIndex.getYearMonthCalendar(),"yyyy-MM"));
+            return housePriceIndexVo;
         });
-        return housePriceIndices;
     }
 
     public String change(Date date) {
@@ -72,8 +88,8 @@ public class HousePriceIndexService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         vo.setTotal(page.getTotal());
-        List<HousePriceIndex> housePriceIndices = list(startTime, endTime);
-        vo.setRows(CollectionUtils.isEmpty(housePriceIndices) ? new ArrayList<HousePriceIndex>() : housePriceIndices);
+        List<HousePriceIndexVo> housePriceIndices = list(startTime, endTime);
+        vo.setRows(CollectionUtils.isEmpty(housePriceIndices) ? new ArrayList<HousePriceIndexVo>() : housePriceIndices);
         return vo;
     }
 

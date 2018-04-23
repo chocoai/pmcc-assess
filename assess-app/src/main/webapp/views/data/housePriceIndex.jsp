@@ -30,18 +30,18 @@
                                 </label>
 
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                    <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
                                            placeholder="开始时间" id="startTime" name="startTime"
-                                           class="form-control">
+                                           class="form-control dbdate">
                             </div>
                             <div>
                                 <label class="col-sm-1 control-label">
                                     结束时间
                                 </label>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                    <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
                                            placeholder="结束时间" id="endTime" name="endTime"
-                                           class="form-control">
+                                           class="form-control dbdate">
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -101,10 +101,9 @@
                                             年份<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar">
-                                            <%--<input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar"--%>
-                                                   <%--data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"--%>
-                                                   <%--value="<fmt:formatDate value="" pattern="yyyy-MM"/>">--%>
+                                            <%--<input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar">--%>
+                                            <input class="form-control dbdate" id="yearMonthCalendar" name="yearMonthCalendar"
+                                                   data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3">
                                         </div>
                                     </div>
                                 </div>
@@ -125,25 +124,6 @@
         </div>
     </div>
 </div>
-
-
-<!--子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">子数据</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
@@ -243,8 +223,8 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        TableReload("tbDataDicList");
-                        $('#divSubDataDicManage').modal('hide');
+                        loadDataDicList();
+                        $('#divBox').modal('hide');
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -254,8 +234,8 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-            document.getElementById("divBox").style.display = "none";
-            window.location.reload();//自动刷新
+//            document.getElementById("divBox").style.display = "none";
+//            window.location.reload();//自动刷新
         }
     }
 
@@ -268,6 +248,7 @@
         $("#frm").clearAll();
         console.info(yearMonthCalendar.value);
         $("#frm").initForm(row);
+        $("#yearMonthCalendar").val(row.yearMonthSource);
         $('#divBox').modal();
     }
 

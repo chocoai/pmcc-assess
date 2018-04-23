@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +41,11 @@ public class HousePriceIndexAction {
     BootstrapTableVo list(@RequestParam(value = "startTime") String startTime, @RequestParam(value = "endTime") String endTime) {
         BootstrapTableVo vo = null;
         try {
+
             if ((startTime == "" ) && (endTime == "" )) {
                 return housePriceIndexService.getListVo(null, null);
             } else {
-                return housePriceIndexService.getListVo(housePriceIndexService.change(startTime), housePriceIndexService.change(endTime));
+                return housePriceIndexService.getListVo(DateUtils.parse(startTime), DateUtils.parse(endTime));
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -65,7 +68,7 @@ public class HousePriceIndexAction {
     @RequestMapping(value = "/save",method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    HttpResult add(HousePriceIndex housePriceIndex) {
+    HttpResult add(HousePriceIndexDto housePriceIndex) {
         try {
             if (housePriceIndex.getId() != null && housePriceIndex.getId() != 0) {//不再使用专门的 update controller
                 housePriceIndexService.update(housePriceIndex);
