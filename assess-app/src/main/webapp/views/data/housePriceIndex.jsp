@@ -17,7 +17,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                       ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
+                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -33,27 +33,27 @@
                                     <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
                                            placeholder="开始时间" id="startTime" name="startTime"
                                            class="form-control dbdate">
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    结束时间
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
-                                           placeholder="结束时间" id="endTime" name="endTime"
-                                           class="form-control dbdate">
+                                </div>
+                                <div>
+                                    <label class="col-sm-1 control-label">
+                                        结束时间
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
+                                               placeholder="结束时间" id="endTime" name="endTime"
+                                               class="form-control dbdate">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                        查询
+                                    </button>
+
+                                    <button type="button" class="btn btn-success" onclick="addDataDic()"
+                                            data-toggle="modal" href="#divBox"> 新增
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
-                                    查询
-                                </button>
-
-                                <button type="button" class="btn btn-success" onclick="addDataDic()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
-                            </div>
-                        </div>
 
                     </form>
                     <table class="table table-bordered" id="tb_List">

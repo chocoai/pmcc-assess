@@ -117,8 +117,8 @@
                                         <div class="col-sm-10">
                                             <input type="text" required data-rule-digits="true" placeholder="残值率"
                                                    id="residualValue" name="residualValue" class="form-control">
-                                    <%--<textarea placeholder="残值率" id="residualValue" name="residualValue"--%>
-                                              <%--class="form-control"></textarea>--%>
+                                            <%--<textarea placeholder="残值率" id="residualValue" name="residualValue"--%>
+                                            <%--class="form-control"></textarea>--%>
                                         </div>
                                     </div>
                                 </div>
