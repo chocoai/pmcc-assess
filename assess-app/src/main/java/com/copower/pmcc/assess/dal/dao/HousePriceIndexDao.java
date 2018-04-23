@@ -26,8 +26,7 @@ public class HousePriceIndexDao {
     }
 
     public boolean remove(Integer id) {
-        int j = housePriceIndexMapper.deleteByPrimaryKey(id);
-        return j == 1;
+        return housePriceIndexMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public HousePriceIndex getById(Integer id) {

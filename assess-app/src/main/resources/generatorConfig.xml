@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="/home/zhou/CS/ssh/other/mysql-connector-java-5.1.23.jar"/>
+            location="D:\lib\mysql-connector-java-5.1.23"/>
 
     <context id="ticket-pms">
 
@@ -22,19 +22,19 @@
 
         <!-- entity 位置-->
         <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.entity"
-                            targetProject="/home/zhou/workspace/pmcc-assess/assess-app/src/main/java">
+                            targetProject="F:\wordspace\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- mapper xml 位置 -->
         <sqlMapGenerator targetPackage="mybatis"
-                         targetProject="/home/zhou/workspace/pmcc-assess/assess-app/src/main/resources/">
+                         targetProject="F:\wordspace\pmcc-assess\assess-app\src\main\resources\">
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.mapper"
-                             targetProject="/home/zhou/workspace/pmcc-assess/assess-app/src/main/java">
+                             targetProject="F:\wordspace\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 

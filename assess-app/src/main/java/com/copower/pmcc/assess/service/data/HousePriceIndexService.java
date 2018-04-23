@@ -31,18 +31,18 @@ public class HousePriceIndexService {
     private HousePriceIndexDao housePriceIndexDao;
 
 
-    public boolean addHousePriceIndex(HousePriceIndexDto housePriceIndexDto) throws BusinessException {
+    public boolean addHousePriceIndex(HousePriceIndexDto housePriceIndexDto) {
         HousePriceIndex housePriceIndex = new HousePriceIndex();
         housePriceIndexDto.setCreator(commonService.thisUserAccount());//设置系统账户
         BeanUtils.copyProperties(housePriceIndexDto, housePriceIndex);
         return housePriceIndexDao.add(housePriceIndex);
     }
 
-    public boolean removeHousePriceIndeX(Integer id) throws BusinessException {
+    public boolean removeHousePriceIndeX(Integer id){
         return housePriceIndexDao.remove(id);
     }
 
-    public HousePriceIndex get(Integer id) throws BusinessException {
+    public HousePriceIndex get(Integer id)  {
         return housePriceIndexDao.getById(id);
     }
 
