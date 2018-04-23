@@ -21,6 +21,7 @@
 <div id="pmcc-footer">
 
 </div>
+<script src='/assets/js/comm/pmcc.js'></script>
 <script src='/assets/js/comm/erp-footer.js'></script>
 <script type="application/javascript">
     var mainObj = {
@@ -57,4 +58,4 @@
         };
     };
 </script>
-<script src='/assets/js/comm/pmcc.js'></script>
+
