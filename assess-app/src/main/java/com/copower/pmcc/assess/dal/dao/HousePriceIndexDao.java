@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndexExample;
 import com.copower.pmcc.assess.dal.mapper.HousePriceIndexMapper;
+import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,9 +48,9 @@ public class HousePriceIndexDao {
         String INDEX_CALENDAR_KEY = null;
         Date start = null;
         if (map!=null){
-            if (map.get(HousePriceIndex.END_TIME) != null) end = (Date) map.get(HousePriceIndex.END_TIME);
-            if (map.get(HousePriceIndex.START_TIME) != null) start = (Date) map.get(HousePriceIndex.START_TIME);
-            if (map.get(HousePriceIndex.INDEX_CALENDAR_KEY) != null) INDEX_CALENDAR_KEY = (String) map.get(HousePriceIndex.INDEX_CALENDAR_KEY);
+            if (map.get(HousePriceIndexDto.END_TIME) != null) end = (Date) map.get(HousePriceIndexDto.END_TIME);
+            if (map.get(HousePriceIndexDto.START_TIME) != null) start = (Date) map.get(HousePriceIndexDto.START_TIME);
+            if (map.get(HousePriceIndexDto.INDEX_CALENDAR_KEY) != null) INDEX_CALENDAR_KEY = (String) map.get(HousePriceIndexDto.INDEX_CALENDAR_KEY);
         }
 
         if (INDEX_CALENDAR_KEY != null) {

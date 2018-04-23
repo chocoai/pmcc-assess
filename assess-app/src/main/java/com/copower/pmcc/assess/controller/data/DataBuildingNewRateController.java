@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequestMapping(value = "/architecture")
 @Controller
-public class DataBuildingNewRateAction {
+public class DataBuildingNewRateController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -40,6 +40,7 @@ public class DataBuildingNewRateAction {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataArchitectureDic");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.BUILDING_NEW_RATE_USE);
         modelAndView.addObject("useList",baseDataDics);
+
         return modelAndView;
     }
 
