@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_building_new_rate" domainObjectName="DataBuildingNewRate">
+        <table tableName="tb_data_house_price_index" domainObjectName="HousePriceIndex">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

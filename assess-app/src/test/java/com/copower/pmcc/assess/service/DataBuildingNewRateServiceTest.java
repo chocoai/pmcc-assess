@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.test;
+package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
