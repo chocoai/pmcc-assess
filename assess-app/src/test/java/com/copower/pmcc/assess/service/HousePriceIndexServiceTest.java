@@ -2,10 +2,11 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.dao.HousePriceIndexDao;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
-import com.copower.pmcc.assess.dto.output.data.HousePriceIndexVo;
+import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -26,7 +27,9 @@ public class HousePriceIndexServiceTest {
         housePriceIndex.setIndexCalendar("24");
         housePriceIndex.setGmtCreated(new Date());
         housePriceIndex.setYearMonthCalendar(new Date());
-        //housePriceIndexService.addHousePriceIndex(housePriceIndex);
+        HousePriceIndexDto housePriceIndexDto = new HousePriceIndexDto();
+        BeanUtils.copyProperties(housePriceIndex, housePriceIndexDto);
+        housePriceIndexService.addHousePriceIndex(housePriceIndexDto);
     }
 
     @Test
@@ -35,7 +38,9 @@ public class HousePriceIndexServiceTest {
         System.out.println(housePriceIndex);
         housePriceIndex.setIndexCalendar("77");
         housePriceIndex.setYearMonthCalendar(new Date());
-        //housePriceIndexService.update(housePriceIndex);
+        HousePriceIndexDto housePriceIndexDto = new HousePriceIndexDto();
+        BeanUtils.copyProperties(housePriceIndex, housePriceIndexDto);
+        housePriceIndexService.update(housePriceIndexDto);
     }
 
     @Test
@@ -55,7 +60,7 @@ public class HousePriceIndexServiceTest {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         start = format.parse("1896-02-29");
         end = format.parse("2018-02-08");
-        List<HousePriceIndexVo> housePriceIndices = housePriceIndexService.list(null,null);
+        List<HousePriceIndexDto> housePriceIndices = housePriceIndexService.list(null,null);
         housePriceIndices.forEach(housePriceIndex -> {
             System.out.println("---------------------------> "+housePriceIndex);
         });

@@ -5,18 +5,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class HousePriceIndex {
-    public static String INDEX_CALENDAR_KEY = "indexCalendar";
-    public static String END_TIME = "endTime";
-    public static String START_TIME = "startTime";
     private Integer id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date yearMonthCalendar;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
-    private String  yearMonthString;
+
 
     private String indexCalendar;
 
@@ -74,39 +66,6 @@ public class HousePriceIndex {
         this.gmtModified = gmtModified;
     }
 
-    @Override
-    public String toString() {
-        return "HousePriceIndex{" +
-                "id=" + id +
-                ", yearMonthCalendar=" + yearMonthCalendar +
-                ", indexCalendar='" + indexCalendar + '\'' +
-                ", creator='" + creator + '\'' +
-                ", gmtCreated=" + gmtCreated +
-                ", gmtModified=" + gmtModified +
-                '}';
-    }
 
-    public String getYearMonthString() {
-        return yearMonthString;
-    }
 
-    public void setYearMonthString(String yearMonthString) {
-        this.yearMonthString = yearMonthString;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 }

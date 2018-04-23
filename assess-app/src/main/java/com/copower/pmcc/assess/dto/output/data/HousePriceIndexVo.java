@@ -1,20 +1,18 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 
 /**
- * Created by kings on 2018-4-23.
+ * Created by 13426 on 2018/4/23.
  */
-public class HousePriceIndexVo extends HousePriceIndex {
+public class HousePriceIndexVo  extends HousePriceIndexDto {
     private String yearMonthString;
     private String yearMonthSource;
 
-    @Override
     public String getYearMonthString() {
         return yearMonthString;
     }
 
-    @Override
     public void setYearMonthString(String yearMonthString) {
         this.yearMonthString = yearMonthString;
     }

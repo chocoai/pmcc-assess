@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequestMapping(value = "/architecture")
 @Controller
-public class DataBuildingNewRateAction {
+public class DataBuildingNewRateController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -40,6 +40,7 @@ public class DataBuildingNewRateAction {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataArchitectureDic");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.BUILDING_NEW_RATE_USE);
         modelAndView.addObject("useList",baseDataDics);
+
         return modelAndView;
     }
 
@@ -74,7 +75,7 @@ public class DataBuildingNewRateAction {
         }catch (BusinessException e){
             return HttpResult.newErrorResult(e.getMessage());
         }
-       return HttpResult.newCorrectResult();
+        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/addDataBuildingNewRate",method = RequestMethod.POST)
@@ -100,7 +101,7 @@ public class DataBuildingNewRateAction {
     @RequestMapping(value = "/updateDataBuildingNewRate",method = RequestMethod.POST)
     public @ResponseBody HttpResult updateDataBuildingNewRate(@RequestParam(value = "dataBuildingNewRate")DataBuildingNewRate dataBuildingNewRate){
         try {
-             dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
+            dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
         }catch (BusinessException e){
             return HttpResult.newErrorResult(e.getMessage());
         }
