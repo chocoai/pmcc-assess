@@ -76,7 +76,6 @@
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
-                <input type="hidden" id="pid" name="pid">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -98,7 +97,7 @@
                                             经济耐用年限<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="经济耐用年限(请输入数字)"
+                                            <input type="text" required data-rule-digits="true" placeholder="经济耐用年限(请输入数字)"
                                                    id="durableLife" name="durableLife" class="form-control">
                                         </div>
                                     </div>
@@ -199,25 +198,6 @@
             search: false
         });
     }
-    //查询
-    function reloadDataDicList() {
-        alert("reloadDataDicList()");
-        var cols = [];
-        cols.push({field: 'buildingStructure', title: '建筑结构'});
-        cols.push({field: 'useChange', title: '用途'});
-        cols.push({field: 'durableLife', title: '经济耐用年限'});
-        cols.push({field: 'residualValue', title: '残值率'});
-
-        alert(""+$("#queryFieldName").val()+" "+$("#queryName").val());
-        TableInit("tb_List", "${pageContext.request.contextPath}/architecture/getArchitectureListA", cols, {
-            buildingStructure: $("#queryFieldName").val(),
-            buildingStructure: $("#queryName").val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: true
-        });
-    }
 
     //删除 建筑成新率数据
     function removeDataBuildingNewRate(id, tbId) {
@@ -249,37 +229,18 @@
 
     //对新增 建筑成新率数据处理
     function addDataDic() {
-        $("#frmSub").clearAll();
-        $("#buildingStructure").val("");
-        $("#durableLife").val("");
-        $("#buildingUse").prop("checked", true);
-        // $("#creator").val("");
-        $("#residualValue").val("");
+        $("#frm").clearAll();
     }
     //新增 建筑成新率数据
     function saveSubDataDic() {
         var flag = false;
-        var data = {};
+        var data = formParams("frm");
         data.id = $("#id").val();
         data.buildingStructure = $("#buildingStructure").val();
         data.durableLife = $("#durableLife").val();
-        // data.creator = $("#creator").val();
         data.buildingUse = $("#buildingUse").val();
         data.residualValue = $("#residualValue").val();
-        //非空校验
-        if (isNot(data.buildingStructure) && isNot(data.durableLife) && isNot(buildingUse) && isNot(residualValue)){
-            flag = true;
-        }else {
-            alert("存在没有填写的内容");
-        }
-        //数字校验
-        var patrn = /^[0-9]*$/;
-        if (!patrn.test($("#durableLife").val())) {
-            flag = false;
-            alert('包含不是数字的字符');
-        }
-        if (flag){
-            console.log(data);
+        if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/architecture/addDataBuildingNewRate",
                 type: "post",
@@ -288,8 +249,8 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        TableReload("tbDataDicList");
-                        $('#divSubDataDicManage').modal('hide');
+                        loadDataDicList();
+                        $('#divBox').modal('hide');
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -299,8 +260,6 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-            document.getElementById("divBox").style.display = "none";
-            window.location.reload();//强制自动刷新
         }
     }
 //-------------------------------------------------------------------------------------
