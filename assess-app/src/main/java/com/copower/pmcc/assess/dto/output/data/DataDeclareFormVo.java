@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
  */
 public class DataDeclareFormVo extends DataDeclareForm {
     private String assessClassName;
+    private String formIdName;
 
     public String getAssessClassName() {
         return assessClassName;
@@ -14,5 +15,13 @@ public class DataDeclareFormVo extends DataDeclareForm {
 
     public void setAssessClassName(String assessClassName) {
         this.assessClassName = assessClassName;
+    }
+
+    public String getFormIdName() {
+        return formIdName;
+    }
+
+    public void setFormIdName(String formIdName) {
+        this.formIdName = formIdName;
     }
 }

@@ -26,8 +26,10 @@ public class BaseFormService {
     @Autowired
     private BaseFormDao baseFormDao;
     //BaseForm=========================================================
-
-    public List<BaseForm> getBaseForm() {
+    public BaseForm getBaseForm(Integer id){
+        return baseFormDao.getBaseForm(id);
+    }
+    public List<BaseForm> getBaseFormList() {
         return baseFormDao.getBaseForm("");
     }
 

@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.DataDeclareFormDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dto.output.data.DataDeclareFormVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -35,6 +37,8 @@ public class DataDeclareFormService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ServiceComponent serviceComponent;
+    @Autowired
+    private BaseFormService baseFormService;
 
     /**
      * 获取数据列表
@@ -61,6 +65,11 @@ public class DataDeclareFormService {
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getAssessClass());
                 if (baseDataDic != null)
                     dataDeclareFormVo.setAssessClassName(baseDataDic.getName());
+            }
+            if (p.getFormId() != null) {
+                BaseForm baseForm = baseFormService.getBaseForm(p.getFormId());
+                if (baseForm != null)
+                    dataDeclareFormVo.setFormIdName(baseForm.getCnName());
             }
             return dataDeclareFormVo;
         });
