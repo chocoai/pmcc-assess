@@ -218,55 +218,7 @@
     </div>
 </div>
 
-<div id="select_form_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
-     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-    <div class="modal-dialog " style="width: 1000px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">表单选择</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group ">
-                        <div>
-                            <label class="col-sm-1 control-label">
-                                名称
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" name="queryName" id="queryName"
-                                       class="form-control">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                分组
-                            </label>
-                            <div class="col-sm-3">
-                                <select name="queryGroup" id="queryGroup" class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="reloadCompanyCertSelectList();">
-                                查询
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
-                <table id="select_form_tb_list" class="table table-bordered">
-
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>

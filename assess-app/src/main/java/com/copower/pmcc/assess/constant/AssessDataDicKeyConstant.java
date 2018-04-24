@@ -8,7 +8,8 @@ package com.copower.pmcc.assess.constant;
  * @time: 13:45
  */
 public class AssessDataDicKeyConstant {
-    public static final String BOX_GROUP = "box.group";//政治面貌
+    public static final String BOX_GROUP = "box.group";//模型分组
     public static final String BUILDING_NEW_RATE_USE = "building.new.rate.use";//建筑成新率用途
+    public static final String ASSESS_CLASS = "assess.class";//建筑成新率用途
 
 }

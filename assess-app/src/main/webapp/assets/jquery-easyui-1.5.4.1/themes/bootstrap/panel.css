@@ -1,0 +1,7 @@
+.treeGrid .panel {
+  overflow: hidden;
+}
+
+.treeGrid .panel-body {
+  padding: 0;
+}

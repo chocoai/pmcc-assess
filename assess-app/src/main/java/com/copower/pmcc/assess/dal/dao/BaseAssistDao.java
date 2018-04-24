@@ -31,7 +31,7 @@ public class BaseAssistDao {
         example.createCriteria().andAssistNameEqualTo(assistName);
         return baseAssistMapper.updateByExampleSelective(BaseAssist, example) == 1;
     }
-    public Boolean insertBaseAssistByAssistName(BaseAssist BaseAssist) {
+    public Boolean insertBaseAssist(BaseAssist BaseAssist) {
         return baseAssistMapper.insertSelective(BaseAssist)==1;
     }
 }
