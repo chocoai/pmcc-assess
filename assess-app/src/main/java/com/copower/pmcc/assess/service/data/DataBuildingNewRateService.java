@@ -56,23 +56,6 @@ public class DataBuildingNewRateService {
         return dataBuildingNewRates;
     }
 
-    @Deprecated
-    private List<DataBuildingNewRateVo> changeV(List<DataBuildingNewRate> dataBuildingNewRates){
-        List<DataBuildingNewRateVo> dataBuildingNewRateVos = new ArrayList<DataBuildingNewRateVo>();
-        DataBuildingNewRateVo dataBuildingNewRateVo = null;
-        for (DataBuildingNewRate buildingNewRate:dataBuildingNewRates){
-            dataBuildingNewRateVo = new DataBuildingNewRateVo();
-            dataBuildingNewRateVo.setId(buildingNewRate.getId());
-            dataBuildingNewRateVo.setUseStr(change(buildingNewRate.getBuildingUse()));
-            dataBuildingNewRateVo.setBuildingStructure(buildingNewRate.getBuildingStructure());
-            dataBuildingNewRateVo.setDurableLife(buildingNewRate.getDurableLife());
-            dataBuildingNewRateVo.setResidualValue(buildingNewRate.getResidualValue());
-            dataBuildingNewRateVo.setCreator(buildingNewRate.getCreator());
-            dataBuildingNewRateVo.setGmtCreated(buildingNewRate.getGmtCreated());
-            dataBuildingNewRateVo.setGmtModified(buildingNewRate.getGmtModified());
-        }
-        return dataBuildingNewRateVos;
-    }
 
     public BootstrapTableVo change(DataBuildingNewRate dataBuildingNewRate){
         BootstrapTableVo vo = new BootstrapTableVo();

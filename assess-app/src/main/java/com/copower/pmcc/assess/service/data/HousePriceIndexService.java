@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ public class HousePriceIndexService {
     private HousePriceIndexDao housePriceIndexDao;
 
 
+    @Transactional
     public boolean addHousePriceIndex(HousePriceIndexDto housePriceIndexDto) {
         HousePriceIndex housePriceIndex = new HousePriceIndex();
         housePriceIndexDto.setCreator(commonService.thisUserAccount());//设置系统账户
@@ -38,14 +40,17 @@ public class HousePriceIndexService {
         return housePriceIndexDao.add(housePriceIndex);
     }
 
+    @Transactional
     public boolean removeHousePriceIndeX(Integer id){
         return housePriceIndexDao.remove(id);
     }
 
+    @Transactional(readOnly = true)
     public HousePriceIndex get(Integer id)  {
         return housePriceIndexDao.getById(id);
     }
 
+    @Transactional
     public boolean update(HousePriceIndexDto housePriceIndexDto) {
         HousePriceIndex housePriceIndex = new HousePriceIndex();
         BeanUtils.copyProperties(housePriceIndexDto, housePriceIndex);
@@ -53,6 +58,7 @@ public class HousePriceIndexService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<HousePriceIndexDto> list(Date start, Date end) {
         Map<String, Object> map = new HashMap<>();
         if (start != null) {
@@ -69,6 +75,7 @@ public class HousePriceIndexService {
         return housePriceIndexVoList;
     }
 
+    @Transactional(readOnly = true)
     public  List<HousePriceIndexVo> list(List<HousePriceIndexDto> indexDto){
         List<HousePriceIndexVo> voList = new ArrayList<>();
         indexDto.forEach(housePriceIndexDto -> {

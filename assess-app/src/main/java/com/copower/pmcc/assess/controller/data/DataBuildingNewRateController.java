@@ -55,7 +55,7 @@ public class DataBuildingNewRateController {
     @RequestMapping(value = "/getArchitectureList",method = {RequestMethod.POST,RequestMethod.GET})
     public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructureA")String buildingStructureA){
         if (buildingStructureA!=null&&buildingStructureA!=""){
-            System.out.printf("-------------> "+buildingStructureA );
+            logger.debug("-------------> "+buildingStructureA);
             return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructureA);
         }
         BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();

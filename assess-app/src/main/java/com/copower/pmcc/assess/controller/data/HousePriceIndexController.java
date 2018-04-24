@@ -34,8 +34,8 @@ public class HousePriceIndexController {
     }
 
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public
-    @ResponseBody
+    public@ResponseBody
+
     BootstrapTableVo list(@RequestParam(value = "startTime") String startTime, @RequestParam(value = "endTime") String endTime) {
         BootstrapTableVo vo = null;
         try {
