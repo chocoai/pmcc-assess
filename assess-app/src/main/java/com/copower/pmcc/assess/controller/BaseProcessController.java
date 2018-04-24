@@ -47,7 +47,7 @@ public class BaseProcessController {
     public ModelAndView processIndex() {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/processIndex");
 
-        List<BaseForm> hrBaseForm = hrBaseFormService.getBaseForm();
+        List<BaseForm> hrBaseForm = hrBaseFormService.getBaseFormList();
         modelAndView.addObject("hrBaseForm", hrBaseForm);
 
         BootstrapTableVo boxReDtoList = bpmRpcBoxService.getBoxReDtoList("", BaseConstant.ASSESS_BOX_RE_GROUP_KEY, 0, 100);

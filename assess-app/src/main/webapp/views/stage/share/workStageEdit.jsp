@@ -45,7 +45,7 @@
                                             自定义服务
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id="stageName" name="stageName"
+                                            <select id="stageForm" name="stageForm"
                                                     class="form-control search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${sysBaseFormListStage}">
@@ -54,7 +54,6 @@
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="form-group">

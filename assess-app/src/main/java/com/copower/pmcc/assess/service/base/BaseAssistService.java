@@ -49,7 +49,7 @@ public class BaseAssistService {
             BaseAssist.setAssistType(type);
             Boolean aBoolean = baseAssistDao.updateBaseAssistByAssistName(BaseAssist, item.getBeanName());
             if (!aBoolean) {
-                baseAssistDao.insertBaseAssistByAssistName(BaseAssist);
+                baseAssistDao.insertBaseAssist(BaseAssist);
             }
         }
         serviceComponent.RemoveRedisKeyValues(BaseConstant.PMCC_ASSESS_BASE_ASSIST, type);

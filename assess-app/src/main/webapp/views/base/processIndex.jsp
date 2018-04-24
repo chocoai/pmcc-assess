@@ -217,59 +217,9 @@
         </div>
     </div>
 </div>
-
-<div id="select_form_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
-     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-    <div class="modal-dialog " style="width: 1000px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">表单选择</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group ">
-                        <div>
-                            <label class="col-sm-1 control-label">
-                                名称
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" name="queryName" id="queryName"
-                                       class="form-control">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                分组
-                            </label>
-                            <div class="col-sm-3">
-                                <select name="queryGroup" id="queryGroup" class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="reloadCompanyCertSelectList();">
-                                查询
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-                <table id="select_form_tb_list" class="table table-bordered">
-
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
+<script src="${pageContext.request.contextPath}/js/assess-form-utils.js" type="text/javascript"></script>
 <script type="application/javascript">
     var currProcessId = 0;
     $(function () {
@@ -536,41 +486,14 @@
 
     //加载列表数据
     function loadSelectFormList() {
-        var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'professionalDisplayName', title: '显示名称'});
-        cols.push({field: 'professionalDisplayName', title: '分组'});
-        cols.push({
-            field: 'opt', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="selectFormClick(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#select_form_tb_list").bootstrapTable('destroy');
-        TableInit("select_form_tb_list", "${pageContext.request.contextPath}/formConfigure/getFormList", cols, {
-            name: $("#queryName").val(),
-            groupId: $("#queryGroupId").val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            uniqueId: "id",
-            search: false,
-            onLoadSuccess: function () {
-                $('#select_form_modal').modal('show');
+        assessForm.select(function (row) {
+            if(row){
+                $("#formId").val(row.id);
+                $("#formIdName").val(row.cnName);
             }
         });
     }
 
-    function selectFormClick(index) {
-        var row = getTableDataByIndex("select_form_tb_list", index);
-        $("#formId").val(row.id);
-        $("#formIdName").val(row.name);
-        //加载表单模块
-        loadFormModuleList(row.id);
-        $('#select_form_modal').modal('hide');
-    }
 
     function loadFormModuleList(formId, value) {
         $.ajax({

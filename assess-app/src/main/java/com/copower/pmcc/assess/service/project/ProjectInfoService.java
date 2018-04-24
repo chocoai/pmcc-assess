@@ -28,13 +28,16 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Console;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * 描述:项目基础信息
@@ -45,6 +48,8 @@ import java.util.List;
  */
 @Service
 public class ProjectInfoService {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
@@ -57,6 +62,8 @@ public class ProjectInfoService {
     private ServiceComponent serviceComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
+    @Autowired
+    private ProjectPlanService projectPlanService;
 
     /**
      * 项目立项申请
@@ -66,7 +73,7 @@ public class ProjectInfoService {
     public void projectApply(ProjectInfoDto projectInfoDto) throws BusinessException {
         ProjectInfo projectInfo = new ProjectInfo();
         BeanUtils.copyProperties(projectInfoDto, projectInfo);
-
+        projectInfoDao.saveProjectInfo(projectInfo);
         initProjectInfo(projectInfo);
     }
 
@@ -97,7 +104,10 @@ public class ProjectInfoService {
         ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
         if (StringUtils.isNotBlank(projectWorkStage.getReviewBoxName()))//注意是取复核模型，因为第一个阶段没有工作成果提交，所以取复核较为合理
         {
-            startProjectProcess(projectInfo, projectWorkStage);
+            ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
+            //发起流程后更新项目的项目id
+            projectInfo.setProcessInsId(processUserDto.getProcessInsId());
+            projectInfoDao.updateProjectInfo(projectInfo);
         }
     }
 
@@ -128,6 +138,7 @@ public class ProjectInfoService {
         try {
             processUserDto = serviceComponent.processStart(processInfo, serviceComponent.getThisUser(), false);
         } catch (BpmException e) {
+            logger.info(e.getMessage());
             throw new BusinessException(e.getMessage());
         }
         return processUserDto;
