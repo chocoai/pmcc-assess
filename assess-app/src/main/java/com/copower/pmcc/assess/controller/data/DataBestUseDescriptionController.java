@@ -18,7 +18,7 @@ public class DataBestUseDescriptionController {
     @Autowired
     private ControllerComponent controllerComponent;
 
-    @RequestMapping(value="/Index" , name="最佳利用描述查看")
+    @RequestMapping(value="/Index" , name="最佳利用描述查看 ")
     public ModelAndView index(){
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/bestUseDescription");
         return modelAndView;
