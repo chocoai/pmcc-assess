@@ -413,6 +413,8 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
+                        window.location.reload();//自动刷新
+                        $('#' + id).bootstrapTable("refresh");
                         loadSubDataDicList();//重载 (刷新)
                     }
                     else {
