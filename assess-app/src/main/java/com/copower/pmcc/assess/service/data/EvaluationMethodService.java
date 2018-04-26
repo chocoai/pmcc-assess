@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
@@ -55,6 +56,7 @@ public class EvaluationMethodService {
 
     @Transactional
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
+        if (evaluationMethodFieldDto.getCreator()==null)evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
         return evaluationMethodFieldDao.add(evaluationMethodFieldDto);
     }
 
@@ -81,6 +83,16 @@ public class EvaluationMethodService {
     public boolean remove(Integer id) {//一起删除
         evaluationMethodFieldDao.removeMethod(id);
         return methodDao.removeEvaluationMethod(id);
+    }
+
+    public BootstrapTableVo getVosField(Integer methodId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        vo.setTotal(page.getTotal());
+        List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldDao.list(methodId);
+        vo.setRows(evaluationMethodFields);
+        return vo;
     }
 
     public BootstrapTableVo getVos(Integer method) {

@@ -131,15 +131,38 @@
     </div>
 </div>
 
+<!-- 显示子项列表 -->
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent">子项数据</h4>
+            </div>
+            <input type="text" name="methodIdN" id="methodIdN">
+            <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success" onclick="addMethodField(id)"
+                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+            </button>
+        </span>
+                <table class="table table-bordered" id="tbDataDicList">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!--原因模板 字段 子项数据 ===========-->
+
+<!-- 子项数据 添加 ===========-->
 <div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">适用与不适用字段数据</h4>
+                <h4 class="modal-title" id="titleContent2">适用与不适用字段数据</h4>
             </div>
             <form id="firSubA">
             <div class="panel-body">
@@ -147,12 +170,12 @@
                     <div class="x-valid">
                         <label class="col-sm-2 control-label">
                             适用与不适用
-                            <input type="hidden" name="methodId" id="methodId">
+                            <input type="text" name="methodId" id="methodId">
                         </label>
-                        <div class="col-sm-10">
-                            <input type="radio" name="type" value="1" checked>适用原因
+                        <div class="col-sm-10" id="type">
+                            <input type="radio" name="type" id="type1"  value="1" checked="checked">适用原因
                             <br>
-                            <input type="radio" name="type" value="0">不适用原因
+                            <input type="radio" name="type" id="type2"  value="0">不适用原因
                         </div>
                     </div>
                 </div>
@@ -198,16 +221,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:findMethodField(' + row.id + ');" >查看字段</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >查看选项</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editMethodField(' + index + ');" >编辑字段</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:removeData(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        //var methodStrChange = encodeURI($("#queryName").val());
         var methodStrChange = $("#queryName").val();
         TableInit("tb_List", "${pageContext.request.contextPath}/evaluationMethod/list", cols, {
             methodStr: methodStrChange
@@ -256,7 +277,7 @@
         var data = formParams("frm");
         data.id = $("#id").val();
         data.applicableReason = $("#applicableReason").val();
-        data.method = $("#method option:selected").val();
+        data.method = $("#method option:selected").val()-120;
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
@@ -287,6 +308,10 @@
         $('#firSub').modal();
         var methodId = document.getElementById("methodId");
         methodId.value = id;
+        if (id==null || id=='' || id==0 ){//说明是从选子项添加的
+            var methodIdN = document.getElementById("methodIdN");
+            methodId.value = methodIdN.value
+        }
     }
     //保存新增字段的数据
     function saveFileld() {
@@ -294,8 +319,17 @@
         var data = formParams("firSubA");
         data.name = $("#name").val();
         data.methodId = $("#methodId").val();
-        alert($("#firSubA :radio:checked").val());
-        data.type = $("#firSubA input:checked").val();
+        var type2 = $("#type2").attr("checked")+"";
+        var type1 = $("#type1").attr("checked")+"";
+        if (type1=='checked'){
+            data.type = $("#type1").val();
+            alert($("#type1").val());
+        }
+        if (type2=='checked'){
+            data.type = $("#type2").val();
+            alert($("#type1").val());
+        }
+        alert(data.type);
         if ($("#firSubA").valid()){
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationMethod/addField",
@@ -304,7 +338,6 @@
                 data: data,
                 success: function (result) {
                     toastr.success('保存成功');
-                    document.getElementById("firSubA").style.display = "none";
                     window.location.reload();//自动刷新
                 },
                 error: function (result) {
@@ -313,26 +346,42 @@
             })
         }
     }
-    
-    function editMethodField(id) {
-        $("#firSubA").clearAll();
-        $('#firSub').modal();
-        var data = formParams("firSubA");
-        data.id = id;
-        $.ajax({
-            url:"${pageContext.request.contextPath}/evaluationMethod/get",
-            type:"POST",
-            dataType:"json",
-            data:data,
-            success:function (result) {
-                console.info(result);
-            },error:function (result) {
-              alert("调用服务端方法失败，失败原因:" + result)  ;
+
+    //加载节点角色数据
+    function loadSubDataDicList(pid, fn) {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({
+            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
             }
         });
+        var methodIdN = document.getElementById("methodIdN");
+        methodIdN.value = pid;
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationMethodNG/listField",
+            cols, {methodId: pid}, {
+                showRefresh: false,                  //是否显示刷新按钮
+                toolbar: '#toolbarSub',
+                uniqueId: "id",
+                onLoadSuccess: function () {
+                    if (fn) {
+                        fn();
+                    }
+                }
+            });
     }
 
-
+    //设置子项数据
+    function setSubDataDic(pid) {
+        $("#divSubDataDic").modal();//显示
+        loadSubDataDicList(pid, function () {
+            $('#divSubDataDic').modal("show");
+        });
+    }
+    
 
 </script>
 

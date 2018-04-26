@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,15 @@ public class MethodFieldController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/evaluationMethod/get",method = RequestMethod.POST,name = "获取方法字段")
+    @RequestMapping(value = "/evaluationMethodNG/listField",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
+    public BootstrapTableVo list(Integer methodId){
+        BootstrapTableVo vo = null;
+        if (methodId!=null) vo = service.getVos(methodId);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/evaluationMethod/getField",method = RequestMethod.POST,name = "获取方法字段")
     public Object get(Integer id){
         try {
             EvaluationMethodFieldDto evaluationMethodFieldDto = service.getField(id);
