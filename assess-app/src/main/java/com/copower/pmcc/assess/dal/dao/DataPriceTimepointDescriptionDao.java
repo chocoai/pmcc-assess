@@ -20,23 +20,23 @@ public class DataPriceTimepointDescriptionDao {
         DataPriceTimepointDescriptionExample example = new DataPriceTimepointDescriptionExample();
         DataPriceTimepointDescriptionExample.Criteria criteria = example.createCriteria();
 
-        if(StringUtils.isNotEmpty(name)){
-            criteria.andNameLike(String.format("%s%s%s","%s",name,"%s"));
+        if (StringUtils.isNotEmpty(name)) {
+            criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
         }
         return dataPriceTimepointDescriptionMapper.selectByExample(example);
     }
 
-    public boolean addDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription){
+    public boolean addDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) {
         int i = dataPriceTimepointDescriptionMapper.insert(dataPriceTimepointDescription);
         return i > 0;
     }
 
-    public boolean editDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription){
+    public boolean editDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) {
         int i = dataPriceTimepointDescriptionMapper.updateByPrimaryKeySelective(dataPriceTimepointDescription);
         return i > 0;
     }
 
-    public boolean deleteDataPriceTimepointDescription(Integer id){
+    public boolean deleteDataPriceTimepointDescription(Integer id) {
         int i = dataPriceTimepointDescriptionMapper.deleteByPrimaryKey(id);
         return i > 0;
     }

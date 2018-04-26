@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,20 +35,20 @@ public class DataPriceTimepointDescriptionService {
         return vo;
     }
 
-    public boolean addPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) throws BusinessException{
+    public boolean addPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) throws BusinessException {
         boolean flag = false;
         dataPriceTimepointDescription.setCreator(serviceComponent.getThisUser());
         flag = dataPriceTimepointDescriptionDao.addDataPriceTimepointDescription(dataPriceTimepointDescription);
         return flag;
     }
 
-    public boolean editPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) throws BusinessException{
+    public boolean editPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) throws BusinessException {
         boolean flag = false;
         flag = dataPriceTimepointDescriptionDao.editDataPriceTimepointDescription(dataPriceTimepointDescription);
         return flag;
     }
 
-    public boolean deletePriceTimepointDescription(Integer id){
+    public boolean deletePriceTimepointDescription(Integer id) {
         boolean flag = false;
         flag = dataPriceTimepointDescriptionDao.deleteDataPriceTimepointDescription(id);
         return flag;

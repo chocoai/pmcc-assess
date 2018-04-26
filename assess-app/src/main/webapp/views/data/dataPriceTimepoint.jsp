@@ -30,7 +30,7 @@
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="建筑结构名称" id="queryName" name="queryName"
+                                           placeholder="价值时点名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
 </div>
 
 
-<!--建筑成新率数据子项数据 ===========-->
+<!--价值时点数据子项数据 ===========-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -139,7 +139,7 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 建筑成新率 数据列表
+    //加载 价值时点 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
@@ -149,14 +149,14 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:removePriceTimepointDescription(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deletePriceTimepointDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/priceTimepoint/getPriceTimepointDescription", cols, {
-            buildingStructureA: $("#queryName").val()
+            name: $("#queryName").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -164,12 +164,12 @@
         });
     }
 
-    //删除 建筑成新率数据
-    function removePriceTimepointDescription(id, tbId) {
+    //删除 价值时点 数据
+    function deletePriceTimepointDescription(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/priceTimepoint/removePriceTimepointDescription",
+                url: "${pageContext.request.contextPath}/priceTimepoint/deletePriceTimepointDescription",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -192,11 +192,11 @@
         })
     }
 
-    //对新增 建筑成新率数据处理
+    //对新增 价值时点 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 建筑成新率数据
+    //新增 价值时点 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
