@@ -96,13 +96,22 @@ public class HousePriceIndexService {
         return builder.toString();
     }
 
-    public Date change(String time) throws Exception {
+    public Date change(String time) {
         if (time == null || time == "") return null;
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.parse(time);
+        try {
+            return format.parse(time);
+        }catch (Exception e){
+            try {
+                throw e;
+            }catch (Exception e1){
+
+            }
+        }
+        return  null;
     }
 
-    public BootstrapTableVo getListVo(Date endTime, Date startTime) throws BusinessException {
+    public BootstrapTableVo getListVo(Date endTime, Date startTime)  {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

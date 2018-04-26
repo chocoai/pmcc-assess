@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">
+        <table tableName="tb_data_evaluation_thinking_field" domainObjectName="EvaluationThinkingField">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
