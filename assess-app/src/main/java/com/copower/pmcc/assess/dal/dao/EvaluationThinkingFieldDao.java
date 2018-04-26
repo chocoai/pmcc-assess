@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by 13426 on 2018/4/26.
  */
@@ -33,8 +35,19 @@ public class EvaluationThinkingFieldDao {
         return false;
     }
 
+    public EvaluationThinkingFieldDao get(Integer id){
+        return change(evaluationThinkingFieldMapper.selectByPrimaryKey(id));
+    }
+
     public boolean update(EvaluationThinkingFieldDao evaluationThinkingFieldDao){
         return evaluationThinkingFieldMapper.updateByPrimaryKey(change(evaluationThinkingFieldDao))==1;
+    }
+
+    public List<EvaluationThinkingField> list(){
+        EvaluationThinkingFieldExample evaluationThinkingFieldExample = new EvaluationThinkingFieldExample();
+        evaluationThinkingFieldExample.createCriteria().andIdIsNotNull();
+        List<EvaluationThinkingField> evaluationThinkingFields = evaluationThinkingFieldMapper.selectByExample(evaluationThinkingFieldExample);
+        return evaluationThinkingFields;
     }
 
     public EvaluationThinkingField change(EvaluationThinkingFieldDao evaluationThinkingFieldDao) {

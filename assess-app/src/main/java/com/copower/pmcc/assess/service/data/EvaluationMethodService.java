@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +72,7 @@ public class EvaluationMethodService {
     @Transactional
     public boolean update(EvaluationMethodFieldDto evaluationMethodFieldDto) {
         if (evaluationMethodFieldDto.getCreator()==null)evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
-//        if(evaluationMethodFieldDto.)
+        if(evaluationMethodFieldDto.getGmtCreated()==null)evaluationMethodFieldDto.setGmtCreated(new Date());
         return evaluationMethodFieldDao.update(evaluationMethodFieldDto);
     }
 
