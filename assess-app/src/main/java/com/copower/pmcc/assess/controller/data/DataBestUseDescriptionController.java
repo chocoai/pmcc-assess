@@ -1,13 +1,19 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.ControllerComponent;
+import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
+import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping(value = "/bestUse")
@@ -18,13 +24,41 @@ public class DataBestUseDescriptionController {
     @Autowired
     private ControllerComponent controllerComponent;
 
-    @RequestMapping(value="/Index" , name="最佳利用描述查看 ")
-    public ModelAndView index(){
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/bestUseDescription");
+    @Autowired
+    private DataBestUseDescriptionService dataBestUseDescriptionService;
+
+    @RequestMapping(value = "/Index", name = "最佳利用描述查看 ")
+    public ModelAndView index() {
+        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataBestUseDescription");
         return modelAndView;
     }
 
-//    @RequestMapping(value="/getBestUseDescription" , name="取得最佳利用描述" , method = RequestMethod.GET)
-//    public BootstrapTableVo
+    @ResponseBody
+    @RequestMapping(value = "/getBestUseDescription", name = "取得最佳利用描述", method = RequestMethod.GET)
+    public BootstrapTableVo getBestUseDescription(@RequestParam(value = "name") String name) {
+        return dataBestUseDescriptionService.getBestUseListVo(name);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addBestUseDescription", name = "新增最佳利用描述", method = RequestMethod.POST)
+    public HttpResult addBestUseDescription(DataBestUseDescription dataBestUseDescription) {
+        try {
+            if (dataBestUseDescription.getId() != null && dataBestUseDescription.getId() != 0) {
+                dataBestUseDescriptionService.editDataBestUseDescription(dataBestUseDescription);
+            } else {
+                dataBestUseDescriptionService.addDataBestUseDescription(dataBestUseDescription);
+            }
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteBestUseDescription", name = "删除最佳利用描述", method = RequestMethod.POST)
+    public HttpResult deleteBestUseDescription(@RequestParam(value = "id") Integer id) {
+        dataBestUseDescriptionService.deleteDataBestUseDescription(id);
+        return HttpResult.newCorrectResult();
+    }
 
 }

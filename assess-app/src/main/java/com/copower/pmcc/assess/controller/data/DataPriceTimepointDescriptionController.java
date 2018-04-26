@@ -24,43 +24,38 @@ public class DataPriceTimepointDescriptionController {
     @Autowired
     private DataPriceTimepointDescriptionService dataPriceTimepointDescriptionService;
 
-
-
-    @RequestMapping(value="/Index" , name="价值时点描述查看")
-    public ModelAndView index(){
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/priceTimepointDescription");
+    @RequestMapping(value = "/Index", name = "价值时点描述查看")
+    public ModelAndView index() {
+        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataPriceTimepoint");
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value="/getPriceTimepointDescription" , name="取得价值时点描述" , method = RequestMethod.GET)
-    public BootstrapTableVo getpriceTimepointDescription(@RequestParam(value = "name") String name){
-        BootstrapTableVo vo =  dataPriceTimepointDescriptionService.getPriceTimepointListVo(name);
-        return vo;
+    @RequestMapping(value = "/getPriceTimepointDescription", name = "取得价值时点描述", method = RequestMethod.GET)
+    public BootstrapTableVo getpriceTimepointDescription(@RequestParam(value = "name") String name) {
+        return dataPriceTimepointDescriptionService.getPriceTimepointListVo(name);
     }
 
     @ResponseBody
-    @RequestMapping(value="/addPriceTimepointDescription" , name="增加价值时点描述" , method = RequestMethod.POST)
-    public HttpResult addPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription){
-            try{
-                if(dataPriceTimepointDescription.getId() != null && dataPriceTimepointDescription.getId() != 0){
-                    dataPriceTimepointDescriptionService.editPriceTimepointDescription(dataPriceTimepointDescription);
-                }else{
-                    dataPriceTimepointDescriptionService.addPriceTimepointDescription(dataPriceTimepointDescription);
-                }
-            }catch (BusinessException e){
-                logger.error(e.getMessage());
-                return HttpResult.newErrorResult(e.getMessage());
+    @RequestMapping(value = "/addPriceTimepointDescription", name = "增加价值时点描述", method = RequestMethod.POST)
+    public HttpResult addPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) {
+        try {
+            if (dataPriceTimepointDescription.getId() != null && dataPriceTimepointDescription.getId() != 0) {
+                dataPriceTimepointDescriptionService.editPriceTimepointDescription(dataPriceTimepointDescription);
+            } else {
+                dataPriceTimepointDescriptionService.addPriceTimepointDescription(dataPriceTimepointDescription);
             }
+        } catch (BusinessException e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
         return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
-    @RequestMapping(value="/deletePriceTimepointDescription" , name="删除价值时点描述",method = RequestMethod.POST)
-    public HttpResult deletePriceTimepointDescription(@RequestParam(value = "id")Integer id){
-            dataPriceTimepointDescriptionService.deletePriceTimepointDescription(id);
+    @RequestMapping(value = "/deletePriceTimepointDescription", name = "删除价值时点描述", method = RequestMethod.POST)
+    public HttpResult deletePriceTimepointDescription(@RequestParam(value = "id") Integer id) {
+        dataPriceTimepointDescriptionService.deletePriceTimepointDescription(id);
         return HttpResult.newCorrectResult();
     }
-
-
 }
