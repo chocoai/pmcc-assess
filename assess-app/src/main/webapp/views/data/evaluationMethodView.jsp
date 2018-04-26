@@ -3,7 +3,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -140,7 +139,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent">子项数据</h4>
             </div>
-            <input type="text" name="methodIdN" id="methodIdN">
+            <input type="hidden" name="methodIdN" id="methodIdN">
             <div class="panel-body">
         <span id="toolbarSub">
             <button type="button" class="btn btn-success" onclick="addMethodField(id)"
@@ -170,12 +169,12 @@
                     <div class="x-valid">
                         <label class="col-sm-2 control-label">
                             适用与不适用
-                            <input type="text" name="methodId" id="methodId">
+                            <input type="hidden" name="methodId" id="methodId">
                         </label>
                         <div class="col-sm-10" id="type">
-                            <input type="radio" name="type" id="type1"  value="1" checked="checked">适用原因
+                            <input type="radio" name="type" value="0" checked="checked">适用原因
                             <br>
-                            <input type="radio" name="type" id="type2"  value="0">不适用原因
+                            <input type="radio" name="type" value="1">不适用原因
                         </div>
                     </div>
                 </div>
@@ -224,6 +223,7 @@
                 str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >查看选项</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:removeData(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:editHrProfessional(' + row.id + ',\'tb_List\')">修改</a>';
                 str += '</div>';
                 return str;
             }
@@ -239,7 +239,7 @@
         });
     }
 
-    //删除 数据()
+    //删除 评估方法 数据()
     function removeData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
@@ -267,17 +267,18 @@
         })
     }
 
-    //对新增 数据处理
+    //对新增 评估方法 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 数据
+    //新增 评估方法 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
         data.applicableReason = $("#applicableReason").val();
         data.method = $("#method option:selected").val()-120;
+        alert(data.method);
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
@@ -301,8 +302,29 @@
             })
         }
     }
+    //评估方法修改
+    function editHrProfessional(index) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/evaluationMethod/get",
+            type: "GET",
+            dataType: "json",
+            data: {id: index},
+            success: function (result) {
+                Loading.progressHide();
+                $('#divBox').modal();
+                $("#id").val(result.id);
+                $("#name").val(result.name);
+                $("#notApplicableReason").val(result.notApplicableReason);
+                $("#applicableReason").val(result.applicableReason);
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
     
-    //新增字段数据
+    //新增 子项 字段数据
     function addMethodField(id) {
         $("#firSub").clearAll();
         $('#firSub').modal();
@@ -313,26 +335,23 @@
             methodId.value = methodIdN.value
         }
     }
-    //保存新增字段的数据
+    //保存新增 子项 字段的数据
     function saveFileld() {
         //firSubA
         var data = formParams("firSubA");
         data.name = $("#name").val();
         data.methodId = $("#methodId").val();
-        var type2 = $("#type2").attr("checked")+"";
-        var type1 = $("#type1").attr("checked")+"";
-        if (type1=='checked'){
-            data.type = $("#type1").val();
-            alert($("#type1").val());
-        }
-        if (type2=='checked'){
-            data.type = $("#type2").val();
-            alert($("#type1").val());
+        var typeId = document.getElementById("type");
+        var radio = typeId.getElementsByTagName("input");
+        for(var i=0;i < radio.length;i++){
+            if(radio[i].checked) {//为radio中选中的值
+                data.type = radio[i].value
+            }
         }
         alert(data.type);
         if ($("#firSubA").valid()){
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/addField",
+                url: "${pageContext.request.contextPath}/evaluationMethodNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -347,7 +366,7 @@
         }
     }
 
-    //加载节点角色数据
+    //加载子项节点数据
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
@@ -380,6 +399,32 @@
         loadSubDataDicList(pid, function () {
             $('#divSubDataDic').modal("show");
         });
+    }
+
+    //删除 子项 子项
+    function delDataDic(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/evaluationMethodNG/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadSubDataDicList();//重载 (刷新)
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
     
 

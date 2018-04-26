@@ -72,4 +72,17 @@ public class EvaluationMethodField {
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
+
+    @Override
+    public String toString() {
+        return "EvaluationMethodField{" +
+                "id=" + id +
+                ", methodId=" + methodId +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", creator='" + creator + '\'' +
+                ", gmtCreated=" + gmtCreated +
+                ", gmtModified=" + gmtModified +
+                '}';
+    }
 }

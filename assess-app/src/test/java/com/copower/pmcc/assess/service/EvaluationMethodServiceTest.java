@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import java.util.Date;
 public class EvaluationMethodServiceTest {
     private final ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     private EvaluationMethodService evaluationMethodService = null;
+    private EvaluationMethodFieldDao evaluationMethodFieldDao = null;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
@@ -28,6 +30,13 @@ public class EvaluationMethodServiceTest {
         evaluationMethodDto.setGmtCreated(new Date());
         evaluationMethodService.add(evaluationMethodDto);
         logger.debug("------------------> "+evaluationMethodDto);
+    }
+
+    @Test
+    public void list(){
+        evaluationMethodFieldDao.list(2).forEach(evaluationMethodField -> {
+            logger.debug("------------------> "+evaluationMethodField);
+        });
     }
 
     @Test
@@ -49,5 +58,6 @@ public class EvaluationMethodServiceTest {
     @Before
     public void init() {
         evaluationMethodService = (EvaluationMethodService) context.getBean("evaluationMethodService");
+        evaluationMethodFieldDao = context.getBean(EvaluationMethodFieldDao.class);
     }
 }

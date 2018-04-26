@@ -85,6 +85,11 @@ public class EvaluationMethodService {
         return methodDao.removeEvaluationMethod(id);
     }
 
+    @Transactional
+    public boolean removeFild(Integer id){//单独字段删除
+        return  evaluationMethodFieldDao.remove(id);
+    }
+
     public BootstrapTableVo getVosField(Integer methodId){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
