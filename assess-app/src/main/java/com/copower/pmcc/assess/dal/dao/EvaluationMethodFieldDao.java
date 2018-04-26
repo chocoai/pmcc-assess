@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +41,14 @@ public class EvaluationMethodFieldDao {
 
     public EvaluationMethodFieldDto get(Integer id) {
         return change(evaluationMethodFieldMapper.selectByPrimaryKey(id));
+    }
+
+    public List<EvaluationMethodField> list(Integer methodId){
+        List<EvaluationMethodField> evaluationMethodFields = new ArrayList<>();
+        EvaluationMethodFieldExample evaluationMethodFieldExample = new EvaluationMethodFieldExample();
+        evaluationMethodFieldExample.createCriteria().andMethodIdEqualTo(methodId);
+        evaluationMethodFields = evaluationMethodFieldMapper.selectByExample(evaluationMethodFieldExample);
+        return evaluationMethodFields;
     }
 
     /**

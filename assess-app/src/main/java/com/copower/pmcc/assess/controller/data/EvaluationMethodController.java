@@ -59,7 +59,8 @@ public class EvaluationMethodController {
         return vo;
     }
 
-    @RequestMapping(value = "/get", name = "获取")
+    @ResponseBody
+    @RequestMapping(value = "/get", name = "获取",method = {RequestMethod.GET})
     public Object get(@RequestParam(value = "id") Integer id) {
         EvaluationMethodDto evaluationMethodDto = null;
         try {

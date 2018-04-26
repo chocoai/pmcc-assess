@@ -5,6 +5,8 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
@@ -16,6 +18,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +58,7 @@ public class EvaluationMethodService {
 
     @Transactional
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
+        if (evaluationMethodFieldDto.getCreator()==null)evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
         return evaluationMethodFieldDao.add(evaluationMethodFieldDto);
     }
 
@@ -83,6 +87,21 @@ public class EvaluationMethodService {
         return methodDao.removeEvaluationMethod(id);
     }
 
+    @Transactional
+    public boolean removeFild(Integer id){//单独字段删除
+        return  evaluationMethodFieldDao.remove(id);
+    }
+
+    public BootstrapTableVo getVosField(Integer methodId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        vo.setTotal(page.getTotal());
+        List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldDao.list(methodId);
+        vo.setRows(CollectionUtils.isEmpty(evaluationMethodFields)?new ArrayList<EvaluationMethodField>():evaluationMethodFields);
+        return vo;
+    }
+
     public BootstrapTableVo getVos(Integer method) {
         List<EvaluationMethodVo> vos = null;
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -91,10 +110,10 @@ public class EvaluationMethodService {
         vo.setTotal(page.getTotal());
         if (method != null) {
             vos = list(method);
-            vo.setRows(vos);
+            vo.setRows(CollectionUtils.isEmpty(vos)?new ArrayList<EvaluationMethodVo>():vos);
         } else {
             vos = list(null);
-            vo.setRows(vos);
+            vo.setRows(CollectionUtils.isEmpty(vos)?new ArrayList<EvaluationMethodVo>():vos);
         }
         return vo;
     }
