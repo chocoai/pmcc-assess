@@ -39,7 +39,7 @@ public class EvaluationThinkingController {
 
     @RequestMapping(value = "/index", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationThinkingView");
         modelAndView.addObject("useList", baseDataDics);
         return modelAndView;

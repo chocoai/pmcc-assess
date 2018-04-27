@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
-import com.copower.pmcc.assess.service.data.EvaluationMethodService;
+import com.copower.pmcc.assess.service.data.EvaluationThinkingFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -14,38 +13,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by 13426 on 2018/4/24.
+ * Created by 13426 on 2018/4/27.
  */
-@RequestMapping(value = "/evaluationMethodNG")
+@RequestMapping(value = "/evaluationThinkingNG")
 @Controller
-public class MethodFieldController {
+public class EvaluationThinkingFieldController {
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EvaluationMethodService service;
-
-    @ResponseBody
-    @RequestMapping(value = "/addField",method = RequestMethod.POST,name = "新增方法字段")
-    public HttpResult add(EvaluationMethodFieldDto evaluationMethodFieldDto){
-        try {
-            if (evaluationMethodFieldDto.getId() != null && evaluationMethodFieldDto.getId() != 0) {//不再使用专门的 update controller
-                service.update(evaluationMethodFieldDto);
-                return HttpResult.newCorrectResult();
-            } else {
-                service.add(evaluationMethodFieldDto);
-                return HttpResult.newCorrectResult();
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
+    private EvaluationThinkingFieldService service;
 
     @ResponseBody
     @RequestMapping(value = "/listField",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
     public BootstrapTableVo list(Integer methodId){
         BootstrapTableVo vo = null;
-        if (methodId!=null) vo = service.getVosField(methodId);
+        if (methodId!=null) vo = service.listVos(methodId);
         return vo;
     }
 
@@ -53,13 +36,11 @@ public class MethodFieldController {
     @RequestMapping(value = "/delete", name = "删除",method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
-            service.removeFild(id);
+            service.remove(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
-
-
 }

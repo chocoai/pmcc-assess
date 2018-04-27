@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,6 @@ import java.util.List;
 @Service(value = "evaluationThinkingService")
 public class EvaluationThinkingService {
 
-    @Autowired
     private EvaluationThinkingDao evaluationThinkingDao;
 
     @Autowired
@@ -65,6 +65,7 @@ public class EvaluationThinkingService {
 
     @Transactional(readOnly = true)
     public List<EvaluationThinking> list(String method){
+        if (method==null || method=="") return evaluationThinkingDao.list(null);
         return evaluationThinkingDao.list(method);
     }
 
@@ -80,16 +81,20 @@ public class EvaluationThinkingService {
 
     private List<EvaluationThinkingVo> vosChange(List<EvaluationThinking> evaluationThinkings){
         List<EvaluationThinkingVo> evaluationThinkingVoList = new ArrayList<>();
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         evaluationThinkings.forEach(evaluationThinking -> {
-            EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
-            BeanUtils.copyProperties(evaluationThinkings, evaluationThinkingVo);
-            if (evaluationThinking.getMethod()!=null && evaluationThinking.getMethod()!="" ){
-                evaluationThinkingVo.setMethodStr(baseDataDics.get(Integer.parseInt(evaluationThinking.getMethod())).getName());
-            }
-            evaluationThinkingVoList.add(evaluationThinkingVo);
+            evaluationThinkingVoList.add(change(evaluationThinking));
         });
         return evaluationThinkingVoList;
+    }
+
+    private EvaluationThinkingVo change(EvaluationThinking evaluationThinking){
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
+        EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
+        BeanUtils.copyProperties(evaluationThinking,evaluationThinkingVo);
+        if (evaluationThinking.getMethod()!=null && evaluationThinking.getMethod()!="" ){
+            evaluationThinkingVo.setMethodStr(baseDataDics.get(Integer.parseInt(evaluationThinking.getMethod())).getName());
+        }
+        return evaluationThinkingVo;
     }
 
 

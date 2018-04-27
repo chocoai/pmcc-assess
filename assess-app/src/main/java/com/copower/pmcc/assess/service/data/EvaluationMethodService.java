@@ -1,11 +1,9 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.URLDecoderHelp;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
@@ -24,9 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Created by 13426 on 2018/4/24.
  */
-@Service(value = "evaluationMethodService")
+@Service
 public class EvaluationMethodService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -44,10 +44,10 @@ public class EvaluationMethodService {
     @Autowired
     private BaseDataDicService baseDataDicService;
 
-    @Autowired
+    @Resource
     private EvaluationMethodFieldDao evaluationMethodFieldDao;
 
-    @Autowired
+    @Resource
     private EvaluationMethodDao methodDao;
 
     @Deprecated

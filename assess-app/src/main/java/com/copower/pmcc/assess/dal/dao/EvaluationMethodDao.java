@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by 13426 on 2018/4/24.
  */
 @Repository(value = "evaluationMethodDao")
-public class EvaluationMethodDao {
+public class EvaluationMethodDao {//evaluationMethodDao
 
     @Autowired
     private EvaluationMethodMapper evaluationMethodMapper;

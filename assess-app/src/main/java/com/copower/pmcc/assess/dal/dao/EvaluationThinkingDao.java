@@ -39,7 +39,7 @@ public class EvaluationThinkingDao {
     public List<EvaluationThinking> list(String method){
         EvaluationThinkingExample evaluationThinkingExample = new EvaluationThinkingExample();
         List<EvaluationThinking> evaluationThinkings = null;
-        if (method==null){
+        if (method==null || method==""){
             evaluationThinkingExample.createCriteria().andNameIsNotNull();
             evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
         }else {
