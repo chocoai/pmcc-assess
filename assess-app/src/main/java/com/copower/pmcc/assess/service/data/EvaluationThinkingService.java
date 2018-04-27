@@ -3,7 +3,9 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.dal.dao.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,13 +29,23 @@ public class EvaluationThinkingService {
     @Autowired
     private EvaluationThinkingDao evaluationThinkingDao;
 
+    @Autowired
+    private CommonService commonService;
+
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+
     @Transactional
     public boolean add(EvaluationThinkingDto evaluationThinkingDto){
+        if (evaluationThinkingDto.getCreator()==null)evaluationThinkingDto.setCreator(commonService.thisUserAccount());
+        if (evaluationThinkingDto.getGmtCreated()==null)evaluationThinkingDto.setGmtCreated(new Date());
         return evaluationThinkingDao.add(evaluationThinkingDto);
     }
 
     @Transactional
     public boolean update(EvaluationThinkingDto evaluationThinkingDto){
+        if (evaluationThinkingDto.getCreator()==null)evaluationThinkingDto.setCreator(commonService.thisUserAccount());
+        if (evaluationThinkingDto.getGmtCreated()==null)evaluationThinkingDto.setGmtCreated(new Date());
         return evaluationThinkingDao.update(evaluationThinkingDto);
     }
 
@@ -55,8 +68,8 @@ public class EvaluationThinkingService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setTotal(page.getTotal());
         List<EvaluationThinking> list = list(method);
+        vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<EvaluationThinking>() : list);
         return vo;
     }
