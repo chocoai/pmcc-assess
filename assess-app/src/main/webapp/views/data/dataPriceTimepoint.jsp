@@ -72,32 +72,32 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        名称<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" required data-rule-maxlength="50" placeholder="价值时点名称"
-                                               id="name" name="name" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            描述<span class="symbol required"></span>
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="价值时点描述"
-                                                   id="description" name="description" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="价值时点名称"
+                                                   id="name" name="name" class="form-control">
                                         </div>
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            描述
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="描述" class="form-control" id="description" name="description">
 
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,11 +199,7 @@
     //新增 价值时点 数据
     function saveSubDataDic() {
         var flag = false;
-        var data = formParams("frm");
-        data.id = $("#id").val();
-        data.name = $("#name").val();
-        data.description = $("#description").val();
-
+        var data = $("#frm").serialize();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/priceTimepoint/addPriceTimepointDescription",

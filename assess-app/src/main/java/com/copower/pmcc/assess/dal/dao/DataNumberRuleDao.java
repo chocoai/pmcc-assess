@@ -3,21 +3,47 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.entity.DataNumberRuleExample;
+import com.copower.pmcc.assess.dal.mapper.DataNumberRuleMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public class DataNumberRuleDao {
-    public List<DataNumberRule> getDataNumberRule(String name) {
+
+    @Autowired
+    private DataNumberRuleMapper dataNumberRuleMapper;
+
+    public List<DataNumberRule> getDataNumberRule(Integer assessClass, String prefix) {
         DataNumberRuleExample example = new DataNumberRuleExample();
         DataNumberRuleExample.Criteria criteria = example.createCriteria();
 
-        if(StringUtils.isNotEmpty(name)){
-
+        if (assessClass != null) {
+            criteria.andAssessClassEqualTo(assessClass);
         }
+        if (StringUtils.isNotEmpty(prefix)) {
+            criteria.andPrefixLike(String.format("%s%s%s", "%", prefix, "%"));
+        }
+        example.setOrderByClause(" id desc");
+        List<DataNumberRule> dataNumberRules = dataNumberRuleMapper.selectByExample(example);
 
+        return dataNumberRules;
+    }
 
-        return null;
+    public Boolean update(DataNumberRule dataNumberRule) {
+        int i = dataNumberRuleMapper.updateByPrimaryKeySelective(dataNumberRule);
+        return i > 0;
+    }
+
+    public Boolean save(DataNumberRule dataNumberRule) {
+        int i = dataNumberRuleMapper.insertSelective(dataNumberRule);
+        return i > 0;
+    }
+
+    public boolean delete(Integer id) {
+        int i = dataNumberRuleMapper.deleteByPrimaryKey(id);
+        return i > 0;
     }
 }

@@ -26,11 +26,24 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    最佳利用名称
+                                    大类
                                 </label>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="最佳利用名称" id="queryName" name="queryName"
+                                    <select class="form-control" id="queryAssessClass" name="queryAssessClass">
+                                        <option value="">-请选择-</option>
+                                        <c:forEach var="item" items="${assessClassList}">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="col-sm-1 control-label">
+                                    名称
+                                </label>
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                           placeholder="名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -39,8 +52,7 @@
                                 <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
                                     查询
                                 </button>
-
-                                <button type="button" class="btn btn-success" onclick="addDataDic()"
+                                <button type="button" class="btn btn-success" onclick="addData()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -75,55 +87,71 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
+                                        <label class="col-sm-3 control-label">
+                                            所属大类<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="最佳利用名称"
-                                                   id="name" name="name" class="form-control">
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="assessClass" name="assessClass">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${assessClassList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            描述
+                                        <label class="col-sm-3 control-label">
+                                            报告类型<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <textarea placeholder="描述" class="form-control" id="description" name="description">
-
-                                            </textarea>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="reportType" name="reportType">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="items" items="${reportTypeList}">
+                                                    <option value="${items.id}">${items.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-3 control-label">--%>
+                                            <%--文号前缀<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-9">--%>
+                                            <%--<input type="text" required data-rule-maxlength="50" placeholder="字段名称"--%>
+                                                   <%--id="numberPrefix" name="numberPrefix" class="form-control">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
 
-                                </div>
                             </div>
                         </div>
                     </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
-                        保存
-                    </button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveData()">
+                            保存
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
 </div>
 
 
-<!--最佳利用描述数据子项数据 ===========-->
+<!--价值时点数据子项数据 ===========-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">最佳利用数据</h4>
+                <h4 class="modal-title" id="titleContent">文号规则数据</h4>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered" id="tbDataDicList">
@@ -135,29 +163,31 @@
 
 
 <%@include file="/views/share/main_footer.jsp" %>
+
 <script type="application/javascript">
 
     $(function () {
         loadDataDicList();
     })
-    //加载 最佳利用 数据列表
+    //加载 文号规则 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'description', title: '描述'});
+        cols.push({field: 'assessClassName', title: '所属大类'});
+        cols.push({field: 'reportType', title: '报告类型'});
+
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delData(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/bestUse/getBestUseDescription", cols, {
-            name: $("#queryName").val()
+        TableInit("tb_List", "${pageContext.request.contextPath}/numberRule/list", cols, {
+            assessClass: $("#queryAssessClass").val(),
         }, {
             showColumns: false,
             showRefresh: false,
@@ -165,12 +195,12 @@
         });
     }
 
-    //删除 最佳利用数据
-    function deleteBestUseDescription(id, tbId) {
+    //删除 文号规则数据
+    function delData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/bestUse/deleteBestUseDescription",
+                url: "${pageContext.request.contextPath}/numberRule/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -193,18 +223,18 @@
         })
     }
 
-    //对新增 最佳利用数据处理
-    function addDataDic() {
+    //对新增 文号规则数据处理
+    function addData() {
         $("#frm").clearAll();
     }
-    //新增 最佳利用数据
-    function saveSubDataDic() {
+    //新增 文号规则数据
+    function saveData() {
         var flag = false;
+        //var data = formParams("frm");
         var data = $("#frm").serialize();
-
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/bestUse/addBestUseDescription",
+                url: "${pageContext.request.contextPath}/numberRule/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -230,7 +260,7 @@
         $("#frm").clearAll();
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/bestUse/getBestUseDescription",
+            url: "${pageContext.request.contextPath}/numberRule/list",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -272,8 +302,8 @@
         return false;
     }
 
-
 </script>
 
 
 </html>
+

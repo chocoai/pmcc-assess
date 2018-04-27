@@ -1,14 +1,22 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.DataNumberRuleDao;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
+import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +29,56 @@ public class DataNumberRuleService {
     @Autowired
     private DataNumberRuleDao dataNumberRuleDao;
 
-    public BootstrapTableVo getDataNumberRuleListVo(String name) {
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+
+    @Autowired
+    private BaseFormService baseFormService;
+
+    public BootstrapTableVo getList(Integer assessClass,String prefix) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(name);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessClass,prefix);
+        List<DataNumberRuleVo> dataNumberRuleVos = getVoList(dataNumberRulesList);
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(dataNumberRulesList) ? new ArrayList<DataNumberRule>() : dataNumberRulesList);
+        vo.setRows(CollectionUtils.isEmpty(dataNumberRuleVos) ? new ArrayList<DataNumberRuleVo>() : dataNumberRuleVos);
         return vo;
     }
 
+    private List<DataNumberRuleVo> getVoList(List<DataNumberRule> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        return LangUtils.transform(list, p -> {
+            DataNumberRuleVo dataNumberRuleVo = new DataNumberRuleVo();
+            BeanUtils.copyProperties(p, dataNumberRuleVo);
+            if (p.getAssessClass() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getAssessClass());
+                if (baseDataDic != null)
+                    dataNumberRuleVo.setAssessClassName(baseDataDic.getName());
+            }
+            if(p.getReportType() != null){
+                BaseDataDic baseDataDic1 = baseDataDicService.getCacheDataDicById(p.getReportType());
+                if(baseDataDic1 != null){
+                    dataNumberRuleVo.setReportTypeName(baseDataDic1.getName());
+                }
+            }
+            return dataNumberRuleVo;
+        });
+    }
 
+
+    public boolean save(DataNumberRule dataNumberRule) throws BusinessException {
+        if(dataNumberRule == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if(dataNumberRule.getId() != null && dataNumberRule.getId() > 0){
+            return dataNumberRuleDao.update(dataNumberRule);
+        }else{
+            return dataNumberRuleDao.save(dataNumberRule);
+        }
+    }
+
+    public boolean delete(Integer id) throws BusinessException {
+        if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
+        return dataNumberRuleDao.delete(id);
+    }
 }

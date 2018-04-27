@@ -12,5 +12,6 @@ public class AssessDataDicKeyConstant {
     public static final String BUILDING_NEW_RATE_USE = "building.new.rate.use";//建筑成新率用途
     public static final String ASSESS_CLASS = "assess.class";//建筑成新率用途
     public static final String EVALUATION_METHOD = "evaluation.method";
+    public static final String REPORT_TYPE = "report.type"; //报告类型
 
 }
