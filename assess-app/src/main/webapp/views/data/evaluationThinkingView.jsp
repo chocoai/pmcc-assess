@@ -230,7 +230,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         var methodStrChange = $("#queryName").val();
-        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationMethod/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationThinking/list", cols, {
             methodStr: methodStrChange
         }, {
             showColumns: false,
@@ -244,7 +244,7 @@
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/delete",
+                url: "${pageContext.request.contextPath}/evaluationThinking/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -282,7 +282,7 @@
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/save",
+                url: "${pageContext.request.contextPath}/evaluationThinking/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -305,7 +305,7 @@
     //评估假设修改
     function editHrProfessional(index) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationMethod/get",
+            url: "${pageContext.request.contextPath}/evaluationThinking/get",
             type: "GET",
             dataType: "json",
             data: {id: index},
@@ -351,7 +351,7 @@
         alert(data.type);
         if ($("#firSubA").valid()){
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/addField",
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -380,7 +380,7 @@
         });
         var methodIdN = document.getElementById("methodIdN");
         methodIdN.value = pid;
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationMethodNG/listField",
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationThinkingNG/listField",
             cols, {methodId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
@@ -405,7 +405,7 @@
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/delete",
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
