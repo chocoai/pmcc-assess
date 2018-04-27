@@ -11,7 +11,6 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -32,8 +32,7 @@ public class EvaluationMethodController {
     @Autowired
     private ControllerComponent controllerComponent;
 
-    @Qualifier(value = "evaluationMethodService")
-    @Autowired
+    @Resource
     private EvaluationMethodService service;
 
     @Autowired

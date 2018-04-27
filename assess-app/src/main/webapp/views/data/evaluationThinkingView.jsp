@@ -25,11 +25,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    评估方法
+                                    评估假设
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估方法名称" id="queryName" name="queryName"
+                                           placeholder="评估假设名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估方法</h4>
+                <h4 class="modal-title">评估假设</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -71,6 +71,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            姓名
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="name" id="Nname" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -87,7 +98,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            评估方法
+                                            评估假设
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="method" class="form-control" id="method">
@@ -171,10 +182,12 @@
                             适用与不适用
                             <input type="hidden" name="methodId" id="methodId">
                         </label>
-                        <div class="col-sm-10" id="type">
-                            <input type="radio" name="type" value="0" checked="checked">适用原因
-                            <br>
-                            <input type="radio" name="type" value="1">不适用原因
+                        <div class="col-sm-10">
+                            <select name="type" id="type" class="form-control">
+                                <option value="" checked="checked">请选择</option>
+                                <option value="0">适用原因</option>
+                                <option value="1">不适用原因</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -211,11 +224,11 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 评估方法 数据列表
+    //加载 评估假设 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'methodStr', title: '评估方法'});
-        cols.push({field: 'applicableReason', title: '适用原因模板'});
+        cols.push({field: 'methodStr', title: '评估假设'});
+        cols.push({field: 'name', title: '姓名'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -230,7 +243,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         var methodStrChange = $("#queryName").val();
-        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationMethod/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationThinking/list", cols, {
             methodStr: methodStrChange
         }, {
             showColumns: false,
@@ -239,12 +252,12 @@
         });
     }
 
-    //删除 评估方法 数据()
+    //删除 评估假设 数据()
     function removeData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/delete",
+                url: "${pageContext.request.contextPath}/evaluationThinking/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -267,21 +280,22 @@
         })
     }
 
-    //对新增 评估方法 数据处理
+    //对新增 评估假设 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 评估方法 数据
+    //新增 评估假设 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
+        data.name = $("#Nname").val();
         data.applicableReason = $("#applicableReason").val();
-        data.method = $("#method option:selected").val()-120;
+        data.method = $("#method option:selected").val()-185;
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/save",
+                url: "${pageContext.request.contextPath}/evaluationThinking/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -301,10 +315,10 @@
             })
         }
     }
-    //评估方法修改
+    //评估假设修改
     function editHrProfessional(index) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationMethod/get",
+            url: "${pageContext.request.contextPath}/evaluationThinking/get",
             type: "GET",
             dataType: "json",
             data: {id: index},
@@ -336,21 +350,13 @@
     }
     //保存新增 子项 字段的数据
     function saveFileld() {
-        //firSubA
         var data = formParams("firSubA");
         data.name = $("#name").val();
-        data.methodId = $("#methodId").val();
-        var typeId = document.getElementById("type");
-        var radio = typeId.getElementsByTagName("input");
-        for(var i=0;i < radio.length;i++){
-            if(radio[i].checked) {//为radio中选中的值
-                data.type = radio[i].value
-            }
-        }
-        alert(data.type);
+        data.thinkingId = $("#methodId").val();
+        data.type = $("#type option:selected").val();
         if ($("#firSubA").valid()){
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/addField",
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -369,6 +375,7 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'typeStr', title: '原因'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -379,7 +386,7 @@
         });
         var methodIdN = document.getElementById("methodIdN");
         methodIdN.value = pid;
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationMethodNG/listField",
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationThinkingNG/listField",
             cols, {methodId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
@@ -404,7 +411,7 @@
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/delete",
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},

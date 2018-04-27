@@ -39,7 +39,7 @@ public class EvaluationThinkingController {
 
     @RequestMapping(value = "/index", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationThinkingView");
         modelAndView.addObject("useList", baseDataDics);
         return modelAndView;
@@ -52,7 +52,7 @@ public class EvaluationThinkingController {
         if (methodStr == null || methodStr == "") {//查询所有
             vo = service.listVo(null);
         } else {
-            vo = service.listVo(methodStr);//关键字查询
+            vo = service.listVo(service.changeMethod(methodStr));//关键字查询
         }
         return vo;
     }
