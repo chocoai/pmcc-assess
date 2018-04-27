@@ -4,9 +4,10 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.entity.DataNumberRuleExample;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class DataNumberRuleDao {
     public List<DataNumberRule> getDataNumberRule(String name) {
         DataNumberRuleExample example = new DataNumberRuleExample();
