@@ -278,7 +278,6 @@
         data.id = $("#id").val();
         data.applicableReason = $("#applicableReason").val();
         data.method = $("#method option:selected").val()-120;
-        alert(data.method);
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({

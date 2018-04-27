@@ -106,9 +106,9 @@ public class HousePriceIndexService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setTotal(page.getTotal());
         List<HousePriceIndexVo>  housePriceIndexVoList = list(list(startTime, endTime));
         vo.setRows(CollectionUtils.isEmpty(housePriceIndexVoList) ? new ArrayList<HousePriceIndexVo>() : housePriceIndexVoList);
+        vo.setTotal(page.getTotal());
         return vo;
     }
 }

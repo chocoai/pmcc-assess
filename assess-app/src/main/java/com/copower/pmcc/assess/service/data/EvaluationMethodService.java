@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,12 +53,14 @@ public class EvaluationMethodService {
     @Deprecated
     @Transactional
     public boolean add(EvaluationMethodDto evaluationMethodDto) {
+        if(evaluationMethodDto.getGmtCreated()==null)evaluationMethodDto.setGmtCreated(new Date());
         if (evaluationMethodDto.getCreator() == null) evaluationMethodDto.setCreator(commonService.thisUserAccount());
         return methodDao.addEvaluationMethod(evaluationMethodDto);
     }
 
     @Transactional
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
+        if(evaluationMethodFieldDto.getGmtCreated()==null)evaluationMethodFieldDto.setGmtCreated(new Date());
         if (evaluationMethodFieldDto.getCreator()==null)evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
         return evaluationMethodFieldDao.add(evaluationMethodFieldDto);
     }
@@ -65,13 +68,14 @@ public class EvaluationMethodService {
     @Transactional
     public boolean update(EvaluationMethodDto evaluationMethodDto) {
         if (evaluationMethodDto.getCreator() == null) evaluationMethodDto.setCreator(commonService.thisUserAccount());
+        if(evaluationMethodDto.getGmtCreated()==null)evaluationMethodDto.setGmtCreated(new Date());
         return methodDao.updateEvaluationMethod(evaluationMethodDto);
     }
 
     @Transactional
     public boolean update(EvaluationMethodFieldDto evaluationMethodFieldDto) {
         if (evaluationMethodFieldDto.getCreator()==null)evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
-//        if(evaluationMethodFieldDto.)
+        if(evaluationMethodFieldDto.getGmtCreated()==null)evaluationMethodFieldDto.setGmtCreated(new Date());
         return evaluationMethodFieldDao.update(evaluationMethodFieldDto);
     }
 
@@ -99,24 +103,25 @@ public class EvaluationMethodService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setTotal(page.getTotal());
         List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldDao.list(methodId);
         vo.setRows(CollectionUtils.isEmpty(evaluationMethodFields)?new ArrayList<EvaluationMethodField>():evaluationMethodFields);
+        vo.setTotal(page.getTotal());
         return vo;
     }
 
     public BootstrapTableVo getVos(Integer method) {
-        List<EvaluationMethodVo> vos = null;
+        List<EvaluationMethodVo> evaluationMethodVos = null;
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setTotal(page.getTotal());
         if (method != null) {
-            vos = list(method);
-            vo.setRows(CollectionUtils.isEmpty(vos)?new ArrayList<EvaluationMethodVo>():vos);
+            evaluationMethodVos = list(method);
+            vo.setTotal(page.getTotal());
+            vo.setRows(CollectionUtils.isEmpty(evaluationMethodVos)?new ArrayList<EvaluationMethodVo>():evaluationMethodVos);
         } else {
-            vos = list(null);
-            vo.setRows(CollectionUtils.isEmpty(vos)?new ArrayList<EvaluationMethodVo>():vos);
+            evaluationMethodVos = list(null);
+            vo.setTotal(page.getTotal());
+            vo.setRows(CollectionUtils.isEmpty(evaluationMethodVos)?new ArrayList<EvaluationMethodVo>():evaluationMethodVos);
         }
         return vo;
     }
