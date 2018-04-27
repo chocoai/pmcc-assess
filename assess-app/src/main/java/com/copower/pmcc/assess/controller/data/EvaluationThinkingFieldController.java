@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -42,5 +45,22 @@ public class EvaluationThinkingFieldController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addField",method = RequestMethod.POST,name = "新增方法字段")
+    public HttpResult add(EvaluationThinkingFieldDto evaluationThinkingFieldDto){
+        try {
+            if (evaluationThinkingFieldDto.getId() != null && evaluationThinkingFieldDto.getId() != 0) {//不再使用专门的 update controller
+                service.update(evaluationThinkingFieldDto);
+                return HttpResult.newCorrectResult();
+            } else {
+                service.add(evaluationThinkingFieldDto);
+                return HttpResult.newCorrectResult();
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

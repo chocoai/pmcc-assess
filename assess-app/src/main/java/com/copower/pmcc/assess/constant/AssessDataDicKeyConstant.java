@@ -14,7 +14,7 @@ public class AssessDataDicKeyConstant {
     public static final String EVALUATION_METHOD = "evaluation.method";//评估方法
     public static final String EVALUATION_THINKING = "evaluation.think";//评估假设
     public static final String EVALUATION_PRINCIPLE = "evaluation.principle";//评估原则
-    public static final String VALUATION_BASIS = "evaluation.principle";//评估依据
+    public static final String VALUATION_BASIS = "evaluation.basis";//评估依据
 
 
 }

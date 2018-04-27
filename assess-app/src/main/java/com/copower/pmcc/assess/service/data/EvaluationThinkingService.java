@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
 @Service(value = "evaluationThinkingService")
 public class EvaluationThinkingService {
 
+    @Resource
     private EvaluationThinkingDao evaluationThinkingDao;
 
     @Autowired
@@ -65,8 +67,20 @@ public class EvaluationThinkingService {
 
     @Transactional(readOnly = true)
     public List<EvaluationThinking> list(String method){
-        if (method==null || method=="") return evaluationThinkingDao.list(null);
-        return evaluationThinkingDao.list(method);
+        try {
+            if (method==null || method=="") {
+                return evaluationThinkingDao.list(null);
+            }else {
+                return evaluationThinkingDao.list(method);
+            }
+        }catch (Exception e){
+            try {
+                throw e;
+            }catch (Exception e1){
+
+            }
+        }
+        return null;
     }
 
     public BootstrapTableVo listVo(String method){
@@ -95,6 +109,22 @@ public class EvaluationThinkingService {
             evaluationThinkingVo.setMethodStr(baseDataDics.get(Integer.parseInt(evaluationThinking.getMethod())).getName());
         }
         return evaluationThinkingVo;
+    }
+
+    public String changeMethod(String methodStr){
+        Integer key = null;
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
+        inner:
+        for (BaseDataDic b : baseDataDics) {
+            for (int i = 0; i < baseDataDics.size() - 1; i++) {
+                String v = baseDataDics.get(i).getName();
+                if (methodStr.equals(v)) {
+                    key = i;
+                    break inner;
+                }
+            }
+        }
+        return key+"";
     }
 
 

@@ -75,6 +75,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            姓名
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="name" id="Nname" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             不适用原因
                                         </label>
                                         <div class="col-sm-10">
@@ -171,10 +182,12 @@
                             适用与不适用
                             <input type="hidden" name="methodId" id="methodId">
                         </label>
-                        <div class="col-sm-10" id="type">
-                            <input type="radio" name="type" value="0" checked="checked">适用原因
-                            <br>
-                            <input type="radio" name="type" value="1">不适用原因
+                        <div class="col-sm-10">
+                            <select name="type" id="type" class="form-control">
+                                <option value="" checked="checked">请选择</option>
+                                <option value="0">适用原因</option>
+                                <option value="1">不适用原因</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -215,7 +228,7 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'methodStr', title: '评估假设'});
-        cols.push({field: 'applicableReason', title: '适用原因模板'});
+        cols.push({field: 'name', title: '姓名'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -276,9 +289,9 @@
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
+        data.name = $("#Nname").val();
         data.applicableReason = $("#applicableReason").val();
-        data.method = $("#method option:selected").val()-120;
-        alert(data.method);
+        data.method = $("#method option:selected").val()-185;
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
@@ -337,18 +350,10 @@
     }
     //保存新增 子项 字段的数据
     function saveFileld() {
-        //firSubA
         var data = formParams("firSubA");
         data.name = $("#name").val();
-        data.methodId = $("#methodId").val();
-        var typeId = document.getElementById("type");
-        var radio = typeId.getElementsByTagName("input");
-        for(var i=0;i < radio.length;i++){
-            if(radio[i].checked) {//为radio中选中的值
-                data.type = radio[i].value
-            }
-        }
-        alert(data.type);
+        data.thinkingId = $("#methodId").val();
+        data.type = $("#type option:selected").val();
         if ($("#firSubA").valid()){
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
@@ -370,6 +375,7 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'typeStr', title: '原因'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

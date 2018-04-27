@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldDaoVoEnum;
 import com.copower.pmcc.assess.dal.dao.EvaluationThinkingFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingFieldDaoVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
@@ -27,36 +29,43 @@ public class EvaluationThinkingFieldService {
     @Autowired
     private EvaluationThinkingFieldDao evaluationThinkingFieldDao;
 
-    public boolean add(EvaluationThinkingFieldDto evaluationThinkingFieldDto){
+    @Autowired
+    private CommonService commonService;
+
+    public boolean add(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {
+        if (evaluationThinkingFieldDto.getCreator() == null)
+            evaluationThinkingFieldDto.setCreator(commonService.thisUserAccount());
         return evaluationThinkingFieldDao.add(evaluationThinkingFieldDto);
     }
 
-    public boolean remove(Integer id){
+    public boolean remove(Integer id) {
         return evaluationThinkingFieldDao.remove(id);
     }
 
-    public boolean removeMethod(Integer method){
+    public boolean removeMethod(Integer method) {
         return evaluationThinkingFieldDao.removeMethod(method);
     }
 
-    public boolean update(EvaluationThinkingFieldDto evaluationThinkingFieldDto){
-        return  evaluationThinkingFieldDao.update(evaluationThinkingFieldDto);
+    public boolean update(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {
+        if (evaluationThinkingFieldDto.getCreator() == null)
+            evaluationThinkingFieldDto.setCreator(commonService.thisUserAccount());
+        return evaluationThinkingFieldDao.update(evaluationThinkingFieldDto);
     }
 
-    public EvaluationThinkingFieldDaoVo get(Integer id){
+    public EvaluationThinkingFieldDaoVo get(Integer id) {
         return change(evaluationThinkingFieldDao.get(id));
     }
 
-    public BootstrapTableVo listVos(Integer thinkId){
+    public BootstrapTableVo listVos(Integer thinkId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setRows(CollectionUtils.isEmpty(list(thinkId)) ? new ArrayList<EvaluationThinkingFieldDaoVo>():list(thinkId));
+        vo.setRows(CollectionUtils.isEmpty(list(thinkId)) ? new ArrayList<EvaluationThinkingFieldDaoVo>() : list(thinkId));
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public List<EvaluationThinkingFieldDaoVo> list(Integer thinkId){
+    public List<EvaluationThinkingFieldDaoVo> list(Integer thinkId) {
         List<EvaluationThinkingFieldDaoVo> evaluationThinkingFieldDaoVos = new ArrayList<>();
         evaluationThinkingFieldDao.list(thinkId).forEach(evaluationThinkingFieldDto -> {
             evaluationThinkingFieldDaoVos.add(change(evaluationThinkingFieldDto));
@@ -64,9 +73,15 @@ public class EvaluationThinkingFieldService {
         return evaluationThinkingFieldDaoVos;
     }
 
-    public EvaluationThinkingFieldDaoVo change(EvaluationThinkingFieldDto evaluationThinkingFieldDto){
+    public EvaluationThinkingFieldDaoVo change(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {
         EvaluationThinkingFieldDaoVo vo = new EvaluationThinkingFieldDaoVo();
         BeanUtils.copyProperties(evaluationThinkingFieldDto, vo);
-        return  vo;
+
+        if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ONE.getNum()) {
+            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR1.getVar());
+        } else if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ZERO.getNum()) {
+            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR2.getVar());
+        }
+        return vo;
     }
 }
