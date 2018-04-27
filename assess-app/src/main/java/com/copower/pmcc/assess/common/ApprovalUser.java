@@ -45,6 +45,10 @@ public class ApprovalUser {
     public String apply_user_department(String CurruserAccount) {
         return hrRpcUserService.getDepartmentLeader(CurruserAccount);
     }
+    //申请人所有部门分管领导
+    public String apply_user_department_leader(String CurruserAccount) {
+        return hrRpcUserService.getDepartmentFirstLeader(CurruserAccount);
+    }
 
     //操作人
     public String opation_user(String CurruserAccount) {
@@ -56,6 +60,10 @@ public class ApprovalUser {
         return apply_user_department(commonService.thisUserAccount());
     }
 
+    //所在部门分管领导
+    public String opation_user_department_leader(String CurruserAccount) {
+        return apply_user_department_leader(commonService.thisUserAccount());
+    }
     //操作人直接上级
     public String opation_user_superior(String CurruserAccount) {
         return apply_user_superior(commonService.thisUserAccount());
