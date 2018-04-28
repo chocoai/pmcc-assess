@@ -25,11 +25,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    评估原则
+                                    评估技术思路
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估原则名称" id="queryName" name="queryName"
+                                           placeholder="评估技术思路名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估原则</h4>
+                <h4 class="modal-title">评估技术思路</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -208,7 +208,7 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 评估原则 数据列表
+    //加载 评估技术思路 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
@@ -229,7 +229,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         var methodStrChange = $("#queryName").val();
-        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationPrinciple/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationBasis/list", cols, {
             methodStr: methodStrChange
         }, {
             showColumns: false,
@@ -238,12 +238,12 @@
         });
     }
 
-    //删除 评估原则 数据()
+    //删除 评估技术思路 数据()
     function removeData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationPrinciple/delete",
+                url: "${pageContext.request.contextPath}/evaluationBasis/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -266,11 +266,11 @@
         })
     }
 
-    //对新增 评估原则 数据处理
+    //对新增 评估技术思路 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 评估原则 数据
+    //新增 评估技术思路 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
@@ -280,7 +280,7 @@
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationPrinciple/save",
+                url: "${pageContext.request.contextPath}/evaluationBasis/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -300,10 +300,10 @@
             })
         }
     }
-    //评估原则修改
+    //评估技术思路修改
     function editHrProfessional(index) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationPrinciple/get",
+            url: "${pageContext.request.contextPath}/evaluationBasis/get",
             type: "GET",
             dataType: "json",
             data: {id: index},
@@ -341,7 +341,7 @@
         data.principleId = $("#principleId").val();
         if ($("#firSubA").valid()){
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationPrincipleNG/addField",
+                url: "${pageContext.request.contextPath}/evaluationBasisNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -371,7 +371,7 @@
         });
         var principleIdN = document.getElementById("principleIdN");
         principleIdN.value = pid;
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationPrincipleNG/listField",
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationBasisNG/listField",
             cols, {principleId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
@@ -396,7 +396,7 @@
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationPrincipleNG/delete",
+                url: "${pageContext.request.contextPath}/evaluationBasisNG/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
