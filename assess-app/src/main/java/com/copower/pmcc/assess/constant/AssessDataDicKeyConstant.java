@@ -17,5 +17,7 @@ public class AssessDataDicKeyConstant {
     public static final String EVALUATION_PRINCIPLE = "evaluation.principle";//评估原则
     public static final String VALUATION_BASIS = "evaluation.basis";//评估依据
     public static final String REPORT_TYPE = "report.type"; //报告类型
+    public static final String ENTRUSTMENT_PURPOSE = "entrustment.purpose"; //委托目的
+    public static final String PROJECT_WORK_STAGE = "project.work.stage";  //阶段权重占比
 
 }
