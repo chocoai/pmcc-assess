@@ -138,7 +138,7 @@
                                             日期规则<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="日期规则"
+                                            <input type="text" required data-rule-digits="true" placeholder="日期规则"
                                                    id="dateRule" name="dateRule" class="form-control">
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@
                                             位数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="位数"
+                                            <input type="text" data-rule-digits="true" placeholder="位数"
                                                    id="figures" name="figures" class="form-control">
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                             起始编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="起始编号"
+                                            <input type="text" data-rule-digits="true" placeholder="起始编号"
                                                    id="startNumber" name="startNumber" class="form-control">
                                         </div>
                                     </div>
@@ -174,8 +174,12 @@
                                             同号的报告类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="同号的报告类型"
-                                                   id="sameReportType" name="sameReportType" class="form-control">
+                                            <select class="form-control" required id="sameReportType" name="sameReportType">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="items" items="${reportTypeList}">
+                                                    <option value="${items.id}">${items.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
