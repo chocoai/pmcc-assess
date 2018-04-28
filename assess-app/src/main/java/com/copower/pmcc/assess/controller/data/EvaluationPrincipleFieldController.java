@@ -32,8 +32,12 @@ public class EvaluationPrincipleFieldController {
                 service.update(evaluationPrincipleFieldDto);
                 return HttpResult.newCorrectResult();
             } else {
-                service.add(evaluationPrincipleFieldDto);
-                return HttpResult.newCorrectResult();
+                boolean flag = service.add(evaluationPrincipleFieldDto);
+                if (flag){
+                    return HttpResult.newCorrectResult();
+                }else {
+                    return HttpResult.newErrorResult("添加失败");
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

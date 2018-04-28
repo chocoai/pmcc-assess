@@ -18,16 +18,16 @@ import java.util.List;
 public class EvaluationThinkingFieldDao {
 
     @Autowired
-    private EvaluationThinkingFieldMapper evaluationThinkingFieldMapper;
+    private EvaluationThinkingFieldMapper mapper;
 
     public EvaluationThinkingFieldDto get(Integer id){
-        return change(evaluationThinkingFieldMapper.selectByPrimaryKey(id));
+        return change(mapper.selectByPrimaryKey(id));
     }
 
     public List<EvaluationThinkingFieldDto> list(Integer thinkId){
         EvaluationThinkingFieldExample evaluationThinkingFieldExample = new EvaluationThinkingFieldExample();
         evaluationThinkingFieldExample.createCriteria().andIdIsNotNull().andThinkingIdLessThanOrEqualTo(thinkId);
-        List<EvaluationThinkingField> evaluationThinkingFields = evaluationThinkingFieldMapper.selectByExample(evaluationThinkingFieldExample);
+        List<EvaluationThinkingField> evaluationThinkingFields = mapper.selectByExample(evaluationThinkingFieldExample);
         List<EvaluationThinkingFieldDto> evaluationThinkingFieldDtos = new ArrayList<>();
         evaluationThinkingFields.forEach(evaluationThinkingField -> {
             evaluationThinkingFieldDtos.add(change(evaluationThinkingField));
@@ -36,24 +36,29 @@ public class EvaluationThinkingFieldDao {
     }
 
     public boolean add(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {
-        return evaluationThinkingFieldMapper.insertSelective(change(evaluationThinkingFieldDto)) == 1;
+        boolean flag = true;
+        EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();
+        example.createCriteria().andNameEqualTo(evaluationThinkingFieldDto.getName());
+        if (mapper.selectByExample(example).size()>0)flag = false;
+        if (flag) return mapper.insertSelective(change(evaluationThinkingFieldDto)) == 1;
+        return false;
     }
 
     public boolean remove(Integer id) {
-        return evaluationThinkingFieldMapper.deleteByPrimaryKey(id) == 1;
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
     public boolean removeMethod(Integer method) {
         EvaluationThinkingFieldExample evaluationThinkingFieldExample = new EvaluationThinkingFieldExample();
         if (!(method == null)) {
             evaluationThinkingFieldExample.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(method);
-            return evaluationThinkingFieldMapper.deleteByExample(evaluationThinkingFieldExample)==1;
+            return mapper.deleteByExample(evaluationThinkingFieldExample)==1;
         }
         return false;
     }
 
     public boolean update(EvaluationThinkingFieldDto evaluationThinkingFieldDto){
-        return evaluationThinkingFieldMapper.updateByPrimaryKey(change(evaluationThinkingFieldDto))==1;
+        return mapper.updateByPrimaryKey(change(evaluationThinkingFieldDto))==1;
     }
 
     public EvaluationThinkingField change(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {

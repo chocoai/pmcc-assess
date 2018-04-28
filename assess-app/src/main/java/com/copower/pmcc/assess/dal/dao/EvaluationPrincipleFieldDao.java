@@ -19,29 +19,34 @@ import java.util.List;
 public class EvaluationPrincipleFieldDao {
 
     @Autowired
-    private EvaluationPrincipleFieldMapper evaluationPrincipleFieldMapper;
+    private EvaluationPrincipleFieldMapper mapper;
 
     public boolean add(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){
-        return evaluationPrincipleFieldMapper.insertSelective(change(evaluationPrincipleFieldDto))==1;
+        boolean flag = true;
+        EvaluationPrincipleFieldExample example = new EvaluationPrincipleFieldExample();
+        example.createCriteria().andNameEqualTo(evaluationPrincipleFieldDto.getName());
+        if (mapper.selectByExample(example).size()>0)flag = false;
+        if (flag) return mapper.insertSelective(change(evaluationPrincipleFieldDto))==1;
+        return false;
     }
 
     public boolean update(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){
-        return evaluationPrincipleFieldMapper.updateByPrimaryKey(change(evaluationPrincipleFieldDto))==1;
+        return mapper.updateByPrimaryKey(change(evaluationPrincipleFieldDto))==1;
     }
 
     public boolean remove(Integer id){
-        return evaluationPrincipleFieldMapper.deleteByPrimaryKey(id)==1;
+        return mapper.deleteByPrimaryKey(id)==1;
     }
 
     public EvaluationPrincipleFieldDto get(Integer id){
-        return change(evaluationPrincipleFieldMapper.selectByPrimaryKey(id));
+        return change(mapper.selectByPrimaryKey(id));
     }
 
     public List<EvaluationPrincipleFieldDto> list(){
         EvaluationPrincipleFieldExample evaluationPrincipleFieldExample = new EvaluationPrincipleFieldExample();
         evaluationPrincipleFieldExample.createCriteria().andIdIsNotNull();
         List<EvaluationPrincipleFieldDto> evaluationPrincipleFieldDtos = new ArrayList<>();
-        evaluationPrincipleFieldMapper.selectByExample(evaluationPrincipleFieldExample).stream().parallel().forEach(evaluationPrincipleField -> evaluationPrincipleFieldDtos.add(change(evaluationPrincipleField)));
+        mapper.selectByExample(evaluationPrincipleFieldExample).stream().parallel().forEach(evaluationPrincipleField -> evaluationPrincipleFieldDtos.add(change(evaluationPrincipleField)));
         return evaluationPrincipleFieldDtos;
     }
 
@@ -49,7 +54,7 @@ public class EvaluationPrincipleFieldDao {
         EvaluationPrincipleFieldExample evaluationPrincipleFieldExample = new EvaluationPrincipleFieldExample();
         evaluationPrincipleFieldExample.createCriteria().andPrincipleIdEqualTo(principleId);
         List<EvaluationPrincipleFieldDto> evaluationPrincipleFieldDtos = new ArrayList<>();
-        evaluationPrincipleFieldMapper.selectByExample(evaluationPrincipleFieldExample).stream().parallel().forEach(evaluationPrincipleField -> evaluationPrincipleFieldDtos.add(change(evaluationPrincipleField)));
+        mapper.selectByExample(evaluationPrincipleFieldExample).stream().parallel().forEach(evaluationPrincipleField -> evaluationPrincipleFieldDtos.add(change(evaluationPrincipleField)));
         return evaluationPrincipleFieldDtos;
     }
 

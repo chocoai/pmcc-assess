@@ -32,8 +32,12 @@ public class EvaluationBasisFieldController {
                 service.update(evaluationBasisFieldDto);
                 return HttpResult.newCorrectResult();
             } else {
-                service.add(evaluationBasisFieldDto);
-                return HttpResult.newCorrectResult();
+                boolean flag = service.add(evaluationBasisFieldDto);
+                if (flag){
+                    return HttpResult.newCorrectResult();
+                }else {
+                    return HttpResult.newErrorResult("添加失败");
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -43,9 +47,9 @@ public class EvaluationBasisFieldController {
 
     @ResponseBody
     @RequestMapping(value = "/listField",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
-    public BootstrapTableVo list(Integer hypothesisId){
+    public BootstrapTableVo list(Integer basisId){
         BootstrapTableVo vo = null;
-        if (hypothesisId!=null) vo = service.listBoot(hypothesisId);
+        if (basisId!=null) vo = service.listBoot(basisId);
         return vo;
     }
 

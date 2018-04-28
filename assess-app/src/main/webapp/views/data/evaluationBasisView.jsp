@@ -148,7 +148,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent">子项数据</h4>
             </div>
-            <input type="hidden" name="principleIdN" id="principleIdN">
+            <input type="hidden" name="basisIdN" id="basisIdN">
             <div class="panel-body">
         <span id="toolbarSub">
             <button type="button" class="btn btn-success" onclick="addMethodField(id)"
@@ -170,7 +170,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">原则字段</h4>
+                <h4 class="modal-title" id="titleContent2">技术思路字段</h4>
             </div>
             <form id="firSubA">
             <div class="panel-body">
@@ -180,7 +180,7 @@
                             字段名称
                         </label>
                         <div class="col-sm-10">
-                            <input type="hidden" name="principleId" id="principleId">
+                            <input type="hidden" name="basisId" id="basisId">
                             <input type="text" id="nameA" name="nameA" class="form-control">
                         </div>
                     </div>
@@ -326,11 +326,11 @@
     function addMethodField(id) {
         $("#firSub").clearAll();
         $('#firSub').modal();
-        var principleId = document.getElementById("principleId");
-        principleId.value = id;
+        var basisId = document.getElementById("basisId");
+        basisId.value = id;
         if (id==null || id=='' || id==0 ){//说明是从选子项添加的
-            var principleIdN = document.getElementById("principleIdN");
-            principleId.value = principleIdN.value
+            var basisIdN = document.getElementById("basisIdN");
+            basisId.value = basisIdN.value
         }
     }
     //保存新增 子项 字段的数据
@@ -369,10 +369,10 @@
                 return str;
             }
         });
-        var principleIdN = document.getElementById("principleIdN");
-        principleIdN.value = pid;
+        var basisIdN = document.getElementById("basisIdN");
+        basisIdN.value = pid;
         TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationBasisNG/listField",
-            cols, {principleId: pid}, {
+            cols, {basisId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
                 uniqueId: "id",

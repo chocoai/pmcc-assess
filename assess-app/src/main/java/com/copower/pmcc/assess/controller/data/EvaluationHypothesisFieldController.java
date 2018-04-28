@@ -32,8 +32,12 @@ public class EvaluationHypothesisFieldController {
                 service.update(evaluationHypothesisFieldDto);
                 return HttpResult.newCorrectResult();
             } else {
-                service.add(evaluationHypothesisFieldDto);
-                return HttpResult.newCorrectResult();
+                boolean flag = service.add(evaluationHypothesisFieldDto);
+                if (flag){
+                    return HttpResult.newCorrectResult();
+                }else {
+                    return HttpResult.newErrorResult("添加失败");
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

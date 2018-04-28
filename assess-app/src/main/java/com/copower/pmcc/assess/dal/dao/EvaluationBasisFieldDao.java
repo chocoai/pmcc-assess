@@ -22,7 +22,14 @@ public class EvaluationBasisFieldDao {
     private EvaluationBasisFieldMapper mapper;
 
     public boolean add(EvaluationBasisFieldDto dto){
-        return mapper.insertSelective(change(dto))==1;
+        boolean flag = true;
+        EvaluationBasisFieldExample example = new EvaluationBasisFieldExample();
+        example.createCriteria().andNameEqualTo(dto.getName());
+        if (mapper.selectByExample(example).size()>0)flag=false;
+        if (flag){
+            return mapper.insertSelective(change(dto))==1;
+        }
+        return false;
     }
 
     public boolean remove(Integer id){

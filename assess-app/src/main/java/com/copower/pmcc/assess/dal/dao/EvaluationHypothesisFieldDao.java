@@ -22,7 +22,14 @@ public class EvaluationHypothesisFieldDao {
     private EvaluationHypothesisFieldMapper evaluationHypothesisFieldMapper;
 
     public boolean add(EvaluationHypothesisFieldDto evaluationHypothesisFieldDto){
-        return evaluationHypothesisFieldMapper.insertSelective(change(evaluationHypothesisFieldDto))==1;
+        boolean flag = true;
+        EvaluationHypothesisFieldExample example = new EvaluationHypothesisFieldExample();
+        example.createCriteria().andNameEqualTo(evaluationHypothesisFieldDto.getName());
+        if (evaluationHypothesisFieldMapper.selectByExample(example).size()>0){
+            flag = false;
+        }
+        if (flag)return evaluationHypothesisFieldMapper.insertSelective(change(evaluationHypothesisFieldDto))==1;
+        return false;
     }
 
     public boolean remove(Integer id){

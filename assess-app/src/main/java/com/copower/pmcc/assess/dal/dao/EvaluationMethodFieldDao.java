@@ -21,7 +21,14 @@ public class EvaluationMethodFieldDao {
     private EvaluationMethodFieldMapper evaluationMethodFieldMapper;
 
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
-        return evaluationMethodFieldMapper.insertSelective(change(evaluationMethodFieldDto)) == 1;
+        boolean flag = true;
+        EvaluationMethodFieldExample example = new EvaluationMethodFieldExample();
+        example.createCriteria().andNameEqualTo(evaluationMethodFieldDto.getName());
+        if (evaluationMethodFieldMapper.selectByExample(example).size() > 0) flag = false;
+        if (flag) {
+            return evaluationMethodFieldMapper.insertSelective(change(evaluationMethodFieldDto)) == 1;
+        }
+        return false;
     }
 
     public boolean remove(Integer id) {
@@ -35,15 +42,15 @@ public class EvaluationMethodFieldDao {
         return i > 0;
     }
 
-    public boolean update(EvaluationMethodFieldDto evaluationMethodFieldDto){
-        return evaluationMethodFieldMapper.updateByPrimaryKey(change(evaluationMethodFieldDto))==1;
+    public boolean update(EvaluationMethodFieldDto evaluationMethodFieldDto) {
+        return evaluationMethodFieldMapper.updateByPrimaryKey(change(evaluationMethodFieldDto)) == 1;
     }
 
     public EvaluationMethodFieldDto get(Integer id) {
         return change(evaluationMethodFieldMapper.selectByPrimaryKey(id));
     }
 
-    public List<EvaluationMethodField> list(Integer methodId){
+    public List<EvaluationMethodField> list(Integer methodId) {
         List<EvaluationMethodField> evaluationMethodFields = new ArrayList<>();
         EvaluationMethodFieldExample evaluationMethodFieldExample = new EvaluationMethodFieldExample();
         evaluationMethodFieldExample.createCriteria().andMethodIdEqualTo(methodId);

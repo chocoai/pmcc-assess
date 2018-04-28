@@ -32,8 +32,12 @@ public class MethodFieldController {
                 service.update(evaluationMethodFieldDto);
                 return HttpResult.newCorrectResult();
             } else {
-                service.add(evaluationMethodFieldDto);
-                return HttpResult.newCorrectResult();
+                boolean flag = service.add(evaluationMethodFieldDto);
+                if (flag){
+                    return HttpResult.newCorrectResult();
+                }else {
+                    return HttpResult.newErrorResult("添加失败");
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

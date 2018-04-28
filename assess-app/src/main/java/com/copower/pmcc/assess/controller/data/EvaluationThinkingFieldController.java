@@ -55,8 +55,12 @@ public class EvaluationThinkingFieldController {
                 service.update(evaluationThinkingFieldDto);
                 return HttpResult.newCorrectResult();
             } else {
-                service.add(evaluationThinkingFieldDto);
-                return HttpResult.newCorrectResult();
+                boolean flag = service.add(evaluationThinkingFieldDto);
+                if (flag){
+                    return HttpResult.newCorrectResult();
+                }else {
+                    return HttpResult.newErrorResult("添加失败");
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
