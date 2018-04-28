@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -49,7 +50,7 @@ public class ControllerComponent {
         ModelAndView modelAndView = commonService.baseView(viewUrl);
         BootstrapTableVo sysRemindUnRead = erpRpcToolsService.getSysRemindUnRead(1, 8, commonService.thisUserAccount());
         modelAndView.addObject("sysRemindUnReadCount", sysRemindUnRead.getTotal());
-        modelAndView.addObject("sysRemindUnRead", sysRemindUnRead.getRows());
+        modelAndView.addObject("sysRemindUnRead", JSON.toJSONString(sysRemindUnRead.getRows()));
         return modelAndView;
     }
 
