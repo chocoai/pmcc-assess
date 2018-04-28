@@ -25,11 +25,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    评估方法
+                                    评估依据
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估方法名称" id="queryName" name="queryName"
+                                           placeholder="评估依据名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估方法</h4>
+                <h4 class="modal-title">评估依据</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -75,10 +75,21 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            不适用原因
+                                            名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason">
+                                            <input type="text" placeholder="请填写名称" class="form-control" id="name" name="name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            模板
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="请填写模板" class="form-control" id="template" name="template">
 
                                             </textarea>
                                         </div>
@@ -103,10 +114,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            适用原因
+                                            委托目的
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
+                                            <textarea placeholder="请填写委托目的" class="form-control" id="entrustmentPurpose" name="entrustmentPurpose">
 
                                             </textarea>
                                         </div>
@@ -139,7 +150,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent">子项数据</h4>
             </div>
-            <input type="hidden" name="methodIdN" id="methodIdN">
+            <input type="hidden" name="hypothesisIdN" id="hypothesisIdN">
             <div class="panel-body">
         <span id="toolbarSub">
             <button type="button" class="btn btn-success" onclick="addMethodField(id)"
@@ -168,24 +179,11 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-2 control-label">
-                            适用与不适用
-                            <input type="hidden" name="methodId" id="methodId">
-                        </label>
-                        <div class="col-sm-10">
-                            <select id="type">
-                                <option value="0" selected="selected">适用原因</option>
-                                <option value="1" >不适用原因</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
                             字段名称
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" id="name" name="name" class="form-control">
+                            <input type="hidden" name="hypothesisId" id="hypothesisId">
+                            <input type="text" id="nameA" name="nameA" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -212,11 +210,13 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 评估方法 数据列表
+    //加载 评估依据 数据列表
     function loadDataDicList() {
         var cols = [];
+        cols.push({field: 'name', title: '名称'});
         cols.push({field: 'methodStr', title: '评估方法'});
-        cols.push({field: 'applicableReason', title: '适用原因模板'});
+        cols.push({field: 'template', title: '模板'});
+        cols.push({field: 'entrustmentPurpose', title: '委托目的'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -231,7 +231,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         var methodStrChange = $("#queryName").val();
-        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationMethod/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/evaluationHypothesis/list", cols, {
             methodStr: methodStrChange
         }, {
             showColumns: false,
@@ -240,12 +240,12 @@
         });
     }
 
-    //删除 评估方法 数据()
+    //删除 评估依据 数据()
     function removeData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/delete",
+                url: "${pageContext.request.contextPath}/evaluationHypothesis/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -268,21 +268,22 @@
         })
     }
 
-    //对新增 评估方法 数据处理
+    //对新增 评估依据 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 评估方法 数据
+    //新增 评估依据 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
-        data.applicableReason = $("#applicableReason").val();
+        data.name = $("#name").val();
         data.method = $("#method option:selected").val()-120;
-        data.notApplicableReason = $("#notApplicableReason").val();
+        data.entrustmentPurpose = $("#entrustmentPurpose").val();
+        data.template = $("#template").val();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethod/save",
+                url: "${pageContext.request.contextPath}/evaluationHypothesis/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -302,10 +303,10 @@
             })
         }
     }
-    //评估方法修改
+    //评估依据修改
     function editHrProfessional(index) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationMethod/get",
+            url: "${pageContext.request.contextPath}/evaluationHypothesis/get",
             type: "GET",
             dataType: "json",
             data: {id: index},
@@ -314,8 +315,8 @@
                 $('#divBox').modal();
                 $("#id").val(result.id);
                 $("#name").val(result.name);
-                $("#notApplicableReason").val(result.notApplicableReason);
-                $("#applicableReason").val(result.applicableReason);
+                $("#entrustmentPurpose").val(result.entrustmentPurpose);
+                $("#template").val(result.template);
             },
             error: function (result) {
                 Loading.progressHide();
@@ -328,23 +329,22 @@
     function addMethodField(id) {
         $("#firSub").clearAll();
         $('#firSub').modal();
-        var methodId = document.getElementById("methodId");
-        methodId.value = id;
+        var hypothesisId = document.getElementById("hypothesisId");
+        hypothesisId.value = id;
         if (id==null || id=='' || id==0 ){//说明是从选子项添加的
-            var methodIdN = document.getElementById("methodIdN");
-            methodId.value = methodIdN.value
+            var hypothesisIdN = document.getElementById("hypothesisIdN");
+            hypothesisId.value = hypothesisIdN.value
         }
     }
     //保存新增 子项 字段的数据
     function saveFileld() {
         //firSubA
         var data = formParams("firSubA");
-        data.name = $("#name").val();
-        data.methodId = $("#methodId").val();
-        data.type = $("#type option:selected").val()
+        data.name = $("#nameA").val();
+        data.hypothesisId = $("#hypothesisId").val();
         if ($("#firSubA").valid()){
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/addField",
+                url: "${pageContext.request.contextPath}/evaluationHypothesisNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -361,6 +361,7 @@
 
     //加载子项节点数据
     function loadSubDataDicList(pid, fn) {
+        console.info(pid);
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({
@@ -371,10 +372,10 @@
                 return str;
             }
         });
-        var methodIdN = document.getElementById("methodIdN");
-        methodIdN.value = pid;
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationMethodNG/listField",
-            cols, {methodId: pid}, {
+        var hypothesisIdN = document.getElementById("hypothesisIdN");
+        hypothesisIdN.value = pid;
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationHypothesisNG/listField",
+            cols, {hypothesisId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
                 uniqueId: "id",
@@ -398,7 +399,7 @@
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationMethodNG/delete",
+                url: "${pageContext.request.contextPath}/evaluationHypothesisNG/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},

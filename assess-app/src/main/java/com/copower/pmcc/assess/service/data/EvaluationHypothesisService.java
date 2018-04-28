@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleDao;
+import com.copower.pmcc.assess.dal.dao.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
+import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -26,12 +26,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 3.1.2.11	评估原则
- * Created by 13426 on 2018/4/27.
+ * 3.1.2.12	评估依据
+ * Created by 13426 on 2018/4/28.
  */
 @Service
-public class EvaluationPrincipleService {
-
+public class EvaluationHypothesisService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
@@ -40,55 +39,55 @@ public class EvaluationPrincipleService {
     private BaseDataDicService baseDataDicService;
 
     @Autowired
-    private EvaluationPrincipleDao evaluationPrincipleDao;
+    private EvaluationHypothesisDao evaluationHypothesisDao;
 
     @Transactional
-    public boolean add(EvaluationPrincipleDto evaluationPrincipleDto) {
-        if (evaluationPrincipleDto.getCreator()==null)evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
-        if (evaluationPrincipleDto.getGmtCreated()==null)evaluationPrincipleDto.setGmtCreated(new Date());
-        return evaluationPrincipleDao.add(evaluationPrincipleDto);
+    public boolean add(EvaluationHypothesisDto evaluationHypothesisDto){
+        if (evaluationHypothesisDto.getCreator()==null)evaluationHypothesisDto.setCreator(commonService.thisUserAccount());
+        if (evaluationHypothesisDto.getGmtCreated()==null)evaluationHypothesisDto.setGmtCreated(new Date());
+        return evaluationHypothesisDao.add(evaluationHypothesisDto);
     }
 
     @Transactional
-    public boolean remove(Integer id) {
-        return evaluationPrincipleDao.remove(id);
+    public boolean remove(Integer id){
+        return evaluationHypothesisDao.remove(id);
     }
 
     @Transactional
-    public boolean update(EvaluationPrincipleDto evaluationPrincipleDto) {
-        if (evaluationPrincipleDto.getCreator()==null)evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
-        if (evaluationPrincipleDto.getGmtCreated()==null)evaluationPrincipleDto.setGmtCreated(new Date());
-        return evaluationPrincipleDao.update(evaluationPrincipleDto);
+    public boolean update(EvaluationHypothesisDto evaluationHypothesisDto){
+        if (evaluationHypothesisDto.getCreator()==null)evaluationHypothesisDto.setCreator(commonService.thisUserAccount());
+        if (evaluationHypothesisDto.getGmtCreated()==null)evaluationHypothesisDto.setGmtCreated(new Date());
+        return evaluationHypothesisDao.update(evaluationHypothesisDto);
     }
 
     @Transactional(readOnly = true)
-    public EvaluationPrincipleDto get(Integer id) {
-        return evaluationPrincipleDao.get(id);
+    public EvaluationHypothesisDto get(Integer id){
+        return evaluationHypothesisDao.get(id);
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationPrincipleDto> listN(String method) {
+    private List<EvaluationHypothesisDto> listN(String method) {
         Integer key = null;
         if (method!=null)  key = changeMethod(method);
-        return evaluationPrincipleDao.list(key);
+        return evaluationHypothesisDao.list(key);
     }
 
     public BootstrapTableVo list(String method) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationPrincipleVo> vos = new ArrayList<>();
+        List<EvaluationHypothesisVo> vos = new ArrayList<>();
         boolean flag = (method == null) || (method == "");
-        listN(flag ? null : method).forEach(evaluationPrincipleDto -> vos.add(change(evaluationPrincipleDto)));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationPrincipleVo>() : vos);
+        listN(flag ? null : method).forEach(evaluationHypothesisDto -> vos.add(change(evaluationHypothesisDto)));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    private EvaluationPrincipleVo change(EvaluationPrincipleDto evaluationPrincipleDto) {
+    private EvaluationHypothesisVo change(EvaluationHypothesisDto evaluationHypothesisDto){
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        EvaluationPrincipleVo vo = new EvaluationPrincipleVo();
-        BeanUtils.copyProperties(evaluationPrincipleDto, vo);
+        EvaluationHypothesisVo vo = new EvaluationHypothesisVo();
+        BeanUtils.copyProperties(evaluationHypothesisDto,vo);
         try {
             if (vo.getMethod() != "" && vo.getMethod() != null) {
                 vo.setMethodStr(baseDataDics.get(Integer.parseInt(vo.getMethod())).getName());
@@ -114,4 +113,5 @@ public class EvaluationPrincipleService {
         }
         return key;
     }
+
 }
