@@ -16,15 +16,15 @@ public class DataNumberRuleDao {
     @Autowired
     private DataNumberRuleMapper dataNumberRuleMapper;
 
-    public List<DataNumberRule> getDataNumberRule(Integer assessClass, String prefix) {
+    public List<DataNumberRule> getDataNumberRule(Integer assessClass, Integer reportType) {
         DataNumberRuleExample example = new DataNumberRuleExample();
         DataNumberRuleExample.Criteria criteria = example.createCriteria();
 
         if (assessClass != null) {
             criteria.andAssessClassEqualTo(assessClass);
         }
-        if (StringUtils.isNotEmpty(prefix)) {
-            criteria.andPrefixLike(String.format("%s%s%s", "%", prefix, "%"));
+        if (reportType != null) {
+            criteria.andReportTypeEqualTo(reportType);
         }
         example.setOrderByClause(" id desc");
         List<DataNumberRule> dataNumberRules = dataNumberRuleMapper.selectByExample(example);

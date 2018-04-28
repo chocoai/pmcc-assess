@@ -37,14 +37,18 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    名称
+                                    报告类型
                                 </label>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                           placeholder="名称" id="queryName" name="queryName"
-                                           class="form-control">
+                                    <select class="form-control" id="queryReportType" name="queryReportType">
+                                        <option value="">-请选择-</option>
+                                        <c:forEach var="items" items="${reportTypeList}">
+                                            <option value="${items.id}">${items.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
 
@@ -88,7 +92,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            所属大类<span class="symbol required"></span>
+                                            大类<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
                                             <select class="form-control" required id="assessClass" name="assessClass">
@@ -115,17 +119,66 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-3 control-label">--%>
-                                            <%--文号前缀<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-9">--%>
-                                            <%--<input type="text" required data-rule-maxlength="50" placeholder="字段名称"--%>
-                                                   <%--id="numberPrefix" name="numberPrefix" class="form-control">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            前缀<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="前缀"
+                                                   id="prefix" name="prefix" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            日期规则<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="日期规则"
+                                                   id="dateRule" name="dateRule" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            位数<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="位数"
+                                                   id="figures" name="figures" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            起始编号<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="起始编号"
+                                                   id="startNumber" name="startNumber" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            同号的报告类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="同号的报告类型"
+                                                   id="sameReportType" name="sameReportType" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -173,8 +226,12 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'assessClassName', title: '所属大类'});
-        cols.push({field: 'reportType', title: '报告类型'});
-
+        cols.push({field: 'reportTypeName', title: '报告类型'});
+        cols.push({field: 'prefix', title: '前缀'});
+        cols.push({field: 'dateRule', title: '日期规则'});
+        cols.push({field: 'figures', title: '位数'});
+        cols.push({field: 'startNumber', title: '起始编号'});
+        cols.push({field: 'sameReportType', title: '同号的报告类型'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -188,6 +245,7 @@
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/numberRule/list", cols, {
             assessClass: $("#queryAssessClass").val(),
+            reportType:$("#queryReportType").val()
         }, {
             showColumns: false,
             showRefresh: false,
