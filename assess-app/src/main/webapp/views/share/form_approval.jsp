@@ -9,7 +9,7 @@
 <c:if test="${flog=='approval'}">
     <div class="x_panel">
         <div class="x_title">
-            <i class="fa fa-external-link-square"></i> 审批信息
+            <h2> 审批信息</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">

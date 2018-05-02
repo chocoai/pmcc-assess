@@ -55,7 +55,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -76,7 +77,8 @@
                                             不适用原因模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason">
+                                            <textarea placeholder="请填写不适用原因" class="form-control"
+                                                      id="notApplicableReason" name="notApplicableReason">
 
                                             </textarea>
                                         </div>
@@ -88,10 +90,10 @@
                                             评估方法
                                         </label>
                                         <div class="col-sm-10" id="method">
-                                            <c:forEach items="${useList}" var="item">
-                                                ${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">
-                                            </c:forEach>
-
+                                            <label class="checkbox-inline">
+                                                <c:forEach items="${useList}" var="item">
+                                                <input type="checkbox" name="method" value="${item.id}"><label >${item.name}</label>
+                                            </c:forEach></label>
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +103,8 @@
                                             适用原因模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
+                                            <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason"
+                                                      name="applicableReason">
 
                                             </textarea>
                                         </div>
@@ -114,7 +117,8 @@
                                             名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="请填写名称">
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                   placeholder="请填写名称">
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +141,8 @@
 </div>
 
 <!-- 显示子项列表 -->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,7 +166,8 @@
 
 
 <!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,9 +184,9 @@
                                 <input type="hidden" name="thinkingId" id="thinkingId">
                             </label>
                             <div class="col-sm-10">
-                                <select id="type">
+                                <select id="type" class="form-control">
                                     <option value="0" selected="selected">适用原因</option>
-                                    <option value="1" >不适用原因</option>
+                                    <option value="1">不适用原因</option>
                                 </select>
                             </div>
                         </div>
@@ -337,7 +343,7 @@
         $('#firSub').modal();
         var thinkingId = document.getElementById("thinkingId");
         thinkingId.value = id;
-        if (id==null || id=='' || id==0 ){//说明是从选子项添加的
+        if (id == null || id == '' || id == 0) {//说明是从选子项添加的
             var thinkingIdN = document.getElementById("thinkingIdN");
             thinkingId.value = thinkingIdN.value
         }
@@ -349,20 +355,20 @@
         data.name = $("#nameA").val();
         data.thinkingId = $("#thinkingId").val();
         data.type = $("#type option:selected").val()
-        if ($("#firSubA").valid()){
+        if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    if (result.ret){
+                    if (result.ret) {
                         console.info(result);
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var thinkingIdN = document.getElementById("thinkingIdN").value;
                         setSubDataDic(thinkingIdN);
-                    }else {
+                    } else {
                         toastr.success('调用服务端方法失败');
                     }
                 },

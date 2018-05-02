@@ -42,7 +42,8 @@ public class EvaluationHypothesisController {
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationHypothesisView");
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationHypothesisView");
         modelAndView.addObject("useList", baseDataDics);
         modelAndView.addObject("useListA", baseDataDicsA);
         return modelAndView;

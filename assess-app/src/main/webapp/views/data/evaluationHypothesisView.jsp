@@ -87,8 +87,8 @@
                                             委托目的
                                         </label>
                                         <div class="col-sm-10" id="entrustmentPurpose">
-                                            <c:forEach items="${useListA}" var="item">"委托目的
-                                                ${item.name}<input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-group">
+                                            <c:forEach items="${useListA}" var="item">
+                                                <input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-group">${item.name}
                                             </c:forEach>
                                         </div>
                                     </div>

@@ -14,21 +14,75 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 设置项目经理
+                    <h2> 项目信息</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frm_set_project_manager" class="form-horizontal">
+                    <form id="frm_project_info" class="form-horizontal">
                         <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目名称</label>
                                 <div class="col-sm-11">
-                                    <input required placeholder="项目经理" id="manager" name="manager"
-                                           value="" class="form-control">
+                                    <label class="form-control">${projectInfo.projectName}</label>
                                 </div>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 委托人</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 委托人联系人</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 占有人</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 占有人联系人</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 报告使用单位</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 报告使用单位联系人</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>

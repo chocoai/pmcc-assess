@@ -12,7 +12,8 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 项目信息
+                    <h2> 项目信息</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="frm_project_info" class="form-horizontal">
@@ -31,7 +32,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 委托人
+                    <h2> 委托人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 
@@ -39,7 +41,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 委托人联系人
+                    <h2> 委托人联系人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 
@@ -47,7 +50,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 占有人
+                    <h2> 占有人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 
@@ -55,7 +59,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 占有人联系人
+                    <h2> 占有人联系人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 
@@ -63,7 +68,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 报告使用单位
+                    <h2> 报告使用单位</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 
@@ -71,7 +77,8 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <i class="fa fa-external-link-square"></i> 报告使用单位联系人
+                    <h2> 报告使用单位联系人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
 

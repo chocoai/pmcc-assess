@@ -104,7 +104,7 @@
                                             申报表名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="字段名称"
+                                            <input type="text" required data-rule-maxlength="50" placeholder="申报表名称"
                                                    id="name" name="name" class="form-control">
                                         </div>
                                     </div>
