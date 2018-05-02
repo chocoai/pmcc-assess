@@ -130,7 +130,7 @@ public class EvaluationThinkingService {
 
     public String changeMethod(String methodStr) {
         Integer key = null;
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         inner:
         for (BaseDataDic b : baseDataDics) {
             for (int i = 0; i < baseDataDics.size() - 1; i++) {
