@@ -45,14 +45,14 @@ public class EvaluationMethodDao {//evaluationMethodDao
      * @param map
      * @return
      */
-    public List<EvaluationMethodDto> list(Map<String, Object> map) {
+    public List<EvaluationMethodDto> list(Map<String, Integer> map) {
         List<EvaluationMethodDto> evaluationMethodDtos = null;
         List<EvaluationMethod> evaluationMethods = null;
         EvaluationMethodExample evaluationMethodExample = new EvaluationMethodExample();
         if (map != null) {
             if (map.get(EvaluationMethodDto.METHOD_FIELD) != null) {//按方法查询
-
-                evaluationMethodExample.createCriteria().andMethodEqualTo((String) map.get(EvaluationMethodDto.METHOD_FIELD));
+                String v = map.get(EvaluationMethodDto.METHOD_FIELD)+"";
+                evaluationMethodExample.createCriteria().andMethodEqualTo(v);
                 evaluationMethodDtos = change(evaluationMethodExample);
             }
         } else {//不带任何查询条件的情况

@@ -121,7 +121,7 @@ public class EvaluationMethodService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         if (method != null) {
-            evaluationMethodVos = list(method);
+            evaluationMethodVos = list(method);// 121 比较法
             vo.setTotal(page.getTotal());
             vo.setRows(CollectionUtils.isEmpty(evaluationMethodVos)?new ArrayList<EvaluationMethodVo>():evaluationMethodVos);
         } else {
@@ -137,7 +137,7 @@ public class EvaluationMethodService {
         List<EvaluationMethodVo> evaluationMethodVos = null;
         List<EvaluationMethodDto> evaluationMethodDtos = null;
         if (method != null) {
-            Map<String, Object> map = new HashedMap();
+            Map<String, Integer> map = new HashedMap();
             map.put(EvaluationMethodDto.METHOD_FIELD, method);
             evaluationMethodDtos = methodDao.list(map);
             evaluationMethodVos = change(evaluationMethodDtos);
@@ -192,15 +192,15 @@ public class EvaluationMethodService {
         return vo;
     }
 
-    public Integer change(String methodStr) {
+    public Integer changeMethod(String methodStr) {
         Integer key = null;
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         inner:
         for (BaseDataDic b : baseDataDics) {
-            for (int i = 0; i < baseDataDics.size() - 1; i++) {
+            for (int i = 0; i < baseDataDics.size(); i++) {
                 String v = baseDataDics.get(i).getName();
                 if (methodStr.equals(v)) {
-                    key = i;
+                    key = b.getId();
                     break inner;
                 }
             }

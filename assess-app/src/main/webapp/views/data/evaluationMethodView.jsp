@@ -62,7 +62,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估技术方法</h4>
+                <h4 class="modal-title">评估方法</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -371,7 +371,7 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'typeStr', title: '是否启用'});
+        cols.push({field: 'typeStr', title: '是否适用'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

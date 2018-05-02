@@ -54,7 +54,7 @@ public class EvaluationMethodController {
         if (methodStr == null || methodStr == "") {//查询所有
             vo = service.getVos(null);
         } else {
-            vo = service.getVos(service.change(methodStr));//关键字查询
+            vo = service.getVos(service.changeMethod(methodStr));//关键字查询
         }
         return vo;
     }
