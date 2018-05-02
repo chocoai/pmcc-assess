@@ -91,6 +91,36 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            阶段<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="stage" name="stage">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${stageList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div>
+                                        <label class="col-sm-3 control-label">
+                                            占比<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                   id="proportion" name="proportion" class="form-control">
+                                        </div>
+                                        <div class="col-sm-1">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -150,7 +180,7 @@
                                             委托目的<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="stage" name="stage">
+                                            <select class="form-control" required id="subEntrustPurpose" name="subEntrustPurpose">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${stageList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -166,8 +196,8 @@
                                             占比<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="proportion" name="proportion" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="占比"
+                                                   id="subProportion" name="subProportion" class="form-control">
                                         </div>
                                         <div class="col-sm-1">
                                         </div>
@@ -205,11 +235,12 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'entrustPurposeName', title: '委托目的'});
+        cols.push({field: 'stageName', title: '阶段'});
+        cols.push({field: 'proportion', title: '占比'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >查看子项</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:delData(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';

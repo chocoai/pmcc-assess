@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.StageWeightProportionService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,15 +43,17 @@ public class StageWeightProportionController {
 
     @ResponseBody
     @RequestMapping(value="/list",name="取得阶段权重占比",method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer entrustmentPurpose){
-        BootstrapTableVo vo = stageWeightProportionService.getList(entrustmentPurpose);
+    public BootstrapTableVo list(Integer entrustmentPurpose,Integer stage){
+        BootstrapTableVo vo = stageWeightProportionService.getList(entrustmentPurpose,stage);
         return vo;
     }
     @ResponseBody
     @RequestMapping(value="/save",name="新增或修改阶段权重占比",method = RequestMethod.POST)
     public HttpResult save(StageWeightProportion stageWeightProportion){
         try {
-            stageWeightProportionService.save(stageWeightProportion);
+            if (stageWeightProportionService.save(stageWeightProportion) == false){
+                return HttpResult.newErrorResult("该选项已存在");
+            }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -67,20 +70,5 @@ public class StageWeightProportionController {
         }
         return HttpResult.newCorrectResult();
     }
-
-
-
-
-    @ResponseBody
-    @RequestMapping(value = "/saveSub",name="保存子项数据", method = RequestMethod.POST)
-    public HttpResult saveSub(StageWeightProportion stageWeightProportion) {
-        try {
-            stageWeightProportionService.saveSub(stageWeightProportion);
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
 
 }

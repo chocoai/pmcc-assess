@@ -31,11 +31,11 @@ public class StageWeightProportionService {
     @Autowired
     private BaseDataDicService baseDataDicService;
 
-    public BootstrapTableVo getList(Integer entrustmentPurpose) {
+    public BootstrapTableVo getList(Integer entrustmentPurpose,Integer stage) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<StageWeightProportion> list = stageWeightProportionDao.getList(entrustmentPurpose);
+        List<StageWeightProportion> list = stageWeightProportionDao.getList(entrustmentPurpose,stage);
         List<StageWeightProportionVo> stageWeightProportionVos = getVoList(list);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(stageWeightProportionVos) ? new ArrayList<StageWeightProportionVo>() : stageWeightProportionVos);
@@ -51,6 +51,12 @@ public class StageWeightProportionService {
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getEntrustPurpose());
                 if (baseDataDic != null)
                     stageWeightProportionVo.setEntrustPurposeName(baseDataDic.getName());
+            }
+            if(p.getStage() != null){
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getStage());
+                if(baseDataDic != null){
+                    stageWeightProportionVo.setStageName(baseDataDic.getName());
+                }
             }
 
             return stageWeightProportionVo;
@@ -72,14 +78,5 @@ public class StageWeightProportionService {
     public boolean delete(Integer id) throws BusinessException {
         if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         return stageWeightProportionDao.delete(id);
-    }
-
-    public void saveSub(StageWeightProportion stageWeightProportion) {
-        if (stageWeightProportion.getId() != null && stageWeightProportion.getId() > 0) {
-            stageWeightProportionDao.update(stageWeightProportion);
-        } else {
-            stageWeightProportionDao.save(stageWeightProportion);
-        }
-
     }
 }
