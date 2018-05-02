@@ -22,9 +22,10 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * 评估技术方法
  * Created by 13426 on 2018/4/24.
  */
-@RequestMapping(value = "/evaluationMethod", name = "评估方法")
+@RequestMapping(value = "/evaluationMethod", name = "评估技术方法")
 @Controller
 public class EvaluationMethodController {
     private final Logger logger = LoggerFactory.getLogger(getClass());

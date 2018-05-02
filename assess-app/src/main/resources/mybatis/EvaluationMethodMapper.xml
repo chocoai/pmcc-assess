@@ -3,7 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.EvaluationMethodMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.EvaluationMethod" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="method" property="method" jdbcType="INTEGER" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="applicable_reason" property="applicableReason" jdbcType="VARCHAR" />
     <result column="not_applicable_reason" property="notApplicableReason" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -108,7 +108,7 @@
     insert into tb_data_evaluation_method (method, applicable_reason, not_applicable_reason, 
       creator, gmt_created, gmt_modified
       )
-    values (#{method,jdbcType=INTEGER}, #{applicableReason,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
+    values (#{method,jdbcType=VARCHAR}, #{applicableReason,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -139,7 +139,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="method != null" >
-        #{method,jdbcType=INTEGER},
+        #{method,jdbcType=VARCHAR},
       </if>
       <if test="applicableReason != null" >
         #{applicableReason,jdbcType=VARCHAR},
@@ -171,7 +171,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.method != null" >
-        method = #{record.method,jdbcType=INTEGER},
+        method = #{record.method,jdbcType=VARCHAR},
       </if>
       <if test="record.applicableReason != null" >
         applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
@@ -196,7 +196,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_evaluation_method
     set id = #{record.id,jdbcType=INTEGER},
-      method = #{record.method,jdbcType=INTEGER},
+      method = #{record.method,jdbcType=VARCHAR},
       applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -210,7 +210,7 @@
     update tb_data_evaluation_method
     <set >
       <if test="method != null" >
-        method = #{method,jdbcType=INTEGER},
+        method = #{method,jdbcType=VARCHAR},
       </if>
       <if test="applicableReason != null" >
         applicable_reason = #{applicableReason,jdbcType=VARCHAR},
@@ -232,7 +232,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.EvaluationMethod" >
     update tb_data_evaluation_method
-    set method = #{method,jdbcType=INTEGER},
+    set method = #{method,jdbcType=VARCHAR},
       applicable_reason = #{applicableReason,jdbcType=VARCHAR},
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

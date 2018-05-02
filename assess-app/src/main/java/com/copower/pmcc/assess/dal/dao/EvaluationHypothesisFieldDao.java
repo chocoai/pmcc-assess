@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Created by 13426 on 2018/4/28.
- * 3.1.2.12	评估依据 字段
+ * 3.1.2.12	评估假设 字段
  */
 @Repository
 public class EvaluationHypothesisFieldDao {

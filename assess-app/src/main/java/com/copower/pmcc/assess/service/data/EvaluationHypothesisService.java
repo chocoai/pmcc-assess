@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 3.1.2.12	评估依据
+ * 3.1.2.12	评估假设
  * Created by 13426 on 2018/4/28.
  */
 @Service
@@ -37,6 +37,8 @@ public class EvaluationHypothesisService {
 
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private EvaluationPrincipleService principleService;
 
     @Autowired
     private EvaluationHypothesisDao evaluationHypothesisDao;
@@ -90,7 +92,34 @@ public class EvaluationHypothesisService {
         BeanUtils.copyProperties(evaluationHypothesisDto,vo);
         try {
             if (vo.getMethod() != "" && vo.getMethod() != null) {
-                vo.setMethodStr(baseDataDics.get(Integer.parseInt(vo.getMethod())).getName());
+                StringBuilder builder = new StringBuilder(1024);
+                String[] methods = vo.getMethod().split(",");
+                for (int i = 0; i < methods.length; i++) {
+                    if (i < 3) {// 只显示3条
+                        int id = Integer.parseInt(methods[i]);
+                        if (i == methods.length - 1) {
+                            builder.append(principleService.changeMethodC(id));
+                        } else {
+                            builder.append(principleService.changeMethodC(id)+",");
+                        }
+                    }
+                }
+                vo.setMethodStr(builder.toString());
+            }
+            if (vo.getEntrustmentPurpose() != null && vo.getEntrustmentPurpose()!=""){
+                StringBuilder builder = new StringBuilder(1024);
+                String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
+                for (int i = 0; i < entrustmentPurposeS.length; i++) {
+                    int id = Integer.parseInt(entrustmentPurposeS[i]);
+                    if (i < 3) { // 只显示3条
+                        if (i == entrustmentPurposeS.length - 1) {
+                            builder.append(principleService.changeEntrustmentPurpose(id));
+                        } else {
+                            builder.append(principleService.changeEntrustmentPurpose(id)+",");
+                        }
+                    }
+                }
+                vo.setEntrustmentPurposeStr(builder.toString());
             }
         }catch (Exception e){
             throw  e;

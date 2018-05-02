@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 3.1.2.3	评估技术思路 字段
+ * 3.1.2.3	评估依据 字段
  * Created by 13426 on 2018/4/28.
  */
 @Service

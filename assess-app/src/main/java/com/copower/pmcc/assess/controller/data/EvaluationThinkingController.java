@@ -21,9 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * 评估技术思路
  * Created by 13426 on 2018/4/26.
  */
-@RequestMapping(value = "/evaluationThinking")
+@RequestMapping(value = "/evaluationThinking",name = "评估技术思路")
 @Controller
 public class EvaluationThinkingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -39,7 +40,7 @@ public class EvaluationThinkingController {
 
     @RequestMapping(value = "/index", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationThinkingView");
         modelAndView.addObject("useList", baseDataDics);
         return modelAndView;
@@ -75,7 +76,6 @@ public class EvaluationThinkingController {
     public HttpResult add(EvaluationThinkingDto evaluationThinkingDto) {
         try {
             if (evaluationThinkingDto.getId() != null && evaluationThinkingDto.getId() != 0) {//不再使用专门的 update controller
-                logger.debug(""+evaluationThinkingDto);
                 service.update(evaluationThinkingDto);
             } else {
                 service.add(evaluationThinkingDto);

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 评估技术方法
  * Created by 13426 on 2018/4/24.
  */
 @Service
@@ -43,6 +44,8 @@ public class EvaluationMethodService {
 
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private EvaluationPrincipleService principleService;
 
     @Resource
     private EvaluationMethodFieldDao evaluationMethodFieldDao;
@@ -50,7 +53,6 @@ public class EvaluationMethodService {
     @Resource
     private EvaluationMethodDao methodDao;
 
-    @Deprecated
     @Transactional
     public boolean add(EvaluationMethodDto evaluationMethodDto) {
         if(evaluationMethodDto.getGmtCreated()==null)evaluationMethodDto.setGmtCreated(new Date());
@@ -154,8 +156,20 @@ public class EvaluationMethodService {
         EvaluationMethodVo vo = new EvaluationMethodVo();
         BeanUtils.copyProperties(evaluationMethodDto, vo);
         try {
-            if (vo.getMethod() != 0 && vo.getMethod() != null) {
-                vo.setMethodStr(baseDataDics.get(vo.getMethod()).getName());
+            if (vo.getMethod() != "" && vo.getMethod() != null) {
+                StringBuilder builder = new StringBuilder(1024);
+                String[] methods = vo.getMethod().split(",");
+                for (int i = 0; i < methods.length; i++) {
+                    if (i < 3) {// 只显示3条
+                        int id = Integer.parseInt(methods[i]);
+                        if (i == methods.length - 1) {
+                            builder.append(principleService.changeMethodC(id));
+                        } else {
+                            builder.append(principleService.changeMethodC(id)+",");
+                        }
+                    }
+                }
+                vo.setMethodStr(builder.toString());
             }
         }catch (Exception e){
             throw  e;

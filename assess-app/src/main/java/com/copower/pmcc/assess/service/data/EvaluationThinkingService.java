@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 评估技术思路
  * Created by 13426 on 2018/4/26.
  */
 @Service(value = "evaluationThinkingService")
@@ -34,6 +35,8 @@ public class EvaluationThinkingService {
 
     @Resource
     private EvaluationThinkingDao evaluationThinkingDao;
+    @Autowired
+    private EvaluationPrincipleService principleService;
 
     @Autowired
     private CommonService commonService;
@@ -42,48 +45,50 @@ public class EvaluationThinkingService {
     private BaseDataDicService baseDataDicService;
 
     @Transactional
-    public boolean add(EvaluationThinkingDto evaluationThinkingDto){
-        if (evaluationThinkingDto.getCreator()==null)evaluationThinkingDto.setCreator(commonService.thisUserAccount());
-        if (evaluationThinkingDto.getGmtCreated()==null)evaluationThinkingDto.setGmtCreated(new Date());
+    public boolean add(EvaluationThinkingDto evaluationThinkingDto) {
+        if (evaluationThinkingDto.getCreator() == null)
+            evaluationThinkingDto.setCreator(commonService.thisUserAccount());
+        if (evaluationThinkingDto.getGmtCreated() == null) evaluationThinkingDto.setGmtCreated(new Date());
         return evaluationThinkingDao.add(evaluationThinkingDto);
     }
 
     @Transactional
-    public boolean update(EvaluationThinkingDto evaluationThinkingDto){
-        if (evaluationThinkingDto.getCreator()==null)evaluationThinkingDto.setCreator(commonService.thisUserAccount());
-        if (evaluationThinkingDto.getGmtCreated()==null)evaluationThinkingDto.setGmtCreated(new Date());
+    public boolean update(EvaluationThinkingDto evaluationThinkingDto) {
+        if (evaluationThinkingDto.getCreator() == null)
+            evaluationThinkingDto.setCreator(commonService.thisUserAccount());
+        if (evaluationThinkingDto.getGmtCreated() == null) evaluationThinkingDto.setGmtCreated(new Date());
         return evaluationThinkingDao.update(evaluationThinkingDto);
     }
 
     @Transactional
-    public boolean remove(Integer id){
+    public boolean remove(Integer id) {
         return evaluationThinkingDao.remove(id);
     }
 
     @Transactional(readOnly = true)
-    public EvaluationThinkingDto get(Integer id){
+    public EvaluationThinkingDto get(Integer id) {
         return evaluationThinkingDao.get(id);
     }
 
     @Transactional(readOnly = true)
-    public List<EvaluationThinking> list(String method){
+    public List<EvaluationThinking> list(String method) {
         try {
-            if (method==null || method=="") {
+            if (method == null || method == "") {
                 return evaluationThinkingDao.list(null);
-            }else {
+            } else {
                 return evaluationThinkingDao.list(method);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             try {
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }
         return null;
     }
 
-    public BootstrapTableVo listVo(String method){
+    public BootstrapTableVo listVo(String method) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -93,7 +98,7 @@ public class EvaluationThinkingService {
         return vo;
     }
 
-    private List<EvaluationThinkingVo> vosChange(List<EvaluationThinking> evaluationThinkings){
+    private List<EvaluationThinkingVo> vosChange(List<EvaluationThinking> evaluationThinkings) {
         List<EvaluationThinkingVo> evaluationThinkingVoList = new ArrayList<>();
         evaluationThinkings.forEach(evaluationThinking -> {
             evaluationThinkingVoList.add(change(evaluationThinking));
@@ -101,17 +106,29 @@ public class EvaluationThinkingService {
         return evaluationThinkingVoList;
     }
 
-    private EvaluationThinkingVo change(EvaluationThinking evaluationThinking){
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
+    private EvaluationThinkingVo change(EvaluationThinking evaluationThinking) {
+        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
-        BeanUtils.copyProperties(evaluationThinking,evaluationThinkingVo);
-        if (evaluationThinking.getMethod()!=null && evaluationThinking.getMethod()!="" ){
-            evaluationThinkingVo.setMethodStr(baseDataDics.get(Integer.parseInt(evaluationThinking.getMethod())).getName());
+        BeanUtils.copyProperties(evaluationThinking, evaluationThinkingVo);
+        if (evaluationThinking.getMethod() != null && evaluationThinking.getMethod() != "") {
+            StringBuilder builder = new StringBuilder(1024);
+            String[] methods = evaluationThinkingVo.getMethod().split(",");
+            for (int i = 0; i < methods.length; i++) {
+                if (i < 3) {// 只显示3条
+                    int id = Integer.parseInt(methods[i]);
+                    if (i == methods.length - 1) {
+                        builder.append(principleService.changeMethodC(id));
+                    } else {
+                        builder.append(principleService.changeMethodC(id) + ",");
+                    }
+                }
+            }
+            evaluationThinkingVo.setMethodStr(builder.toString());
         }
         return evaluationThinkingVo;
     }
 
-    public String changeMethod(String methodStr){
+    public String changeMethod(String methodStr) {
         Integer key = null;
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_THINKING);
         inner:
@@ -124,7 +141,7 @@ public class EvaluationThinkingService {
                 }
             }
         }
-        return key+"";
+        return key + "";
     }
 
 

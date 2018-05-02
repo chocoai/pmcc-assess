@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 评估技术方法 字段
  * Created by 13426 on 2018/4/24.
  */
-@RequestMapping(value = "/evaluationMethodNG")
+@RequestMapping(value = "/evaluationMethodNG",name = "评估技术方法 字段")
 @Controller
-public class MethodFieldController {
+public class EvaluationMethodFieldController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired

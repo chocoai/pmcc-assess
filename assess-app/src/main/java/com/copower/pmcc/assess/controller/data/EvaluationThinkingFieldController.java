@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 评估技术思路 字段
  * Created by 13426 on 2018/4/27.
  */
-@RequestMapping(value = "/evaluationThinkingNG")
+@RequestMapping(value = "/evaluationThinkingNG",name = "评估技术思路 字段")
 @Controller
 public class EvaluationThinkingFieldController {
 
@@ -29,9 +30,9 @@ public class EvaluationThinkingFieldController {
 
     @ResponseBody
     @RequestMapping(value = "/listField",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
-    public BootstrapTableVo list(Integer methodId){
+    public BootstrapTableVo list(Integer thinkingId){
         BootstrapTableVo vo = null;
-        if (methodId!=null) vo = service.listVos(methodId);
+        if (thinkingId!=null) vo = service.listVos(thinkingId);
         return vo;
     }
 

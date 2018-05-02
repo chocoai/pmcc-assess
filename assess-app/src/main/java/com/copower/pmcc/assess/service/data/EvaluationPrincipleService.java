@@ -44,8 +44,9 @@ public class EvaluationPrincipleService {
 
     @Transactional
     public boolean add(EvaluationPrincipleDto evaluationPrincipleDto) {
-        if (evaluationPrincipleDto.getCreator()==null)evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
-        if (evaluationPrincipleDto.getGmtCreated()==null)evaluationPrincipleDto.setGmtCreated(new Date());
+        if (evaluationPrincipleDto.getCreator() == null)
+            evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
+        if (evaluationPrincipleDto.getGmtCreated() == null) evaluationPrincipleDto.setGmtCreated(new Date());
         return evaluationPrincipleDao.add(evaluationPrincipleDto);
     }
 
@@ -56,8 +57,9 @@ public class EvaluationPrincipleService {
 
     @Transactional
     public boolean update(EvaluationPrincipleDto evaluationPrincipleDto) {
-        if (evaluationPrincipleDto.getCreator()==null)evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
-        if (evaluationPrincipleDto.getGmtCreated()==null)evaluationPrincipleDto.setGmtCreated(new Date());
+        if (evaluationPrincipleDto.getCreator() == null)
+            evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
+        if (evaluationPrincipleDto.getGmtCreated() == null) evaluationPrincipleDto.setGmtCreated(new Date());
         return evaluationPrincipleDao.update(evaluationPrincipleDto);
     }
 
@@ -69,7 +71,7 @@ public class EvaluationPrincipleService {
     @Transactional(readOnly = true)
     private List<EvaluationPrincipleDto> listN(String method) {
         Integer key = null;
-        if (method!=null)  key = changeMethod(method);
+        if (method != null) key = changeMethod(method);
         return evaluationPrincipleDao.list(key);
     }
 
@@ -87,19 +89,52 @@ public class EvaluationPrincipleService {
 
     private EvaluationPrincipleVo change(EvaluationPrincipleDto evaluationPrincipleDto) {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         EvaluationPrincipleVo vo = new EvaluationPrincipleVo();
         BeanUtils.copyProperties(evaluationPrincipleDto, vo);
         try {
             if (vo.getMethod() != "" && vo.getMethod() != null) {
-                vo.setMethodStr(baseDataDics.get(Integer.parseInt(vo.getMethod())).getName());
+                StringBuilder builder = new StringBuilder(1024);
+                String[] methods = vo.getMethod().split(",");
+                for (int i = 0; i < methods.length; i++) {
+                    if (i < 3){//只显示3条
+                        int id = Integer.parseInt(methods[i]);
+                        if (i == methods.length - 1) {
+                            builder.append(changeMethodC(id));
+                        } else {
+                            builder.append(changeMethodC(id)+",");
+                        }
+                    }
+                }
+                vo.setMethodStr(builder.toString());
             }
-        }catch (Exception e){
-            throw  e;
+            if (vo.getEntrustmentPurpose() != null && vo.getEntrustmentPurpose() != "") {
+                StringBuilder builder = new StringBuilder(1024);
+                String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
+                for (int i = 0; i < entrustmentPurposeS.length; i++) {
+                    if (i < 3) {//只显示3条
+                        int id = Integer.parseInt(entrustmentPurposeS[i]);
+                        if (i == entrustmentPurposeS.length - 1) {
+                            builder.append(changeEntrustmentPurpose(id));
+                        } else {
+                            builder.append(changeEntrustmentPurpose(id)+",");
+                        }
+                    }
+                }
+                vo.setEntrustmentPurposeStr(builder.toString());
+            }
+        } catch (Exception e) {
+            throw e;
         }
         return vo;
     }
 
-    private Integer changeMethod(String methodStr) {
+    /**
+     * 特别处理 方法 int
+     * @param methodStr
+     * @return
+     */
+    public Integer changeMethod(String methodStr) {
         Integer key = null;
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         inner:
@@ -113,5 +148,41 @@ public class EvaluationPrincipleService {
             }
         }
         return key;
+    }
+
+    /**
+     * 特别处理 方法
+     * @param id
+     * @return
+     */
+    public String changeMethodC(Integer id){
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        String v = "";
+        inner:
+        for (BaseDataDic b : baseDataDicsA){
+            if (b.getId()==id){
+                v = b.getName();
+                break inner;
+            }
+        }
+        return v;
+    }
+
+    /**
+     * 特别处理 委托
+     * @param id
+     * @return
+     */
+    public String changeEntrustmentPurpose(Integer id){
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        String v = "";
+        inner:
+        for (BaseDataDic b : baseDataDicsA){
+            if (b.getId()==id){
+                v = b.getName();
+                break inner;
+            }
+        }
+        return v;
     }
 }

@@ -6,8 +6,6 @@
 </head>
 
 <body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
 <div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
@@ -29,7 +27,7 @@
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估原则名称" id="queryName" name="queryName"
+                                           placeholder="评估方法 名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -78,7 +76,7 @@
                                             名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="名称" class="form-control">
+                                            <input type="text" name="name" id="name" placeholder="名称">
                                         </div>
                                     </div>
                                 </div>
@@ -88,8 +86,10 @@
                                         <label class="col-sm-2 control-label">
                                             委托目的
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="entrustmentPurpose" id="entrustmentPurpose" placeholder="委托目的" class="form-control">
+                                        <div class="col-sm-10" id="entrustmentPurpose">
+                                            <c:forEach items="${useListA}" var="item">"委托目的
+                                                ${item.name}<input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-group">
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
@@ -98,13 +98,10 @@
                                         <label class="col-sm-2 control-label">
                                             评估方法
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select name="method" class="form-control" id="method">
-                                                <option value="">请选择</option>
+                                        <div class="col-sm-10" id="method">
                                                 <c:forEach items="${useList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
+                                                    ${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">
                                                 </c:forEach>
-                                            </select>
 
                                         </div>
                                     </div>
@@ -170,7 +167,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">原则字段</h4>
+                <h4 class="modal-title" id="titleContent2">字段</h4>
             </div>
             <form id="firSubA">
             <div class="panel-body">
@@ -212,7 +209,7 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'entrustmentPurpose', title: '委托目的'});
+        cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'template', title: '模板'});
         cols.push({field: 'methodStr', title: '评估方法'});
 
@@ -275,9 +272,10 @@
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
-        data.applicableReason = $("#applicableReason").val();
-        data.method = $("#method option:selected").val()-120;
-        data.notApplicableReason = $("#notApplicableReason").val();
+        data.name = $("#name").val();
+        data.template = $("#template").val();
+        console.info(data.entrustmentPurpose);
+        console.info(data.method);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationPrinciple/save",
@@ -300,7 +298,7 @@
             })
         }
     }
-    //评估原则修改
+    //评估原则 修改
     function editHrProfessional(index) {
         $.ajax({
             url: "${pageContext.request.contextPath}/evaluationPrinciple/get",
@@ -346,8 +344,15 @@
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    toastr.success('保存成功');
-                    window.location.reload();//自动刷新
+                    if (result.ret){
+                        console.info(result);
+                        toastr.success('保存成功');
+                        $('#firSub').modal('hide');//隐藏
+                        var principleIdN = document.getElementById("principleIdN").value;
+                        setSubDataDic(principleIdN);
+                    }else {
+                        toastr.success('调用服务端方法失败');
+                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -371,6 +376,7 @@
         });
         var principleIdN = document.getElementById("principleIdN");
         principleIdN.value = pid;
+        $("#tbDataDicList").bootstrapTable("destroy");
         TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationPrincipleNG/listField",
             cols, {principleId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
@@ -387,6 +393,7 @@
     //设置子项数据
     function setSubDataDic(pid) {
         $("#divSubDataDic").modal();//显示
+        $("#tbDataDicList").clearAll();//清除数据
         loadSubDataDicList(pid, function () {
             $('#divSubDataDic').modal("show");
         });
@@ -404,9 +411,8 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        window.location.reload();//自动刷新
-                        $('#' + id).bootstrapTable("refresh");
-                        loadSubDataDicList();//重载 (刷新)
+                        var principleIdN = document.getElementById("principleIdN").value;
+                        setSubDataDic(principleIdN);
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);

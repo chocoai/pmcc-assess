@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * 评估原则
  * Created by 13426 on 2018/4/28.
  */
 @RequestMapping(value = "/evaluationPrinciple", name = "评估原则")
@@ -40,8 +41,10 @@ public class EvaluationPrincipleController {
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationPrincipleView");
         modelAndView.addObject("useList", baseDataDics);
+        modelAndView.addObject("useListA", baseDataDicsA);
         return modelAndView;
     }
 

@@ -22,11 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * 评估依据
  * Created by 13426 on 2018/4/28.
  */
-@RequestMapping(value = "/evaluationBasis")
+@RequestMapping(value = "/evaluationBasis",name = "评估依据")
 @Controller
-public class EvaluationBasisController {//EvaluationBasisDto
+public class EvaluationBasisController {
 
     @Autowired
     private EvaluationBasisService service;
@@ -41,8 +42,10 @@ public class EvaluationBasisController {//EvaluationBasisDto
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationBasisView");
         modelAndView.addObject("useList", baseDataDics);
+        modelAndView.addObject("useListA", baseDataDicsA);
         return modelAndView;
     }
 

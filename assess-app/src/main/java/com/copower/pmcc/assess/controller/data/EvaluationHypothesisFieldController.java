@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 评估假设 字段
  * Created by 13426 on 2018/4/28.
  */
-@RequestMapping(value = "/evaluationHypothesisNG", name = "评估依据字段")
+@RequestMapping(value = "/evaluationHypothesisNG", name = "评估假设字段")
 @Controller
 public class EvaluationHypothesisFieldController {
     private final Logger logger = LoggerFactory.getLogger(getClass());

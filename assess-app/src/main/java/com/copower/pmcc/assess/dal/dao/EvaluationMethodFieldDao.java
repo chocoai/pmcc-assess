@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 评估技术方法 字段
  * Created by 13426 on 2018/4/24.
  */
 @Repository(value = "evaluationMethodFieldDao")

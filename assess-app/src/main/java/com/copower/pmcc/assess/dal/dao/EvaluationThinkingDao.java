@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 评估技术思路
  * Created by 13426 on 2018/4/26.
  */
 @Repository(value = "evaluationThinkingDao")

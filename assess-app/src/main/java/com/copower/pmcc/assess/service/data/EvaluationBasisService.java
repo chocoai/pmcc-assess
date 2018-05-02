@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 评估依据
  * Created by 13426 on 2018/4/28.
  */
 @Service
@@ -38,39 +39,42 @@ public class EvaluationBasisService {
     private BaseDataDicService baseDataDicService;
 
     @Autowired
+    private EvaluationPrincipleService principleService;
+
+    @Autowired
     private EvaluationBasisDao evaluationBasisDao;
 
     @Transactional
-    public boolean add(EvaluationBasisDto dto){
-        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
+    public boolean add(EvaluationBasisDto dto) {
+        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
         return evaluationBasisDao.add(dto);
     }
 
     @Transactional
-    public boolean remove(Integer id){
+    public boolean remove(Integer id) {
         return evaluationBasisDao.remove(id);
     }
 
     @Transactional
-    public boolean update(EvaluationBasisDto dto){
-        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
-        return  evaluationBasisDao.update(dto);
+    public boolean update(EvaluationBasisDto dto) {
+        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
+        return evaluationBasisDao.update(dto);
     }
 
     @Transactional(readOnly = true)
-    public EvaluationBasisVo get(Integer id){
+    public EvaluationBasisVo get(Integer id) {
         return change(evaluationBasisDao.get(id));
     }
 
-    public List<EvaluationBasisDto> listN(String method){
+    public List<EvaluationBasisDto> listN(String method) {
         Integer key = null;
-        if (method!=null)  key = changeMethod(method);
+        if (method != null) key = changeMethod(method);
         return evaluationBasisDao.list(key);
     }
 
-    public BootstrapTableVo list(String method){
+    public BootstrapTableVo list(String method) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -82,25 +86,53 @@ public class EvaluationBasisService {
         return vo;
     }
 
-    public EvaluationBasisVo change(EvaluationBasisDto dto){
+    public EvaluationBasisVo change(EvaluationBasisDto dto) {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationBasisVo vo = new EvaluationBasisVo();
-        BeanUtils.copyProperties(dto,vo);
+        BeanUtils.copyProperties(dto, vo);
         try {
             if (vo.getMethod() != "" && vo.getMethod() != null) {
-                vo.setMethodStr(baseDataDics.get(Integer.parseInt(vo.getMethod())).getName());
+                StringBuilder builder = new StringBuilder(1024);
+                String[] methods = vo.getMethod().split(",");
+                for (int i = 0; i < methods.length; i++) {
+                    if (i < 3) {// 只显示3条
+                        int id = Integer.parseInt(methods[i]);
+                        if (i == methods.length - 1) {
+                            builder.append(principleService.changeMethodC(id));
+                        } else {
+                            builder.append(principleService.changeMethodC(id)+",");
+                        }
+                    }
+                }
+                vo.setMethodStr(builder.toString());
             }
-        }catch (Exception e){
-            throw  e;
+            if (vo.getEntrustmentPurpose() != null && vo.getEntrustmentPurpose() != "") {
+                StringBuilder builder = new StringBuilder(1024);
+                String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
+                for (int i = 0; i < entrustmentPurposeS.length; i++) {
+                    int id = Integer.parseInt(entrustmentPurposeS[i]);
+                    if (i < 3) { // 只显示3条
+                        if (i == entrustmentPurposeS.length - 1) {
+                            builder.append(principleService.changeEntrustmentPurpose(id));
+                        } else {
+                            builder.append(principleService.changeEntrustmentPurpose(id)+",");
+                        }
+                    }
+                }
+                vo.setEntrustmentPurposeStr(builder.toString());
+            }
+        } catch (Exception e) {
+            throw e;
         }
         return vo;
     }
 
-    public EvaluationBasisDto change(EvaluationBasisVo e){
+    public EvaluationBasisDto change(EvaluationBasisVo e) {
         EvaluationBasisDto dto = new EvaluationBasisDto();
-        BeanUtils.copyProperties(e,dto);
+        BeanUtils.copyProperties(e, dto);
         return dto;
     }
+
     private Integer changeMethod(String methodStr) {
         Integer key = null;
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);

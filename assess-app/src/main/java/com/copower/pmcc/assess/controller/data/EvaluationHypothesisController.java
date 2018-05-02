@@ -21,9 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * 评估假设
  * Created by 13426 on 2018/4/28.
  */
-@RequestMapping(value = "/evaluationHypothesis", name = "评估依据")
+@RequestMapping(value = "/evaluationHypothesis", name = "评估假设")
 @Controller
 public class EvaluationHypothesisController {
 
@@ -41,8 +42,9 @@ public class EvaluationHypothesisController {
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationHypothesisView");
+        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationHypothesisView");
         modelAndView.addObject("useList", baseDataDics);
+        modelAndView.addObject("useListA", baseDataDicsA);
         return modelAndView;
     }
 

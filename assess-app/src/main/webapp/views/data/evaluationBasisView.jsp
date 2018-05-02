@@ -6,8 +6,6 @@
 </head>
 
 <body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
 <div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
@@ -25,11 +23,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    评估技术思路
+                                    评估依据
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估技术思路名称" id="queryName" name="queryName"
+                                           placeholder="评估方法 名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -63,7 +61,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估技术思路</h4>
+                <h4 class="modal-title">评估依据</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -78,7 +76,7 @@
                                             名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="名称" class="form-control">
+                                            <input type="text" name="name" id="name" placeholder="名称">
                                         </div>
                                     </div>
                                 </div>
@@ -88,8 +86,10 @@
                                         <label class="col-sm-2 control-label">
                                             委托目的
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="entrustmentPurpose" id="entrustmentPurpose" placeholder="委托目的" class="form-control">
+                                        <div class="col-sm-10" id="entrustmentPurpose">
+                                            <c:forEach items="${useListA}" var="item">"委托目的
+                                                ${item.name}<input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-group">
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
@@ -98,13 +98,10 @@
                                         <label class="col-sm-2 control-label">
                                             评估方法
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select name="method" class="form-control" id="method">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${useList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                        <div class="col-sm-10" id="method">
+                                            <c:forEach items="${useList}" var="item">
+                                                ${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">
+                                            </c:forEach>
 
                                         </div>
                                     </div>
@@ -170,31 +167,31 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">技术思路字段</h4>
+                <h4 class="modal-title" id="titleContent2">字段</h4>
             </div>
             <form id="firSubA">
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
-                            字段名称
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="hidden" name="basisId" id="basisId">
-                            <input type="text" id="nameA" name="nameA" class="form-control">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                字段名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="basisId" id="basisId">
+                                <input type="text" id="nameA" name="nameA" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                    保存
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                        保存
+                    </button>
+                </div>
             </form>
 
         </div>
@@ -208,11 +205,11 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 评估技术思路 数据列表
+    //加载 评估依据 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'entrustmentPurpose', title: '委托目的'});
+        cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'template', title: '模板'});
         cols.push({field: 'methodStr', title: '评估方法'});
 
@@ -238,7 +235,7 @@
         });
     }
 
-    //删除 评估技术思路 数据()
+    //删除 评估依据 数据()
     function removeData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
@@ -266,18 +263,19 @@
         })
     }
 
-    //对新增 评估技术思路 数据处理
+    //对新增 评估依据 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
-    //新增 评估技术思路 数据
+    //新增 评估依据 数据
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
-        data.applicableReason = $("#applicableReason").val();
-        data.method = $("#method option:selected").val()-120;
-        data.notApplicableReason = $("#notApplicableReason").val();
+        data.name = $("#name").val();
+        data.template = $("#template").val();
+        console.info(data.entrustmentPurpose);
+        console.info(data.method);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationBasis/save",
@@ -300,7 +298,7 @@
             })
         }
     }
-    //评估技术思路修改
+    //评估依据 修改
     function editHrProfessional(index) {
         $.ajax({
             url: "${pageContext.request.contextPath}/evaluationBasis/get",
@@ -321,7 +319,7 @@
             }
         })
     }
-    
+
     //新增 子项 字段数据
     function addMethodField(id) {
         $("#firSub").clearAll();
@@ -338,7 +336,7 @@
         //firSubA
         var data = formParams("firSubA");
         data.name = $("#nameA").val();
-        data.principleId = $("#principleId").val();
+        data.basisId = $("#basisId").val();
         if ($("#firSubA").valid()){
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationBasisNG/addField",
@@ -346,8 +344,15 @@
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    toastr.success('保存成功');
-                    window.location.reload();//自动刷新
+                    if (result.ret){
+                        console.info(result);
+                        toastr.success('保存成功');
+                        $('#firSub').modal('hide');//隐藏
+                        var basisIdN = document.getElementById("basisIdN").value;
+                        setSubDataDic(basisIdN);
+                    }else {
+                        toastr.success('调用服务端方法失败');
+                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -371,6 +376,7 @@
         });
         var basisIdN = document.getElementById("basisIdN");
         basisIdN.value = pid;
+        $("#tbDataDicList").bootstrapTable("destroy");
         TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationBasisNG/listField",
             cols, {basisId: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
@@ -387,6 +393,7 @@
     //设置子项数据
     function setSubDataDic(pid) {
         $("#divSubDataDic").modal();//显示
+        $("#tbDataDicList").clearAll();//清除数据
         loadSubDataDicList(pid, function () {
             $('#divSubDataDic').modal("show");
         });
@@ -404,9 +411,8 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        window.location.reload();//自动刷新
-                        $('#' + id).bootstrapTable("refresh");
-                        loadSubDataDicList();//重载 (刷新)
+                        var basisIdN = document.getElementById("basisIdN").value;
+                        setSubDataDic(basisIdN);
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -419,9 +425,8 @@
             })
         })
     }
-    
+
 
 </script>
-
 
 </html>

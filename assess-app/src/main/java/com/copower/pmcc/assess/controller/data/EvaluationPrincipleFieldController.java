@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 评估原则 字段
  * Created by 13426 on 2018/4/28.
  */
 @RequestMapping(value = "/evaluationPrincipleNG", name = "评估原则字段")

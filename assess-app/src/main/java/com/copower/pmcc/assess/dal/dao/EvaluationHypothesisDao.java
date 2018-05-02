@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 3.1.2.12	评估依据
+ * 3.1.2.12	评估假设
  * Created by 13426 on 2018/4/28.
  */
 @Repository

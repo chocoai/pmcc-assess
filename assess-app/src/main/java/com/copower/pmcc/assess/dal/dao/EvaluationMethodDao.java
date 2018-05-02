@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 评估技术方法
  * Created by 13426 on 2018/4/24.
  */
 @Repository(value = "evaluationMethodDao")
@@ -50,7 +51,8 @@ public class EvaluationMethodDao {//evaluationMethodDao
         EvaluationMethodExample evaluationMethodExample = new EvaluationMethodExample();
         if (map != null) {
             if (map.get(EvaluationMethodDto.METHOD_FIELD) != null) {//按方法查询
-                evaluationMethodExample.createCriteria().andMethodEqualTo((Integer) map.get(EvaluationMethodDto.METHOD_FIELD));
+
+                evaluationMethodExample.createCriteria().andMethodEqualTo((String) map.get(EvaluationMethodDto.METHOD_FIELD));
                 evaluationMethodDtos = change(evaluationMethodExample);
             }
         } else {//不带任何查询条件的情况

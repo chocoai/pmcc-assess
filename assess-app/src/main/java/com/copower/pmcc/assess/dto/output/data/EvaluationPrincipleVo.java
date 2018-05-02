@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
  */
 public class EvaluationPrincipleVo extends EvaluationPrincipleDto {
     private String methodStr ;
+    private String entrustmentPurposeStr;
 
     public String getMethodStr() {
         return methodStr;
@@ -14,5 +15,13 @@ public class EvaluationPrincipleVo extends EvaluationPrincipleDto {
 
     public void setMethodStr(String methodStr) {
         this.methodStr = methodStr;
+    }
+
+    public String getEntrustmentPurposeStr() {
+        return entrustmentPurposeStr;
+    }
+
+    public void setEntrustmentPurposeStr(String entrustmentPurposeStr) {
+        this.entrustmentPurposeStr = entrustmentPurposeStr;
     }
 }

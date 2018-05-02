@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.entity.EvaluationBasis;
  */
 public class EvaluationBasisVo extends EvaluationBasis {
     private String methodStr;
+    private String  entrustmentPurposeStr;
 
     public String getMethodStr() {
         return methodStr;
@@ -14,5 +15,13 @@ public class EvaluationBasisVo extends EvaluationBasis {
 
     public void setMethodStr(String methodStr) {
         this.methodStr = methodStr;
+    }
+
+    public String getEntrustmentPurposeStr() {
+        return entrustmentPurposeStr;
+    }
+
+    public void setEntrustmentPurposeStr(String entrustmentPurposeStr) {
+        this.entrustmentPurposeStr = entrustmentPurposeStr;
     }
 }

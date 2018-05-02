@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * 评估依据 字段
  * Created by 13426 on 2018/4/28.
  */
-@RequestMapping(value = "/evaluationBasisNG")
+@RequestMapping(value = "/evaluationBasisNG",name = "评估依据 字段")
 @Controller
 public class EvaluationBasisFieldController {
     private final Logger logger = LoggerFactory.getLogger(getClass());

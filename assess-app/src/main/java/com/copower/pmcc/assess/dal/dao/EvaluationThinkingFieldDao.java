@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 评估技术思路 字段
  * Created by 13426 on 2018/4/26.
  */
 @Repository(value = "evaluationThinkingFieldDao")
@@ -26,7 +27,7 @@ public class EvaluationThinkingFieldDao {
 
     public List<EvaluationThinkingFieldDto> list(Integer thinkId){
         EvaluationThinkingFieldExample evaluationThinkingFieldExample = new EvaluationThinkingFieldExample();
-        evaluationThinkingFieldExample.createCriteria().andIdIsNotNull().andThinkingIdLessThanOrEqualTo(thinkId);
+        evaluationThinkingFieldExample.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(thinkId);
         List<EvaluationThinkingField> evaluationThinkingFields = mapper.selectByExample(evaluationThinkingFieldExample);
         List<EvaluationThinkingFieldDto> evaluationThinkingFieldDtos = new ArrayList<>();
         evaluationThinkingFields.forEach(evaluationThinkingField -> {

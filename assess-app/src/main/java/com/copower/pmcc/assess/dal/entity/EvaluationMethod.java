@@ -5,7 +5,7 @@ import java.util.Date;
 public class EvaluationMethod {
     private Integer id;
 
-    private Integer method;
+    private String method;
 
     private String applicableReason;
 
@@ -25,12 +25,12 @@ public class EvaluationMethod {
         this.id = id;
     }
 
-    public Integer getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(Integer method) {
-        this.method = method;
+    public void setMethod(String method) {
+        this.method = method == null ? null : method.trim();
     }
 
     public String getApplicableReason() {
@@ -71,18 +71,5 @@ public class EvaluationMethod {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    @Override
-    public String toString() {
-        return "EvaluationMethod{" +
-                "id=" + id +
-                ", method=" + method +
-                ", applicableReason='" + applicableReason + '\'' +
-                ", notApplicableReason='" + notApplicableReason + '\'' +
-                ", creator='" + creator + '\'' +
-                ", gmtCreated=" + gmtCreated +
-                ", gmtModified=" + gmtModified +
-                '}';
     }
 }
