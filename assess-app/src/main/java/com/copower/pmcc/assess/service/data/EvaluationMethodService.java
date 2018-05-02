@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldDaoVoEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
@@ -7,6 +8,7 @@ import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationMethodFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -106,7 +108,9 @@ public class EvaluationMethodService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldDao.list(methodId);
-        vo.setRows(CollectionUtils.isEmpty(evaluationMethodFields)?new ArrayList<EvaluationMethodField>():evaluationMethodFields);
+        List<EvaluationMethodFieldVo> list = new ArrayList<>();
+        evaluationMethodFields.forEach(evaluationMethodField -> list.add(change(evaluationMethodField)));
+        vo.setRows(CollectionUtils.isEmpty(list)?new ArrayList<EvaluationMethodFieldVo>():list);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -142,6 +146,17 @@ public class EvaluationMethodService {
             evaluationMethodVos = change(evaluationMethodDtos);
         }
         return evaluationMethodVos;
+    }
+
+    private EvaluationMethodFieldVo change(EvaluationMethodField evaluationMethodField){
+        EvaluationMethodFieldVo vo = new EvaluationMethodFieldVo();
+        BeanUtils.copyProperties(evaluationMethodField,vo);
+        if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ONE.getNum()) {
+            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR1.getVar());
+        } else if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ZERO.getNum()){
+            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR2.getVar());
+        }
+        return vo;
     }
 
 

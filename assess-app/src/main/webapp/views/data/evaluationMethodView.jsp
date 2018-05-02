@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -87,10 +88,14 @@
                                         <label class="col-sm-2 control-label">
                                             评估方法
                                         </label>
-                                        <div class="col-sm-10" id="method">
+                                        <div class="col-sm-10">
+                                            <select id="method" name="method" class="form-control">
+                                                <option selected="selected" value="0">请选择</option>
                                                 <c:forEach items="${useList}" var="item">
-                                                    ${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">
+                                                    <%--${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">--%>
+                                                    <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
+                                            </select>
 
                                         </div>
                                     </div>
@@ -273,6 +278,7 @@
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
+        data.method = $("#method option:selected").val();
         data.applicableReason = $("#applicableReason").val();
         data.notApplicableReason = $("#notApplicableReason").val();
         if ($("#frm").valid()) {
@@ -365,7 +371,7 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'creator', title: '创建人'});
+        cols.push({field: 'typeStr', title: '是否启用'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

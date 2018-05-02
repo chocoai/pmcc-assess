@@ -61,7 +61,8 @@ public class EvaluationThinkingFieldService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        vo.setRows(CollectionUtils.isEmpty(list(thinkId)) ? new ArrayList<EvaluationThinkingFieldDaoVo>() : list(thinkId));
+        List<EvaluationThinkingFieldDaoVo> list = list(thinkId);
+        vo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<EvaluationThinkingFieldDaoVo>() : list);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -80,7 +81,7 @@ public class EvaluationThinkingFieldService {
 
         if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ONE.getNum()) {
             vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR1.getVar());
-        } else if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ZERO.getNum()) {
+        } else if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ZERO.getNum()){
             vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR2.getVar());
         }
         return vo;
