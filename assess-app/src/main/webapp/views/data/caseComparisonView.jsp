@@ -161,61 +161,68 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent2">字段</h4>
             </div>
-            <form id="firSubA">
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
-                            字段名称
-                            <input type="hidden" name="caseId" id="caseIdNG">
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="text" id="nameA" name="nameA" class="form-control">
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="firSubA" name="firSubA">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-2 control-label">
+                                    字段名称
+                                    <input type="hidden" name="caseId" id="caseIdNG">
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="nameA" name="nameA" class="form-control">
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-2 control-label">
+                                    表
+                                </label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="tableName" id="tableName">
+                                        <option>请选择</option>
+                                        <c:forEach items="${userList}" var="tableVar">
+                                            <option value="${tableVar.key}">${tableVar.key}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-2 control-label">
+                                    表字段
+                                </label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name="TableField" id="TableField">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                            保存
+                        </button>
+                    </div>
+                    </form>
                 </div>
 
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
-                            表
-                        </label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="tableName" id="tableName">
-                                <option>请选择</option>
-                                <c:forEach items="${userList}" var="tableVar">
-                                    <option value="${tableVar.key}">${tableVar.key}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
-                            表字段
-                        </label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="TableField" id="TableField">
-                                <option>请选择</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                    保存
-                </button>
-            </div>
-            </form>
-
-        </div>
     </div>
 </div>
 

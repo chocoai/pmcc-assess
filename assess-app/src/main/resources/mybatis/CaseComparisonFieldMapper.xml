@@ -78,7 +78,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_case_comparison_field
+    from tb_data_case_comparison_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,15 +89,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_case_comparison_field
+    from tb_data_case_comparison_field
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_case_comparison_field
+    delete from tb_data_case_comparison_field
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonFieldExample" >
-    delete from tb_case_comparison_field
+    delete from tb_data_case_comparison_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -106,7 +106,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_comparison_field (case_id, u_name, table_name, 
+    insert into tb_data_case_comparison_field (case_id, u_name, table_name, 
       name, creator, gmt_created, 
       gmt_modified)
     values (#{caseId,jdbcType=INTEGER}, #{uName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
@@ -117,7 +117,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_comparison_field
+    insert into tb_data_case_comparison_field
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="caseId != null" >
         case_id,
@@ -166,13 +166,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonFieldExample" resultType="java.lang.Integer" >
-    select count(*) from tb_case_comparison_field
+    select count(*) from tb_data_case_comparison_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_case_comparison_field
+    update tb_data_case_comparison_field
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -204,7 +204,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_case_comparison_field
+    update tb_data_case_comparison_field
     set id = #{record.id,jdbcType=INTEGER},
       case_id = #{record.caseId,jdbcType=INTEGER},
       u_name = #{record.uName,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonField" >
-    update tb_case_comparison_field
+    update tb_data_case_comparison_field
     <set >
       <if test="caseId != null" >
         case_id = #{caseId,jdbcType=INTEGER},
@@ -245,7 +245,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonField" >
-    update tb_case_comparison_field
+    update tb_data_case_comparison_field
     set case_id = #{caseId,jdbcType=INTEGER},
       u_name = #{uName,jdbcType=VARCHAR},
       table_name = #{tableName,jdbcType=VARCHAR},
