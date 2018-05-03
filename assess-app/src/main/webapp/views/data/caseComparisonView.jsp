@@ -76,7 +76,7 @@
                                             合并名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="合并名称" class="form-control">
+                                            <input type="text" name="name" id="name" placeholder="合并名称" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                             说明
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写说明" class="form-control" id="uExplain" name="uExplain">
+                                            <textarea placeholder="请填写说明" class="form-control" id="uExplain" name="uExplain" required="required">
 
                                             </textarea>
                                         </div>
@@ -100,7 +100,7 @@
                                         </label>
                                         <div class="col-sm-10" id="method">
 
-                                            <select id="type" name="type" class="form-control">
+                                            <select id="type" name="type" class="form-control" required="required">
                                                 <option selected="selected" value="0">请选择类型</option>
                                                 <c:forEach items="${typeMap}" var="mymap">
                                                     <option value="${mymap.key}">${mymap.value}</option>
@@ -161,68 +161,70 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent2">字段</h4>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <form id="firSubA" name="firSubA">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    字段名称
-                                    <input type="hidden" name="caseId" id="caseIdNG">
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="nameA" name="nameA" class="form-control">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="firSubA" name="firSubA" class="form-horizontal">
+                        <div class="panel-body">
+
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        字段名称
+                                        <input type="hidden" name="caseId" id="caseIdNG">
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="nameA" name="nameA" class="form-control" required="required">
+                                    </div>
                                 </div>
-                                <div class="col-sm-1"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        表
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="tableName" id="tableName" required="required">
+                                            <option>请选择</option>
+                                            <c:forEach items="${userList}" var="tableVar">
+                                                <option value="${tableVar.key}">${tableVar.key}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        表字段
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="TableField" id="TableField" required="required">
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    表
-                                </label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" name="tableName" id="tableName">
-                                        <option>请选择</option>
-                                        <c:forEach items="${userList}" var="tableVar">
-                                            <option value="${tableVar.key}">${tableVar.key}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-sm-1"></div>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-default">
+                                取消
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                                保存
+                            </button>
                         </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-2 control-label">
-                                    表字段
-                                </label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" name="TableField" id="TableField">
-                                        <option>请选择</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-1"></div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">
-                            取消
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                            保存
-                        </button>
-                    </div>
-                    </form>
-                </div>
-
-                </div>
+                </div><!--row -->
             </div>
+        </div>
     </div>
 </div>
 
@@ -388,6 +390,7 @@
         });
     }
     tableNameA();
+//    $("#firSub .form-group").css({"margin-top":"20px","margin-bottom":"40px"});
 
     //新增 子项 字段数据
     function addMethodField() {
@@ -491,6 +494,14 @@
                 }
             })
         })
+    }
+    function isNot(val) {
+        if (val!=null){
+            if (val!=''){
+                return true;
+            }
+        }
+        return false;
     }
     
 
