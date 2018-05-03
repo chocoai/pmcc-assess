@@ -47,13 +47,13 @@ public class DataNumberRuleController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得文号规则", method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer assessClass, String prefix) {
-        BootstrapTableVo vo = dataNumberRuleService.getList(assessClass, prefix);
+    public BootstrapTableVo list(Integer assessClass, Integer reportType) {
+        BootstrapTableVo vo = dataNumberRuleService.getList(assessClass, reportType);
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/save", name = "新增文号规则", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", name = "新增和修改文号规则", method = RequestMethod.POST)
     public HttpResult save(DataNumberRule dataNumberRule) {
         try {
             dataNumberRuleService.save(dataNumberRule);
