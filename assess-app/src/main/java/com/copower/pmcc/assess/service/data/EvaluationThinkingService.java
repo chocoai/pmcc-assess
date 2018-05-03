@@ -17,7 +17,6 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,12 +70,12 @@ public class EvaluationThinkingService {
     }
 
     @Transactional(readOnly = true)
-    public List<EvaluationThinking> list(String method) {
+    public List<EvaluationThinking> list(String name) {
         try {
-            if (method == null || method == "") {
+            if (name == null || name == "") {
                 return evaluationThinkingDao.list(null);
             } else {
-                return evaluationThinkingDao.list(method);
+                return evaluationThinkingDao.list(name);
             }
         } catch (Exception e) {
             try {

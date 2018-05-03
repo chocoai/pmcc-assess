@@ -53,7 +53,7 @@ public class EvaluationThinkingController {
         if (methodStr == null || methodStr == "") {//查询所有
             vo = service.listVo(null);
         } else {
-            vo = service.listVo(service.changeMethod(methodStr));//关键字查询
+            vo = service.listVo(methodStr);//关键字查询
         }
         return vo;
     }

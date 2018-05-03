@@ -68,19 +68,17 @@ public class EvaluationHypothesisService {
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationHypothesisDto> listN(String method) {
-        Integer key = null;
-        if (method!=null)  key = changeMethod(method);
-        return evaluationHypothesisDao.list(key);
+    private List<EvaluationHypothesisDto> listN(String name) {
+        return evaluationHypothesisDao.list(name);
     }
 
-    public BootstrapTableVo list(String method) {
+    public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationHypothesisVo> vos = new ArrayList<>();
-        boolean flag = (method == null) || (method == "");
-        listN(flag ? null : method).forEach(evaluationHypothesisDto -> vos.add(change(evaluationHypothesisDto)));
+        boolean flag = (name == null) || (name == "");
+        listN(flag ? null : name).forEach(evaluationHypothesisDto -> vos.add(change(evaluationHypothesisDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;

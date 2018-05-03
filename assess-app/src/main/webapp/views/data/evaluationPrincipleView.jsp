@@ -27,7 +27,7 @@
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="评估方法 名称" id="queryName" name="queryName"
+                                           placeholder="评估原则 名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>

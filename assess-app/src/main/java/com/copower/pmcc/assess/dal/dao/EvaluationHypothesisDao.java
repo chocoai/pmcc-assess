@@ -29,15 +29,15 @@ public class EvaluationHypothesisDao {
         return evaluationHypothesisMapper.updateByPrimaryKey(change(evaluationHypothesisDto)) == 1;
     }
 
-    public List<EvaluationHypothesisDto> list(Integer method) {
+    public List<EvaluationHypothesisDto> list(String name) {
         List<EvaluationHypothesisDto> evaluationHypothesisDtos = new ArrayList<>();
         EvaluationHypothesisExample evaluationHypothesisExample = new EvaluationHypothesisExample();
-        String methodStr = method + "";
-        if (method == null) {
+        String methodStr ="%"+ name + "%";
+        if (name == null || name=="") {
             evaluationHypothesisExample.createCriteria().andIdIsNotNull();
             evaluationHypothesisMapper.selectByExample(evaluationHypothesisExample).stream().parallel().forEach(evaluationHypothesis -> evaluationHypothesisDtos.add(change(evaluationHypothesis)));
         }else {
-            evaluationHypothesisExample.createCriteria().andMethodEqualTo(methodStr);
+            evaluationHypothesisExample.createCriteria().andNameLike(methodStr);
             evaluationHypothesisMapper.selectByExample(evaluationHypothesisExample).stream().parallel().forEach(evaluationHypothesis -> evaluationHypothesisDtos.add(change(evaluationHypothesis)));
         }
         return evaluationHypothesisDtos;

@@ -37,14 +37,14 @@ public class EvaluationThinkingDao {
         return evaluationThinkingMapper.updateByPrimaryKey(change(evaluationThinkingDto))==1;
     }
 
-    public List<EvaluationThinking> list(String method){
+    public List<EvaluationThinking> list(String name){
         EvaluationThinkingExample evaluationThinkingExample = new EvaluationThinkingExample();
         List<EvaluationThinking> evaluationThinkings = null;
-        if (method==null || method==""){
-            evaluationThinkingExample.createCriteria().andNameIsNotNull();
+        if (name ==null || name ==""){
+            evaluationThinkingExample.createCriteria().andIdIsNotNull();
             evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
         }else {
-            evaluationThinkingExample.createCriteria().andNameIsNotNull().andMethodLike("%"+method+"%");
+            evaluationThinkingExample.createCriteria().andNameLike("%"+ name +"%");
             evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
         }
         return evaluationThinkings;

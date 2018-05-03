@@ -33,16 +33,16 @@ public class EvaluationPrincipleDao {
         return evaluationPrincipleMapper.updateByPrimaryKey(change(evaluationPrincipleDto)) == 1;
     }
 
-    public List<EvaluationPrincipleDto> list(Integer method) {
-        String methodStr = method + "";
+    public List<EvaluationPrincipleDto> list(String name) {
+        String methodStr = "%"+name + "%";
         List<EvaluationPrinciple> evaluationPrinciples = null;
         EvaluationPrincipleExample evaluationPrincipleExample = new EvaluationPrincipleExample();
-        if (method == null) {
+        if (name == null || name=="") {
             evaluationPrincipleExample.createCriteria().andIdIsNotNull();
             evaluationPrinciples = evaluationPrincipleMapper.selectByExample(evaluationPrincipleExample);
             return change(evaluationPrinciples);
         } else {
-            evaluationPrincipleExample.createCriteria().andMethodEqualTo(methodStr);
+            evaluationPrincipleExample.createCriteria().andNameLike(methodStr);
             evaluationPrinciples = evaluationPrincipleMapper.selectByExample(evaluationPrincipleExample);
             return change(evaluationPrinciples);
         }

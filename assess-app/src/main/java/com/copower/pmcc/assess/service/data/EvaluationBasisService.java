@@ -68,19 +68,17 @@ public class EvaluationBasisService {
         return change(evaluationBasisDao.get(id));
     }
 
-    public List<EvaluationBasisDto> listN(String method) {
-        Integer key = null;
-        if (method != null) key = changeMethod(method);
-        return evaluationBasisDao.list(key);
+    public List<EvaluationBasisDto> listN(String name) {
+        return evaluationBasisDao.list(name);
     }
 
-    public BootstrapTableVo list(String method) {
+    public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationBasisVo> vos = new ArrayList<>();
-        boolean flag = (method == null) || (method == "");
-        listN(flag ? null : method).parallelStream().forEach(evaluationBasisDto -> vos.add(change(evaluationBasisDto)));
+        boolean flag = (name == null) || (name == "");
+        listN(flag ? null : name).parallelStream().forEach(evaluationBasisDto -> vos.add(change(evaluationBasisDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationBasisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;

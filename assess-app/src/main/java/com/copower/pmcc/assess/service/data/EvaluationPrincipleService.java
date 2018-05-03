@@ -69,19 +69,17 @@ public class EvaluationPrincipleService {
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationPrincipleDto> listN(String method) {
-        Integer key = null;
-        if (method != null) key = changeMethod(method);
-        return evaluationPrincipleDao.list(key);
+    private List<EvaluationPrincipleDto> listN(String name) {
+        return evaluationPrincipleDao.list(name);
     }
 
-    public BootstrapTableVo list(String method) {
+    public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationPrincipleVo> vos = new ArrayList<>();
-        boolean flag = (method == null) || (method == "");
-        listN(flag ? null : method).forEach(evaluationPrincipleDto -> vos.add(change(evaluationPrincipleDto)));
+        boolean flag = (name == null) || (name == "");
+        listN(flag ? null : name).forEach(evaluationPrincipleDto -> vos.add(change(evaluationPrincipleDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationPrincipleVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
