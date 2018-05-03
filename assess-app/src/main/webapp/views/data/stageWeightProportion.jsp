@@ -231,7 +231,7 @@
     $(function () {
         loadDataDicList();
     })
-    //加载 文号规则 数据列表
+    //加载 阶段权重占比 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'entrustPurposeName', title: '委托目的'});
@@ -257,7 +257,7 @@
         });
     }
 
-    //删除 文号规则数据
+    //删除 阶段权重占比数据
     function delData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
@@ -285,11 +285,11 @@
         })
     }
 
-    //对新增 文号规则数据处理
+    //对新增 阶段权重占比数据处理
     function addData() {
         $("#frm").clearAll();
     }
-    //新增 文号规则数据
+    //新增 阶段权重占比数据
     function saveData() {
         var flag = false;
         var data = $("#frm").serialize();
@@ -405,7 +405,7 @@
         })
     }
 
-    //删除 子项 子项
+    //删除 子项
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
