@@ -26,27 +26,13 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    大类
+                                    委托目的
                                 </label>
                                 <div class="col-sm-2">
-                                    <select class="form-control" id="queryAssessClass" name="queryAssessClass">
+                                    <select class="form-control" id="queryEntrustmentPurpose" name="queryEntrustmentPurpose">
                                         <option value="">-请选择-</option>
-                                        <c:forEach var="item" items="${assessClassList}">
+                                        <c:forEach var="item" items="${entrustmentPurposeList}">
                                             <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    报告类型
-                                </label>
-                                <div class="col-sm-2">
-                                    <select class="form-control" id="queryReportType" name="queryReportType">
-                                        <option value="">-请选择-</option>
-                                        <c:forEach var="items" items="${reportTypeList}">
-                                            <option value="${items.id}">${items.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -92,28 +78,29 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            大类<span class="symbol required"></span>
+                                            委托目的<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="assessClass" name="assessClass">
+                                            <select class="form-control" required id="entrustPurpose" name="entrustPurpose">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${assessClassList}">
+                                                <c:forEach var="item" items="${entrustmentPurposeList}">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            报告类型<span class="symbol required"></span>
+                                            阶段<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="reportType" name="reportType">
+                                            <select class="form-control" required id="stage" name="stage">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${reportTypeList}">
-                                                    <option value="${items.id}">${items.name}</option>
+                                                <c:forEach var="item" items="${stageList}">
+                                                    <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -121,65 +108,15 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="x-valid">
+                                    <div>
                                         <label class="col-sm-3 control-label">
-                                            前缀<span class="symbol required"></span>
+                                            占比<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="前缀"
-                                                   id="prefix" name="prefix" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                   id="proportion" name="proportion" class="form-control">
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            日期规则<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" required data-rule-digits="true" placeholder="日期规则"
-                                                   id="dateRule" name="dateRule" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            位数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-digits="true" placeholder="位数"
-                                                   id="figures" name="figures" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            起始编号<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-digits="true" placeholder="起始编号"
-                                                   id="startNumber" name="startNumber" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            同号的报告类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="sameReportType" name="sameReportType">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${reportTypeList}">
-                                                    <option value="${items.id}">${items.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                        <div class="col-sm-1">
                                         </div>
                                     </div>
                                 </div>
@@ -201,19 +138,87 @@
 </div>
 
 
-<!--价值时点数据子项数据 ===========-->
+<!--子项管理-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">文号规则数据</h4>
+                <h4 class="modal-title" id="titleContent">子项数据</h4>
             </div>
             <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success" onclick="addSubDataDic()"
+                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+            </button>
+        </span>
                 <table class="table table-bordered" id="tbDataDicList">
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+<div id="divSubDataDicManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">子项管理</h4>
+            </div>
+            <input type="hidden" id="mainId" name="mainId" value="0">
+            <form id="frmSub" class="form-horizontal">
+                <input type="hidden" id="subId" name="subId" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            委托目的<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="subEntrustPurpose" name="subEntrustPurpose">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${stageList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div>
+                                        <label class="col-sm-3 control-label">
+                                            占比<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="占比"
+                                                   id="subProportion" name="subProportion" class="form-control">
+                                        </div>
+                                        <div class="col-sm-1">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                        保存
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -229,13 +234,9 @@
     //加载 文号规则 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'assessClassName', title: '所属大类'});
-        cols.push({field: 'reportTypeName', title: '报告类型'});
-        cols.push({field: 'prefix', title: '前缀'});
-        cols.push({field: 'dateRule', title: '日期规则'});
-        cols.push({field: 'figures', title: '位数'});
-        cols.push({field: 'startNumber', title: '起始编号'});
-        cols.push({field: 'sameReportType', title: '同号的报告类型'});
+        cols.push({field: 'entrustPurposeName', title: '委托目的'});
+        cols.push({field: 'stageName', title: '阶段'});
+        cols.push({field: 'proportion', title: '占比'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -247,9 +248,8 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/numberRule/list", cols, {
-            assessClass: $("#queryAssessClass").val(),
-            reportType:$("#queryReportType").val()
+        TableInit("tb_List", "${pageContext.request.contextPath}/stageWeightProportion/list", cols, {
+            entrustmentPurpose: $("#queryEntrustmentPurpose").val(),
         }, {
             showColumns: false,
             showRefresh: false,
@@ -262,7 +262,7 @@
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/numberRule/delete",
+                url: "${pageContext.request.contextPath}/stageWeightProportion/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -292,11 +292,10 @@
     //新增 文号规则数据
     function saveData() {
         var flag = false;
-        //var data = formParams("frm");
         var data = $("#frm").serialize();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/numberRule/save",
+                url: "${pageContext.request.contextPath}/stageWeightProportion/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -317,12 +316,70 @@
         }
     }
     //-------------------------------------------------------------------------------------
+
+    //加载节点角色数据
+    function loadSubDataDicList(pid, fn) {
+        var cols = [];
+        cols.push({field: 'stage', title: '阶段'});
+        cols.push({field: 'proportion', title: '占比'});
+        cols.push({
+            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataDic(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tbDataDicList").bootstrapTable("destroy");
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/baseDataDic/getDataDicListByPid",
+            cols, {pid: pid}, {
+                showRefresh: false,                  //是否显示刷新按钮
+                toolbar: '#toolbarSub',
+                uniqueId: "id",
+                onLoadSuccess: function () {
+                    if (fn) {
+                        fn();
+                    }
+                }
+            });
+    }
+
+
+    //保存子项
+    function saveSubDataDic() {
+        if ($("#frmSub").valid()) {
+            var data = $("#frmSub").serialize();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/stageWeightProportion/saveSub",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        TableReload("tbDataDicList");
+                        $('#divSubDataDicManage').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+
+
     //编辑字典数据
     function editDataDic(id) {
         $("#frm").clearAll();
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/numberRule/list",
+            url: "${pageContext.request.contextPath}/stageWeightProportion/list",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -348,11 +405,61 @@
         })
     }
 
+    //删除 子项 子项
+    function delDataDic(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        window.location.reload();//自动刷新
+                        $('#' + id).bootstrapTable("refresh");
+                        loadSubDataDicList();//重载 (刷新)
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //编辑子项
+    function editSubDataDic(id) {
+        $("#frmSub").clearAll();
+        var row = $("#tbDataDicList").bootstrapTable("getRowByUniqueId", id);
+        if (row) {
+            $("#subId").val(row.id);
+            $("#subName").val(row.name);
+            $("#subBisEnable").prop("checked", row.bisEnable);
+            $("#subSorting").val(row.sorting);
+            $("#subRemark").val(row.remark);
+        }
+        $('#divSubDataDicManage').modal();
+    }
+
     function editHrProfessional(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $('#divBox').modal();
+    }
+
+    //设置子项数据
+    function setSubDataDic(pid) {
+        $("#divSubDataDic").modal();//显示
+        loadSubDataDicList(pid, function () {
+            $('#divSubDataDic').modal("show");
+        });
     }
 
     function isNot(val) {
@@ -368,4 +475,5 @@
 
 
 </html>
+
 

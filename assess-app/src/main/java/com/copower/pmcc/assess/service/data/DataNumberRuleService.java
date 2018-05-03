@@ -4,8 +4,8 @@ import com.copower.pmcc.assess.dal.dao.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
+import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -33,13 +33,13 @@ public class DataNumberRuleService {
     private BaseDataDicService baseDataDicService;
 
     @Autowired
-    private BaseFormService baseFormService;
+    private ServiceComponent serviceComponent;
 
-    public BootstrapTableVo getList(Integer assessClass,String prefix) {
+    public BootstrapTableVo getList(Integer assessClass,Integer reportType) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessClass,prefix);
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessClass,reportType);
         List<DataNumberRuleVo> dataNumberRuleVos = getVoList(dataNumberRulesList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(dataNumberRuleVos) ? new ArrayList<DataNumberRuleVo>() : dataNumberRuleVos);
@@ -73,6 +73,7 @@ public class DataNumberRuleService {
         if(dataNumberRule.getId() != null && dataNumberRule.getId() > 0){
             return dataNumberRuleDao.update(dataNumberRule);
         }else{
+            dataNumberRule.setCreator(serviceComponent.getThisUser());
             return dataNumberRuleDao.save(dataNumberRule);
         }
     }
