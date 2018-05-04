@@ -76,7 +76,7 @@
                                             名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="名称">
+                                            <input type="text" name="name" id="name" placeholder="名称" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                                             模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写模板" class="form-control" id="template" name="template">
+                                            <textarea placeholder="请填写模板" class="form-control" id="template" name="template" required="required">
 
                                             </textarea>
                                         </div>
@@ -178,7 +178,7 @@
                         </label>
                         <div class="col-sm-10">
                             <input type="hidden" name="principleId" id="principleId">
-                            <input type="text" id="nameA" name="nameA" class="form-control">
+                            <input type="text" id="nameA" name="nameA" class="form-control" required="required">
                         </div>
                     </div>
                 </div>
