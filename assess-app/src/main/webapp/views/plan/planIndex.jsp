@@ -139,7 +139,7 @@
 </body>
 
 
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
         <button type="button" onclick="addfirst()" class="btn btn-success btn-xs">
             <i class='fa fa-plus fa-white'></i> 新增第一级
@@ -155,10 +155,6 @@
         </button>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/share/model_employee.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-
 
 <div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -433,7 +429,9 @@
 </div>
 
 </html>
-
+<%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/share/model_employee.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 
 <script type="text/javascript">
     var treeGridJson = {};

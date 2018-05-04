@@ -35,6 +35,11 @@
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
+            <artifactId>crm-api</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
             <version>1.0.60</version>
         </dependency>
@@ -386,7 +391,7 @@
 
 
     <build>
-        <finalName>assess-app</finalName>
+        <finalName>pmcc-assess</finalName>
         <resources>
             <resource>
                 <directory>${profiles.dir}/${deploy.type}</directory>
@@ -397,6 +402,12 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>tmp-war</outputDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

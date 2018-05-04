@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldDaoVoEnum;
+import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldVoEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -151,10 +150,10 @@ public class EvaluationMethodService {
     private EvaluationMethodFieldVo change(EvaluationMethodField evaluationMethodField){
         EvaluationMethodFieldVo vo = new EvaluationMethodFieldVo();
         BeanUtils.copyProperties(evaluationMethodField,vo);
-        if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ONE.getNum()) {
-            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR1.getVar());
-        } else if (vo.getType() == EvaluationThinkingFieldDaoVoEnum.ZERO.getNum()){
-            vo.setTypeStr(EvaluationThinkingFieldDaoVoEnum.STR2.getVar());
+        if (vo.getType() == EvaluationThinkingFieldVoEnum.ONE.getNum()) {
+            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR1.getVar());
+        } else if (vo.getType() == EvaluationThinkingFieldVoEnum.ZERO.getNum()){
+            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR2.getVar());
         }
         return vo;
     }

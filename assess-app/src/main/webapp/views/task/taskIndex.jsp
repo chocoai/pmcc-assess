@@ -12,6 +12,7 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -20,6 +21,20 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_task" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                客户
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-3">
+                                    <input type="text"  placeholder="客户"
+                                           id="customerName" name="customerName" class="form-control" >
+                                    <span class="input-group-btn">
+                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 实际工时
@@ -48,8 +63,8 @@
                                 成果文件
                             </label>
                             <div class="col-sm-11">
-                                <input id="file_upload" name="file_upload" type="file" multiple="false">
-                                <div id="_file_upload">
+                                <input id="apply_file" name="apply_file" type="file" multiple="false">
+                                <div id="_apply_file">
                                 </div>
                             </div>
                         </div>
@@ -63,7 +78,7 @@
                             取消
                         </button>
 
-                        <button id="commit_btn" class="btn btn-success" onclick="submit();">
+                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
@@ -75,29 +90,43 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
 
     $(function () {
-        var params = {buttonText: "上传成果文件"};
+        $("#btn_select_customer").click(function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    console.log(nodes);
+                }
+            });
+        })
+        
         $("#frm_task").validate();
 
-        uploadFiles("file_upload", "", params,
-            {
+        FileUtils.uploadFiles({
+            target: "apply_file",
+            disabledTarget: "btn_submit",
+            formData: {
                 tableName: "tb_project_plan_details",
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
-            }
-            , function (data) {
-                //alert(data);
-            });
-        GetFileShows("file_upload",
-            {
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "apply_file",
+            formData: {
                 tableName: "tb_project_plan_details",
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
-            }, "1");
+            },
+            deleteFlag: true
+        })
     });
 
 
@@ -105,10 +134,7 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
-        if ("${mustUploadFile}" == "true" && $("#_file_upload a").length <= 0) {
-            Alert("必须上传工作成果文件");
-            return false;
-        }
+
         if ("${processInsId}" != "0") {
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }

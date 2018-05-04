@@ -78,7 +78,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="请填写不适用原因" class="form-control"
-                                                      id="notApplicableReason" name="notApplicableReason">
+                                                      id="notApplicableReason" name="notApplicableReason" required="required">
 
                                             </textarea>
                                         </div>
@@ -104,7 +104,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason"
-                                                      name="applicableReason">
+                                                      name="applicableReason" required="required">
 
                                             </textarea>
                                         </div>
@@ -118,7 +118,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" id="name"
-                                                   placeholder="请填写名称">
+                                                   placeholder="请填写名称" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@
                                 <input type="hidden" name="thinkingId" id="thinkingId">
                             </label>
                             <div class="col-sm-10">
-                                <select id="type" class="form-control">
+                                <select id="type" class="form-control" required="required">
                                     <option value="0" selected="selected">适用原因</option>
                                     <option value="1">不适用原因</option>
                                 </select>
@@ -198,7 +198,7 @@
                                 字段名称
                             </label>
                             <div class="col-sm-10">
-                                <input type="text" id="nameA" name="nameA" class="form-control">
+                                <input type="text" id="nameA" name="nameA" class="form-control" required="required">
                             </div>
                         </div>
                     </div>

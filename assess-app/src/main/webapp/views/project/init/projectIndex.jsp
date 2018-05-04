@@ -32,11 +32,110 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> 委托人</h2>
-                    <div class="clearfix"></div>
+                    <%--<h2> 委托人</h2>--%>
+                    <div class="clearfix" id="changeType">
+                        委托人
+                        法人<input type="radio" name="csType" value="1" checked="checked">
+                        自然人<input type="radio" name="csType" value="0" >
+                    </div>
                 </div>
                 <div class="x_content">
+                    <form id="legal_person_Form" class="form-inline">
 
+                        <div id="legal_person" class="panel-body">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        委托单位
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        法定代表人
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="csLegalRepresentative" id="csLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control">
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="csScopeOperation" id="csScopeOperation" placeholder="社会统一信用代码" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="no_legal_person">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        委托姓名
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="csName" id="csName" placeholder="委托姓名" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        地址
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="cs_address" id="cs_address" placeholder="地址" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        身份证
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        身份证附件
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="file" name="cs_enclosure_location" id="cs_IDCard_Location" placeholder="身份证" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="x_panel">
@@ -105,7 +204,22 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
-
+<script>
+    //选项框
+    $(document).ready(function () {
+        $("#no_legal_person").hide();
+        $("#changeType input[type='radio'][name='csType']").change(function () {
+            if ($(this).val()==1){
+                $("#no_legal_person").hide();
+                $("#legal_person").show();
+            }
+            if ($(this).val()==0){
+                $("#no_legal_person").show();
+                $("#legal_person").hide();
+            }
+        });
+    });
+</script>
 
 <script type="text/javascript">
     $(function () {
