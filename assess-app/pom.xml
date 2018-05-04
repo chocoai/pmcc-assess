@@ -35,6 +35,11 @@
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
+            <artifactId>crm-api</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
             <version>1.0.60</version>
         </dependency>

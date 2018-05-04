@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.assess;
+package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
@@ -11,7 +11,7 @@ import java.util.List;
  * Created by kings on 2018-4-18.
  */
 @Service
-public class AreaService {
+public class ErpAreaService {
     @Autowired
     private ErpRpcToolsService erpRpcToolsService;
 
