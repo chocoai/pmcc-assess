@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.InitiateConsignorMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="cs_type" property="csType" jdbcType="INTEGER" />
+    <result column="cs_entrustment_unit" property="csEntrustmentUnit" jdbcType="VARCHAR" />
+    <result column="cs_legal_representative" property="csLegalRepresentative" jdbcType="VARCHAR" />
+    <result column="cs_sociology_code" property="csSociologyCode" jdbcType="VARCHAR" />
+    <result column="cs_address" property="csAddress" jdbcType="VARCHAR" />
+    <result column="cs_scope_operation" property="csScopeOperation" jdbcType="VARCHAR" />
+    <result column="cs_unit_properties" property="csUnitProperties" jdbcType="VARCHAR" />
+    <result column="cs_enclosure_location" property="csEnclosureLocation" jdbcType="VARCHAR" />
+    <result column="cs_name" property="csName" jdbcType="VARCHAR" />
+    <result column="cs_spare_field" property="csSpareField" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, creator, gmt_created, gmt_modified, cs_type, cs_entrustment_unit, cs_legal_representative, 
+    cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, cs_enclosure_location, 
+    cs_name, cs_spare_field
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_initiate_consignor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_initiate_consignor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_initiate_consignor
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" >
+    delete from tb_initiate_consignor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_initiate_consignor (creator, gmt_created, gmt_modified, 
+      cs_type, cs_entrustment_unit, cs_legal_representative, 
+      cs_sociology_code, cs_address, cs_scope_operation, 
+      cs_unit_properties, cs_enclosure_location, 
+      cs_name, cs_spare_field)
+    values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{csType,jdbcType=INTEGER}, #{csEntrustmentUnit,jdbcType=VARCHAR}, #{csLegalRepresentative,jdbcType=VARCHAR}, 
+      #{csSociologyCode,jdbcType=VARCHAR}, #{csAddress,jdbcType=VARCHAR}, #{csScopeOperation,jdbcType=VARCHAR}, 
+      #{csUnitProperties,jdbcType=VARCHAR}, #{csEnclosureLocation,jdbcType=VARCHAR}, 
+      #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_initiate_consignor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="csType != null" >
+        cs_type,
+      </if>
+      <if test="csEntrustmentUnit != null" >
+        cs_entrustment_unit,
+      </if>
+      <if test="csLegalRepresentative != null" >
+        cs_legal_representative,
+      </if>
+      <if test="csSociologyCode != null" >
+        cs_sociology_code,
+      </if>
+      <if test="csAddress != null" >
+        cs_address,
+      </if>
+      <if test="csScopeOperation != null" >
+        cs_scope_operation,
+      </if>
+      <if test="csUnitProperties != null" >
+        cs_unit_properties,
+      </if>
+      <if test="csEnclosureLocation != null" >
+        cs_enclosure_location,
+      </if>
+      <if test="csName != null" >
+        cs_name,
+      </if>
+      <if test="csSpareField != null" >
+        cs_spare_field,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csType != null" >
+        #{csType,jdbcType=INTEGER},
+      </if>
+      <if test="csEntrustmentUnit != null" >
+        #{csEntrustmentUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="csLegalRepresentative != null" >
+        #{csLegalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="csSociologyCode != null" >
+        #{csSociologyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="csAddress != null" >
+        #{csAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="csScopeOperation != null" >
+        #{csScopeOperation,jdbcType=VARCHAR},
+      </if>
+      <if test="csUnitProperties != null" >
+        #{csUnitProperties,jdbcType=VARCHAR},
+      </if>
+      <if test="csEnclosureLocation != null" >
+        #{csEnclosureLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="csName != null" >
+        #{csName,jdbcType=VARCHAR},
+      </if>
+      <if test="csSpareField != null" >
+        #{csSpareField,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" resultType="java.lang.Integer" >
+    select count(*) from tb_initiate_consignor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_initiate_consignor
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.csType != null" >
+        cs_type = #{record.csType,jdbcType=INTEGER},
+      </if>
+      <if test="record.csEntrustmentUnit != null" >
+        cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csLegalRepresentative != null" >
+        cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csSociologyCode != null" >
+        cs_sociology_code = #{record.csSociologyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csAddress != null" >
+        cs_address = #{record.csAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csScopeOperation != null" >
+        cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csUnitProperties != null" >
+        cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csEnclosureLocation != null" >
+        cs_enclosure_location = #{record.csEnclosureLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csName != null" >
+        cs_name = #{record.csName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csSpareField != null" >
+        cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_initiate_consignor
+    set id = #{record.id,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      cs_type = #{record.csType,jdbcType=INTEGER},
+      cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
+      cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
+      cs_sociology_code = #{record.csSociologyCode,jdbcType=VARCHAR},
+      cs_address = #{record.csAddress,jdbcType=VARCHAR},
+      cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
+      cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
+      cs_enclosure_location = #{record.csEnclosureLocation,jdbcType=VARCHAR},
+      cs_name = #{record.csName,jdbcType=VARCHAR},
+      cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
+    update tb_initiate_consignor
+    <set >
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="csType != null" >
+        cs_type = #{csType,jdbcType=INTEGER},
+      </if>
+      <if test="csEntrustmentUnit != null" >
+        cs_entrustment_unit = #{csEntrustmentUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="csLegalRepresentative != null" >
+        cs_legal_representative = #{csLegalRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="csSociologyCode != null" >
+        cs_sociology_code = #{csSociologyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="csAddress != null" >
+        cs_address = #{csAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="csScopeOperation != null" >
+        cs_scope_operation = #{csScopeOperation,jdbcType=VARCHAR},
+      </if>
+      <if test="csUnitProperties != null" >
+        cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
+      </if>
+      <if test="csEnclosureLocation != null" >
+        cs_enclosure_location = #{csEnclosureLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="csName != null" >
+        cs_name = #{csName,jdbcType=VARCHAR},
+      </if>
+      <if test="csSpareField != null" >
+        cs_spare_field = #{csSpareField,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
+    update tb_initiate_consignor
+    set creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      cs_type = #{csType,jdbcType=INTEGER},
+      cs_entrustment_unit = #{csEntrustmentUnit,jdbcType=VARCHAR},
+      cs_legal_representative = #{csLegalRepresentative,jdbcType=VARCHAR},
+      cs_sociology_code = #{csSociologyCode,jdbcType=VARCHAR},
+      cs_address = #{csAddress,jdbcType=VARCHAR},
+      cs_scope_operation = #{csScopeOperation,jdbcType=VARCHAR},
+      cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
+      cs_enclosure_location = #{csEnclosureLocation,jdbcType=VARCHAR},
+      cs_name = #{csName,jdbcType=VARCHAR},
+      cs_spare_field = #{csSpareField,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
