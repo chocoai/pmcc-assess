@@ -65,7 +65,7 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", projectPlanDetails.getProjectPhaseName() + "-成果提交");
+        modelAndView.addObject("boxCnName", String.format("%s-成果提交", projectPlanDetails.getProjectPhaseName()));
         modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "成果提交");
         modelAndView.addObject("currUserName", "管理员");
