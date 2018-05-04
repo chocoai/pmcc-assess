@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.DataEarlyWarningMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.EarlyWarning" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.DataEarlyWarning" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="entrust_purpose" property="entrustPurpose" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="near_day" property="nearDay" jdbcType="INTEGER" />
     <result column="color" property="color" jdbcType="VARCHAR" />
-    <result column="mode" property="mode" jdbcType="VARCHAR" />
+    <result column="mode" property="mode" jdbcType="INTEGER" />
     <result column="object" property="object" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -74,7 +74,7 @@
   <sql id="Base_Column_List" >
     id, entrust_purpose, type, near_day, color, mode, object, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarningExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample" >
     select
     <if test="distinct" >
       distinct
@@ -98,13 +98,13 @@
     delete from tb_data_early_warning
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarningExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample" >
     delete from tb_data_early_warning
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarning" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarning" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -112,12 +112,12 @@
       color, mode, object, 
       creator, gmt_created, gmt_modified
       )
-    values (#{entrustPurpose,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{nearDay,jdbcType=INTEGER}, 
-      #{color,jdbcType=VARCHAR}, #{mode,jdbcType=VARCHAR}, #{object,jdbcType=VARCHAR}, 
+    values (#{entrustPurpose,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{nearDay,jdbcType=INTEGER}, 
+      #{color,jdbcType=VARCHAR}, #{mode,jdbcType=INTEGER}, #{object,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarning" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarning" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -153,10 +153,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="entrustPurpose != null" >
-        #{entrustPurpose,jdbcType=VARCHAR},
+        #{entrustPurpose,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="nearDay != null" >
         #{nearDay,jdbcType=INTEGER},
@@ -165,7 +165,7 @@
         #{color,jdbcType=VARCHAR},
       </if>
       <if test="mode != null" >
-        #{mode,jdbcType=VARCHAR},
+        #{mode,jdbcType=INTEGER},
       </if>
       <if test="object != null" >
         #{object,jdbcType=VARCHAR},
@@ -181,7 +181,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarningExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample" resultType="java.lang.Integer" >
     select count(*) from tb_data_early_warning
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -194,10 +194,10 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.entrustPurpose != null" >
-        entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
+        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.nearDay != null" >
         near_day = #{record.nearDay,jdbcType=INTEGER},
@@ -206,7 +206,7 @@
         color = #{record.color,jdbcType=VARCHAR},
       </if>
       <if test="record.mode != null" >
-        mode = #{record.mode,jdbcType=VARCHAR},
+        mode = #{record.mode,jdbcType=INTEGER},
       </if>
       <if test="record.object != null" >
         object = #{record.object,jdbcType=VARCHAR},
@@ -228,11 +228,11 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_early_warning
     set id = #{record.id,jdbcType=INTEGER},
-      entrust_purpose = #{record.entrustPurpose,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
+      entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       near_day = #{record.nearDay,jdbcType=INTEGER},
       color = #{record.color,jdbcType=VARCHAR},
-      mode = #{record.mode,jdbcType=VARCHAR},
+      mode = #{record.mode,jdbcType=INTEGER},
       object = #{record.object,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -241,14 +241,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarning" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarning" >
     update tb_data_early_warning
     <set >
       <if test="entrustPurpose != null" >
-        entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
+        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="nearDay != null" >
         near_day = #{nearDay,jdbcType=INTEGER},
@@ -257,7 +257,7 @@
         color = #{color,jdbcType=VARCHAR},
       </if>
       <if test="mode != null" >
-        mode = #{mode,jdbcType=VARCHAR},
+        mode = #{mode,jdbcType=INTEGER},
       </if>
       <if test="object != null" >
         object = #{object,jdbcType=VARCHAR},
@@ -274,13 +274,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.EarlyWarning" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.DataEarlyWarning" >
     update tb_data_early_warning
-    set entrust_purpose = #{entrustPurpose,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
+    set entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       near_day = #{nearDay,jdbcType=INTEGER},
       color = #{color,jdbcType=VARCHAR},
-      mode = #{mode,jdbcType=VARCHAR},
+      mode = #{mode,jdbcType=INTEGER},
       object = #{object,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

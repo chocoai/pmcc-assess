@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2018\5\3 0003
@@ -33,9 +33,12 @@
                             <div>
                                 <label class="col-sm-1 control-label">委托目的</label>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="委托目的" id="queryName" name="queryName"
-                                           class="form-control">
+                                    <select class="form-control" id="queryName">
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${entrustPurposeList}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
 
@@ -82,8 +85,12 @@
                                             委托目的<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入委托目的"
-                                                   id="entrustPurpose" name="entrustPurpose" class="form-control">
+                                            <select required class="form-control" name="entrustPurpose" id="entrustPurpose">
+                                                <option value="">请选择</option>
+                                                <c:forEach items="${entrustPurposeList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +100,12 @@
                                             预警类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入预警类型"
-                                                   id="type" name="type" class="form-control">
+                                            <select required class="form-control" name="type" id="type">
+                                                <option value="">请选择</option>
+                                                <c:forEach items="${typeList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -126,8 +137,12 @@
                                             预警方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入预警方式"
-                                                   id="mode" name="mode" class="form-control">
+                                            <select required class="form-control" name="mode" id="mode">
+                                                <option value="">请选择</option>
+                                                <c:forEach items="${modeList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -184,11 +199,11 @@
     //加载预警设置信息数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'entrustPurpose', title: '委托目的'});
-        cols.push({field: 'type', title: '预警类型'});
+        cols.push({field: 'entrustPurposeName', title: '委托目的'});
+        cols.push({field: 'typeName', title: '预警类型'});
         cols.push({field: 'nearDay', title: '接近天数'});
         cols.push({field: 'color', title: '预警颜色'});
-        cols.push({field: 'mode', title: '预警方式'});
+        cols.push({field: 'modeName', title: '预警方式'});
         cols.push({field: 'object', title: '预警对象'});
 
         cols.push({
@@ -218,8 +233,14 @@
     //新增一条预警设置信息
     function saveSubDataDic() {
         var flag = false;
-        var data = $("#frm").serialize();
-
+        var data = formParams("frm");
+        // data.id = $("#id").val();
+        // data.entrustPurpose = $("#entrustPurpose").val();
+        // data.type = $("#type").val();
+        // data.nearDay = $("#nearDay").val();
+        // data.color = $("#color").val();
+        // data.mode = $("#mode").val();
+        // data.object = $("#object").val();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/earlyWarning/editEarlyWarning",
@@ -309,6 +330,7 @@
         $("#frm").initForm(row);
         $('#divBox').modal();
     }
+
 
 </script>
 </html>
