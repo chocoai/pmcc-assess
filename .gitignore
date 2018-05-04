@@ -3,6 +3,7 @@
 
 # maven ignore
 target/
+tmp-war/
 
 # eclipse ignore
 .settings/

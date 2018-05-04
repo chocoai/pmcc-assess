@@ -236,11 +236,11 @@ public class ProjectTaskAllService {
             projectPlanService.saveProjectPlanResponsibility(projectPlan, workStageUserAccounts, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.ALLTASK);
         } else {
             //将下阶段设置为可编辑计划
-//            try {
-//                projectBidAssist.updatePlanStatus(planId);
-//            } catch (BusinessException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                projectPlanService.updatePlanStatus(planId);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

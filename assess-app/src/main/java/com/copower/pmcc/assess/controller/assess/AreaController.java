@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.assess;
 
-import com.copower.pmcc.assess.service.assess.AreaService;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import java.util.List;
 public class AreaController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AreaController.class);
     @Autowired
-    private AreaService areaService;
+    private ErpAreaService areaService;
 
     /**
      * 获取字典列表数据
