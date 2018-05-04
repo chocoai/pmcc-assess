@@ -22,25 +22,25 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
     private ControllerComponent serviceComponent;
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyIndex", "", 0, "-1", "");
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 }
