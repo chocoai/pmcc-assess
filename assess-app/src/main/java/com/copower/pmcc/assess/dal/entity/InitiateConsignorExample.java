@@ -1044,6 +1044,76 @@ public class InitiateConsignorExample {
             addCriterion("cs_spare_field not between", value1, value2, "csSpareField");
             return (Criteria) this;
         }
+
+        public Criteria andCsIdcardIsNull() {
+            addCriterion("cs_idcard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardIsNotNull() {
+            addCriterion("cs_idcard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardEqualTo(String value) {
+            addCriterion("cs_idcard =", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardNotEqualTo(String value) {
+            addCriterion("cs_idcard <>", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardGreaterThan(String value) {
+            addCriterion("cs_idcard >", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardGreaterThanOrEqualTo(String value) {
+            addCriterion("cs_idcard >=", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardLessThan(String value) {
+            addCriterion("cs_idcard <", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardLessThanOrEqualTo(String value) {
+            addCriterion("cs_idcard <=", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardLike(String value) {
+            addCriterion("cs_idcard like", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardNotLike(String value) {
+            addCriterion("cs_idcard not like", value, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardIn(List<String> values) {
+            addCriterion("cs_idcard in", values, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardNotIn(List<String> values) {
+            addCriterion("cs_idcard not in", values, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardBetween(String value1, String value2) {
+            addCriterion("cs_idcard between", value1, value2, "csIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsIdcardNotBetween(String value1, String value2) {
+            addCriterion("cs_idcard not between", value1, value2, "csIdcard");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -16,6 +16,7 @@
     <result column="cs_enclosure_location" property="csEnclosureLocation" jdbcType="VARCHAR" />
     <result column="cs_name" property="csName" jdbcType="VARCHAR" />
     <result column="cs_spare_field" property="csSpareField" jdbcType="VARCHAR" />
+    <result column="cs_idcard" property="csIdcard" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +79,7 @@
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, cs_type, cs_entrustment_unit, cs_legal_representative, 
     cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, cs_enclosure_location, 
-    cs_name, cs_spare_field
+    cs_name, cs_spare_field, cs_idcard
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" >
     select
@@ -118,12 +119,14 @@
       cs_type, cs_entrustment_unit, cs_legal_representative, 
       cs_sociology_code, cs_address, cs_scope_operation, 
       cs_unit_properties, cs_enclosure_location, 
-      cs_name, cs_spare_field)
+      cs_name, cs_spare_field, cs_idcard
+      )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{csType,jdbcType=INTEGER}, #{csEntrustmentUnit,jdbcType=VARCHAR}, #{csLegalRepresentative,jdbcType=VARCHAR}, 
       #{csSociologyCode,jdbcType=VARCHAR}, #{csAddress,jdbcType=VARCHAR}, #{csScopeOperation,jdbcType=VARCHAR}, 
       #{csUnitProperties,jdbcType=VARCHAR}, #{csEnclosureLocation,jdbcType=VARCHAR}, 
-      #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR})
+      #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -170,6 +173,9 @@
       <if test="csSpareField != null" >
         cs_spare_field,
       </if>
+      <if test="csIdcard != null" >
+        cs_idcard,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -210,6 +216,9 @@
       </if>
       <if test="csSpareField != null" >
         #{csSpareField,jdbcType=VARCHAR},
+      </if>
+      <if test="csIdcard != null" >
+        #{csIdcard,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -264,6 +273,9 @@
       <if test="record.csSpareField != null" >
         cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
       </if>
+      <if test="record.csIdcard != null" >
+        cs_idcard = #{record.csIdcard,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -284,7 +296,8 @@
       cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
       cs_enclosure_location = #{record.csEnclosureLocation,jdbcType=VARCHAR},
       cs_name = #{record.csName,jdbcType=VARCHAR},
-      cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR}
+      cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
+      cs_idcard = #{record.csIdcard,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -331,6 +344,9 @@
       <if test="csSpareField != null" >
         cs_spare_field = #{csSpareField,jdbcType=VARCHAR},
       </if>
+      <if test="csIdcard != null" >
+        cs_idcard = #{csIdcard,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -348,7 +364,8 @@
       cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
       cs_enclosure_location = #{csEnclosureLocation,jdbcType=VARCHAR},
       cs_name = #{csName,jdbcType=VARCHAR},
-      cs_spare_field = #{csSpareField,jdbcType=VARCHAR}
+      cs_spare_field = #{csSpareField,jdbcType=VARCHAR},
+      cs_idcard = #{csIdcard,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

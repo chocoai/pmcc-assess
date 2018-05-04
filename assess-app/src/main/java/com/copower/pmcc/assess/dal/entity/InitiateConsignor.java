@@ -31,6 +31,8 @@ public class InitiateConsignor {
 
     private String csSpareField;
 
+    private String csIdcard;
+
     public Integer getId() {
         return id;
     }
@@ -141,5 +143,13 @@ public class InitiateConsignor {
 
     public void setCsSpareField(String csSpareField) {
         this.csSpareField = csSpareField == null ? null : csSpareField.trim();
+    }
+
+    public String getCsIdcard() {
+        return csIdcard;
+    }
+
+    public void setCsIdcard(String csIdcard) {
+        this.csIdcard = csIdcard == null ? null : csIdcard.trim();
     }
 }
