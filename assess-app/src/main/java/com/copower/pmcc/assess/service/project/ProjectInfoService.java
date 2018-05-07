@@ -237,4 +237,6 @@ public class ProjectInfoService {
     public boolean addContacts(InitiateContactsDto dto){
         return initiateContactsService.add(dto);
     }
+
+    public boolean removeContacts(Integer id){return initiateContactsService.remove(id);}
 }

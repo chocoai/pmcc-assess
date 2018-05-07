@@ -100,7 +100,7 @@
                                         单位性质
                                     </label>
                                     <div class="col-sm-3">
-                                        <select class="form-control">
+                                        <select class="form-control" id="csUnitProperties" name="csUnitProperties">
                                             <option>请选择</option>
                                             <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
                                                 <option value="${mymap.key}">${mymap.value}</option>
@@ -109,87 +109,218 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="file" name="csEnclosureLocation" id="csEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
                         <div id="no_legal_person">
-                                <div class="form-group">
+                            <div class="form-group">
 
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            委托姓名
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csName" id="csName" placeholder="委托姓名" class="form-control" required="required">
-                                        </div>
-                                    </div>
-
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            身份证号
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号" class="form-control" required="required">
-                                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托姓名
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csName" id="csName" placeholder="委托姓名" class="form-control" required="required">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            委托住址
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csAddress" id="csAddress2" placeholder="委托住址" class="form-control" required="required">
-                                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号" class="form-control" required="required">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            身份证附件
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="file" name="csEnclosureLocation" id="csEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
-                                        </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托住址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csAddress" id="csAddress2" placeholder="委托住址" class="form-control" required="required">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="file" name="csEnclosureLocation" id="csEnclosureLocation2" placeholder="上传附件" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
 
                 <div class="x_foot">
-                    <button class="btn btn-default" onclick="addContacts()">新增联系人</button>
-                    <table class="table table-bordered" id="tb_List">
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                    <table class="table table-bordered" id="tb_ListA">
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
+
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> 委托人联系人</h2>
-                    <div class="clearfix"></div>
+                    <div class="clearfix" id="changeType1">
+                        占有人
+                        法人<input type="radio" name="pType" value="1" checked="checked">
+                        自然人<input type="radio" name="pType" value="0" >
+                    </div>
                 </div>
                 <div class="x_content">
+                    <form id="legal_person_Form1" class="form-horizontal">
 
+                        <div id="legal_person1" class="panel-body">
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        占有单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit" placeholder="占有单位" class="form-control" required="required">
+                                        <span class="input-group-btn">
+                                          <button type="button" id="btn_select_customer1" class="btn btn-primary">选择</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        占有单位法定代表
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pLegalRepresentative" id="pLegalRepresentative" placeholder="占有单位法定代表" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pSociologyCode" id="pSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pScopeOperation" id="pScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        占有单位地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" id="pUnitProperties" name="pUnitProperties">
+                                            <option>请选择</option>
+                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                                <option value="${mymap.key}">${mymap.value}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="file" name="pEnclosureLocation" id="pEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="no_legal_person1">
+                            <div class="form-group">
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        占有人姓名
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pName" id="pName" placeholder="占有人姓名" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        占有人住址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pAddress" id="pAddress2" placeholder="占有人住址" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="file" name="pEnclosureLocation" id="pEnclosureLocation2" placeholder="上传附件" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> 占有人</h2>
-                    <div class="clearfix"></div>
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
                 </div>
                 <div class="x_content">
-
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2> 占有人联系人</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
+                    <table class="table table-bordered" id="tb_ListB">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
             <div class="x_panel">
@@ -330,6 +461,17 @@
                 $("#legal_person").hide();
             }
         });
+        $("#no_legal_person1").hide();
+        $("#changeType1 input[type='radio'][name='pType']").change(function () {
+            if ($(this).val()==1){
+                $("#no_legal_person1").hide();
+                $("#legal_person1").show();
+            }
+            if ($(this).val()==0){
+                $("#no_legal_person1").show();
+                $("#legal_person1").hide();
+            }
+        });
     });
     //CRM
     $("#btn_select_customer").click(function () {
@@ -344,8 +486,9 @@
             }
         });
     })
-    //加载 委托人 联系人列表
-    function loadContactsDicList(id) {
+
+    //加载联系人列表
+    function loadInitContactsList(id,divID) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
@@ -355,12 +498,12 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:removeData(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContacts(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
-        TableInit("tb_List", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
+        TableInit(""+divID, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
             id: id}, {
             showColumns: false,
             showRefresh: false,
@@ -368,13 +511,12 @@
         });
     }
 
-    //新建 委托 联系人
+    // 显示 联系人 view
     function addContacts() {
         $('#divBoxContacts').modal("show");
     }
-    //新增 委托 联系人
-    function saveContacts() {
-        //cDept,cPhone,cEmail,cType,cName
+    //新增  联系人
+    function saveContacts(fn) {
         var data = formParams("frmContacts");//收集参数
         data.cDept = $("#cDept").val();
         data.cName = $("#cName").val();
@@ -391,7 +533,7 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#divBoxContacts').modal('hide');
-                        loadContactsDicList();
+                        fn();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -403,6 +545,33 @@
             })
         }
     }
+
+    //删除 联系人
+    function deteteContacts(id,fn) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/Contacts/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        fn();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
 </script>
 
 <script type="text/javascript">

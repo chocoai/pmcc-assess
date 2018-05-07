@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -228,13 +229,25 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
+    @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
     public HttpResult add(InitiateContactsDto dto) {
         try {
             if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
             } else {
                 projectInfoService.addContacts(dto);
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除",method = RequestMethod.POST)
+    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+        try {
+            projectInfoService.removeContacts(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
