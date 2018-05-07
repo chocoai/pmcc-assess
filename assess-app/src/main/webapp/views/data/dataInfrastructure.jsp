@@ -3,8 +3,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
-            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -118,7 +116,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" required data-rule-maxlength="50" placeholder="发文单位"
-                                                   id="dispatch_unit" name="dispatch_unit" class="form-control">
+                                                   id="dispatchUnit" name="dispatchUnit" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -142,8 +140,8 @@
                                             文件名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="文件名称" class="form-control" id="file_name"
-                                                      name="file_name">
+                                            <textarea placeholder="文件名称" class="form-control" id="fileName"
+                                                      name="fileName">
 
                                             </textarea>
                                         </div>
@@ -156,8 +154,8 @@
                                             项目类别
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="项目类别" class="form-control" id="project_type"
-                                                      name="project_type">
+                                            <textarea placeholder="项目类别" class="form-control" id="projectType"
+                                                      name="projectType">
 
                                             </textarea>
                                         </div>
@@ -170,7 +168,7 @@
                                             执行开始日期
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="执行开始日期" id="beginDate" name="beginDate"
+                                            <input type="text" placeholder="执行开始日期" id="startDate" name="startDate"
                                                    data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                                    readonly="readonly">
                                         </div>
@@ -228,6 +226,8 @@
 
 
 <%@include file="/views/share/main_footer.jsp" %>
+
+<script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"></script>
 <script type="application/javascript">
 
     $(function () {
@@ -240,13 +240,21 @@
         cols.push({field: 'province', title: '省'});
         cols.push({field: 'city', title: '市'});
         cols.push({field: 'district', title: '县'});
-        cols.push({field: 'dispatch_unit', title: '发文单位'});
+        cols.push({field: 'dispatchUnit', title: '发文单位'});
         cols.push({field: 'number', title: '文号'});
-        cols.push({field: 'file_name', title: '文件名称'});
-        cols.push({field: 'project_type', title: '项目类别'});
-        cols.push({field: 'start_date', title: '执行开始日期'});
-        cols.push({field: 'end_date', title: '执行结束日期'});
-
+        cols.push({field: 'fileName', title: '文件名称'});
+        cols.push({field: 'projectType', title: '项目类别'});
+        /*日期转换*/
+        cols.push({
+            field: 'startDate', title: '执行开始日期', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
+        cols.push({
+            field: 'endDate', title: '执行结束日期', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -363,6 +371,8 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        $("#startDate").val(formatDate(row.startDate, false));
+        $("#endDate").val(formatDate(row.endDate, false));
         $('#divBox').modal();
     }
 

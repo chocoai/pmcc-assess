@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
+import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -25,20 +26,20 @@ public class DataInfrastructureController {
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
 
-    @RequestMapping(value = "/index" , name = "发文单位查看")
+    @RequestMapping(value = "/Index" , name = "发文单位查看")
     public ModelAndView index(){
-       ModelAndView modelAndView =  controllerComponent.baseModelAndView("data/dataInfrastructure");
+       ModelAndView modelAndView =  controllerComponent.baseModelAndView("/data/dataInfrastructure");
        return  modelAndView;
     }
     @ResponseBody
-    @RequestMapping(value = "getInfrastructure",name = "获取发文单位信息",method = RequestMethod.GET)
+    @RequestMapping(value = "/getInfrastructure",name = "获取发文单位信息",method = RequestMethod.GET)
     public BootstrapTableVo getInfrastructure(@RequestParam(value = "name") String name){
         return dataInfrastructureService.getInfrastructure(name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "addInfrastructure",name = "添加发文单位",method = RequestMethod.POST)
-    public HttpResult addInfrastructure(Infrastructure infrastructure) {
+    @RequestMapping(value = "/addInfrastructure",name = "添加发文单位",method = RequestMethod.POST)
+    public HttpResult addInfrastructure(InfrastructureDto infrastructure) {
         try {
             if (infrastructure.getId() != null && infrastructure.getId() != 0){
                 dataInfrastructureService.editInfrastructure(infrastructure);
