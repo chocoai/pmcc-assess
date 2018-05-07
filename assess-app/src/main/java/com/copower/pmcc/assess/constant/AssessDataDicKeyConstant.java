@@ -20,5 +20,7 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_WORK_STAGE = "project.work.stage";  //阶段权重占比
     public static final String EARLY_WARNING_TYPE = "earlywarning.type";  //预警类型
     public static final String EARLY_WARNING_MODE = "earlywarning.mode";  //预警方式
+    public static final String REPORT_ANALYSIS_CATEGORY = "report.analysis.category";  //报告分析类别
+
 
 }

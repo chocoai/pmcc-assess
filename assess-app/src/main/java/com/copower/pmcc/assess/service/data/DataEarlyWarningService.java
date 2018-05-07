@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Service(value = "dataEarlyWarningServiceService")
+@Service(value = "dataEarlyWarningService")
 public class DataEarlyWarningService {
 
     @Autowired
@@ -66,7 +66,7 @@ public class DataEarlyWarningService {
      * @param keyWord 查询关键字
      * @return 分页列表信息
      */
-    public BootstrapTableVo getEarlyWarningForList(String keyWord) {
+    public BootstrapTableVo getEarlyWarningForList(String keyWord) throws Exception{
         //Bootstrap表格对象
         BootstrapTableVo vo = new BootstrapTableVo();
         //分页参数对象
@@ -122,9 +122,9 @@ public class DataEarlyWarningService {
      * @param id id
      * @return true or false
      */
-    public boolean deleteEarlyWarning(Integer id) {
+    public boolean deleteEarlyWarning(Integer id) throws Exception{
         boolean flag = false;
-        dataEarlyWarningDao.deleteEarlyWarning(id);
+        flag = dataEarlyWarningDao.deleteEarlyWarning(id);
         return flag;
     }
 }
