@@ -12,7 +12,10 @@
 
 <script src='/assets/js/comm/erp-head.js'></script>
 <script type="text/javascript">
-    $("#pmcc_head").html(PMCC_MAIN.head(${baseViewDtoJson}, ${sysRemindUnReadCount}, ${sysRemindUnRead}));
+    var viewJson = '${baseViewDtoJson}';
+    var sysRemindUnReadCount = ${sysRemindUnReadCount};
+    var sysRemindUnRead = ${sysRemindUnRead};
+    $("#pmcc_head").html(PMCC_MAIN.head(viewJson, sysRemindUnReadCount, sysRemindUnRead));
     $("#mainHeadProcessMap").click(function (e) {
         e.stopPropagation();
     });
