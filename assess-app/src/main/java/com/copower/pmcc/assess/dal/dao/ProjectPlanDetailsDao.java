@@ -116,4 +116,10 @@ public class ProjectPlanDetailsDao {
     public Boolean deleteProjectPlanDetails(Integer id) {
         return projectPlanDetailsMapper.deleteByPrimaryKey(id) == 1;
     }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectIdAndName(Integer projectId, String name,Integer workStageId){
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andProjectIdEqualTo(projectId).andProjectPhaseNameEqualTo(name).andProjectWorkStageIdEqualTo(workStageId);
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
 }

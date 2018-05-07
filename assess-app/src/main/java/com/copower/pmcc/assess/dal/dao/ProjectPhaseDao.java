@@ -71,4 +71,12 @@ public class ProjectPhaseDao {
 
         return projectPhaseMapper.selectByExample(example);
     }
+
+    public List<ProjectPhase> getProjectPhase(Integer workStageId){
+
+        ProjectPhaseExample example = new ProjectPhaseExample();
+        example.createCriteria().andWorkStageIdEqualTo(workStageId);
+        return projectPhaseMapper.selectByExample(example);
+
+    }
 }
