@@ -78,6 +78,7 @@ public class ProjectInfoController {
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
+        modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());
         return modelAndView;
     }
 

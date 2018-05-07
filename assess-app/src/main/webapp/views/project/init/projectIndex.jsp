@@ -32,7 +32,6 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <%--<h2> 委托人</h2>--%>
                     <div class="clearfix" id="changeType">
                         委托人
                         法人<input type="radio" name="csType" value="1" checked="checked">
@@ -43,51 +42,83 @@
                     <form id="legal_person_Form" class="form-inline">
 
                         <div id="legal_person" class="panel-body">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        委托单位
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
+
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            委托单位
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            法定代表人
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="csLegalRepresentative" id="csLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            社会统一信用代码
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="csSociologyCode" id="csSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        法定代表人
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="csLegalRepresentative" id="csLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            单位性质
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option>请选择</option>
+                                                <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                                    <option value="${mymap.key}">${mymap.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            经营范围
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="csScopeOperation" id="csScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            地址
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="csAddress" id="csAddress" placeholder="地址" class="form-control" required="required">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        单位性质
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control">
-                                            <option>请选择</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        社会统一信用代码
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="csScopeOperation" id="csScopeOperation" placeholder="社会统一信用代码" class="form-control" required="required">
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div id="no_legal_person">

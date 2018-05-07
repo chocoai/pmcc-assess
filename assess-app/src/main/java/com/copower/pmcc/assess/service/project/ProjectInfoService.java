@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
@@ -36,7 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Console;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -193,5 +196,13 @@ public class ProjectInfoService {
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
+    }
+
+    public Map<String,Object> getConsignorMap(){
+        Map<String,Object> map = new HashMap<>();
+        map.put(InitiateConsignorEnum.ONE.getValue()+"",InitiateConsignorEnum.BANK.getDec());
+        map.put(InitiateConsignorEnum.THREE.getValue()+"",InitiateConsignorEnum.OTHER.getDec());
+        map.put(InitiateConsignorEnum.TWO.getValue()+"",InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
+        return map;
     }
 }
