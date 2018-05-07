@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
@@ -9,7 +10,10 @@ import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
+import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -20,10 +24,16 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,12 +41,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Console;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -64,6 +74,9 @@ public class ProjectInfoService {
     private ProjectPlanDao projectPlanDao;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Lazy
+    @Autowired
+    private InitiateContactsService initiateContactsService;
 
     /**
      * 项目立项申请
@@ -79,10 +92,11 @@ public class ProjectInfoService {
 
     /**
      * 初始化项目信息
+     *
      * @param projectInfo
      */
     private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0,true);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0, true);
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
@@ -113,6 +127,7 @@ public class ProjectInfoService {
 
     /**
      * 发起立项流程
+     *
      * @param projectInfo
      * @param projectWorkStage
      * @return
@@ -146,6 +161,7 @@ public class ProjectInfoService {
 
     /**
      * 立项审批
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -157,6 +173,7 @@ public class ProjectInfoService {
 
     /**
      * 返回修改
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -194,4 +211,32 @@ public class ProjectInfoService {
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
+
+    public Map<String, Object> getConsignorMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(InitiateConsignorEnum.ONE.getValue() + "", InitiateConsignorEnum.BANK.getDec());
+        map.put(InitiateConsignorEnum.THREE.getValue() + "", InitiateConsignorEnum.OTHER.getDec());
+        map.put(InitiateConsignorEnum.TWO.getValue() + "", InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
+        return map;
+    }
+
+    public BootstrapTableVo listContactsVo(Integer crmId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public Map<String,String> getTypeInitiateContactsMap(){
+        return initiateContactsService.getTypeMap();
+    }
+
+    public boolean addContacts(InitiateContactsDto dto){
+        return initiateContactsService.add(dto);
+    }
+
+    public boolean removeContacts(Integer id){return initiateContactsService.remove(id);}
 }

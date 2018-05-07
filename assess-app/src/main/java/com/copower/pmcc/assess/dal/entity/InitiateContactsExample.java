@@ -764,6 +764,66 @@ public class InitiateContactsExample {
             addCriterion("c_spare_field not between", value1, value2, "cSpareField");
             return (Criteria) this;
         }
+
+        public Criteria andCPidIsNull() {
+            addCriterion("c_pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidIsNotNull() {
+            addCriterion("c_pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidEqualTo(Integer value) {
+            addCriterion("c_pid =", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidNotEqualTo(Integer value) {
+            addCriterion("c_pid <>", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidGreaterThan(Integer value) {
+            addCriterion("c_pid >", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("c_pid >=", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidLessThan(Integer value) {
+            addCriterion("c_pid <", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidLessThanOrEqualTo(Integer value) {
+            addCriterion("c_pid <=", value, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidIn(List<Integer> values) {
+            addCriterion("c_pid in", values, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidNotIn(List<Integer> values) {
+            addCriterion("c_pid not in", values, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidBetween(Integer value1, Integer value2) {
+            addCriterion("c_pid between", value1, value2, "cPid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("c_pid not between", value1, value2, "cPid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
