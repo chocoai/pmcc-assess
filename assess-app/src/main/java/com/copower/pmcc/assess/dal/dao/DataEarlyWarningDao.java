@@ -1,7 +1,8 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
+import com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample;
 import com.copower.pmcc.assess.dal.entity.EarlyWarning;
-import com.copower.pmcc.assess.dal.entity.EarlyWarningExample;
 import com.copower.pmcc.assess.dal.mapper.DataEarlyWarningMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,16 @@ public class DataEarlyWarningDao {
     @Autowired
     private DataEarlyWarningMapper dataEarlyWarningMapper;
 
-    public boolean addEarlyWarning(EarlyWarning earlyWarning) {
+    public boolean addEarlyWarning(DataEarlyWarning earlyWarning) {
     int flag = dataEarlyWarningMapper.insert(earlyWarning);
         return flag > 0;
     }
 
-    public List<EarlyWarning> getEarlyWarningList(String keyWord) {
-        EarlyWarningExample earlyWarningExample = new EarlyWarningExample();
-        EarlyWarningExample.Criteria criteria = earlyWarningExample.createCriteria();
+    public List<DataEarlyWarning> getEarlyWarningList(String keyWord) {
+        DataEarlyWarningExample earlyWarningExample = new DataEarlyWarningExample();
+        DataEarlyWarningExample.Criteria criteria = earlyWarningExample.createCriteria();
         if (StringUtils.isNotEmpty(keyWord)){
-           criteria.andEntrustPurposeLike(String.format("%s%s%s","%",keyWord,"%"));
+            criteria.andEntrustPurposeEqualTo(Integer.parseInt(keyWord));
         }
         return dataEarlyWarningMapper.selectByExample(earlyWarningExample);
     }
@@ -34,7 +35,7 @@ public class DataEarlyWarningDao {
         return flag > 0;
     }
 
-    public boolean editEarlyWarning(EarlyWarning earlyWarning) {
+    public boolean editEarlyWarning(DataEarlyWarning earlyWarning) {
         int flag = dataEarlyWarningMapper.updateByPrimaryKeySelective(earlyWarning);
         return flag > 0;
     }

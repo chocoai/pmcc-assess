@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
 import com.copower.pmcc.assess.dal.entity.EarlyWarning;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataEarlyWarningService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @RequestMapping(value = "/earlyWarning")
 @Controller
 public class DataEarlyWarningController {
@@ -27,13 +32,25 @@ public class DataEarlyWarningController {
     @Autowired
     private DataEarlyWarningService dataEarlyWarningService;
 
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+
     /**
      * 初始化页面
      * @return 视图页面
      */
     @RequestMapping(value = "/Index", name = "预警设置初始页面 ")
     public ModelAndView index() {
+        //获取委托类型字典列表
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        //获取预警类型字典列表
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLY_WARNING_TYPE);
+        //获取预警方式字典列表
+        List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLY_WARNING_MODE);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataEarlyWarning");
+        modelAndView.addObject("entrustPurposeList",entrustPurposeList);
+        modelAndView.addObject("typeList",typeList);
+        modelAndView.addObject("modeList",modeList);
         return modelAndView;
     }
 
@@ -44,7 +61,7 @@ public class DataEarlyWarningController {
      */
     @ResponseBody
     @RequestMapping(value = "/editEarlyWarning", name = "新增or修改预警设置信息", method = RequestMethod.POST)
-    public HttpResult editEarlyWarning(EarlyWarning earlyWarning) {
+    public HttpResult editEarlyWarning(DataEarlyWarning earlyWarning) {
         try {
             if (earlyWarning.getId() != null && earlyWarning.getId() != 0){
                 //修改

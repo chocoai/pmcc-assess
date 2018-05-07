@@ -18,5 +18,7 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_TYPE = "report.type"; //报告类型
     public static final String ENTRUSTMENT_PURPOSE = "entrustment.purpose";//委托目的
     public static final String PROJECT_WORK_STAGE = "project.work.stage";  //阶段权重占比
+    public static final String EARLY_WARNING_TYPE = "earlywarning.type";  //预警类型
+    public static final String EARLY_WARNING_MODE = "earlywarning.mode";  //预警方式
 
 }

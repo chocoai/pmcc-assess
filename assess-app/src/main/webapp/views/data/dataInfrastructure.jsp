@@ -1,15 +1,10 @@
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2018\5\3 0003
-  Time: 10:29
-  To change this template use File | Settings | File Templates.
---%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
+            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -31,19 +26,20 @@
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div>
-                                <label class="col-sm-1 control-label">委托目的</label>
+                                <label class="col-sm-1 control-label">
+                                    发文单位
+                                </label>
                                 <div class="col-sm-2">
-                                    <select class="form-control" id="queryName">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${entrustPurposeList}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="发文单位" id="queryName" name="queryName"
+                                           class="form-control">
                                 </div>
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">查询</button>
+                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                    查询
+                                </button>
 
                                 <button type="button" class="btn btn-success" onclick="addDataDic()"
                                         data-toggle="modal" href="#divBox"> 新增
@@ -63,14 +59,14 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<!-- 新增预警设置信息 -->
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">新增预警设置</h4>
+                <h4 class="modal-title">字典管理</h4>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -82,81 +78,118 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            委托目的<span class="symbol required"></span>
+                                            省
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required class="form-control" name="entrustPurpose" id="entrustPurpose">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${entrustPurposeList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input type="text" placeholder="省" class="form-control" id="province"
+                                                   name="province">
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            预警类型<span class="symbol required"></span>
+                                            市
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required class="form-control" name="type" id="type">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${typeList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <input type="text" placeholder="市" class="form-control" id="city"
+                                                   name="city"/>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            接近天数<span class="symbol required"></span>
+                                            县
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入接近天数"
-                                                   id="nearDay" name="nearDay" class="form-control">
+                                            <input type="text" placeholder="县" class="form-control" id="district"
+                                                   name="district">
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            预警颜色<span class="symbol required"></span>
+                                            发文单位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入预警颜色"
-                                                   id="color" name="color" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="发文单位"
+                                                   id="dispatch_unit" name="dispatch_unit" class="form-control">
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            预警方式<span class="symbol required"></span>
+                                            文号
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required class="form-control" name="mode" id="mode">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${modeList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <textarea placeholder="文号" class="form-control" id="number" name="number">
+
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            预警对象<span class="symbol required"></span>
+                                            文件名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="请输入预警对象"
-                                                   id="object" name="object" class="form-control">
+                                            <textarea placeholder="文件名称" class="form-control" id="file_name"
+                                                      name="file_name">
+
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            项目类别
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="项目类别" class="form-control" id="project_type"
+                                                      name="project_type">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            执行开始日期
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="执行开始日期" id="beginDate" name="beginDate"
+                                                   data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
+                                                   readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            执行结束日期
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="执行结束日期" id="endDate" name="endDate"
+                                                   data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
+                                                   readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -173,14 +206,17 @@
         </div>
     </div>
 </div>
-<!-- 预警设置信息列表 -->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+
+
+<!--基础设施及公共配套设施维护数据子项数据 ===========-->
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">预警设置信息数据</h4>
+                <h4 class="modal-title" id="titleContent">基础设施维护数据</h4>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered" id="tbDataDicList">
@@ -189,35 +225,40 @@
         </div>
     </div>
 </div>
+
+
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="application/javascript"></script>
 <script type="application/javascript">
-    //页面初始化
+
     $(function () {
         loadDataDicList();
-    });
-    //加载预警设置信息数据列表
+    })
+
+    //加载 基础设施及公共配套设施维护 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'entrustPurposeName', title: '委托目的'});
-        cols.push({field: 'typeName', title: '预警类型'});
-        cols.push({field: 'nearDay', title: '接近天数'});
-        cols.push({field: 'color', title: '预警颜色'});
-        cols.push({field: 'modeName', title: '预警方式'});
-        cols.push({field: 'object', title: '预警对象'});
+        cols.push({field: 'province', title: '省'});
+        cols.push({field: 'city', title: '市'});
+        cols.push({field: 'district', title: '县'});
+        cols.push({field: 'dispatch_unit', title: '发文单位'});
+        cols.push({field: 'number', title: '文号'});
+        cols.push({field: 'file_name', title: '文件名称'});
+        cols.push({field: 'project_type', title: '项目类别'});
+        cols.push({field: 'start_date', title: '执行开始日期'});
+        cols.push({field: 'end_date', title: '执行结束日期'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteEarlyWarning(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/earlyWarning/getEarlyWarningForList", cols, {
-            keyWord: $("#queryName").val()
+        TableInit("tb_List", "${pageContext.request.contextPath}/infrastructure/getInfrastructure", cols, {
+            name: $("#queryName").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -225,51 +266,12 @@
         });
     }
 
-    //清楚新增表单缓存输入
-    function addDataDic() {
-        $("#frm").clearAll();
-    }
-
-    //新增一条预警设置信息
-    function saveSubDataDic() {
-        var flag = false;
-        var data = formParams("frm");
-        // data.id = $("#id").val();
-        // data.entrustPurpose = $("#entrustPurpose").val();
-        // data.type = $("#type").val();
-        // data.nearDay = $("#nearDay").val();
-        // data.color = $("#color").val();
-        // data.mode = $("#mode").val();
-        // data.object = $("#object").val();
-        if ($("#frm").valid()) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/earlyWarning/editEarlyWarning",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        loadDataDicList();
-                        $('#divBox').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    }
-
-    //删除一条预警设置信息
-    function deleteEarlyWarning(id, tbId) {
+    //删除 基础设施及公共配套设施维护数据
+    function deleteBestUseDescription(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/earlyWarning/deleteEarlyWarning",
+                url: "${pageContext.request.contextPath}/infrastructure/deleteInfrastructure",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -292,12 +294,46 @@
         })
     }
 
-    //修改预警设置信息
+    //对新增 基础设施及公共配套设施维护数据处理
+    function addDataDic() {
+        $("#frm").clearAll();
+    }
+
+    //新增 基础设施及公共配套设施维护数据
+    function saveSubDataDic() {
+        var flag = false;
+        var data = $("#frm").serialize();
+
+        if ($("#frm").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructure/addInfrastructure",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadDataDicList();
+                        $('#divBox').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //-------------------------------------------------------------------------------------
+    //编辑基础设施维护数据
     function editDataDic(id) {
         $("#frm").clearAll();
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/earlyWarning/getEarlyWarningForList",
+            url: "${pageContext.request.contextPath}/infrastructure/getInfrastructure",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -305,12 +341,11 @@
                 Loading.progressHide();
                 if (result.ret) {
                     $("#id").val(id);
-                    $("#entrustPurpose").val(result.data.entrustPurpose);
-                    $("#type").val(result.data.type);
-                    $("#nearDay").val(result.data.nearDay);
-                    $("#color").val(result.data.color);
-                    $("#mode").val(result.data.mode);
-                    $("#object").val(result.data.object);
+                    $("#name").val(result.data.name);
+                    $("#fieldName").val(result.data.fieldName);
+                    $("#bisEnable").prop("checked", result.data.bisEnable);
+                    $("#sorting").val(result.data.sorting);
+                    $("#remark").val(result.data.remark);
                     $('#divBox').modal();
                 }
                 else {
@@ -331,6 +366,17 @@
         $('#divBox').modal();
     }
 
+    function isNot(val) {
+        if (val != null) {
+            if (val != '') {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 </script>
+
+
 </html>

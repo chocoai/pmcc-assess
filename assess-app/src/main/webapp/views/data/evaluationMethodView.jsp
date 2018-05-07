@@ -29,7 +29,7 @@
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
                                            placeholder="评估方法 名称" id="queryName" name="queryName"
-                                           class="form-control">
+                                           class="form-control" >
                                 </div>
                             </div>
 
@@ -77,7 +77,7 @@
                                             不适用原因模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason">
+                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason" required="required">
 
                                             </textarea>
                                         </div>
@@ -89,7 +89,7 @@
                                             评估方法
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id="method" name="method" class="form-control">
+                                            <select id="method" name="method" class="form-control" required="required">
                                                 <option selected="selected" value="0">请选择</option>
                                                 <c:forEach items="${useList}" var="item">
                                                     <%--${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">--%>
@@ -106,7 +106,7 @@
                                             适用原因模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
+                                            <textarea required="required" placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
 
                                             </textarea>
                                         </div>
@@ -172,7 +172,7 @@
                             <input type="hidden" name="methodId" id="methodId">
                         </label>
                         <div class="col-sm-10">
-                            <select id="type">
+                            <select id="type" required="required">
                                 <option value="0" selected="selected">适用原因</option>
                                 <option value="1" >不适用原因</option>
                             </select>
@@ -186,7 +186,7 @@
                             字段名称
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" id="nameA" name="nameA" class="form-control">
+                            <input type="text" id="nameA" name="nameA" class="form-control" required="required">
                         </div>
                     </div>
                 </div>
