@@ -45,6 +45,14 @@ public class InitiateContactsDao {
         return dtos;
     }
 
+    public List<InitiateContactsDto> getList(Integer cPid){
+        List<InitiateContactsDto> dtos = new ArrayList<>();
+        InitiateContactsExample example = new InitiateContactsExample();
+        example.createCriteria().andCPidEqualTo(cPid);
+        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
+        return dtos;
+    }
+
     private InitiateContacts change(InitiateContactsDto dto){
         InitiateContacts data = new InitiateContacts();
         BeanUtils.copyProperties(dto,data);

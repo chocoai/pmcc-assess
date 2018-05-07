@@ -11,6 +11,8 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -21,10 +23,16 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,10 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Console;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -67,6 +72,8 @@ public class ProjectInfoService {
     private ProjectPlanDao projectPlanDao;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired(required = true)
+    private InitiateContactsService initiateContactsService;
 
     /**
      * 项目立项申请
@@ -204,5 +211,15 @@ public class ProjectInfoService {
         map.put(InitiateConsignorEnum.THREE.getValue()+"",InitiateConsignorEnum.OTHER.getDec());
         map.put(InitiateConsignorEnum.TWO.getValue()+"",InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
         return map;
+    }
+
+    public BootstrapTableVo listContactsVo(Integer crmId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
     }
 }

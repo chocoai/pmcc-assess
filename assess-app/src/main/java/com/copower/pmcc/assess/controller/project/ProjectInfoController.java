@@ -9,10 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
-import com.copower.pmcc.assess.service.project.ProjectFollowService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectMemberService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
@@ -225,6 +222,13 @@ public class ProjectInfoController {
         }
 
         return keyValueDtos;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
+    public BootstrapTableVo listContactsVo(Integer crmId){
+        BootstrapTableVo vo = projectInfoService.listContactsVo(crmId);
+        return vo;
     }
 
 }
