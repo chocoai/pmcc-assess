@@ -8,4 +8,5 @@ import com.copower.pmcc.assess.dal.entity.InitiateContacts;
  */
 public class InitiateContactsDto extends InitiateContacts {
     public static Integer CPID = 0;
+
 }

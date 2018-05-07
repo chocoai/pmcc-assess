@@ -1,17 +1,19 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.dao.InitiateContactsDao;
 import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
+import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 委托人信息
@@ -20,9 +22,11 @@ import java.util.List;
 @Service
 public class InitiateContactsService {
 
-    @Lazy
-    @Autowired(required = true)
+//    @Autowired
     private CrmCustomerService crmCustomerService;
+
+    @Autowired
+    private CommonService commonService;
 
     @Autowired
     private InitiateContactsDao dao;
@@ -47,7 +51,10 @@ public class InitiateContactsService {
         return vos;
     }
 
+    @Transactional
     public boolean add(InitiateContactsDto dto) {
+        if ((dto.getCreator()==null))dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
         dto.setcPid(InitiateContactsDto.CPID);
         return dao.add(dto);
     }
@@ -56,6 +63,7 @@ public class InitiateContactsService {
         return change(dao.get(id));
     }
 
+    @Transactional
     public boolean remove(Integer id) {
         return dao.remove(id);
     }
@@ -84,5 +92,13 @@ public class InitiateContactsService {
         InitiateContactsVo vo = new InitiateContactsVo();
         BeanUtils.copyProperties(dto, vo);
         return vo;
+    }
+
+    public Map<String,String> getTypeMap(){
+        Map<String,String> map = new HashMap<>();
+        map.put(""+ InitiateContactsEnum.ONE.getNum(),InitiateContactsEnum.CONTACTS_ENUM_A.getVal());
+        map.put(""+ InitiateContactsEnum.TWO.getNum(),InitiateContactsEnum.CONTACTS_ENUM_B.getVal());
+        map.put(""+ InitiateContactsEnum.THREE.getNum(),InitiateContactsEnum.CONTACTS_ENUM_C.getVal());
+        return map;
     }
 }

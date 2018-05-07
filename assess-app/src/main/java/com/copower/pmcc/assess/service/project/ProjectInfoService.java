@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
+import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
@@ -40,6 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +74,8 @@ public class ProjectInfoService {
     private ProjectPlanDao projectPlanDao;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired(required = true)
+    @Lazy
+    @Autowired
     private InitiateContactsService initiateContactsService;
 
     /**
@@ -89,10 +92,11 @@ public class ProjectInfoService {
 
     /**
      * 初始化项目信息
+     *
      * @param projectInfo
      */
     private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0,true);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0, true);
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
@@ -123,6 +127,7 @@ public class ProjectInfoService {
 
     /**
      * 发起立项流程
+     *
      * @param projectInfo
      * @param projectWorkStage
      * @return
@@ -156,6 +161,7 @@ public class ProjectInfoService {
 
     /**
      * 立项审批
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -167,6 +173,7 @@ public class ProjectInfoService {
 
     /**
      * 返回修改
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -205,15 +212,15 @@ public class ProjectInfoService {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
 
-    public Map<String,Object> getConsignorMap(){
-        Map<String,Object> map = new HashMap<>();
-        map.put(InitiateConsignorEnum.ONE.getValue()+"",InitiateConsignorEnum.BANK.getDec());
-        map.put(InitiateConsignorEnum.THREE.getValue()+"",InitiateConsignorEnum.OTHER.getDec());
-        map.put(InitiateConsignorEnum.TWO.getValue()+"",InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
+    public Map<String, Object> getConsignorMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(InitiateConsignorEnum.ONE.getValue() + "", InitiateConsignorEnum.BANK.getDec());
+        map.put(InitiateConsignorEnum.THREE.getValue() + "", InitiateConsignorEnum.OTHER.getDec());
+        map.put(InitiateConsignorEnum.TWO.getValue() + "", InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
         return map;
     }
 
-    public BootstrapTableVo listContactsVo(Integer crmId){
+    public BootstrapTableVo listContactsVo(Integer crmId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -221,5 +228,13 @@ public class ProjectInfoService {
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
+    }
+
+    public Map<String,String> getTypeInitiateContactsMap(){
+        return initiateContactsService.getTypeMap();
+    }
+
+    public boolean addContacts(InitiateContactsDto dto){
+        return initiateContactsService.add(dto);
     }
 }

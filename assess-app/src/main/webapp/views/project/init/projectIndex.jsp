@@ -44,75 +44,68 @@
 
                         <div id="legal_person" class="panel-body">
 
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            委托单位
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
-                                            <span class="input-group-btn">
-                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
-                                    </span>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            法定代表
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csLegalRepresentative" id="csLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            社会统一信用代码
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="csSociologyCode" id="csSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
-                                        </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
+                                        <span class="input-group-btn">
+                                          <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
+                                        </span>
                                     </div>
                                 </div>
 
-
-
-                            <div class="form-inline">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            经营范围
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" name="csScopeOperation" id="csScopeOperation" placeholder="经营范围" class="form-control" required="required">
-                                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定代表
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csLegalRepresentative" id="csLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            单位地址
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" name="csAddress" id="csAddress" placeholder="单位地址" class="form-control" required="required">
-                                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csSociologyCode" id="csSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csScopeOperation" id="csScopeOperation" placeholder="经营范围" class="form-control" required="required">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            单位性质
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control">
-                                                <option>请选择</option>
-                                                <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                                    <option value="${mymap.key}">${mymap.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="csAddress" id="csAddress" placeholder="单位地址" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control">
+                                            <option>请选择</option>
+                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                                <option value="${mymap.key}">${mymap.value}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -120,59 +113,53 @@
                         </div>
 
                         <div id="no_legal_person">
-                            <div class="form-inline">
                                 <div class="form-group">
+
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-1 control-label">
                                             委托姓名
                                         </label>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-3">
                                             <input type="text" name="csName" id="csName" placeholder="委托姓名" class="form-control" required="required">
+                                        </div>
+                                    </div>
+
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            身份证号
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            身份证号
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-inline">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-1 control-label">
                                             委托住址
                                         </label>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-3">
                                             <input type="text" name="csAddress" id="csAddress2" placeholder="委托住址" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-inline">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             身份证附件
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <input type="file" name="csEnclosureLocation" id="csEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </form>
                 </div>
 
                 <div class="x_foot">
-                    <button class="btn btn-default">新增联系人</button>
+                    <button class="btn btn-default" onclick="addContacts()">新增联系人</button>
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -241,6 +228,91 @@
         </div>
     </div>
 </div>
+<div id="divBoxContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">联系人</h4>
+            </div>
+            <form id="frmContacts" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            姓名
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="cName" id="cName" placeholder="姓名" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            部门
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="cDept" id="cDept" placeholder="部门" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            号码
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="cPhone" id="cPhone" placeholder="号码" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            邮箱
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="cEmail" id="cEmail" placeholder="邮箱" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类型
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="cType" id="cType" required="required">
+                                                <option>请选择</option>
+                                                <c:forEach items="${InitiateContactsMap}" var="mymap">
+                                                    <option value="${mymap.key}">${mymap.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveContacts()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
@@ -259,6 +331,7 @@
             }
         });
     });
+    //CRM
     $("#btn_select_customer").click(function () {
         crmCustomer.select({
             multi: false,//是否允许多选
@@ -288,11 +361,47 @@
             }
         });
         TableInit("tb_List", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            crmId: id}, {
+            id: id}, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+    }
+
+    //新建 委托 联系人
+    function addContacts() {
+        $('#divBoxContacts').modal("show");
+    }
+    //新增 委托 联系人
+    function saveContacts() {
+        //cDept,cPhone,cEmail,cType,cName
+        var data = formParams("frmContacts");//收集参数
+        data.cDept = $("#cDept").val();
+        data.cName = $("#cName").val();
+        data.cPhone = $("#cPhone").val();
+        data.cEmail = $("#cEmail").val();
+        data.cType = $("#cType option:selected").val();
+        if ($("#frmContacts").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/Contacts/save",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#divBoxContacts').modal('hide');
+                        loadContactsDicList();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
     }
 </script>
 
