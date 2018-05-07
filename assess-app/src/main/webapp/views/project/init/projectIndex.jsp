@@ -488,7 +488,7 @@
     })
 
     //加载联系人列表
-    function loadInitContactsList(id,divID) {
+    function loadInitContactsListA(id) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
@@ -498,12 +498,56 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContacts(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsA(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
-        TableInit(""+divID, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
+        TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
+            id: id}, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+    function loadInitContactsListB(id) {
+        var cols = [];
+        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'cPhone', title: '部门'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsB(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
+            id: id}, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+    function loadInitContactsListC(id) {
+        var cols = [];
+        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'cPhone', title: '部门'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
             id: id}, {
             showColumns: false,
             showRefresh: false,
@@ -516,7 +560,7 @@
         $('#divBoxContacts').modal("show");
     }
     //新增  联系人
-    function saveContacts(fn) {
+    function saveContacts() {
         var data = formParams("frmContacts");//收集参数
         data.cDept = $("#cDept").val();
         data.cName = $("#cName").val();
@@ -533,7 +577,14 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#divBoxContacts').modal('hide');
-                        fn();
+                        var flag = data.cType;
+                        if (flag==1){
+                            loadInitContactsListA();
+                        }else if (flag==2){
+                            loadInitContactsListB();
+                        }else if (flag==3){
+                            loadInitContactsListC();
+                        }
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -547,7 +598,7 @@
     }
 
     //删除 联系人
-    function deteteContacts(id,fn) {
+    function deteteContactsA(id) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/Contacts/delete",
@@ -558,7 +609,57 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        fn();
+                        loadInitContactsListA();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    function deteteContactsB(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/Contacts/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInitContactsListB();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    function deteteContactsC(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/Contacts/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInitContactsListC();
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
