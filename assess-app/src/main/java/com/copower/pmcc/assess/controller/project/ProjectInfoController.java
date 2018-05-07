@@ -1,43 +1,35 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
-import com.copower.pmcc.assess.service.project.ProjectFollowService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectMemberService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
-import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,6 +46,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/projectInfo", name = "项目控制器")
 public class ProjectInfoController {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ControllerComponent controllerComponent;
     @Autowired
@@ -78,6 +71,8 @@ public class ProjectInfoController {
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
+        modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());
+        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());
         return modelAndView;
     }
 
@@ -224,6 +219,40 @@ public class ProjectInfoController {
         }
 
         return keyValueDtos;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
+    public BootstrapTableVo listContactsVo(Integer crmId){
+        BootstrapTableVo vo = projectInfoService.listContactsVo(crmId);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
+    public HttpResult add(InitiateContactsDto dto) {
+        try {
+            if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
+            } else {
+                projectInfoService.addContacts(dto);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除",method = RequestMethod.POST)
+    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+        try {
+            projectInfoService.removeContacts(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
 }

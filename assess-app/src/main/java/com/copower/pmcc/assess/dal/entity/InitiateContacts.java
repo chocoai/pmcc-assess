@@ -23,6 +23,8 @@ public class InitiateContacts {
 
     private String cSpareField;
 
+    private Integer cPid;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class InitiateContacts {
 
     public void setcSpareField(String cSpareField) {
         this.cSpareField = cSpareField == null ? null : cSpareField.trim();
+    }
+
+    public Integer getcPid() {
+        return cPid;
+    }
+
+    public void setcPid(Integer cPid) {
+        this.cPid = cPid;
     }
 }
