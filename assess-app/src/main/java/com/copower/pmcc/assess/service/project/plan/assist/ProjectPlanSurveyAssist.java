@@ -73,7 +73,6 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
 
-
         List<ProjectPhase> projectPhases = projectPhaseDao.getProjectPhase(workStageId);
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
         ;
@@ -95,6 +94,7 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
                     projectPlanDetails.setProjectId(projectId);
                     projectPlanDetails.setProjectPhaseName(name);
                     projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                    projectPlanDetails.setBisLastLayer(false); //？？？？？
                     projectPlanDetails.setSorting(i++);
                     projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
                 }
@@ -106,8 +106,10 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
                     pid = projectPlanDetails.getId();
 
                     String projectPhaseName = "";
+                    Integer projectPhaseId = 0;
                     for(ProjectPhase projectPhase : projectPhases){
                         projectPhaseName = projectPhase.getProjectPhaseName();
+                        projectPhaseId = projectPhase.getId();
 
                         ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
                         projectPlanDetail.setProjectWorkStageId(workStageId);
@@ -116,6 +118,8 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
                         projectPlanDetail.setProjectPhaseName(projectPhaseName);
                         projectPlanDetail.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                         projectPlanDetail.setPid(pid);
+                        projectPlanDetail.setFirstPid(pid);
+                        projectPlanDetail.setProjectPhaseId(projectPhaseId);
                         projectPlanDetail.setSorting(j++);
                         projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
                 }
