@@ -3,10 +3,13 @@ package com.copower.pmcc.assess.service.project.plan.assist;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
+import com.copower.pmcc.assess.service.project.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -20,11 +23,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;
+
+    @Autowired
+    private ProjectPlanSurveyService projectPlanSurveyService;
+
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyIndex", "", 0, "-1", "");
-        return modelAndView;
-    }
+        projectPlanSurveyService.getProjectPlanSurvey(modelAndView,projectPlan);
+            return modelAndView;
+        }
+
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
@@ -43,4 +52,5 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
+
 }
