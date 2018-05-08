@@ -1044,6 +1044,76 @@ public class InitiatePossessorExample {
             addCriterion("spare_field not between", value1, value2, "spareField");
             return (Criteria) this;
         }
+
+        public Criteria andPIdcardIsNull() {
+            addCriterion("p_idcard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardIsNotNull() {
+            addCriterion("p_idcard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardEqualTo(String value) {
+            addCriterion("p_idcard =", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardNotEqualTo(String value) {
+            addCriterion("p_idcard <>", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardGreaterThan(String value) {
+            addCriterion("p_idcard >", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardGreaterThanOrEqualTo(String value) {
+            addCriterion("p_idcard >=", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardLessThan(String value) {
+            addCriterion("p_idcard <", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardLessThanOrEqualTo(String value) {
+            addCriterion("p_idcard <=", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardLike(String value) {
+            addCriterion("p_idcard like", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardNotLike(String value) {
+            addCriterion("p_idcard not like", value, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardIn(List<String> values) {
+            addCriterion("p_idcard in", values, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardNotIn(List<String> values) {
+            addCriterion("p_idcard not in", values, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardBetween(String value1, String value2) {
+            addCriterion("p_idcard between", value1, value2, "pIdcard");
+            return (Criteria) this;
+        }
+
+        public Criteria andPIdcardNotBetween(String value1, String value2) {
+            addCriterion("p_idcard not between", value1, value2, "pIdcard");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

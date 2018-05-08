@@ -3,17 +3,16 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -23,6 +22,7 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -59,6 +59,9 @@ import java.util.logging.Logger;
 @Service
 public class ProjectInfoService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     @Autowired
     private ProjectInfoDao projectInfoDao;
@@ -212,6 +215,29 @@ public class ProjectInfoService {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
 
+    /*获取所有省*/
+    public List<SysAreaDto> getProvinceList(){
+        return erpAreaService.getProvinceList();
+    }
+
+    /*获取城市*/
+    public List<SysAreaDto> getAreaList(String pid){
+        return erpAreaService.getAreaList(pid);
+    }
+
+    /*大类*/
+    public List<BaseDataDic> listClass_assess(){
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
+        return baseDataDics;
+    }
+
+    /*委托目的*/
+    public List<BaseDataDic> list_entrustment_purpose(){
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        return baseDataDics;
+    }
+
+    /*单位性质*/
     public Map<String, Object> getConsignorMap() {
         Map<String, Object> map = new HashMap<>();
         map.put(InitiateConsignorEnum.ONE.getValue() + "", InitiateConsignorEnum.BANK.getDec());
@@ -220,23 +246,27 @@ public class ProjectInfoService {
         return map;
     }
 
-    public BootstrapTableVo listContactsVo(Integer crmId) {
+    /*联系人 vo*/
+    public BootstrapTableVo listContactsVo(Integer crmId,Integer flag) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId);
+        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId,flag);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
+    /*联系人类型*/
     public Map<String,String> getTypeInitiateContactsMap(){
         return initiateContactsService.getTypeMap();
     }
 
+    //添加联系人
     public boolean addContacts(InitiateContactsDto dto){
         return initiateContactsService.add(dto);
     }
 
+    /*联系人删除*/
     public boolean removeContacts(Integer id){return initiateContactsService.remove(id);}
 }

@@ -16,6 +16,7 @@
     <result column="p_enclosure_location" property="pEnclosureLocation" jdbcType="VARCHAR" />
     <result column="p_name" property="pName" jdbcType="VARCHAR" />
     <result column="spare_field" property="spareField" jdbcType="VARCHAR" />
+    <result column="p_idcard" property="pIdcard" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +79,7 @@
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, p_type, p_entrustment_unit, p_legal_representative, 
     p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_enclosure_location, 
-    p_name, spare_field
+    p_name, spare_field, p_idcard
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiatePossessorExample" >
     select
@@ -118,12 +119,12 @@
       p_type, p_entrustment_unit, p_legal_representative, 
       p_sociology_code, p_address, p_scope_operation, 
       p_unit_properties, p_enclosure_location, p_name, 
-      spare_field)
+      spare_field, p_idcard)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{pType,jdbcType=INTEGER}, #{pEntrustmentUnit,jdbcType=VARCHAR}, #{pLegalRepresentative,jdbcType=VARCHAR}, 
       #{pSociologyCode,jdbcType=VARCHAR}, #{pAddress,jdbcType=VARCHAR}, #{pScopeOperation,jdbcType=VARCHAR}, 
       #{pUnitProperties,jdbcType=VARCHAR}, #{pEnclosureLocation,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
-      #{spareField,jdbcType=VARCHAR})
+      #{spareField,jdbcType=VARCHAR}, #{pIdcard,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiatePossessor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -170,6 +171,9 @@
       <if test="spareField != null" >
         spare_field,
       </if>
+      <if test="pIdcard != null" >
+        p_idcard,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -210,6 +214,9 @@
       </if>
       <if test="spareField != null" >
         #{spareField,jdbcType=VARCHAR},
+      </if>
+      <if test="pIdcard != null" >
+        #{pIdcard,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -264,6 +271,9 @@
       <if test="record.spareField != null" >
         spare_field = #{record.spareField,jdbcType=VARCHAR},
       </if>
+      <if test="record.pIdcard != null" >
+        p_idcard = #{record.pIdcard,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -284,7 +294,8 @@
       p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
       p_enclosure_location = #{record.pEnclosureLocation,jdbcType=VARCHAR},
       p_name = #{record.pName,jdbcType=VARCHAR},
-      spare_field = #{record.spareField,jdbcType=VARCHAR}
+      spare_field = #{record.spareField,jdbcType=VARCHAR},
+      p_idcard = #{record.pIdcard,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -331,6 +342,9 @@
       <if test="spareField != null" >
         spare_field = #{spareField,jdbcType=VARCHAR},
       </if>
+      <if test="pIdcard != null" >
+        p_idcard = #{pIdcard,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -348,7 +362,8 @@
       p_unit_properties = #{pUnitProperties,jdbcType=VARCHAR},
       p_enclosure_location = #{pEnclosureLocation,jdbcType=VARCHAR},
       p_name = #{pName,jdbcType=VARCHAR},
-      spare_field = #{spareField,jdbcType=VARCHAR}
+      spare_field = #{spareField,jdbcType=VARCHAR},
+      p_idcard = #{pIdcard,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

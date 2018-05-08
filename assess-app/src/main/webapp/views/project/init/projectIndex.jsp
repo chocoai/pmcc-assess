@@ -4,6 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -28,20 +29,171 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">大类<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="projectClassId" name="projectClassId" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                        <c:forEach items="${listClass_assess}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="entrustPurpose" name="entrustPurpose" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                        <c:forEach items="${list_entrustment_purpose}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required placeholder="评估基准日" id="completeDateStart" name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                           value="${projectInfo.projectName}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="province" name="province" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                        <c:forEach items="${ProvinceList}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="city" name="city" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">县<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="district" name="district" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </form>
+                    <script>
+                        function tableNameA() {
+                            $("#province").change(function () {//监听 选择的省份
+                                //检测  然后操作
+                                removeChild();//删除市
+                                removeChild_district();//删除县
+                                var selected =$(this).children('option:selected').val();//获取到省
+                                var data = "pid="+selected;
+                                $.ajax({
+                                    url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: data,
+                                    success: function (result) {
+                                        console.info(result);
+                                        appendChildElement(result);
+                                    },
+                                    error: function (result) {
+                                        Alert("调用服务端方法失败，失败原因:" + result);
+                                    }
+                                })
+                            });
+                        }
+                        tableNameA();
+                        function tableName_district() {
+                            $("#city").change(function () {//监听 选择的城市
+                                //检测  然后操作
+                                removeChild_district();
+                                var selected =$(this).children('option:selected').val();//获取到城市
+                                var data = "pid="+selected;
+                                $.ajax({
+                                    url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: data,
+                                    success: function (result) {
+                                        console.info(result);
+                                        appendChildElement_district(result);
+                                    },
+                                    error: function (result) {
+                                        Alert("调用服务端方法失败，失败原因:" + result);
+                                    }
+                                })
+                            });
+                        }
+                        tableName_district();
+                        function removeChild() { //删除市
+                            var optionLen = $("#city option").size();
+                            if (optionLen>2){
+                                $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+                            }
+                        }
+                        function removeChild_district() {//删除县或者区
+                            var optionLen = $("#district option").size();
+                            if (optionLen>2){
+                                $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+                            }
+                        }
+                        function appendChildElement(item) {//市添加
+                            var TableField = $("#city");
+                            var TableFieldElement = document.getElementById("city");
+                            var len = item.length;
+                            for (var i = 0 ; i < len;i++){
+                                var optionLen = $("#city option").size();
+                                var fieldElment = document.createElement("option");
+                                fieldElment.setAttribute("value",item[i].areaId);
+                                fieldElment.appendChild(document.createTextNode(item[i].name));
+                                TableFieldElement.appendChild(fieldElment);
+
+                            }
+                        }
+
+                        function appendChildElement_district(item) {//县或者区域添加
+                            var TableField = $("#district");
+                            var TableFieldElement = document.getElementById("district");
+                            var len = item.length;
+                            for (var i = 0 ; i < len;i++){
+                                var optionLen = $("#district option").size();
+                                var fieldElment = document.createElement("option");
+                                fieldElment.setAttribute("value",item[i].id);
+                                fieldElment.appendChild(document.createTextNode(item[i].name));
+                                TableFieldElement.appendChild(fieldElment);
+
+                            }
+                        }
+                    </script>
                 </div>
             </div>
             <div class="x_panel">
                 <div class="x_title">
-                    <div class="clearfix" id="changeType">
-                        委托人
-                        法人<input type="radio" name="csType" value="1" checked="checked">
-                        自然人<input type="radio" name="csType" value="0" >
-                    </div>
+                    <h2> 委托人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="legal_person_Form" class="form-horizontal">
-
+                        <div id="changeType">
+                            法人<input type="radio" name="csType" value="1" checked="checked">
+                            自然人<input type="radio" name="csType" value="0" >
+                        </div>
                         <div id="legal_person" class="panel-body">
 
                             <div class="form-group">
@@ -167,9 +319,14 @@
                         </div>
                     </form>
                 </div>
+            </div>
 
-                <div class="x_foot">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2> 委托人联系人</h2>
                     <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                </div>
+                <div class="x_content">
                     <table class="table table-bordered" id="tb_ListA">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -178,15 +335,15 @@
 
             <div class="x_panel">
                 <div class="x_title">
-                    <div class="clearfix" id="changeType1">
-                        占有人
-                        法人<input type="radio" name="pType" value="1" checked="checked">
-                        自然人<input type="radio" name="pType" value="0" >
-                    </div>
+                    <h2> 占有人</h2>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="legal_person_Form1" class="form-horizontal">
-
+                        <div id="changeType1">
+                            法人<input type="radio" name="pType" value="1" checked="checked">
+                            自然人<input type="radio" name="pType" value="0" >
+                        </div>
                         <div id="legal_person1" class="panel-body">
 
                             <div class="form-group">
@@ -315,6 +472,7 @@
             </div>
             <div class="x_panel">
                 <div class="x_title">
+                    <h2> 占有人联系人</h2>
                     <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
                 </div>
                 <div class="x_content">
@@ -329,16 +487,88 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <form name="InitiateUnitInformationForm" class="form-horizontal">
+                        <div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        报告使用单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="uUseUnit" id="uUseUnit" placeholder="报告使用单位" class="form-control" required="required">
+                                        <span class="input-group-btn">
+                                          <button type="button" id="btn_select_customer2" class="btn btn-primary">选择</button>
+                                        </span>
+                                    </div>
+                                </div>
 
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定代表人
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="uLegalRepresentative" id="uLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        证照号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="uCertificateNumber" id="uCertificateNumber" placeholder="证照号" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" id="uUnitProperties" name="uUnitProperties">
+                                            <option>请选择</option>
+                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                                <option value="${mymap.key}">${mymap.value}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="uScopeOperation" id="uScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="uAddress" id="uAddress" placeholder="地址" class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 报告使用单位联系人</h2>
-                    <div class="clearfix"></div>
+                    <div class="clearfix">
+                        <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                    </div>
                 </div>
                 <div class="x_content">
-
+                    <table class="table table-bordered" id="tb_ListC">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
             <div class="x_panel">
@@ -448,6 +678,10 @@
 </body>
 </html>
 <script>
+    //日期控件
+    laydate.render({
+        elem: '#completeDateStart' //指定元素 id
+    });
     //选项框
     $(document).ready(function () {
         $("#no_legal_person").hide();
@@ -481,12 +715,40 @@
                 var csEntrustmentUnit = document.getElementById("csEntrustmentUnit");
                 csEntrustmentUnit.value = nodes[0].name;
                 var id = nodes[0].id ;
-                loadContactsDicList(id);
+                loadInitContactsListA(id);
                 console.log(nodes);
             }
         });
     })
 
+    $("#btn_select_customer1").click(function () {
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            onSelected: function (nodes) {
+                var pEntrustmentUnit = document.getElementById("pEntrustmentUnit");
+                pEntrustmentUnit.value = nodes[0].name;
+                var id = nodes[0].id ;
+                loadInitContactsListB(id);
+                console.log(nodes);
+            }
+        });
+    })
+
+    $("#btn_select_customer2").click(function () {
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            onSelected: function (nodes) {
+                var uUseUnit = document.getElementById("uUseUnit");
+                uUseUnit.value = nodes[0].name;
+                var id = nodes[0].id ;
+                loadInitContactsListC(id);
+                console.log(nodes);
+            }
+        });
+    })
+    var flags = new Array();
+    flags[0] = 1,flags[1] = 2,flags[2] = 3;
+    console.info(flags);
     //加载联系人列表
     function loadInitContactsListA(id) {
         var cols = [];
@@ -504,7 +766,7 @@
             }
         });
         TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            id: id}, {
+            crmId: id,flag:flags[0]}, {
             showColumns: false,
             showRefresh: false,
             search: false
@@ -526,7 +788,7 @@
             }
         });
         TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            id: id}, {
+            crmId: id,flag:flags[1]}, {
             showColumns: false,
             showRefresh: false,
             search: false
@@ -548,7 +810,7 @@
             }
         });
         TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            id: id}, {
+            crmId: id,flag:flags[2]}, {
             showColumns: false,
             showRefresh: false,
             search: false
@@ -557,6 +819,7 @@
 
     // 显示 联系人 view
     function addContacts() {
+        $("#frmContacts").clearAll();
         $('#divBoxContacts').modal("show");
     }
     //新增  联系人

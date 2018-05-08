@@ -31,6 +31,8 @@ public class InitiatePossessor {
 
     private String spareField;
 
+    private String pIdcard;
+
     public Integer getId() {
         return id;
     }
@@ -141,5 +143,13 @@ public class InitiatePossessor {
 
     public void setSpareField(String spareField) {
         this.spareField = spareField == null ? null : spareField.trim();
+    }
+
+    public String getpIdcard() {
+        return pIdcard;
+    }
+
+    public void setpIdcard(String pIdcard) {
+        this.pIdcard = pIdcard == null ? null : pIdcard.trim();
     }
 }

@@ -37,18 +37,18 @@ public class InitiateContactsDao {
         return change(mapper.selectByPrimaryKey(id));
     }
 
-    public List<InitiateContactsDto> getList(){
+    public List<InitiateContactsDto> getList(Integer flag){
         List<InitiateContactsDto> dtos = new ArrayList<>();
         InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andIdIsNotNull();
+        example.createCriteria().andCTypeEqualTo(flag);
         mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
         return dtos;
     }
 
-    public List<InitiateContactsDto> getList(Integer cPid){
+    public List<InitiateContactsDto> getList(Integer cPid,Integer flag){
         List<InitiateContactsDto> dtos = new ArrayList<>();
         InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andCPidEqualTo(cPid);
+        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(flag);
         mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
         return dtos;
     }

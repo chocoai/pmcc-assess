@@ -14,6 +14,7 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
@@ -71,8 +72,11 @@ public class ProjectInfoController {
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
-        modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());
-        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());
+        modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
+        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
+        modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
+        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
+        modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
         return modelAndView;
     }
 
@@ -223,8 +227,8 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId){
-        BootstrapTableVo vo = projectInfoService.listContactsVo(crmId);
+    public BootstrapTableVo listContactsVo(Integer crmId,Integer flag){
+        BootstrapTableVo vo = projectInfoService.listContactsVo(crmId,flag);
         return vo;
     }
 
@@ -249,6 +253,21 @@ public class ProjectInfoController {
         try {
             projectInfoService.removeContacts(id);
         } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAreaList", name = "联系人 删除",method = RequestMethod.POST)
+    public Object getAreaList(Integer pid){
+        try {
+            if (pid!=null){
+                List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList(""+pid);
+                if (sysAreaDtos!=null)return sysAreaDtos;
+            }
+        }catch (Exception e){
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }

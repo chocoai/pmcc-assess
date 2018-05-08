@@ -22,7 +22,8 @@ import java.util.*;
 @Service
 public class InitiateContactsService {
 
-//    @Autowired
+    @Lazy
+    @Autowired
     private CrmCustomerService crmCustomerService;
 
     @Autowired
@@ -31,7 +32,7 @@ public class InitiateContactsService {
     @Autowired
     private InitiateContactsDao dao;
 
-    public List<InitiateContactsVo> listVo(Integer crmId){
+    public List<InitiateContactsVo> listVo(Integer crmId,Integer flag){
         List<InitiateContactsVo> vos = new ArrayList<>();
         if (crmId!=null){
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
@@ -46,7 +47,7 @@ public class InitiateContactsService {
                 vos.add(vo);
             }
         }else {
-            vos = getVoList(InitiateContactsDto.CPID);
+            vos = getVoList(InitiateContactsDto.CPID,flag);
         }
         return vos;
     }
@@ -72,12 +73,12 @@ public class InitiateContactsService {
         return dao.update(dto);
     }
 
-    private List<InitiateContactsVo> getVoList(Integer cPid) {
+    private List<InitiateContactsVo> getVoList(Integer cPid,Integer flag) {
         List<InitiateContactsVo> vos = new ArrayList<>();
-        if (cPid==null){
-            dao.getList().parallelStream().forEach(oo -> vos.add(change(oo)));
-        }else {
-            dao.getList(cPid).parallelStream().forEach(oo -> vos.add(change(oo)));
+        if (cPid==null && flag!=null){
+            dao.getList(flag).parallelStream().forEach(oo -> vos.add(change(oo)));
+        }else if (cPid!=null && flag!=null){
+            dao.getList(cPid,flag).parallelStream().forEach(oo -> vos.add(change(oo)));
         }
         return vos;
     }

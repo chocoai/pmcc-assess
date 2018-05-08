@@ -372,7 +372,7 @@
         $("#tableName").change(function () {
             //检测  然后操作
             removeChild();
-            var selected=$(this).children('option:selected').val();
+            var selected= $(this).children('option:selected').val();
             var data = "tableName="+selected;
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparisonNG/listTableField",
