@@ -79,8 +79,12 @@
                                             省
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="省" class="form-control" id="province"
-                                                   name="province">
+                                            <select name="province" class="form-control" id="province">
+                                                <c:forEach items="${provinceList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <span for="province" class="help-block">该字段为必填项</span>
                                         </div>
                                     </div>
                                 </div>
@@ -91,8 +95,9 @@
                                             市
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="市" class="form-control" id="city"
-                                                   name="city"/>
+                                            <select name="city" class="form-control" id="city" required="required">
+                                                <option>请选择</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -103,8 +108,9 @@
                                             县
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="县" class="form-control" id="district"
-                                                   name="district">
+                                            <select name="district" class="form-control" id="district" required="required">
+                                                <option>请选择</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -127,9 +133,8 @@
                                             文号
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="文号" class="form-control" id="number" name="number">
-
-                                            </textarea>
+                                            <input placeholder="文号" class="form-control" id="number" name="number"/>
+                                            <span for="number" class="help-block">该字段为必填项</span>
                                         </div>
                                     </div>
                                 </div>
@@ -140,10 +145,9 @@
                                             文件名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="文件名称" class="form-control" id="fileName"
-                                                      name="fileName">
+                                            <input placeholder="文件名称" class="form-control" id="fileName"
+                                                   name="fileName"/>
 
-                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -154,10 +158,10 @@
                                             项目类别
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="项目类别" class="form-control" id="projectType"
-                                                      name="projectType">
 
-                                            </textarea>
+                                            <input placeholder="项目类别" class="form-control" id="projectType"
+                                                   name="projectType"/>
+
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +210,7 @@
 </div>
 
 
-<!--基础设施及公共配套设施维护数据子项数据 ===========-->
+<!-- 显示基础设施费用 -->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -214,15 +218,70 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">基础设施维护数据</h4>
+                <h4 class="modal-title" id="titleContent">基础设施费用</h4>
             </div>
             <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success" onclick="addMethodField(id)"
+                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+            </button>
+        </span>
                 <table class="table table-bordered" id="tbDataDicList">
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 基础设施费用 添加 ===========-->
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent2">字段</h4>
+            </div>
+            <form id="firSubA">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="name" name="name" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">.</div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                费用
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="numberCost" name="numberCost" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                        保存
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 
 
 <%@include file="/views/share/main_footer.jsp" %>
@@ -258,6 +317,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >基础设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >公共配套设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
@@ -272,6 +333,113 @@
             showRefresh: false,
             search: false
         });
+    }
+
+    //新增基础设施费用
+    function addMethodField(id) {
+        $("#firSub").clearAll();
+        $('#firSub').modal();
+        var thinkingId = document.getElementById("thinkingId");
+        thinkingId.value = id;
+        if (id == null || id == '' || id == 0) {//说明是从选子项添加的
+            var thinkingIdN = document.getElementById("thinkingIdN");
+            thinkingId.value = thinkingIdN.value
+        }
+    }
+    //保存新增 基础设施费用
+    function saveFileld() {
+        //firSubA
+        var data = formParams("firSubA");
+        data.name = $("#nameA").val();
+        data.thinkingId = $("#thinkingId").val();
+        data.type = $("#type option:selected").val()
+        if ($("#firSubA").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        console.info(result);
+                        toastr.success('保存成功');
+                        $('#firSub').modal('hide');//隐藏
+                        var thinkingIdN = document.getElementById("thinkingIdN").value;
+                        setSubDataDic(thinkingIdN);
+                    } else {
+                        toastr.success('调用服务端方法失败');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //加载基础设施费用
+    function loadSubDataDicList(pid, fn) {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'numberCost', title: '费用'});
+        cols.push({
+            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        var thinkingIdN = document.getElementById("thinkingIdN");
+        thinkingIdN.value = pid;
+        $("#tbDataDicList").bootstrapTable("destroy");
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationThinkingNG/listField",
+            cols, {thinkingId: pid}, {
+                showRefresh: false,                  //是否显示刷新按钮
+                toolbar: '#toolbarSub',
+                uniqueId: "id",
+                onLoadSuccess: function () {
+                    if (fn) {
+                        fn();
+                    }
+                }
+            });
+    }
+
+    //设置基础设施费用
+    function setSubDataDic(pid) {
+        $("#divSubDataDic").modal();//显示
+        $("#tbDataDicList").clearAll();//清除数据
+        loadSubDataDicList(pid, function () {
+            $('#divSubDataDic').modal("show");
+        });
+    }
+
+    //删除 基础设施费用
+    function delDataDic(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureCost/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        var thinkingIdN = document.getElementById("thinkingIdN").value;
+                        setSubDataDic(thinkingIdN);
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
 
     //删除 基础设施及公共配套设施维护数据
@@ -307,11 +475,95 @@
         $("#frm").clearAll();
     }
 
+    function selectProvince() {
+        $("#province").change(function () {//监听 选择的省份
+            //检测  然后操作
+            removeChild();//删除市
+            removeChild_district();//删除县
+            var selected =$(this).children('option:selected').val();//获取到省
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    selectProvince();
+    function selectCity() {
+        $("#city").change(function () {//监听 选择的城市
+            //检测  然后操作
+            removeChild_district();
+            var selected =$(this).children('option:selected').val();//获取到城市
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement_district(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    selectCity();
+    function removeChild() { //删除市
+        var optionLen = $("#city option").size();
+        if (optionLen>2){
+            $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function removeChild_district() {//删除县或者区
+        var optionLen = $("#district option").size();
+        if (optionLen>2){
+            $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function appendChildElement(item) {//市添加
+        var TableField = $("#city");
+        var TableFieldElement = document.getElementById("city");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#city option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].areaId);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+
+    function appendChildElement_district(item) {//县或者区域添加
+        var TableField = $("#district");
+        var TableFieldElement = document.getElementById("district");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#district option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].id);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+
     //新增 基础设施及公共配套设施维护数据
     function saveSubDataDic() {
         var flag = false;
         var data = $("#frm").serialize();
-
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructure/addInfrastructure",
