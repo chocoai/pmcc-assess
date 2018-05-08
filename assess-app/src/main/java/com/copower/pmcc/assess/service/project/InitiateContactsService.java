@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * 委托人信息
+ * 联系人
  * Created by 13426 on 2018/5/4.
  */
 @Service
@@ -58,6 +58,12 @@ public class InitiateContactsService {
         if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
         dto.setcPid(InitiateContactsDto.CPID);
         return dao.add(dto);
+    }
+
+    /*更新主表的id值*/
+    @Transactional
+    public void update(int pid, int flag){
+        dao.update(pid,flag);
     }
 
     public InitiateContactsVo get(Integer id) {

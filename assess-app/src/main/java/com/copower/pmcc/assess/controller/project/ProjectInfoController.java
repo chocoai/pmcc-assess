@@ -4,8 +4,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.*;
@@ -77,14 +76,16 @@ public class ProjectInfoController {
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
         modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
+        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
+        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(ProjectInfoDto projectInfoDto) {
+    public HttpResult projectApplySubmit(String formData) {
         try {
-            projectInfoService.projectApply(projectInfoDto);
+            projectInfoService.projectApply(projectInfoService.format(formData));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

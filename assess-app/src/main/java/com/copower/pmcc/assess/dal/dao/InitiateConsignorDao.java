@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 联系人
+ * 委托人信息
  * Created by 13426 on 2018/5/4.
  */
 @Repository
@@ -21,8 +21,10 @@ public class InitiateConsignorDao {
     @Autowired
     private InitiateConsignorMapper mapper;
 
-    public boolean add(InitiateConsignorDto dto){
-        return mapper.insertSelective(change(dto))==1;
+    public int add(InitiateConsignorDto dto){
+        InitiateConsignor consignor = change(dto);
+        mapper.insertSelective(consignor);
+        return consignor.getId();
     }
 
     public boolean remove(Integer id){
@@ -32,6 +34,7 @@ public class InitiateConsignorDao {
     public boolean update(InitiateConsignorDto dto){
         return mapper.updateByPrimaryKey(change(dto))==1;
     }
+
 
     public InitiateConsignorDto get(Integer id){
         return change(mapper.selectByPrimaryKey(id));

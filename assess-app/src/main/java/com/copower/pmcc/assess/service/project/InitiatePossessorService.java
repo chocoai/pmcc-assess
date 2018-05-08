@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.project.InitiatePossessorVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,8 @@ public class InitiatePossessorService {
     @Autowired
     private InitiatePossessorDao dao;
 
-    public boolean add(InitiatePossessorDto dto){
+    @Transactional
+    public int add(InitiatePossessorDto dto){
         return dao.add(dto);
     }
 
@@ -28,10 +30,12 @@ public class InitiatePossessorService {
         return change(dao.get(id));
     }
 
+    @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);
     }
 
+    @Transactional
     public boolean update(InitiatePossessorDto dto){
         return dao.update(dto);
     }

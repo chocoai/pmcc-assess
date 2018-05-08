@@ -18,7 +18,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frm_project_info" class="form-horizontal">
+                    <form id="frm_project_info" class="form-horizontal" enctype="multipart/form-data">
                         <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
                         <div class="form-group">
                             <div class="x-valid">
@@ -58,7 +58,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input required placeholder="评估基准日" id="completeDateStart" name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                    <input required="required" placeholder="评估基准日" id="completeDateStart" name="completeDateStart" data-date-format="yyyy-mm-dd"
                                            value="${projectInfo.projectName}" class="form-control">
                                 </div>
                             </div>
@@ -94,93 +94,65 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="urgency" name="urgency" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                        <c:forEach items="${project_initiate_urgency}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="valueType" name="valueType" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                        <c:forEach items="${value_type}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="departmentId" name="departmentId" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="项目说明" id="remarks" name="remarks" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="userAccountManager" name="userAccountManager" class="form-control" required="required">
+                                        <option selected="selected" value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">上传附件<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="上传附件"  class="form-control" type="file">
+                                </div>
+                            </div>
+                        </div>
                     </form>
-                    <script>
-                        function tableNameA() {
-                            $("#province").change(function () {//监听 选择的省份
-                                //检测  然后操作
-                                removeChild();//删除市
-                                removeChild_district();//删除县
-                                var selected =$(this).children('option:selected').val();//获取到省
-                                var data = "pid="+selected;
-                                $.ajax({
-                                    url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
-                                    type: "post",
-                                    dataType: "json",
-                                    data: data,
-                                    success: function (result) {
-                                        console.info(result);
-                                        appendChildElement(result);
-                                    },
-                                    error: function (result) {
-                                        Alert("调用服务端方法失败，失败原因:" + result);
-                                    }
-                                })
-                            });
-                        }
-                        tableNameA();
-                        function tableName_district() {
-                            $("#city").change(function () {//监听 选择的城市
-                                //检测  然后操作
-                                removeChild_district();
-                                var selected =$(this).children('option:selected').val();//获取到城市
-                                var data = "pid="+selected;
-                                $.ajax({
-                                    url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
-                                    type: "post",
-                                    dataType: "json",
-                                    data: data,
-                                    success: function (result) {
-                                        console.info(result);
-                                        appendChildElement_district(result);
-                                    },
-                                    error: function (result) {
-                                        Alert("调用服务端方法失败，失败原因:" + result);
-                                    }
-                                })
-                            });
-                        }
-                        tableName_district();
-                        function removeChild() { //删除市
-                            var optionLen = $("#city option").size();
-                            if (optionLen>2){
-                                $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
-                            }
-                        }
-                        function removeChild_district() {//删除县或者区
-                            var optionLen = $("#district option").size();
-                            if (optionLen>2){
-                                $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
-                            }
-                        }
-                        function appendChildElement(item) {//市添加
-                            var TableField = $("#city");
-                            var TableFieldElement = document.getElementById("city");
-                            var len = item.length;
-                            for (var i = 0 ; i < len;i++){
-                                var optionLen = $("#city option").size();
-                                var fieldElment = document.createElement("option");
-                                fieldElment.setAttribute("value",item[i].areaId);
-                                fieldElment.appendChild(document.createTextNode(item[i].name));
-                                TableFieldElement.appendChild(fieldElment);
-
-                            }
-                        }
-
-                        function appendChildElement_district(item) {//县或者区域添加
-                            var TableField = $("#district");
-                            var TableFieldElement = document.getElementById("district");
-                            var len = item.length;
-                            for (var i = 0 ; i < len;i++){
-                                var optionLen = $("#district option").size();
-                                var fieldElment = document.createElement("option");
-                                fieldElment.setAttribute("value",item[i].id);
-                                fieldElment.appendChild(document.createTextNode(item[i].name));
-                                TableFieldElement.appendChild(fieldElment);
-
-                            }
-                        }
-                    </script>
                 </div>
             </div>
             <div class="x_panel">
@@ -189,7 +161,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="legal_person_Form" class="form-horizontal">
+                    <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
                         <div id="changeType">
                             法人<input type="radio" name="csType" value="1" checked="checked">
                             自然人<input type="radio" name="csType" value="0" >
@@ -339,7 +311,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="legal_person_Form1" class="form-horizontal">
+                    <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
                         <div id="changeType1">
                             法人<input type="radio" name="pType" value="1" checked="checked">
                             自然人<input type="radio" name="pType" value="0" >
@@ -487,7 +459,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form name="InitiateUnitInformationForm" class="form-horizontal">
+                    <form name="frm_unitinformation" class="form-horizontal" enctype="multipart/form-data">
                         <div>
                             <div class="form-group">
                                 <div class="x-valid">
@@ -678,6 +650,123 @@
 </body>
 </html>
 <script>
+    function tableNameA() {
+        $("#province").change(function () {//监听 选择的省份
+            //检测  然后操作
+            removeChild();//删除市
+            removeChild_district();//删除县
+            var selected =$(this).children('option:selected').val();//获取到省
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    tableNameA();
+    function tableName_district() {
+        $("#city").change(function () {//监听 选择的城市
+            //检测  然后操作
+            removeChild_district();
+            var selected =$(this).children('option:selected').val();//获取到城市
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement_district(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    tableName_district();
+    function removeChild() { //删除市
+        var optionLen = $("#city option").size();
+        if (optionLen>2){
+            $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function removeChild_district() {//删除县或者区
+        var optionLen = $("#district option").size();
+        if (optionLen>2){
+            $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function appendChildElement(item) {//市添加
+        var TableField = $("#city");
+        var TableFieldElement = document.getElementById("city");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#city option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].areaId);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+
+    function appendChildElement_district(item) {//县或者区域添加
+        var TableField = $("#district");
+        var TableFieldElement = document.getElementById("district");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#district option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].id);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+</script>
+<script>
+    //执业部门
+    var departmentId = document.getElementById("departmentId");
+    departmentId.onclick = function () {
+        erpDepartment.select({
+            onSelected:function (nodes) {
+                console.log(nodes[0].text);
+                console.log(nodes[0].id);
+                departmentId.removeChild(departmentId.firstChild);
+                var fieldElment = document.createElement("option");
+                fieldElment.setAttribute("value",nodes[0].id);
+                fieldElment.setAttribute("selected","selected");
+                fieldElment.appendChild(document.createTextNode(nodes[0].text));
+                departmentId.appendChild(fieldElment);
+            }
+        });
+    }
+    // 项目经理
+    var userAccountManager = document.getElementById("userAccountManager");
+    userAccountManager.onclick = function () {
+        erpEmployee.select({
+            onSelected:function (data) {
+                console.log(data);
+                userAccountManager.removeChild(userAccountManager.firstChild);
+                var fieldElment = document.createElement("option");
+                fieldElment.setAttribute("value",data.account);
+                fieldElment.setAttribute("selected","selected");
+                fieldElment.appendChild(document.createTextNode(data.name));
+                userAccountManager.appendChild(fieldElment);
+            }
+        });
+    }
     //日期控件
     laydate.render({
         elem: '#completeDateStart' //指定元素 id
@@ -939,18 +1028,28 @@
 </script>
 
 <script type="text/javascript">
-    $(function () {
-
-    });
-
-
-    //提交
+    var json = "";
+    function params() {
+        var data = {};
+        var projectInfo = formParams("frm_project_info");//项目信息
+        var consignor = formParams("frm_consignor"); //委托人信息
+        var possessor = formParams("frm_possessor"); //占有人信息
+        var unitinformation = formParams("frm_unitinformation"); //报告使用单位信息
+        data.projectInfo=projectInfo;
+        data.consignor=consignor;
+        data.possessor=possessor;
+        data.unitinformation=unitinformation;
+        console.info(data);
+        json = JSON.stringify(data);
+        console.info(json);
+    }
     function projectApply() {
         Loading.progressShow();
+        params();
         $.ajax({
             url: getContextPath() + "/projectInfo/projectApplySubmit",
             type: "post",
-            data: formParams("frm_project_info"),
+            formData: json,
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();

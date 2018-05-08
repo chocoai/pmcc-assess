@@ -5,6 +5,8 @@ import java.util.Date;
 public class ProjectInfo {
     private Integer id;
 
+    private Integer urgency;
+
     private String projectName;
 
     private Integer province;
@@ -49,6 +51,14 @@ public class ProjectInfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(Integer urgency) {
+        this.urgency = urgency;
     }
 
     public String getProjectName() {

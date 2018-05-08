@@ -21,8 +21,10 @@ public class InitiatePossessorDao {
     @Autowired
     private InitiatePossessorMapper mapper;
 
-    public boolean add(InitiatePossessorDto dto){
-        return mapper.insertSelective(change(dto))==1;
+    public int add(InitiatePossessorDto dto){
+        InitiatePossessor initiatePossessor = change(dto);
+        mapper.insertSelective(initiatePossessor);
+        return initiatePossessor.getId();
     }
 
     public boolean remove(Integer id){

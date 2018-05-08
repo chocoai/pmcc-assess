@@ -165,6 +165,66 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andUrgencyIsNull() {
+            addCriterion("urgency is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyIsNotNull() {
+            addCriterion("urgency is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyEqualTo(Integer value) {
+            addCriterion("urgency =", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyNotEqualTo(Integer value) {
+            addCriterion("urgency <>", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyGreaterThan(Integer value) {
+            addCriterion("urgency >", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("urgency >=", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyLessThan(Integer value) {
+            addCriterion("urgency <", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyLessThanOrEqualTo(Integer value) {
+            addCriterion("urgency <=", value, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyIn(List<Integer> values) {
+            addCriterion("urgency in", values, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyNotIn(List<Integer> values) {
+            addCriterion("urgency not in", values, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyBetween(Integer value1, Integer value2) {
+            addCriterion("urgency between", value1, value2, "urgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andUrgencyNotBetween(Integer value1, Integer value2) {
+            addCriterion("urgency not between", value1, value2, "urgency");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectNameIsNull() {
             addCriterion("project_name is null");
             return (Criteria) this;
