@@ -48,8 +48,8 @@
 
                     </form>
                     <table class="table table-bordered" id="tb_List">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                    <!-- cerare document add ajax data-->
+                </table>
                 </div>
             </div>
         </div>
@@ -228,6 +228,7 @@
     //编辑字典数据
     function editDataDic(id) {
         $("#frm").clearAll();
+        alert()
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/bestUse/getBestUseDescription",

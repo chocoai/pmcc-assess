@@ -209,8 +209,7 @@
     </div>
 </div>
 
-
-<!-- 显示基础设施费用 -->
+<!-- 显示基础设施费用列表 -->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -219,11 +218,22 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="titleContent">基础设施费用</h4>
+
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName1" name="queryName1"
+                               class="form-control">
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
         <span id="toolbarSub">
-            <button type="button" class="btn btn-success" onclick="addMethodField(id)"
-                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+            <button type="button" class="btn btn-success"
+                    data-toggle="modal" href="#firSub1"> 新增
             </button>
         </span>
                 <table class="table table-bordered" id="tbDataDicList">
@@ -234,7 +244,7 @@
 </div>
 
 <!-- 基础设施费用 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="firSub1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -277,12 +287,97 @@
                     </button>
                 </div>
             </form>
-
+            <table class="table table-bordered" id="tb_List1">
+                <!-- cerare document add ajax data-->
+            </table>
         </div>
     </div>
 </div>
 
+<!-- 显示公共设施费用列表 -->
+<div id="divSubDataDic1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent1">公共设施费用</h4>
 
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName2" name="queryName2"
+                               class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+        <span id="toolbarSub2">
+            <button type="button" class="btn btn-success"
+                    data-toggle="modal" href="#firSub2"> 新增
+            </button>
+        </span>
+                <table class="table table-bordered" id="tbDataDicList2">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 公共设施费用 添加 ===========-->
+<div id="firSub2" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent3">字段</h4>
+            </div>
+            <form id="firSubA1">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="name1" name="name1" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">.</div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                费用
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="numberCost1" name="numberCost1" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld1()">
+                        保存
+                    </button>
+                </div>
+            </form>
+            <table class="table table-bordered" id="tb_List2">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+</div>
 
 <%@include file="/views/share/main_footer.jsp" %>
 
@@ -292,6 +387,222 @@
     $(function () {
         loadDataDicList();
     })
+
+    $(function () {
+        loadInfratructureCost();
+    })
+
+    $(function () {
+        loadInfratructurematchingCost();
+    })
+    //加载基础设施费用列表
+    function loadInfratructureCost() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '费用'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional1(' + index + ');" >编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription1(' + row.id + ',\'tb_List1\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_List1").bootstrapTable('destroy');
+        TableInit("tb_List1", "${pageContext.request.contextPath}/infrastructureCost/list", cols, {
+            name: $("#queryName1").val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+
+    //对新增 基础设施费用处理
+    function firSub1() {
+        $("#firSubA").clearAll();
+    }
+    //新增基础设施费用
+    function saveFileld() {
+        var flag = false;
+        var data = $("#firSubA").serialize();
+        if ($("#firSubA").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureCost/addAndEdit",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadInfratructureCost();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 基础设施费用
+    function deleteBestUseDescription1(id,tbId1) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureCost/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInfratructureCost();//重载 (刷新)
+                        $('#' + tbId1).bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //基础设施费用 修改
+    function editHrProfessional1(index) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureCost/list",
+            type: "POST",
+            dataType: "json",
+            data: {id: index},
+            success: function (result) {
+                Loading.progressHide();
+                $('#firSub1').modal();
+                $("#id").val(result.id);
+                $("#name").val(result.name);
+                $("#notApplicableReason").val(result.notApplicableReason);
+                $("#applicableReason").val(result.applicableReason);
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+
+    //加载公共设施费用列表
+    function loadInfratructurematchingCost() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '金额'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional2(' + index + ');" >编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription2(' + row.id + ',\'tb_List2\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_List2").bootstrapTable('destroy');
+        TableInit("tb_List2", "${pageContext.request.contextPath}/infrastructureMatchingCost/list", cols, {
+            name: $("#queryName2").val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+
+    //对新增 公共设施费用处理
+    function firSub2() {
+        $("#firSubA1").clearAll();
+    }
+    //新增公共设施费用
+    function saveFileld1() {
+        var flag = false;
+        var data = $("#firSubA1").serialize();
+        if ($("#firSubA1").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureMatchingCost/addAndEdit",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadInfratructurematchingCost();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 公共设施费用
+    function deleteBestUseDescription2(id,tbId2) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureMatchingCost/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInfratructurematchingCost();//重载 (刷新)
+                        $('#' + tbId2).bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //公共设施费用 修改
+    function editHrProfessional2(index) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureMatchingCost/list",
+            type: "POST",
+            dataType: "json",
+            data: {id: index},
+            success: function (result) {
+                Loading.progressHide();
+                $('#firSub2').modal();
+                $("#id").val(result.id);
+                $("#name").val(result.name);
+                $("#notApplicableReason").val(result.notApplicableReason);
+                $("#applicableReason").val(result.applicableReason);
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 
     //加载 基础设施及公共配套设施维护 数据列表
     function loadDataDicList() {
@@ -317,8 +628,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >基础设施费</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >公共配套设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + row+ ');" >基础设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + row + ');" >公共配套设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
@@ -333,113 +644,6 @@
             showRefresh: false,
             search: false
         });
-    }
-
-    //新增基础设施费用
-    function addMethodField(id) {
-        $("#firSub").clearAll();
-        $('#firSub').modal();
-        var thinkingId = document.getElementById("thinkingId");
-        thinkingId.value = id;
-        if (id == null || id == '' || id == 0) {//说明是从选子项添加的
-            var thinkingIdN = document.getElementById("thinkingIdN");
-            thinkingId.value = thinkingIdN.value
-        }
-    }
-    //保存新增 基础设施费用
-    function saveFileld() {
-        //firSubA
-        var data = formParams("firSubA");
-        data.name = $("#nameA").val();
-        data.thinkingId = $("#thinkingId").val();
-        data.type = $("#type option:selected").val()
-        if ($("#firSubA").valid()) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        console.info(result);
-                        toastr.success('保存成功');
-                        $('#firSub').modal('hide');//隐藏
-                        var thinkingIdN = document.getElementById("thinkingIdN").value;
-                        setSubDataDic(thinkingIdN);
-                    } else {
-                        toastr.success('调用服务端方法失败');
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    }
-
-    //加载基础设施费用
-    function loadSubDataDicList(pid, fn) {
-        var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'numberCost', title: '费用'});
-        cols.push({
-            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        var thinkingIdN = document.getElementById("thinkingIdN");
-        thinkingIdN.value = pid;
-        $("#tbDataDicList").bootstrapTable("destroy");
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/evaluationThinkingNG/listField",
-            cols, {thinkingId: pid}, {
-                showRefresh: false,                  //是否显示刷新按钮
-                toolbar: '#toolbarSub',
-                uniqueId: "id",
-                onLoadSuccess: function () {
-                    if (fn) {
-                        fn();
-                    }
-                }
-            });
-    }
-
-    //设置基础设施费用
-    function setSubDataDic(pid) {
-        $("#divSubDataDic").modal();//显示
-        $("#tbDataDicList").clearAll();//清除数据
-        loadSubDataDicList(pid, function () {
-            $('#divSubDataDic').modal("show");
-        });
-    }
-
-    //删除 基础设施费用
-    function delDataDic(id) {
-        Alert("确认要删除么？", 2, null, function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/infrastructureCost/delete",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        var thinkingIdN = document.getElementById("thinkingIdN").value;
-                        setSubDataDic(thinkingIdN);
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        })
     }
 
     //删除 基础设施及公共配套设施维护数据
