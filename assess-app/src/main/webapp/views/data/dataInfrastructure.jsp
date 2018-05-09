@@ -272,7 +272,7 @@
                                 费用
                             </label>
                             <div class="col-sm-10">
-                                <input type="text" id="numberCost" name="numberCost" class="form-control" required="required">
+                                <input type="text" id="numberCost" name="number" class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -346,7 +346,7 @@
                                 名称
                             </label>
                             <div class="col-sm-10">
-                                <input type="text" id="name1" name="name1" class="form-control" required="required">
+                                <input type="text" id="name1" name="name" class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -354,10 +354,10 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                费用
+                                金额
                             </label>
                             <div class="col-sm-10">
-                                <input type="text" id="numberCost1" name="numberCost1" class="form-control" required="required">
+                                <input type="text" id="numberCost1" name="number" class="form-control" required="required">
                             </div>
                         </div>
                     </div>
@@ -388,13 +388,7 @@
         loadDataDicList();
     })
 
-    $(function () {
-        loadInfratructureCost();
-    })
 
-    $(function () {
-        loadInfratructurematchingCost();
-    })
     //加载基础设施费用列表
     function loadInfratructureCost() {
         var cols = [];
@@ -411,13 +405,15 @@
             }
         });
         $("#tb_List1").bootstrapTable('destroy');
+        var methodStrChange = "";
         TableInit("tb_List1", "${pageContext.request.contextPath}/infrastructureCost/list", cols, {
-            name: $("#queryName1").val()
+            methodStr: methodStrChange
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+        $('#firSub1').modal();
     }
 
     //对新增 基础设施费用处理
@@ -479,6 +475,8 @@
 
     //基础设施费用 修改
     function editHrProfessional1(index) {
+        $("#firSubA").clearAll();
+        $('#firSub1').modal();
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructureCost/list",
             type: "POST",
@@ -516,13 +514,15 @@
             }
         });
         $("#tb_List2").bootstrapTable('destroy');
+        var name = "";
         TableInit("tb_List2", "${pageContext.request.contextPath}/infrastructureMatchingCost/list", cols, {
-            name: $("#queryName2").val()
+            name: name
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+        $('#firSub2').modal();
     }
 
     //对新增 公共设施费用处理
@@ -566,6 +566,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
+
                         toastr.success('删除成功');
                         loadInfratructurematchingCost();//重载 (刷新)
                         $('#' + tbId2).bootstrapTable("refresh");
@@ -582,8 +583,10 @@
         })
     }
 
-    //公共设施费用 修改
+    //公共设施费用 修改//
     function editHrProfessional2(index) {
+        $("#firSubA1").clearAll();
+        $('#firSub2').modal();
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructureMatchingCost/list",
             type: "POST",
@@ -628,8 +631,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + row+ ');" >基础设施费</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + row + ');" >公共配套设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + index + ');" >基础设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + index + ');" >公共配套设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';

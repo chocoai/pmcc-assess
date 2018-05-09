@@ -24,8 +24,8 @@ public class DataInfrastructureCostController {
     private DataInfrastructureCostService dataInfrastructureCostService;
 
     @ResponseBody
-    @RequestMapping(value = "/list",name = "获取基础设施费用列表",method = RequestMethod.POST)
-    public BootstrapTableVo list(@RequestParam(value = "name") String name){
+    @RequestMapping(value = "/list",name = "获取基础设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
+    public BootstrapTableVo list(String name){
         return dataInfrastructureCostService.getInfrastructureCost(name);
     }
 
@@ -34,7 +34,7 @@ public class DataInfrastructureCostController {
     public HttpResult addAndEdit(InfrastructureCost infrastructureCost){
 
         try {
-            if (infrastructureCost != null && infrastructureCost.getId() > 0){
+            if (infrastructureCost.getId() != null && infrastructureCost.getId() != 0){
                 dataInfrastructureCostService.editInfrastructureCost(infrastructureCost);
             }
             else {
@@ -48,8 +48,9 @@ public class DataInfrastructureCostController {
 
     @ResponseBody
     @RequestMapping(value = "/delete",name = "删除基础设施费用",method = RequestMethod.POST)
-    public boolean delete(Integer id){
-        return dataInfrastructureCostService.deleteInfrastructure(id);
+    public HttpResult delete(Integer id){
+         dataInfrastructureCostService.deleteInfrastructure(id);
+         return HttpResult.newCorrectResult();
     }
 
 }

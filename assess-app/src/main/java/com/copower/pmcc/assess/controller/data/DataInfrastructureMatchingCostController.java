@@ -22,8 +22,8 @@ public class DataInfrastructureMatchingCostController {
     private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
 
     @ResponseBody
-    @RequestMapping(value = "/list",name = "获取公共配套设施费用列表",method = RequestMethod.POST)
-    public BootstrapTableVo list(@RequestParam(value = "name") String name){
+    @RequestMapping(value = "/list",name = "获取公共配套设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
+    public BootstrapTableVo list(String name){
         return dataInfrastructureMatchingCostService.getInfrastructureCost(name);
     }
 
@@ -46,7 +46,8 @@ public class DataInfrastructureMatchingCostController {
 
     @ResponseBody
     @RequestMapping(value = "/delete",name = "删除公共配套设施费用",method = RequestMethod.POST)
-    public boolean delete(Integer id){
-        return dataInfrastructureMatchingCostService.deleteInfrastructure(id);
+    public HttpResult delete(Integer id){
+        dataInfrastructureMatchingCostService.deleteInfrastructure(id);
+        return  HttpResult.newCorrectResult();
     }
 }
