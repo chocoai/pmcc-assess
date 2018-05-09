@@ -98,6 +98,19 @@ public class BaseAttachmentDao {
 
     }
 
+    /**
+     *  @time zch 2018-05-09
+     * @param table_id
+     * @param fields_name
+     * @return
+     */
+    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name){
+        BaseAttachmentExample example = new BaseAttachmentExample();
+        example.createCriteria().andTableIdEqualTo(table_id).andFieldsNameEqualTo(fields_name);
+        List<BaseAttachment> baseAttachments = sysAttachmentMapper.selectByExample(example);
+        return baseAttachments;
+    }
+
 
     /**
      * 添加附件表信息到数据库，并返回数据中对应的id

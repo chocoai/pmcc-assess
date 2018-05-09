@@ -30,6 +30,10 @@ public class InitiateConsignorService {
         return change(dao.get(id));
     }
 
+    public InitiateConsignorDto getById(Integer id){
+        return dao.get(id);
+    }
+
     @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);

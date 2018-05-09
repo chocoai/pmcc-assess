@@ -30,6 +30,10 @@ public class InitiatePossessorService {
         return change(dao.get(id));
     }
 
+    public InitiatePossessorDto getById(Integer id){
+        return dao.get(id);
+    }
+
     @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);

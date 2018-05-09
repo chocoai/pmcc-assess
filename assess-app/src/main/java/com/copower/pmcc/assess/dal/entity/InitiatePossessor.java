@@ -25,7 +25,7 @@ public class InitiatePossessor {
 
     private String pUnitProperties;
 
-    private String pEnclosureLocation;
+    private String pAttachmentProjectEnclosureId;
 
     private String pName;
 
@@ -121,12 +121,12 @@ public class InitiatePossessor {
         this.pUnitProperties = pUnitProperties == null ? null : pUnitProperties.trim();
     }
 
-    public String getpEnclosureLocation() {
-        return pEnclosureLocation;
+    public String getpAttachmentProjectEnclosureId() {
+        return pAttachmentProjectEnclosureId;
     }
 
-    public void setpEnclosureLocation(String pEnclosureLocation) {
-        this.pEnclosureLocation = pEnclosureLocation == null ? null : pEnclosureLocation.trim();
+    public void setpAttachmentProjectEnclosureId(String pAttachmentProjectEnclosureId) {
+        this.pAttachmentProjectEnclosureId = pAttachmentProjectEnclosureId == null ? null : pAttachmentProjectEnclosureId.trim();
     }
 
     public String getpName() {

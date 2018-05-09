@@ -1424,6 +1424,76 @@ public class ProjectInfoExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andAttachmentProjectInfoIdIsNull() {
+            addCriterion("attachment_project_info_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdIsNotNull() {
+            addCriterion("attachment_project_info_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdEqualTo(String value) {
+            addCriterion("attachment_project_info_id =", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdNotEqualTo(String value) {
+            addCriterion("attachment_project_info_id <>", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdGreaterThan(String value) {
+            addCriterion("attachment_project_info_id >", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdGreaterThanOrEqualTo(String value) {
+            addCriterion("attachment_project_info_id >=", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdLessThan(String value) {
+            addCriterion("attachment_project_info_id <", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdLessThanOrEqualTo(String value) {
+            addCriterion("attachment_project_info_id <=", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdLike(String value) {
+            addCriterion("attachment_project_info_id like", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdNotLike(String value) {
+            addCriterion("attachment_project_info_id not like", value, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdIn(List<String> values) {
+            addCriterion("attachment_project_info_id in", values, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdNotIn(List<String> values) {
+            addCriterion("attachment_project_info_id not in", values, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdBetween(String value1, String value2) {
+            addCriterion("attachment_project_info_id between", value1, value2, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttachmentProjectInfoIdNotBetween(String value1, String value2) {
+            addCriterion("attachment_project_info_id not between", value1, value2, "attachmentProjectInfoId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

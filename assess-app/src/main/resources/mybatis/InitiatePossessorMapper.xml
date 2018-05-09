@@ -13,7 +13,7 @@
     <result column="p_address" property="pAddress" jdbcType="VARCHAR" />
     <result column="p_scope_operation" property="pScopeOperation" jdbcType="VARCHAR" />
     <result column="p_unit_properties" property="pUnitProperties" jdbcType="VARCHAR" />
-    <result column="p_enclosure_location" property="pEnclosureLocation" jdbcType="VARCHAR" />
+    <result column="p_attachment_project_enclosure_id" property="pAttachmentProjectEnclosureId" jdbcType="VARCHAR" />
     <result column="p_name" property="pName" jdbcType="VARCHAR" />
     <result column="spare_field" property="spareField" jdbcType="VARCHAR" />
     <result column="p_idcard" property="pIdcard" jdbcType="VARCHAR" />
@@ -78,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, p_type, p_entrustment_unit, p_legal_representative, 
-    p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_enclosure_location, 
+    p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_attachment_project_enclosure_id, 
     p_name, spare_field, p_idcard
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiatePossessorExample" >
@@ -118,13 +118,15 @@
     insert into tb_initiate_possessor (creator, gmt_created, gmt_modified, 
       p_type, p_entrustment_unit, p_legal_representative, 
       p_sociology_code, p_address, p_scope_operation, 
-      p_unit_properties, p_enclosure_location, p_name, 
-      spare_field, p_idcard)
+      p_unit_properties, p_attachment_project_enclosure_id, 
+      p_name, spare_field, p_idcard
+      )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{pType,jdbcType=INTEGER}, #{pEntrustmentUnit,jdbcType=VARCHAR}, #{pLegalRepresentative,jdbcType=VARCHAR}, 
       #{pSociologyCode,jdbcType=VARCHAR}, #{pAddress,jdbcType=VARCHAR}, #{pScopeOperation,jdbcType=VARCHAR}, 
-      #{pUnitProperties,jdbcType=VARCHAR}, #{pEnclosureLocation,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
-      #{spareField,jdbcType=VARCHAR}, #{pIdcard,jdbcType=VARCHAR})
+      #{pUnitProperties,jdbcType=VARCHAR}, #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR}, 
+      #{pName,jdbcType=VARCHAR}, #{spareField,jdbcType=VARCHAR}, #{pIdcard,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiatePossessor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -162,8 +164,8 @@
       <if test="pUnitProperties != null" >
         p_unit_properties,
       </if>
-      <if test="pEnclosureLocation != null" >
-        p_enclosure_location,
+      <if test="pAttachmentProjectEnclosureId != null" >
+        p_attachment_project_enclosure_id,
       </if>
       <if test="pName != null" >
         p_name,
@@ -206,8 +208,8 @@
       <if test="pUnitProperties != null" >
         #{pUnitProperties,jdbcType=VARCHAR},
       </if>
-      <if test="pEnclosureLocation != null" >
-        #{pEnclosureLocation,jdbcType=VARCHAR},
+      <if test="pAttachmentProjectEnclosureId != null" >
+        #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       </if>
       <if test="pName != null" >
         #{pName,jdbcType=VARCHAR},
@@ -262,8 +264,8 @@
       <if test="record.pUnitProperties != null" >
         p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
       </if>
-      <if test="record.pEnclosureLocation != null" >
-        p_enclosure_location = #{record.pEnclosureLocation,jdbcType=VARCHAR},
+      <if test="record.pAttachmentProjectEnclosureId != null" >
+        p_attachment_project_enclosure_id = #{record.pAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       </if>
       <if test="record.pName != null" >
         p_name = #{record.pName,jdbcType=VARCHAR},
@@ -292,7 +294,7 @@
       p_address = #{record.pAddress,jdbcType=VARCHAR},
       p_scope_operation = #{record.pScopeOperation,jdbcType=VARCHAR},
       p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
-      p_enclosure_location = #{record.pEnclosureLocation,jdbcType=VARCHAR},
+      p_attachment_project_enclosure_id = #{record.pAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       p_name = #{record.pName,jdbcType=VARCHAR},
       spare_field = #{record.spareField,jdbcType=VARCHAR},
       p_idcard = #{record.pIdcard,jdbcType=VARCHAR}
@@ -333,8 +335,8 @@
       <if test="pUnitProperties != null" >
         p_unit_properties = #{pUnitProperties,jdbcType=VARCHAR},
       </if>
-      <if test="pEnclosureLocation != null" >
-        p_enclosure_location = #{pEnclosureLocation,jdbcType=VARCHAR},
+      <if test="pAttachmentProjectEnclosureId != null" >
+        p_attachment_project_enclosure_id = #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       </if>
       <if test="pName != null" >
         p_name = #{pName,jdbcType=VARCHAR},
@@ -360,7 +362,7 @@
       p_address = #{pAddress,jdbcType=VARCHAR},
       p_scope_operation = #{pScopeOperation,jdbcType=VARCHAR},
       p_unit_properties = #{pUnitProperties,jdbcType=VARCHAR},
-      p_enclosure_location = #{pEnclosureLocation,jdbcType=VARCHAR},
+      p_attachment_project_enclosure_id = #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       p_name = #{pName,jdbcType=VARCHAR},
       spare_field = #{spareField,jdbcType=VARCHAR},
       p_idcard = #{pIdcard,jdbcType=VARCHAR}

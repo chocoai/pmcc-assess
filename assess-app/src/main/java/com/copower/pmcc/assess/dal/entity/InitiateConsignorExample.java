@@ -835,73 +835,73 @@ public class InitiateConsignorExample {
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationIsNull() {
-            addCriterion("cs_enclosure_location is null");
+        public Criteria andCsAttachmentProjectEnclosureIdIsNull() {
+            addCriterion("cs_attachment_project_enclosure_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationIsNotNull() {
-            addCriterion("cs_enclosure_location is not null");
+        public Criteria andCsAttachmentProjectEnclosureIdIsNotNull() {
+            addCriterion("cs_attachment_project_enclosure_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationEqualTo(String value) {
-            addCriterion("cs_enclosure_location =", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdEqualTo(String value) {
+            addCriterion("cs_attachment_project_enclosure_id =", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationNotEqualTo(String value) {
-            addCriterion("cs_enclosure_location <>", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdNotEqualTo(String value) {
+            addCriterion("cs_attachment_project_enclosure_id <>", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationGreaterThan(String value) {
-            addCriterion("cs_enclosure_location >", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdGreaterThan(String value) {
+            addCriterion("cs_attachment_project_enclosure_id >", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationGreaterThanOrEqualTo(String value) {
-            addCriterion("cs_enclosure_location >=", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdGreaterThanOrEqualTo(String value) {
+            addCriterion("cs_attachment_project_enclosure_id >=", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationLessThan(String value) {
-            addCriterion("cs_enclosure_location <", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdLessThan(String value) {
+            addCriterion("cs_attachment_project_enclosure_id <", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationLessThanOrEqualTo(String value) {
-            addCriterion("cs_enclosure_location <=", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdLessThanOrEqualTo(String value) {
+            addCriterion("cs_attachment_project_enclosure_id <=", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationLike(String value) {
-            addCriterion("cs_enclosure_location like", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdLike(String value) {
+            addCriterion("cs_attachment_project_enclosure_id like", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationNotLike(String value) {
-            addCriterion("cs_enclosure_location not like", value, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdNotLike(String value) {
+            addCriterion("cs_attachment_project_enclosure_id not like", value, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationIn(List<String> values) {
-            addCriterion("cs_enclosure_location in", values, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdIn(List<String> values) {
+            addCriterion("cs_attachment_project_enclosure_id in", values, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationNotIn(List<String> values) {
-            addCriterion("cs_enclosure_location not in", values, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdNotIn(List<String> values) {
+            addCriterion("cs_attachment_project_enclosure_id not in", values, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationBetween(String value1, String value2) {
-            addCriterion("cs_enclosure_location between", value1, value2, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdBetween(String value1, String value2) {
+            addCriterion("cs_attachment_project_enclosure_id between", value1, value2, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andCsEnclosureLocationNotBetween(String value1, String value2) {
-            addCriterion("cs_enclosure_location not between", value1, value2, "csEnclosureLocation");
+        public Criteria andCsAttachmentProjectEnclosureIdNotBetween(String value1, String value2) {
+            addCriterion("cs_attachment_project_enclosure_id not between", value1, value2, "csAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 

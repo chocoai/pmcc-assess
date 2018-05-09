@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.*;
@@ -72,6 +73,9 @@ public class ProjectInfoService {
     private ServiceComponent serviceComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
+
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
     @Autowired
     private ProjectPlanService projectPlanService;
     @Lazy
@@ -94,22 +98,70 @@ public class ProjectInfoService {
      * @param projectDto
      */
     public void projectApply(InitiateProjectDto projectDto) throws BusinessException {
-        ProjectInfo projectInfo = projectDto.getProjectInfo();
-        projectInfoDao.saveProjectInfo(projectInfo);
+        ProjectInfo projectInfo = change(projectDto.getProjectInfo());
+        int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);
+        update_BaseAttachment_(id,ProjectInfoDto.ATTACHMENTPROJECTINFOID,0);
         initProjectInfo(projectInfo);
-        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),null);
+        ProjectMember projectMember = new ProjectMember();
+        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
+        projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
+        projectMember.setBisEnable(true);
+        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember));
+    }
+
+    //修改附件中的id
+    public void update_BaseAttachment_(int pid,String fields_name,int flag){
+        int TEMP = 0;
+        //默认位置为0
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP,fields_name);
+        //一般都只有一个
+        BaseAttachment baseAttachment = baseAttachments.get(0);
+        // 更新 存附件的主表
+        if (flag==0){//项目信息 附件
+            ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
+            projectInfo.setAttachmentProjectInfoId(""+baseAttachment.getId());
+            projectInfoDao.updateProjectInfo(projectInfo);
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        }else if (flag == InitiateContactsEnum.ONE.getNum()){// 委托人 附件
+            InitiateConsignorDto dto = consignorService.getById(pid);
+            dto.setCsAttachmentProjectEnclosureId(""+baseAttachment.getId());
+            consignorService.update(dto);
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        }else if (flag == InitiateContactsEnum.TWO.getNum()){//占有人 附件
+            InitiatePossessorDto dto = possessorService.getById(pid);
+            possessorService.update(dto);
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        }
     }
 
     public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto,ProjectMemberDto projectMemberDto){
         try {
-            projectMemberService.save(projectMemberDto);
             int i = possessorService.add(possessorDto);
-            int j = unitInformationService.add(unitInformationDto);
             int v = consignorService.add(consignorDto);
-            //更新联系人中的主表id (这根据联系人的标识符来确定联系人类型)
+            int j = unitInformationService.add(unitInformationDto);
+            //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
             initiateContactsService.update(v,InitiateContactsEnum.ONE.getNum());
             initiateContactsService.update(i,InitiateContactsEnum.TWO.getNum());
             initiateContactsService.update(j,InitiateContactsEnum.THREE.getNum());
+
+            //附件更新
+            update_BaseAttachment_(v,InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.ONE.getNum());
+            update_BaseAttachment_(i,InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.TWO.getNum());
+            try {
+                projectMemberService.save(projectMemberDto);
+            }catch (Exception e){
+                try {
+                    throw e;
+                }catch (Exception e2){
+
+                }
+            }
         }catch (Exception e){
             try {
                 throw e;
@@ -313,6 +365,13 @@ public class ProjectInfoService {
         BeanUtils.copyProperties(dto,projectInfo);
         return projectInfo;
     }
+
+    public ProjectMemberDto change(ProjectMember projectMember){
+        ProjectMemberDto dto = new ProjectMemberDto();
+        BeanUtils.copyProperties(projectMember,dto);
+        return dto;
+    }
+
 
     public InitiateProjectDto format(String val){
         InitiateProjectDto dto = null;

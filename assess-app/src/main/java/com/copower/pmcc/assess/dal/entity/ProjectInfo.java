@@ -45,6 +45,8 @@ public class ProjectInfo {
 
     private Date gmtModified;
 
+    private String attachmentProjectInfoId;
+
     public Integer getId() {
         return id;
     }
@@ -211,5 +213,13 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAttachmentProjectInfoId() {
+        return attachmentProjectInfoId;
+    }
+
+    public void setAttachmentProjectInfoId(String attachmentProjectInfoId) {
+        this.attachmentProjectInfoId = attachmentProjectInfoId == null ? null : attachmentProjectInfoId.trim();
     }
 }

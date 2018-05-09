@@ -70,6 +70,10 @@ public class InitiateContactsService {
         return change(dao.get(id));
     }
 
+    public InitiateContactsDto getById(Integer id){
+        return dao.get(id);
+    }
+
     @Transactional
     public boolean remove(Integer id) {
         return dao.remove(id);

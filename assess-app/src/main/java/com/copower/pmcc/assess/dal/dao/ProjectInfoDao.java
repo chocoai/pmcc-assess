@@ -33,6 +33,11 @@ public class ProjectInfoDao {
         return false;
     }
 
+    public int saveProjectInfo_returnID(ProjectInfo projectInfo){
+        projectInfoMapper.insertSelective(projectInfo);
+        return  projectInfo.getId();
+    }
+
     public Boolean updateProjectInfo(ProjectInfo projectInfo)
     {
         int i = projectInfoMapper.updateByPrimaryKeySelective(projectInfo);

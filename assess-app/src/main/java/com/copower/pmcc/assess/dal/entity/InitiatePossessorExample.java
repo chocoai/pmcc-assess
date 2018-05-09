@@ -835,73 +835,73 @@ public class InitiatePossessorExample {
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationIsNull() {
-            addCriterion("p_enclosure_location is null");
+        public Criteria andPAttachmentProjectEnclosureIdIsNull() {
+            addCriterion("p_attachment_project_enclosure_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationIsNotNull() {
-            addCriterion("p_enclosure_location is not null");
+        public Criteria andPAttachmentProjectEnclosureIdIsNotNull() {
+            addCriterion("p_attachment_project_enclosure_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationEqualTo(String value) {
-            addCriterion("p_enclosure_location =", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdEqualTo(String value) {
+            addCriterion("p_attachment_project_enclosure_id =", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationNotEqualTo(String value) {
-            addCriterion("p_enclosure_location <>", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdNotEqualTo(String value) {
+            addCriterion("p_attachment_project_enclosure_id <>", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationGreaterThan(String value) {
-            addCriterion("p_enclosure_location >", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdGreaterThan(String value) {
+            addCriterion("p_attachment_project_enclosure_id >", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationGreaterThanOrEqualTo(String value) {
-            addCriterion("p_enclosure_location >=", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdGreaterThanOrEqualTo(String value) {
+            addCriterion("p_attachment_project_enclosure_id >=", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationLessThan(String value) {
-            addCriterion("p_enclosure_location <", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdLessThan(String value) {
+            addCriterion("p_attachment_project_enclosure_id <", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationLessThanOrEqualTo(String value) {
-            addCriterion("p_enclosure_location <=", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdLessThanOrEqualTo(String value) {
+            addCriterion("p_attachment_project_enclosure_id <=", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationLike(String value) {
-            addCriterion("p_enclosure_location like", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdLike(String value) {
+            addCriterion("p_attachment_project_enclosure_id like", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationNotLike(String value) {
-            addCriterion("p_enclosure_location not like", value, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdNotLike(String value) {
+            addCriterion("p_attachment_project_enclosure_id not like", value, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationIn(List<String> values) {
-            addCriterion("p_enclosure_location in", values, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdIn(List<String> values) {
+            addCriterion("p_attachment_project_enclosure_id in", values, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationNotIn(List<String> values) {
-            addCriterion("p_enclosure_location not in", values, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdNotIn(List<String> values) {
+            addCriterion("p_attachment_project_enclosure_id not in", values, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationBetween(String value1, String value2) {
-            addCriterion("p_enclosure_location between", value1, value2, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdBetween(String value1, String value2) {
+            addCriterion("p_attachment_project_enclosure_id between", value1, value2, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 
-        public Criteria andPEnclosureLocationNotBetween(String value1, String value2) {
-            addCriterion("p_enclosure_location not between", value1, value2, "pEnclosureLocation");
+        public Criteria andPAttachmentProjectEnclosureIdNotBetween(String value1, String value2) {
+            addCriterion("p_attachment_project_enclosure_id not between", value1, value2, "pAttachmentProjectEnclosureId");
             return (Criteria) this;
         }
 

@@ -9,7 +9,7 @@ public class InitiateProjectDto {
     private InitiatePossessorDto possessor;
     private InitiateConsignorDto consignor;
     private InitiateUnitInformationDto unitinformation;
-    private ProjectInfo projectInfo;
+    private ProjectInfoDto projectInfo;
 
     public InitiatePossessorDto getPossessor() {
         return possessor;
@@ -35,11 +35,11 @@ public class InitiateProjectDto {
         this.unitinformation = unitinformation;
     }
 
-    public ProjectInfo getProjectInfo() {
+    public ProjectInfoDto getProjectInfo() {
         return projectInfo;
     }
 
-    public void setProjectInfo(ProjectInfo projectInfo) {
+    public void setProjectInfo(ProjectInfoDto projectInfo) {
         this.projectInfo = projectInfo;
     }
 }

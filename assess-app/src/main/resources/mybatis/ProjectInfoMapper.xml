@@ -23,6 +23,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="attachment_project_info_id" property="attachmentProjectInfoId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -86,7 +87,7 @@
     id, urgency, project_name, province, city, district, project_class_id, entrust_purpose, 
     value_type, department_id, remarks, complete_date_plan, complete_date_actual, complete_date_start, 
     process_ins_id, status, project_status, public_project_id, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, attachment_project_info_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -128,14 +129,16 @@
       remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, status, 
       project_status, public_project_id, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, attachment_project_info_id
+      )
     values (#{urgency,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, 
       #{entrustPurpose,jdbcType=INTEGER}, #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
       #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{attachmentProjectInfoId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -203,6 +206,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="attachmentProjectInfoId != null" >
+        attachment_project_info_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="urgency != null" >
@@ -264,6 +270,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attachmentProjectInfoId != null" >
+        #{attachmentProjectInfoId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -339,6 +348,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.attachmentProjectInfoId != null" >
+        attachment_project_info_id = #{record.attachmentProjectInfoId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -366,7 +378,8 @@
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      attachment_project_info_id = #{record.attachmentProjectInfoId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -434,6 +447,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="attachmentProjectInfoId != null" >
+        attachment_project_info_id = #{attachmentProjectInfoId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -458,7 +474,8 @@
       public_project_id = #{publicProjectId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      attachment_project_info_id = #{attachmentProjectInfoId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

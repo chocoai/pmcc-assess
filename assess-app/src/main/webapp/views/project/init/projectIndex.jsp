@@ -148,7 +148,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">上传附件<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input required="required" placeholder="上传附件"  class="form-control" type="file">
+                                    <input id="attachmentProjectInfoId" name="attachmentProjectInfoId" required="required" placeholder="上传附件"  class="form-control" type="file">
+                                    <div id="_attachmentProjectInfoId"></div>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +175,7 @@
                                         委托单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" placeholder="委托单位" class="form-control" required="required">
+                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
                                         </span>
@@ -239,7 +240,7 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="csEnclosureLocation" id="csEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="csAttachmentProjectEnclosureId" id="csAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -284,7 +285,7 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="csEnclosureLocation" id="csEnclosureLocation2" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="csAttachmentProjectEnclosureId_" id="csAttachmentProjectEnclosureId_" placeholder="上传附件" class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -324,7 +325,7 @@
                                         占有单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit" placeholder="占有单位" class="form-control" required="required">
+                                        <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer1" class="btn btn-primary">选择</button>
                                         </span>
@@ -389,7 +390,7 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="pEnclosureLocation" id="pEnclosureLocation" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="pAttachmentProjectEnclosureId" id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +435,7 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="pEnclosureLocation" id="pEnclosureLocation2" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="pAttachmentProjectEnclosureId_" id="pAttachmentProjectEnclosureId_" placeholder="上传附件" class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -459,7 +460,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form name="frm_unitinformation" class="form-horizontal" enctype="multipart/form-data">
+                    <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal" enctype="multipart/form-data">
                         <div>
                             <div class="form-group">
                                 <div class="x-valid">
@@ -467,7 +468,7 @@
                                         报告使用单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="uUseUnit" id="uUseUnit" placeholder="报告使用单位" class="form-control" required="required">
+                                        <input type="text" name="uUseUnit" id="uUseUnit"  class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer2" class="btn btn-primary">选择</button>
                                         </span>
@@ -650,6 +651,34 @@
 </body>
 </html>
 <script>
+    $(function () {
+        FileUtils.uploadFiles({
+            target: "attachmentProjectInfoId",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_project_info",
+                tableId: 0,
+                fieldsName: "attachmentProjectInfoId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "attachmentProjectInfoId",
+            formData: {
+                tableName: "tb_project_info",
+                tableId: 0,
+                fieldsName: "attachmentProjectInfoId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+    })
+
+</script>
+<script type="text/javascript">
+    /*省 市 县 js*/
     function tableNameA() {
         $("#province").change(function () {//监听 选择的省份
             //检测  然后操作
@@ -663,7 +692,6 @@
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    console.info(result);
                     appendChildElement(result);
                 },
                 error: function (result) {
@@ -720,7 +748,6 @@
 
         }
     }
-
     function appendChildElement_district(item) {//县或者区域添加
         var TableField = $("#district");
         var TableFieldElement = document.getElementById("district");
@@ -734,15 +761,11 @@
 
         }
     }
-</script>
-<script>
     //执业部门
     var departmentId = document.getElementById("departmentId");
     departmentId.onclick = function () {
         erpDepartment.select({
             onSelected:function (nodes) {
-                console.log(nodes[0].text);
-                console.log(nodes[0].id);
                 departmentId.removeChild(departmentId.firstChild);
                 var fieldElment = document.createElement("option");
                 fieldElment.setAttribute("value",nodes[0].id);
@@ -757,7 +780,6 @@
     userAccountManager.onclick = function () {
         erpEmployee.select({
             onSelected:function (data) {
-                console.log(data);
                 userAccountManager.removeChild(userAccountManager.firstChild);
                 var fieldElment = document.createElement("option");
                 fieldElment.setAttribute("value",data.account);
@@ -797,47 +819,45 @@
         });
     });
     //CRM
-    $("#btn_select_customer").click(function () {
+    document.getElementById("btn_select_customer").onclick = function () {
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                var csEntrustmentUnit = document.getElementById("csEntrustmentUnit");
-                csEntrustmentUnit.value = nodes[0].name;
+                console.log(nodes);
+                console.log(nodes[0].name);
+                $("#csEntrustmentUnit").val(nodes[0].name);
                 var id = nodes[0].id ;
                 loadInitContactsListA(id);
-                console.log(nodes);
             }
         });
-    })
+    }
 
-    $("#btn_select_customer1").click(function () {
+    document.getElementById("btn_select_customer1").onclick = function () {
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                var pEntrustmentUnit = document.getElementById("pEntrustmentUnit");
-                pEntrustmentUnit.value = nodes[0].name;
+                console.log(nodes);
+                $("#pEntrustmentUnit").val(nodes[0].name);
                 var id = nodes[0].id ;
                 loadInitContactsListB(id);
-                console.log(nodes);
             }
         });
-    })
+    }
 
-    $("#btn_select_customer2").click(function () {
+    document.getElementById("btn_select_customer2").onclick = function () {
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                var uUseUnit = document.getElementById("uUseUnit");
-                uUseUnit.value = nodes[0].name;
+                console.info(nodes);
+                $("#uUseUnit").val(nodes[0].name);
                 var id = nodes[0].id ;
                 loadInitContactsListC(id);
-                console.log(nodes);
             }
         });
-    })
+    }
+
     var flags = new Array();
     flags[0] = 1,flags[1] = 2,flags[2] = 3;
-    console.info(flags);
     //加载联系人列表
     function loadInitContactsListA(id) {
         var cols = [];
@@ -1025,9 +1045,6 @@
         })
     }
 
-</script>
-
-<script type="text/javascript">
     var json = "";
     function params() {
         var data = {};
@@ -1039,6 +1056,7 @@
         data.consignor=consignor;
         data.possessor=possessor;
         data.unitinformation=unitinformation;
+        //手动收集unitinformation的数据
         console.info(data);
         json = JSON.stringify(data);
         console.info(json);
@@ -1047,12 +1065,10 @@
         Loading.progressShow();
         params();
         $.ajax({
+            type: "POST",
             url: getContextPath() + "/projectInfo/projectApplySubmit",
-            type: "post",
-            formData: json,
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
+            data: "formData="+json,
+            success: function(result){
                 if (result.ret) {
                     //保存完后其他动作
                     Alert("提交数据成功!", 1, null, function () {
@@ -1069,3 +1085,4 @@
         });
     }
 </script>
+
