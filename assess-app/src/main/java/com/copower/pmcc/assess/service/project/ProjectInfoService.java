@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
+import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -23,6 +24,7 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -60,6 +62,10 @@ public class ProjectInfoService {
 
     @Autowired
     private ErpAreaService erpAreaService;
+
+    @Lazy
+    @Autowired
+    private CrmCustomerService crmCustomerService;
 
     @Autowired
     private ProjectInfoDao projectInfoDao;
@@ -109,7 +115,7 @@ public class ProjectInfoService {
         projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember));
     }
 
-    //修改附件中的id
+    //修改附件中的table id 以及存附件的主表的附件id
     public void update_BaseAttachment_(int pid,String fields_name,int flag){
         int TEMP = 0;
         //默认位置为0
@@ -291,6 +297,10 @@ public class ProjectInfoService {
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
+    }
+
+    public CrmCustomerDto getCRM(Integer id){
+        return crmCustomerService.getCustomer(id);
     }
 
     /*获取所有省*/

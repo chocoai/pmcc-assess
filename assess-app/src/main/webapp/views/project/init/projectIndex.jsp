@@ -146,7 +146,18 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">上传附件<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目经理下级<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="userAccountMember" name="userAccountMember" class="form-control">
+                                        <option selected="selected" value="0">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">上传附件</label>
                                 <div class="col-sm-3">
                                     <input id="attachmentProjectInfoId" name="attachmentProjectInfoId" required="required" placeholder="上传附件"  class="form-control" type="file">
                                     <div id="_attachmentProjectInfoId"></div>
@@ -175,7 +186,8 @@
                                         委托单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="csEntrustmentUnit" id="csEntrustmentUnit" class="form-control" required="required">
+                                        <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit" class="form-control" required="required">
+                                        <input type="text" id="csEntrustmentUnitX" class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
                                         </span>
@@ -241,6 +253,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="file" name="csAttachmentProjectEnclosureId" id="csAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
+                                        <div id="_csAttachmentProjectEnclosureId"></div>
                                     </div>
                                 </div>
                             </div>
@@ -285,7 +298,8 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="csAttachmentProjectEnclosureId_" id="csAttachmentProjectEnclosureId_" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="csAttachmentProjectEnclosureId2" id="csAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
+                                        <div id="_csAttachmentProjectEnclosureId2"></div>
                                     </div>
                                 </div>
                             </div>
@@ -325,7 +339,8 @@
                                         占有单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
+                                        <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
+                                        <input type="text" id="pEntrustmentUnitX" class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer1" class="btn btn-primary">选择</button>
                                         </span>
@@ -391,6 +406,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="file" name="pAttachmentProjectEnclosureId" id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
+                                        <div id="_pAttachmentProjectEnclosureId"></div>
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +451,8 @@
                                         身份证附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="pAttachmentProjectEnclosureId_" id="pAttachmentProjectEnclosureId_" placeholder="上传附件" class="form-control" required="required">
+                                        <input type="file" name="pAttachmentProjectEnclosureId2" id="pAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
+                                        <div id="_pAttachmentProjectEnclosureId2"></div>
                                     </div>
                                 </div>
                             </div>
@@ -468,7 +485,8 @@
                                         报告使用单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="uUseUnit" id="uUseUnit"  class="form-control" required="required">
+                                        <input type="hidden" name="uUseUnit" id="uUseUnit"  class="form-control" required="required">
+                                        <input type="text"  id="uUseUnitX"  class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer2" class="btn btn-primary">选择</button>
                                         </span>
@@ -652,6 +670,7 @@
 </html>
 <script>
     $(function () {
+        //---------
         FileUtils.uploadFiles({
             target: "attachmentProjectInfoId",
             disabledTarget: "btn_submit",
@@ -663,17 +682,108 @@
             },
             deleteFlag: true
         });
-
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: "tb_project_info",
-                tableId: 0,
+                tableId: ${empty projectInfo?0:projectInfo.attachmentProjectInfoId},
                 fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })
+        //---------
+        FileUtils.uploadFiles({
+            target: "pAttachmentProjectEnclosureId",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: 0,
+                fieldsName: "pAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "pAttachmentProjectEnclosureId",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: ${empty initiatePossessor?0:initiatePossessor.pAttachmentProjectEnclosureId},
+                fieldsName: "pAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+        //---------
+        //---------
+        FileUtils.uploadFiles({
+            target: "pAttachmentProjectEnclosureId2",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: 0,
+                fieldsName: "pAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "pAttachmentProjectEnclosureId2",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: ${empty initiatePossessor?0:initiatePossessor.pAttachmentProjectEnclosureId},
+                fieldsName: "pAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+        //---------
+        //---------
+        FileUtils.uploadFiles({
+            target: "csAttachmentProjectEnclosureId",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: 0,
+                fieldsName: "csAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "csAttachmentProjectEnclosureId",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: ${empty initiateConsignor?0:initiateConsignor.csAttachmentProjectEnclosureId},
+                fieldsName: "csAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+        //---------
+        //---------
+        FileUtils.uploadFiles({
+            target: "csAttachmentProjectEnclosureId2",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: 0,
+                fieldsName: "csAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "csAttachmentProjectEnclosureId2",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: ${empty initiateConsignor?0:initiateConsignor.csAttachmentProjectEnclosureId},
+                fieldsName: "csAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+        //---------
     })
 
 </script>
@@ -789,6 +899,20 @@
             }
         });
     }
+    // 项目经理下级
+    var userAccountMember = document.getElementById("userAccountMember");
+    userAccountMember.onclick = function () {
+        erpEmployee.select({
+            onSelected:function (data) {
+                userAccountMember.removeChild(userAccountMember.firstChild);
+                var fieldElment = document.createElement("option");
+                fieldElment.setAttribute("value",data.account);
+                fieldElment.setAttribute("selected","selected");
+                fieldElment.appendChild(document.createTextNode(data.name));
+                userAccountMember.appendChild(fieldElment);
+            }
+        });
+    }
     //日期控件
     laydate.render({
         elem: '#completeDateStart' //指定元素 id
@@ -818,16 +942,48 @@
             }
         });
     });
+    //获取crm 信息
+    function getCRM(id) {
+        var info;
+        $.ajax({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+            data: "crmId="+id,
+            success: function(msg){
+                info = msg;
+                return info;
+            }
+        });
+    }
+    function writeCRM(msg,id1,id2,id3,id4) {
+        var legalRepresentative = msg.legalRepresentative;//法定代表人
+        var address = msg.address;//地址
+        var businessScope = msg.businessScope;//经营范围
+        var certificateNumber = msg.certificateNumber;//社会统一信用代码
+        $("#"+id1).val(legalRepresentative);
+        $("#"+id2).val(address);
+        $("#"+id3).val(businessScope);
+        $("#"+id4).val(certificateNumber);
+    }
     //CRM
     document.getElementById("btn_select_customer").onclick = function () {
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                console.log(nodes);
-                console.log(nodes[0].name);
-                $("#csEntrustmentUnit").val(nodes[0].name);
+                $("#csEntrustmentUnit").val(nodes[0].id);
+                $("#csEntrustmentUnitX").val(nodes[0].name);
                 var id = nodes[0].id ;
+                console.log("----------------------");
                 loadInitContactsListA(id);
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                    data: "crmId="+id,
+                    success: function(msg){
+                        console.log(msg);
+                        writeCRM(msg,"csLegalRepresentative","csAddress","csScopeOperation","csSociologyCode");
+                    }
+                });
             }
         });
     }
@@ -836,10 +992,19 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                console.log(nodes);
-                $("#pEntrustmentUnit").val(nodes[0].name);
+                $("#pEntrustmentUnit").val(nodes[0].id);
+                $("#pEntrustmentUnitX").val(nodes[0].name);
                 var id = nodes[0].id ;
                 loadInitContactsListB(id);
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                    data: "crmId="+id,
+                    success: function(msg){
+                        console.log(msg);
+                        writeCRM(msg,"pLegalRepresentative","pAddress","pScopeOperation","pSociologyCode");
+                    }
+                });
             }
         });
     }
@@ -848,10 +1013,19 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             onSelected: function (nodes) {
-                console.info(nodes);
-                $("#uUseUnit").val(nodes[0].name);
+                $("#uUseUnitX").val(nodes[0].name);
+                $("#uUseUnit").val(nodes[0].id);
                 var id = nodes[0].id ;
                 loadInitContactsListC(id);
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                    data: "crmId="+id,
+                    success: function(msg){
+                        console.log(msg);
+                        writeCRM(msg,"uLegalRepresentative","uAddress","uScopeOperation","uCertificateNumber");
+                    }
+                });
             }
         });
     }
@@ -1056,7 +1230,7 @@
         data.consignor=consignor;
         data.possessor=possessor;
         data.unitinformation=unitinformation;
-        //手动收集unitinformation的数据
+        //合并json
         console.info(data);
         json = JSON.stringify(data);
         console.info(json);
@@ -1064,25 +1238,36 @@
     function projectApply() {
         Loading.progressShow();
         params();
-        $.ajax({
-            type: "POST",
-            url: getContextPath() + "/projectInfo/projectApplySubmit",
-            data: "formData="+json,
-            success: function(result){
-                if (result.ret) {
-                    //保存完后其他动作
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                } else {
-                    Alert("保存失败:" + result.errmsg);
+        if ($("#frm_project_info").valid()){//js校验
+            if ($("#frm_consignor").valid()){
+                if ($("#frm_possessor").valid()){
+                    if ($("#frm_unitinformation").valid()){
+                        $.ajax({
+                            type: "POST",
+                            url: getContextPath() + "/projectInfo/projectApplySubmit",
+                            data: "formData="+json,
+                            success: function(result){
+                                if (result.ret) {
+                                    //保存完后其他动作
+                                    Alert("提交数据成功!", 1, null, function () {
+                                        window.close();
+                                    });
+                                } else {
+                                    Alert("保存失败:" + result.errmsg);
+                                }
+                            },
+                            error: function (e) {
+                                Loading.progressHide();
+                                Alert("调用服务端方法失败，失败原因:" + e);
+                            }
+                        });
+
+                    }
+
                 }
-            },
-            error: function (e) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+
             }
-        });
+        }
     }
 </script>
 

@@ -12,6 +12,7 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -271,6 +272,21 @@ public class ProjectInfoController {
         }catch (Exception e){
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCRMList", name = "CRM 获取",method = RequestMethod.POST)
+    public Object getCRMList(Integer crmId){
+        if (crmId!=null){
+            CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
+            try {
+                if (crmCustomerDto!=null)return crmCustomerDto;
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                return HttpResult.newErrorResult(e.getMessage());
+            }
         }
         return HttpResult.newCorrectResult();
     }
