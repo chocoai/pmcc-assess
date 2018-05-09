@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 委托人信息
+ * 联系人
  * Created by 13426 on 2018/5/4.
  */
 @Repository
@@ -31,6 +31,14 @@ public class InitiateContactsDao {
 
     public boolean update(InitiateContactsDto dto){
         return mapper.updateByPrimaryKey(change(dto))==1;
+    }
+
+    public void update(int pid,int flag){
+        List<InitiateContactsDto> dtos = getList(flag);
+        for (InitiateContactsDto dto:dtos){
+            dto.setcPid(pid);
+            update(dto);
+        }
     }
 
     public InitiateContactsDto get(Integer id){

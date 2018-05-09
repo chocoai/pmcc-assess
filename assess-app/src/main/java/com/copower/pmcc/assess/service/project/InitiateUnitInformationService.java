@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.project.InitiateUnitInformationVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,8 @@ public class InitiateUnitInformationService {
     @Autowired
     private InitiateUnitInformationDao dao;
 
-    public boolean add(InitiateUnitInformationDto dto){
+    @Transactional
+    public int add(InitiateUnitInformationDto dto){
         return dao.add(dto);
     }
 
@@ -27,10 +29,12 @@ public class InitiateUnitInformationService {
         return change(dao.get(id));
     }
 
+    @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);
     }
 
+    @Transactional
     public boolean update(InitiateUnitInformationDto dto){
         return dao.update(dto);
     }

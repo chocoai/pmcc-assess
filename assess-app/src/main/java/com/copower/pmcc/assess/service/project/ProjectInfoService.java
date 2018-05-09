@@ -1,16 +1,16 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
-import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.ServiceComponent;
@@ -23,9 +23,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
-import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -35,7 +33,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -81,16 +78,45 @@ public class ProjectInfoService {
     @Autowired
     private InitiateContactsService initiateContactsService;
 
+    @Autowired
+    private InitiateConsignorService consignorService;
+    @Autowired
+    private InitiateUnitInformationService unitInformationService;
+    @Autowired
+    private InitiatePossessorService possessorService;
+
+    @Autowired
+    private ProjectMemberService projectMemberService;
+
     /**
      * 项目立项申请
      *
-     * @param projectInfoDto
+     * @param projectDto
      */
-    public void projectApply(ProjectInfoDto projectInfoDto) throws BusinessException {
-        ProjectInfo projectInfo = new ProjectInfo();
-        BeanUtils.copyProperties(projectInfoDto, projectInfo);
+    public void projectApply(InitiateProjectDto projectDto) throws BusinessException {
+        ProjectInfo projectInfo = projectDto.getProjectInfo();
         projectInfoDao.saveProjectInfo(projectInfo);
         initProjectInfo(projectInfo);
+        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),null);
+    }
+
+    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto,ProjectMemberDto projectMemberDto){
+        try {
+            projectMemberService.save(projectMemberDto);
+            int i = possessorService.add(possessorDto);
+            int j = unitInformationService.add(unitInformationDto);
+            int v = consignorService.add(consignorDto);
+            //更新联系人中的主表id (这根据联系人的标识符来确定联系人类型)
+            initiateContactsService.update(v,InitiateContactsEnum.ONE.getNum());
+            initiateContactsService.update(i,InitiateContactsEnum.TWO.getNum());
+            initiateContactsService.update(j,InitiateContactsEnum.THREE.getNum());
+        }catch (Exception e){
+            try {
+                throw e;
+            }catch (Exception e1){
+
+            }
+        }
     }
 
     /**
@@ -237,6 +263,18 @@ public class ProjectInfoService {
         return baseDataDics;
     }
 
+    /*紧急程度*/
+    public List<BaseDataDic> project_initiate_urgency(){
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY);
+        return baseDataDics;
+    }
+
+    /*价值类型*/
+    public List<BaseDataDic> value_type(){
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
+        return baseDataDics;
+    }
+
     /*单位性质*/
     public Map<String, Object> getConsignorMap() {
         Map<String, Object> map = new HashMap<>();
@@ -269,4 +307,18 @@ public class ProjectInfoService {
 
     /*联系人删除*/
     public boolean removeContacts(Integer id){return initiateContactsService.remove(id);}
+
+    public ProjectInfo  change(ProjectInfoDto dto){
+        ProjectInfo projectInfo = new ProjectInfo();
+        BeanUtils.copyProperties(dto,projectInfo);
+        return projectInfo;
+    }
+
+    public InitiateProjectDto format(String val){
+        InitiateProjectDto dto = null;
+        if (StringUtils.isNotBlank(val)){
+            dto = JSONObject.parseObject(val,InitiateProjectDto.class);
+        }
+        return dto;
+    }
 }

@@ -6,12 +6,13 @@ import com.copower.pmcc.assess.dto.output.project.InitiateConsignorVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 联系人
+ *  委托人信息
  * Created by 13426 on 2018/5/4.
  */
 @Service
@@ -20,7 +21,8 @@ public class InitiateConsignorService {
     @Autowired
     private InitiateConsignorDao dao;
 
-    public boolean add(InitiateConsignorDto dto){
+    @Transactional
+    public int add(InitiateConsignorDto dto){
         return dao.add(dto);
     }
 
@@ -28,13 +30,16 @@ public class InitiateConsignorService {
         return change(dao.get(id));
     }
 
+    @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);
     }
 
+    @Transactional
     public boolean update(InitiateConsignorDto dto){
         return dao.update(dto);
     }
+
 
     private List<InitiateConsignorVo> getVoList(){
         List<InitiateConsignorVo> vos = new ArrayList<>();

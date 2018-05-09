@@ -20,8 +20,10 @@ public class InitiateUnitInformationDao {
     @Autowired
     private InitiateUnitInformationMapper mapper;
 
-    public boolean add(InitiateUnitInformationDto dto){
-        return mapper.insertSelective(change(dto))==1;
+    public int add(InitiateUnitInformationDto dto){
+        InitiateUnitInformation initiateUnitInformation = change(dto);
+        mapper.insertSelective(initiateUnitInformation);
+        return initiateUnitInformation.getId();
     }
 
     public boolean remove(Integer id){
