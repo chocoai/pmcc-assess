@@ -35,6 +35,7 @@
     <result column="sign_filed" property="signFiled" jdbcType="VARCHAR" />
     <result column="bis_last_layer" property="bisLastLayer" jdbcType="BIT" />
     <result column="return_details_reason" property="returnDetailsReason" jdbcType="VARCHAR" />
+    <result column="declare_form_id" property="declareFormId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,7 +101,7 @@
     execute_department_id, bis_enable, proportion, sorting, pid, first_pid, bis_start, 
     process_ins_id, task_submit_time, task_remarks, actual_hours, bis_all_submit, bis_again_submit, 
     status, bis_partake, return_details_id, return_process_ins_id, bis_new, sign_filed, 
-    bis_last_layer, return_details_reason
+    bis_last_layer, return_details_reason, declare_form_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample" >
     select
@@ -146,8 +147,8 @@
       task_remarks, actual_hours, bis_all_submit, 
       bis_again_submit, status, bis_partake, 
       return_details_id, return_process_ins_id, bis_new, 
-      sign_filed, bis_last_layer, return_details_reason
-      )
+      sign_filed, bis_last_layer, return_details_reason, 
+      declare_form_id)
     values (#{projectWorkStageId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
       #{projectPhaseId,jdbcType=INTEGER}, #{projectPhaseDetailsId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{planStartDate,jdbcType=TIMESTAMP}, #{planEndDate,jdbcType=TIMESTAMP}, 
@@ -158,8 +159,8 @@
       #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, #{bisAllSubmit,jdbcType=BIT}, 
       #{bisAgainSubmit,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{bisPartake,jdbcType=BIT}, 
       #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, 
-      #{signFiled,jdbcType=VARCHAR}, #{bisLastLayer,jdbcType=BIT}, #{returnDetailsReason,jdbcType=VARCHAR}
-      )
+      #{signFiled,jdbcType=VARCHAR}, #{bisLastLayer,jdbcType=BIT}, #{returnDetailsReason,jdbcType=VARCHAR}, 
+      #{declareFormId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanDetails" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -263,6 +264,9 @@
       <if test="returnDetailsReason != null" >
         return_details_reason,
       </if>
+      <if test="declareFormId != null" >
+        declare_form_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectWorkStageId != null" >
@@ -360,6 +364,9 @@
       </if>
       <if test="returnDetailsReason != null" >
         #{returnDetailsReason,jdbcType=VARCHAR},
+      </if>
+      <if test="declareFormId != null" >
+        #{declareFormId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -471,6 +478,9 @@
       <if test="record.returnDetailsReason != null" >
         return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
       </if>
+      <if test="record.declareFormId != null" >
+        declare_form_id = #{record.declareFormId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -510,7 +520,8 @@
       bis_new = #{record.bisNew,jdbcType=BIT},
       sign_filed = #{record.signFiled,jdbcType=VARCHAR},
       bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
-      return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR}
+      return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
+      declare_form_id = #{record.declareFormId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -614,6 +625,9 @@
       <if test="returnDetailsReason != null" >
         return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
       </if>
+      <if test="declareFormId != null" >
+        declare_form_id = #{declareFormId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -650,7 +664,8 @@
       bis_new = #{bisNew,jdbcType=BIT},
       sign_filed = #{signFiled,jdbcType=VARCHAR},
       bis_last_layer = #{bisLastLayer,jdbcType=BIT},
-      return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR}
+      return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
+      declare_form_id = #{declareFormId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -21,6 +21,8 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String url;
 
+    private String declareFormName;
+
     private List<KeyValueDto> tasks;
 
     public String get_parentId() {
@@ -45,6 +47,14 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setExecuteDepartmentName(String executeDepartmentName) {
         this.executeDepartmentName = executeDepartmentName;
+    }
+
+    public String getDeclareFormName() {
+        return declareFormName;
+    }
+
+    public void setDeclareFormName(String declareFormName) {
+        this.declareFormName = declareFormName;
     }
 
     public List<KeyValueDto> getTasks() {

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.dal.dao.BaseDataDicDao;
+import com.copower.pmcc.assess.dto.output.TreeViewVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -238,6 +239,42 @@ public class BaseDataDicService {
             keyValueDto.setKeyValueDto(kv);
 
         }
+    }
+
+    public TreeViewVo getDataDicTree(String fieldName) {
+
+        BaseDataDic hrBaseDataDic = getCacheDataDicByFieldName(fieldName);
+        TreeViewVo treeViewVo = new TreeViewVo();
+        if (hrBaseDataDic != null) {
+
+            treeViewVo.setId(hrBaseDataDic.getId());
+            treeViewVo.setText(hrBaseDataDic.getName());
+            treeViewVo.setpId(0);
+            treeViewVo.setpName("");
+            treeViewVo.setNodes(getTreeView(hrBaseDataDic.getId()));
+        }
+        return treeViewVo;
+    }
+
+    private List<TreeViewVo> getTreeView(Integer pid) {
+        TreeViewVo treeViewVo;
+        List<BaseDataDic> hrBaseDataDics = getCacheDataDicListByPid(pid);
+        List<TreeViewVo> treeViewVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hrBaseDataDics)) {
+
+            for (BaseDataDic item : hrBaseDataDics) {
+                treeViewVo = new TreeViewVo();
+                treeViewVo.setId(item.getId());
+                treeViewVo.setText(item.getName());
+                treeViewVo.setpId(item.getPid());
+                List<TreeViewVo> treeView = getTreeView(item.getId());
+                if (treeView.size() > 0) {
+                    treeViewVo.setNodes(treeView);
+                }
+                treeViewVos.add(treeViewVo);
+            }
+        }
+        return treeViewVos;
     }
 
 }

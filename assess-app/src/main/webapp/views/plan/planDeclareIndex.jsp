@@ -3,9 +3,12 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 <body class="nav-md footer_fixed">
@@ -139,7 +142,7 @@
 </body>
 
 
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
         <button type="button" onclick="addfirst()" class="btn btn-success btn-xs">
             <i class='fa fa-plus fa-white'></i> 新增第一级
@@ -155,16 +158,14 @@
         </button>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/share/model_employee.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 
 
-<div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="h4_modeTitle">计划编辑</h4>
+                <h3 class="modal-title" id="h4_modeTitle">计划编辑</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -180,7 +181,8 @@
                                             <input type="hidden" id="planDetailsId" name="id"/>
                                             <input type="hidden" id="pid" name="pid"/>
                                             <input type="hidden" id="firstPid" name="firstPid"/>
-                                            <input type="text" placeholder="计划名称" required maxlength="50" id="projectPhaseName" name="projectPhaseName"
+                                            <input type="text" placeholder="计划名称" required maxlength="50"
+                                                   id="projectPhaseName" name="projectPhaseName"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -191,8 +193,7 @@
                                             所属工作内容
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="projectPhaseId" id="projectPhaseId" class="form-control search-select select2">
-                                                <option value="">-选择-</option>
+                                            <select name="projectPhaseId" id="projectPhaseId" class="form-control">
                                                 <c:forEach var="item" items="${projectPhases}">
                                                     <option value="${item.id}">${item.projectPhaseName}</option>
                                                 </c:forEach>
@@ -203,10 +204,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            申报表
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="hidden" id="declareFormId" name="declareFormId"/>
+                                            <input type="text" placeholder="申报表" required maxlength="50"
+                                                   id="declareFormName" name="declareFormName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             开始时间
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd' id="planStartDate" name="planStartDate"
+                                            <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
+                                                   id="planStartDate" name="planStartDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
@@ -215,7 +230,8 @@
                                             结束时间
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd' id="planEndDate" name="planEndDate"
+                                            <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
+                                                   id="planEndDate" name="planEndDate"
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
@@ -225,16 +241,20 @@
                                         责任人
                                     </label>
                                     <div class="col-sm-4">
-                                        <input type="hidden" placeholder="责任人" maxlength="50" id="executeUserAccount" name="executeUserAccount" class="form-control">
-                                        <input type="text" placeholder="责任人" maxlength="50" id="executeUserName" name="executeUserName" class="form-control" readonly="readonly"
+                                        <input type="hidden" placeholder="责任人" maxlength="50" id="executeUserAccount"
+                                               name="executeUserAccount" class="form-control">
+                                        <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
+                                               name="executeUserName" class="form-control" readonly="readonly"
                                                onclick="selEmployee()">
                                     </div>
                                     <label class="col-sm-2 control-label">
                                         责任部门
                                     </label>
                                     <div class="col-sm-4">
-                                        <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId" name="executeDepartmentId" class="form-control">
-                                        <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName" name="executeDepartmentName" class="form-control" onclick="selDept()"
+                                        <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId"
+                                               name="executeDepartmentId" class="form-control">
+                                        <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName"
+                                               name="executeDepartmentName" class="form-control" onclick="selDept()"
                                                readonly="readonly">
                                     </div>
                                 </div>
@@ -244,7 +264,8 @@
                                             计划工时
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5" id="planHours" name="planHours"
+                                            <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5"
+                                                   id="planHours" name="planHours"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -253,7 +274,8 @@
                                             权重占比
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5" id="proportion" name="proportion"
+                                            <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5"
+                                                   id="proportion" name="proportion"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -263,7 +285,8 @@
                                         说明
                                     </label>
                                     <div class="col-sm-10">
-                                        <input type="text" placeholder="说明" maxlength="50" id="planRemarks" name="planRemarks"
+                                        <input type="text" placeholder="说明" maxlength="50" id="planRemarks"
+                                               name="planRemarks"
                                                class="form-control">
                                     </div>
                                 </div>
@@ -285,18 +308,20 @@
     </div>
 </div>
 
-<div id="div_fastSet" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="div_fastSet" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">快速设置</h4>
+                <h3 class="modal-title">快速设置</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel-body">
                             <form id="frm_fastset" class="form-horizontal">
-                                <table class="table table-striped table-bordered table-hover table-bordered" id="sample-table-2">
+                                <table class="table table-striped table-bordered table-hover table-bordered"
+                                       id="sample-table-2">
                                     <thead>
                                     <tr>
                                         <th class="hidden-xs">设置内容</th>
@@ -310,7 +335,8 @@
                                         <td class="hidden-xs">开始时间</td>
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" title="开始时间" value="planStartDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                            <input type="text" data-date-format='yyyy-mm-dd'
+                                                   class="fast_value form-control dbdate"></td>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
                                                 <c:forEach var="item" items="${fastSet}">
@@ -319,14 +345,17 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
                                         <td class="hidden-xs">结束时间</td>
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="planEndDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                            <input type="text" data-date-format='yyyy-mm-dd'
+                                                   class="fast_value form-control dbdate"></td>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
                                                 <c:forEach var="item" items="${fastSet}">
@@ -335,7 +364,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -343,7 +374,8 @@
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="executeUserAccount">
                                             <input type="hidden" id="fast_executeUserAccount" class="fast_value">
-                                            <input type="text" id="fast_executeUserName" class="form-control" readonly="readonly"
+                                            <input type="text" id="fast_executeUserName" class="form-control"
+                                                   readonly="readonly"
                                                    onclick="selFastEmployee()">
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -353,7 +385,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" id="btn_user" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning" id="btn_user"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -361,7 +395,8 @@
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="executeDepartmentId">
                                             <input type="hidden" id="fast_executeDepartmentId" class="fast_value">
-                                            <input type="text" id="fast_executeDepartmentName" class="form-control" onclick="selFastDept()"
+                                            <input type="text" id="fast_executeDepartmentName" class="form-control"
+                                                   onclick="selFastDept()"
                                                    readonly="readonly">
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -371,7 +406,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" id="btn_dept" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning" id="btn_dept"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -379,7 +416,8 @@
                                         <td class="hidden-xs">
                                             <div class="x-valid">
                                                 <input type="hidden" class="fast_fileds" value="planHours">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
+                                                <input type="text" data-rule-number='true' maxlength="5"
+                                                       class="form-control fast_value">
                                             </div>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -390,7 +428,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -399,7 +439,8 @@
                                         <td class="hidden-xs">
                                             <div class="x-valid">
                                                 <input type="hidden" class="fast_fileds" value="proportion">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
+                                                <input type="text" data-rule-number='true' maxlength="5"
+                                                       class="form-control fast_value">
                                             </div>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -409,7 +450,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -433,17 +476,27 @@
 </div>
 
 </html>
-
+<%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/share/model_employee.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/assess-declare-form-utils.js"></script>
 
 <script type="text/javascript">
     var treeGridJson = {};
     var treeGridJsonData = {};
     $(function () {
         getPlanItemList();
-        $("#projectPhaseId").select2();
 
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
+
+        $("#declareFormName").click(function () {
+            assessDeclareForm.select(function (row) {
+                console.log(row);
+                $("#declareFormId").val(row.id);
+                $("#declareFormName").val(row.name);
+            })
+        })
     });
 
     function nextEmployee() {
@@ -453,14 +506,17 @@
             var userAccount = $("#nextApproval").val();
             thisUser = userName + "_" + userAccount;
         }
-        loadSelectEmployee(1, thisUser, true, function (data) {
-            if (data.account) {
-                $("#nextApproval").val(data.account);
-                $("#nextApprovalName").val(data.name);
-            }
-            else {
-                $("#nextApproval").val("");
-                $("#nextApprovalName").val("");
+        erpEmployee.select({
+            value:thisUser,
+            onSelected:function (data) {
+                if (data.account) {
+                    $("#nextApproval").val(data.account);
+                    $("#nextApprovalName").val(data.name);
+                }
+                else {
+                    $("#nextApproval").val("");
+                    $("#nextApprovalName").val("");
+                }
             }
         });
     }
@@ -472,73 +528,84 @@
             var userAccount = $("#executeUserAccount").val();
             thisUser = userName + "_" + userAccount;
         }
-        loadSelectEmployee(1, thisUser, true, function (data) {
-            if (data.account) {
-                $("#executeUserAccount").val(data.account);
-                $("#executeUserName").val(data.name);
+        erpEmployee.select({
+            value:thisUser,
+            onSelected:function (data) {
+                if (data.account) {
+                    $("#executeUserAccount").val(data.account);
+                    $("#executeUserName").val(data.name);
 
-                //获取人员部门信息
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/RpcErpService/getDepartmentByUserAccount",
-                    type: "get",
-                    data: {userAccount: data.account},
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#executeDepartmentId").val(result.data.id);
-                            $("#executeDepartmentName").val(result.data.name);
+                    //获取人员部门信息
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/RpcErpService/getDepartmentByUserAccount",
+                        type: "get",
+                        data: {userAccount: data.account},
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                $("#executeDepartmentId").val(result.data.id);
+                                $("#executeDepartmentName").val(result.data.name);
+                            }
                         }
-                    }
-                })
-            }
-            else {
-                $("#executeUserAccount").val("");
-                $("#executeUserName").val("");
+                    })
+                }
+                else {
+                    $("#executeUserAccount").val("");
+                    $("#executeUserName").val("");
+                }
             }
         });
     }
 
     //选部门控件
     function selDept() {
-        loadSelectDept(1, $("#executeDepartmentId").val(), false, function (node) {
-            $("#executeDepartmentId").val(node[0].id);
-            $("#executeDepartmentName").val(node[0].text);
+        erpDepartment.select({
+            value: $("#executeDepartmentId").val(),
+            onSelected: function (node) {
+                $("#executeDepartmentId").val(node[0].id);
+                $("#executeDepartmentName").val(node[0].text);
+            }
         });
     }
 
 
     function selFastEmployee() {
-        loadSelectEmployee(1, "", true, function (data) {
-            if (data.account) {
-                $("#fast_executeUserAccount").val(data.account);
-                $("#fast_executeUserName").val(data.name);
+        erpEmployee.select({
+            onSelected:function (data) {
+                if (data.account) {
+                    $("#fast_executeUserAccount").val(data.account);
+                    $("#fast_executeUserName").val(data.name);
 
-                //获取人员部门信息
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/RpcErpService/getDepartmentByUserAccount",
-                    type: "get",
-                    data: {userAccount: data.account},
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#fast_executeDepartmentId").val(result.data.id);
-                            $("#fast_executeDepartmentName").val(result.data.name);
+                    //获取人员部门信息
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/RpcErpService/getDepartmentByUserAccount",
+                        type: "get",
+                        data: {userAccount: data.account},
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                $("#fast_executeDepartmentId").val(result.data.id);
+                                $("#fast_executeDepartmentName").val(result.data.name);
+                            }
                         }
-                    }
-                })
-            }
-            else {
-                $("#fast_executeUserAccount").val("");
-                $("#fast_executeUserName").val("");
+                    })
+                }
+                else {
+                    $("#fast_executeUserAccount").val("");
+                    $("#fast_executeUserName").val("");
+                }
             }
         });
     }
 
     //选部门控件
     function selFastDept() {
-        loadSelectDept(1, $("#fast_executeDepartmentId").val(), false, function (node) {
-            $("#fast_executeDepartmentId").val(node[0].id);
-            $("#fast_executeDepartmentName").val(node[0].text);
+        erpDepartment.select({
+            value: $("#fast_executeDepartmentId").val(),
+            onSelected: function (node) {
+                $("#fast_executeDepartmentId").val(node[0].id);
+                $("#fast_executeDepartmentName").val(node[0].text);
+            }
         });
     }
 
@@ -609,9 +676,8 @@
         $("#frm_planDetails").validate();
         $("#pid").val(0);
         $("#firstPid").val(0);
-        $("#projectPhaseId").val(0);
+        $("#projectPhaseId").find("option").first().attr("selected", true);
         $("#planDetailsId").val(0);
-        $("#projectPhaseId").select2();
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
     function addPlan(id) {
@@ -623,7 +689,6 @@
         $("#firstPid").val(row["firstPid"]);
         $("#projectPhaseId").val(row["projectPhaseId"]);
         $("#planDetailsId").val(0);
-        $("#projectPhaseId").select2();
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
 
     }
@@ -636,7 +701,7 @@
         $("#planDetailsId").val(row["id"]);
         $("#planStartDate").val(formatDate(row["planStartDate"]));
         $("#planEndDate").val(formatDate(row["planEndDate"]));
-        $("#projectPhaseId").select2().val(row.projectPhaseId).trigger("change");
+        $("#projectPhaseId").val(row.projectPhaseId);
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
     function deletePlan(id) {
@@ -774,7 +839,7 @@
                 onDblClickRow: function (row) {
                     editPlan(row.id);
                 },
-            onLoadSuccess: function () {
+                onLoadSuccess: function () {
                     $(".tooltips").tooltip();
                 },
 
@@ -827,6 +892,8 @@
                     {field: "sorting", title: "sorting", align: "center", hidden: true},
                     {field: "id", title: "PlanItemId", align: "center", hidden: true},
                     {field: "projectPhaseId", title: "projectPhaseId", align: "center", hidden: true},
+                    {field: "declareFormId", title: "declareFormId", align: "center", hidden: true},
+                    {field: "declareFormName", title: "declareFormName", align: "center", hidden: true},
                     {
                         field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
                         if (row.bisEnable) {
