@@ -79,8 +79,12 @@
                                             省
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="省" class="form-control" id="province"
-                                                   name="province">
+                                            <select name="province" class="form-control" id="province">
+                                                <c:forEach items="${provinceList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <span for="province" class="help-block">该字段为必填项</span>
                                         </div>
                                     </div>
                                 </div>
@@ -91,8 +95,9 @@
                                             市
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="市" class="form-control" id="city"
-                                                   name="city"/>
+                                            <select name="city" class="form-control" id="city" required="required">
+                                                <option>请选择</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -103,8 +108,9 @@
                                             县
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="县" class="form-control" id="district"
-                                                   name="district">
+                                            <select name="district" class="form-control" id="district" required="required">
+                                                <option>请选择</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -127,9 +133,8 @@
                                             文号
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="文号" class="form-control" id="number" name="number">
-
-                                            </textarea>
+                                            <input placeholder="文号" class="form-control" id="number" name="number"/>
+                                            <span for="number" class="help-block">该字段为必填项</span>
                                         </div>
                                     </div>
                                 </div>
@@ -140,10 +145,9 @@
                                             文件名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="文件名称" class="form-control" id="fileName"
-                                                      name="fileName">
+                                            <input placeholder="文件名称" class="form-control" id="fileName"
+                                                   name="fileName"/>
 
-                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -154,10 +158,10 @@
                                             项目类别
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="项目类别" class="form-control" id="projectType"
-                                                      name="projectType">
 
-                                            </textarea>
+                                            <input placeholder="项目类别" class="form-control" id="projectType"
+                                                   name="projectType"/>
+
                                         </div>
                                     </div>
                                 </div>
@@ -205,8 +209,7 @@
     </div>
 </div>
 
-
-<!--基础设施及公共配套设施维护数据子项数据 ===========-->
+<!-- 显示基础设施费用列表 -->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -214,9 +217,25 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">基础设施维护数据</h4>
+                <h4 class="modal-title" id="titleContent">基础设施费用</h4>
+
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName1" name="queryName1"
+                               class="form-control">
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success"
+                    data-toggle="modal" href="#firSub1"> 新增
+            </button>
+        </span>
                 <table class="table table-bordered" id="tbDataDicList">
                 </table>
             </div>
@@ -224,6 +243,141 @@
     </div>
 </div>
 
+<!-- 基础设施费用 添加 ===========-->
+<div id="firSub1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent2">字段</h4>
+            </div>
+            <form id="firSubA">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="name" name="name" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">.</div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                费用
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="numberCost" name="number" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                        保存
+                    </button>
+                </div>
+            </form>
+            <table class="table table-bordered" id="tb_List1">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 显示公共设施费用列表 -->
+<div id="divSubDataDic1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent1">公共设施费用</h4>
+
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName2" name="queryName2"
+                               class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+        <span id="toolbarSub2">
+            <button type="button" class="btn btn-success"
+                    data-toggle="modal" href="#firSub2"> 新增
+            </button>
+        </span>
+                <table class="table table-bordered" id="tbDataDicList2">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 公共设施费用 添加 ===========-->
+<div id="firSub2" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="titleContent3">字段</h4>
+            </div>
+            <form id="firSubA1">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="name1" name="name" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">.</div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                金额
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" id="numberCost1" name="number" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld1()">
+                        保存
+                    </button>
+                </div>
+            </form>
+            <table class="table table-bordered" id="tb_List2">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+</div>
 
 <%@include file="/views/share/main_footer.jsp" %>
 
@@ -233,6 +387,225 @@
     $(function () {
         loadDataDicList();
     })
+
+
+    //加载基础设施费用列表
+    function loadInfratructureCost() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '费用'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional1(' + index + ');" >编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription1(' + row.id + ',\'tb_List1\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_List1").bootstrapTable('destroy');
+        var methodStrChange = "";
+        TableInit("tb_List1", "${pageContext.request.contextPath}/infrastructureCost/list", cols, {
+            methodStr: methodStrChange
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+        $('#firSub1').modal();
+    }
+
+    //对新增 基础设施费用处理
+    function firSub1() {
+        $("#firSubA").clearAll();
+    }
+    //新增基础设施费用
+    function saveFileld() {
+        var flag = false;
+        var data = $("#firSubA").serialize();
+        if ($("#firSubA").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureCost/addAndEdit",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadInfratructureCost();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 基础设施费用
+    function deleteBestUseDescription1(id,tbId1) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureCost/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInfratructureCost();//重载 (刷新)
+                        $('#' + tbId1).bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //基础设施费用 修改
+    function editHrProfessional1(index) {
+        $("#firSubA").clearAll();
+        $('#firSub1').modal();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureCost/list",
+            type: "POST",
+            dataType: "json",
+            data: {id: index},
+            success: function (result) {
+                Loading.progressHide();
+                $('#firSub1').modal();
+                $("#id").val(result.id);
+                $("#name").val(result.name);
+                $("#notApplicableReason").val(result.notApplicableReason);
+                $("#applicableReason").val(result.applicableReason);
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+
+    //加载公共设施费用列表
+    function loadInfratructurematchingCost() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '金额'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional2(' + index + ');" >编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription2(' + row.id + ',\'tb_List2\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_List2").bootstrapTable('destroy');
+        var name = "";
+        TableInit("tb_List2", "${pageContext.request.contextPath}/infrastructureMatchingCost/list", cols, {
+            name: name
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+        $('#firSub2').modal();
+    }
+
+    //对新增 公共设施费用处理
+    function firSub2() {
+        $("#firSubA1").clearAll();
+    }
+    //新增公共设施费用
+    function saveFileld1() {
+        var flag = false;
+        var data = $("#firSubA1").serialize();
+        if ($("#firSubA1").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureMatchingCost/addAndEdit",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadInfratructurematchingCost();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 公共设施费用
+    function deleteBestUseDescription2(id,tbId2) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructureMatchingCost/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+
+                        toastr.success('删除成功');
+                        loadInfratructurematchingCost();//重载 (刷新)
+                        $('#' + tbId2).bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //公共设施费用 修改//
+    function editHrProfessional2(index) {
+        $("#firSubA1").clearAll();
+        $('#firSub2').modal();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureMatchingCost/list",
+            type: "POST",
+            dataType: "json",
+            data: {id: index},
+            success: function (result) {
+                Loading.progressHide();
+                $('#firSub2').modal();
+                $("#id").val(result.id);
+                $("#name").val(result.name);
+                $("#notApplicableReason").val(result.notApplicableReason);
+                $("#applicableReason").val(result.applicableReason);
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 
     //加载 基础设施及公共配套设施维护 数据列表
     function loadDataDicList() {
@@ -258,6 +631,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + index + ');" >基础设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + index + ');" >公共配套设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
@@ -307,11 +682,95 @@
         $("#frm").clearAll();
     }
 
+    function selectProvince() {
+        $("#province").change(function () {//监听 选择的省份
+            //检测  然后操作
+            removeChild();//删除市
+            removeChild_district();//删除县
+            var selected =$(this).children('option:selected').val();//获取到省
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    selectProvince();
+    function selectCity() {
+        $("#city").change(function () {//监听 选择的城市
+            //检测  然后操作
+            removeChild_district();
+            var selected =$(this).children('option:selected').val();//获取到城市
+            var data = "pid="+selected;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    appendChildElement_district(result);
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    }
+    selectCity();
+    function removeChild() { //删除市
+        var optionLen = $("#city option").size();
+        if (optionLen>2){
+            $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function removeChild_district() {//删除县或者区
+        var optionLen = $("#district option").size();
+        if (optionLen>2){
+            $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
+        }
+    }
+    function appendChildElement(item) {//市添加
+        var TableField = $("#city");
+        var TableFieldElement = document.getElementById("city");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#city option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].areaId);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+
+    function appendChildElement_district(item) {//县或者区域添加
+        var TableField = $("#district");
+        var TableFieldElement = document.getElementById("district");
+        var len = item.length;
+        for (var i = 0 ; i < len;i++){
+            var optionLen = $("#district option").size();
+            var fieldElment = document.createElement("option");
+            fieldElment.setAttribute("value",item[i].id);
+            fieldElment.appendChild(document.createTextNode(item[i].name));
+            TableFieldElement.appendChild(fieldElment);
+
+        }
+    }
+
     //新增 基础设施及公共配套设施维护数据
     function saveSubDataDic() {
         var flag = false;
         var data = $("#frm").serialize();
-
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructure/addInfrastructure",
