@@ -17,6 +17,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,12 +83,8 @@ public class BaseDataDicService {
             sysDataDicTemp = cmsBaseDataDicDao.getSingleObject(sysDataDic.getId());
             if (sysDataDicTemp != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
             {
-                sysDataDicTemp.setName(sysDataDic.getName());
-                sysDataDicTemp.setFieldName(sysDataDic.getFieldName());
-                sysDataDicTemp.setGroupKey(sysDataDic.getGroupKey());
+                BeanUtils.copyProperties(sysDataDic,sysDataDicTemp);
                 sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
-                sysDataDicTemp.setSorting(sysDataDic.getSorting());
-                sysDataDicTemp.setRemark(sysDataDic.getRemark());
                 if (!cmsBaseDataDicDao.updateObject(sysDataDicTemp)) {
                     throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
                 }
@@ -97,19 +94,9 @@ public class BaseDataDicService {
 
         } else {
             sysDataDicTemp = new BaseDataDic();
-            sysDataDicTemp.setName(sysDataDic.getName());
-            sysDataDicTemp.setFieldName(sysDataDic.getFieldName());
-            sysDataDicTemp.setGroupKey(sysDataDic.getGroupKey());
-            sysDataDicTemp.setSorting(sysDataDic.getSorting());
-            sysDataDicTemp.setRemark(sysDataDic.getRemark());
+            BeanUtils.copyProperties(sysDataDic,sysDataDicTemp);
             sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
             sysDataDicTemp.setBisDelete(false);
-            if (sysDataDic.getPid() != null) {
-                sysDataDicTemp.setPid(sysDataDic.getPid());
-
-                BaseDataDic cacheDataDicById = getCacheDataDicById(sysDataDic.getPid());
-                sysDataDicTemp.setGroupKey(cacheDataDicById.getGroupKey());
-            }
             sysDataDicTemp.setCreator(serviceComponent.getThisUser());
             if (!cmsBaseDataDicDao.addObject(sysDataDicTemp)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());

@@ -295,73 +295,73 @@ public class BaseDataDicExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyIsNull() {
-            addCriterion("group_key is null");
+        public Criteria andItemKeyIsNull() {
+            addCriterion("item_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyIsNotNull() {
-            addCriterion("group_key is not null");
+        public Criteria andItemKeyIsNotNull() {
+            addCriterion("item_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyEqualTo(String value) {
-            addCriterion("group_key =", value, "groupKey");
+        public Criteria andItemKeyEqualTo(String value) {
+            addCriterion("item_key =", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyNotEqualTo(String value) {
-            addCriterion("group_key <>", value, "groupKey");
+        public Criteria andItemKeyNotEqualTo(String value) {
+            addCriterion("item_key <>", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyGreaterThan(String value) {
-            addCriterion("group_key >", value, "groupKey");
+        public Criteria andItemKeyGreaterThan(String value) {
+            addCriterion("item_key >", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyGreaterThanOrEqualTo(String value) {
-            addCriterion("group_key >=", value, "groupKey");
+        public Criteria andItemKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("item_key >=", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyLessThan(String value) {
-            addCriterion("group_key <", value, "groupKey");
+        public Criteria andItemKeyLessThan(String value) {
+            addCriterion("item_key <", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyLessThanOrEqualTo(String value) {
-            addCriterion("group_key <=", value, "groupKey");
+        public Criteria andItemKeyLessThanOrEqualTo(String value) {
+            addCriterion("item_key <=", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyLike(String value) {
-            addCriterion("group_key like", value, "groupKey");
+        public Criteria andItemKeyLike(String value) {
+            addCriterion("item_key like", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyNotLike(String value) {
-            addCriterion("group_key not like", value, "groupKey");
+        public Criteria andItemKeyNotLike(String value) {
+            addCriterion("item_key not like", value, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyIn(List<String> values) {
-            addCriterion("group_key in", values, "groupKey");
+        public Criteria andItemKeyIn(List<String> values) {
+            addCriterion("item_key in", values, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyNotIn(List<String> values) {
-            addCriterion("group_key not in", values, "groupKey");
+        public Criteria andItemKeyNotIn(List<String> values) {
+            addCriterion("item_key not in", values, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyBetween(String value1, String value2) {
-            addCriterion("group_key between", value1, value2, "groupKey");
+        public Criteria andItemKeyBetween(String value1, String value2) {
+            addCriterion("item_key between", value1, value2, "itemKey");
             return (Criteria) this;
         }
 
-        public Criteria andGroupKeyNotBetween(String value1, String value2) {
-            addCriterion("group_key not between", value1, value2, "groupKey");
+        public Criteria andItemKeyNotBetween(String value1, String value2) {
+            addCriterion("item_key not between", value1, value2, "itemKey");
             return (Criteria) this;
         }
 

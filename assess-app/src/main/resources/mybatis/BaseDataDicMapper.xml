@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="group_key" property="groupKey" jdbcType="VARCHAR" />
+    <result column="item_key" property="itemKey" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, group_key, bis_enable, bis_delete, remark, sorting, created, mdified, 
+    id, pid, name, item_key, bis_enable, bis_delete, remark, sorting, created, mdified, 
     creator, field_name, url, forbid_modify
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataDicExample" >
@@ -113,12 +113,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_data_dic (pid, name, group_key, 
+    insert into tb_base_data_dic (pid, name, item_key, 
       bis_enable, bis_delete, remark, 
       sorting, created, mdified, 
       creator, field_name, url, 
       forbid_modify)
-    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{groupKey,jdbcType=VARCHAR}, 
+    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{itemKey,jdbcType=VARCHAR}, 
       #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
       #{sorting,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{mdified,jdbcType=TIMESTAMP}, 
       #{creator,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
@@ -136,8 +136,8 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="groupKey != null" >
-        group_key,
+      <if test="itemKey != null" >
+        item_key,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -177,8 +177,8 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="groupKey != null" >
-        #{groupKey,jdbcType=VARCHAR},
+      <if test="itemKey != null" >
+        #{itemKey,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -230,8 +230,8 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.groupKey != null" >
-        group_key = #{record.groupKey,jdbcType=VARCHAR},
+      <if test="record.itemKey != null" >
+        item_key = #{record.itemKey,jdbcType=VARCHAR},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -273,7 +273,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      group_key = #{record.groupKey,jdbcType=VARCHAR},
+      item_key = #{record.itemKey,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -297,8 +297,8 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="groupKey != null" >
-        group_key = #{groupKey,jdbcType=VARCHAR},
+      <if test="itemKey != null" >
+        item_key = #{itemKey,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -337,7 +337,7 @@
     update tb_base_data_dic
     set pid = #{pid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      group_key = #{groupKey,jdbcType=VARCHAR},
+      item_key = #{itemKey,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
