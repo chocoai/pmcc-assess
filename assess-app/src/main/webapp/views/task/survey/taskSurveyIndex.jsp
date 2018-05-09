@@ -313,7 +313,7 @@
                                             清查内容
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="assessClass" name="assessClass">
+                                            <select class="form-control" required id="inventoryContent" name="inventoryContent">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${checkContentList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -326,11 +326,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            登记信息
+                                            登记面积
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="登记信息"
-                                                   id="name" name="name" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="登记面积"
+                                                   id="registrationAddress" name="registrationAddress" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -338,11 +338,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            实际信息
+                                            实际面积
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="实际信息"
-                                                   id="name1" name="name1" class="form-control">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="实际面积"
+                                                   id="actualAddress" name="actualAddress" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -354,7 +354,7 @@
                                         </label>
                                         <div class="col-sm-9">
                                             <input type="text" required data-rule-maxlength="50" placeholder="差异原因"
-                                                   id="name2" name="name2" class="form-control">
+                                                   id="differenceReason" name="differenceReason" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -366,7 +366,7 @@
                                         </label>
                                         <div class="col-sm-9">
                                             <input type="text" required data-rule-maxlength="50" placeholder="证明文件"
-                                                   id="name3" name="name3" class="form-control">
+                                                   id="credential" name="credential" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -389,13 +389,12 @@
                                         </label>
                                         <div class="col-sm-9">
                                             <input type="text" required data-rule-maxlength="50" placeholder="证明人"
-                                                   id="name4" name="name4" class="form-control">
+                                                   id="voucher" name="voucher" class="form-control">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-
+                               <%-- <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             调查时间
@@ -403,14 +402,13 @@
                                         <div class="col-sm-9">
                                             <input type="text" required
                                                    placeholder="调查时间"
-                                                   value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                                   id="name5" name="name5"
+                                                   value="<fmt:formatDate value="${surveyAssetTemplate.surveyTime}" pattern="yyyy-MM-dd"/>"
+                                                   id="surveyTime" name="surveyTime"
                                                    data-date-format='yyyy-mm-dd'
                                                    class="form-control dbdate">
                                         </div>
                                     </div>
-
-                                </div>
+                                </div>--%>
 
                             </div>
                         </div>
@@ -419,7 +417,7 @@
                         <button type="button" data-dismiss="modal" class="btn btn-default">
                             取消
                         </button>
-                        <button id="baocun" type="button" class="btn btn-primary" onclick="saveData()">
+                        <button id="saveFrm" type="button" class="btn btn-primary" onclick="saveData()">
                             保存
                         </button>
                     </div>
@@ -512,15 +510,20 @@
 
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'assessClassName', title: '清查内容'});
-        cols.push({field: 'reportTypeName', title: '是否一致'});
-        cols.push({field: 'prefix', title: '登记信息'});
-        cols.push({field: 'dateRule', title: '实际信息'});
-        cols.push({field: 'figures', title: '差异原因'});
-        cols.push({field: 'startNumber', title: '证明文件'});
-        cols.push({field: 'sameReportType', title: '证明文件附件'});
+        cols.push({field: 'inventoryContentName', title: '清查内容'});
+        cols.push({field: 'are_consistent', title: '是否一致'});
+        cols.push({field: 'registrationAddress', title: '登记面积'});
+        cols.push({field: 'actualAddress', title: '实际面积'});
+        cols.push({field: 'differenceReason', title: '差异原因'});
+        cols.push({field: 'credential', title: '证明文件'});
+        cols.push({field: 'credentialAccessory', title: '证明文件附件'});
         cols.push({field: 'voucher', title: '证明人'});
-        cols.push({field: 'surveyTime', title: '调查时间'});
+
+        cols.push({
+            field: 'surveyTime', title: '调查时间', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -532,14 +535,80 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/numberRule/list", cols, {
-            assessClass: $("#queryAssessClass").val(),
-            reportType:$("#queryReportType").val()
+        TableInit("tb_List", "${pageContext.request.contextPath}/ProjectTask/list", cols, {
+
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+    }
+
+
+    function addData() {
+        $("#frm").clearAll();
+    }
+
+    function saveData() {
+        var flag = false;
+        //var data = formParams("frm");
+        var data = $("#frm").serialize();
+        if ($("#frm").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/ProjectTask/save",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadDataDicList();
+                        $('#divBox').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    function editHrProfessional(index) {
+        var row = $("#tb_List").bootstrapTable('getData')[index];
+        $("#frm").clearAll();
+        $("#frm").initForm(row);
+        $('#divBox').modal();
+    }
+
+
+    function delData(id, tbId) {
+        Alert("确认要删除么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/ProjectTask/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadDataDicList();//重载 (刷新)
+                        $('#' + tbId).bootstrapTable("refresh");
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
 
     $('#yizhiBox').click(function(){
@@ -550,9 +619,7 @@
         }
     });
 
-    function addData() {
-        $("#frm").clearAll();
-    }
+
 
     //选择人员
     /*erpDepartment.select({
