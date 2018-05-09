@@ -150,7 +150,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        登记日期<span class="symbol required"></span>
+                                        登记日期
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" required
@@ -164,7 +164,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        到期日<span class="symbol required"></span>
+                                        到期日
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" required
@@ -178,7 +178,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        实际行权人行权日期<span class="symbol required"></span>
+                                        实际行权人行权日期
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" required
@@ -196,7 +196,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        预计到期日<span class="symbol required"></span>
+                                        预计到期日
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" required
@@ -291,6 +291,143 @@
     </div>
 </div>
 </body>
+
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">字典管理</h4>
+            </div>
+            <form id="frm" class="form-horizontal">
+                <input type="hidden" id="id" name="id" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            清查内容
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="assessClass" name="assessClass">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${checkContentList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            登记信息
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="登记信息"
+                                                   id="name" name="name" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            实际信息
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="实际信息"
+                                                   id="name1" name="name1" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            差异原因
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="差异原因"
+                                                   id="name2" name="name2" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            证明文件
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="证明文件"
+                                                   id="name3" name="name3" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        证明文件附件
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input id="apply_file1" name="apply_file" type="file" multiple="false">
+                                        <div id="_apply_file1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            证明人
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required data-rule-maxlength="50" placeholder="证明人"
+                                                   id="name4" name="name4" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            调查时间
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" required
+                                                   placeholder="调查时间"
+                                                   value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
+                                                   id="name5" name="name5"
+                                                   data-date-format='yyyy-mm-dd'
+                                                   class="form-control dbdate">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button id="baocun" type="button" class="btn btn-primary" onclick="saveData()">
+                            保存
+                        </button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
@@ -326,6 +463,31 @@
             target: "apply_file",
             formData: {
                 tableName: "tb_project_plan_details",
+                tableId: ${projectPlanDetails.id},
+                fieldsName: "apply",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+
+
+
+        FileUtils.uploadFiles({
+            target: "apply_file1",
+            disabledTarget: "baocun",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: ${projectPlanDetails.id},
+                fieldsName: "apply",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "apply_file1",
+            formData: {
+                tableName: "tb_initiate_possessor",
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
@@ -387,6 +549,10 @@
             $('#frm_survey').css('display','none');
         }
     });
+
+    function addData() {
+        $("#frm").clearAll();
+    }
 
     //选择人员
     /*erpDepartment.select({
