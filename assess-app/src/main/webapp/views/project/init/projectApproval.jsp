@@ -28,6 +28,103 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">大类<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                   <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">县<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目经理下级<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">样式</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">上传附件</label>
+                                <div class="col-sm-3">
+                                    <input id="attachmentProjectInfoId" name="attachmentProjectInfoId" required="required" placeholder="上传附件"  class="form-control" type="file">
+                                    <div id="_attachmentProjectInfoId"></div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

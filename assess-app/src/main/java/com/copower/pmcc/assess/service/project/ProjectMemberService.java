@@ -58,6 +58,10 @@ public class ProjectMemberService {
         upateProjectMemeberToErp(projectMember.getProjectId(), projectMember.getUserAccountManager(), projectMember.getUserAccountMember());
     }
 
+    public ProjectMember get(Integer id){
+        return projectMemberDao.getProjectMemberItem(id);
+    }
+
     public void save(ProjectMemberDto dto)throws BusinessException {
         if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         saveProjectMemeber(change(dto));

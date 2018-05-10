@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.ServiceComponent;
@@ -45,9 +46,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Console;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * 描述:项目基础信息
@@ -299,6 +298,36 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
+    public ProjectInfoVo getVo(ProjectInfo projectInfo){
+        ProjectInfoVo projectInfoVo = new ProjectInfoVo();
+        //大类
+        projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
+        //委托目的
+        projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getProjectClassId(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
+        projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
+        projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
+        //紧急程度
+        projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getProjectClassId(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
+        ProjectMember projectMember = projectMemberService.get(projectInfo.getProjectMemberId());
+        //项目经理 与下级
+        projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManager());
+        projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMember());
+        //价值类型
+        projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getProjectClassId(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
+        return projectInfoVo;
+    }
+
+    public String baseDataDicChange(Integer id,List<BaseDataDic> base){
+        String v = "";
+        inner:
+        for (BaseDataDic b : base){
+            if (b.getId()==id){
+                v = b.getName();
+                break inner;
+            }
+        }
+        return v;
+    }
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
@@ -313,10 +342,36 @@ public class ProjectInfoService {
         return erpAreaService.getProvinceList();
     }
 
+    /*省名称*/
+    public String getProvinceName(int pid){
+        List<SysAreaDto> provinceLists = erpAreaService.getProvinceList();
+        String s = provinceAndArea(pid,provinceLists);
+        return s;
+    }
+
+    /*城市名称*/
+    public String getSysArea(Integer id){
+        return erpAreaService.getSysAreaDto(id).getName();
+    }
+
+    public String provinceAndArea(int id,List<SysAreaDto> sysAreaDtos){
+        String v = "";
+        inner:
+        for (SysAreaDto s:sysAreaDtos){
+            if (id==s.getId()){
+                v = s.getName();
+                break inner;
+            }
+        }
+        return v;
+    }
+
+
     /*获取城市*/
     public List<SysAreaDto> getAreaList(String pid){
         return erpAreaService.getAreaList(pid);
     }
+
 
     /*大类*/
     public List<BaseDataDic> listClass_assess(){

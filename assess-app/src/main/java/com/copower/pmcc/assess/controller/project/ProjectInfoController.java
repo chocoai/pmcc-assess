@@ -105,7 +105,7 @@ public class ProjectInfoController {
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        //modelAndView.addObject("projectId", projectInfo.getId());
+        modelAndView.addObject("projectInfo",projectInfoService.getVo(projectInfo) );
         return modelAndView;
     }
 
