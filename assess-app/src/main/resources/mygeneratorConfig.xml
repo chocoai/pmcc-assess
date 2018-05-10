@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\lib\mysql-connector-java-5.1.23.jar"/>
+
+    <context id="ticket-pms">
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess"
+                        userId="root" password="123456">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- entity 位置-->
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.entity"
+                            targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper xml 位置 -->
+        <sqlMapGenerator targetPackage="mybatis"
+                         targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
+        </sqlMapGenerator>
+
+        <!--mapper 接口位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.mapper"
+                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 具体表 -->
+        <table tableName="tb_survey_asset_other_template" domainObjectName="SurveyAssetOtherTemplate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+
+</generatorConfiguration>
