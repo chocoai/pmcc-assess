@@ -47,6 +47,14 @@ public class ProjectInfo {
 
     private String attachmentProjectInfoId;
 
+    private Integer consignorId;
+
+    private Integer unitInformationId;
+
+    private Integer possessorId;
+
+    private Integer projectMemberId;
+
     public Integer getId() {
         return id;
     }
@@ -221,5 +229,37 @@ public class ProjectInfo {
 
     public void setAttachmentProjectInfoId(String attachmentProjectInfoId) {
         this.attachmentProjectInfoId = attachmentProjectInfoId == null ? null : attachmentProjectInfoId.trim();
+    }
+
+    public Integer getConsignorId() {
+        return consignorId;
+    }
+
+    public void setConsignorId(Integer consignorId) {
+        this.consignorId = consignorId;
+    }
+
+    public Integer getUnitInformationId() {
+        return unitInformationId;
+    }
+
+    public void setUnitInformationId(Integer unitInformationId) {
+        this.unitInformationId = unitInformationId;
+    }
+
+    public Integer getPossessorId() {
+        return possessorId;
+    }
+
+    public void setPossessorId(Integer possessorId) {
+        this.possessorId = possessorId;
+    }
+
+    public Integer getProjectMemberId() {
+        return projectMemberId;
+    }
+
+    public void setProjectMemberId(Integer projectMemberId) {
+        this.projectMemberId = projectMemberId;
     }
 }
