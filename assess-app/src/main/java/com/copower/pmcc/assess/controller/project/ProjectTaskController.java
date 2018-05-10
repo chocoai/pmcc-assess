@@ -1,17 +1,14 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectTaskService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
@@ -20,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -47,6 +45,8 @@ public class ProjectTaskController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private SurveyAssetTemplateService surveyAssetTemplateService;
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
     public ModelAndView projectTaskIndex(Integer responsibilityId) {
@@ -204,6 +204,35 @@ public class ProjectTaskController {
             projectTaskService.submitPlanEdit(approvalModelDto, formData, taskRemarks, actualHours);
 
         } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/list", name = "取得清查模板详情", method = RequestMethod.GET)
+    public BootstrapTableVo list(Integer pid) {
+        BootstrapTableVo vo = surveyAssetTemplateService.getList(pid);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/save", name = "新增和修改清查模板", method = RequestMethod.POST)
+    public HttpResult save(SurveyAssetTemplateDto surveyAssetTemplateDto) {
+        try {
+            surveyAssetTemplateService.save(surveyAssetTemplateDto);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete", name = "删除清查模板", method = RequestMethod.POST)
+    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+        try {
+            surveyAssetTemplateService.delete(id);
+        } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
