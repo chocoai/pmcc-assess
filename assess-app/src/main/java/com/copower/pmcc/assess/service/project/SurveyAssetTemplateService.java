@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;

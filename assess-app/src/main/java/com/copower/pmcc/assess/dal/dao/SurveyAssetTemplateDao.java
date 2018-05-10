@@ -21,7 +21,6 @@ public class SurveyAssetTemplateDao {
         if (pid != null) {
             example.createCriteria().andPidEqualTo(pid);
         }
-
         example.setOrderByClause(" id desc");
         List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateMapper.selectByExample(example);
 

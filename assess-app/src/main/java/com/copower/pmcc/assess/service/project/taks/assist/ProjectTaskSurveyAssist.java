@@ -24,7 +24,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
 
-        projectCheckContentService.getBaseDataDicList(modelAndView);//获取数据字典
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);//获取数据字典
         
         return modelAndView;
     }
