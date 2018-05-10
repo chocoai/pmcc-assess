@@ -7,6 +7,7 @@
     <result column="cn_name" property="cnName" jdbcType="VARCHAR" />
     <result column="box_name" property="boxName" jdbcType="VARCHAR" />
     <result column="executor" property="executor" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, cn_name, box_name, executor, bis_enable, gmt_created, gmt_modified
+    id, name, cn_name, box_name, executor, table_name, bis_enable, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcessExample" >
     select
@@ -107,11 +108,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_base_process (name, cn_name, box_name, 
-      executor, bis_enable, gmt_created, 
-      gmt_modified)
+      executor, table_name, bis_enable, 
+      gmt_created, gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{cnName,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, 
-      #{executor,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{executor,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseProcess" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -130,6 +131,9 @@
       </if>
       <if test="executor != null" >
         executor,
+      </if>
+      <if test="tableName != null" >
+        table_name,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -153,6 +157,9 @@
       </if>
       <if test="executor != null" >
         #{executor,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -189,6 +196,9 @@
       <if test="record.executor != null" >
         executor = #{record.executor,jdbcType=VARCHAR},
       </if>
+      <if test="record.tableName != null" >
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -210,6 +220,7 @@
       cn_name = #{record.cnName,jdbcType=VARCHAR},
       box_name = #{record.boxName,jdbcType=VARCHAR},
       executor = #{record.executor,jdbcType=VARCHAR},
+      table_name = #{record.tableName,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -232,6 +243,9 @@
       <if test="executor != null" >
         executor = #{executor,jdbcType=VARCHAR},
       </if>
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
@@ -250,6 +264,7 @@
       cn_name = #{cnName,jdbcType=VARCHAR},
       box_name = #{boxName,jdbcType=VARCHAR},
       executor = #{executor,jdbcType=VARCHAR},
+      table_name = #{tableName,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

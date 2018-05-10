@@ -13,9 +13,8 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-
             <!--动态表单-->
+            <%@include file="/views/share/tools/dynamic_form.jsp" %>
 
             <div class="x_panel">
                 <div class="x_title">
@@ -24,20 +23,6 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                客户
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text"  placeholder="客户"
-                                           id="customerName" name="customerName" class="form-control" >
-                                    <span class="input-group-btn">
-                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 实际工时
@@ -94,18 +79,10 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="application/javascript">
 
     $(function () {
-        $("#btn_select_customer").click(function () {
-            crmCustomer.select({
-                multi: false,//是否允许多选
-                onSelected: function (nodes) {
-                    console.log(nodes);
-                }
-            });
-        })
-        
         $("#frm_task").validate();
 
         FileUtils.uploadFiles({
