@@ -48,6 +48,11 @@ public class ProjectMemberDao {
         return i == 1;
     }
 
+    public int saveProjectMemeberID(ProjectMember projectMember){
+        int i = projectMemberMapper.insertSelective(projectMember);
+        return projectMember.getId();
+    }
+
     public Boolean updateProjectMember(ProjectMember projectMember) {
         int i = projectMemberMapper.updateByPrimaryKeySelective(projectMember);
         return i >= 0;

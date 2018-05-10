@@ -63,6 +63,11 @@ public class ProjectMemberService {
         saveProjectMemeber(change(dto));
     }
 
+    public int saveReturnId(ProjectMemberDto dto)throws BusinessException{
+        if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        return projectMemberDao.saveProjectMemeberID(change(dto));
+    }
+
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
         SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectId,applicationConstant.getAppKey());
         if (sysProjectDto.getId() > 0) {

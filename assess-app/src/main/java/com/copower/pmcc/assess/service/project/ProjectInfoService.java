@@ -104,15 +104,11 @@ public class ProjectInfoService {
      * @param projectDto
      */
     public void projectApply(InitiateProjectDto projectDto) throws BusinessException {
-        ProjectInfo projectInfo = change(projectDto.getProjectInfo());
-        int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);
-        update_BaseAttachment_(id,ProjectInfoDto.ATTACHMENTPROJECTINFOID,0);
-        initProjectInfo(projectInfo);
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember));
+        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember),projectDto.getProjectInfo());
     }
 
     //修改附件中的table id 以及存附件的主表的附件id
@@ -147,7 +143,7 @@ public class ProjectInfoService {
         }
     }
 
-    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto,ProjectMemberDto projectMemberDto){
+    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto,ProjectMemberDto projectMemberDto,ProjectInfoDto projectInfoDto){
         try {
             int i = possessorService.add(possessorDto);
             int v = consignorService.add(consignorDto);
@@ -161,7 +157,15 @@ public class ProjectInfoService {
             update_BaseAttachment_(v,InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.ONE.getNum());
             update_BaseAttachment_(i,InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.TWO.getNum());
             try {
-                projectMemberService.save(projectMemberDto);
+                int k= projectMemberService.saveReturnId(projectMemberDto);
+                ProjectInfo projectInfo = change(projectInfoDto);
+                projectInfo.setConsignorId(v);//设置 关联id
+                projectInfo.setPossessorId(i);
+                projectInfo.setUnitInformationId(j);
+                projectInfo.setProjectMemberId(k);
+                int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                update_BaseAttachment_(id,ProjectInfoDto.ATTACHMENTPROJECTINFOID,0);
+                initProjectInfo(projectInfo);//初始化项目信息
             }catch (Exception e){
                 try {
                     throw e;
