@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.project.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.*;
@@ -105,7 +106,8 @@ public class ProjectInfoController {
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        modelAndView.addObject("projectInfo",projectInfoService.getVo(projectInfo) );
+        ProjectInfoVo vo = projectInfoService.getVo(projectInfo);
+        modelAndView.addObject("projectInfo",vo);
         return modelAndView;
     }
 
@@ -290,5 +292,6 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
+
 
 }

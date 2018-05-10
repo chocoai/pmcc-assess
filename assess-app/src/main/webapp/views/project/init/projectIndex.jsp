@@ -326,139 +326,139 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
-                        <div id="changeType1">
-                            法人<input type="radio" name="pType" value="1" checked="checked">
-                            自然人<input type="radio" name="pType" value="0" >
-                        </div>
-                        <div id="legal_person1" class="panel-body">
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        占有单位
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
-                                        <input type="text" id="pEntrustmentUnitX" class="form-control" required="required">
-                                        <span class="input-group-btn">
+                </div> <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
+                <div id="changeType1">
+                    法人<input type="radio" name="pType" value="1" checked="checked">
+                    自然人<input type="radio" name="pType" value="0" >
+                </div>
+                <div id="legal_person1" class="panel-body">
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                占有单位
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
+                                <input type="text" id="pEntrustmentUnitX" class="form-control" required="required">
+                                <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer1" class="btn btn-primary">选择</button>
                                         </span>
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        占有单位法定代表
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pLegalRepresentative" id="pLegalRepresentative" placeholder="占有单位法定代表" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        社会统一信用代码
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pSociologyCode" id="pSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        经营范围
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pScopeOperation" id="pScopeOperation" placeholder="经营范围" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        占有单位地址
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        单位性质
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" id="pUnitProperties" name="pUnitProperties">
-                                            <option>请选择</option>
-                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                                <option value="${mymap.key}">${mymap.value}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        身份证附件
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="file" name="pAttachmentProjectEnclosureId" id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
-                                        <div id="_pAttachmentProjectEnclosureId"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div id="no_legal_person1">
-                            <div class="form-group">
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        占有人姓名
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pName" id="pName" placeholder="占有人姓名" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        身份证号
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号" class="form-control" required="required">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        占有人住址
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="pAddress" id="pAddress2" placeholder="占有人住址" class="form-control" required="required">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        身份证附件
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="file" name="pAttachmentProjectEnclosureId2" id="pAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
-                                        <div id="_pAttachmentProjectEnclosureId2"></div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </form>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                占有单位法定代表
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pLegalRepresentative" id="pLegalRepresentative" placeholder="占有单位法定代表" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                社会统一信用代码
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pSociologyCode" id="pSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                经营范围
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pScopeOperation" id="pScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                占有单位地址
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                单位性质
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="pUnitProperties" name="pUnitProperties">
+                                    <option>请选择</option>
+                                    <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                        <option value="${mymap.key}">${mymap.value}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                身份证附件
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="file" name="pAttachmentProjectEnclosureId" id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
+                                <div id="_pAttachmentProjectEnclosureId"></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <div id="no_legal_person1">
+                    <div class="form-group">
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                占有人姓名
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pName" id="pName" placeholder="占有人姓名" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                身份证号
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                占有人住址
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pAddress" id="pAddress2" placeholder="占有人住址" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                身份证附件
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="file" name="pAttachmentProjectEnclosureId2" id="pAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
+                                <div id="_pAttachmentProjectEnclosureId2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             </div>
             <div class="x_panel">
                 <div class="x_title">
@@ -477,77 +477,77 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal" enctype="multipart/form-data">
-                        <div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        报告使用单位
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="hidden" name="uUseUnit" id="uUseUnit"  class="form-control" required="required">
-                                        <input type="text"  id="uUseUnitX"  class="form-control" required="required">
-                                        <span class="input-group-btn">
+
+                </div><form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal" enctype="multipart/form-data">
+                <div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                报告使用单位
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="uUseUnit" id="uUseUnit"  class="form-control" required="required">
+                                <input type="text"  id="uUseUnitX"  class="form-control" required="required">
+                                <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer2" class="btn btn-primary">选择</button>
                                         </span>
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        法定代表人
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="uLegalRepresentative" id="uLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        证照号
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="uCertificateNumber" id="uCertificateNumber" placeholder="证照号" class="form-control" required="required">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        单位性质
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" id="uUnitProperties" name="uUnitProperties">
-                                            <option>请选择</option>
-                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                                <option value="${mymap.key}">${mymap.value}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        经营范围
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="uScopeOperation" id="uScopeOperation" placeholder="经营范围" class="form-control" required="required">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        地址
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="uAddress" id="uAddress" placeholder="地址" class="form-control" required="required">
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </form>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                法定代表人
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="uLegalRepresentative" id="uLegalRepresentative" placeholder="法定代表人" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                证照号
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="uCertificateNumber" id="uCertificateNumber" placeholder="证照号" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                单位性质
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="uUnitProperties" name="uUnitProperties">
+                                    <option>请选择</option>
+                                    <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                        <option value="${mymap.key}">${mymap.value}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                经营范围
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="uScopeOperation" id="uScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                            </div>
+                        </div>
+
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                地址
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="uAddress" id="uAddress" placeholder="地址" class="form-control" required="required">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </form>
             </div>
             <div class="x_panel">
                 <div class="x_title">

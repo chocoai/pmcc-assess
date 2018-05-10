@@ -62,6 +62,10 @@ public class ProjectMemberService {
         return projectMemberDao.getProjectMemberItem(id);
     }
 
+    public ProjectMember getById(Integer id){
+        return projectMemberDao.get(id);
+    }
+
     public void save(ProjectMemberDto dto)throws BusinessException {
         if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         saveProjectMemeber(change(dto));

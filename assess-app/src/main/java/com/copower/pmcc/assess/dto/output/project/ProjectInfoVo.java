@@ -14,16 +14,16 @@ import java.util.List;
  */
 public class ProjectInfoVo extends ProjectInfo {
 
-//    private String projectClassIdName;
     private String entrustPurposeName;
     private String provinceName;
     private String cityName;
     private String districtName;
     private String urgencyName;
-//    private String valueTypeName;
-//    private String departmentIdName;
     private String userAccountManagerName;
     private String userAccountMemberName;
+    private InitiatePossessorVo possessorVo;
+    private InitiateConsignorVo consignorVo;
+    private InitiateUnitInformationVo unitInformationVo;
 
     private String projectClassName;
 
@@ -149,5 +149,29 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setUserAccountMemberName(String userAccountMemberName) {
         this.userAccountMemberName = userAccountMemberName;
+    }
+
+    public InitiatePossessorVo getPossessorVo() {
+        return possessorVo;
+    }
+
+    public void setPossessorVo(InitiatePossessorVo possessorVo) {
+        this.possessorVo = possessorVo;
+    }
+
+    public InitiateConsignorVo getConsignorVo() {
+        return consignorVo;
+    }
+
+    public void setConsignorVo(InitiateConsignorVo consignorVo) {
+        this.consignorVo = consignorVo;
+    }
+
+    public InitiateUnitInformationVo getUnitInformationVo() {
+        return unitInformationVo;
+    }
+
+    public void setUnitInformationVo(InitiateUnitInformationVo unitInformationVo) {
+        this.unitInformationVo = unitInformationVo;
     }
 }
