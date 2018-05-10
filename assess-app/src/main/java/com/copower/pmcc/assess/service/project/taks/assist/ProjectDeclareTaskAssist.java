@@ -1,13 +1,16 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.output.BaseProcessFormVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.assess.service.project.DeclareInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -39,6 +42,8 @@ public class ProjectDeclareTaskAssist implements ProjectTaskInterface {
     private FormConfigureService formConfigureService;
     @Autowired
     private BaseProcessService baseProcessService;
+    @Autowired
+    private DeclareInfoService declareInfoService;
 
 
     @Override
@@ -84,7 +89,11 @@ public class ProjectDeclareTaskAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        DeclareInfoDto declareInfoDto = JSON.parseObject(formData, DeclareInfoDto.class);
+        declareInfoDto.setPlanDetailId(projectPlanDetails.getId());
+        declareInfoDto.setProcessInsId(processInsId);
+        declareInfoDto.setProjectId(projectPlanDetails.getProjectId());
+        declareInfoService.saveDeclareInfo(declareInfoDto);
     }
 
     @Override

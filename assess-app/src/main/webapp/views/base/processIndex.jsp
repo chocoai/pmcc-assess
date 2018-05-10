@@ -520,6 +520,7 @@
 
 
     function loadFormModuleList(formId, value) {
+        $("#formModuleId").empty();
         $.ajax({
             url: "${pageContext.request.contextPath}/formConfigure/getFormModules",
             data: {formId: formId},
@@ -530,7 +531,7 @@
                     if (result.data) {
                         var html = "";
                         $.each(result.data, function (i, item) {
-                            html += '<option value="' + item.id + '">' + item.name + '</option>';
+                            html += '<option value="' + item.id + '">' + item.cnName + '</option>';
                         })
                         $("#formModuleId").append(html).val(value);
                     }

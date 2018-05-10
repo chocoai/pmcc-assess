@@ -14,6 +14,7 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--动态表单-->
+            <input type="hidden" id="id" name="id" value="0">
             <%@include file="/views/share/tools/dynamic_form.jsp" %>
 
             <div class="x_panel">
@@ -114,12 +115,15 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
+        var data = {};
+        data.dynamicData = FormConfigureUtils.getData();
+        data.id = $("#id").val();
 
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(data, $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(data, $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 
