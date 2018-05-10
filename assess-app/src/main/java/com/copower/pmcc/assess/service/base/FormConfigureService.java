@@ -844,7 +844,6 @@ public class FormConfigureService {
             detailDto.setTableId(primaryId);
             detailDto.setTableName(formConfigureDto.getPrimaryTableName());
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("phase_id", formConfigureDto.getPhaseId());
             jsonObject.put("id", primaryId);
             detailDto.setFormData(jsonObject.toJSONString());
             resultDataList.add(detailDto);
