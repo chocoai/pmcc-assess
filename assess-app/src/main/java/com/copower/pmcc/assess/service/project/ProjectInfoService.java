@@ -126,20 +126,21 @@ public class ProjectInfoService {
         if (flag==0){//项目信息 附件
             ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
             projectInfo.setAttachmentProjectInfoId(""+baseAttachment.getId());
-            projectInfoDao.updateProjectInfo(projectInfo);
+            projectInfoDao.updateProjectInfo(projectInfo);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);
         }else if (flag == InitiateContactsEnum.ONE.getNum()){// 委托人 附件
             InitiateConsignorDto dto = consignorService.getById(pid);
             dto.setCsAttachmentProjectEnclosureId(""+baseAttachment.getId());
-            consignorService.update(dto);
+            consignorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);
         }else if (flag == InitiateContactsEnum.TWO.getNum()){//占有人 附件
             InitiatePossessorDto dto = possessorService.getById(pid);
-            possessorService.update(dto);
+            dto.setpAttachmentProjectEnclosureId(""+baseAttachment.getId());
+            possessorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);

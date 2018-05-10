@@ -59,7 +59,7 @@
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <input required="required" placeholder="评估基准日" id="completeDateStart" name="completeDateStart" data-date-format="yyyy-mm-dd"
-                                           value="${projectInfo.projectName}" class="form-control">
+                                            class="form-control date-picker dbdate" readonly="readonly">
                                 </div>
                             </div>
                         </div>
@@ -914,9 +914,15 @@
         });
     }
     //日期控件
-    laydate.render({
-        elem: '#completeDateStart' //指定元素 id
-    });
+//    laydate.render({
+//        elem: '#completeDateStart' //指定元素 id
+//    });
+//    $("#completeDateStart").val(formatDate(row.startDate, false));
+//    cols.push({
+//        field: 'completeDateStart', title: '执行开始日期', formatter: function (value, row, index) {
+//            return formatDate(value, false);
+//        }
+//    });
     //选项框
     $(document).ready(function () {
         $("#no_legal_person").hide();
@@ -1242,6 +1248,7 @@
             if ($("#frm_consignor").valid()){
                 if ($("#frm_possessor").valid()){
                     if ($("#frm_unitinformation").valid()){
+
                         $.ajax({
                             type: "POST",
                             url: getContextPath() + "/projectInfo/projectApplySubmit",
