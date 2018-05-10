@@ -33,6 +33,18 @@ public class BaseFormDao {
         return hrBaseFormMapper.selectByPrimaryKey(id);
     }
 
+    public BaseForm getBaseFormByName(String name) {
+        BaseFormExample example = new BaseFormExample();
+        BaseFormExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameEqualTo(name);
+        List<BaseForm> baseForms = hrBaseFormMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(baseForms))
+            return baseForms.get(0);
+        return null;
+    }
+
     public List<BaseForm> getBaseForm(String search) {
         BaseFormExample example = new BaseFormExample();
         BaseFormExample.Criteria criteria = example.createCriteria();

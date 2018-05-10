@@ -29,14 +29,20 @@ public class BaseFormService {
     public BaseForm getBaseForm(Integer id){
         return baseFormDao.getBaseForm(id);
     }
+    public BaseForm getBaseForm(String name){
+        return baseFormDao.getBaseFormByName(name);
+    }
     public List<BaseForm> getBaseFormList() {
         return baseFormDao.getBaseForm("");
     }
 
     //BaseFormList======================================================
-
     public List<BaseFormModule> getBaseFormModuleList(Integer formId) {
         return baseFormDao.getBaseFormModuleList(formId);
+    }
+
+    public List<BaseFormModule> getBaseFormModuleList(List<Integer> ids) {
+        return baseFormDao.getBaseFormModuleList(ids);
     }
 
     public BaseFormModule getBaseFormModule(Integer id){

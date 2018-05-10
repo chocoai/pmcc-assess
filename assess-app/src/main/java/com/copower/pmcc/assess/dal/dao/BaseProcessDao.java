@@ -44,6 +44,17 @@ public class BaseProcessDao {
         return null;
     }
 
+    public List<BaseProcessForm> getProcessForms(Integer processId,String boxName) {
+        BaseProcessFormExample example = new BaseProcessFormExample();
+        BaseProcessFormExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        criteria.andProcessIdEqualTo(processId);
+        if(StringUtils.isNotBlank(boxName)){
+            criteria.andBoxReActivityNameEqualTo(boxName);
+        }
+        example.setOrderByClause("sorting");
+        return hrProcessFormMapper.selectByExample(example);
+    }
+
     public BaseProcess getProcessByBoxName(String boxName) {
         BaseProcessExample example = new BaseProcessExample();
         example.createCriteria().andBisEnableEqualTo(true).andBoxNameEqualTo(boxName);
