@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.InitiatePossessorDao;
 import com.copower.pmcc.assess.dto.input.project.InitiatePossessorDto;
 import com.copower.pmcc.assess.dto.output.project.InitiatePossessorVo;
+import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ import java.util.List;
  */
 @Service
 public class InitiatePossessorService {
-
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private InitiatePossessorDao dao;
 
@@ -30,6 +32,7 @@ public class InitiatePossessorService {
             dto.setpLegalRepresentative(null);
             dto.setpEntrustmentUnit(null);
         }
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);
     }
 

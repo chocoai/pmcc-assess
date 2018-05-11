@@ -15,6 +15,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 项目信息</h2>
+                    <input type="hidden" value="${projectInfo.id}" id="projectinfoid">
+                    <input type="hidden" value="${projectInfo.consignorVo.id}" id="consignorid">
+                    <input type="hidden" value="${projectInfo.possessorVo.id}" id="possessorid">
+                    <input type="hidden" value="${projectInfo.unitInformationVo.id}" id="unitInformationid">
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -911,10 +915,13 @@
 <script>
     //修改
     $("#completeDateStartB").hide();
-    document.getElementById("completeDateStartA").onclick = function () {
-        $("#completeDateStartA").hide();
-        $("#completeDateStartB").show();
-    };
+    //判断元素是否存在
+    if ($("#completeDateStartA").size()>0){
+        document.getElementById("completeDateStartA").onclick = function () {
+            $("#completeDateStartA").hide();
+            $("#completeDateStartB").show();
+        };
+    }
 </script>
 <script>
     $(function () {
@@ -1354,6 +1361,40 @@
         });
     }
 
+    //修改专用
+    function loadInitContactsList(id,tb_List,flag) {
+        var cols = [];
+        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'cPhone', title: '部门'});
+
+        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVosX", cols,{
+            pid: id,flag:flag}, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
+    $(function () {
+        var csType = ${projectInfo.consignorVo.csType}+"";
+        var pType = ${projectInfo.possessorVo.pType}+"";
+        if (pType!=""){
+            if (csType==1){
+                loadInitContactsListA($("#consignorid").val());
+            }else {
+                loadInitContactsList($("#consignorid").val(),"tb_ListA",flags[0]);
+            }
+
+            if (pType==1){
+                loadInitContactsListB($("#possessorid").val());
+            }else {
+                loadInitContactsList($("#possessorid").val(),"tb_ListB",flags[1]);
+            }
+            loadInitContactsListC($("#unitInformationid").val());
+        }
+    });
+
     // 显示 联系人 view
     function addContacts() {
         $("#frmContacts").clearAll();
@@ -1500,7 +1541,7 @@
                         $.ajax({
                             type: "POST",
                             url: getContextPath() + "/projectInfo/projectApplySubmit",
-                            data: "formData="+json,
+                            data: "formData="+json+"&projectinfoid="+$("#projectinfoid").val()+"&consignorid="+$("#consignorid").val()+"&possessorid="+$("#consignorid").val()+"&possessorid="+$("#possessorid").val()+"&unitInformationid="+$("#unitInformationid").val(),
                             success: function(result){
                                 if (result.ret) {
                                     //保存完后其他动作

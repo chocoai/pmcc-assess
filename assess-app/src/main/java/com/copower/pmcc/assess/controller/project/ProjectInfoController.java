@@ -86,7 +86,7 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData) {
+    public HttpResult projectApplySubmit(String formData,Integer projectinfoid,Integer consignorid,Integer possessorid,Integer unitInformationid) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData));
         } catch (Exception e) {
