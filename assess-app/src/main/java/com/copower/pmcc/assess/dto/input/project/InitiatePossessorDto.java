@@ -7,4 +7,6 @@ import com.copower.pmcc.assess.dal.entity.InitiatePossessor;
  */
 public class InitiatePossessorDto extends InitiatePossessor {
     public static String PATTACHMENTPROJECTENCLOSUREID = "pAttachmentProjectEnclosureId";
+    public static int PTYPEa = 0;
+    public static int PTYPEb = 1;
 }

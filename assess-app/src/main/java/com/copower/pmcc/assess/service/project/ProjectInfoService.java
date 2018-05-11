@@ -111,34 +111,34 @@ public class ProjectInfoService {
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        projectApplyChange(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember),projectDto.getProjectInfo());
+        projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
     }
 
     //修改附件中的table id 以及存附件的主表的附件id
-    public void update_BaseAttachment_(int pid,String fields_name,int flag){
+    public void update_BaseAttachment_(int pid, String fields_name, int flag) {
         int TEMP = 0;
         //默认位置为0
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP,fields_name);
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name);
         //一般都只有一个
         BaseAttachment baseAttachment = baseAttachments.get(0);
         // 更新 存附件的主表
-        if (flag==0){//项目信息 附件
+        if (flag == 0) {//项目信息 附件
             ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
-            projectInfo.setAttachmentProjectInfoId(""+baseAttachment.getId());
+            projectInfo.setAttachmentProjectInfoId("" + baseAttachment.getId());
             projectInfoDao.updateProjectInfo(projectInfo);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);
-        }else if (flag == InitiateContactsEnum.ONE.getNum()){// 委托人 附件
+        } else if (flag == InitiateContactsEnum.ONE.getNum()) {// 委托人 附件
             InitiateConsignorDto dto = consignorService.getById(pid);
-            dto.setCsAttachmentProjectEnclosureId(""+baseAttachment.getId());
+            dto.setCsAttachmentProjectEnclosureId("" + baseAttachment.getId());
             consignorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);
-        }else if (flag == InitiateContactsEnum.TWO.getNum()){//占有人 附件
+        } else if (flag == InitiateContactsEnum.TWO.getNum()) {//占有人 附件
             InitiatePossessorDto dto = possessorService.getById(pid);
-            dto.setpAttachmentProjectEnclosureId(""+baseAttachment.getId());
+            dto.setpAttachmentProjectEnclosureId("" + baseAttachment.getId());
             possessorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
             //更新附件
             baseAttachment.setTableId(pid);
@@ -146,40 +146,40 @@ public class ProjectInfoService {
         }
     }
 
-    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto,ProjectMemberDto projectMemberDto,ProjectInfoDto projectInfoDto){
+    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
         try {
             int i = possessorService.add(possessorDto);
             int v = consignorService.add(consignorDto);
             int j = unitInformationService.add(unitInformationDto);
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
-            initiateContactsService.update(v,InitiateContactsEnum.ONE.getNum());
-            initiateContactsService.update(i,InitiateContactsEnum.TWO.getNum());
-            initiateContactsService.update(j,InitiateContactsEnum.THREE.getNum());
+            initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
+            initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
+            initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
 
             //附件更新
-            update_BaseAttachment_(v,InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.ONE.getNum());
-            update_BaseAttachment_(i,InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID,InitiateContactsEnum.TWO.getNum());
+            update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+            update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
             try {
-                int k= projectMemberService.saveReturnId(projectMemberDto);
+                int k = projectMemberService.saveReturnId(projectMemberDto);
                 ProjectInfo projectInfo = change(projectInfoDto);
                 projectInfo.setConsignorId(v);//设置 关联id
                 projectInfo.setPossessorId(i);
                 projectInfo.setUnitInformationId(j);
                 projectInfo.setProjectMemberId(k);
                 int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
-                update_BaseAttachment_(id,ProjectInfoDto.ATTACHMENTPROJECTINFOID,0);
+                update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
                 initProjectInfo(projectInfo);//初始化项目信息
-            }catch (Exception e){
+            } catch (Exception e) {
                 try {
                     throw e;
-                }catch (Exception e2){
+                } catch (Exception e2) {
 
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             try {
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }
@@ -302,48 +302,69 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
-    public ProjectInfoVo getVo(ProjectInfo projectInfo){
+    public ProjectInfoVo getVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
-        BeanUtils.copyProperties(projectInfo,projectInfoVo);
+        BeanUtils.copyProperties(projectInfo, projectInfoVo);
         //大类
-        projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
+        projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
         //委托目的
-        projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
+        projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
         projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
         projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
         projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));
         //紧急程度
-        projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
+        projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
         projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
         //项目经理 与下级
-        if (projectMember!=null){
+        if (projectMember != null) {
             projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManager());
             projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMember());
         }
         //价值类型
-        projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(),bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
+        projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
         InitiatePossessorVo possessorVo = possessorService.get(projectInfo.getPossessorId());
         InitiateConsignorVo consignorVo = consignorService.get(projectInfo.getConsignorId());
         InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
 
-        if (consignorVo.getCsUnitProperties()!=null){
-            String csUnitPropertiesName = getConsignorMap().get(consignorVo.getCsUnitProperties()).toString();
-            consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
+        if (consignorVo.getCsUnitProperties() != null && consignorVo.getCsUnitProperties() != "") {
+            try {
+                String csUnitPropertiesName = getConsignorMap().get(consignorVo.getCsUnitProperties()).toString();
+                consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
         }
-        if (consignorVo.getCsEntrustmentUnit()!=null) consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
-
-        if (possessorVo.getpUnitProperties()!=null){
-            String pUnitPropertiesName = getConsignorMap().get(possessorVo.getpUnitProperties()).toString();
-            possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
+        if (consignorVo.getCsEntrustmentUnit() != null && consignorVo.getCsEntrustmentUnit() != ""){
+            try {
+                consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
         }
-        if (possessorVo.getpEntrustmentUnit()!=null) possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
 
-        if (unitInformationVo.getuUnitProperties()!=null){
+        if (possessorVo.getpUnitProperties() != null && possessorVo.getpUnitProperties() != "") {
+            try {
+                String pUnitPropertiesName = getConsignorMap().get(possessorVo.getpUnitProperties()).toString();
+                possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
+        if (possessorVo.getpEntrustmentUnit() != null && possessorVo.getpEntrustmentUnit() != ""){
+            try {
+                possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
+
+        if (unitInformationVo.getuUnitProperties() != null && unitInformationVo.getuUnitProperties() != "") {
             String uUnitPropertiesName = getConsignorMap().get(unitInformationVo.getuUnitProperties()).toString();
             unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
         }
-        if (unitInformationVo.getuUseUnit()!=null) unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
+        if (unitInformationVo.getuUseUnit() != null && unitInformationVo.getuUseUnit() != "")
+            unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
 
         projectInfoVo.setPossessorVo(possessorVo);
         projectInfoVo.setConsignorVo(consignorVo);
@@ -351,11 +372,11 @@ public class ProjectInfoService {
         return projectInfoVo;
     }
 
-    public String baseDataDicChange(Integer id,List<BaseDataDic> base){
+    public String baseDataDicChange(Integer id, List<BaseDataDic> base) {
         String v = "";
         inner:
-        for (BaseDataDic b : base){
-            if (b.getId()==id){
+        for (BaseDataDic b : base) {
+            if (b.getId().equals(id)) {
                 v = b.getName();
                 break inner;
             }
@@ -367,37 +388,37 @@ public class ProjectInfoService {
         projectInfoDao.updateProjectInfo(projectInfo);
     }
 
-    public CrmCustomerDto getCRM(Integer id){
+    public CrmCustomerDto getCRM(Integer id) {
         return crmCustomerService.getCustomer(id);
     }
 
     /*获取所有省*/
-    public List<SysAreaDto> getProvinceList(){
+    public List<SysAreaDto> getProvinceList() {
         return erpAreaService.getProvinceList();
     }
 
     /*省名称*/
-    public String getProvinceName(int pid){
+    public String getProvinceName(int pid) {
         List<SysAreaDto> provinceLists = erpAreaService.getProvinceList();
-        String s = provinceAndArea(pid,provinceLists);
+        String s = provinceAndArea(pid, provinceLists);
         return s;
     }
 
     /*城市名称*/
-    public String getSysArea(Integer id){
+    public String getSysArea(Integer id) {
         return erpAreaService.getSysAreaDto(id).getName();
     }
 
 
-    public SysDepartmentDto getDepartmentDto(Integer id){
+    public SysDepartmentDto getDepartmentDto(Integer id) {
         return erpRpcDepartmentService.getDepartmentById(id);
     }
 
-    public String provinceAndArea(int id,List<SysAreaDto> sysAreaDtos){
+    public String provinceAndArea(int id, List<SysAreaDto> sysAreaDtos) {
         String v = "";
         inner:
-        for (SysAreaDto s:sysAreaDtos){
-            if (id==s.getId()){
+        for (SysAreaDto s : sysAreaDtos) {
+            if (id == s.getId()) {
                 v = s.getName();
                 break inner;
             }
@@ -407,31 +428,31 @@ public class ProjectInfoService {
 
 
     /*获取城市*/
-    public List<SysAreaDto> getAreaList(String pid){
+    public List<SysAreaDto> getAreaList(String pid) {
         return erpAreaService.getAreaList(pid);
     }
 
 
     /*大类*/
-    public List<BaseDataDic> listClass_assess(){
+    public List<BaseDataDic> listClass_assess() {
         List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
         return baseDataDics;
     }
 
     /*委托目的*/
-    public List<BaseDataDic> list_entrustment_purpose(){
+    public List<BaseDataDic> list_entrustment_purpose() {
         List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         return baseDataDics;
     }
 
     /*紧急程度*/
-    public List<BaseDataDic> project_initiate_urgency(){
+    public List<BaseDataDic> project_initiate_urgency() {
         List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY);
         return baseDataDics;
     }
 
     /*价值类型*/
-    public List<BaseDataDic> value_type(){
+    public List<BaseDataDic> value_type() {
         List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
         return baseDataDics;
     }
@@ -446,46 +467,60 @@ public class ProjectInfoService {
     }
 
     /*联系人 vo*/
-    public BootstrapTableVo listContactsVo(Integer crmId,Integer flag) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId,flag);
+        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId, flag);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
+    /*联系人 vo*/
+    public BootstrapTableVo listContactsVos(Integer pid,Integer flag){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContactsVo> vos = initiateContactsService.getVoList(pid,flag);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+
     /*联系人类型*/
-    public Map<String,String> getTypeInitiateContactsMap(){
+    public Map<String, String> getTypeInitiateContactsMap() {
         return initiateContactsService.getTypeMap();
     }
 
     //添加联系人
-    public boolean addContacts(InitiateContactsDto dto){
+    public boolean addContacts(InitiateContactsDto dto) {
         return initiateContactsService.add(dto);
     }
 
     /*联系人删除*/
-    public boolean removeContacts(Integer id){return initiateContactsService.remove(id);}
+    public boolean removeContacts(Integer id) {
+        return initiateContactsService.remove(id);
+    }
 
-    public ProjectInfo  change(ProjectInfoDto dto){
+    public ProjectInfo change(ProjectInfoDto dto) {
         ProjectInfo projectInfo = new ProjectInfo();
-        BeanUtils.copyProperties(dto,projectInfo);
+        BeanUtils.copyProperties(dto, projectInfo);
         return projectInfo;
     }
 
-    public ProjectMemberDto change(ProjectMember projectMember){
+    public ProjectMemberDto change(ProjectMember projectMember) {
         ProjectMemberDto dto = new ProjectMemberDto();
-        BeanUtils.copyProperties(projectMember,dto);
+        BeanUtils.copyProperties(projectMember, dto);
         return dto;
     }
 
 
-    public InitiateProjectDto format(String val){
+    public InitiateProjectDto format(String val) {
         InitiateProjectDto dto = null;
-        if (StringUtils.isNotBlank(val)){
-            dto = JSONObject.parseObject(val,InitiateProjectDto.class);
+        if (StringUtils.isNotBlank(val)) {
+            dto = JSONObject.parseObject(val, InitiateProjectDto.class);
         }
         return dto;
     }

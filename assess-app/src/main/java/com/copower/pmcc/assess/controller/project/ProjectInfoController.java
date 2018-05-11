@@ -73,6 +73,7 @@ public class ProjectInfoController {
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
+
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
@@ -98,7 +99,17 @@ public class ProjectInfoController {
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
+        ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
         //modelAndView.addObject("projectId", projectInfo.getId());
+
+        modelAndView.addObject("projectInfo",projectInfoVo);
+        modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
+        modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
+        modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
+        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
+        modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
+        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
+        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
         return modelAndView;
     }
 
@@ -107,7 +118,7 @@ public class ProjectInfoController {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         ProjectInfoVo vo = projectInfoService.getVo(projectInfo);
-        modelAndView.addObject("projectInfo",vo);
+        modelAndView.addObject("projectInfo", vo);
         return modelAndView;
     }
 
@@ -231,8 +242,19 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId,Integer flag){
-        BootstrapTableVo vo = projectInfoService.listContactsVo(crmId,flag);
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
+        BootstrapTableVo vo = null;
+        vo = projectInfoService.listContactsVo(crmId, flag);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectContactsVosX", name = "取得联系人列表", method = {RequestMethod.GET})
+    public BootstrapTableVo listContactsVoX(Integer flag, Integer pid) {
+        BootstrapTableVo vo = null;
+        if (pid != null) {
+            vo = projectInfoService.listContactsVos(pid,flag);
+        }
         return vo;
     }
 
@@ -252,7 +274,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除",method = RequestMethod.POST)
+    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             projectInfoService.removeContacts(id);
@@ -264,14 +286,14 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getAreaList", name = "联系人 删除",method = RequestMethod.POST)
-    public Object getAreaList(Integer pid){
+    @RequestMapping(value = "/getAreaList", name = "联系人 删除", method = RequestMethod.POST)
+    public Object getAreaList(Integer pid) {
         try {
-            if (pid!=null){
-                List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList(""+pid);
-                if (sysAreaDtos!=null)return sysAreaDtos;
+            if (pid != null) {
+                List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList("" + pid);
+                if (sysAreaDtos != null) return sysAreaDtos;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -279,13 +301,13 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCRMList", name = "CRM 获取",method = RequestMethod.POST)
-    public Object getCRMList(Integer crmId){
-        if (crmId!=null){
+    @RequestMapping(value = "/getCRMList", name = "CRM 获取", method = RequestMethod.POST)
+    public Object getCRMList(Integer crmId) {
+        if (crmId != null) {
             CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
             try {
-                if (crmCustomerDto!=null)return crmCustomerDto;
-            }catch (Exception e){
+                if (crmCustomerDto != null) return crmCustomerDto;
+            } catch (Exception e) {
                 logger.error(e.getMessage());
                 return HttpResult.newErrorResult(e.getMessage());
             }

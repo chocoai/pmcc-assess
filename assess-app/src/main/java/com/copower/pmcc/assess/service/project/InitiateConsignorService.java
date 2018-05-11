@@ -23,6 +23,14 @@ public class InitiateConsignorService {
 
     @Transactional
     public int add(InitiateConsignorDto dto){
+        //对 委托人进行单独处理
+        if (dto.getCsType()==InitiateConsignorDto.CSTYPEa){
+            dto.setCsUnitProperties(null);
+            dto.setCsScopeOperation(null);
+            dto.setCsSociologyCode(null);
+            dto.setCsLegalRepresentative(null);
+            dto.setCsEntrustmentUnit(null);
+        }
         return dao.add(dto);
     }
 

@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.erp.common.CommonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,6 +23,7 @@ import java.util.*;
  */
 @Service
 public class InitiateContactsService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Lazy
     @Autowired
@@ -32,19 +35,24 @@ public class InitiateContactsService {
     @Autowired
     private InitiateContactsDao dao;
 
+
     public List<InitiateContactsVo> listVo(Integer crmId,Integer flag){
         List<InitiateContactsVo> vos = new ArrayList<>();
         if (crmId!=null){
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
             InitiateContactsVo vo = null;
-            for (CrmCustomerLinkmanDto dto:linkmanDtos){
-                vo = new InitiateContactsVo();
-                vo.setId(dto.getId());
-                vo.setcEmail(dto.getEmail());
-                vo.setcDept(dto.getDepartment());
-                vo.setcName(dto.getName());
-                vo.setcPhone(dto.getPhoneNumber());
-                vos.add(vo);
+            try {
+                for (CrmCustomerLinkmanDto dto:linkmanDtos){
+                    vo = new InitiateContactsVo();
+                    vo.setId(dto.getId());
+                    vo.setcEmail(dto.getEmail());
+                    vo.setcDept(dto.getDepartment());
+                    vo.setcName(dto.getName());
+                    vo.setcPhone(dto.getPhoneNumber());
+                    vos.add(vo);
+                }
+            }catch (Exception e){
+                logger.error(e.getMessage());
             }
         }else {
             vos = getVoList(InitiateContactsDto.CPID,flag);
@@ -83,7 +91,7 @@ public class InitiateContactsService {
         return dao.update(dto);
     }
 
-    private List<InitiateContactsVo> getVoList(Integer cPid,Integer flag) {
+    public List<InitiateContactsVo> getVoList(Integer cPid,Integer flag) {
         List<InitiateContactsVo> vos = new ArrayList<>();
         if (cPid==null && flag!=null){
             dao.getList(flag).parallelStream().forEach(oo -> vos.add(change(oo)));

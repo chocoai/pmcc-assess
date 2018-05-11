@@ -61,6 +61,7 @@ public class InitiateContactsDao {
         return dtos;
     }
 
+
     private InitiateContacts change(InitiateContactsDto dto){
         InitiateContacts data = new InitiateContacts();
         BeanUtils.copyProperties(dto,data);

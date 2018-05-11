@@ -23,6 +23,13 @@ public class InitiatePossessorService {
 
     @Transactional
     public int add(InitiatePossessorDto dto){
+        if (dto.getpType()==InitiatePossessorDto.PTYPEa){//对资产占有人信息 进行单独处理
+            dto.setpUnitProperties(null);
+            dto.setpScopeOperation(null);
+            dto.setpSociologyCode(null);
+            dto.setpLegalRepresentative(null);
+            dto.setpEntrustmentUnit(null);
+        }
         return dao.add(dto);
     }
 

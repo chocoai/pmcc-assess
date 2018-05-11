@@ -211,7 +211,7 @@
                                     委托姓名
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csName}</label>                                </div>
                             </div>
 
                             <div class="x-valid">
@@ -219,7 +219,7 @@
                                     身份证号
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csIdcard}</label>                                </div>
                             </div>
                         </div>
 
@@ -229,7 +229,7 @@
                                     委托住址
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csAddress}</label>                                </div>
                                 </div>
                         </div>
                         <div class="form-group">
@@ -238,7 +238,7 @@
                                     身份证附件
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="file" name="csAttachmentProjectEnclosureId2" id="csAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
+                                    <input type="file" name="csAttachmentProjectEnclosureId" id="csAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
                                     <div id="_csAttachmentProjectEnclosureId2"></div>
                                 </div>
                             </div>
@@ -531,6 +531,27 @@
         //---------
         //---------
         FileUtils.uploadFiles({
+            target: "pAttachmentProjectEnclosureId2",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: 0,
+                fieldsName: "pAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "pAttachmentProjectEnclosureId2",
+            formData: {
+                tableName: "tb_initiate_possessor",
+                tableId: ${projectInfo.possessorVo.id}
+            },
+            deleteFlag: true
+        })
+        //---------
+        //---------
+        FileUtils.uploadFiles({
             target: "csAttachmentProjectEnclosureId",
             disabledTarget: "btn_submit",
             formData: {
@@ -543,6 +564,28 @@
         });
         FileUtils.getFileShows({
             target: "csAttachmentProjectEnclosureId",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: ${projectInfo.consignorVo.id}
+            },
+            deleteFlag: true
+        })
+        //---------
+
+        //---------
+        FileUtils.uploadFiles({
+            target: "csAttachmentProjectEnclosureId2",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_initiate_consignor",
+                tableId: 0,
+                fieldsName: "csAttachmentProjectEnclosureId",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+        FileUtils.getFileShows({
+            target: "csAttachmentProjectEnclosureId2",
             formData: {
                 tableName: "tb_initiate_consignor",
                 tableId: ${projectInfo.consignorVo.id}
@@ -567,19 +610,49 @@
             search: false
         });
     }
+
+    function loadInitContactsListC(id,tb_List,flag) {
+        var cols = [];
+        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'cPhone', title: '部门'});
+
+        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVosX", cols,{
+            pid: id,flag:flag}, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    }
     //选项框
     $(document).ready(function () {
         $("#no_legal_person").hide();
         var changeType = ${projectInfo.consignorVo.csType};
+        console.log(changeType);
         if (changeType==1){
             $("#no_legal_person").hide();
             $("#legal_person").show();
-            loadInitContactsList(${projectInfo.consignorVo.csEntrustmentUnit},"tb_ListA");
+            try {
+                var val = ${projectInfo.consignorVo.csEntrustmentUnit}+"";
+                if (val!='' && val != null){
+                    loadInitContactsList(val,"tb_ListA");
+                }
+            }catch (e){
+                console.info(e);
+            }
         }
         if (changeType==0){
             $("#no_legal_person").show();
             $("#legal_person").hide();
-            loadInitContactsList(${projectInfo.consignorVo.csEntrustmentUnit},"tb_ListA");
+            try {
+                var val = ${projectInfo.consignorVo.id}+"";
+                if(val!='' && val!=null){
+                    loadInitContactsListC(val,"tb_ListA",flags[0]);
+                }
+            }catch (e){
+                console.info(e);
+            }
         }
 
         $("#no_legal_person1").hide();
@@ -587,12 +660,26 @@
         if (changeTypeA==1){
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
-            loadInitContactsList(${projectInfo.possessorVo.pEntrustmentUnit},"tb_ListB");
+            try {
+                var val = ${projectInfo.possessorVo.pEntrustmentUnit}+"";
+                if (val!='' && val!=null){
+                    loadInitContactsList(val,"tb_ListB");
+                }
+            }catch (e){
+                console.info(e);
+            }
         }
         if (changeTypeA==0){
             $("#no_legal_person1").show();
             $("#legal_person1").hide();
-            loadInitContactsList(${projectInfo.possessorVo.pEntrustmentUnit},"tb_ListB");
+            try {
+                var val = ${projectInfo.possessorVo.id}+"";
+                if (val!='' && val!=null){
+                    loadInitContactsListC(val,"tb_ListB",flags[1]);
+                }
+            }catch (e){
+                console.info(e);
+            }
         }
 
         loadInitContactsList(${projectInfo.unitInformationVo.uUseUnit},"tb_ListC");
