@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.dao.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetOtherTemplateDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetInventoryDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
@@ -15,7 +16,9 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +37,8 @@ public class SurveyAssetInventoryService {
     private SurveyAssetOtherTemplateDao surveyAssetOtherTemplateDao;
     @Autowired
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
+    @Autowired
+    private SurveyAssetOtherTemplateService surveyAssetOtherTemplateService;
 
     public boolean save(ProjectPlanDetails projectPlanDetails,String processInsId,SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         Integer projectId = projectPlanDetails.getProjectId();
@@ -48,8 +53,9 @@ public class SurveyAssetInventoryService {
             int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
 
             SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto = surveyAssetCommonDataDto.getSurveyAssetOtherTemplateDto();
-            surveyAssetInventoryDto.setProjectId(projectId);
-            surveyAssetInventoryDto.setPlanDetailId(planId);
+            surveyAssetOtherTemplateDto.setProjectId(projectId);
+            surveyAssetOtherTemplateDto.setPlanDetailId(planId);
+            surveyAssetOtherTemplateDto.setCreator(serviceComponent.getThisUser());
             surveyAssetOtherTemplateDto.setPid(pid);
             surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
 
@@ -60,6 +66,7 @@ public class SurveyAssetInventoryService {
                 surveyAssetTemplate.setPid(pid);
                 surveyAssetTemplateDao.save(surveyAssetTemplate);
             }
+            return true;
 
         }
         return false;
@@ -71,6 +78,17 @@ public class SurveyAssetInventoryService {
             dto = JSON.parseObject(val,SurveyAssetCommonDataDto.class);
         }
         return dto;
+    }
+
+    public ModelAndView getSurveyAssetInventoryByProcessInsId(ModelAndView modelAndView,String processInsId){
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
+        if(surveyAssetInventory != null){
+            modelAndView.addObject("surveyAssetInventory",surveyAssetInventory);
+            Integer pid = surveyAssetInventory.getId();
+            surveyAssetOtherTemplateService.getSurveyAssetOtherTemplateByPid(modelAndView,pid);
+            return modelAndView;
+        }
+        return modelAndView;
     }
 
 }
