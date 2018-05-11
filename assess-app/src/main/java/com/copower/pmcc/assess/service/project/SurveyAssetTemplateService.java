@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
@@ -40,7 +41,7 @@ public class SurveyAssetTemplateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(pid);
+        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(serviceComponent.getThisUser(),pid);
         List<SurveyAssetTemplateVo> surveyAssetTemplateVos = getVoList(surveyAssetTemplatesList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyAssetTemplateVos) ? new ArrayList<DataNumberRuleVo>() : surveyAssetTemplateVos);

@@ -295,52 +295,62 @@ public class SurveyAssetOtherTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarEqualTo(Integer value) {
+        public Criteria andOtherRightsRegistrarEqualTo(String value) {
             addCriterion("other_rights_registrar =", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarNotEqualTo(Integer value) {
+        public Criteria andOtherRightsRegistrarNotEqualTo(String value) {
             addCriterion("other_rights_registrar <>", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarGreaterThan(Integer value) {
+        public Criteria andOtherRightsRegistrarGreaterThan(String value) {
             addCriterion("other_rights_registrar >", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarGreaterThanOrEqualTo(Integer value) {
+        public Criteria andOtherRightsRegistrarGreaterThanOrEqualTo(String value) {
             addCriterion("other_rights_registrar >=", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarLessThan(Integer value) {
+        public Criteria andOtherRightsRegistrarLessThan(String value) {
             addCriterion("other_rights_registrar <", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarLessThanOrEqualTo(Integer value) {
+        public Criteria andOtherRightsRegistrarLessThanOrEqualTo(String value) {
             addCriterion("other_rights_registrar <=", value, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarIn(List<Integer> values) {
+        public Criteria andOtherRightsRegistrarLike(String value) {
+            addCriterion("other_rights_registrar like", value, "otherRightsRegistrar");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherRightsRegistrarNotLike(String value) {
+            addCriterion("other_rights_registrar not like", value, "otherRightsRegistrar");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherRightsRegistrarIn(List<String> values) {
             addCriterion("other_rights_registrar in", values, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarNotIn(List<Integer> values) {
+        public Criteria andOtherRightsRegistrarNotIn(List<String> values) {
             addCriterion("other_rights_registrar not in", values, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarBetween(Integer value1, Integer value2) {
+        public Criteria andOtherRightsRegistrarBetween(String value1, String value2) {
             addCriterion("other_rights_registrar between", value1, value2, "otherRightsRegistrar");
             return (Criteria) this;
         }
 
-        public Criteria andOtherRightsRegistrarNotBetween(Integer value1, Integer value2) {
+        public Criteria andOtherRightsRegistrarNotBetween(String value1, String value2) {
             addCriterion("other_rights_registrar not between", value1, value2, "otherRightsRegistrar");
             return (Criteria) this;
         }
@@ -355,52 +365,62 @@ public class SurveyAssetOtherTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderEqualTo(Integer value) {
+        public Criteria andRightHanderEqualTo(String value) {
             addCriterion("right_hander =", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderNotEqualTo(Integer value) {
+        public Criteria andRightHanderNotEqualTo(String value) {
             addCriterion("right_hander <>", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderGreaterThan(Integer value) {
+        public Criteria andRightHanderGreaterThan(String value) {
             addCriterion("right_hander >", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRightHanderGreaterThanOrEqualTo(String value) {
             addCriterion("right_hander >=", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderLessThan(Integer value) {
+        public Criteria andRightHanderLessThan(String value) {
             addCriterion("right_hander <", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderLessThanOrEqualTo(Integer value) {
+        public Criteria andRightHanderLessThanOrEqualTo(String value) {
             addCriterion("right_hander <=", value, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderIn(List<Integer> values) {
+        public Criteria andRightHanderLike(String value) {
+            addCriterion("right_hander like", value, "rightHander");
+            return (Criteria) this;
+        }
+
+        public Criteria andRightHanderNotLike(String value) {
+            addCriterion("right_hander not like", value, "rightHander");
+            return (Criteria) this;
+        }
+
+        public Criteria andRightHanderIn(List<String> values) {
             addCriterion("right_hander in", values, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderNotIn(List<Integer> values) {
+        public Criteria andRightHanderNotIn(List<String> values) {
             addCriterion("right_hander not in", values, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderBetween(Integer value1, Integer value2) {
+        public Criteria andRightHanderBetween(String value1, String value2) {
             addCriterion("right_hander between", value1, value2, "rightHander");
             return (Criteria) this;
         }
 
-        public Criteria andRightHanderNotBetween(Integer value1, Integer value2) {
+        public Criteria andRightHanderNotBetween(String value1, String value2) {
             addCriterion("right_hander not between", value1, value2, "rightHander");
             return (Criteria) this;
         }
