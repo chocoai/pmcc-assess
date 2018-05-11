@@ -15,11 +15,14 @@ public class SurveyAssetTemplateDao {
     @Autowired
     private SurveyAssetTemplateMapper surveyAssetTemplateMapper;
 
-    public List<SurveyAssetTemplate> getSurveyAssetTemplate(Integer pid) {
+    public List<SurveyAssetTemplate> getSurveyAssetTemplate(String creator, Integer pid) {
         SurveyAssetTemplateExample example = new SurveyAssetTemplateExample();
 
         if (pid != null) {
             example.createCriteria().andPidEqualTo(pid);
+        }
+        if(creator != null){
+            example.createCriteria().andCreatorEqualTo(creator);
         }
         example.setOrderByClause(" id desc");
         List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateMapper.selectByExample(example);
@@ -32,8 +35,8 @@ public class SurveyAssetTemplateDao {
         return i > 0;
     }
 
-    public boolean save(SurveyAssetTemplateDto surveyAssetTemplateDto) {
-        int i = surveyAssetTemplateMapper.insertSelective(surveyAssetTemplateDto);
+    public boolean save(SurveyAssetTemplate surveyAssetTemplate) {
+        int i = surveyAssetTemplateMapper.insertSelective(surveyAssetTemplate);
         return i > 0;
     }
 

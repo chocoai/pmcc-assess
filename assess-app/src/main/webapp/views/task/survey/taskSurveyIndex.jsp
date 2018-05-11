@@ -485,23 +485,24 @@
         console.info(json);
     }
 
-    /*function submit() {
+    function submit() {
         if (!$("#frm_task").valid()) {
             return false;
         }
 
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            params();
+            submitEditToServer(json, $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
             params();
             submitToServer(json, $("#taskRemarks").val(), $("#actualHours").val());
         }
-    }*/
+    }
 
 
 
-    function saveSubmit() {
+    /*function saveSubmit() {
         params();
         if ($("#frm_assess").valid()) {
             if($("#frm_survey").valid()){
@@ -524,7 +525,7 @@
                 })
             }
         }
-    }
+    }*/
 
     function loadDataDicList() {
         var cols = [];

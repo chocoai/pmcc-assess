@@ -24,7 +24,7 @@ public class SurveyAssetInventoryController {
     @RequestMapping(value = "/inventorySubmit", name = "新增和修改资产清查", method = RequestMethod.POST)
     public HttpResult save(String formData) {
         try {
-            surveyAssetInventoryService.save(surveyAssetInventoryService.format(formData));
+//            surveyAssetInventoryService.save(surveyAssetInventoryService.format(formData));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

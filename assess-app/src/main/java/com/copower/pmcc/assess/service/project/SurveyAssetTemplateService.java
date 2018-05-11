@@ -41,7 +41,7 @@ public class SurveyAssetTemplateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(pid);
+        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(serviceComponent.getThisUser(),pid);
         List<SurveyAssetTemplateVo> surveyAssetTemplateVos = getVoList(surveyAssetTemplatesList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyAssetTemplateVos) ? new ArrayList<DataNumberRuleVo>() : surveyAssetTemplateVos);

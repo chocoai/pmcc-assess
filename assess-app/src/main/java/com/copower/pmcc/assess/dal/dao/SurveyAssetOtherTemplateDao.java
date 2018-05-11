@@ -15,9 +15,8 @@ public class SurveyAssetOtherTemplateDao {
     @Autowired
     private SurveyAssetOtherTemplateMapper surveyAssetOtherTemplateMapper;
 
-
     public boolean save(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
-        surveyAssetOtherTemplateMapper.insertSelective(surveyAssetOtherTemplateDto);
-        return false;
+        int i = surveyAssetOtherTemplateMapper.insertSelective(surveyAssetOtherTemplateDto);
+        return i > 0;
     }
 }
