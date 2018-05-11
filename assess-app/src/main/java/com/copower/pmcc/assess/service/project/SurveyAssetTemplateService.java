@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
@@ -33,9 +35,10 @@ public class SurveyAssetTemplateService {
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
-
     @Autowired
     private ServiceComponent serviceComponent;
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
 
     public BootstrapTableVo getList(Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -68,8 +71,21 @@ public class SurveyAssetTemplateService {
         if(surveyAssetTemplateDto.getId() != null && surveyAssetTemplateDto.getId() > 0){
             return surveyAssetTemplateDao.update(surveyAssetTemplateDto);
         }else{
+            List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(0,SurveyAssetTemplateDto.CREDENTIALACCESSORY);
+            BaseAttachment baseAttachment = new BaseAttachment();
+            if(baseAttachments.size() != 0){
+                 baseAttachment = baseAttachments.get(0);
+                Integer credentialAccessory = baseAttachment.getId();
+                surveyAssetTemplateDto.setCredentialAccessory("" + credentialAccessory);
+            }
+
             surveyAssetTemplateDto.setCreator(serviceComponent.getThisUser());
-            return surveyAssetTemplateDao.save(surveyAssetTemplateDto);
+            surveyAssetTemplateDao.save(surveyAssetTemplateDto);
+
+            int tableId = surveyAssetTemplateDto.getId();
+            baseAttachment.setTableId(tableId);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+            return true;
         }
     }
 

@@ -7,9 +7,10 @@ import java.util.Date;
 
 
 public class SurveyAssetTemplateDto extends SurveyAssetTemplate {
-
+    public static String CREDENTIALACCESSORY = "credentialAccessory";
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date surveyTime;
+
 
     @Override
     public Date getSurveyTime() {

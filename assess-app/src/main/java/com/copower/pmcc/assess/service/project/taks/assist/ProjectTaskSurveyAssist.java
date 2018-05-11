@@ -33,12 +33,16 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", processInsId, boxId, taskId, agentUserAccount);
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
+        surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", processInsId, boxId, taskId, agentUserAccount);
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
+        surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
     }
 
@@ -65,6 +69,6 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        //返回提交走这里
     }
 }

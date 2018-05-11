@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,12 +26,9 @@ public class ProjectCheckContentService {
      */
     public ModelAndView getBaseDataDicList(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails){
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
-        String surveyUser = serviceComponent.getThisUser(); //取当前用户名
-        String userName = serviceComponent.getThisUserInfo().getUserName(); //取当前用户姓名
-        modelAndView.addObject("checkContentList",baseDataDicList);
-        modelAndView.addObject("surveyUser",surveyUser);
-        modelAndView.addObject("userName",userName);
-
+        SysUserDto thisUserInfo = serviceComponent.getThisUserInfo();
+        modelAndView.addObject("checkContentList",baseDataDicList); //数据字典
+        modelAndView.addObject("thisUserInfo",thisUserInfo);    //当前操作用户信息
         return modelAndView;
     }
 }

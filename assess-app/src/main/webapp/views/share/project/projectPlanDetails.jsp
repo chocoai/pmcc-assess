@@ -128,7 +128,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
-                        /*window.close();*/
+                        window.close();
                     });
                 }
                 else {
