@@ -264,15 +264,8 @@
                                         委托单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit" class="form-control" required="required"
-                                       <c:choose>
-                                           <c:when test="${projectInfo.consignorVo.csEntrustmentUnitName != null}">
-                                                <input type="text" id="csEntrustmentUnitX" value="${projectInfo.consignorVo.csEntrustmentUnitName}" class="form-control" required="required">
-                                           </c:when>
-                                           <c:otherwise>
-                                                <input type="text" id="csEntrustmentUnitX" placeholder="委托单位" class="form-control" required="required">
-                                           </c:otherwise>
-                                       </c:choose>
+                                        <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit" class="form-control" required="required">
+                                        <input type="text" id="csEntrustmentUnitX" placeholder="委托单位" value="${projectInfo.consignorVo.csEntrustmentUnitName}" class="form-control" required="required">
                                         <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
                                         </span>
@@ -334,7 +327,14 @@
                                         单位地址
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="csAddress" id="csAddress" placeholder="单位地址" class="form-control" required="required">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.consignorVo.csAddress != null}">
+                                                <input type="text" name="csAddress" id="csAddress" value="${projectInfo.consignorVo.csAddress}" class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="csAddress" id="csAddress" placeholder="单位地址" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
 
@@ -346,7 +346,12 @@
                                         <select class="form-control" id="csUnitProperties" name="csUnitProperties">
                                             <option>请选择</option>
                                             <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                                <option value="${mymap.key}">${mymap.value}</option>
+                                                <c:choose>
+                                                    <c:when test="${mymap.key == projectInfo.consignorVo.csUnitProperties}">
+                                                        <option value="${mymap.key}" selected="selected">${mymap.value}</option>
+                                                    </c:when>
+                                                    <c:otherwise><option value="${mymap.key}">${mymap.value}</option></c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -481,7 +486,7 @@
                             </label>
                             <div class="col-sm-3">
                                 <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit" class="form-control" required="required">
-                                <input type="text" id="pEntrustmentUnitX" class="form-control" required="required">
+                                <input type="text" id="pEntrustmentUnitX" value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="占有单位" class="form-control" required="required">
                                 <span class="input-group-btn">
                                           <button type="button" id="btn_select_customer1" class="btn btn-primary">选择</button>
                                         </span>
@@ -493,7 +498,14 @@
                                 占有单位法定代表
                             </label>
                             <div class="col-sm-3">
-                                <input type="text" name="pLegalRepresentative" id="pLegalRepresentative" placeholder="占有单位法定代表" class="form-control" required="required">
+                                <c:choose>
+                                    <c:when test="${projectInfo.possessorVo.pLegalRepresentative != null}">
+                                        <input type="text" name="pLegalRepresentative" value="${projectInfo.possessorVo.pLegalRepresentative}" id="pLegalRepresentative"  class="form-control" required="required">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="text" name="pLegalRepresentative"  id="pLegalRepresentative" placeholder="占有单位法定代表" class="form-control" required="required">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
 
@@ -502,7 +514,14 @@
                                 社会统一信用代码
                             </label>
                             <div class="col-sm-3">
-                                <input type="text" name="pSociologyCode" id="pSociologyCode" placeholder="社会统一信用代码" class="form-control" required="required">
+                                <c:choose>
+                                    <c:when test="${projectInfo.possessorVo.pSociologyCode != null}">
+                                        <input type="text" name="pSociologyCode" id="pSociologyCode"  value="${projectInfo.possessorVo.pSociologyCode}" class="form-control" required="required">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="text" name="pSociologyCode" id="pSociologyCode"  placeholder="社会统一信用代码" class="form-control" required="required">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
@@ -513,7 +532,14 @@
                                 经营范围
                             </label>
                             <div class="col-sm-3">
-                                <input type="text" name="pScopeOperation" id="pScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                                <c:choose>
+                                    <c:when test="${projectInfo.possessorVo.pScopeOperation != null}">
+                                        <input type="text" name="pScopeOperation" id="pScopeOperation" value="${projectInfo.possessorVo.pScopeOperation}" class="form-control" required="required">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="text" name="pScopeOperation" id="pScopeOperation" placeholder="经营范围" class="form-control" required="required">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
 
@@ -522,7 +548,14 @@
                                 占有单位地址
                             </label>
                             <div class="col-sm-3">
-                                <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址" class="form-control" required="required">
+                                <c:choose>
+                                    <c:when test="${projectInfo.possessorVo.pAddress != null}">
+                                        <input type="text" name="pAddress" id="pAddress" value="${projectInfo.possessorVo.pAddress}" class="form-control" required="required">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址" class="form-control" required="required">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
 
@@ -534,7 +567,12 @@
                                 <select class="form-control" id="pUnitProperties" name="pUnitProperties">
                                     <option>请选择</option>
                                     <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                        <option value="${mymap.key}">${mymap.value}</option>
+                                        <c:choose>
+                                            <c:when test="${mymap.key == projectInfo.possessorVo.pUnitProperties}">
+                                                <option value="${mymap.key}" selected="selected">${mymap.value}</option>
+                                            </c:when>
+                                            <c:otherwise><option value="${mymap.key}">${mymap.value}</option></c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
                                 </select>
                             </div>
