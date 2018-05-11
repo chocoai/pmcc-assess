@@ -5,8 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
-    <result column="other_rights_registrar" property="otherRightsRegistrar" jdbcType="INTEGER" />
-    <result column="right_hander" property="rightHander" jdbcType="INTEGER" />
+    <result column="other_rights_registrar" property="otherRightsRegistrar" jdbcType="VARCHAR" />
+    <result column="right_hander" property="rightHander" jdbcType="VARCHAR" />
     <result column="register_area" property="registerArea" jdbcType="VARCHAR" />
     <result column="actual_area" property="actualArea" jdbcType="VARCHAR" />
     <result column="register_purpose" property="registerPurpose" jdbcType="VARCHAR" />
@@ -124,8 +124,8 @@
       due_date, exercise_date, predict_due_date, 
       spare_field, creator, gmt_created, 
       gmt_modified, pid)
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{otherRightsRegistrar,jdbcType=INTEGER}, 
-      #{rightHander,jdbcType=INTEGER}, #{registerArea,jdbcType=VARCHAR}, #{actualArea,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{otherRightsRegistrar,jdbcType=VARCHAR}, 
+      #{rightHander,jdbcType=VARCHAR}, #{registerArea,jdbcType=VARCHAR}, #{actualArea,jdbcType=VARCHAR}, 
       #{registerPurpose,jdbcType=VARCHAR}, #{actualPurpose,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, 
       #{dueDate,jdbcType=TIMESTAMP}, #{exerciseDate,jdbcType=TIMESTAMP}, #{predictDueDate,jdbcType=TIMESTAMP}, 
       #{spareField,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -197,10 +197,10 @@
         #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="otherRightsRegistrar != null" >
-        #{otherRightsRegistrar,jdbcType=INTEGER},
+        #{otherRightsRegistrar,jdbcType=VARCHAR},
       </if>
       <if test="rightHander != null" >
-        #{rightHander,jdbcType=INTEGER},
+        #{rightHander,jdbcType=VARCHAR},
       </if>
       <if test="registerArea != null" >
         #{registerArea,jdbcType=VARCHAR},
@@ -262,10 +262,10 @@
         plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       </if>
       <if test="record.otherRightsRegistrar != null" >
-        other_rights_registrar = #{record.otherRightsRegistrar,jdbcType=INTEGER},
+        other_rights_registrar = #{record.otherRightsRegistrar,jdbcType=VARCHAR},
       </if>
       <if test="record.rightHander != null" >
-        right_hander = #{record.rightHander,jdbcType=INTEGER},
+        right_hander = #{record.rightHander,jdbcType=VARCHAR},
       </if>
       <if test="record.registerArea != null" >
         register_area = #{record.registerArea,jdbcType=VARCHAR},
@@ -316,8 +316,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
-      other_rights_registrar = #{record.otherRightsRegistrar,jdbcType=INTEGER},
-      right_hander = #{record.rightHander,jdbcType=INTEGER},
+      other_rights_registrar = #{record.otherRightsRegistrar,jdbcType=VARCHAR},
+      right_hander = #{record.rightHander,jdbcType=VARCHAR},
       register_area = #{record.registerArea,jdbcType=VARCHAR},
       actual_area = #{record.actualArea,jdbcType=VARCHAR},
       register_purpose = #{record.registerPurpose,jdbcType=VARCHAR},
@@ -345,10 +345,10 @@
         plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="otherRightsRegistrar != null" >
-        other_rights_registrar = #{otherRightsRegistrar,jdbcType=INTEGER},
+        other_rights_registrar = #{otherRightsRegistrar,jdbcType=VARCHAR},
       </if>
       <if test="rightHander != null" >
-        right_hander = #{rightHander,jdbcType=INTEGER},
+        right_hander = #{rightHander,jdbcType=VARCHAR},
       </if>
       <if test="registerArea != null" >
         register_area = #{registerArea,jdbcType=VARCHAR},
@@ -396,8 +396,8 @@
     update tb_survey_asset_other_template
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
-      other_rights_registrar = #{otherRightsRegistrar,jdbcType=INTEGER},
-      right_hander = #{rightHander,jdbcType=INTEGER},
+      other_rights_registrar = #{otherRightsRegistrar,jdbcType=VARCHAR},
+      right_hander = #{rightHander,jdbcType=VARCHAR},
       register_area = #{registerArea,jdbcType=VARCHAR},
       actual_area = #{actualArea,jdbcType=VARCHAR},
       register_purpose = #{registerPurpose,jdbcType=VARCHAR},

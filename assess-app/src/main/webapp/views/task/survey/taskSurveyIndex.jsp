@@ -26,27 +26,23 @@
                     <form id="frm_assess" class="form-horizontal">
 
                         <div class="form-group">
+
                             <div class="x-valid">
-                            <label class="col-sm-1 control-label">
-                                评估人员<span class="symbol required"></span>
-                            </label>
+                                <label class="col-sm-1 control-label">评估人员<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <input type="text"  placeholder="评估人员"
-                                           id="assessMan" name="assessMan" class="form-control" >
+                                    <select id="evaluator" name="evaluator" class="form-control" required="required">
+                                        <option selected="selected" value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    核对日期<span class="symbol required"></span>
-                                </label>
+                                <label class="col-sm-1 control-label">核对日期<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <input type="text" required
-                                           placeholder="核对日期"
-                                           value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                           id="checkDate" name="checkDate"
-                                           data-date-format='yyyy-mm-dd'
-                                           class="form-control dbdate">
+                                    <input required="required" placeholder="核对日期" id="checkDate" name="checkDate"
+                                           data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
 
@@ -57,6 +53,8 @@
                             </div>
 
                         </div>
+
+                    </form>
 
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
@@ -70,7 +68,7 @@
                                 他项权利与实际情况是否一致
                             </label>
 
-                            <label class="col-sm-0.5 control-label" >
+                            <label class="col-sm-0.5 control-label">
                                 <input id="yizhiBox" type="checkbox" value="checkbox" style="vertical-align:middle;"/>
                                 <span style="vertical-align:middle;">一致</span>
                             </label>
@@ -78,138 +76,129 @@
 
                     </form>
 
-                        <form id="frm_survey" class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label">
-                                    他权登记人
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="他权登记人"
-                                               id="registrant" name="customerName" class="form-control" >
-                                    </div>
+                    <form id="frm_survey" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                他权登记人
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="他权登记人"
+                                           id="otherRightsRegistrar" name="otherRightsRegistrar" class="form-control"
+                                           value="${surveyAssetOtherTemplate.otherRightsRegistrar}">
                                 </div>
-
-                                <label class="col-sm-1 control-label">
-                                    实际行权人
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="实际行权人"
-                                               id="realRegistrant" name="realRegistrant" class="form-control" >
-                                    </div>
-                                </div>
-
-                                <label class="col-sm-1 control-label">
-                                    登记面积
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="登记面积"
-                                               id="registerArea" name="registerArea" class="form-control" >
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="form-group">
-
-                                <label class="col-sm-1 control-label">
-                                    实际面积
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="实际面积"
-                                               id="realArea" name="realArea" class="form-control" >
-                                    </div>
+                            <label class="col-sm-1 control-label">
+                                实际行权人
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="实际行权人"
+                                           id="rightHander" name="rightHander" class="form-control"
+                                           value="${surveyAssetOtherTemplate.rightHander}">
                                 </div>
-
-                                <label class="col-sm-1 control-label">
-                                    登记用途
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="登记用途"
-                                               id="registerPurpose" name="registerPurpose" class="form-control" >
-                                    </div>
-                                </div>
-
-                                <label class="col-sm-1 control-label">
-                                    实际用途
-                                </label>
-                                <div class="x-valid">
-                                    <div class="col-sm-2">
-                                        <input type="text"  placeholder="实际用途"
-                                               id="realPurpose" name="realPurpose" class="form-control" >
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="form-group">
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        登记日期
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" required
-                                               placeholder="登记日期"
-                                               value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                               id="registerDate" name="registerDate"
-                                               data-date-format='yyyy-mm-dd'
-                                               class="form-control dbdate">
-                                    </div>
+                            <label class="col-sm-1 control-label">
+                                登记面积
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="登记面积"
+                                           id="registerArea" name="registerArea" class="form-control"
+                                           value="${surveyAssetOtherTemplate.registerArea}">
                                 </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        到期日
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" required
-                                               placeholder="到期日"
-                                               value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                               id="realDate" name="realDate"
-                                               data-date-format='yyyy-mm-dd'
-                                               class="form-control dbdate">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        实际行权人行权日期
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" required
-                                               placeholder="实际行权人行权日期"
-                                               value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                               id="realRegisterDate" name="realRegisterDate"
-                                               data-date-format='yyyy-mm-dd'
-                                               class="form-control dbdate">
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="form-group">
+                        </div>
 
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        预计到期日
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" required
-                                               placeholder="预计到期日"
-                                               value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                               id="predictDate" name="predictDate"
-                                               data-date-format='yyyy-mm-dd'
-                                               class="form-control dbdate">
-                                    </div>
+                        <div class="form-group">
+
+                            <label class="col-sm-1 control-label">
+                                实际面积
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="实际面积"
+                                           id="actualArea" name="actualArea" class="form-control"
+                                           value="${surveyAssetOtherTemplate.actualArea}">
                                 </div>
-
                             </div>
-                        </form>
+
+                            <label class="col-sm-1 control-label">
+                                登记用途
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="登记用途"
+                                           id="registerPurpose" name="registerPurpose" class="form-control"
+                                    value="${surveyAssetOtherTemplate.registerPurpose}">
+                                </div>
+                            </div>
+
+                            <label class="col-sm-1 control-label">
+                                实际用途
+                            </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="实际用途"
+                                           id="actualPurpose" name="actualPurpose" class="form-control"
+                                    value="${surveyAssetOtherTemplate.actualPurpose}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">登记日期<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input required="required" placeholder="登记日期" id="registerDate" name="registerDate"
+                                           data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${surveyAssetOtherTemplate.registerDate}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">到期日<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input required="required" placeholder="到期日" id="dueDate" name="dueDate"
+                                           data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${surveyAssetOtherTemplate.dueDate}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">实际行权人行权日期<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input required="required" placeholder="实际行权人行权日期" id="exerciseDate"
+                                           name="exerciseDate" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${surveyAssetOtherTemplate.exerciseDate}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">预计到期日<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input required="required" placeholder="预计到期日" id="predictDueDate"
+                                           name="predictDueDate" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${surveyAssetOtherTemplate.predictDueDate}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
 
                 </div>
             </div>
@@ -225,27 +214,14 @@
                     <form id="frm_task" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                客户
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text"  placeholder="客户"
-                                           id="customerName" name="customerName" class="form-control" >
-                                    <span class="input-group-btn">
-                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
                                 实际工时
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-3">
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
+                                           id="actualHours" name="actualHours" class="form-control" maxlength="3"
+                                    value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -256,7 +232,7 @@
                             <div class="x-valid">
                                 <div class="col-sm-11">
                                         <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
+                                                  class="form-control">${projectPlanDetails.taskRemarks}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -292,7 +268,8 @@
 </div>
 </body>
 
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -313,7 +290,8 @@
                                             清查内容
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="inventoryContent" name="inventoryContent">
+                                            <select class="form-control" required id="inventoryContent"
+                                                    name="inventoryContent">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${checkContentList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -326,11 +304,25 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
+                                            是否一致
+                                        </label>
+                                        <label class="col-sm-1 control-label">
+                                            <input id="yizhiBox1" type="checkbox" value="checkbox"
+                                                   style="vertical-align:middle;"/>
+                                            <span style="vertical-align:middle;">一致</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
                                             登记面积
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="登记面积"
-                                                   id="registrationAddress" name="registrationAddress" class="form-control">
+                                            <input type="text" data-rule-maxlength="50" placeholder="登记面积"
+                                                   id="registrationAddress" name="registrationAddress"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +333,7 @@
                                             实际面积
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="实际面积"
+                                            <input type="text" data-rule-maxlength="50" placeholder="实际面积"
                                                    id="actualAddress" name="actualAddress" class="form-control">
                                         </div>
                                     </div>
@@ -353,7 +345,7 @@
                                             差异原因
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="差异原因"
+                                            <input type="text" data-rule-maxlength="50" placeholder="差异原因"
                                                    id="differenceReason" name="differenceReason" class="form-control">
                                         </div>
                                     </div>
@@ -365,7 +357,7 @@
                                             证明文件
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="证明文件"
+                                            <input type="text" data-rule-maxlength="50" placeholder="证明文件"
                                                    id="credential" name="credential" class="form-control">
                                         </div>
                                     </div>
@@ -376,8 +368,9 @@
                                         证明文件附件
                                     </label>
                                     <div class="col-sm-9">
-                                        <input id="apply_file1" name="apply_file" type="file" multiple="false">
-                                        <div id="_apply_file1">
+                                        <input id="credentialAccessory" name="credentialAccessory" type="file"
+                                               multiple="false">
+                                        <div id="_credentialAccessory">
                                         </div>
                                     </div>
                                 </div>
@@ -388,27 +381,22 @@
                                             证明人
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="证明人"
+                                            <input type="text" data-rule-maxlength="50" placeholder="证明人"
                                                    id="voucher" name="voucher" class="form-control">
                                         </div>
                                     </div>
                                 </div>
 
-                               <%-- <div class="form-group">
+                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            调查时间
-                                        </label>
+                                        <label class="col-sm-3 control-label">调查时间<span class="symbol required"></span></label>
                                         <div class="col-sm-9">
-                                            <input type="text" required
-                                                   placeholder="调查时间"
-                                                   value="<fmt:formatDate value="${surveyAssetTemplate.surveyTime}" pattern="yyyy-MM-dd"/>"
-                                                   id="surveyTime" name="surveyTime"
-                                                   data-date-format='yyyy-mm-dd'
-                                                   class="form-control dbdate">
+                                            <input placeholder="调查时间" id="surveyTime" name="surveyTime"
+                                                   data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate" readonly="readonly">
                                         </div>
                                     </div>
-                                </div>--%>
+                                </div>
 
                             </div>
                         </div>
@@ -421,13 +409,14 @@
                             保存
                         </button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+<%--<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>--%>
 <script type="application/javascript">
 
     $(function () {
@@ -442,7 +431,7 @@
                 }
             });
         })
-        
+
         $("#frm_task").validate();
 
         FileUtils.uploadFiles({
@@ -469,31 +458,42 @@
         })
 
 
-
         FileUtils.uploadFiles({
-            target: "apply_file1",
-            disabledTarget: "baocun",
+            target: "credentialAccessory",
+            disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
+                tableName: "tb_survey_asset_template",
+                tableId: 0,
+                fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         });
 
         FileUtils.getFileShows({
-            target: "apply_file1",
+            target: "credentialAccessory",
             formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
+                tableName: "tb_survey_asset_template",
+                tableId: ${empty surveyAssetTemplateVo?0:surveyAssetTemplateVo.credentialAccessory},
+                fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })
     });
 
+    var json = "";
+    function params() {
+        var data = {};
+        var surveyAssetInventoryDto = formParams("frm_assess");//评估人员 核对时间
+        var surveyAssetOtherTemplateDto = formParams("frm_survey"); //他项权利是否一致
+        data.surveyAssetInventoryDto = surveyAssetInventoryDto;
+        data.surveyAssetOtherTemplateDto = surveyAssetOtherTemplateDto;
+        //合并json
+        console.info(data);
+        json = JSON.stringify(data);
+        console.info(json);
+    }
 
     function submit() {
         if (!$("#frm_task").valid()) {
@@ -501,12 +501,15 @@
         }
 
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            params();
+            submitEditToServer(json, $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            params();
+            submitToServer(json, $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
+
 
     function loadDataDicList() {
         var cols = [];
@@ -535,7 +538,8 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/ProjectTask/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetTemplate/list", cols, {
+            pid: ${empty surveyAssetInventory.id?0:surveyAssetInventory.id}
 
         }, {
             showColumns: false,
@@ -555,7 +559,7 @@
         var data = $("#frm").serialize();
         if ($("#frm").valid()) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/ProjectTask/save",
+                url: "${pageContext.request.contextPath}/surveyAssetTemplate/save",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -588,7 +592,7 @@
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/ProjectTask/delete",
+                url: "${pageContext.request.contextPath}/surveyAssetTemplate/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -611,29 +615,42 @@
         })
     }
 
-    $('#yizhiBox').click(function(){
-        if($('#yizhiBox')[0].checked ==false){
-            $('#frm_survey').css('display','block');
-        }else{
-            $('#frm_survey').css('display','none');
+    $('#yizhiBox').click(function () {
+        if ($('#yizhiBox')[0].checked == false) {
+            $('#frm_survey').css('display', 'block');
+        } else {
+            $('#frm_survey').css('display', 'none');
         }
     });
-
 
 
     //选择人员
     /*erpDepartment.select({
-        onSelected:function (nodes) {
-            console.log(nodes);
-        }
-    });
+     onSelected:function (nodes) {
+     console.log(nodes);
+     }
+     });
 
-    erpEmployee.select({
-        onSelected:function (data) {
-            console.log(data);
-        }
-    });*/
+     erpEmployee.select({
+     onSelected:function (data) {
+     console.log(data);
+     }
+     });*/
 
+    // 评估人员
+    var evaluator = document.getElementById("evaluator");
+    evaluator.onclick = function () {
+        erpEmployee.select({
+            onSelected: function (data) {
+                evaluator.removeChild(evaluator.firstChild);
+                var fieldElment = document.createElement("option");
+                fieldElment.setAttribute("value", data.account);
+                fieldElment.setAttribute("selected", "selected");
+                fieldElment.appendChild(document.createTextNode(data.name));
+                evaluator.appendChild(fieldElment);
+            }
+        });
+    }
 
 
 </script>

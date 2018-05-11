@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectCheckContentService;
+import com.copower.pmcc.assess.service.project.SurveyAssetInventoryService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +20,29 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Autowired
     private ProjectCheckContentService projectCheckContentService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
-
-        projectCheckContentService.getBaseDataDicList(modelAndView);//获取数据字典
-        
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);//获取数据字典
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", processInsId, boxId, taskId, agentUserAccount);
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
+        surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", processInsId, boxId, taskId, agentUserAccount);
+        projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
+        surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
     }
 
@@ -54,7 +59,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        surveyAssetInventoryService.save(projectPlanDetails,processInsId,surveyAssetInventoryService.format(formData));
     }
 
     @Override
@@ -64,6 +69,6 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        //返回提交走这里
     }
 }

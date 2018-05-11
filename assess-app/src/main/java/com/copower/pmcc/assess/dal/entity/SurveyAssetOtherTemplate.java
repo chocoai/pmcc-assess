@@ -9,9 +9,9 @@ public class SurveyAssetOtherTemplate {
 
     private Integer planDetailId;
 
-    private Integer otherRightsRegistrar;
+    private String otherRightsRegistrar;
 
-    private Integer rightHander;
+    private String rightHander;
 
     private String registerArea;
 
@@ -63,20 +63,20 @@ public class SurveyAssetOtherTemplate {
         this.planDetailId = planDetailId;
     }
 
-    public Integer getOtherRightsRegistrar() {
+    public String getOtherRightsRegistrar() {
         return otherRightsRegistrar;
     }
 
-    public void setOtherRightsRegistrar(Integer otherRightsRegistrar) {
-        this.otherRightsRegistrar = otherRightsRegistrar;
+    public void setOtherRightsRegistrar(String otherRightsRegistrar) {
+        this.otherRightsRegistrar = otherRightsRegistrar == null ? null : otherRightsRegistrar.trim();
     }
 
-    public Integer getRightHander() {
+    public String getRightHander() {
         return rightHander;
     }
 
-    public void setRightHander(Integer rightHander) {
-        this.rightHander = rightHander;
+    public void setRightHander(String rightHander) {
+        this.rightHander = rightHander == null ? null : rightHander.trim();
     }
 
     public String getRegisterArea() {
