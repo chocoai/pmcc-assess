@@ -72,7 +72,10 @@ public class SurveyAssetTemplateService {
         if(surveyAssetTemplateDto.getId() != null && surveyAssetTemplateDto.getId() > 0){
             return surveyAssetTemplateDao.update(surveyAssetTemplateDto);
         }else{
-            List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(0,SurveyAssetTemplateDto.CREDENTIALACCESSORY);  //附件列表
+            BaseAttachment sysAttachment = new BaseAttachment();
+            sysAttachment.setTableId(0);
+            sysAttachment.setFieldsName(SurveyAssetTemplateDto.CREDENTIALACCESSORY);
+            List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentList(sysAttachment);
             BaseAttachment baseAttachment = new BaseAttachment();
             if(baseAttachments.size() != 0){
                  baseAttachment = baseAttachments.get(0);
