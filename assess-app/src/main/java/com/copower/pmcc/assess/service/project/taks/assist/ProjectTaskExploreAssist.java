@@ -17,26 +17,26 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "提交工作成果默认类")
+@WorkFlowAnnotation(desc = "现场查勘类")
 public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/taskIndex", "", 0, "0", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/explore/taskExploreIndex", "", 0, "0", "");
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/taskApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/explore/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/taskIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/explore/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
@@ -47,7 +47,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/taskApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/explore/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 
