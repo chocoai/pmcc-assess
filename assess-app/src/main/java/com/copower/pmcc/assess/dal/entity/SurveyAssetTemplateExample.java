@@ -355,52 +355,62 @@ public class SurveyAssetTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentEqualTo(Integer value) {
+        public Criteria andAreConsistentEqualTo(String value) {
             addCriterion("are_consistent =", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentNotEqualTo(Integer value) {
+        public Criteria andAreConsistentNotEqualTo(String value) {
             addCriterion("are_consistent <>", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentGreaterThan(Integer value) {
+        public Criteria andAreConsistentGreaterThan(String value) {
             addCriterion("are_consistent >", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAreConsistentGreaterThanOrEqualTo(String value) {
             addCriterion("are_consistent >=", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentLessThan(Integer value) {
+        public Criteria andAreConsistentLessThan(String value) {
             addCriterion("are_consistent <", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentLessThanOrEqualTo(Integer value) {
+        public Criteria andAreConsistentLessThanOrEqualTo(String value) {
             addCriterion("are_consistent <=", value, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentIn(List<Integer> values) {
+        public Criteria andAreConsistentLike(String value) {
+            addCriterion("are_consistent like", value, "areConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreConsistentNotLike(String value) {
+            addCriterion("are_consistent not like", value, "areConsistent");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreConsistentIn(List<String> values) {
             addCriterion("are_consistent in", values, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentNotIn(List<Integer> values) {
+        public Criteria andAreConsistentNotIn(List<String> values) {
             addCriterion("are_consistent not in", values, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentBetween(Integer value1, Integer value2) {
+        public Criteria andAreConsistentBetween(String value1, String value2) {
             addCriterion("are_consistent between", value1, value2, "areConsistent");
             return (Criteria) this;
         }
 
-        public Criteria andAreConsistentNotBetween(Integer value1, Integer value2) {
+        public Criteria andAreConsistentNotBetween(String value1, String value2) {
             addCriterion("are_consistent not between", value1, value2, "areConsistent");
             return (Criteria) this;
         }
