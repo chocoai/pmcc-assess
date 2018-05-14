@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.dal.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeclareRecord {
     private Integer id;
 
     private Integer projectId;
+
+    private String number;
 
     private String name;
 
@@ -14,6 +17,8 @@ public class DeclareRecord {
     private String city;
 
     private String district;
+
+    private BigDecimal floorArea;
 
     private String creator;
 
@@ -35,6 +40,14 @@ public class DeclareRecord {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number == null ? null : number.trim();
     }
 
     public String getName() {
@@ -67,6 +80,14 @@ public class DeclareRecord {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public BigDecimal getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(BigDecimal floorArea) {
+        this.floorArea = floorArea;
     }
 
     public String getCreator() {

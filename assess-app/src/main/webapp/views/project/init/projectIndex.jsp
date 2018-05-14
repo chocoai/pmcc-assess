@@ -4,7 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -72,19 +71,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.completeDateStart != null}">
-                                            <label class="form-control" id="completeDateStartA">
-                                                <fmt:formatDate value="${projectInfo.completeDateStart}" />
-                                            </label>
-                                        </c:when>
-                                        <c:otherwise>
                                     <input required="required" placeholder="评估基准日" id="completeDateStart" name="completeDateStart" data-date-format="yyyy-mm-dd"
-                                            class="form-control date-picker dbdate" readonly="readonly">
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <input required="required" placeholder="评估基准日" id="completeDateStartB" name="completeDateStart" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly">
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
+
                                 </div>
                             </div>
                         </div>
@@ -928,17 +918,6 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
-<script>
-    //修改
-    $("#completeDateStartB").hide();
-    //判断元素是否存在
-    if ($("#completeDateStartA").size()>0){
-        document.getElementById("completeDateStartA").onclick = function () {
-            $("#completeDateStartA").hide();
-            $("#completeDateStartB").show();
-        };
-    }
-</script>
 <script>
     $(function () {
         //---------

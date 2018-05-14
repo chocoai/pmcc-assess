@@ -294,7 +294,12 @@ public class FormConfigureService {
     public String getDynamicFormHtml(Integer formModuleId, Boolean readOnly, String jsonValue) {
         BaseFormModule hrbaseFormModule = hrBaseFormDao.getBaseFormModule(formModuleId);
         if (hrbaseFormModule != null) {
-            List<BaseFormModuleField> hrBaseFormModuleFields = hrBaseFormDao.getBaseFormModuleFields(hrbaseFormModule.getId());
+            BaseFormModuleField queryParam=new BaseFormModuleField();
+            queryParam.setFormModuleId(hrbaseFormModule.getId());
+            queryParam.setBisEnable(true);
+            queryParam.setBisDelete(false);
+            queryParam.setBisShow(true);
+            List<BaseFormModuleField> hrBaseFormModuleFields =hrBaseFormDao.getBaseFormModuleFields(queryParam);
             String s = getFormHtmlString(hrbaseFormModule.getTableName(), readOnly, jsonValue, hrBaseFormModuleFields);
             if (s != null) return s;
         }
@@ -618,11 +623,19 @@ public class FormConfigureService {
                 for (BaseFormModuleField formListField : formListFields) {
                     if (formListField.getBisJson()) {
                         if (formListField.getJsonName().equals(stringObjectEntry.getKey())) {
-                            stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s','%s'),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            if(stringObjectEntry.getValue()==null){
+                                stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s',%s),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            }else {
+                                stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s','%s'),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            }
                         }
                     } else {
                         if (formListField.getName().equals(stringObjectEntry.getKey())) {
-                            stringBuilder.append(String.format("%s='%s',", formListField.getName(), stringObjectEntry.getValue()));
+                            if (stringObjectEntry.getValue() == null) {
+                                stringBuilder.append(String.format("%s=%s,", formListField.getName(), stringObjectEntry.getValue()));
+                            } else {
+                                stringBuilder.append(String.format("%s='%s',", formListField.getName(), stringObjectEntry.getValue()));
+                            }
                         }
                     }
                 }

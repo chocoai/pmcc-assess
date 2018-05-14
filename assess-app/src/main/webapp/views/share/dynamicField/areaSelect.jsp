@@ -4,7 +4,7 @@
         #{curr_labelName}<span class="symbol required"></span>
     </label>
     <div class="col-sm-3">
-        <select id="#{curr_fieldId}" name="#{curr_fieldId}" class="form-control" required="required">
+        <select id="#{curr_fieldId}" name="#{curr_fieldName}" class="form-control  search-select select2" required="required">
             <option selected="selected" value="">-请选择-</option>
         </select>
     </div>
@@ -14,7 +14,7 @@
         市<span class="symbol required"></span>
     </label>
     <div class="col-sm-3">
-        <select id="city" name="city" class="form-control" required="required">
+        <select id="city" name="city" class="form-control  search-select select2" required="required">
             <option selected="selected" value="">请选择</option>
         </select>
     </div>
@@ -24,7 +24,7 @@
         区县
     </label>
     <div class="col-sm-3">
-        <select id="district" name="district" class="form-control" >
+        <select id="district" name="district" class="form-control  search-select select2" >
             <option selected="selected" value="">请选择</option>
         </select>
     </div>
@@ -32,6 +32,7 @@
 <script type="text/javascript">
     var areaSelect = {
         provinceId: "#{curr_fieldId}",
+        provinceName: "#{curr_fieldName}",
         loadProvinceEdit: function (row) {
             $("#" + areaSelect.provinceId).empty();
             $("#city,#district").empty();
@@ -49,7 +50,7 @@
                             $("#" + areaSelect.provinceId).append("<option value='" + item.areaId + "'>" + item.name + "</option>");
                         });
                         if (row) {
-                            $("#" + areaSelect.provinceId).val(row[areaSelect.provinceId]);
+                            $("#" + areaSelect.provinceId).val(row[areaSelect.provinceName]);
                         }
                     }
                 },
@@ -65,7 +66,7 @@
                 type: "post",
                 dataType: "json",
                 data: {
-                    pid: row[areaSelect.provinceId]
+                    pid: row[areaSelect.provinceName]
                 },
                 success: function (result) {
                     if (result) {
@@ -86,7 +87,7 @@
         loadDistrictEdit: function (row) {
             $("#district").empty();
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                url: getContextPath() +"/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {
@@ -116,8 +117,12 @@
         beforeEditFunction["#{curr_tableName}"].push(areaSelect["loadCityEdit"]);
         beforeEditFunction["#{curr_tableName}"].push(areaSelect["loadDistrictEdit"]);
 
+        $("#" + areaSelect.provinceId).select2();
+        $("#city").select2();
+        $("#district").select2();
+
         $("#" + areaSelect.provinceId).change(function () {
-            $("#city,#district").empty();
+            $("#city").val(null).trigger("change").empty();
             var that = $(this);
             $.ajax({
                 url: getContextPath() +"/projectInfo/getAreaList",
@@ -141,7 +146,7 @@
         });
 
         $("#city").change(function () {
-            $("#district").empty();
+            $("#district").val(null).trigger("change").empty();
             var that = $(this);
             $.ajax({
                 url: getContextPath() +"/projectInfo/getAreaList",

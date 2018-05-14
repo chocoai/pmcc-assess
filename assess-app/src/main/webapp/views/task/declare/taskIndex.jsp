@@ -116,14 +116,14 @@
             return false;
         }
         var data = {};
-        data.dynamicData = FormConfigureUtils.getData();
+        data.formConfigureDto = FormConfigureUtils.getData();
         data.id = $("#id").val();
 
         if ("${processInsId}" != "0") {
-            submitEditToServer(data, $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer(data, $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 

@@ -44,7 +44,7 @@
                 success: function (result) {
                     if (result.ret) {
                         defaluts.success(result.data);
-                        //DatepickerUtils.parse();
+                        DatepickerUtils.parse();
                     }
                 }
             })

@@ -34,7 +34,7 @@
 
                                     <c:choose>
                                         <c:when test="${item.bisMultiple eq true}">
-                                            <button type="button" data-toggle="modal"
+                                            <button type="button" data-toggle="modal" style="display: none;"
                                                     href="#modal_detail_${item.id}"
                                                     class="btn btn-success"
                                                     id="btn_add_detail_info_${item.id}"> 新增
@@ -111,32 +111,35 @@
                                                             foreignKeyValue: $("#primaryId").val()
                                                         });
                                                     })
-                                                    FormConfigureUtils.loadDetailInfoList({
-                                                        formModuleId: '${item.formModuleId}',
-                                                        fieldList: $("#lbl_json_field_${item.id}").text(),
-                                                        targetList: "tb_detail_list_${item.id}",
-                                                        targetForm: "frm_detail_${item.id}",
-                                                        targetModal: "modal_detail_${item.id}",
-                                                        foreignKeyName: "${item.foreignKeyName}",
-                                                        foreignKeyValue: $("#primaryId").val(),
-                                                        tableName: "${item.tableName}",
-                                                        beforeEdit:function (row) {
-                                                            var fns = beforeEditFunction["${item.tableName}"];
-                                                            if(fns){
-                                                                $.each(fns,function (i,item) {
-                                                                    item(row);
-                                                                });
-                                                            }
-                                                        }
-                                                    });
 
 
+                                                    //获取动态的html
                                                     FormConfigureUtils.getDynamicFormHtml({
                                                         formModuleId: '${item.formModuleId}',
                                                         readOnly: false,
                                                         jsonValue: $("#lbl_json_table_${item.id}").text(),
                                                         success: function (html) {
                                                             $("#detail_content_${item.id}").append(html);
+                                                            $("#btn_add_detail_info_${item.id}").show();//显示对应的新增按钮
+                                                            //加载数据列表
+                                                            FormConfigureUtils.loadDetailInfoList({
+                                                                formModuleId: '${item.formModuleId}',
+                                                                fieldList: $("#lbl_json_field_${item.id}").text(),
+                                                                targetList: "tb_detail_list_${item.id}",
+                                                                targetForm: "frm_detail_${item.id}",
+                                                                targetModal: "modal_detail_${item.id}",
+                                                                foreignKeyName: "${item.foreignKeyName}",
+                                                                foreignKeyValue: $("#primaryId").val(),
+                                                                tableName: "${item.tableName}",
+                                                                beforeEdit:function (row) {
+                                                                    var fns = beforeEditFunction["${item.tableName}"];
+                                                                    if(fns){
+                                                                        $.each(fns,function (i,item) {
+                                                                            item(row);
+                                                                        });
+                                                                    }
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 })

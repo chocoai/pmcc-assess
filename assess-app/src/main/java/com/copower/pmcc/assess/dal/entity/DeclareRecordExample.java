@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,6 +223,76 @@ public class DeclareRecordExample {
 
         public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
             addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIsNull() {
+            addCriterion("number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIsNotNull() {
+            addCriterion("number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberEqualTo(String value) {
+            addCriterion("number =", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotEqualTo(String value) {
+            addCriterion("number <>", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberGreaterThan(String value) {
+            addCriterion("number >", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("number >=", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberLessThan(String value) {
+            addCriterion("number <", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberLessThanOrEqualTo(String value) {
+            addCriterion("number <=", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberLike(String value) {
+            addCriterion("number like", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotLike(String value) {
+            addCriterion("number not like", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIn(List<String> values) {
+            addCriterion("number in", values, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotIn(List<String> values) {
+            addCriterion("number not in", values, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberBetween(String value1, String value2) {
+            addCriterion("number between", value1, value2, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotBetween(String value1, String value2) {
+            addCriterion("number not between", value1, value2, "number");
             return (Criteria) this;
         }
 
@@ -502,6 +573,66 @@ public class DeclareRecordExample {
 
         public Criteria andDistrictNotBetween(String value1, String value2) {
             addCriterion("district not between", value1, value2, "district");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaIsNull() {
+            addCriterion("floor_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaIsNotNull() {
+            addCriterion("floor_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaEqualTo(BigDecimal value) {
+            addCriterion("floor_area =", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotEqualTo(BigDecimal value) {
+            addCriterion("floor_area <>", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaGreaterThan(BigDecimal value) {
+            addCriterion("floor_area >", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_area >=", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaLessThan(BigDecimal value) {
+            addCriterion("floor_area <", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_area <=", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaIn(List<BigDecimal> values) {
+            addCriterion("floor_area in", values, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotIn(List<BigDecimal> values) {
+            addCriterion("floor_area not in", values, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_area between", value1, value2, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_area not between", value1, value2, "floorArea");
             return (Criteria) this;
         }
 

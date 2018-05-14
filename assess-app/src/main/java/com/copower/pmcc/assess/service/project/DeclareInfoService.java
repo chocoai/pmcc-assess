@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +74,7 @@ public class DeclareInfoService {
                         //记录申报数据
                         DeclareRecord declareRecord=new DeclareRecord();
                         declareRecord.setProjectId(declareInfoDto.getProjectId());
+                        //申报数据特定字段记录
                         if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)){
                             declareRecord.setName(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)));
                         }
@@ -84,6 +86,9 @@ public class DeclareInfoService {
                         }
                         if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)){
                             declareRecord.setDistrict(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)));
+                        }
+                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)){
+                            declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA))));
                         }
                         declareRecord.setCreator(serviceComponent.getThisUser());
                         declareRecordDao.addDeclareRecord(declareRecord);
