@@ -15,7 +15,7 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--动态表单-->
             <input type="hidden" id="id" name="id" value="0">
-            <%@include file="/views/share/tools/dynamic_form.jsp" %>
+            <%@include file="/views/share/tools/dynamic_form_apply.jsp" %>
 
             <div class="x_panel">
                 <div class="x_title">
@@ -79,7 +79,6 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="application/javascript">
 

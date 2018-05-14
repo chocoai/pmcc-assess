@@ -67,12 +67,35 @@ public class ProjectDeclareTaskAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskApproval", processInsId, boxId, taskId, agentUserAccount);
+
+        Integer declareFormId = projectPlanDetails.getDeclareFormId();
+        BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
+        BaseProcess baseProcess = baseProcessService.getProcessByName(baseDataDic.getItemKey());
+        List<BaseProcessFormVo> hrProcessForms = baseProcessService.getProcessFormVos(baseDataDic.getItemKey());
+        modelAndView.addObject("hrProcessForms", hrProcessForms);
+        Map<String, Object> map = formConfigureService.getObjectSingle(baseProcess.getTableName(), processInsId);
+
+        Map<String, Object> primaryData = Maps.newHashMap();
+        primaryData.put("primaryId", map.get("id"));
+        primaryData.put("primaryTableName", baseProcess.getTableName());
+        modelAndView.addObject("primaryData", primaryData);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskIndex", processInsId, boxId, taskId, agentUserAccount);
+        Integer declareFormId = projectPlanDetails.getDeclareFormId();
+        BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
+        BaseProcess baseProcess = baseProcessService.getProcessByName(baseDataDic.getItemKey());
+        List<BaseProcessFormVo> hrProcessForms = baseProcessService.getProcessFormVos(baseDataDic.getItemKey());
+        modelAndView.addObject("hrProcessForms", hrProcessForms);
+        Map<String, Object> map = formConfigureService.getObjectSingle(baseProcess.getTableName(), processInsId);
+
+        Map<String, Object> primaryData = Maps.newHashMap();
+        primaryData.put("primaryId", map.get("id"));
+        primaryData.put("primaryTableName", baseProcess.getTableName());
+        modelAndView.addObject("primaryData", primaryData);
         return modelAndView;
     }
 

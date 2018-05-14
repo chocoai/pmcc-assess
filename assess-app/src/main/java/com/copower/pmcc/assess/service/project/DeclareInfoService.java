@@ -18,6 +18,7 @@ import org.aspectj.weaver.patterns.Declare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,6 +45,7 @@ public class DeclareInfoService {
      *
      * @param declareInfoDto
      */
+    @Transactional(rollbackFor = Exception.class)
     public void saveDeclareInfo(DeclareInfoDto declareInfoDto) throws BusinessException {
         FormConfigureDto formConfigureDto = declareInfoDto.getFormConfigureDto();
 
@@ -64,30 +66,36 @@ public class DeclareInfoService {
         //申报信息写入到 固定的申报记录表中 tb_declare_record
         //循环申报数据将申报的 位置信息写入 并且拼接出权证号的名称
 
+        //先清空原有数据
+        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordByProjectId(declareInfoDto.getProjectId());
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            declareRecordList.forEach(p -> declareRecordDao.deleteDeclareRecord(p.getId()));
+        }
+
         List<FormConfigureDetailDto> multipleFormList = formConfigureDto.getMultipleFormList();
         if (CollectionUtils.isNotEmpty(multipleFormList)) {
             String sql = "select * from %s where main_id=%s";
             for (FormConfigureDetailDto formConfigureDetailDto : multipleFormList) {
-                List<Map<String, Object>> mapList = formConfigureDao.getObjectList(String.format(sql,formConfigureDetailDto.getTableName(),mainId));
-                if(CollectionUtils.isNotEmpty(mapList)){
+                List<Map<String, Object>> mapList = formConfigureDao.getObjectList(String.format(sql, formConfigureDetailDto.getTableName(), mainId));
+                if (CollectionUtils.isNotEmpty(mapList)) {
                     for (Map<String, Object> map : mapList) {
                         //记录申报数据
-                        DeclareRecord declareRecord=new DeclareRecord();
+                        DeclareRecord declareRecord = new DeclareRecord();
                         declareRecord.setProjectId(declareInfoDto.getProjectId());
                         //申报数据特定字段记录
-                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)){
+                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)) {
                             declareRecord.setName(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)));
                         }
-                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)){
+                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)) {
                             declareRecord.setProvince(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)));
                         }
-                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)){
+                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)) {
                             declareRecord.setCity(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)));
                         }
-                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)){
+                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)) {
                             declareRecord.setDistrict(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)));
                         }
-                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)){
+                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)) {
                             declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA))));
                         }
                         declareRecord.setCreator(serviceComponent.getThisUser());

@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
@@ -73,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, number, name, province, city, district, floor_area, creator, gmt_created, 
+    id, project_id, name, province, city, district, floor_area, creator, gmt_created, 
     gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecordExample" >
@@ -110,14 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_record (project_id, number, name, 
-      province, city, district, 
-      floor_area, creator, gmt_created, 
-      gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_declare_record (project_id, name, province, 
+      city, district, floor_area, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -127,9 +126,6 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
-      </if>
-      <if test="number != null" >
-        number,
       </if>
       <if test="name != null" >
         name,
@@ -159,9 +155,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        #{number,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -204,9 +197,6 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=VARCHAR},
-      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -240,7 +230,6 @@
     update tb_declare_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
-      number = #{record.number,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
@@ -258,9 +247,6 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -292,7 +278,6 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     update tb_declare_record
     set project_id = #{projectId,jdbcType=INTEGER},
-      number = #{number,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
