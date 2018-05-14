@@ -64,7 +64,9 @@ public class InitiateContactsService {
     public boolean add(InitiateContactsDto dto) {
         if ((dto.getCreator()==null))dto.setCreator(commonService.thisUserAccount());
         if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
-        dto.setcPid(InitiateContactsDto.CPID);
+        if (dto.getcPid()==null || dto.getcPid()==0){
+            dto.setcPid(InitiateContactsDto.CPID);
+        }
         return dao.add(dto);
     }
 

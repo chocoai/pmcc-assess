@@ -315,5 +315,47 @@ public class ProjectInfoController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/UnitInformation/get", method = {RequestMethod.POST}, name = "报告使用单位 获取")
+    public Object unitinformationGet(Integer id) {
+        try {
+            if (id!=null){
+                return projectInfoService.getInitiateUnitInformation(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Possessor/get", method = {RequestMethod.POST}, name = "占有人 获取")
+    public Object possessorGet(Integer id) {
+        try {
+            if (id!=null){
+                return projectInfoService.getInitiatePossessor(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Consignor/get", method = {RequestMethod.POST}, name = "委托 获取")
+    public Object consignorGet(Integer id) {
+        try {
+            if (id!=null){
+                return projectInfoService.getInitiateConsignor(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
 
 }

@@ -1168,16 +1168,6 @@
             }
         });
     }
-    //日期控件
-//    laydate.render({
-//        elem: '#completeDateStart' //指定元素 id
-//    });
-//    $("#completeDateStart").val(formatDate(row.startDate, false));
-//    cols.push({
-//        field: 'completeDateStart', title: '执行开始日期', formatter: function (value, row, index) {
-//            return formatDate(value, false);
-//        }
-//    });
     //选项框
     $(document).ready(function () {
         $("#no_legal_person").hide();
@@ -1345,14 +1335,14 @@
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
-                str += '</div>';
-                return str;
-            }
-        });
+//        cols.push({
+//            field: 'id', title: '操作', formatter: function (value, row, index) {
+//                var str = '<div class="btn-margin">';
+//                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
+//                str += '</div>';
+//                return str;
+//            }
+//        });
         TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
             crmId: id,flag:flags[2]}, {
             showColumns: false,
@@ -1376,22 +1366,41 @@
             search: false
         });
     }
-    $(function () {
+    $(function () {//修改专用
         var csType = ${projectInfo.consignorVo.csType}+"";
         var pType = ${projectInfo.possessorVo.pType}+"";
         if (pType!=""){
             if (csType==1){
-                loadInitContactsListA($("#consignorid").val());
-            }else {
+                //需要获取到委托人  然后取出联系人对应的crmID,下面两个同理
+                $.post(//非自然人 机构等
+                    "${pageContext.request.contextPath}/projectInfo/Consignor/get",
+                    { id: $("#consignorid").val() },
+                    function(data){
+                        loadInitContactsListA(data.csEntrustmentUnit);
+                    }
+                );
+            }else {//自然人
                 loadInitContactsList($("#consignorid").val(),"tb_ListA",flags[0]);
             }
 
             if (pType==1){
-                loadInitContactsListB($("#possessorid").val());
+                $.post(
+                    "${pageContext.request.contextPath}/projectInfo/Possessor/get",
+                    { id: $("#possessorid").val() },
+                    function(data){
+                        loadInitContactsListB(data.pEntrustmentUnit);
+                    }
+                );
             }else {
                 loadInitContactsList($("#possessorid").val(),"tb_ListB",flags[1]);
             }
-            loadInitContactsListC($("#unitInformationid").val());
+            $.post(
+                "${pageContext.request.contextPath}/projectInfo/UnitInformation/get",
+                { id: $("#unitInformationid").val() },
+                function(data){
+                    loadInitContactsListC(data.uUseUnit);
+                }
+            );
         }
     });
 
@@ -1408,6 +1417,23 @@
         data.cPhone = $("#cPhone").val();
         data.cEmail = $("#cEmail").val();
         data.cType = $("#cType option:selected").val();
+        var cType = $("#cType option:selected").val();
+        if (cType==1){//修改 添加委托联系人
+            var consignorid = document.getElementById("consignorid").value;
+            if (consignorid!=null && consignorid!=""){
+                data.cPid = consignorid;
+            }
+        }else if (cType==2){//修改 添加 占有人 联系人
+            var possessorid = document.getElementById("possessorid").value;
+            if (possessorid!=null && possessorid!=""){
+                data.cPid = possessorid;
+            }
+        }else if (cType==3){//修改 添加 报告使用单位 联系人
+            var unitInformationid = document.getElementById("unitInformationid").value;
+            if (unitInformationid!=null && unitInformationid!=""){
+                data.cPid = unitInformationid;
+            }
+        }
         if ($("#frmContacts").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectInfo/Contacts/save",

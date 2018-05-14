@@ -331,14 +331,14 @@ public class ProjectInfoService {
             try {
                 String csUnitPropertiesName = getConsignorMap().get(consignorVo.getCsUnitProperties()).toString();
                 consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
-        if (consignorVo.getCsEntrustmentUnit() != null && consignorVo.getCsEntrustmentUnit() != ""){
+        if (consignorVo.getCsEntrustmentUnit() != null && consignorVo.getCsEntrustmentUnit() != "") {
             try {
                 consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
@@ -347,14 +347,14 @@ public class ProjectInfoService {
             try {
                 String pUnitPropertiesName = getConsignorMap().get(possessorVo.getpUnitProperties()).toString();
                 possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
-        if (possessorVo.getpEntrustmentUnit() != null && possessorVo.getpEntrustmentUnit() != ""){
+        if (possessorVo.getpEntrustmentUnit() != null && possessorVo.getpEntrustmentUnit() != "") {
             try {
                 possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
@@ -478,11 +478,11 @@ public class ProjectInfoService {
     }
 
     /*联系人 vo*/
-    public BootstrapTableVo listContactsVos(Integer pid,Integer flag){
+    public BootstrapTableVo listContactsVos(Integer pid, Integer flag) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = initiateContactsService.getVoList(pid,flag);
+        List<InitiateContactsVo> vos = initiateContactsService.getVoList(pid, flag);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -523,5 +523,20 @@ public class ProjectInfoService {
             dto = JSONObject.parseObject(val, InitiateProjectDto.class);
         }
         return dto;
+    }
+
+    /*报告使用单位 获取*/
+    public InitiateUnitInformationVo getInitiateUnitInformation(Integer id) {
+        return unitInformationService.get(id);
+    }
+
+    /*占有人 获取*/
+    public InitiatePossessorVo getInitiatePossessor(Integer id) {
+        return possessorService.get(id);
+    }
+
+    /*委托人 获取*/
+    public InitiateConsignorVo getInitiateConsignor(Integer id) {
+        return consignorService.get(id);
     }
 }
