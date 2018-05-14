@@ -20,4 +20,7 @@ public class DeclareRecordDao {
         return declareRecordMapper.selectByExample(example);
     }
 
+    public boolean addDeclareRecord(DeclareRecord declareRecord) {
+        return declareRecordMapper.insertSelective(declareRecord) > 0;
+    }
 }

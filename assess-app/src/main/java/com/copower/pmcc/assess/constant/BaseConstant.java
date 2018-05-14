@@ -17,4 +17,9 @@ public class BaseConstant {
     public static final String PMCC_ASSESS_BASE_ASSIST = "pmcc:assess:base:assist";
     public static final String PMCC_ASSESS_BASE_ASSIST_ID = "pmcc:assess:base:assist:id";
 
+    //申报记录关键字段
+    public static final String PMCC_ASSESS_DECLARE_RECORD_NAME = "name"; //申报记录名称
+    public static final String PMCC_ASSESS_DECLARE_RECORD_PROVINCE = "province"; //申报记录省
+    public static final String PMCC_ASSESS_DECLARE_RECORD_CITY = "city"; //申报记录市
+    public static final String PMCC_ASSESS_DECLARE_RECORD_DISTRICT = "district"; //申报记录区县
 }
