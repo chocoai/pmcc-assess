@@ -38,7 +38,7 @@
                                 <label class="col-sm-1 control-label">大类<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="projectClassId" name="projectClassId" class="form-control" required="required">
-                                        <option value="0">请选择</option>
+                                        <option value="">请选择</option>
                                         <c:forEach items="${listClass_assess}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.projectClassId}">
@@ -55,7 +55,7 @@
                                 <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="entrustPurpose" name="entrustPurpose" class="form-control" required="required">
-                                        <option value="0">请选择</option>
+                                        <option value="">请选择</option>
                                         <c:forEach items="${list_entrustment_purpose}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.entrustPurpose}">
@@ -83,7 +83,7 @@
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="province" name="province" class="form-control" required="required">
-                                        <option value="0">请选择</option>
+                                        <option value="">请选择</option>
                                         <c:forEach items="${ProvinceList}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.province}">
@@ -104,7 +104,7 @@
                                             <c:when test="${projectInfo.city != null}">
                                                 <option selected="selected" value="${projectInfo.city}">${projectInfo.cityName}</option>
                                             </c:when>
-                                            <c:otherwise><option value="0">请选择</option></c:otherwise>
+                                            <c:otherwise><option value="">请选择</option></c:otherwise>
                                         </c:choose>
                                     </select>
                                 </div>
@@ -118,7 +118,7 @@
                                             <c:when test="${projectInfo.city != null}">
                                                 <option selected="selected" value="${projectInfo.district}">${projectInfo.districtName}</option>
                                             </c:when>
-                                            <c:otherwise><option value="0">请选择</option></c:otherwise>
+                                            <c:otherwise><option value="">请选择</option></c:otherwise>
                                         </c:choose>
                                     </select>
                                 </div>
@@ -129,7 +129,7 @@
                                 <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="urgency" name="urgency" class="form-control" required="required">
-                                        <option>请选择</option>
+                                        <option value="">请选择</option>
                                         <c:forEach items="${project_initiate_urgency}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id==projectInfo.urgency}">
@@ -146,7 +146,7 @@
                                 <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="valueType" name="valueType" class="form-control" required="required">
-                                        <option selected="selected" value="0}">请选择</option>
+                                        <option selected="selected" value="">请选择</option>
                                         <c:forEach items="${value_type}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.valueType}">
@@ -167,7 +167,7 @@
                                             <c:when test="${projectInfo.departmentId != null}">
                                                 <option selected="selected" value="${projectInfo.departmentId}">${projectInfo.departmentName}</option>
                                             </c:when>
-                                            <c:otherwise><option value="0">请选择</option></c:otherwise>
+                                            <c:otherwise><option value="">请选择</option></c:otherwise>
                                         </c:choose>
                                     </select>
                                 </div>
@@ -354,7 +354,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <select class="form-control" id="csUnitProperties" name="csUnitProperties">
-                                            <option>请选择</option>
+                                            <option value="">请选择</option>
                                             <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
                                                 <c:choose>
                                                     <c:when test="${mymap.key == projectInfo.consignorVo.csUnitProperties}">
@@ -575,7 +575,7 @@
                             </label>
                             <div class="col-sm-3">
                                 <select class="form-control" id="pUnitProperties" name="pUnitProperties">
-                                    <option>请选择</option>
+                                    <option value="">请选择</option>
                                     <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
                                         <c:choose>
                                             <c:when test="${mymap.key == projectInfo.possessorVo.pUnitProperties}">
@@ -750,7 +750,7 @@
                             </label>
                             <div class="col-sm-3">
                                 <select class="form-control" id="uUnitProperties" name="uUnitProperties">
-                                    <option>请选择</option>
+                                    <option value="">请选择</option>
                                     <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
                                         <c:choose>
                                             <c:when test="${mymap.key == projectInfo.unitInformationVo.uUnitProperties}">
@@ -891,7 +891,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="cType" id="cType" required="required">
-                                                <option>请选择</option>
+                                                <option value="">请选择</option>
                                                 <c:forEach items="${InitiateContactsMap}" var="mymap">
                                                     <option value="${mymap.key}">${mymap.value}</option>
                                                 </c:forEach>
@@ -1552,6 +1552,9 @@
     function projectApply() {
         //js校验
         if (!$("#frm_project_info").valid()){
+            return false;
+        }
+        if (!$("#frm_consignor").valid()){
             return false;
         }
         if (!$("#frm_possessor").valid()){

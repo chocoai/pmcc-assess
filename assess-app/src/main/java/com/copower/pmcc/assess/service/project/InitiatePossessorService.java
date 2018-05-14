@@ -51,6 +51,7 @@ public class InitiatePossessorService {
 
     @Transactional
     public boolean update(InitiatePossessorDto dto){
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 

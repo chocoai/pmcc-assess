@@ -53,6 +53,7 @@ public class InitiateConsignorService {
 
     @Transactional
     public boolean update(InitiateConsignorDto dto) {
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 

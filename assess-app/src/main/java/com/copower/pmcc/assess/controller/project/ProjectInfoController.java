@@ -98,7 +98,7 @@ public class ProjectInfoController {
         return HttpResult.newCorrectResult();
     }
 
-    @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改")
+    @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改 页面")
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);

@@ -29,6 +29,7 @@ import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -60,6 +61,8 @@ import java.util.*;
 public class ProjectInfoService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
 
@@ -115,6 +118,7 @@ public class ProjectInfoService {
     }
 
     /*项目立项修改*/
+    @Transactional
     public void projectUpdate(InitiateProjectDto projectDto,Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid)throws Exception {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
@@ -130,6 +134,7 @@ public class ProjectInfoService {
     }
 
     //修改附件中的table id 以及存附件的主表的附件id
+    @Transactional
     public void update_BaseAttachment_(int pid, String fields_name, int flag) {
         int TEMP = 0;
         //默认位置为0
@@ -161,14 +166,17 @@ public class ProjectInfoService {
         }
     }
 
+    @Transactional
     public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto)throws Exception{
         projectInfoDao.updateProjectInfo(change(projectInfoDto));
+        projectInfoDto.setCreator(commonService.thisUserAccount());
         consignorService.update(consignorDto);
         possessorService.update(possessorDto);
         projectMemberService.saveReturnId(projectMemberDto);
         unitInformationService.update(unitInformationDto);
     }
 
+    @Transactional
     public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
         try {
             int i = possessorService.add(possessorDto);
@@ -189,6 +197,7 @@ public class ProjectInfoService {
                 projectInfo.setPossessorId(i);
                 projectInfo.setUnitInformationId(j);
                 projectInfo.setProjectMemberId(k);
+                if (projectInfo.getCreator()==null)projectInfo.setCreator(commonService.thisUserAccount());
                 int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
                 update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
                 initProjectInfo(projectInfo);//初始化项目信息
@@ -213,6 +222,7 @@ public class ProjectInfoService {
      *
      * @param projectInfo
      */
+    @Transactional
     private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0, true);
         int i = 1;

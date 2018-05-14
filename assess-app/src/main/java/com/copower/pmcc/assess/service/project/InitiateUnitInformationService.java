@@ -40,6 +40,7 @@ public class InitiateUnitInformationService {
 
     @Transactional
     public boolean update(InitiateUnitInformationDto dto){
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 
