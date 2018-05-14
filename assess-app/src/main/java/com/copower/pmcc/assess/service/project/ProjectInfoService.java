@@ -114,6 +114,21 @@ public class ProjectInfoService {
         projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
     }
 
+    /*项目立项修改*/
+    public void projectUpdate(InitiateProjectDto projectDto,Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid)throws Exception {
+        ProjectMember projectMember = new ProjectMember();
+        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
+        projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
+        projectMember.setBisEnable(true);
+        ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
+        projectDto.getProjectInfo().setId(projectinfoid);
+        projectMember.setId(projectInfoID.getProjectMemberId());
+        projectDto.getConsignor().setId(projectInfoID.getConsignorId());
+        projectDto.getUnitinformation().setId(projectInfoID.getUnitInformationId());
+        projectDto.getPossessor().setId(projectInfoID.getPossessorId());
+        projectApplyUpdate(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember),projectDto.getProjectInfo());
+    }
+
     //修改附件中的table id 以及存附件的主表的附件id
     public void update_BaseAttachment_(int pid, String fields_name, int flag) {
         int TEMP = 0;
@@ -144,6 +159,14 @@ public class ProjectInfoService {
             baseAttachment.setTableId(pid);
             baseAttachmentDao.updateAttachment(baseAttachment);
         }
+    }
+
+    public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto)throws Exception{
+        projectInfoDao.updateProjectInfo(change(projectInfoDto));
+        consignorService.update(consignorDto);
+        possessorService.update(possessorDto);
+        projectMemberService.saveReturnId(projectMemberDto);
+        unitInformationService.update(unitInformationDto);
     }
 
     public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
@@ -363,8 +386,14 @@ public class ProjectInfoService {
             String uUnitPropertiesName = getConsignorMap().get(unitInformationVo.getuUnitProperties()).toString();
             unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
         }
-        if (unitInformationVo.getuUseUnit() != null && unitInformationVo.getuUseUnit() != "")
-            unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
+        if (unitInformationVo.getuUseUnit() != null && unitInformationVo.getuUseUnit() != ""){
+            try {
+                unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
+
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
 
         projectInfoVo.setPossessorVo(possessorVo);
         projectInfoVo.setConsignorVo(consignorVo);

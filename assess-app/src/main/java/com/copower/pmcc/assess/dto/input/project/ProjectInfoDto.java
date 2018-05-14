@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project;
 
+import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  * @time: 17:34
  * 2018-05-09 进行过一次添加修改
  */
-public class ProjectInfoDto {
+public class ProjectInfoDto extends ProjectInfo {
     public static String ATTACHMENTPROJECTINFOID = "attachmentProjectInfoId"; //附件字段
     private String userAccountManager;//项目经理
     private String userAccountMember;//项目成员 或者说下级成员

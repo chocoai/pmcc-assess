@@ -184,17 +184,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.remarks != null}">
-                                            <input required="required" value="${projectInfo.remarks}" id="remarks" name="remarks" class="form-control">
-                                        </c:when>
-                                        <c:otherwise><input required="required" placeholder="项目说明" id="remarks" name="remarks" class="form-control"></c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
@@ -204,14 +193,16 @@
                                             <c:when test="${projectInfo.projectMemberId != null}">
                                                 <option selected="selected">${projectInfo.userAccountManagerName}</option>
                                             </c:when>
-                                            <c:otherwise><option value="0">请选择</option></c:otherwise>
+                                            <c:otherwise><option value="">请选择</option></c:otherwise>
                                         </c:choose>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目经理下级<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目经理下级
+                                <input type="checkbox" id="userAccountMemberCheckBox">下级分派
+                                <span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="userAccountMember" name="userAccountMember" class="form-control">
                                         <c:choose>
@@ -222,8 +213,33 @@
                                         </c:choose>
                                     </select>
                                 </div>
+                                <script>
+                                    document.getElementById("userAccountMember").style.display = "none";
+                                    var userAccountMemberCheckBox = document.getElementById("userAccountMemberCheckBox");
+                                    userAccountMemberCheckBox.onclick = function () {
+                                        if ($("#userAccountMemberCheckBox").get(0).checked){
+                                            var userAccountManager = document.getElementById("userAccountManager").value;
+                                            if (userAccountManager!=null && userAccountManager!=''){
+                                                document.getElementById("userAccountMember").style.display = "";
+                                            }
+                                        }
+                                    }
+                                </script>
                             </div>
 
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <c:choose>
+                                        <c:when test="${projectInfo.remarks != null}">
+                                            <input required="required" value="${projectInfo.remarks}" id="remarks" name="remarks" class="form-control">
+                                        </c:when>
+                                        <c:otherwise><input required="required" placeholder="项目说明" id="remarks" name="remarks" class="form-control"></c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
@@ -1552,44 +1568,42 @@
         data.possessor=possessor;
         data.unitinformation=unitinformation;
         //合并json
-        console.info(data);
         json = JSON.stringify(data);
-        console.info(json);
     }
     function projectApply() {
-        Loading.progressShow();
-        params();
-        if ($("#frm_project_info").valid()){//js校验
-            if ($("#frm_consignor").valid()){
-                if ($("#frm_possessor").valid()){
-                    if ($("#frm_unitinformation").valid()){
-
-                        $.ajax({
-                            type: "POST",
-                            url: getContextPath() + "/projectInfo/projectApplySubmit",
-                            data: "formData="+json+"&projectinfoid="+$("#projectinfoid").val()+"&consignorid="+$("#consignorid").val()+"&possessorid="+$("#consignorid").val()+"&possessorid="+$("#possessorid").val()+"&unitInformationid="+$("#unitInformationid").val(),
-                            success: function(result){
-                                if (result.ret) {
-                                    //保存完后其他动作
-                                    Alert("提交数据成功!", 1, null, function () {
-                                        window.close();
-                                    });
-                                } else {
-                                    Alert("保存失败:" + result.errmsg);
-                                }
-                            },
-                            error: function (e) {
-                                Loading.progressHide();
-                                Alert("调用服务端方法失败，失败原因:" + e);
-                            }
-                        });
-
-                    }
-
-                }
-
-            }
+        //js校验
+        if (!$("#frm_project_info").valid()){
+            return false;
         }
+        if (!$("#frm_possessor").valid()){
+            return false;
+        }
+        if (!$("#frm_unitinformation").valid()){
+            return false;
+        }
+        params();
+        Loading.progressShow();
+        $.ajax({
+            type: "POST",
+            url: getContextPath() + "/projectInfo/projectApplySubmit",
+            data: "formData="+json+"&projectinfoid="+$("#projectinfoid").val()+"&consignorid="+$("#consignorid").val()+"&possessorid="+$("#consignorid").val()+"&possessorid="+$("#possessorid").val()+"&unitInformationid="+$("#unitInformationid").val(),
+            success: function(result){
+                if (result.ret) {
+                    //保存完后其他动作
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                } else {
+                    Alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
+
     }
 </script>
 

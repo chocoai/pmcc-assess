@@ -86,9 +86,12 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData,Integer projectinfoid,Integer consignorid,Integer possessorid,Integer unitInformationid) {
+    public HttpResult projectApplySubmit(String formData, Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData));
+            if (projectinfoid != null && projectinfoid != 0) {
+                projectInfoService.projectUpdate(projectInfoService.format(formData),projectinfoid,consignorid,possessorid,unitInformationid);
+            }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -102,7 +105,7 @@ public class ProjectInfoController {
         ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
         //modelAndView.addObject("projectId", projectInfo.getId());
 
-        modelAndView.addObject("projectInfo",projectInfoVo);
+        modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
@@ -253,7 +256,7 @@ public class ProjectInfoController {
     public BootstrapTableVo listContactsVoX(Integer flag, Integer pid) {
         BootstrapTableVo vo = null;
         if (pid != null) {
-            vo = projectInfoService.listContactsVos(pid,flag);
+            vo = projectInfoService.listContactsVos(pid, flag);
         }
         return vo;
     }
@@ -319,7 +322,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/UnitInformation/get", method = {RequestMethod.POST}, name = "报告使用单位 获取")
     public Object unitinformationGet(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 return projectInfoService.getInitiateUnitInformation(id);
             }
         } catch (Exception e) {
@@ -333,7 +336,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/Possessor/get", method = {RequestMethod.POST}, name = "占有人 获取")
     public Object possessorGet(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 return projectInfoService.getInitiatePossessor(id);
             }
         } catch (Exception e) {
@@ -347,7 +350,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/Consignor/get", method = {RequestMethod.POST}, name = "委托 获取")
     public Object consignorGet(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 return projectInfoService.getInitiateConsignor(id);
             }
         } catch (Exception e) {
