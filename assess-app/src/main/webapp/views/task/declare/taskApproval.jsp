@@ -14,6 +14,7 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
+            <%@include file="/views/share/tools/dynamic_form_approval.jsp" %>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>${projectPlanDetails.projectPhaseName}工作成果</h2>
@@ -54,8 +55,8 @@
     </div>
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="application/javascript">
     $(function () {
         GetFileShows("file_upload_task",

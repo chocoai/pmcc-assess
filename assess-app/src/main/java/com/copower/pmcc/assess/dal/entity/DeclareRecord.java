@@ -8,8 +8,6 @@ public class DeclareRecord {
 
     private Integer projectId;
 
-    private String number;
-
     private String name;
 
     private String province;
@@ -40,14 +38,6 @@ public class DeclareRecord {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
     }
 
     public String getName() {

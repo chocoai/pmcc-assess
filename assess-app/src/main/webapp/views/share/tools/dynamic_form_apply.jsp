@@ -20,7 +20,7 @@
     <c:if test="${item.boxReActivityName!=null}">
         <c:if test="${item.sorting<=1}">
             <div id="${item.formModuleName}" data-name="${item.bisMultiple eq true?"multipleTable":"singleTable"}"
-                 data-table-name="${item.tableName}" data-form-list-id="${item.id}">
+                 data-table-name="${item.tableName}" data-form-list-id="${item.formModuleId}">
                 <c:if test="${item.boxReActivityName eq 'start' or item.boxReActivityName eq 'edit'}">
                     <%--判断是配置的字段还是程序固定页面--%>
                     <c:choose>

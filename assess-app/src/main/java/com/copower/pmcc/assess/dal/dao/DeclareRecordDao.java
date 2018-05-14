@@ -23,4 +23,8 @@ public class DeclareRecordDao {
     public boolean addDeclareRecord(DeclareRecord declareRecord) {
         return declareRecordMapper.insertSelective(declareRecord) > 0;
     }
+
+    public boolean deleteDeclareRecord(Integer id){
+        return declareRecordMapper.deleteByPrimaryKey(id) > 0;
+    }
 }
