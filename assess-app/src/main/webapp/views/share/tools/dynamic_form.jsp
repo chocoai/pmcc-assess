@@ -44,11 +44,11 @@
                                             <table id="tb_detail_list_${item.id}" class="table table-bordered">
                                             </table>
                                             <div id='modal_detail_${item.id}'
-                                                 class="modal fade bs-example-modal-sm"
+                                                 class="modal fade bs-example-modal-lg"
                                                  data-backdrop="static" aria-hidden="true"
                                                  role="dialog" data-keyboard="false" tabindex="1"
                                                  style="display: none;">
-                                                <div class="modal-dialog modal-lg">
+                                                <div class="modal-dialog modal-lg" style="height: 800px;width: 1200px;">
                                                     <div class="modal-content">
                                                         <div class='modal-header'>
                                                             <button type='button' class='close'

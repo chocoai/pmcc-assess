@@ -1,13 +1,17 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.DeclareInfoDao;
+import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
 import com.copower.pmcc.assess.dal.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.weaver.patterns.Declare;
@@ -31,6 +35,9 @@ public class DeclareInfoService {
     private ServiceComponent serviceComponent;
     @Autowired
     private FormConfigureDao formConfigureDao;
+    @Autowired
+    private DeclareRecordDao declareRecordDao;
+
     /**
      * 保存申报数据
      *
@@ -39,11 +46,13 @@ public class DeclareInfoService {
     public void saveDeclareInfo(DeclareInfoDto declareInfoDto) throws BusinessException {
         FormConfigureDto formConfigureDto = declareInfoDto.getFormConfigureDto();
 
-        if(declareInfoDto.getId()!=null&&declareInfoDto.getId()>0){
+        Integer mainId = 0;
+        if (declareInfoDto.getId() != null && declareInfoDto.getId() > 0) {
             //暂不处理
-        }else{
-            Integer integer = formConfigureService.saveData(formConfigureDto);
+        } else {
+            mainId = formConfigureService.saveData(formConfigureDto);
             DeclareInfo declareInfo = new DeclareInfo();
+            declareInfo.setId(mainId);
             declareInfo.setProjectId(declareInfoDto.getProjectId());
             declareInfo.setProcessInsId(declareInfoDto.getProcessInsId());
             declareInfo.setPlanDetailId(declareInfoDto.getPlanDetailId());
@@ -55,10 +64,31 @@ public class DeclareInfoService {
         //循环申报数据将申报的 位置信息写入 并且拼接出权证号的名称
 
         List<FormConfigureDetailDto> multipleFormList = formConfigureDto.getMultipleFormList();
-        if(CollectionUtils.isNotEmpty(multipleFormList)){
+        if (CollectionUtils.isNotEmpty(multipleFormList)) {
+            String sql = "select * from %s where main_id=%s";
             for (FormConfigureDetailDto formConfigureDetailDto : multipleFormList) {
-                List<Map<String, Object>> maps = formConfigureDao.getObjectList(String.format(""));
-
+                List<Map<String, Object>> mapList = formConfigureDao.getObjectList(String.format(sql,formConfigureDetailDto.getTableName(),mainId));
+                if(CollectionUtils.isNotEmpty(mapList)){
+                    for (Map<String, Object> map : mapList) {
+                        //记录申报数据
+                        DeclareRecord declareRecord=new DeclareRecord();
+                        declareRecord.setProjectId(declareInfoDto.getProjectId());
+                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)){
+                            declareRecord.setName(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)));
+                        }
+                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)){
+                            declareRecord.setProvince(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)));
+                        }
+                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)){
+                            declareRecord.setCity(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)));
+                        }
+                        if(map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)){
+                            declareRecord.setDistrict(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)));
+                        }
+                        declareRecord.setCreator(serviceComponent.getThisUser());
+                        declareRecordDao.addDeclareRecord(declareRecord);
+                    }
+                }
             }
         }
     }

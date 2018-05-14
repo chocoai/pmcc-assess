@@ -213,8 +213,8 @@
                                             字段名称
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="50" placeholder="字段名称"
-                                                   id="subfieldName" name="fieldName" class="form-control">
+                                            <input type="text"  data-rule-maxlength="100" placeholder="字段名称"
+                                                   id="subFieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -503,11 +503,13 @@
             data.id = $("#subId").val();
             data.pid = $("#mainId").val();
             data.name = $("#subName").val();
-            data.fieldName = $("#subFieldName").val();
             data.itemKey = $("#subItemKey").val();
             data.sorting = $("#subSorting").val();
             data.bisEnable = $("#subBisEnable").prop("checked");
             data.remark = $("#subRemark").val();
+            if($("#subFieldName").val()){
+                data.fieldName = $("#subFieldName").val();
+            }
             $.ajax({
                 url: "${pageContext.request.contextPath}/baseDataDic/saveDataDic",
                 type: "post",

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 
+import java.math.BigDecimal;
 import java.sql.*;
 
 /**
@@ -13,6 +14,12 @@ import java.sql.*;
  * @date: 2017/12/14 17:30
  */
 public class Test {
+
+    @org.junit.Test
+    public void simpleTest(){
+        BigDecimal thisWorkYear = new BigDecimal(-366).divide(new BigDecimal(365),BigDecimal.ROUND_FLOOR);
+        System.out.print(thisWorkYear);
+    }
 
     @org.junit.Test
     public void genMybatisRm() {

@@ -230,6 +230,9 @@ public class FormConfigureDao {
                             break;
                     }
                 }
+                if(StringUtils.isBlank(keyValueDto.getValue())){
+
+                }
             }
         }
     }

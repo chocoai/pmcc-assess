@@ -175,7 +175,7 @@
                                             外键字段名称
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='foreignKeyName'  class='form-control'>
+                                            <input type="text" name='foreignKeyName' class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                             自定义url
                                         </label>
                                         <div class='col-sm-4 '>
-                                            <input type="text" name='customUrl'  class='form-control'>
+                                            <input type="text" name='customUrl' class='form-control'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -193,7 +193,7 @@
                                             自定义显示url
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='customDisplayUrl'  class='form-control'>
+                                            <input type="text" name='customDisplayUrl' class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -316,6 +316,15 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" id='jsonName' name='jsonName'
+                                                   class='form-control'>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            分组名称
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id='groupName' name='groupName'
                                                    class='form-control'>
                                         </div>
                                     </div>
@@ -568,7 +577,7 @@
         if ($("#frm_form").valid()) {
             Loading.progressShow();
             var data = formParams("frm_form");
-            data.id=$("#formId").val();
+            data.id = $("#formId").val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/formConfigure/saveForm",
                 type: "post",
@@ -699,8 +708,8 @@
         if ($("#frm_form_module").valid()) {
             Loading.progressShow();
             var data = formParams("frm_form_module");
-            data.id=$("#formModuleId").val();
-            data.formId=$("#formId").val();
+            data.id = $("#formModuleId").val();
+            data.formId = $("#formId").val();
             data.bisEnable = $("#frm_form_module").find("[name=bisEnable]").prop("checked");
             data.bisConfigure = $("#frm_form_module").find("[name=bisConfigure]").prop("checked");
             data.bisMultiple = $("#frm_form_module").find("[name=bisMultiple]").prop("checked");
@@ -935,6 +944,127 @@
 
 </script>
 
+
+<script>
+    $(function () {
+        beforeAddFunction["tb_declare_house_certificate"].push(areaSelect["loadProvinceEdit"]);
+        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadProvinceEdit"]);
+        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadCityEdit"]);
+        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadDistrictEdit"]);
+        $("#" + areaSelect.provinceId).change(function () {
+            $("#city,#district").empty();
+            var that = $(this);
+            $.ajax({
+                url: getContextPath() + "/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: {pid: that.val()},
+                success: function (result) {
+                    if (result) {
+                        $("#city").append("<option value=''>-请选择-</option>");
+                        $.each(result, function (i, item) {
+                            $("#city").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        })
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+        $("#city").change(function () {
+            $("#district").empty();
+            var that = $(this);
+            $.ajax({
+                url: getContextPath() + "/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: {pid: that.val()},
+                success: function (result) {
+                    if (result) {
+                        $("#district").append("<option value=''>-请选择-</option>");
+                        $.each(result, function (i, item) {
+                            $("#district").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        })
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    });
+    var areaSelect = {
+        provinceId: "", loadProvinceEdit: function (row) {
+            $("#" + areaSelect.provinceId).empty();
+            $("#city,#district").empty();
+            $.ajax({
+                url: getContextPath() + "/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: {pid: "0"},
+                success: function (result) {
+                    if (result) {
+                        $("#" + areaSelect.provinceId).append("<option value=''>-请选择-</option>");
+                        $.each(result, function (i, item) {
+                            $("#" + areaSelect.provinceId).append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        })
+                        if (row) {
+                            $("#" + areaSelect.provinceId).val(row[areaSelect.provinceId]);
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }, loadCityEdit: function (row) {
+            $("#city").empty();
+            $.ajax({
+                url: getContextPath() + "/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: {pid: row[areaSelect.provinceId]},
+                success: function (result) {
+                    if (result) {
+                        $("#city").append("<option value=''>-请选择-</option>");
+                        $.each(result, function (i, item) {
+                            $("#city").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        })
+                        if (row) {
+                            $("#city").val(row.city);
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }, loadDistrictEdit: function (row) {
+            $("#district").empty();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                type: "post",
+                dataType: "json",
+                data: {pid: row.city},
+                success: function (result) {
+                    if (result) {
+                        $("#district").append("<option value=''>-请选择-</option>");
+                        $.each(result, function (i, item) {
+                            $("#district").append("<option value='" + item.id + "'>" + item.name + "</option>");
+                        })
+                        if (row) {
+                            $("#district").val(row.district);
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    };
+</script>
 </body>
 </html>
 
