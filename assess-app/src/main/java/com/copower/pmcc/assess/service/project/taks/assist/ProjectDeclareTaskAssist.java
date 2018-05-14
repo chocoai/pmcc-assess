@@ -53,7 +53,7 @@ public class ProjectDeclareTaskAssist implements ProjectTaskInterface {
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
         BaseProcess baseProcess = baseProcessService.getProcessByName(baseDataDic.getItemKey());
-        List<BaseProcessFormVo> hrProcessForms = baseProcessService.getProcessFormVos(baseDataDic.getItemKey());
+        List<BaseProcessFormVo> hrProcessForms = baseProcessService.getProcessFormVos(baseProcess.getName());
         modelAndView.addObject("hrProcessForms", hrProcessForms);
         Integer tableId = 0;
 
