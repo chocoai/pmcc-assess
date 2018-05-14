@@ -36,4 +36,11 @@ public class SurveyAssetOtherTemplateDao {
         }
         return null;
     }
+
+    public boolean update(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
+        int i = surveyAssetOtherTemplateMapper.updateByPrimaryKeySelective(surveyAssetOtherTemplateDto);
+        return i > 0;
+    }
+
+
 }
