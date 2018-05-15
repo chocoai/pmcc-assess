@@ -22,11 +22,12 @@ import java.util.List;
  * @date: 2017/09/14 17:08
  */
 public class MyBatisGenerateMapper {
+    private static String fileName = "zchgeneratorConfig" +".xml";
 
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "generatorConfig.xml", files);
+        findFiles(System.getProperty("user.dir"), fileName, files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
 
