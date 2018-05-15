@@ -13,6 +13,24 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+
+            <!--填写表单-->
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>${projectPlanDetails.projectPhaseName}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <table class="table table-bordered" id="tb_List">
+                        <!-- cerare document add ajax data-->
+                    </table>
+
+                </div>
+            </div>
+
+
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -58,6 +76,8 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
+        loadDataDicList();
+
         GetFileShows("file_upload_task",
             {
                 tableName: "tb_project_plan_details",
@@ -69,6 +89,28 @@
     })
     function saveform() {
         saveApprovalform("");
+    }
+
+    function loadDataDicList() {
+        var cols = [];
+        cols.push({field: 'surveySheetNumber', title: '查勘单编号'});
+        cols.push({field: 'surveyPeople', title: '查勘人'});
+        cols.push({field: 'surveyTime', title: '查勘时间'});
+        cols.push({field: 'belongWarrant', title: '所属权证'});
+        cols.push({field: 'ledLuminousPeople', title: '领勘人'});
+        cols.push({field: 'surveyPicture', title: '查勘图片'});
+        cols.push({field: 'surveyImage', title: '查勘图像'});
+        cols.push({field: 'locationPicture', title: '位置图片'});
+        cols.push({field: 'surveyLocaltion', title: '查勘位置'});
+
+        $("#tb_List").bootstrapTable('destroy');
+        TableInit("tb_List", "${pageContext.request.contextPath}/surveyLocale/list", cols, {
+            <%--pid: ${empty surveyAssetInventory.id?0:surveyAssetInventory.id}--%>
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
     }
 
 </script>

@@ -50,7 +50,7 @@
 
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-success" onclick="addData()"
-                                        data-toggle="modal" href="#divBox"> 新增
+                                        data-toggle="modal" href="#divBox"> 新增</button>
                             </div>
 
                         </div>
@@ -606,6 +606,8 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        $("#surveyTime").val(formatDate(row.surveyTime, false));
+        $(".noshow").hide();
         $('#divBox').modal();
         if ($('#areConsistent').prop("checked")) {
             $('#notReal').css('display', 'none');
