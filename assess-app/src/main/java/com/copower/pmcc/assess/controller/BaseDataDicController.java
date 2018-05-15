@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
+import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
@@ -184,5 +185,41 @@ public class BaseDataDicController {
         }
     }
 
+
+    /**
+     * 查询数据信息树
+     *
+     * @param name
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryBaseDicTree", method = RequestMethod.POST)
+    public List<ZtreeDto> queryBaseDicTree(String name) {
+        return baseDataDicService.queryBaseDicTree(name);
+    }
+
+    /**
+     * 获取数据信息树
+     *
+     * @param pid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getBaseDicTree", method = RequestMethod.POST)
+    public List<ZtreeDto> getBaseDicTree(Integer pid) {
+        return baseDataDicService.getBaseDicTree(pid);
+    }
+
+    /**
+     * 获取数据信息树
+     *
+     * @param key
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getBaseDicByKey", method = RequestMethod.POST)
+    public List<ZtreeDto> getBaseDicByKey(String key) {
+        return baseDataDicService.getBaseDicByKey(key);
+    }
 
 }

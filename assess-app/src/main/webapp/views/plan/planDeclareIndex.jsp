@@ -480,12 +480,20 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/assess-declare-form-utils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/assess-datadic-utils.js"></script>
 
 <script type="text/javascript">
     var treeGridJson = {};
     var treeGridJsonData = {};
     $(function () {
         getPlanItemList();
+
+        assessDataDic.select({
+            key:"assess.class",
+            onSelected:function (nodes) {
+                console.log(nodes);
+            }
+        })
 
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
