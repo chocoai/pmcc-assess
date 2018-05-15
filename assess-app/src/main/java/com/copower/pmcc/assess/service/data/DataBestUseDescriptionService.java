@@ -29,6 +29,10 @@ public class DataBestUseDescriptionService {
     @Autowired
     private ServiceComponent serviceComponent;
 
+    public List<DataBestUseDescription> dataBestUseDescriptionList(){
+        return dataBestUseDescriptionDao.dataBestUseDescriptionList();
+    }
+
     public BootstrapTableVo getBestUseListVo(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

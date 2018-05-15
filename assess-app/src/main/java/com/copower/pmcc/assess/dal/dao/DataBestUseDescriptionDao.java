@@ -25,6 +25,11 @@ public class DataBestUseDescriptionDao {
         }
         return dataBestUseDescriptionMapper.selectByExample(example);
     }
+    public List<DataBestUseDescription> dataBestUseDescriptionList(){
+        DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
+        example.createCriteria().andIdIsNotNull();
+        return dataBestUseDescriptionMapper.selectByExample(example);
+    }
 
     public boolean addDataBestUseDescription(DataBestUseDescription dataBestUseDescription) {
         int i = dataBestUseDescriptionMapper.insert(dataBestUseDescription);

@@ -70,6 +70,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <c:if test="${detailsPlan==1}"> <%--是否允许下级修改计划--%>
                             <input type="hidden" id="detailsPlan" name="detailsPlan" value="${detailsPlan}">
                             <div class="form-group">
@@ -104,6 +105,56 @@
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </c:if>
                     </form>
+                    <table class="table">
+                        <tbody>
+                            <c:forEach items="${dataList.items}" var="item">
+                                <tr>
+                                    <th>四川省成都市锦江区</th>
+                                </tr>
+                                <tr>
+                                    <th>估价对象编号</th>
+                                    <th>权证号</th>
+                                    <th>所有权人</th>
+                                    <th>座落</th>
+                                    <th>最佳利用设置</th>
+                                    <th>合并测算序号</th>
+                                    <th>证载面积</th>
+                                    <th>评估面积</th>
+                                    <th>评估方法</th>
+                                    <th>操作</th>
+                                </tr>
+                                <c:forEach items="${item}" var="data" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td>${data.name}</td>
+                                            <td>${data.creator}</td>
+                                            <td>座落</td>
+                                            <td>
+                                                <select class="form-control">
+                                                    <option value="" selected="selected">最佳利用设置</option>
+                                                    <c:forEach items="${bestusedescriptionList}" var="bestUse">
+                                                        <option>${bestUse.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" placeholder="合并测算序号">
+                                            </td>
+                                            <td>${data.floorArea}</td>
+                                            <td>
+                                                <input class="form-control" placeholder="评估面积">
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" id="btnID${data.id}">拆分</button>
+                                            </td>
+                                        </tr>
+                                </c:forEach>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -432,7 +483,12 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-
+<script type="text/javascript">
+    //评估方法
+    function evaluationmethod(id) {
+        alert(id);
+    }
+</script>
 <script type="text/javascript">
     var treeGridJson = {};
     var treeGridJsonData = {};
