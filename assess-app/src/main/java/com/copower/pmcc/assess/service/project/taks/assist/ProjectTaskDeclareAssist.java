@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @Component
 @WorkFlowAnnotation(desc = "提交资产申报成果")
-public class ProjectDeclareTaskAssist implements ProjectTaskInterface {
+public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;
     @Autowired

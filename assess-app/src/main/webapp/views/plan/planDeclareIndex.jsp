@@ -488,21 +488,16 @@
     $(function () {
         getPlanItemList();
 
-        assessDataDic.select({
-            key:"assess.class",
-            onSelected:function (nodes) {
-                console.log(nodes);
-            }
-        })
-
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
 
         $("#declareFormName").click(function () {
-            assessDeclareForm.select(function (row) {
-                console.log(row);
-                $("#declareFormId").val(row.id);
-                $("#declareFormName").val(row.name);
+            assessDataDic.select({
+                key:"assess.class",
+                onSelected:function (nodes) {
+                    $("#declareFormId").val(nodes[0].id);
+                    $("#declareFormName").val(nodes[0].name);
+                }
             })
         })
     });

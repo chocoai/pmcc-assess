@@ -44,9 +44,9 @@ public class DataEarlyWarningController {
         //获取委托类型字典列表
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         //获取预警类型字典列表
-        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLY_WARNING_TYPE);
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_TYPE);
         //获取预警方式字典列表
-        List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLY_WARNING_MODE);
+        List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_MODE);
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataEarlyWarning");
         modelAndView.addObject("entrustPurposeList",entrustPurposeList);
         modelAndView.addObject("typeList",typeList);

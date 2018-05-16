@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_report_template" domainObjectName="ReportTemplate">
+        <table tableName="tb_scheme_area_group_record" domainObjectName="SchemeAreaGroupRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
