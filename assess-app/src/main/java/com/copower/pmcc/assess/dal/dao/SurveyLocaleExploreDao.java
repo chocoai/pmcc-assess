@@ -32,10 +32,10 @@ public class SurveyLocaleExploreDao {
         return i > 0;
     }
 
-    public List<SurveyLocaleExplore> getSurveyLocaleExplore(String creator) {
+    public List<SurveyLocaleExplore> getSurveyLocaleExplore(String processInsId) {
         SurveyLocaleExploreExample example = new SurveyLocaleExploreExample();
-        if (creator != null) {
-            example.createCriteria().andCreatorEqualTo(creator);
+        if (processInsId != null) {
+            example.createCriteria().andProcessInsIdEqualTo(processInsId);
         }
         example.setOrderByClause(" id desc");
         List<SurveyLocaleExplore> surveyLocaleExplores = surveyLocaleExploreMapper.selectByExample(example);

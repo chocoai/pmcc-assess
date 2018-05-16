@@ -38,7 +38,7 @@
                             <div class="col-sm-3">
                                 <%--<button type="button" class="btn btn-success" onclick="addData()"
                                         data-toggle="modal" href="#divBox"> 新增</button>--%>
-                                <a class="btn btn-success" href="${pageContext.request.contextPath}/surveyLocale/index" target="_blank">
+                                <a class="btn btn-success" href="${pageContext.request.contextPath}/surveyLocale/index?responsibilityId=${responsibilityId}" target="_blank">
                                     新增
                                 </a>
                             </div>

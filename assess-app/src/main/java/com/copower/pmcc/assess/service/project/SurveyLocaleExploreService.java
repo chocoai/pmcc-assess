@@ -48,11 +48,11 @@ public class SurveyLocaleExploreService {
 
     }
 
-    public BootstrapTableVo getList(Integer pid) {
+    public BootstrapTableVo getList(String processInsId) {
             BootstrapTableVo vo = new BootstrapTableVo();
             RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
             Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-            List<SurveyLocaleExplore> surveyLocaleExploreList = surveyLocaleExploreDao.getSurveyLocaleExplore(serviceComponent.getThisUser());
+            List<SurveyLocaleExplore> surveyLocaleExploreList = surveyLocaleExploreDao.getSurveyLocaleExplore(processInsId);
             vo.setTotal(page.getTotal());
             vo.setRows(CollectionUtils.isEmpty(surveyLocaleExploreList) ? new ArrayList<DataPriceTimepointDescription>() : surveyLocaleExploreList);
             return vo;
