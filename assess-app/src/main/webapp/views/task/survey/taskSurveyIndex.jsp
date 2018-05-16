@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
@@ -31,7 +32,8 @@
                                 <label class="col-sm-1 control-label">评估人员<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <select id="evaluator" name="evaluator" class="form-control" required="required">
-                                        <option selected="selected" value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
+                                        <option selected="selected"
+                                                value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
                                     </select>
                                 </div>
                             </div>
@@ -48,8 +50,7 @@
 
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-success" onclick="addData()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
+                                        data-toggle="modal" href="#divBox"> 新增</button>
                             </div>
 
                         </div>
@@ -69,7 +70,8 @@
                             </label>
 
                             <label class="col-sm-0.5 control-label">
-                                <input id="yizhiBox" type="checkbox" value="checkbox" style="vertical-align:middle;"/>
+                                <input id="agreementBox" type="checkbox" value="checkbox"
+                                       style="vertical-align:middle;"/>
                                 <span style="vertical-align:middle;">一致</span>
                             </label>
                         </div>
@@ -133,7 +135,7 @@
                                 <div class="col-sm-2">
                                     <input type="text" placeholder="登记用途"
                                            id="registerPurpose" name="registerPurpose" class="form-control"
-                                    value="${surveyAssetOtherTemplate.registerPurpose}">
+                                           value="${surveyAssetOtherTemplate.registerPurpose}">
                                 </div>
                             </div>
 
@@ -144,7 +146,7 @@
                                 <div class="col-sm-2">
                                     <input type="text" placeholder="实际用途"
                                            id="actualPurpose" name="actualPurpose" class="form-control"
-                                    value="${surveyAssetOtherTemplate.actualPurpose}">
+                                           value="${surveyAssetOtherTemplate.actualPurpose}">
                                 </div>
                             </div>
 
@@ -221,7 +223,7 @@
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
                                            id="actualHours" name="actualHours" class="form-control" maxlength="3"
-                                    value="${projectPlanDetails.actualHours}">
+                                           value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -275,7 +277,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h4 class="modal-title">字典管理</h4></button>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -284,7 +286,7 @@
                         <div class="col-md-12">
                             <div class="panel-body">
 
-                                <div class="form-group">
+                                <div class="form-group disform">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             清查内容
@@ -301,99 +303,116 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group disform">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             是否一致
                                         </label>
                                         <label class="col-sm-1 control-label">
-                                            <input id="yizhiBox1" type="checkbox" value="checkbox"
+                                            <input id="areConsistent" name="areConsistent" type="checkbox" value="一致"
                                                    style="vertical-align:middle;"/>
                                             <span style="vertical-align:middle;">一致</span>
                                         </label>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div id="notReal">
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                登记面积
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="登记面积"
+                                                       id="registrationAddress" name="registrationAddress"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                实际面积
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="实际面积"
+                                                       id="actualAddress" name="actualAddress" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                差异原因
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="差异原因"
+                                                       id="differenceReason" name="differenceReason"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                证明文件
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="证明文件"
+                                                       id="credential" name="credential" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group disform">
                                         <label class="col-sm-3 control-label">
-                                            登记面积
+                                            证明文件附件
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="登记面积"
-                                                   id="registrationAddress" name="registrationAddress"
-                                                   class="form-control">
+                                            <input id="credentialAccessory" name="credentialAccessory" type="file"
+                                                   multiple="false">
+                                            <div id="_credentialAccessory">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            实际面积
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="实际面积"
-                                                   id="actualAddress" name="actualAddress" class="form-control">
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                证明人
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="证明人"
+                                                       id="voucher" name="voucher" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            差异原因
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="差异原因"
-                                                   id="differenceReason" name="differenceReason" class="form-control">
+                                    <div class="form-group disform">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">调查时间<span
+                                                    class="symbol required"></span></label>
+                                            <div class="col-sm-9">
+                                                <input placeholder="调查时间" id="surveyTime" name="surveyTime"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       class="form-control date-picker dbdate" readonly="readonly">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            证明文件
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明文件"
-                                                   id="credential" name="credential" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        证明文件附件
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input id="credentialAccessory" name="credentialAccessory" type="file"
-                                               multiple="false">
-                                        <div id="_credentialAccessory">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            证明人
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明人"
-                                                   id="voucher" name="voucher" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">调查时间<span class="symbol required"></span></label>
-                                        <div class="col-sm-9">
-                                            <input placeholder="调查时间" id="surveyTime" name="surveyTime"
-                                                   data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate" readonly="readonly">
+                                    <div class="form-group noshow">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                id
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" data-rule-maxlength="50" placeholder="id"
+                                                       id="pid" name="pid" class="form-control"
+                                                       value="${empty surveyAssetInventory.id?0:surveyAssetInventory.id}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -420,7 +439,7 @@
 <script type="application/javascript">
 
     $(function () {
-
+        $('#surveyAssetInventory').css('display', 'none');
         loadDataDicList();
 
         $("#btn_select_customer").click(function () {
@@ -514,7 +533,7 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'inventoryContentName', title: '清查内容'});
-        cols.push({field: 'are_consistent', title: '是否一致'});
+        cols.push({field: 'areConsistent', title: '是否一致'});
         cols.push({field: 'registrationAddress', title: '登记面积'});
         cols.push({field: 'actualAddress', title: '实际面积'});
         cols.push({field: 'differenceReason', title: '差异原因'});
@@ -550,13 +569,16 @@
 
 
     function addData() {
-        $("#frm").clearAll();
+        $(".disform").clearAll();
+        $("#notReal").show();
+        $(".noshow").hide();
     }
 
     function saveData() {
         var flag = false;
         //var data = formParams("frm");
-        var data = $("#frm").serialize();
+//        var data = $("#frm").serialize();
+        var data = formParams("frm");
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetTemplate/save",
@@ -584,7 +606,14 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        $("#surveyTime").val(formatDate(row.surveyTime, false));
+        $(".noshow").hide();
         $('#divBox').modal();
+        if ($('#areConsistent').prop("checked")) {
+            $('#notReal').css('display', 'none');
+        } else {
+            $('#notReal').css('display', 'block');
+        }
     }
 
 
@@ -615,11 +644,19 @@
         })
     }
 
-    $('#yizhiBox').click(function () {
-        if ($('#yizhiBox')[0].checked == false) {
+    $('#agreementBox').click(function () {
+        if ($('#agreementBox')[0].checked == false) {
             $('#frm_survey').css('display', 'block');
         } else {
             $('#frm_survey').css('display', 'none');
+        }
+    });
+
+    $('#areConsistent').click(function () {
+        if ($('#areConsistent').prop("checked")) {
+            $('#notReal').css('display', 'none');
+        } else {
+            $('#notReal').css('display', 'block');
         }
     });
 

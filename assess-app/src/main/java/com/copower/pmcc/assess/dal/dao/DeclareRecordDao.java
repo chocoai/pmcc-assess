@@ -64,4 +64,5 @@ public class DeclareRecordDao {
     public boolean deleteDeclareRecord(Integer id){
         return mapper.deleteByPrimaryKey(id) > 0;
     }
+
 }

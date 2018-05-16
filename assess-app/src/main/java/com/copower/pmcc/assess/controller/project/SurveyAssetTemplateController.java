@@ -28,9 +28,9 @@ public class SurveyAssetTemplateController {
 
     @ResponseBody
     @RequestMapping(value = "/save", name = "新增和修改清查模板", method = RequestMethod.POST)
-    public HttpResult save(SurveyAssetTemplateDto surveyAssetTemplateDto) {
+    public HttpResult save(SurveyAssetTemplateDto surveyAssetTemplateDto,Integer pid) {
         try {
-            surveyAssetTemplateService.save(surveyAssetTemplateDto);
+            surveyAssetTemplateService.save(surveyAssetTemplateDto,pid);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

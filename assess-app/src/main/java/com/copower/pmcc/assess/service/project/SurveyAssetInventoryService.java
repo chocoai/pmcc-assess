@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.dao.SurveyAssetOtherTemplateDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
+import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetInventoryDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
@@ -40,52 +41,61 @@ public class SurveyAssetInventoryService {
     @Autowired
     private SurveyAssetOtherTemplateService surveyAssetOtherTemplateService;
 
-    public boolean save(ProjectPlanDetails projectPlanDetails,String processInsId,SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
+    public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         Integer projectId = projectPlanDetails.getProjectId();
         Integer planId = projectPlanDetails.getPlanId();
 
-        if(surveyAssetCommonDataDto != null){
+        if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventoryDto surveyAssetInventoryDto = surveyAssetCommonDataDto.getSurveyAssetInventoryDto();
-            surveyAssetInventoryDto.setProjectId(projectId);
-            surveyAssetInventoryDto.setPlanDetailId(planId);
-            surveyAssetInventoryDto.setProcessInsId(processInsId);
-            surveyAssetInventoryDto.setCreator(serviceComponent.getThisUser());
-            int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
-
             SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto = surveyAssetCommonDataDto.getSurveyAssetOtherTemplateDto();
-            surveyAssetOtherTemplateDto.setProjectId(projectId);
-            surveyAssetOtherTemplateDto.setPlanDetailId(planId);
-            surveyAssetOtherTemplateDto.setCreator(serviceComponent.getThisUser());
-            surveyAssetOtherTemplateDto.setPid(pid);
-            surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
+            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
+            if (surveyAssetInventory != null) {
+                surveyAssetInventoryDto.setId(surveyAssetInventory.getId());
+                surveyAssetInventoryDao.update(surveyAssetInventoryDto);
+                Integer pid = surveyAssetInventory.getId();
+                SurveyAssetOtherTemplate surveyAssetOtherTemplate = surveyAssetOtherTemplateDao.getSurveyAssetOtherTemplateByPid(pid);
+                if (surveyAssetOtherTemplate != null) {
+                    surveyAssetOtherTemplateDto.setId(surveyAssetOtherTemplate.getId());
+                    surveyAssetOtherTemplateDao.update(surveyAssetOtherTemplateDto);
+                }
+            }else{
+                surveyAssetInventoryDto.setProjectId(projectId);
+                surveyAssetInventoryDto.setPlanDetailId(planId);
+                surveyAssetInventoryDto.setProcessInsId(processInsId);
+                surveyAssetInventoryDto.setCreator(serviceComponent.getThisUser());
+                int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
 
-            List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(serviceComponent.getThisUser(), 0);
-            for(SurveyAssetTemplate surveyAssetTemplate :surveyAssetTemplates){
-                surveyAssetTemplate.setProjectId(projectId);
-                surveyAssetTemplate.setPlanDetailId(planId);
-                surveyAssetTemplate.setPid(pid);
-                surveyAssetTemplateDao.save(surveyAssetTemplate);
+                surveyAssetOtherTemplateDto.setProjectId(projectId);
+                surveyAssetOtherTemplateDto.setPlanDetailId(planId);
+                surveyAssetOtherTemplateDto.setCreator(serviceComponent.getThisUser());
+                surveyAssetOtherTemplateDto.setPid(pid);
+                surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
+
+                List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(serviceComponent.getThisUser(), 0);
+                for (SurveyAssetTemplate surveyAssetTemplate : surveyAssetTemplates) {
+                    surveyAssetTemplate.setProjectId(projectId);
+                    surveyAssetTemplate.setPlanDetailId(planId);
+                    surveyAssetTemplate.setPid(pid);
+                    surveyAssetTemplateDao.save(surveyAssetTemplate);
+                }
             }
-            return true;
-
         }
-        return false;
     }
 
-    public SurveyAssetCommonDataDto format(String val){
+    public SurveyAssetCommonDataDto format(String val) {
         SurveyAssetCommonDataDto dto = null;
-        if (StringUtils.isNotBlank(val)){
-            dto = JSON.parseObject(val,SurveyAssetCommonDataDto.class);
+        if (StringUtils.isNotBlank(val)) {
+            dto = JSON.parseObject(val, SurveyAssetCommonDataDto.class);
         }
         return dto;
     }
 
-    public ModelAndView getSurveyAssetInventoryByProcessInsId(ModelAndView modelAndView,String processInsId){
+    public ModelAndView getSurveyAssetInventoryByProcessInsId(ModelAndView modelAndView, String processInsId) {
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
-        if(surveyAssetInventory != null){
-            modelAndView.addObject("surveyAssetInventory",surveyAssetInventory);
+        if (surveyAssetInventory != null) {
+            modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
             Integer pid = surveyAssetInventory.getId();
-            surveyAssetOtherTemplateService.getSurveyAssetOtherTemplateByPid(modelAndView,pid);
+            surveyAssetOtherTemplateService.getSurveyAssetOtherTemplateByPid(modelAndView, pid);
             return modelAndView;
         }
         return modelAndView;
