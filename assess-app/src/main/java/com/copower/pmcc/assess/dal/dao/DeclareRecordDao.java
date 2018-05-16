@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.constant.DeclareRecordConstant;
+import com.copower.pmcc.assess.dal.custom.entity.DeclareRecordRowMapper;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.DeclareRecordExample;
 import com.copower.pmcc.assess.dal.mapper.DeclareRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
