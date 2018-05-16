@@ -11,7 +11,7 @@ public class SurveyAssetTemplate {
 
     private Integer inventoryContent;
 
-    private Integer areConsistent;
+    private String areConsistent;
 
     private String registrationAddress;
 
@@ -69,12 +69,12 @@ public class SurveyAssetTemplate {
         this.inventoryContent = inventoryContent;
     }
 
-    public Integer getAreConsistent() {
+    public String getAreConsistent() {
         return areConsistent;
     }
 
-    public void setAreConsistent(Integer areConsistent) {
-        this.areConsistent = areConsistent;
+    public void setAreConsistent(String areConsistent) {
+        this.areConsistent = areConsistent == null ? null : areConsistent.trim();
     }
 
     public String getRegistrationAddress() {

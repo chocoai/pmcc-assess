@@ -319,12 +319,23 @@
                                                    class='form-control'>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             分组名称
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" id='groupName' name='groupName'
+                                                   class='form-control'>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            分组显示名称
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id='groupDisplayName' name='groupDisplayName'
                                                    class='form-control'>
                                         </div>
                                     </div>
@@ -753,50 +764,50 @@
         });
         cols.push({field: 'displayName', title: '显示名称'});
         cols.push({field: 'fieldLength', title: '最大长度'});
-        cols.push({field: 'defaultValue', title: '默认值'});
+        cols.push({field: 'groupName', title: '分组'});
         cols.push({field: 'sorting', title: '排序'});
         cols.push({
             field: 'bisRequired', title: '必填', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisShow', title: '显示', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisListShow', title: '列表显示', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisQuery', title: '查询', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisEnable', title: '启用', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
@@ -944,127 +955,6 @@
 
 </script>
 
-
-<script>
-    $(function () {
-        beforeAddFunction["tb_declare_house_certificate"].push(areaSelect["loadProvinceEdit"]);
-        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadProvinceEdit"]);
-        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadCityEdit"]);
-        beforeEditFunction["tb_declare_house_certificate"].push(areaSelect["loadDistrictEdit"]);
-        $("#" + areaSelect.provinceId).change(function () {
-            $("#city,#district").empty();
-            var that = $(this);
-            $.ajax({
-                url: getContextPath() + "/projectInfo/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: {pid: that.val()},
-                success: function (result) {
-                    if (result) {
-                        $("#city").append("<option value=''>-请选择-</option>");
-                        $.each(result, function (i, item) {
-                            $("#city").append("<option value='" + item.id + "'>" + item.name + "</option>");
-                        })
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
-        $("#city").change(function () {
-            $("#district").empty();
-            var that = $(this);
-            $.ajax({
-                url: getContextPath() + "/projectInfo/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: {pid: that.val()},
-                success: function (result) {
-                    if (result) {
-                        $("#district").append("<option value=''>-请选择-</option>");
-                        $.each(result, function (i, item) {
-                            $("#district").append("<option value='" + item.id + "'>" + item.name + "</option>");
-                        })
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        })
-    });
-    var areaSelect = {
-        provinceId: "", loadProvinceEdit: function (row) {
-            $("#" + areaSelect.provinceId).empty();
-            $("#city,#district").empty();
-            $.ajax({
-                url: getContextPath() + "/projectInfo/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: {pid: "0"},
-                success: function (result) {
-                    if (result) {
-                        $("#" + areaSelect.provinceId).append("<option value=''>-请选择-</option>");
-                        $.each(result, function (i, item) {
-                            $("#" + areaSelect.provinceId).append("<option value='" + item.id + "'>" + item.name + "</option>");
-                        })
-                        if (row) {
-                            $("#" + areaSelect.provinceId).val(row[areaSelect.provinceId]);
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }, loadCityEdit: function (row) {
-            $("#city").empty();
-            $.ajax({
-                url: getContextPath() + "/projectInfo/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: {pid: row[areaSelect.provinceId]},
-                success: function (result) {
-                    if (result) {
-                        $("#city").append("<option value=''>-请选择-</option>");
-                        $.each(result, function (i, item) {
-                            $("#city").append("<option value='" + item.id + "'>" + item.name + "</option>");
-                        })
-                        if (row) {
-                            $("#city").val(row.city);
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }, loadDistrictEdit: function (row) {
-            $("#district").empty();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: {pid: row.city},
-                success: function (result) {
-                    if (result) {
-                        $("#district").append("<option value=''>-请选择-</option>");
-                        $.each(result, function (i, item) {
-                            $("#district").append("<option value='" + item.id + "'>" + item.name + "</option>");
-                        })
-                        if (row) {
-                            $("#district").val(row.district);
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    };
-</script>
 </body>
 </html>
 

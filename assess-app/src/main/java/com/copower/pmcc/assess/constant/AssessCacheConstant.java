@@ -48,4 +48,5 @@ public class AssessCacheConstant {
 
     //申报表单
     public static final String PMCC_ASSESS_DECLARE_FORM = "pmcc:assess:declare:form"; //申报表单
+
 }

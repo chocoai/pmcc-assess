@@ -25,6 +25,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +66,16 @@ public class SurveyAssetTemplateService {
         });
     }
 
-    public boolean save(SurveyAssetTemplateDto surveyAssetTemplateDto) throws BusinessException {
+    public boolean save(SurveyAssetTemplateDto surveyAssetTemplateDto,Integer pid) throws BusinessException {
         if(surveyAssetTemplateDto == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if(surveyAssetTemplateDto.getId() != null && surveyAssetTemplateDto.getId() > 0){
             return surveyAssetTemplateDao.update(surveyAssetTemplateDto);
         }else{
-            List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(0,SurveyAssetTemplateDto.CREDENTIALACCESSORY);
+            BaseAttachment sysAttachment = new BaseAttachment();
+            sysAttachment.setTableId(0);
+            sysAttachment.setFieldsName(SurveyAssetTemplateDto.CREDENTIALACCESSORY);
+            List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentList(sysAttachment);
             BaseAttachment baseAttachment = new BaseAttachment();
             if(baseAttachments.size() != 0){
                  baseAttachment = baseAttachments.get(0);
@@ -79,6 +83,7 @@ public class SurveyAssetTemplateService {
                 surveyAssetTemplateDto.setCredentialAccessory("" + credentialAccessory);
             }
 
+            surveyAssetTemplateDto.setPid(pid);
             surveyAssetTemplateDto.setCreator(serviceComponent.getThisUser());
             surveyAssetTemplateDao.save(surveyAssetTemplateDto);
 

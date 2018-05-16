@@ -7,22 +7,14 @@ import com.copower.pmcc.assess.dal.entity.ReportTemplate;
  * Created by kings on 2018-3-5.
  */
 public class ReportTemplateVo extends ReportTemplate {
-    private String subjectIdName;
-    private String contractTypeName;
+    private String typeName;
+    private String categoryName;
 
-    public String getSubjectIdName() {
-        return subjectIdName;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
-    public void setSubjectIdName(String subjectIdName) {
-        this.subjectIdName = subjectIdName;
-    }
-
-    public String getContractTypeName() {
-        return contractTypeName;
-    }
-
-    public void setContractTypeName(String contractTypeName) {
-        this.contractTypeName = contractTypeName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

@@ -51,6 +51,8 @@ public class ControllerComponent {
         BootstrapTableVo sysRemindUnRead = erpRpcToolsService.getSysRemindUnRead(1, 8, commonService.thisUserAccount());
         modelAndView.addObject("sysRemindUnReadCount", sysRemindUnRead.getTotal());
         modelAndView.addObject("sysRemindUnRead", JSON.toJSONString(sysRemindUnRead.getRows()));
+        SysUserDto sysUser = commonService.thisUser();
+        modelAndView.addObject("currUserInfo", sysUser);
         return modelAndView;
     }
 

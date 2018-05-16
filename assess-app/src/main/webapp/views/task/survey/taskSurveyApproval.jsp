@@ -170,10 +170,6 @@
                 </div>
             </div>
 
-
-
-
-
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -209,10 +205,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
 
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
