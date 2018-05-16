@@ -9,9 +9,13 @@ public class BaseFormModuleField {
 
     private String name;
 
+    private String displayName;
+
     private String jsonName;
 
-    private String displayName;
+    private String groupName;
+
+    private String groupDisplayName;
 
     private String tableName;
 
@@ -85,6 +89,14 @@ public class BaseFormModuleField {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName == null ? null : displayName.trim();
+    }
+
     public String getJsonName() {
         return jsonName;
     }
@@ -93,12 +105,20 @@ public class BaseFormModuleField {
         this.jsonName = jsonName == null ? null : jsonName.trim();
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName == null ? null : displayName.trim();
+    public void setGroupName(String groupName) {
+        this.groupName = groupName == null ? null : groupName.trim();
+    }
+
+    public String getGroupDisplayName() {
+        return groupDisplayName;
+    }
+
+    public void setGroupDisplayName(String groupDisplayName) {
+        this.groupDisplayName = groupDisplayName == null ? null : groupDisplayName.trim();
     }
 
     public String getTableName() {

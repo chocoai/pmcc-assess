@@ -295,6 +295,76 @@ public class BaseFormModuleFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andDisplayNameIsNull() {
+            addCriterion("display_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameIsNotNull() {
+            addCriterion("display_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameEqualTo(String value) {
+            addCriterion("display_name =", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotEqualTo(String value) {
+            addCriterion("display_name <>", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameGreaterThan(String value) {
+            addCriterion("display_name >", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameGreaterThanOrEqualTo(String value) {
+            addCriterion("display_name >=", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLessThan(String value) {
+            addCriterion("display_name <", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLessThanOrEqualTo(String value) {
+            addCriterion("display_name <=", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameLike(String value) {
+            addCriterion("display_name like", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotLike(String value) {
+            addCriterion("display_name not like", value, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameIn(List<String> values) {
+            addCriterion("display_name in", values, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotIn(List<String> values) {
+            addCriterion("display_name not in", values, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameBetween(String value1, String value2) {
+            addCriterion("display_name between", value1, value2, "displayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayNameNotBetween(String value1, String value2) {
+            addCriterion("display_name not between", value1, value2, "displayName");
+            return (Criteria) this;
+        }
+
         public Criteria andJsonNameIsNull() {
             addCriterion("json_name is null");
             return (Criteria) this;
@@ -365,73 +435,143 @@ public class BaseFormModuleFieldExample {
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameIsNull() {
-            addCriterion("display_name is null");
+        public Criteria andGroupNameIsNull() {
+            addCriterion("group_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameIsNotNull() {
-            addCriterion("display_name is not null");
+        public Criteria andGroupNameIsNotNull() {
+            addCriterion("group_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameEqualTo(String value) {
-            addCriterion("display_name =", value, "displayName");
+        public Criteria andGroupNameEqualTo(String value) {
+            addCriterion("group_name =", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameNotEqualTo(String value) {
-            addCriterion("display_name <>", value, "displayName");
+        public Criteria andGroupNameNotEqualTo(String value) {
+            addCriterion("group_name <>", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameGreaterThan(String value) {
-            addCriterion("display_name >", value, "displayName");
+        public Criteria andGroupNameGreaterThan(String value) {
+            addCriterion("group_name >", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameGreaterThanOrEqualTo(String value) {
-            addCriterion("display_name >=", value, "displayName");
+        public Criteria andGroupNameGreaterThanOrEqualTo(String value) {
+            addCriterion("group_name >=", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameLessThan(String value) {
-            addCriterion("display_name <", value, "displayName");
+        public Criteria andGroupNameLessThan(String value) {
+            addCriterion("group_name <", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameLessThanOrEqualTo(String value) {
-            addCriterion("display_name <=", value, "displayName");
+        public Criteria andGroupNameLessThanOrEqualTo(String value) {
+            addCriterion("group_name <=", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameLike(String value) {
-            addCriterion("display_name like", value, "displayName");
+        public Criteria andGroupNameLike(String value) {
+            addCriterion("group_name like", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameNotLike(String value) {
-            addCriterion("display_name not like", value, "displayName");
+        public Criteria andGroupNameNotLike(String value) {
+            addCriterion("group_name not like", value, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameIn(List<String> values) {
-            addCriterion("display_name in", values, "displayName");
+        public Criteria andGroupNameIn(List<String> values) {
+            addCriterion("group_name in", values, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameNotIn(List<String> values) {
-            addCriterion("display_name not in", values, "displayName");
+        public Criteria andGroupNameNotIn(List<String> values) {
+            addCriterion("group_name not in", values, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameBetween(String value1, String value2) {
-            addCriterion("display_name between", value1, value2, "displayName");
+        public Criteria andGroupNameBetween(String value1, String value2) {
+            addCriterion("group_name between", value1, value2, "groupName");
             return (Criteria) this;
         }
 
-        public Criteria andDisplayNameNotBetween(String value1, String value2) {
-            addCriterion("display_name not between", value1, value2, "displayName");
+        public Criteria andGroupNameNotBetween(String value1, String value2) {
+            addCriterion("group_name not between", value1, value2, "groupName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameIsNull() {
+            addCriterion("group_display_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameIsNotNull() {
+            addCriterion("group_display_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameEqualTo(String value) {
+            addCriterion("group_display_name =", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameNotEqualTo(String value) {
+            addCriterion("group_display_name <>", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameGreaterThan(String value) {
+            addCriterion("group_display_name >", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameGreaterThanOrEqualTo(String value) {
+            addCriterion("group_display_name >=", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameLessThan(String value) {
+            addCriterion("group_display_name <", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameLessThanOrEqualTo(String value) {
+            addCriterion("group_display_name <=", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameLike(String value) {
+            addCriterion("group_display_name like", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameNotLike(String value) {
+            addCriterion("group_display_name not like", value, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameIn(List<String> values) {
+            addCriterion("group_display_name in", values, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameNotIn(List<String> values) {
+            addCriterion("group_display_name not in", values, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameBetween(String value1, String value2) {
+            addCriterion("group_display_name between", value1, value2, "groupDisplayName");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupDisplayNameNotBetween(String value1, String value2) {
+            addCriterion("group_display_name not between", value1, value2, "groupDisplayName");
             return (Criteria) this;
         }
 

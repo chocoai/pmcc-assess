@@ -37,6 +37,16 @@ public class ReportTemplateDao {
         return list;
     }
 
+    public List<ReportTemplate> getListObject(List<Integer> ids) {
+        if(CollectionUtils.isEmpty(ids)) return null;
+        ReportTemplateExample example = new ReportTemplateExample();
+        ReportTemplateExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        example.setOrderByClause("id");
+        List<ReportTemplate> list = reportTemplateMapper.selectByExample(example);
+        return list;
+    }
+
 
     //endregion
 

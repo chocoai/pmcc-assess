@@ -44,7 +44,6 @@ public class ReportTemplateController {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/reportTemplate");
         List<BaseDataDic> reportTemplateTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TEMPLATE_TYPE);
         modelAndView.addObject("reportTemplateTypeList",reportTemplateTypeList);
-        modelAndView.addObject("currUserName", serviceComponent.getThisUser());
         return modelAndView;
     }
 
@@ -55,8 +54,8 @@ public class ReportTemplateController {
      */
     @ResponseBody
     @RequestMapping(value = "/getTemplateList", method = RequestMethod.GET)
-    public BootstrapTableVo getTemplateList(Integer subjectId, Integer contactType) {
-        return reportTemplateService.getTemplateList(subjectId, contactType);
+    public BootstrapTableVo getTemplateList(Integer type, Integer category) {
+        return reportTemplateService.getTemplateList(type, category);
     }
 
     /**

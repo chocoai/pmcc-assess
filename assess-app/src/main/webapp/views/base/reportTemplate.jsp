@@ -73,35 +73,22 @@
                             <table id="tbList" class="table table-bordered"></table>
                         </div>
                     </div>
-                    <div class="x_panel">
+                    <div class="x_panel" id="panel_bookmark" style="display: none;">
                         <div class="x_title">
                             <h2>
-                                <span id="span_template_name">当前模板</span>的其它设置
+                                <label id="span_template_name">当前模板</label>的书签设置
                             </h2>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <div class="tabbable" style="margin-top: 10px;">
-                                <ul id="myTab" class="nav nav-tabs tab-bricky">
-                                    <li class="active">
-                                        <a href="#panel_bookmark" data-toggle="tab">
-                                            书签配置
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane in active" id="panel_bookmark">
-                                        <p>
-                                            <button type="button" class="btn btn-success"
-                                                    data-toggle="modal"
-                                                    href="#modal_template_bookmark"
-                                                    onclick="addTemplateBookmark();"> 新增
-                                            </button>
-                                        </p>
-                                        <table id="tb_bookmark_list" class="table table-bordered"></table>
-                                    </div>
-                                </div>
-                            </div>
+                            <p>
+                                <button type="button" class="btn btn-success"
+                                        data-toggle="modal"
+                                        href="#modal_template_bookmark"
+                                        onclick="addTemplateBookmark();"> 新增
+                                </button>
+                            </p>
+                            <table id="tb_bookmark_list" class="table table-bordered"></table>
                         </div>
                     </div>
                 </div>
@@ -118,7 +105,7 @@
 <!-- start: org modal -->
 <div id="modalTemplate" class="modal fade bs-example-modal-lg" data-height="200"
      data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" >
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class='modal-header'>
                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span
@@ -130,6 +117,17 @@
                     <div class='row'>
                         <div class='col-md-12'>
                             <div class='panel-body'>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input name='name' required class='form-control' required
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class='x-valid'><label
                                             class='col-sm-2 control-label'>类型<span
@@ -145,9 +143,20 @@
                                     </div>
                                     <div class='x-valid'><label class='col-sm-2 control-label'>类别</label>
                                         <div class='col-sm-4'>
-                                            <select id='category' name='category'  class='form-control'>
+                                            <select id='category' name='category' class='form-control'>
 
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'><label
+                                            class='col-sm-2 control-label'>取附件sql
+                                    </label>
+                                        <div class='col-sm-10'>
+                                         <textarea name="valueSql"
+                                                   placeholder="select * from table"
+                                                   class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +184,8 @@
     </div>
 </div>
 <!-- end: org  modal -->
-<div id="modal_template_bookmark" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="modal_template_bookmark" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1"
+     role="dialog" aria-hidden="true" data-height="200">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class='modal-header'>
@@ -199,12 +209,22 @@
                                         </div>
                                     </div>
                                     <div class='x-valid'><label
-                                            class='col-sm-2 control-label'>关联字段<span
+                                            class='col-sm-2 control-label'>书签中文名称<span
                                             class="symbol required"></span></label>
                                         <div class='col-sm-4'>
-                                            <input type="hidden" id="hdfieldId" name="fieldId">
-                                            <input id='fieldIdName' name="fieldIdName" class='form-control' required
+                                            <input name='displayName' class='form-control' required
                                                    maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'><label
+                                            class='col-sm-2 control-label'>取值sql<span
+                                            class="symbol required"></span></label>
+                                        <div class='col-sm-10'>
+                                         <textarea id="valueSql" required name="valueSql"
+                                                   placeholder="select * from table"
+                                                   class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -232,70 +252,70 @@
         }
     }
 
-    function test_Callback() {
-
-    }
 </script>
 <script type="application/javascript">
     $(function () {
         loadTemplateList();
         FileUtils.uploadFiles({
             target: "uploadFile",
+            showFileList: false,
             fileExtArray: ["doc", "docx"]
         }, {
             onUpload: function (file) {//上传之前触发
                 var formData = {
-                    tableName: "tb_cms_template",
-                    creater: "${currUserName}",
+                    tableName: "tb_report_template",
+                    creater: "${currUserInfo.userAccount}",
                     tableId: $("#id").val()
                 };
                 $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
             },
-
+            onUploadComplete: function () {
+                loadTemplateAttachment($("#id").val(), "${currUserInfo.userAccount}");
+            }
         });
 
         $("#queryType").change(function () {
             $("#queryCategory").empty();
-            baseDicUtils.loadDataDicByPid($(this).val(),"",function (retHtml,data) {
+            baseDicUtils.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
                 $("#queryCategory").html(retHtml);
             })
         })
 
         $("#type").change(function () {
             $("#category").empty();
-            baseDicUtils.loadDataDicByPid($(this).val(),"",function (retHtml,data) {
+            baseDicUtils.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
                 $("#category").html(retHtml);
             })
         })
     })
 
 
-
     //加载列表数据
     function loadTemplateList() {
         var cols = [];
-        cols.push({field: 'subjectIdName', title: '类型'});
-        cols.push({field: 'contractTypeName', title: '类别'});
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'categoryName', title: '类别'});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = "<a style='margin-left: 5px;' data-placement='top' data-original-title='一键写入书签' class='btn btn-xs btn-success tooltips' onclick='autoReadBookmark(" + index + ")'   ><i class='fa fa-pencil fa-white'></i></a>";
                 str += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips' onclick='editTemplate(" + index + ")'   ><i class='fa fa-edit fa-white'></i></a>";
                 str += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips'  onclick='delTemplate(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
-
                 return str;
 
             }
         });
         $("#tbList").bootstrapTable('destroy');
         TableInit("tbList", "${pageContext.request.contextPath}/reportTemplate/getTemplateList", cols, {
-            subjectId: $("#querySubjectId").val(),
-            contactType: $("#queryContractType").val()
+            type: $("#queryType").val(),
+            category: $("#queryCategory").val()
         }, {
             showColumns: false,
             showRefresh: false,
             uniqueId: "id",
             search: false,
             onClickRow: function (row) {
+                $("#panel_bookmark").show();
                 loadTemplateDetailInfo(row.id, row.subjectIdName, row.contractTypeName);
             },
             onLoadSuccess: function () {
@@ -310,7 +330,7 @@
         $("#frm").clearAll();
         $("#id").val("0");
         $("#category").empty();
-        loadTemplateAttachment(0, "${currUserName}");
+        loadTemplateAttachment(0, "${currUserInfo.userAccount}");
     }
     //编辑模板
     function editTemplate(index) {
@@ -318,7 +338,7 @@
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $("#category").empty();
-        baseDicUtils.loadDataDicByPid(row.type,row.category,function (retHtml,data) {
+        baseDicUtils.loadDataDicByPid(row.type, row.category, function (retHtml, data) {
             $("#category").html(retHtml);
         })
         loadTemplateAttachment(row.id);
@@ -414,21 +434,19 @@
         $("#templateId").val(templateId);
         $("#span_template_name").text(subjectIdName + "-" + contractTypeName);
         loadTemplateBookmarkList(templateId);
-        loadTemplateFieldList(templateId);
         $("#panel_template_other_set").show();
     }
 
     //加载列表数据
     function loadTemplateBookmarkList(templateId) {
         var cols = [];
-        cols.push({field: 'name', title: '书签'});
-        cols.push({field: 'fieldsName', title: '字段名称'});
-        cols.push({field: 'fieldsDisplayName', title: '显示名称'});
+        cols.push({field: 'name', title: '书签名称', width: "20%"});
+        cols.push({field: 'displayName', title: '书签中文名称', width: "20%"});
+        cols.push({field: 'valueSql', title: '取值sql', width: "40%"});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
-               var str = "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips' onclick='editTemplateBookmark(" + index + ")'   ><i class='fa fa-edit fa-white'></i></a>";
+                var str = "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips' onclick='editTemplateBookmark(" + index + ")'   ><i class='fa fa-edit fa-white'></i></a>";
                 str += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips'  onclick='delTemplateBookmark(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
-
                 return str;
             }
         });

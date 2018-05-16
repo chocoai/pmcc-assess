@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.ReportTemplateBookmarkMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ReportMergeRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ReportMergeRule" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="template_id" property="templateId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="display_name" property="displayName" jdbcType="VARCHAR" />
-    <result column="value_sql" property="valueSql" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -69,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, template_id, name, display_name, value_sql, gmt_created, gmt_modified
+    id, report_type, template_id, sorting, remark, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmarkExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRuleExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_report_template_bookmark
+    from tb_report_merge_rule
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,47 +89,50 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_report_template_bookmark
+    from tb_report_merge_rule
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_report_template_bookmark
+    delete from tb_report_merge_rule
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmarkExample" >
-    delete from tb_report_template_bookmark
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRuleExample" >
+    delete from tb_report_merge_rule
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_report_template_bookmark (template_id, name, display_name, 
-      value_sql, gmt_created, gmt_modified
-      )
-    values (#{templateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
-      #{valueSql,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_report_merge_rule (report_type, template_id, sorting, 
+      remark, creator, gmt_created, 
+      gmt_modified)
+    values (#{reportType,jdbcType=INTEGER}, #{templateId,jdbcType=INTEGER}, #{sorting,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_report_template_bookmark
+    insert into tb_report_merge_rule
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportType != null" >
+        report_type,
+      </if>
       <if test="templateId != null" >
         template_id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="sorting != null" >
+        sorting,
       </if>
-      <if test="displayName != null" >
-        display_name,
+      <if test="remark != null" >
+        remark,
       </if>
-      <if test="valueSql != null" >
-        value_sql,
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -138,17 +142,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportType != null" >
+        #{reportType,jdbcType=INTEGER},
+      </if>
       <if test="templateId != null" >
         #{templateId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
       </if>
-      <if test="displayName != null" >
-        #{displayName,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="valueSql != null" >
-        #{valueSql,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -158,29 +165,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmarkExample" resultType="java.lang.Integer" >
-    select count(*) from tb_report_template_bookmark
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRuleExample" resultType="java.lang.Integer" >
+    select count(*) from tb_report_merge_rule
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_report_template_bookmark
+    update tb_report_merge_rule
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.reportType != null" >
+        report_type = #{record.reportType,jdbcType=INTEGER},
+      </if>
       <if test="record.templateId != null" >
         template_id = #{record.templateId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
-      <if test="record.displayName != null" >
-        display_name = #{record.displayName,jdbcType=VARCHAR},
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
-      <if test="record.valueSql != null" >
-        value_sql = #{record.valueSql,jdbcType=VARCHAR},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -194,32 +204,36 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_report_template_bookmark
+    update tb_report_merge_rule
     set id = #{record.id,jdbcType=INTEGER},
+      report_type = #{record.reportType,jdbcType=INTEGER},
       template_id = #{record.templateId,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      display_name = #{record.displayName,jdbcType=VARCHAR},
-      value_sql = #{record.valueSql,jdbcType=VARCHAR},
+      sorting = #{record.sorting,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark" >
-    update tb_report_template_bookmark
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRule" >
+    update tb_report_merge_rule
     <set >
+      <if test="reportType != null" >
+        report_type = #{reportType,jdbcType=INTEGER},
+      </if>
       <if test="templateId != null" >
         template_id = #{templateId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
       </if>
-      <if test="displayName != null" >
-        display_name = #{displayName,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="valueSql != null" >
-        value_sql = #{valueSql,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -230,12 +244,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark" >
-    update tb_report_template_bookmark
-    set template_id = #{templateId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      display_name = #{displayName,jdbcType=VARCHAR},
-      value_sql = #{valueSql,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ReportMergeRule" >
+    update tb_report_merge_rule
+    set report_type = #{reportType,jdbcType=INTEGER},
+      template_id = #{templateId,jdbcType=INTEGER},
+      sorting = #{sorting,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
