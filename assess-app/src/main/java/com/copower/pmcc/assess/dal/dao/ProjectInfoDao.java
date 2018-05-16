@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,15 @@ public class ProjectInfoDao {
         return false;
     }
 
+<<<<<<< Updated upstream
+=======
+    @Transactional
+    public int saveProjectInfo_returnID(ProjectInfo projectInfo){
+        projectInfoMapper.insertSelective(projectInfo);
+        return  projectInfo.getId();
+    }
+
+>>>>>>> Stashed changes
     public Boolean updateProjectInfo(ProjectInfo projectInfo)
     {
         int i = projectInfoMapper.updateByPrimaryKeySelective(projectInfo);

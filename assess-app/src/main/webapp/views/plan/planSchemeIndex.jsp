@@ -47,11 +47,11 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    结束日期<span class="symbol required"></span>
+                                    结束日期1<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" required
-                                           placeholder="结束日期"
+                                           placeholder="结束日期1"
                                            value="<fmt:formatDate value="${projectPlan.projectPlanEnd}" pattern="yyyy-MM-dd"/>"
                                            id="projectPlanEnd" name="projectPlanEnd"
                                            data-date-format='yyyy-mm-dd'
@@ -70,6 +70,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <c:if test="${detailsPlan==1}"> <%--是否允许下级修改计划--%>
                             <input type="hidden" id="detailsPlan" name="detailsPlan" value="${detailsPlan}">
                             <div class="form-group">
@@ -104,6 +105,56 @@
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </c:if>
                     </form>
+                    <table class="table">
+                        <tbody>
+                            <c:forEach items="${dataList.items}" var="item">
+                                <tr>
+                                    <th>四川省成都市锦江区</th>
+                                </tr>
+                                <tr>
+                                    <th>估价对象编号</th>
+                                    <th>权证号</th>
+                                    <th>所有权人</th>
+                                    <th>座落</th>
+                                    <th>最佳利用设置</th>
+                                    <th>合并测算序号</th>
+                                    <th>证载面积</th>
+                                    <th>评估面积</th>
+                                    <th>评估方法</th>
+                                    <th>操作</th>
+                                </tr>
+                                <c:forEach items="${item}" var="data" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td>${data.name}</td>
+                                            <td>${data.creator}</td>
+                                            <td>座落</td>
+                                            <td>
+                                                <select class="form-control">
+                                                    <option value="" selected="selected">最佳利用设置</option>
+                                                    <c:forEach items="${bestusedescriptionList}" var="bestUse">
+                                                        <option>${bestUse.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" placeholder="合并测算序号">
+                                            </td>
+                                            <td>${data.floorArea}</td>
+                                            <td>
+                                                <input class="form-control" placeholder="评估面积">
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" id="btnID${data.id}">拆分</button>
+                                            </td>
+                                        </tr>
+                                </c:forEach>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -139,7 +190,7 @@
 </body>
 
 
-<div id="tb" style="padding:5px;height:auto">
+<div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
         <button type="button" onclick="addfirst()" class="btn btn-success btn-xs">
             <i class='fa fa-plus fa-white'></i> 新增第一级
@@ -155,10 +206,6 @@
         </button>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/share/model_employee.jsp" %>
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-
 
 <div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -433,33 +480,24 @@
 </div>
 
 </html>
-
-
+<%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/share/model_employee.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+    //评估方法
+    function evaluationmethod(id) {
+        alert(id);
+    }
+</script>
 <script type="text/javascript">
     var treeGridJson = {};
     var treeGridJsonData = {};
     $(function () {
         getPlanItemList();
-<<<<<<< Updated upstream
         $("#projectPhaseId").select2();
 
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
-=======
-
-        DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
-        DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
-
-        $("#declareFormName").click(function () {
-            assessDataDic.select({
-                key:"assess.class",
-                onSelected:function (nodes) {
-                    $("#declareFormId").val(nodes[0].id);
-                    $("#declareFormName").val(nodes[0].name);
-                }
-            })
-        })
->>>>>>> Stashed changes
     });
 
     function nextEmployee() {

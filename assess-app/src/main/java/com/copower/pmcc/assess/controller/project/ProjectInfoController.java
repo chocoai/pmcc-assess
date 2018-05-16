@@ -226,4 +226,125 @@ public class ProjectInfoController {
         return keyValueDtos;
     }
 
+<<<<<<< Updated upstream
+=======
+    @ResponseBody
+    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
+        BootstrapTableVo vo = null;
+        vo = projectInfoService.listContactsVo(crmId, flag);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectContactsVosX", name = "取得联系人列表", method = {RequestMethod.GET})
+    public BootstrapTableVo listContactsVoX(Integer flag, Integer pid) {
+        BootstrapTableVo vo = null;
+        if (pid != null) {
+            vo = projectInfoService.listContactsVos(pid, flag);
+        }
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
+    public HttpResult add(InitiateContactsDto dto) {
+        try {
+            if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
+            } else {
+                projectInfoService.addContacts(dto);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/delete", name = "联系人 删除", method = RequestMethod.POST)
+    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+        try {
+            projectInfoService.removeContacts(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAreaList", name = "城市 县 get", method = RequestMethod.POST)
+    public Object getAreaList(Integer pid) {
+        try {
+            if (pid != null) {
+                List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList("" + pid);
+                if (sysAreaDtos != null) return sysAreaDtos;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCRMList", name = "CRM 获取", method = RequestMethod.POST)
+    public Object getCRMList(Integer crmId) {
+        if (crmId != null) {
+            CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
+            try {
+                if (crmCustomerDto != null) return crmCustomerDto;
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                return HttpResult.newErrorResult(e.getMessage());
+            }
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/UnitInformation/get", method = {RequestMethod.POST}, name = "报告使用单位 获取")
+    public Object unitinformationGet(Integer id) {
+        try {
+            if (id != null) {
+                return projectInfoService.getInitiateUnitInformation(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Possessor/get", method = {RequestMethod.POST}, name = "占有人 获取")
+    public Object possessorGet(Integer id) {
+        try {
+            if (id != null) {
+                return projectInfoService.getInitiatePossessor(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Consignor/get", method = {RequestMethod.POST}, name = "委托 获取")
+    public Object consignorGet(Integer id) {
+        try {
+            if (id != null) {
+                return projectInfoService.getInitiateConsignor(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+>>>>>>> Stashed changes
 }

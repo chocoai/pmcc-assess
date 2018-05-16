@@ -70,11 +70,130 @@ public class ProjectInfoService {
      *
      * @param projectInfoDto
      */
+<<<<<<< Updated upstream
     public void projectApply(ProjectInfoDto projectInfoDto) throws BusinessException {
         ProjectInfo projectInfo = new ProjectInfo();
         BeanUtils.copyProperties(projectInfoDto, projectInfo);
         projectInfoDao.saveProjectInfo(projectInfo);
         initProjectInfo(projectInfo);
+=======
+    public void projectApply(InitiateProjectDto projectDto) throws BusinessException {
+        ProjectMember projectMember = new ProjectMember();
+        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
+        projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
+        projectMember.setBisEnable(true);
+        projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
+    }
+
+    /*项目立项修改*/
+    @Transactional
+    public void projectUpdate(InitiateProjectDto projectDto,Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid)throws Exception {
+        ProjectMember projectMember = new ProjectMember();
+        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
+        projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
+        projectMember.setBisEnable(true);
+        ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
+        projectDto.getProjectInfo().setId(projectinfoid);
+        projectMember.setId(projectInfoID.getProjectMemberId());
+        projectDto.getConsignor().setId(projectInfoID.getConsignorId());
+        projectDto.getUnitinformation().setId(projectInfoID.getUnitInformationId());
+        projectDto.getPossessor().setId(projectInfoID.getPossessorId());
+        projectApplyUpdate(projectDto.getConsignor(),projectDto.getUnitinformation(),projectDto.getPossessor(),change(projectMember),projectDto.getProjectInfo());
+    }
+
+    //修改附件中的table id 以及存附件的主表的附件id
+    @Transactional
+    public void update_BaseAttachment_(int pid, String fields_name, int flag) {
+        int TEMP = 0;
+        //默认位置为0
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name);
+        //一般都只有一个
+        BaseAttachment baseAttachment = baseAttachments.get(0);
+        // 更新 存附件的主表
+        if (flag == 0) {//项目信息 附件
+            ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
+            projectInfo.setAttachmentProjectInfoId("" + baseAttachment.getId());
+            projectInfoDao.updateProjectInfo(projectInfo);//更新 委托人或者占有人或者项目信息中的附件id
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        } else if (flag == InitiateContactsEnum.ONE.getNum()) {// 委托人 附件
+            InitiateConsignorDto dto = consignorService.getById(pid);
+            dto.setCsAttachmentProjectEnclosureId("" + baseAttachment.getId());
+            consignorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        } else if (flag == InitiateContactsEnum.TWO.getNum()) {//占有人 附件
+            InitiatePossessorDto dto = possessorService.getById(pid);
+            dto.setpAttachmentProjectEnclosureId("" + baseAttachment.getId());
+            possessorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
+            //更新附件
+            baseAttachment.setTableId(pid);
+            baseAttachmentDao.updateAttachment(baseAttachment);
+        }
+    }
+
+    @Transactional
+    public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto)throws Exception{
+        projectInfoDao.updateProjectInfo(change(projectInfoDto));
+        projectInfoDto.setCreator(commonService.thisUserAccount());
+        consignorService.update(consignorDto);
+        possessorService.update(possessorDto);
+        projectMemberService.saveReturnId(projectMemberDto);
+        unitInformationService.update(unitInformationDto);
+    }
+
+    @Transactional
+    public void projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
+        try {
+            int i = possessorService.add(possessorDto);
+            int v = consignorService.add(consignorDto);
+            int j = unitInformationService.add(unitInformationDto);
+            //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
+
+            if (consignorDto.getCsType()==1 && possessorDto.getpType()==1){//说明是法人 则不需要更新
+
+            }else {
+                initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
+                initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
+                initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
+            }
+
+            //附件更新
+            update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+            update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
+            try {
+                int k = projectMemberService.saveReturnId(projectMemberDto);
+                ProjectInfo projectInfo = change(projectInfoDto);
+                projectInfo.setConsignorId(v);//设置 关联id
+                projectInfo.setPossessorId(i);
+                projectInfo.setUnitInformationId(j);
+                projectInfo.setProjectMemberId(k);
+                if (projectInfo.getCreator()==null)projectInfo.setCreator(commonService.thisUserAccount());
+
+                int id =0;
+                id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                if (id==0){
+                    id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                }
+                update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+                initProjectInfo(projectInfo);//初始化项目信息
+            } catch (Exception e) {
+                try {
+                    throw e;
+                } catch (Exception e2) {
+
+                }
+            }
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception e1) {
+
+            }
+        }
+>>>>>>> Stashed changes
     }
 
     /**

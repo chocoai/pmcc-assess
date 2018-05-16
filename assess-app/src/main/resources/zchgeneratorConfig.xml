@@ -39,11 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-<<<<<<< Updated upstream
-        <table tableName="tb_initiate_consignor" domainObjectName="InitiateConsignor">
-=======
-        <table tableName="tb_report_template" domainObjectName="ReportTemplate">
->>>>>>> Stashed changes
+        <table tableName="tb_scheme_area_group_record" domainObjectName="SchemeAreaGroupRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
