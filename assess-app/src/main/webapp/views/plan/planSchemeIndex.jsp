@@ -128,29 +128,29 @@
                                 </tr>
                                 <c:forEach items="${item.declareRecords}" var="data" varStatus="status">
                                         <tr>
-                                            <td>${status.index + 1}</td>
-                                            <td>${data.name}</td>
-                                            <td>${data.creator}</td>
-                                            <td>座落</td>
-                                            <td>
+                                            <td id="dataIndex${data.id}">${status.index + 1}</td>
+                                            <td id="dataName${data.id}">${data.name}</td>
+                                            <td id="dataCreator${data.id}">${data.creator}</td>
+                                            <td id="dataSeat${data.id}">座落</td>
+                                            <td id="dataBestUse${data.id}">
                                                 <select class="form-control">
                                                     <c:forEach items="${bestusedescriptionList}" var="bestUse">
                                                         <option>${bestUse.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </td>
-                                            <td>
+                                            <td id="dataMerge${data.id}">
                                                 <input class="form-control" placeholder="合并测算序号">
                                             </td>
-                                            <td>${data.floorArea}</td>
-                                            <td>
+                                            <td id="dataFloorArea${data.id}"><label class="form-control">${data.floorArea}</label></td>
+                                            <td id="dataAssessmentArea${data.id}">
                                                 <input class="form-control" placeholder="评估面积">
                                             </td>
                                             <td>
                                                 <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-success" id="btnID${data.id}">拆分</button>
+                                                <button class="btn btn-success" id="btnID${data.id}" onclick="splitEvaluate(${data.id})">拆分</button>
                                             </td>
                                         </tr>
                                 </c:forEach>
@@ -191,6 +191,137 @@
 </div>
 </body>
 
+<!-- 评估方法 -->
+<div id="divBoxMethod" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="260">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">评估方法</h4>
+            </div>
+            <form id="frmMethod" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+
+                                <c:forEach items="${dataEvaluationMethod}" var="item">
+                                    <div class="form-group panel">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label" >
+                                                ${item.name}
+                                                <input type="hidden" value="${item.id}"   class="form-control" >
+                                            </label>
+
+                                            <label class="col-sm-9 control-label" >
+                                                适用<input type="radio" name="apply" onclick="applyMethodA('${item.id}','${item.name}')" >
+                                                不适用<input type="radio" name="apply" onclick="applyMethodB('${item.id}','${item.name}')" >
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" id="applyTemplateView${item.id}">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                适用原因模板
+                                                <span class="input-group-btn">
+                                            <button type="button" id="applyTemplate${item.id}" class="btn btn-primary">选择模板</button>
+                                            </span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                            <textarea required="required" placeholder="请填写适用原因" class="form-control"  name="applicableReason">
+
+                                            </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="applyNoTemplateView${item.id}">
+                                        <div class="x-valid">
+                                            <label class="col-sm-3 control-label">
+                                                适用不原因模板
+                                                <span class="input-group-btn">
+                                            <button type="button" id="applyNoTemplate${item.id}" class="btn btn-primary">选择模板</button>
+                                            </span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                            <textarea required="required" placeholder="请填写不适用原因" class="form-control" name="applicableReasonNo">
+
+                                            </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            评估思路
+                                        </label>
+                                        <label class="col-sm-9 control-label">
+                                            <input type="hidden" id="methodName">
+                                            <input type="hidden" id="methodID">
+                                            <label class="btn btn-success" onclick="evaluationthinking()">思路选择</label>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 评估思路 -->
+<div id="divBoxThink" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="190">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">评估思路</h4>
+            </div>
+            <form id="frmThink" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="modal-title" id="ThinkNameSHOW"></h3>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="evaluationthinkingClose()">
+                        关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" >
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">
@@ -486,9 +617,90 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
+    $(function () {
+        <c:forEach items="${dataEvaluationMethod}" var="item">
+            $("#applyNoTemplateView"+${item.id}).hide();
+            $("#applyTemplateView"+${item.id}).hide();
+        </c:forEach>
+    });
+    function applyMethodA(id,name) {
+        $("#methodID").val(id);
+        $("#methodName").val(name);
+        $("#applyNoTemplateView"+id).hide();
+        $("#applyTemplateView"+id).show();
+    }
+    function applyMethodB(id,name) {
+        $("#methodID").val(id);
+        $("#methodName").val(name);
+        $("#applyNoTemplateView"+id).show();
+        $("#applyTemplateView"+id).hide();
+    }
     //评估方法
     function evaluationmethod(id) {
-        alert(id);
+        $("#frmMethod").clearAll();
+        $("#divBoxMethod").modal();//显示
+    }
+
+    //评估思路
+    function evaluationthinking() {
+        $("#frmThink").clearAll();
+        document.getElementById("ThinkNameSHOW").innerText = document.getElementById("methodName").value;
+//        $("#ThinkNameSHOW").val($("#methodName").val());
+        $("#divBoxThink").modal();//显示
+    }
+
+    //评估思路 关闭
+    function evaluationthinkingClose() {
+        $("#divBoxThink").hide();
+    }
+    
+    function splitEvaluate(id) {
+        var btnID = document.getElementById("btnID"+id);
+        var parentElement = btnID.parentNode.parentNode;
+        var trElement = document.createElement("tr");
+        var len = 10;
+        var dataIndex = document.getElementById("dataIndex"+id).innerText;
+        var dataName = document.getElementById("dataName"+id).innerText;
+        var dataCreator = document.getElementById("dataCreator"+id).innerText;
+        var dataSeat = document.getElementById("dataSeat"+id).innerText;
+        var dataFloorArea = document.getElementById("dataFloorArea"+id).innerText;
+        var dataBestUse = document.getElementById("dataBestUse"+id).innerHTML;
+        var dataMerge = document.getElementById("dataMerge"+id).innerHTML;
+        for (var i = 0;i< len;i++){
+            var tdElement = document.createElement("td");
+            var j =0;
+            if (i==j++){
+                tdElement.innerHTML = dataIndex;
+            }else if (i==j++){
+                tdElement.innerHTML = dataName;
+            }else if (i==j++){
+                tdElement.innerHTML = dataCreator;
+            }else if (i==j++){
+                tdElement.innerHTML = dataSeat;
+            }else if (i==j++){
+                tdElement.innerHTML = dataBestUse;
+            }else if (i==j++){
+                tdElement.innerHTML = dataMerge;
+            }else if (i==j++){
+                var inputElement = document.createElement("input");
+                inputElement.setAttribute("class","form-control");
+                inputElement.setAttribute("placeholder","证载面积");
+                tdElement.appendChild(inputElement);
+            }else if (i==j++){
+                var inputElement = document.createElement("input");
+                inputElement.setAttribute("class","form-control");
+                inputElement.setAttribute("placeholder","评估面积");
+                tdElement.appendChild(inputElement);
+            }else if (i==j++){
+
+            }else if (i==j++){
+
+            }else if (i==j++){
+
+            }
+            trElement.appendChild(tdElement);
+        }
+        parentElement.parentNode.insertBefore(trElement,parentElement);
     }
 </script>
 <script type="text/javascript">
