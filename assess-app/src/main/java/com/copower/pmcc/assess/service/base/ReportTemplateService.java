@@ -59,8 +59,8 @@ public class ReportTemplateService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ReportTemplate reportTemplate = new ReportTemplate();
-        reportTemplate.setSubjectId(subjectId);
-        reportTemplate.setContractType(contractType);
+        reportTemplate.setType(subjectId);
+        reportTemplate.setCategory(contractType);
         List<ReportTemplate> list = reportTemplateDao.getListObject(reportTemplate);
         List<ReportTemplateVo> voList = LangUtils.transform(list, o -> getReportTemplateVos(o));
         bootstrapTableVo.setTotal(page.getTotal());
@@ -82,8 +82,8 @@ public class ReportTemplateService {
     public ReportTemplate getDbTemplate(Integer subjectId, Integer contractType) {
 
         ReportTemplate reportTemplate = new ReportTemplate();
-        reportTemplate.setSubjectId(subjectId);
-        reportTemplate.setContractType(contractType);
+        reportTemplate.setType(subjectId);
+        reportTemplate.setCategory(contractType);
         List<ReportTemplate> list = reportTemplateDao.getListObject(reportTemplate);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
@@ -94,10 +94,10 @@ public class ReportTemplateService {
     public ReportTemplateVo getReportTemplateVos(ReportTemplate reportTemplate) {
         ReportTemplateVo reportTemplateVo = new ReportTemplateVo();
         BeanUtils.copyProperties(reportTemplate, reportTemplateVo);
-        if (reportTemplate.getSubjectId() != null)
-            reportTemplateVo.setSubjectIdName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getSubjectId()).getName());
-        if (reportTemplate.getContractType() != null)
-            reportTemplateVo.setContractTypeName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getContractType()).getName());
+        if (reportTemplate.getType() != null)
+            reportTemplateVo.setSubjectIdName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getType()).getName());
+        if (reportTemplate.getCategory() != null)
+            reportTemplateVo.setContractTypeName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getCategory()).getName());
         return reportTemplateVo;
     }
 
