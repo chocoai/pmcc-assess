@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  * @date: 2017/09/14 17:08
  */
-public class MyBatisGenerateMapper {
+public class ZlyMyBatisGenerateMapper {
 
     public static void main(String[] args) throws Exception {
 

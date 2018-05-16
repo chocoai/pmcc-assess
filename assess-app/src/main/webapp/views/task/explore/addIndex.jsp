@@ -6,8 +6,8 @@
     <%@include file="/views/share/main_css.jsp" %>
     <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/positionPicker.html -->
     <!-- <base href="//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/" /> -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <script type="text/javascript"
             src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>
     <!-- UI组件库 1.0 -->
@@ -18,6 +18,7 @@
             height: 30%;
             width: 20%;
         }
+
         #right {
             color: #444;
             background-color: #f8f8f8;
@@ -62,36 +63,74 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="frm_assess" class="form-horizontal">
 
+                    <form id="frm_survey" class="form-horizontal">
+                        <input type="hidden" name="planDetailId" value="${projectPlanDetails.planId}">
+                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                        <input type="hidden" name="processInsId" value="${projectPlanDetails.processInsId}">
+
+                        <div class="form-group">
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-maxlength="50" placeholder="查勘人"
+                                           id="surveyPeople" name="surveyPeople"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input placeholder="查勘时间" id="surveyTime" name="surveyTime"
+                                           data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">领勘人<span class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-maxlength="50" placeholder="领勘人"
+                                           id="ledLuminousPeople" name="ledLuminousPeople"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="form-group">
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">相关权证<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <select id="evaluator" name="evaluator" class="form-control" required="required">
-                                        <option selected="selected"
-                                                value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
-                                    </select>
+
+                                    <c:forEach items="${declareRecords}" var="item">
+                                        <input type="checkbox" name="correlationCard" value="${item.id}">${item.name}
+                                    </c:forEach>
+
+                                    <%--<select id="correlationCard" name="correlationCard" class="form-control" required="required" multiple="true">--%>
+                                    <%--<c:forEach items="${declareRecords}" var="item">--%>
+                                    <%--<option value="${item.id}" selected="selected">${item.name}</option>--%>
+                                    <%--</c:forEach>--%>
+                                    <%--</select>--%>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <select id="evaluator1" name="evaluator1" class="form-control" required="required">
-                                        <option selected="selected"
-                                                value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
-                                    </select>
+                                    <input type="text" data-rule-maxlength="50" placeholder="楼盘名称"
+                                           id="houseName" name="houseName"
+                                           class="form-control">
                                 </div>
                             </div>
-
                         </div>
                     </form>
+
                 </div>
             </div>
-
-
 
             <div id="tip"></div>
             <div id='right'>
@@ -117,8 +156,8 @@
                             查勘图片上传
                         </label>
                         <div class="col-sm-11">
-                            <input id="apply_file" name="apply_file" type="file" multiple="false">
-                            <div id="_apply_file">
+                            <input id="surveyPicture" name="surveyPicture" type="file" multiple="false">
+                            <div id="_surveyPicture">
                             </div>
                         </div>
                     </div>
@@ -128,8 +167,8 @@
                             查勘图像上传
                         </label>
                         <div class="col-sm-11">
-                            <input id="apply_file1" name="apply_file1" type="file" multiple="false">
-                            <div id="_apply_file1">
+                            <input id="surveyImage" name="surveyImage" type="file" multiple="false">
+                            <div id="_surveyImage">
                             </div>
                         </div>
                     </div>
@@ -157,12 +196,13 @@
 <%@include file="/views/share/main_footer.jsp" %>
 
 <script type="text/javascript">
+
+    //高德地图接入定位
     AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
         //var map = new AMap.Map('container', {
         //     zoom: 16,
         //     scrollWheel: false
         // })
-
 
         var map, geolocation;
         //加载地图，调用浏览器定位服务
@@ -221,42 +261,24 @@
             document.getElementById('nearestRoad').innerHTML = ' ';
             document.getElementById('nearestPOI').innerHTML = ' ';
         });
-        /* var onModeChange = function(e) {
-         positionPicker.setMode(e.target.value)
-         }
-         var startButton = document.getElementById('start');
-         var stopButton = document.getElementById('stop');
-         var dragMapMode = document.getElementsByName('mode')[0];
-         var dragMarkerMode = document.getElementsByName('mode')[1];
-         AMap.event.addDomListener(startButton, 'click', function() {
-         positionPicker.start(map.getBounds().getSouthWest())
-         })
-         AMap.event.addDomListener(stopButton, 'click', function() {
-         positionPicker.stop();
-         }) */
-        //AMap.event.addDomListener(dragMapMode, 'change', onModeChange)
-        //AMap.event.addDomListener(dragMarkerMode, 'change', onModeChange);
+
         positionPicker.start();
         map.panBy(0, 1);
 
-        /* map.addControl(new AMap.ToolBar({
-         liteStyle: true
-         })) */
+
     });
 
+    //保存数据
     function saveData() {
-        var flag = false;
-        //var data = formParams("frm");
-//        var data = $("#frm").serialize();
-        /*var data = formParams("frm");*/
-        var surveyLocaltion = document.getElementById("surveyLocaltion").innerHTML;
-        alert(surveyLocaltion);
+
+        var data = formParams("frm_survey");
+        data.surveyLocaltion = document.getElementById("surveyLocaltion").innerHTML;
 
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyLocale/save",
             type: "post",
             dataType: "json",
-            data: {surveyLocaltion:surveyLocaltion},
+            data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
                     Alert("保存数据成功!", 1, null, function () {
@@ -275,50 +297,53 @@
     }
 </script>
 
+
 <script type="text/javascript">
-    $(function(){
+
+    //附件上传和加载
+    $(function () {
         FileUtils.uploadFiles({
-            target: "apply_file",
+            target: "surveyPicture",
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "apply",
-                projectId: "0"
+                fieldsName: "surveyPicture",
+                projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         });
 
         FileUtils.getFileShows({
-            target: "apply_file",
+            target: "surveyPicture",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "apply",
-                projectId: "0"
+                fieldsName: "surveyPicture",
+                projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })
 
         FileUtils.uploadFiles({
-            target: "apply_file1",
+            target: "surveyImage",
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "apply",
-                projectId: "0"
+                fieldsName: "surveyImage",
+                projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         });
 
         FileUtils.getFileShows({
-            target: "apply_file1",
+            target: "surveyImage",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "apply",
-                projectId: "0"
+                fieldsName: "surveyImage",
+                projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })

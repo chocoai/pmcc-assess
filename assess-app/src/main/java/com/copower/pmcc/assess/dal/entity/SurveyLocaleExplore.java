@@ -11,24 +11,6 @@ public class SurveyLocaleExplore {
 
     private String processInsId;
 
-    private String surveySheetNumber;
-
-    private String surveyPeople;
-
-    private Date surveyTime;
-
-    private String belongWarrant;
-
-    private String ledLuminousPeople;
-
-    private String surveyPicture;
-
-    private String surveyImage;
-
-    private String locationPicture;
-
-    private String surveyLocaltion;
-
     private String creator;
 
     private Date gmtCreated;
@@ -65,78 +47,6 @@ public class SurveyLocaleExplore {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
-    }
-
-    public String getSurveySheetNumber() {
-        return surveySheetNumber;
-    }
-
-    public void setSurveySheetNumber(String surveySheetNumber) {
-        this.surveySheetNumber = surveySheetNumber == null ? null : surveySheetNumber.trim();
-    }
-
-    public String getSurveyPeople() {
-        return surveyPeople;
-    }
-
-    public void setSurveyPeople(String surveyPeople) {
-        this.surveyPeople = surveyPeople == null ? null : surveyPeople.trim();
-    }
-
-    public Date getSurveyTime() {
-        return surveyTime;
-    }
-
-    public void setSurveyTime(Date surveyTime) {
-        this.surveyTime = surveyTime;
-    }
-
-    public String getBelongWarrant() {
-        return belongWarrant;
-    }
-
-    public void setBelongWarrant(String belongWarrant) {
-        this.belongWarrant = belongWarrant == null ? null : belongWarrant.trim();
-    }
-
-    public String getLedLuminousPeople() {
-        return ledLuminousPeople;
-    }
-
-    public void setLedLuminousPeople(String ledLuminousPeople) {
-        this.ledLuminousPeople = ledLuminousPeople == null ? null : ledLuminousPeople.trim();
-    }
-
-    public String getSurveyPicture() {
-        return surveyPicture;
-    }
-
-    public void setSurveyPicture(String surveyPicture) {
-        this.surveyPicture = surveyPicture == null ? null : surveyPicture.trim();
-    }
-
-    public String getSurveyImage() {
-        return surveyImage;
-    }
-
-    public void setSurveyImage(String surveyImage) {
-        this.surveyImage = surveyImage == null ? null : surveyImage.trim();
-    }
-
-    public String getLocationPicture() {
-        return locationPicture;
-    }
-
-    public void setLocationPicture(String locationPicture) {
-        this.locationPicture = locationPicture == null ? null : locationPicture.trim();
-    }
-
-    public String getSurveyLocaltion() {
-        return surveyLocaltion;
-    }
-
-    public void setSurveyLocaltion(String surveyLocaltion) {
-        this.surveyLocaltion = surveyLocaltion == null ? null : surveyLocaltion.trim();
     }
 
     public String getCreator() {

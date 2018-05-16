@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDao;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -31,7 +30,7 @@ public class SurveyLocaleExploreService {
     @Autowired
     private ServiceComponent serviceComponent;
 
-    public boolean save(SurveyLocaleExploreDto surveyLocaleExploreDto, Integer pid) throws BusinessException {
+    public boolean save(SurveyLocaleExplore surveyLocaleExploreDto) throws BusinessException {
         if(surveyLocaleExploreDto == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if(surveyLocaleExploreDto.getId() != null && surveyLocaleExploreDto.getId() > 0){
@@ -57,5 +56,10 @@ public class SurveyLocaleExploreService {
             vo.setRows(CollectionUtils.isEmpty(surveyLocaleExploreList) ? new ArrayList<DataPriceTimepointDescription>() : surveyLocaleExploreList);
             return vo;
 
+    }
+
+    public List<SurveyLocaleExplore> getSurveyLocaleExplore(String processInsId) {
+        List<SurveyLocaleExplore> surveyLocaleExplore = surveyLocaleExploreDao.getSurveyLocaleExplore(processInsId);
+        return surveyLocaleExplore;
     }
 }
