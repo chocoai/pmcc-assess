@@ -26,7 +26,7 @@ public class MyBatisGenerateMapper {
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "zlygeneratorConfig.xml", files);
+        findFiles(System.getProperty("user.dir"), "mygeneratorConfig.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
 

@@ -5,8 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="form_module_id" property="formModuleId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="json_name" property="jsonName" jdbcType="VARCHAR" />
     <result column="display_name" property="displayName" jdbcType="VARCHAR" />
+    <result column="json_name" property="jsonName" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="group_display_name" property="groupDisplayName" jdbcType="VARCHAR" />
     <result column="table_name" property="tableName" jdbcType="VARCHAR" />
     <result column="field_type" property="fieldType" jdbcType="INTEGER" />
     <result column="field_length" property="fieldLength" jdbcType="INTEGER" />
@@ -91,11 +93,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, form_module_id, name, json_name, display_name, table_name, field_type, field_length, 
-    default_value, data_source_sql, sorting, bis_cache_data_source, custom_url, custom_display_url, 
-    data_view_sql, width, list_width, bis_cache_data_view, bis_json, bis_required, bis_show, 
-    bis_list_show, bis_alone_line, bis_query, bis_enable, bis_delete, creator, gmt_created, 
-    gmt_modified
+    id, form_module_id, name, display_name, json_name, group_name, group_display_name, 
+    table_name, field_type, field_length, default_value, data_source_sql, sorting, bis_cache_data_source, 
+    custom_url, custom_display_url, data_view_sql, width, list_width, bis_cache_data_view, 
+    bis_json, bis_required, bis_show, bis_list_show, bis_alone_line, bis_query, bis_enable, 
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseFormModuleFieldExample" >
     select
@@ -131,26 +133,28 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_form_module_field (form_module_id, name, json_name, 
-      display_name, table_name, field_type, 
-      field_length, default_value, data_source_sql, 
-      sorting, bis_cache_data_source, custom_url, 
-      custom_display_url, data_view_sql, width, 
-      list_width, bis_cache_data_view, bis_json, 
-      bis_required, bis_show, bis_list_show, 
-      bis_alone_line, bis_query, bis_enable, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
-    values (#{formModuleId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{jsonName,jdbcType=VARCHAR}, 
-      #{displayName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{fieldType,jdbcType=INTEGER}, 
-      #{fieldLength,jdbcType=INTEGER}, #{defaultValue,jdbcType=VARCHAR}, #{dataSourceSql,jdbcType=VARCHAR}, 
-      #{sorting,jdbcType=INTEGER}, #{bisCacheDataSource,jdbcType=BIT}, #{customUrl,jdbcType=VARCHAR}, 
-      #{customDisplayUrl,jdbcType=VARCHAR}, #{dataViewSql,jdbcType=VARCHAR}, #{width,jdbcType=INTEGER}, 
-      #{listWidth,jdbcType=INTEGER}, #{bisCacheDataView,jdbcType=BIT}, #{bisJson,jdbcType=BIT}, 
-      #{bisRequired,jdbcType=BIT}, #{bisShow,jdbcType=BIT}, #{bisListShow,jdbcType=BIT}, 
-      #{bisAloneLine,jdbcType=BIT}, #{bisQuery,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_base_form_module_field (form_module_id, name, display_name, 
+      json_name, group_name, group_display_name, 
+      table_name, field_type, field_length, 
+      default_value, data_source_sql, sorting, 
+      bis_cache_data_source, custom_url, custom_display_url, 
+      data_view_sql, width, list_width, 
+      bis_cache_data_view, bis_json, bis_required, 
+      bis_show, bis_list_show, bis_alone_line, 
+      bis_query, bis_enable, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{formModuleId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
+      #{jsonName,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupDisplayName,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{fieldType,jdbcType=INTEGER}, #{fieldLength,jdbcType=INTEGER}, 
+      #{defaultValue,jdbcType=VARCHAR}, #{dataSourceSql,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
+      #{bisCacheDataSource,jdbcType=BIT}, #{customUrl,jdbcType=VARCHAR}, #{customDisplayUrl,jdbcType=VARCHAR}, 
+      #{dataViewSql,jdbcType=VARCHAR}, #{width,jdbcType=INTEGER}, #{listWidth,jdbcType=INTEGER}, 
+      #{bisCacheDataView,jdbcType=BIT}, #{bisJson,jdbcType=BIT}, #{bisRequired,jdbcType=BIT}, 
+      #{bisShow,jdbcType=BIT}, #{bisListShow,jdbcType=BIT}, #{bisAloneLine,jdbcType=BIT}, 
+      #{bisQuery,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseFormModuleField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -164,11 +168,17 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="displayName != null" >
+        display_name,
+      </if>
       <if test="jsonName != null" >
         json_name,
       </if>
-      <if test="displayName != null" >
-        display_name,
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="groupDisplayName != null" >
+        group_display_name,
       </if>
       <if test="tableName != null" >
         table_name,
@@ -250,11 +260,17 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
       <if test="jsonName != null" >
         #{jsonName,jdbcType=VARCHAR},
       </if>
-      <if test="displayName != null" >
-        #{displayName,jdbcType=VARCHAR},
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDisplayName != null" >
+        #{groupDisplayName,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null" >
         #{tableName,jdbcType=VARCHAR},
@@ -348,11 +364,17 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.displayName != null" >
+        display_name = #{record.displayName,jdbcType=VARCHAR},
+      </if>
       <if test="record.jsonName != null" >
         json_name = #{record.jsonName,jdbcType=VARCHAR},
       </if>
-      <if test="record.displayName != null" >
-        display_name = #{record.displayName,jdbcType=VARCHAR},
+      <if test="record.groupName != null" >
+        group_name = #{record.groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupDisplayName != null" >
+        group_display_name = #{record.groupDisplayName,jdbcType=VARCHAR},
       </if>
       <if test="record.tableName != null" >
         table_name = #{record.tableName,jdbcType=VARCHAR},
@@ -436,8 +458,10 @@
     set id = #{record.id,jdbcType=INTEGER},
       form_module_id = #{record.formModuleId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      json_name = #{record.jsonName,jdbcType=VARCHAR},
       display_name = #{record.displayName,jdbcType=VARCHAR},
+      json_name = #{record.jsonName,jdbcType=VARCHAR},
+      group_name = #{record.groupName,jdbcType=VARCHAR},
+      group_display_name = #{record.groupDisplayName,jdbcType=VARCHAR},
       table_name = #{record.tableName,jdbcType=VARCHAR},
       field_type = #{record.fieldType,jdbcType=INTEGER},
       field_length = #{record.fieldLength,jdbcType=INTEGER},
@@ -475,11 +499,17 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="displayName != null" >
+        display_name = #{displayName,jdbcType=VARCHAR},
+      </if>
       <if test="jsonName != null" >
         json_name = #{jsonName,jdbcType=VARCHAR},
       </if>
-      <if test="displayName != null" >
-        display_name = #{displayName,jdbcType=VARCHAR},
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDisplayName != null" >
+        group_display_name = #{groupDisplayName,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null" >
         table_name = #{tableName,jdbcType=VARCHAR},
@@ -560,8 +590,10 @@
     update tb_base_form_module_field
     set form_module_id = #{formModuleId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      json_name = #{jsonName,jdbcType=VARCHAR},
       display_name = #{displayName,jdbcType=VARCHAR},
+      json_name = #{jsonName,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      group_display_name = #{groupDisplayName,jdbcType=VARCHAR},
       table_name = #{tableName,jdbcType=VARCHAR},
       field_type = #{fieldType,jdbcType=INTEGER},
       field_length = #{fieldLength,jdbcType=INTEGER},

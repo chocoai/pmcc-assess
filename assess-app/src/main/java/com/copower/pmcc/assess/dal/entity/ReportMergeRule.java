@@ -2,16 +2,18 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class ReportTemplateBookmark {
+public class ReportMergeRule {
     private Integer id;
+
+    private Integer reportType;
 
     private Integer templateId;
 
-    private String name;
+    private Integer sorting;
 
-    private String displayName;
+    private String remark;
 
-    private String valueSql;
+    private String creator;
 
     private Date gmtCreated;
 
@@ -25,6 +27,14 @@ public class ReportTemplateBookmark {
         this.id = id;
     }
 
+    public Integer getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(Integer reportType) {
+        this.reportType = reportType;
+    }
+
     public Integer getTemplateId() {
         return templateId;
     }
@@ -33,28 +43,28 @@ public class ReportTemplateBookmark {
         this.templateId = templateId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getSorting() {
+        return sorting;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName == null ? null : displayName.trim();
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
-    public String getValueSql() {
-        return valueSql;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setValueSql(String valueSql) {
-        this.valueSql = valueSql == null ? null : valueSql.trim();
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

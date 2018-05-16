@@ -241,7 +241,7 @@
 </div>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
-<script src="${pageContext.request.contextPath}/js/assess-form-utils.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/assess-form-utils.dynamic-form-utils.js" type="text/javascript"></script>
 <script type="application/javascript">
     var currProcessId = 0;
     $(function () {
