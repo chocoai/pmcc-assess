@@ -108,7 +108,12 @@
                     <c:forEach items="${dataList.items}" var="item">
                     <table class="table">
                         <tbody>
-                                <h2>四川省成都市锦江区</h2>
+                        <h2>
+                        ${item.provinceName}  ${item.cityName}
+                            <c:if test="${!empty item.districtName}">
+                                ${item.districtName}
+                            </c:if>
+                        </h2>
                                 <tr>
                                     <th>估价对象编号</th>
                                     <th>权证号</th>
@@ -121,7 +126,7 @@
                                     <th>评估方法</th>
                                     <th>操作</th>
                                 </tr>
-                                <c:forEach items="${item}" var="data" varStatus="status">
+                                <c:forEach items="${item.declareRecords}" var="data" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
                                             <td>${data.name}</td>

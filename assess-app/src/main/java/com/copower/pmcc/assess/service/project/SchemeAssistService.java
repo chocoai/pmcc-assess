@@ -38,7 +38,11 @@ public class SchemeAssistService {
     }
 
     public DeclareRecordItems items(){
-        return declareRecordService.items();
+        DeclareRecordItems items = declareRecordService.foreachDeclareRecord();
+        if (items.getItems().size()>0){
+            return items;
+        }
+        return null;
     }
 
     public Collection<DeclareRecord> list(){
