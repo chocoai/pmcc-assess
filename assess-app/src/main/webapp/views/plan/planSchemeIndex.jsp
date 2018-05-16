@@ -105,12 +105,10 @@
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </c:if>
                     </form>
+                    <c:forEach items="${dataList.items}" var="item">
                     <table class="table">
                         <tbody>
-                            <c:forEach items="${dataList.items}" var="item">
-                                <tr>
-                                    <th>四川省成都市锦江区</th>
-                                </tr>
+                                <h2>四川省成都市锦江区</h2>
                                 <tr>
                                     <th>估价对象编号</th>
                                     <th>权证号</th>
@@ -131,7 +129,6 @@
                                             <td>座落</td>
                                             <td>
                                                 <select class="form-control">
-                                                    <option value="" selected="selected">最佳利用设置</option>
                                                     <c:forEach items="${bestusedescriptionList}" var="bestUse">
                                                         <option>${bestUse.name}</option>
                                                     </c:forEach>
@@ -152,9 +149,9 @@
                                             </td>
                                         </tr>
                                 </c:forEach>
-                            </c:forEach>
                         </tbody>
                     </table>
+                    </c:forEach>
                 </div>
             </div>
 

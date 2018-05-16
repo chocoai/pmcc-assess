@@ -47,16 +47,7 @@ public class SchemeAssistService {
         declareRecords.addAll(declareRecordService.queryProvinceCityDistrictAll());
         return declareRecords;
     }
-    public BootstrapTableVo vos(){
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareRecordVo> vos = new ArrayList<>();
-        list().parallelStream().forEach(declareRecord -> vos.add(change(declareRecord)));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DeclareRecordVo>() : vos);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
+
 
     public DeclareRecordVo change(DeclareRecord declareRecord){
         DeclareRecordVo vo = new DeclareRecordVo();
