@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.project.plan.assist;
 
+import com.copower.pmcc.assess.common.DeclareRecordItems;
 import com.copower.pmcc.assess.controller.ControllerComponent;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
@@ -8,6 +10,8 @@ import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -27,8 +31,9 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSchemeIndex", "", 0, "-1", "");
-        modelAndView.addObject("dataList",schemeAssistService.items());
         modelAndView.addObject("bestusedescriptionList",schemeAssistService.dataBestUseDescriptionList());
+        modelAndView.addObject("dataList",schemeAssistService.items());
+        modelAndView.addObject("dataEvaluationMethod",schemeAssistService.evaluationmethod());
         return modelAndView;
     }
 

@@ -153,7 +153,7 @@
 
 
 <!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
