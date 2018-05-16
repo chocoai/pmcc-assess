@@ -183,9 +183,14 @@ public class ProjectInfoService {
             int v = consignorService.add(consignorDto);
             int j = unitInformationService.add(unitInformationDto);
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
-            initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
-            initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
-            initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
+
+            if (consignorDto.getCsType()==1 && possessorDto.getpType()==1){//说明是法人 则不需要更新
+
+            }else {
+                initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
+                initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
+                initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
+            }
 
             //附件更新
             update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
@@ -198,7 +203,12 @@ public class ProjectInfoService {
                 projectInfo.setUnitInformationId(j);
                 projectInfo.setProjectMemberId(k);
                 if (projectInfo.getCreator()==null)projectInfo.setCreator(commonService.thisUserAccount());
-                int id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+
+                int id =0;
+                id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                if (id==0){
+                    id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                }
                 update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
                 initProjectInfo(projectInfo);//初始化项目信息
             } catch (Exception e) {

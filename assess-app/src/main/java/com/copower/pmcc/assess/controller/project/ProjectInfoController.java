@@ -289,7 +289,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getAreaList", name = "联系人 删除", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAreaList", name = "城市 县 get", method = RequestMethod.POST)
     public Object getAreaList(Integer pid) {
         try {
             if (pid != null) {
