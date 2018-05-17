@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -58,8 +60,15 @@ public class BaseAttachmentService {
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private ServletContext servletContext;
 
     private final static String KEEP_UPLOAD_PATH = "Keep";//归档文件存放目录
+    private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
+
+    public static String getTempUploadPath() {
+        return TEMP_UPLOAD_PATH;
+    }
 
     /**
      * 创建不重复的文件名
@@ -69,6 +78,24 @@ public class BaseAttachmentService {
      */
     public String createNoRepeatFileName(String suffix) {
         return UUID.randomUUID().toString().replace("-", "") + DateUtils.formatNowToYMDHMS() + "." + suffix.replaceAll("^\\.", "");
+    }
+
+    /**
+     * 创建文件存放目录
+     *
+     * @param params
+     * @return
+     */
+    public String createBasePath(String... params) {
+        if (params == null || params.length == 0)
+            return "default";
+        String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey();
+        for (String param : params) {
+            filePath += File.separator + StringUtils.defaultIfBlank(param, "default");
+        }
+        //清除当天以外的临时文件
+        FileUtils.folderMake(filePath);
+        return filePath;
     }
 
     /**
@@ -403,7 +430,6 @@ public class BaseAttachmentService {
     }
 
 
-
     /**
      * 原文件存档并更新文件编辑者
      *
@@ -420,7 +446,7 @@ public class BaseAttachmentService {
         String strDay = String.valueOf(DateUtils.getMonthDay(date));
         String targetPath = createFTPBasePath(KEEP_UPLOAD_PATH, strYear, strMonth, strDay, serviceComponent.getThisUser());
         String targetFileName = createNoRepeatFileName(sysAttachment.getFileExtension());
-        ftpUtilsExtense.copyFile(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), targetFileName,targetPath);
+        ftpUtilsExtense.copyFile(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), targetFileName, targetPath);
         BaseAttachmentKeep sysAttachmentKeep = new BaseAttachmentKeep();
         sysAttachmentKeep.setAttachmentId(sysAttachment.getId());
         sysAttachmentKeep.setOwner(sysAttachment.getModifier());//记录的该版本的拥有者
@@ -459,6 +485,7 @@ public class BaseAttachmentService {
 
     /**
      * 获取工作事项的工作模板
+     *
      * @param id
      * @return
      */
@@ -475,6 +502,7 @@ public class BaseAttachmentService {
 
     /**
      * 获取
+     *
      * @param id
      * @return
      */

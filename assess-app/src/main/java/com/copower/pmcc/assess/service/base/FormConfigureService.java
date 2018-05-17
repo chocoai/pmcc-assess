@@ -104,6 +104,11 @@ public class FormConfigureService {
         return baseFormModule;
     }
 
+    public BaseFormModule getBaseFormModuleByName(String name) {
+        return hrBaseFormDao.getBaseFormModuleByName(name);
+    }
+
+
     /**
      * 获取字段信息列表
      *
@@ -294,12 +299,12 @@ public class FormConfigureService {
     public String getDynamicFormHtml(Integer formModuleId, Boolean readOnly, String jsonValue) {
         BaseFormModule hrbaseFormModule = hrBaseFormDao.getBaseFormModule(formModuleId);
         if (hrbaseFormModule != null) {
-            BaseFormModuleField queryParam=new BaseFormModuleField();
+            BaseFormModuleField queryParam = new BaseFormModuleField();
             queryParam.setFormModuleId(hrbaseFormModule.getId());
             queryParam.setBisEnable(true);
             queryParam.setBisDelete(false);
             queryParam.setBisShow(true);
-            List<BaseFormModuleField> hrBaseFormModuleFields =hrBaseFormDao.getBaseFormModuleFields(queryParam);
+            List<BaseFormModuleField> hrBaseFormModuleFields = hrBaseFormDao.getBaseFormModuleFields(queryParam);
             String s = getFormHtmlString(hrbaseFormModule.getTableName(), readOnly, jsonValue, hrBaseFormModuleFields);
             if (s != null) return s;
         }
@@ -623,9 +628,9 @@ public class FormConfigureService {
                 for (BaseFormModuleField formListField : formListFields) {
                     if (formListField.getBisJson()) {
                         if (formListField.getJsonName().equals(stringObjectEntry.getKey())) {
-                            if(stringObjectEntry.getValue()==null){
+                            if (stringObjectEntry.getValue() == null) {
                                 stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s',%s),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
-                            }else {
+                            } else {
                                 stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s','%s'),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
                             }
                         }
@@ -915,6 +920,27 @@ public class FormConfigureService {
         Integer tableId = addObject(formConfigureDetailDto.getTableName(), map);
         //更新附件tableId
         updateAttachmentTableId(formConfigureDetailDto.getTableName(), tableId);
+    }
+
+    /**
+     * 保存单表的动态数据
+     *
+     * @param formConfigureDetailDto
+     * @return
+     */
+    public Integer saveSimpleData(FormConfigureDetailDto formConfigureDetailDto) throws BusinessException {
+        Integer tableId = formConfigureDetailDto.getTableId();
+        Integer primaryId = 0;
+        if (tableId != null && tableId > 0) {
+            List<BaseFormModuleField> formListFields = hrBaseFormDao.getBaseFormModuleFields(formConfigureDetailDto.getFormModuleId());
+            String jsonContentOut = jsonContentOut(formListFields, formConfigureDetailDto.getFormData());
+            JSONObject jsonObject = JSONObject.parseObject(jsonContentOut);
+            updateObject(formConfigureDetailDto.getTableName(), formConfigureDetailDto.getTableId(), formListFields, jsonObject);
+        } else {
+            Map<String, Object> map = jsonStringToMap(formConfigureDetailDto.getFormData());
+            primaryId = addObject(formConfigureDetailDto.getTableName(), map);
+        }
+        return primaryId;
     }
 
     /**

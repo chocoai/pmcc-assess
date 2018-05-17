@@ -975,6 +975,196 @@ public class SurveyLocaleExploreDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andDynamicFormIdIsNull() {
+            addCriterion("dynamic_form_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIsNotNull() {
+            addCriterion("dynamic_form_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdEqualTo(Integer value) {
+            addCriterion("dynamic_form_id =", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <>", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThan(Integer value) {
+            addCriterion("dynamic_form_id >", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id >=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThan(Integer value) {
+            addCriterion("dynamic_form_id <", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIn(List<Integer> values) {
+            addCriterion("dynamic_form_id in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_form_id not in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id not between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNull() {
+            addCriterion("dynamic_table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNotNull() {
+            addCriterion("dynamic_table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdEqualTo(Integer value) {
+            addCriterion("dynamic_table_id =", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <>", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThan(Integer value) {
+            addCriterion("dynamic_table_id >", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id >=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThan(Integer value) {
+            addCriterion("dynamic_table_id <", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIn(List<Integer> values) {
+            addCriterion("dynamic_table_id in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_table_id not in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id not between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNull() {
+            addCriterion("dynamic_table_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNotNull() {
+            addCriterion("dynamic_table_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameEqualTo(String value) {
+            addCriterion("dynamic_table_name =", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotEqualTo(String value) {
+            addCriterion("dynamic_table_name <>", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThan(String value) {
+            addCriterion("dynamic_table_name >", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name >=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThan(String value) {
+            addCriterion("dynamic_table_name <", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name <=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLike(String value) {
+            addCriterion("dynamic_table_name like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotLike(String value) {
+            addCriterion("dynamic_table_name not like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIn(List<String> values) {
+            addCriterion("dynamic_table_name in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotIn(List<String> values) {
+            addCriterion("dynamic_table_name not in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name not between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

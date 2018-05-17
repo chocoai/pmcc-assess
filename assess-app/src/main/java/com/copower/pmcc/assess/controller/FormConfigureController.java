@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller;
 
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -30,6 +33,8 @@ public class FormConfigureController {
     private ControllerComponent controllerComponent;
     @Autowired
     private FormConfigureService formConfigureService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -272,4 +277,28 @@ public class FormConfigureController {
     public BootstrapTableVo getDetailInfoList(String tableName, String foreignKeyName, Integer foreignKeyValue, Integer formModuleId) {
         return formConfigureService.getDetailInfoList(tableName, foreignKeyName, foreignKeyValue, formModuleId);
     }
+
+
+    /**
+     * 获取字典中的动态表单信息
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getDataDicFormInfo", method = RequestMethod.POST)
+    public HttpResult getDataDicFormInfo(Integer baseDataDicId) {
+        try {
+            BaseFormModuleVo baseFormModuleVo=new BaseFormModuleVo();
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(baseDataDicId);
+            BaseFormModule baseFormModule = formConfigureService.getBaseFormModuleByName(baseDataDic.getItemKey());
+            baseFormModuleVo.setId(baseFormModule.getId());
+            baseFormModuleVo.setTableId(0);
+            baseFormModuleVo.setTableName(baseFormModule.getTableName());
+            baseFormModuleVo.setFieldVos(formConfigureService.getListFieldsShow(baseFormModule.getId()));
+            return HttpResult.newCorrectResult(baseFormModuleVo);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }

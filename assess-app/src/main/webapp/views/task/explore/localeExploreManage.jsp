@@ -4,55 +4,24 @@
 <html>
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/positionPicker.html -->
-    <!-- <base href="//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/" /> -->
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <%--<script type="text/javascript"--%>
-            <%--src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>--%>
-    <%--<!-- UI组件库 1.0 -->--%>
-    <%--<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>--%>
-
-    <style>
-        .map {
-            height: 30%;
-            width: 20%;
-        }
-
-        #right {
-            color: #444;
-            background-color: #f8f8f8;
-            width: 20%;
-            height: 60%;
-        }
-
-        #right input {
-            margin: 4px;
-            margin-left: 15px;
-        }
-
-        /* button {
-             border: solid 1px;
-             margin-left: 15px;
-             background-color: #dadafa;
-         }*/
-
-        .c {
-            font-weight: 600;
-            padding-left: 15px;
-            padding-top: 4px;
-        }
-
-    </style>
 </head>
-
 <body>
-
-<%--<div id="containerMap" class="map" tabindex="0"></div>--%>
-
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
+            <div class="x_panel" style="display: none;">
+                <div class="x_title">
+                    <h2>查勘明细</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="frm_dynamic_content" class="form-horizontal">
+
+                    </form>
+                </div>
+            </div>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -60,15 +29,24 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <button type="button" class="btn btn-primary" onclick="selectDynamicForm()">
+                        选择表单模板
+                    </button>
                     <form id="frm_survey" class="form-horizontal">
                         <input type="hidden" name="id" value="${surveyLocaleExploreDetail.id}">
+                        <input type="hidden" name="dynamicFormId" value="${surveyLocaleExploreDetail.dynamicFormId}">
+                        <input type="hidden" name="dynamicTableId" value="${surveyLocaleExploreDetail.dynamicTableId}">
+                        <input type="hidden" name="dynamicTableName" value="${surveyLocaleExploreDetail.dynamicTableName}">
                         <input type="hidden" name="planDetailsId" value="${planDetailsId}">
+                        <input type="hidden" id="surveyLocaltion" name="surveyLocaltion"
+                               value="${surveyLocaleExploreDetail.surveyLocaltion}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50" placeholder="查勘人"
-                                           id="surveyPeople" name="surveyPeople" value="${surveyLocaleExploreDetail.surveyPeople}"
+                                           id="surveyPeople" name="surveyPeople" required
+                                           value="${surveyLocaleExploreDetail.surveyPeople}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -76,7 +54,7 @@
                                 <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input placeholder="查勘时间" id="surveyTime" name="surveyTime"
-                                           data-date-format="yyyy-mm-dd"
+                                           data-date-format="yyyy-mm-dd" required
                                            value="<fmt:formatDate value="${surveyLocaleExploreDetail.surveyTime}"   pattern="yyyy-MM-dd"/>"
                                            class="form-control date-picker dbdate" readonly="readonly">
                                 </div>
@@ -84,8 +62,9 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">领勘人<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50" placeholder="领勘人"
-                                           id="ledLuminousPeople" name="ledLuminousPeople" value="${surveyLocaleExploreDetail.ledLuminousPeople}"
+                                    <input type="text" data-rule-maxlength="50" placeholder="领勘人" required
+                                           id="ledLuminousPeople" name="ledLuminousPeople"
+                                           value="${surveyLocaleExploreDetail.ledLuminousPeople}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -106,12 +85,45 @@
                                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50" placeholder="楼盘名称"
-                                           id="houseName" name="houseName" value="${surveyLocaleExploreDetail.houseName}"
+                                           id="houseName" name="houseName" required
+                                           value="${surveyLocaleExploreDetail.houseName}"
                                            class="form-control">
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                查勘定位
+                            </label>
+                            <div class="col-sm-11">
+                                <c:if test="${surveyLocaleExploreDetail.id eq 0}">
+                                    <iframe src="${pageContext.request.contextPath}/map/positionPicker?position=${surveyLocaleExploreDetail.surveyLocaltion}"
+                                            width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
+                                            marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
+                                </c:if>
+                                <c:if test="${surveyLocaleExploreDetail.id ne 0}">
+                                    <div id="_surveyLocaltion">
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            //显示定位图片
+                                            loadSurveyLocaltionFiles();
+                                        })
+                                        function loadSurveyLocaltionFiles() {
+                                            FileUtils.getFileShows({
+                                                target: "surveyLocaltion",
+                                                formData: {
+                                                    tableName: "tb_survey_locale_explore_detail",
+                                                    tableId: ${surveyLocaleExploreDetail.id},
+                                                    fieldsName: "survey_localtion"
+                                                },
+                                                deleteFlag: false
+                                            })
+                                        }
+                                    </script>
+                                </c:if>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 查勘图像上传
@@ -134,35 +146,14 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
-
-            <%--<div id="tip"></div>--%>
-            <%--<div id='right'>--%>
-                <%--<div>--%>
-                    <%--<div class='c'>经纬度:</div>--%>
-                    <%--<div id='lnglat'></div>--%>
-                    <%--<div class='c'>地址:</div>--%>
-                    <%--<div id='surveyLocaltion' name="surveyLocaltion"></div>--%>
-                    <%--<div class='c'>最近的路口:</div>--%>
-                    <%--<div id='nearestJunction'></div>--%>
-                    <%--<div class='c'>最近的路:</div>--%>
-                    <%--<div id='nearestRoad'></div>--%>
-                    <%--<div class='c'>最近的POI:</div>--%>
-                    <%--<div id='nearestPOI'></div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
                         <button id="saveFrm" type="button" class="btn btn-primary" onclick="saveData()">
                             保存
                         </button>
@@ -174,84 +165,21 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
-
-    //高德地图接入定位
-//    AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
-//        //var map = new AMap.Map('container', {
-//        //     zoom: 16,
-//        //     scrollWheel: false
-//        // })
-//
-//        var map, geolocation;
-//        //加载地图，调用浏览器定位服务
-//        map = new AMap.Map('containerMap', {
-//            zoom: 14,
-//            resizeEnable: true,
-//
-//        });
-//        map.plugin('AMap.Geolocation', function () {
-//            geolocation = new AMap.Geolocation({
-//                enableHighAccuracy: true,//是否使用高精度定位，默认:true
-//                timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-//                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-//                zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-//                buttonPosition: 'RB'
-//            });
-//            map.addControl(geolocation);
-//            geolocation.getCurrentPosition();
-//            AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-//            AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-//        });
-//        //解析定位结果
-//        function onComplete(data) {
-//            var str = ['定位成功'];
-//            str.push('经度：' + data.position.getLng());
-//            str.push('纬度：' + data.position.getLat());
-//            if (data.accuracy) {
-//                str.push('精度：' + data.accuracy + ' 米');
-//            }//如为IP精确定位结果则没有精度信息
-//            str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-//            document.getElementById('tip').innerHTML = str.join('<br>');
-//        }
-//
-//        //解析定位错误信息
-//        function onError(data) {
-//            document.getElementById('tip').innerHTML = '定位失败';
-//        }
-//
-//
-//        var positionPicker = new PositionPicker({
-//            mode: 'dragMap',
-//            map: map
-//        });
-//
-//        positionPicker.on('success', function (positionResult) {
-//            document.getElementById('lnglat').innerHTML = positionResult.position;
-//            document.getElementById('surveyLocaltion').innerHTML = positionResult.address;
-//            document.getElementById('nearestJunction').innerHTML = positionResult.nearestJunction;
-//            document.getElementById('nearestRoad').innerHTML = positionResult.nearestRoad;
-//            document.getElementById('nearestPOI').innerHTML = positionResult.nearestPOI;
-//        });
-//        positionPicker.on('fail', function (positionResult) {
-//            document.getElementById('lnglat').innerHTML = ' ';
-//            document.getElementById('address').innerHTML = ' ';
-//            document.getElementById('nearestJunction').innerHTML = ' ';
-//            document.getElementById('nearestRoad').innerHTML = ' ';
-//            document.getElementById('nearestPOI').innerHTML = ' ';
-//        });
-//
-//        positionPicker.start();
-//        map.panBy(0, 1);
-//
-//
-//    });
 
     //保存数据
     function saveData() {
+        if (!$("#frm_dynamic_content").valid()) {
+            return false;
+        }
+        if (!$("#frm_survey").valid()) {
+            return false;
+        }
+        var dynamicFormData = formParams("frm_dynamic_content");
         var data = formParams("frm_survey");
-        //data.surveyLocaltion = document.getElementById("surveyLocaltion").innerHTML;
+        data.dynamicFormData = dynamicFormData;
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyLocale/save",
             type: "post",
@@ -271,7 +199,49 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
 
+    //选择动态表单模板
+    function selectDynamicForm() {
+        assessDataDic.select({
+            key: "assess.class",
+            onSelected: function (nodes) {
+                if (nodes) {
+                    var node = nodes[0];
+                    var form=$("#frm_survey");
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/formConfigure/getDataDicFormInfo",
+                        type: "post",
+                        dataType: "json",
+                        data: {baseDataDicId: node.id},
+                        success: function (result) {
+                            if (result.ret) {
+                                form.find('[name=dynamicFormId]').val(node.id);
+                                form.find('[name=dynamicTableId]').val(result.data.tableId);
+                                form.find('[name=dynamicTableName]').val(result.data.tableName);
+                                FormConfigureUtils.getDynamicFormHtml({
+                                    formModuleId: result.data.id,
+                                    readOnly: false,
+                                    jsonValue: result.data.fieldVos,
+                                    success: function (html) {
+                                        $("#frm_dynamic_content").append(html).closest('.x_panel').show();
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    //map选址成功回调
+    function positionPickerSuccess(positionResult) {
+        $("#surveyLocaltion").val(positionResult.position);
+    }
+    //map选址失败回调
+    function positionPickerFail(positionResult) {
+        //暂不处理
     }
 </script>
 
@@ -290,8 +260,8 @@
                 fieldsName: "survey_image"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadSurveyImageFiles();
             }
         });
@@ -306,8 +276,8 @@
                 fieldsName: "survey_video"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadSurveyVideoFiles();
             }
         });

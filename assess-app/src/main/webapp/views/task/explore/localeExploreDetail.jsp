@@ -109,7 +109,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                查勘定位
+                            </label>
+                            <div class="col-sm-11">
+                                <jsp:include page="/views/share/tools/mapPositionPicker.jsp"></jsp:include>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 查勘图像上传

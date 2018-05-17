@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
+import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -62,7 +63,7 @@ public class SurveyLocaleExploreController {
     @RequestMapping(value = "/save", name = "新增和修改现场查勘", method = RequestMethod.POST)
     public HttpResult save(String formData) {
         try {
-            SurveyLocaleExploreDetail surveyLocaleExploreDetail = JSON.parseObject(formData, SurveyLocaleExploreDetail.class);
+            SurveyLocaleExploreDetailDto surveyLocaleExploreDetail = JSON.parseObject(formData, SurveyLocaleExploreDetailDto.class);
             surveyLocaleExploreDetailService.save(surveyLocaleExploreDetail);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

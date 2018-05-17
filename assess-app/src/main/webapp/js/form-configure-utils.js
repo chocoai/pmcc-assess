@@ -64,7 +64,7 @@
                 beforeEdit: function () {
 
                 },
-                beforeView:function () {
+                beforeView: function () {
 
                 }
             };
@@ -104,7 +104,7 @@
                         }
                     }
                 });
-            }else{
+            } else {
                 cols.push({
                     field: 'opt', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';

@@ -29,6 +29,12 @@ public class SurveyLocaleExploreDetail {
 
     private String houseName;
 
+    private Integer dynamicFormId;
+
+    private Integer dynamicTableId;
+
+    private String dynamicTableName;
+
     private String creator;
 
     private Date gmtCreated;
@@ -137,6 +143,30 @@ public class SurveyLocaleExploreDetail {
 
     public void setHouseName(String houseName) {
         this.houseName = houseName == null ? null : houseName.trim();
+    }
+
+    public Integer getDynamicFormId() {
+        return dynamicFormId;
+    }
+
+    public void setDynamicFormId(Integer dynamicFormId) {
+        this.dynamicFormId = dynamicFormId;
+    }
+
+    public Integer getDynamicTableId() {
+        return dynamicTableId;
+    }
+
+    public void setDynamicTableId(Integer dynamicTableId) {
+        this.dynamicTableId = dynamicTableId;
+    }
+
+    public String getDynamicTableName() {
+        return dynamicTableName;
+    }
+
+    public void setDynamicTableName(String dynamicTableName) {
+        this.dynamicTableName = dynamicTableName == null ? null : dynamicTableName.trim();
     }
 
     public String getCreator() {

@@ -153,20 +153,14 @@
 
     function loadSurveyList() {
         var cols = [];
-        cols.push({field: 'id', title: '查勘单编号'});
         cols.push({field: 'surveyPeople', title: '查勘人'});
-
         cols.push({
             field: 'surveyTime', title: '查勘时间', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
-        cols.push({field: 'belongWarrant', title: '所属权证'});
         cols.push({field: 'ledLuminousPeople', title: '领勘人'});
-        cols.push({field: 'surveyPicture', title: '查勘图片'});
-        cols.push({field: 'surveyImage', title: '查勘图像'});
-        cols.push({field: 'locationPicture', title: '位置图片'});
-        cols.push({field: 'surveyLocaltion', title: '查勘位置'});
+        cols.push({field: 'houseName', title: '楼盘名称'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
