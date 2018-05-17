@@ -14,9 +14,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-
-
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -24,18 +21,15 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                        <div class="form-group">
-                            <div class="col-sm-3">
-                                <%--<button type="button" class="btn btn-success" onclick="addData()"
-                                        data-toggle="modal" href="#divBox"> 新增</button>--%>
-                                <a class="btn btn-success" href="${pageContext.request.contextPath}/surveyLocale/index?responsibilityId=${responsibilityId}" target="_blank">
-                                    新增
-                                </a>
-                            </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <a class="btn btn-success" onclick="addData();" href="javascript://">
+                                新增
+                            </a>
                         </div>
+                    </div>
                 </div>
             </div>
-
             <div class="x_panel">
                 <table class="table table-bordered" id="tb_List">
                     <!-- cerare document add ajax data-->
@@ -92,8 +86,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
-
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -107,16 +99,17 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<%--<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>--%>
 <script type="application/javascript">
 
     $(function () {
-        loadDataDicList();
-
+        loadSurveyList();
         $("#frm_task").validate();
 
+        loadUploadFiles();
+        //上传附件
         FileUtils.uploadFiles({
             target: "apply_file",
+            showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_project_plan_details",
@@ -125,73 +118,31 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
+        },{
+            onUploadComplete:function () {
+                loadUploadFiles();
+            }
         });
-
-        FileUtils.getFileShows({
-            target: "apply_file",
-            formData: {
-                tableName: "tb_project_plan_details",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-
-        //查勘图片
-        FileUtils.uploadFiles({
-            target: "surveyPicture",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_survey_locale_explore_detail",
-                tableId: 0,
-                fieldsName: "surveyPicture",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
-
-        FileUtils.getFileShows({
-            target: "surveyPicture",
-            formData: {
-                tableName: "tb_survey_locale_explore_detail",
-                tableId: 0,
-                fieldsName: "surveyPicture",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-
-        FileUtils.uploadFiles({
-            target: "surveyImage",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_survey_locale_explore_detail",
-                tableId: 0,
-                fieldsName: "surveyImage",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
-
-        FileUtils.getFileShows({
-            target: "surveyImage",
-            formData: {
-                tableName: "tb_survey_locale_explore_detail",
-                tableId: 0,
-                fieldsName: "surveyImage",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
     });
 
+    //显示附件
+    function loadUploadFiles() {
+        FileUtils.getFileShows({
+            target: "apply_file",
+            formData: {
+                tableName: "tb_project_plan_details",
+                tableId: ${projectPlanDetails.id},
+                fieldsName: "apply",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+    }
 
     function submit() {
         if (!$("#frm_task").valid()) {
             return false;
         }
-
         if ("${processInsId}" != "0") {
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
@@ -200,7 +151,7 @@
         }
     }
 
-    function loadDataDicList() {
+    function loadSurveyList() {
         var cols = [];
         cols.push({field: 'id', title: '查勘单编号'});
         cols.push({field: 'surveyPeople', title: '查勘人'});
@@ -210,18 +161,16 @@
                 return formatDate(value, false);
             }
         });
-
         cols.push({field: 'belongWarrant', title: '所属权证'});
         cols.push({field: 'ledLuminousPeople', title: '领勘人'});
         cols.push({field: 'surveyPicture', title: '查勘图片'});
         cols.push({field: 'surveyImage', title: '查勘图像'});
         cols.push({field: 'locationPicture', title: '位置图片'});
         cols.push({field: 'surveyLocaltion', title: '查勘位置'});
-
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                /*str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';*/
+                str += '<a class="btn btn-xs btn-success" href="javascript:editData(' + row.id + ');" >编辑</i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:delData(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
@@ -229,13 +178,21 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/surveyLocale/list", cols, {
-            mainId: ${empty surveyLocaleExplore.id?0:surveyLocaleExplore.id}
+            planDetailsId: ${projectPlanDetails.id}
 
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+    }
+
+    function addData() {
+        window.open("${pageContext.request.contextPath}/surveyLocale/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}");
+    }
+
+    function editData(id) {
+        window.open("${pageContext.request.contextPath}/surveyLocale/index?projectId=${projectId}&id=" + id);
     }
 
     function delData(id, tbId) {
@@ -250,8 +207,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadDataDicList();//重载 (刷新)
-                        $('#' + tbId).bootstrapTable("refresh");
+                        loadSurveyList();//重载 (刷新)
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
