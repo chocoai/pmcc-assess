@@ -73,7 +73,12 @@ public class SurveyLocaleExploreDetailService {
                 surveyLocaleExploreDetail.setSurveyImage(""+surveyImage);
             }
             surveyLocaleExploreDetail.setCreator(serviceComponent.getThisUser());
-            return surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
+            boolean flag = surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
+            baseAttachment.setTableId(surveyLocaleExploreDetail.getId());
+            baseAttachment1.setTableId(surveyLocaleExploreDetail.getId());
+            baseAttachmentDao.updateAttachment(baseAttachment);
+            baseAttachmentDao.updateAttachment(baseAttachment1);
+            return flag;
         }
     }
 
