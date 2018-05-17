@@ -105,8 +105,11 @@
         
         $("#frm_task").validate();
 
+        loadUploadFiles();
+        //上传附件
         FileUtils.uploadFiles({
             target: "apply_file",
+            showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_project_plan_details",
@@ -115,8 +118,14 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
+        },{
+            onUploadComplete:function () {
+                loadUploadFiles();
+            }
         });
-
+    });
+    //显示附件
+    function loadUploadFiles() {
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
@@ -127,7 +136,7 @@
             },
             deleteFlag: true
         })
-    });
+    }
 
 
     function submit() {

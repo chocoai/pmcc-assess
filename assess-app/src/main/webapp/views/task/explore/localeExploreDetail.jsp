@@ -8,10 +8,10 @@
     <!-- <base href="//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/" /> -->
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript"
-            src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>
-    <!-- UI组件库 1.0 -->
-    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <%--<script type="text/javascript"--%>
+            <%--src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>--%>
+    <%--<!-- UI组件库 1.0 -->--%>
+    <%--<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>--%>
 
     <style>
         .map {
@@ -48,72 +48,54 @@
 
 <body>
 
-<div id="containerMap" class="map" tabindex="0"></div>
+<%--<div id="containerMap" class="map" tabindex="0"></div>--%>
 
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-
-
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>查勘信息</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
                     <form id="frm_survey" class="form-horizontal">
-                        <input type="hidden" name="planDetailId" value="${projectPlanDetails.planId}">
-                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                        <input type="hidden" name="processInsId" value="${projectPlanDetails.processInsId}">
-
+                        <input type="hidden" name="planDetailsId" value="${planDetailsId}">
                         <div class="form-group">
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50" placeholder="查勘人"
-                                           id="surveyPeople" name="surveyPeople"
+                                           id="surveyPeople" name="surveyPeople" value="${surveyLocaleExploreDetail.surveyPeople}"
                                            class="form-control">
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input placeholder="查勘时间" id="surveyTime" name="surveyTime"
-                                           data-date-format="yyyy-mm-dd"
+                                           data-date-format="yyyy-mm-dd" value="${surveyLocaleExploreDetail.surveyPeople}"
                                            class="form-control date-picker dbdate" readonly="readonly">
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">领勘人<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50" placeholder="领勘人"
-                                           id="ledLuminousPeople" name="ledLuminousPeople"
+                                           id="ledLuminousPeople" name="ledLuminousPeople" value="${surveyLocaleExploreDetail.surveyPeople}"
                                            class="form-control">
                                 </div>
                             </div>
-
                         </div>
                         <div class="form-group">
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">相关权证<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-
                                     <c:forEach items="${declareRecords}" var="item">
                                         <input type="checkbox" name="correlationCard" value="${item.id}">${item.name}
                                     </c:forEach>
-
-                                    <%--<select id="correlationCard" name="correlationCard" class="form-control" required="required" multiple="true">--%>
-                                    <%--<c:forEach items="${declareRecords}" var="item">--%>
-                                    <%--<option value="${item.id}" selected="selected">${item.name}</option>--%>
-                                    <%--</c:forEach>--%>
-                                    <%--</select>--%>
                                 </div>
                             </div>
                         </div>
@@ -122,8 +104,30 @@
                                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50" placeholder="楼盘名称"
-                                           id="houseName" name="houseName"
+                                           id="houseName" name="houseName" value="${surveyLocaleExploreDetail.surveyPeople}"
                                            class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                查勘图像上传
+                            </label>
+                            <div class="col-sm-11">
+                                <input id="surveyImage" name="surveyImage" type="file" multiple="false">
+                                <div id="_surveyImage">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                查勘视频上传
+                            </label>
+                            <div class="col-sm-11">
+                                <input id="surveyVideo" name="surveyPicture" type="file" multiple="false">
+                                <div id="_surveyVideo">
                                 </div>
                             </div>
                         </div>
@@ -132,49 +136,23 @@
                 </div>
             </div>
 
-            <div id="tip"></div>
-            <div id='right'>
-                <div>
-                    <div class='c'>经纬度:</div>
-                    <div id='lnglat'></div>
-                    <div class='c'>地址:</div>
-                    <div id='surveyLocaltion' name="surveyLocaltion"></div>
-                    <div class='c'>最近的路口:</div>
-                    <div id='nearestJunction'></div>
-                    <div class='c'>最近的路:</div>
-                    <div id='nearestRoad'></div>
-                    <div class='c'>最近的POI:</div>
-                    <div id='nearestPOI'></div>
-                </div>
-            </div>
+            <%--<div id="tip"></div>--%>
+            <%--<div id='right'>--%>
+                <%--<div>--%>
+                    <%--<div class='c'>经纬度:</div>--%>
+                    <%--<div id='lnglat'></div>--%>
+                    <%--<div class='c'>地址:</div>--%>
+                    <%--<div id='surveyLocaltion' name="surveyLocaltion"></div>--%>
+                    <%--<div class='c'>最近的路口:</div>--%>
+                    <%--<div id='nearestJunction'></div>--%>
+                    <%--<div class='c'>最近的路:</div>--%>
+                    <%--<div id='nearestRoad'></div>--%>
+                    <%--<div class='c'>最近的POI:</div>--%>
+                    <%--<div id='nearestPOI'></div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
-            <div class="x_content">
-                <form id="frm_upload" class="form-horizontal">
 
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label">
-                            查勘图片上传
-                        </label>
-                        <div class="col-sm-11">
-                            <input id="surveyPicture" name="surveyPicture" type="file" multiple="false">
-                            <div id="_surveyPicture">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label">
-                            查勘图像上传
-                        </label>
-                        <div class="col-sm-11">
-                            <input id="surveyImage" name="surveyImage" type="file" multiple="false">
-                            <div id="_surveyImage">
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
 
             <div class="x_panel">
                 <div class="x_content">
@@ -270,10 +248,8 @@
 
     //保存数据
     function saveData() {
-
         var data = formParams("frm_survey");
         data.surveyLocaltion = document.getElementById("surveyLocaltion").innerHTML;
-
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyLocale/save",
             type: "post",
@@ -308,22 +284,10 @@
             formData: {
                 tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "surveyPicture",
-                projectId: "${projectPlanDetails.projectId}"
+                fieldsName: "survey_video"
             },
             deleteFlag: true
         });
-
-        FileUtils.getFileShows({
-            target: "surveyPicture",
-            formData: {
-                tableName: "tb_survey_locale_explore",
-                tableId: 0,
-                fieldsName: "surveyPicture",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
 
         FileUtils.uploadFiles({
             target: "surveyImage",
@@ -331,8 +295,7 @@
             formData: {
                 tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "surveyImage",
-                projectId: "${projectPlanDetails.projectId}"
+                fieldsName: "surveyImage"
             },
             deleteFlag: true
         });
@@ -342,14 +305,37 @@
             formData: {
                 tableName: "tb_survey_locale_explore",
                 tableId: 0,
-                fieldsName: "surveyImage",
-                projectId: "${projectPlanDetails.projectId}"
+                fieldsName: "surveyImage"
             },
             deleteFlag: true
         })
-
     });
 
+    //显示图片附件
+    function loadSurveyImageFiles() {
+        FileUtils.getFileShows({
+            target: "surveyImage",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: ${surveyLocaleExploreDetail.id},
+                fieldsName: "survey_image"
+            },
+            deleteFlag: true
+        })
+    }
+
+    //显示图片附件
+    function loadSurveyVideoFiles() {
+        FileUtils.getFileShows({
+            target: "surveyImage",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: ${surveyLocaleExploreDetail.id},
+                fieldsName: "survey_video"
+            },
+            deleteFlag: true
+        })
+    }
 
 </script>
 </html>

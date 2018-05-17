@@ -7,7 +7,7 @@ public class SurveyLocaleExplore {
 
     private Integer projectId;
 
-    private Integer planDetailId;
+    private Integer planDetailsId;
 
     private String processInsId;
 
@@ -33,12 +33,12 @@ public class SurveyLocaleExplore {
         this.projectId = projectId;
     }
 
-    public Integer getPlanDetailId() {
-        return planDetailId;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setPlanDetailId(Integer planDetailId) {
-        this.planDetailId = planDetailId;
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getProcessInsId() {
