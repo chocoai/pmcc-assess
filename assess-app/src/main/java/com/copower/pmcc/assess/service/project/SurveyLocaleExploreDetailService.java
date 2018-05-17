@@ -34,8 +34,6 @@ public class SurveyLocaleExploreDetailService {
     private ServiceComponent serviceComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
 
     public SurveyLocaleExploreDetail getSingelDetail(Integer id) {
         return surveyLocaleExploreDetailDao.getSingelDetail(id);
