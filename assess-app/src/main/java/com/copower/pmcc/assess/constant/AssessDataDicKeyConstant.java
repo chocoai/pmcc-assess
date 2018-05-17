@@ -29,5 +29,8 @@ public class AssessDataDicKeyConstant {
     public static final String VALUE_TYPE = "value.type";  //价值类型
     public static final String CHECK_CONTENT = "check.content"; //清查内容
 
+    //案例相关
+    public static final String CASE_TYPE = "case.type";  //案例类型
+    public static final String CASE_INFO_SOURCE = "case.info.source";  //案例来源
 
 }

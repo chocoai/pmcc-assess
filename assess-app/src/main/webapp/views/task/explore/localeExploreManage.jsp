@@ -261,6 +261,7 @@
                 if (result.ret) {
                     Alert("保存数据成功!", 1, null, function () {
                         window.close();
+                        window.opener.location.reload();
                     });
                 }
                 else {
