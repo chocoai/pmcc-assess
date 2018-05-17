@@ -208,7 +208,7 @@
 
 
                                 <c:forEach items="${dataEvaluationMethod}" var="item">
-                                    <div class="form-group panel">
+                                    <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-3 control-label" >
                                                 ${item.name}
@@ -223,50 +223,51 @@
                                     </div>
 
                                     <div class="form-group" id="applyTemplateView${item.id}">
-                                        <div class="x-valid">
-                                            <label class="col-sm-3 control-label">
-                                                适用原因模板
-                                                <span class="input-group-btn">
-                                            <button type="button" id="applyTemplate${item.id}" class="btn btn-primary">选择模板</button>
-                                            </span>
-                                            </label>
-                                            <div class="col-sm-9">
-                                            <textarea required="required" placeholder="请填写适用原因" class="form-control"  name="applicableReason">
+                                        <label class="col-sm-3 control-label">
+                                            适用原因模板
+                                            <span class="input-group-btn">
+                                                    <button type="button" id="applyTemplate${item.id}" class="btn btn-primary">选择模板</button>
+                                                </span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                                <textarea required="required" placeholder="请填写适用原因" class="form-control" id="applicableReason${item.id}"  name="applicableReason">
 
-                                            </textarea>
-                                            </div>
+                                                </textarea>
                                         </div>
                                     </div>
                                     <div class="form-group" id="applyNoTemplateView${item.id}">
-                                        <div class="x-valid">
+                                        <div class="x-valid" >
                                             <label class="col-sm-3 control-label">
                                                 适用不原因模板
                                                 <span class="input-group-btn">
-                                            <button type="button" id="applyNoTemplate${item.id}" class="btn btn-primary">选择模板</button>
-                                            </span>
+                                                    <button type="button" id="applyNoTemplate${item.id}" class="btn btn-primary">选择模板</button>
+                                                </span>
                                             </label>
                                             <div class="col-sm-9">
-                                            <textarea required="required" placeholder="请填写不适用原因" class="form-control" name="applicableReasonNo">
+                                                <textarea required="required" placeholder="请填写不适用原因" class="form-control" id="applicableReasonNo${item.id}" name="applicableReasonNo">
 
-                                            </textarea>
+                                                </textarea>
                                             </div>
                                         </div>
                                     </div>
-                                </c:forEach>
+                                    <div class="form-group" id="thinkField${item.id}">
+                                        <div id="thinkFieldWrite${item.id}" >
 
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            评估思路
-                                        </label>
-                                        <label class="col-sm-9 control-label">
-                                            <input type="hidden" id="methodName">
-                                            <input type="hidden" id="methodID">
-                                            <label class="btn btn-success" onclick="evaluationthinking()">思路选择</label>
-                                        </label>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="form-group" id="thinkView${item.id}">
+                                        <div class="x-valid" >
+                                            <label class="col-sm-3 control-label">
+                                                评估思路
+                                            </label>
+                                            <label class="col-sm-9 control-label">
+                                                <label class="btn btn-success" onclick="evaluationthinking()">思路选择</label>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </c:forEach>
 
                             </div>
                         </div>
@@ -298,11 +299,33 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="modal-title" id="ThinkNameSHOW"></h3>
                             <div class="panel-body">
-                                <div class="form-group">
+                                <div class="form-group" >
                                     <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            评估技术思路
+                                        </label>
 
+                                        <div class="col-sm-9">
+                                            <select class="form-control" id="EvaluationThinkSelect">
+                                                <c:forEach items="${dataEvaluationThink}" var="item">
+                                                    <option value="${item.id}" name="evaluationThink">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" >
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            模板
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" placeholder="模板显示数据" id="evaluationThinkTemple">
+
+                                            </textarea>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -314,7 +337,40 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default" onclick="evaluationthinkingClose()">
                         关闭
                     </button>
-                    <button type="button" class="btn btn-primary" >
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="evaluationthinkingSave()">
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 模板 -->
+<div id="divTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="170">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="templateShow"></h4>
+                <input type="hidden" id="templateID">
+            </div>
+            <form id="frmTemplate" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body" id="templatePanel">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" onclick="divTemplateClose()" class="btn btn-default">
+                        关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="evaluationmethodSave()" >
                         确认
                     </button>
                 </div>
@@ -617,23 +673,156 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
+
+    //方法 save
+    function evaluationmethodSave() {
+        var frmTemplate = formParams("frmTemplate");
+        var templateID = document.getElementById("templateID").value;
+        if (templateID!=null && templateID!=''){
+            var applicableReason = document.getElementById("applicableReason"+templateID);
+            var applicableReasonNo = document.getElementById("applicableReasonNo"+templateID);
+            applicableReason.value = "";
+            applicableReasonNo.value = "";
+            var methodType = frmTemplate.methodType;
+            var methodNOType = frmTemplate.methodNOType;
+            if (methodType!=null && methodType!='' && methodType!=""){
+                applicableReason.value = methodType;
+            }else if (methodNOType!=null && methodNOType!='' && methodNOType!=""){
+                applicableReasonNo.value = methodNOType;
+            }
+        }
+        document.getElementById("divTemplate").style.display = "none";
+        //加载方法字段
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/fieldList",
+            data: {
+                id: templateID
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                var thinkFieldWriteID = "thinkFieldWrite"+templateID;
+                var thinkFieldElement = document.getElementById(thinkFieldWriteID);
+                thinkFieldElement.innerHTML = "";
+                for(var i = 0;i<result.length;i++){
+                    var data = result[i];
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","col-sm"+(12/result.length));
+                    divElement.appendChild(document.createTextNode(data.name));
+                    var inputElement = document.createElement("input");
+                    inputElement.setAttribute("name","fieldName");
+                    inputElement.setAttribute("type","text");
+                    inputElement.setAttribute("size","12");
+//                    inputElement.setAttribute("class","form-control");
+                    inputElement.setAttribute("placeholder","自定义字段");
+                    divElement.appendChild(inputElement);
+                    divElement.appendChild(document.createElement("br"));
+                    thinkFieldElement.appendChild(divElement);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+        $("#thinkField"+templateID).show();
+    }
+
+    //方法选择
+    function evaluationmethodSelect(id) {
+        document.getElementById("templateID").value = id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/getList",
+            data: {
+                id: id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                    var templatePanel = document.getElementById("templatePanel");
+                for (var i=0;i<result.length;i++){
+                    var data = result[i];
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+
+                    var divValidElement = document.createElement("div");
+                    divValidElement.setAttribute("class","x-valid");
+
+                    var div1Element = document.createElement("div");
+                    div1Element.setAttribute("class","col-sm-4");
+                    div1Element.appendChild(document.createTextNode("模板选择"));
+                    divValidElement.appendChild(div1Element);
+
+                    var div2Element = document.createElement("div");
+                    div2Element.setAttribute("class","col-sm-8");
+
+                    var inputElementA = document.createElement("input");
+                    inputElementA.setAttribute("type","checkbox");
+                    inputElementA.setAttribute("class","form-control");
+                    inputElementA.setAttribute("value",data.applicableReason);
+                    inputElementA.setAttribute("name","methodType");
+                    div2Element.appendChild(document.createTextNode("适用原因:"+data.applicableReason));
+                    div2Element.appendChild(inputElementA);
+                    var inputElementB = document.createElement("input");
+                    inputElementB.setAttribute("type","checkbox");
+                    inputElementB.setAttribute("class","form-control");
+                    inputElementB.setAttribute("value",data.notApplicableReason);
+                    inputElementB.setAttribute("name","methodNOType");
+                    div2Element.appendChild(document.createTextNode("不适用原因:"+data.notApplicableReason));
+                    div2Element.appendChild(inputElementB);
+
+                    divValidElement.appendChild(div2Element);
+                    divElement.appendChild(divValidElement);
+                }
+                    templatePanel.innerHTML = "";
+                    templatePanel.appendChild(divElement);
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
     $(function () {
+        //初始化
         <c:forEach items="${dataEvaluationMethod}" var="item">
             $("#applyNoTemplateView"+${item.id}).hide();
             $("#applyTemplateView"+${item.id}).hide();
+            $("#thinkView"+${item.id}).hide();
+            $("#thinkField"+${item.id}).hide();
+        </c:forEach>
+
+        //评估方法 模板 字段 选择
+        <c:forEach items="${dataEvaluationMethod}" var="item">
+            var applyNoTemplate = "applyNoTemplate"+${item.id};
+            document.getElementById(applyNoTemplate).onclick = function () {
+                document.getElementById("templateShow").innerText = "${item.name}";
+                var id = "${item.id}";
+                $("#frmTemplate").clearAll();
+                evaluationmethodSelect(id);
+                $("#divTemplate").modal();//显示
+            }
+            var applyTemplate = "applyTemplate"+${item.id};
+            document.getElementById(applyTemplate).onclick = function () {
+                document.getElementById("templateShow").innerText = "${item.name}";
+                var id = "${item.id}";
+                $("#frmTemplate").clearAll();
+                evaluationmethodSelect(id);
+                $("#divTemplate").modal();//显示
+            }
         </c:forEach>
     });
+    //选项卡
     function applyMethodA(id,name) {
-        $("#methodID").val(id);
-        $("#methodName").val(name);
         $("#applyNoTemplateView"+id).hide();
+        $("#thinkField"+id).hide();
+        $("#thinkView"+id).show();
         $("#applyTemplateView"+id).show();
     }
+    //选项卡
     function applyMethodB(id,name) {
-        $("#methodID").val(id);
-        $("#methodName").val(name);
         $("#applyNoTemplateView"+id).show();
+        $("#thinkView"+id).hide();
         $("#applyTemplateView"+id).hide();
+        $("#thinkField"+id).hide();
     }
     //评估方法
     function evaluationmethod(id) {
@@ -644,16 +833,65 @@
     //评估思路
     function evaluationthinking() {
         $("#frmThink").clearAll();
-        document.getElementById("ThinkNameSHOW").innerText = document.getElementById("methodName").value;
-//        $("#ThinkNameSHOW").val($("#methodName").val());
         $("#divBoxThink").modal();//显示
+    }
+
+    //评估思路 保存
+    function evaluationthinkingSave() {
+        $("#divBoxThink").hide();
     }
 
     //评估思路 关闭
     function evaluationthinkingClose() {
         $("#divBoxThink").hide();
     }
-    
+
+    //评估方法模板字段 关闭
+    function divTemplateClose() {
+        $("#divTemplate").hide();
+    }
+    $("#EvaluationThinkSelect").change(function () {
+        var selected =$(this).children('option:selected').val();
+        if (selected!="" && selected!='' && selected!=null){
+            $.ajax({// get
+                url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
+                data: {
+                    id: selected,
+                    type:1
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    var evaluationThinkTemple = document.getElementById("evaluationThinkTemple");
+                    evaluationThinkTemple.value = result.name;
+                },
+                error: function (result) {
+                    alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            $.ajax({// list
+                url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
+                data: {
+                    id: selected,
+                    type:2
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    for (var i=0; i<result.length;i++){
+
+                    }
+                },
+                error: function (result) {
+                    alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+    });
+
+    //拆分
     function splitEvaluate(id) {
         var btnID = document.getElementById("btnID"+id);
         var parentElement = btnID.parentNode.parentNode;

@@ -34,6 +34,7 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
         modelAndView.addObject("bestusedescriptionList",schemeAssistService.dataBestUseDescriptionList());
         modelAndView.addObject("dataList",schemeAssistService.items());
         modelAndView.addObject("dataEvaluationMethod",schemeAssistService.evaluationmethod());
+        modelAndView.addObject("dataEvaluationThink",schemeAssistService.thinkingList());
         return modelAndView;
     }
 
