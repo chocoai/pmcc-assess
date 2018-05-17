@@ -4,10 +4,7 @@ import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -81,8 +78,4 @@ public class SurveyLocaleExploreDetailService {
         return surveyLocaleExploreDetailDao.delete(id);
     }
 
-    public List<SurveyLocaleExploreDetail> changeId(Integer mainId) {
-        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetails = surveyLocaleExploreDetailDao.changId(mainId);
-        return surveyLocaleExploreDetails;
-    }
 }
