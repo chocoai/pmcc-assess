@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.survey;
 
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_detail_id, process_ins_id, creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" >
     select
@@ -105,10 +105,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore (project_id, plan_detail_id, process_ins_id, 
+    insert into tb_survey_locale_explore (project_id, plan_details_id, process_ins_id, 
       creator, gmt_created, gmt_modified
       )
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -121,8 +121,8 @@
       <if test="projectId != null" >
         project_id,
       </if>
-      <if test="planDetailId != null" >
-        plan_detail_id,
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="processInsId != null" >
         process_ins_id,
@@ -141,8 +141,8 @@
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailId != null" >
-        #{planDetailId,jdbcType=INTEGER},
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
@@ -173,8 +173,8 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.planDetailId != null" >
-        plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
@@ -197,7 +197,7 @@
     update tb_survey_locale_explore
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
-      plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -212,8 +212,8 @@
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailId != null" >
-        plan_detail_id = #{planDetailId,jdbcType=INTEGER},
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
@@ -233,7 +233,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
     update tb_survey_locale_explore
     set project_id = #{projectId,jdbcType=INTEGER},
-      plan_detail_id = #{planDetailId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
