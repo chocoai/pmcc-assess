@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.SurveyLocaleExploreMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.SurveyLocaleCorrelationCardMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCard" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
+    <result column="correlation_card" property="correlationCard" jdbcType="VARCHAR" />
+    <result column="house_name" property="houseName" jdbcType="VARCHAR" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_detail_id, process_ins_id, creator, gmt_created, gmt_modified
+    id, correlation_card, house_name, process_ins_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCardExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_survey_locale_correlation_card
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,105 +85,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_survey_locale_correlation_card
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_survey_locale_explore
+    delete from tb_survey_locale_correlation_card
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" >
-    delete from tb_survey_locale_explore
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCardExample" >
+    delete from tb_survey_locale_correlation_card
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCard" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore (project_id, plan_detail_id, process_ins_id, 
-      creator, gmt_created, gmt_modified
+    insert into tb_survey_locale_correlation_card (correlation_card, house_name, process_ins_id
       )
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+    values (#{correlationCard,jdbcType=VARCHAR}, #{houseName,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCard" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore
+    insert into tb_survey_locale_correlation_card
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        project_id,
+      <if test="correlationCard != null" >
+        correlation_card,
       </if>
-      <if test="planDetailId != null" >
-        plan_detail_id,
+      <if test="houseName != null" >
+        house_name,
       </if>
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
+      <if test="correlationCard != null" >
+        #{correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="planDetailId != null" >
-        #{planDetailId,jdbcType=INTEGER},
+      <if test="houseName != null" >
+        #{houseName,jdbcType=VARCHAR},
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" resultType="java.lang.Integer" >
-    select count(*) from tb_survey_locale_explore
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCardExample" resultType="java.lang.Integer" >
+    select count(*) from tb_survey_locale_correlation_card
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_survey_locale_correlation_card
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=INTEGER},
+      <if test="record.correlationCard != null" >
+        correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="record.planDetailId != null" >
-        plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
+      <if test="record.houseName != null" >
+        house_name = #{record.houseName,jdbcType=VARCHAR},
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -194,50 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_survey_locale_correlation_card
     set id = #{record.id,jdbcType=INTEGER},
-      project_id = #{record.projectId,jdbcType=INTEGER},
-      plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
+      house_name = #{record.houseName,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCard" >
+    update tb_survey_locale_correlation_card
     <set >
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
+      <if test="correlationCard != null" >
+        correlation_card = #{correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="planDetailId != null" >
-        plan_detail_id = #{planDetailId,jdbcType=INTEGER},
+      <if test="houseName != null" >
+        house_name = #{houseName,jdbcType=VARCHAR},
       </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
-    set project_id = #{projectId,jdbcType=INTEGER},
-      plan_detail_id = #{planDetailId,jdbcType=INTEGER},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleCorrelationCard" >
+    update tb_survey_locale_correlation_card
+    set correlation_card = #{correlationCard,jdbcType=VARCHAR},
+      house_name = #{houseName,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

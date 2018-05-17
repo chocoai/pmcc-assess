@@ -21,12 +21,12 @@ import java.util.List;
  * @version 1.0
  * @date: 2017/09/14 17:08
  */
-public class MyBatisGenerateMapper {
+public class ZlyMyBatisGenerateMapper {
 
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "mygeneratorConfig.xml", files);
+        findFiles(System.getProperty("user.dir"), "zlygeneratorConfig.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
 

@@ -2,16 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
-    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-    <script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>
-    <!-- UI组件库 1.0 -->
-    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
-
-
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
@@ -147,6 +137,53 @@
             },
             deleteFlag: true
         })
+
+        //查勘图片
+        FileUtils.uploadFiles({
+            target: "surveyPicture",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: 0,
+                fieldsName: "surveyPicture",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "surveyPicture",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: 0,
+                fieldsName: "surveyPicture",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
+
+        FileUtils.uploadFiles({
+            target: "surveyImage",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: 0,
+                fieldsName: "surveyImage",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "surveyImage",
+            formData: {
+                tableName: "tb_survey_locale_explore_detail",
+                tableId: 0,
+                fieldsName: "surveyImage",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: true
+        })
     });
 
 
@@ -165,9 +202,15 @@
 
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'surveySheetNumber', title: '查勘单编号'});
+        cols.push({field: 'id', title: '查勘单编号'});
         cols.push({field: 'surveyPeople', title: '查勘人'});
-        cols.push({field: 'surveyTime', title: '查勘时间'});
+
+        cols.push({
+            field: 'surveyTime', title: '查勘时间', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
+
         cols.push({field: 'belongWarrant', title: '所属权证'});
         cols.push({field: 'ledLuminousPeople', title: '领勘人'});
         cols.push({field: 'surveyPicture', title: '查勘图片'});
@@ -186,7 +229,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/surveyLocale/list", cols, {
-            pid: ${empty surveyAssetInventory.id?0:surveyAssetInventory.id}
+            mainId: ${empty surveyLocaleExplore.id?0:surveyLocaleExplore.id}
 
         }, {
             showColumns: false,

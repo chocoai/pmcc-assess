@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample;
 import com.copower.pmcc.assess.dal.mapper.SurveyLocaleExploreMapper;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +16,12 @@ public class SurveyLocaleExploreDao {
     @Autowired
     private SurveyLocaleExploreMapper surveyLocaleExploreMapper;
 
-    public boolean update(SurveyLocaleExploreDto surveyLocaleExploreDto) {
+    public boolean update(SurveyLocaleExplore surveyLocaleExploreDto) {
         int i = surveyLocaleExploreMapper.updateByPrimaryKeySelective(surveyLocaleExploreDto);
         return i > 0;
     }
 
-    public boolean save(SurveyLocaleExploreDto surveyLocaleExploreDto) {
+    public boolean save(SurveyLocaleExplore surveyLocaleExploreDto) {
         int i = surveyLocaleExploreMapper.insertSelective(surveyLocaleExploreDto);
         return i > 0;
     }
@@ -37,7 +36,7 @@ public class SurveyLocaleExploreDao {
         if (processInsId != null) {
             example.createCriteria().andProcessInsIdEqualTo(processInsId);
         }
-        example.setOrderByClause(" id desc");
+        example.setOrderByClause(" id ASC");
         List<SurveyLocaleExplore> surveyLocaleExplores = surveyLocaleExploreMapper.selectByExample(example);
         return surveyLocaleExplores;
     }

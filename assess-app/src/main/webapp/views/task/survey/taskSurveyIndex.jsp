@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
@@ -406,7 +405,7 @@
                                     <div class="form-group noshow">
                                         <div class="x-valid">
                                             <label class="col-sm-3 control-label">
-                                                id
+
                                             </label>
                                             <div class="col-sm-9">
                                                 <input type="text" data-rule-maxlength="50" placeholder="id"

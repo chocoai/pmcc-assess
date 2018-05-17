@@ -1,17 +1,16 @@
 package com.copower.pmcc.assess.dal.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class SurveyLocaleExploreExample {
+public class SurveyLocaleCorrelationCardExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SurveyLocaleExploreExample() {
+    public SurveyLocaleCorrelationCardExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,123 +164,143 @@ public class SurveyLocaleExploreExample {
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIsNull() {
-            addCriterion("project_id is null");
+        public Criteria andCorrelationCardIsNull() {
+            addCriterion("correlation_card is null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIsNotNull() {
-            addCriterion("project_id is not null");
+        public Criteria andCorrelationCardIsNotNull() {
+            addCriterion("correlation_card is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdEqualTo(Integer value) {
-            addCriterion("project_id =", value, "projectId");
+        public Criteria andCorrelationCardEqualTo(String value) {
+            addCriterion("correlation_card =", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotEqualTo(Integer value) {
-            addCriterion("project_id <>", value, "projectId");
+        public Criteria andCorrelationCardNotEqualTo(String value) {
+            addCriterion("correlation_card <>", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThan(Integer value) {
-            addCriterion("project_id >", value, "projectId");
+        public Criteria andCorrelationCardGreaterThan(String value) {
+            addCriterion("correlation_card >", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("project_id >=", value, "projectId");
+        public Criteria andCorrelationCardGreaterThanOrEqualTo(String value) {
+            addCriterion("correlation_card >=", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThan(Integer value) {
-            addCriterion("project_id <", value, "projectId");
+        public Criteria andCorrelationCardLessThan(String value) {
+            addCriterion("correlation_card <", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("project_id <=", value, "projectId");
+        public Criteria andCorrelationCardLessThanOrEqualTo(String value) {
+            addCriterion("correlation_card <=", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIn(List<Integer> values) {
-            addCriterion("project_id in", values, "projectId");
+        public Criteria andCorrelationCardLike(String value) {
+            addCriterion("correlation_card like", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotIn(List<Integer> values) {
-            addCriterion("project_id not in", values, "projectId");
+        public Criteria andCorrelationCardNotLike(String value) {
+            addCriterion("correlation_card not like", value, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("project_id between", value1, value2, "projectId");
+        public Criteria andCorrelationCardIn(List<String> values) {
+            addCriterion("correlation_card in", values, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("project_id not between", value1, value2, "projectId");
+        public Criteria andCorrelationCardNotIn(List<String> values) {
+            addCriterion("correlation_card not in", values, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNull() {
-            addCriterion("plan_detail_id is null");
+        public Criteria andCorrelationCardBetween(String value1, String value2) {
+            addCriterion("correlation_card between", value1, value2, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNotNull() {
-            addCriterion("plan_detail_id is not null");
+        public Criteria andCorrelationCardNotBetween(String value1, String value2) {
+            addCriterion("correlation_card not between", value1, value2, "correlationCard");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdEqualTo(Integer value) {
-            addCriterion("plan_detail_id =", value, "planDetailId");
+        public Criteria andHouseNameIsNull() {
+            addCriterion("house_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotEqualTo(Integer value) {
-            addCriterion("plan_detail_id <>", value, "planDetailId");
+        public Criteria andHouseNameIsNotNull() {
+            addCriterion("house_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThan(Integer value) {
-            addCriterion("plan_detail_id >", value, "planDetailId");
+        public Criteria andHouseNameEqualTo(String value) {
+            addCriterion("house_name =", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id >=", value, "planDetailId");
+        public Criteria andHouseNameNotEqualTo(String value) {
+            addCriterion("house_name <>", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThan(Integer value) {
-            addCriterion("plan_detail_id <", value, "planDetailId");
+        public Criteria andHouseNameGreaterThan(String value) {
+            addCriterion("house_name >", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id <=", value, "planDetailId");
+        public Criteria andHouseNameGreaterThanOrEqualTo(String value) {
+            addCriterion("house_name >=", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIn(List<Integer> values) {
-            addCriterion("plan_detail_id in", values, "planDetailId");
+        public Criteria andHouseNameLessThan(String value) {
+            addCriterion("house_name <", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotIn(List<Integer> values) {
-            addCriterion("plan_detail_id not in", values, "planDetailId");
+        public Criteria andHouseNameLessThanOrEqualTo(String value) {
+            addCriterion("house_name <=", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id between", value1, value2, "planDetailId");
+        public Criteria andHouseNameLike(String value) {
+            addCriterion("house_name like", value, "houseName");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id not between", value1, value2, "planDetailId");
+        public Criteria andHouseNameNotLike(String value) {
+            addCriterion("house_name not like", value, "houseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseNameIn(List<String> values) {
+            addCriterion("house_name in", values, "houseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseNameNotIn(List<String> values) {
+            addCriterion("house_name not in", values, "houseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseNameBetween(String value1, String value2) {
+            addCriterion("house_name between", value1, value2, "houseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseNameNotBetween(String value1, String value2) {
+            addCriterion("house_name not between", value1, value2, "houseName");
             return (Criteria) this;
         }
 
@@ -352,196 +371,6 @@ public class SurveyLocaleExploreExample {
 
         public Criteria andProcessInsIdNotBetween(String value1, String value2) {
             addCriterion("process_ins_id not between", value1, value2, "processInsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIsNull() {
-            addCriterion("gmt_created is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIsNotNull() {
-            addCriterion("gmt_created is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedEqualTo(Date value) {
-            addCriterion("gmt_created =", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotEqualTo(Date value) {
-            addCriterion("gmt_created <>", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThan(Date value) {
-            addCriterion("gmt_created >", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_created >=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThan(Date value) {
-            addCriterion("gmt_created <", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_created <=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIn(List<Date> values) {
-            addCriterion("gmt_created in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotIn(List<Date> values) {
-            addCriterion("gmt_created not in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
-            addCriterion("gmt_created between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIsNull() {
-            addCriterion("gmt_modified is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIsNotNull() {
-            addCriterion("gmt_modified is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedEqualTo(Date value) {
-            addCriterion("gmt_modified =", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotEqualTo(Date value) {
-            addCriterion("gmt_modified <>", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedGreaterThan(Date value) {
-            addCriterion("gmt_modified >", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified >=", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedLessThan(Date value) {
-            addCriterion("gmt_modified <", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified <=", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIn(List<Date> values) {
-            addCriterion("gmt_modified in", values, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotIn(List<Date> values) {
-            addCriterion("gmt_modified not in", values, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
     }

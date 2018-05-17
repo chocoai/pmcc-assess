@@ -77,14 +77,13 @@ public class SurveyLocaleExploreDetailService {
 
             }
             surveyLocaleExploreDetail.setCreator(serviceComponent.getThisUser());
-            boolean save = surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
-
+            boolean flag = surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
             baseAttachment.setTableId(surveyLocaleExploreDetail.getId());
-            baseAttachmentDao.updateAttachment(baseAttachment);
-
             baseAttachment1.setTableId(surveyLocaleExploreDetail.getId());
+            baseAttachmentDao.updateAttachment(baseAttachment);
             baseAttachmentDao.updateAttachment(baseAttachment1);
-            return save;
+            return flag;
+
         }
     }
 
