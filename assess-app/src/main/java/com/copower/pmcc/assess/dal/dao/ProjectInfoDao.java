@@ -34,15 +34,12 @@ public class ProjectInfoDao {
         return false;
     }
 
-<<<<<<< Updated upstream
-=======
     @Transactional
     public int saveProjectInfo_returnID(ProjectInfo projectInfo){
         projectInfoMapper.insertSelective(projectInfo);
         return  projectInfo.getId();
     }
 
->>>>>>> Stashed changes
     public Boolean updateProjectInfo(ProjectInfo projectInfo)
     {
         int i = projectInfoMapper.updateByPrimaryKeySelective(projectInfo);

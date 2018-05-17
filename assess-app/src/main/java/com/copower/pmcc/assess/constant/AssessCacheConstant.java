@@ -45,4 +45,8 @@ public class AssessCacheConstant {
     //动态表单
     public static final String PMCC_ASSESS_DYNAMIC_FORM_DATASOURCE = "pmcc:assess:dynamic:form:datasource"; //数据源
     public static final String PMCC_ASSESS_DYNAMIC_FORM_TEXT = "pmcc:assess:dynamic:form:text"; //显示值
+
+    //申报表单
+    public static final String PMCC_ASSESS_DECLARE_FORM = "pmcc:assess:declare:form"; //申报表单
+
 }

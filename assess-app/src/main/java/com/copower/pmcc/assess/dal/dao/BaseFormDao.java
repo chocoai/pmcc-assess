@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dal.mapper.BaseFormMapper;
 import com.copower.pmcc.assess.dal.mapper.BaseFormModuleFieldMapper;
 import com.copower.pmcc.assess.dal.mapper.BaseFormModuleMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,18 @@ public class BaseFormDao {
     //BaseForm=========================================================
     public BaseForm getBaseForm(Integer id) {
         return hrBaseFormMapper.selectByPrimaryKey(id);
+    }
+
+    public BaseForm getBaseFormByName(String name) {
+        BaseFormExample example = new BaseFormExample();
+        BaseFormExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameEqualTo(name);
+        List<BaseForm> baseForms = hrBaseFormMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(baseForms))
+            return baseForms.get(0);
+        return null;
     }
 
     public List<BaseForm> getBaseForm(String search) {
@@ -95,6 +108,13 @@ public class BaseFormDao {
     public List<BaseFormModuleField> getBaseFormModuleFields(Integer formModuleId) {
         BaseFormModuleFieldExample example = new BaseFormModuleFieldExample();
         example.createCriteria().andFormModuleIdEqualTo(formModuleId).andBisDeleteEqualTo(false);
+        example.setOrderByClause("sorting,id");
+        return hrBaseFormModuleFieldMapper.selectByExample(example);
+    }
+
+    public List<BaseFormModuleField> getBaseFormModuleFields(BaseFormModuleField baseFormModuleField) {
+        BaseFormModuleFieldExample example = new BaseFormModuleFieldExample();
+        MybatisUtils.convertObj2Example(baseFormModuleField, example);
         example.setOrderByClause("sorting,id");
         return hrBaseFormModuleFieldMapper.selectByExample(example);
     }

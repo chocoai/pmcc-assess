@@ -43,9 +43,19 @@ public class ProjectMemberDao {
         return null;
     }
 
+    public ProjectMember get(Integer id){
+        ProjectMember projectMember = projectMemberMapper.selectByPrimaryKey(id);
+        return projectMember;
+    }
+
     public Boolean saveProjectMember(ProjectMember projectMember) {
         int i = projectMemberMapper.insertSelective(projectMember);
         return i == 1;
+    }
+
+    public int saveProjectMemeberID(ProjectMember projectMember){
+        int i = projectMemberMapper.insertSelective(projectMember);
+        return projectMember.getId();
     }
 
     public Boolean updateProjectMember(ProjectMember projectMember) {

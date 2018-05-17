@@ -175,7 +175,7 @@
                                             外键字段名称
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='foreignKeyName'  class='form-control'>
+                                            <input type="text" name='foreignKeyName' class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                             自定义url
                                         </label>
                                         <div class='col-sm-4 '>
-                                            <input type="text" name='customUrl'  class='form-control'>
+                                            <input type="text" name='customUrl' class='form-control'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -193,7 +193,7 @@
                                             自定义显示url
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name='customDisplayUrl'  class='form-control'>
+                                            <input type="text" name='customDisplayUrl' class='form-control'>
                                         </div>
                                     </div>
                                 </div>
@@ -316,6 +316,26 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" id='jsonName' name='jsonName'
+                                                   class='form-control'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            分组名称
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id='groupName' name='groupName'
+                                                   class='form-control'>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            分组显示名称
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" id='groupDisplayName' name='groupDisplayName'
                                                    class='form-control'>
                                         </div>
                                     </div>
@@ -568,7 +588,7 @@
         if ($("#frm_form").valid()) {
             Loading.progressShow();
             var data = formParams("frm_form");
-            data.id=$("#formId").val();
+            data.id = $("#formId").val();
             $.ajax({
                 url: "${pageContext.request.contextPath}/formConfigure/saveForm",
                 type: "post",
@@ -699,8 +719,8 @@
         if ($("#frm_form_module").valid()) {
             Loading.progressShow();
             var data = formParams("frm_form_module");
-            data.id=$("#formModuleId").val();
-            data.formId=$("#formId").val();
+            data.id = $("#formModuleId").val();
+            data.formId = $("#formId").val();
             data.bisEnable = $("#frm_form_module").find("[name=bisEnable]").prop("checked");
             data.bisConfigure = $("#frm_form_module").find("[name=bisConfigure]").prop("checked");
             data.bisMultiple = $("#frm_form_module").find("[name=bisMultiple]").prop("checked");
@@ -744,50 +764,50 @@
         });
         cols.push({field: 'displayName', title: '显示名称'});
         cols.push({field: 'fieldLength', title: '最大长度'});
-        cols.push({field: 'defaultValue', title: '默认值'});
+        cols.push({field: 'groupName', title: '分组'});
         cols.push({field: 'sorting', title: '排序'});
         cols.push({
             field: 'bisRequired', title: '必填', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisShow', title: '显示', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisListShow', title: '列表显示', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisQuery', title: '查询', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });
         cols.push({
             field: 'bisEnable', title: '启用', formatter: function (value, row, index) {
                 if (value) {
-                    return "是";
+                    return '<i class="fa fa-check green"></i>';
                 } else {
-                    return "否";
+                    return '<i class="fa fa-remove red"></i>';
                 }
             }
         });

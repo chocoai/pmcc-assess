@@ -2175,6 +2175,66 @@ public class ProjectPlanDetailsExample {
             addCriterion("return_details_reason not between", value1, value2, "returnDetailsReason");
             return (Criteria) this;
         }
+
+        public Criteria andDeclareFormIdIsNull() {
+            addCriterion("declare_form_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdIsNotNull() {
+            addCriterion("declare_form_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdEqualTo(Integer value) {
+            addCriterion("declare_form_id =", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdNotEqualTo(Integer value) {
+            addCriterion("declare_form_id <>", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdGreaterThan(Integer value) {
+            addCriterion("declare_form_id >", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_form_id >=", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdLessThan(Integer value) {
+            addCriterion("declare_form_id <", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_form_id <=", value, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdIn(List<Integer> values) {
+            addCriterion("declare_form_id in", values, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdNotIn(List<Integer> values) {
+            addCriterion("declare_form_id not in", values, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_form_id between", value1, value2, "declareFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_form_id not between", value1, value2, "declareFormId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -165,7 +165,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">子项数据</h4>
+                <h3 class="modal-title" id="titleContent">子项数据</h3>
             </div>
             <div class="panel-body">
         <span id="toolbarSub">
@@ -185,11 +185,11 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">子项管理</h4>
+                <h3 class="modal-title">子项管理</h3>
             </div>
             <input type="hidden" id="mainId" name="mainId" value="0">
             <form id="frmSub" class="form-horizontal">
-                <input type="hidden" id="subId" name="subId" value="0">
+                <input type="hidden" id="subId" name="id" value="0">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -201,9 +201,31 @@
                                         </label>
                                         <div class="col-sm-8">
                                             <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="subName" name="subName" class="form-control">
+                                                   id="subName" name="name" class="form-control">
                                         </div>
                                         <div class="col-sm-1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            字段名称
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text"  data-rule-maxlength="100" placeholder="字段名称"
+                                                   id="subFieldName" name="fieldName" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            关联项Key
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text"  data-rule-maxlength="50" placeholder="关联项Key"
+                                                   id="subItemKey" name="itemKey" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +236,7 @@
                                         </label>
                                         <div class="col-sm-8">
                                             <label class="radio-inline">
-                                                <input type="checkbox" id="subBisEnable" name="subBisEnable" value="true"
+                                                <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
                                                        checked="checked">
                                             </label>
                                         </div>
@@ -229,7 +251,7 @@
                                         </label>
                                         <div class="col-sm-8">
                                             <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="subSorting" name="subSorting" class="form-control">
+                                                   id="subSorting" name="sorting" class="form-control">
                                         </div>
                                         <div class="col-sm-1">
                                         </div>
@@ -241,7 +263,7 @@
                                             备注
                                         </label>
                                         <div class="col-sm-8">
-                                    <textarea placeholder="备注" id="subRemark" name="subRemark"
+                                    <textarea placeholder="备注" id="subRemark" name="remark"
                                               class="form-control"></textarea>
                                         </div>
                                         <div class="col-sm-1">
@@ -274,7 +296,6 @@
         var cols = [];
         cols.push({field: 'fieldName', title: '字段名称'});
         cols.push({field: 'name', title: '名称'});
-//        cols.push({field: 'moduleId', title: '分类'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);
@@ -424,6 +445,8 @@
     function loadSubDataDicList(pid, fn) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'fieldName', title: '字段名称'});
+        cols.push({field: 'itemKey', title: '关联项Key'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);
@@ -458,10 +481,7 @@
     function addSubDataDic() {
         $("#frmSub").clearAll();
         $("#subId").val("0");
-        $("#subName").val("");
         $("#subBisEnable").prop("checked", true);
-        $("#subSorting").val("");
-        $("#subRemark").val("");
     }
 
     //编辑子项
@@ -469,11 +489,8 @@
         $("#frmSub").clearAll();
         var row = $("#tbDataDicList").bootstrapTable("getRowByUniqueId", id);
         if (row) {
-            $("#subId").val(row.id);
-            $("#subName").val(row.name);
+            $("#frmSub").initForm(row);
             $("#subBisEnable").prop("checked", row.bisEnable);
-            $("#subSorting").val(row.sorting);
-            $("#subRemark").val(row.remark);
         }
         $('#divSubDataDicManage').modal();
     }
@@ -486,9 +503,13 @@
             data.id = $("#subId").val();
             data.pid = $("#mainId").val();
             data.name = $("#subName").val();
+            data.itemKey = $("#subItemKey").val();
             data.sorting = $("#subSorting").val();
             data.bisEnable = $("#subBisEnable").prop("checked");
             data.remark = $("#subRemark").val();
+            if($("#subFieldName").val()){
+                data.fieldName = $("#subFieldName").val();
+            }
             $.ajax({
                 url: "${pageContext.request.contextPath}/baseDataDic/saveDataDic",
                 type: "post",

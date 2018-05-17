@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.data.DataDeclareFormService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -44,6 +46,8 @@ public class ProjectPlanDetailsService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private ServiceComponent serviceComponent;
+    @Autowired
+    private DataDeclareFormService dataDeclareFormService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -121,6 +125,12 @@ public class ProjectPlanDetailsService {
                         });
                         projectPlanDetailsVo.setTasks(transform);
 
+                    }
+                }
+                if (item.getDeclareFormId() != null && item.getDeclareFormId() > 0) {
+                    DataDeclareForm declareForm = dataDeclareFormService.getCacheDataDeclareForm(item.getDeclareFormId());
+                    if(declareForm!=null){
+                        projectPlanDetailsVo.setDeclareFormName(declareForm.getName());
                     }
                 }
                 projectPlanDetailsVos.add(projectPlanDetailsVo);

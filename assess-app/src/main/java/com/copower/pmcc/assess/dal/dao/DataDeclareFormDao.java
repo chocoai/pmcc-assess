@@ -23,6 +23,10 @@ public class DataDeclareFormDao {
     @Autowired
     private DataDeclareFormMapper dataDeclareFormMapper;
 
+    public DataDeclareForm getDataDeclareForm(Integer id){
+        return dataDeclareFormMapper.selectByPrimaryKey(id);
+    }
+
     public List<DataDeclareForm> getDataDeclareFormList(Integer assessClass, String name) {
         DataDeclareFormExample example = new DataDeclareFormExample();
         DataDeclareFormExample.Criteria criteria = example.createCriteria();

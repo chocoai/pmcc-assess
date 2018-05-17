@@ -54,13 +54,13 @@ public class ReportTemplateService {
      *
      * @return
      */
-    public BootstrapTableVo getTemplateList(Integer subjectId, Integer contractType) {
+    public BootstrapTableVo getTemplateList(Integer type, Integer category) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ReportTemplate reportTemplate = new ReportTemplate();
-        reportTemplate.setType(subjectId);
-        reportTemplate.setCategory(contractType);
+        reportTemplate.setType(type);
+        reportTemplate.setCategory(category);
         List<ReportTemplate> list = reportTemplateDao.getListObject(reportTemplate);
         List<ReportTemplateVo> voList = LangUtils.transform(list, o -> getReportTemplateVos(o));
         bootstrapTableVo.setTotal(page.getTotal());
@@ -68,22 +68,12 @@ public class ReportTemplateService {
         return bootstrapTableVo;
     }
 
-    public ReportTemplate getTemplate(Integer subjectId, Integer contractType) {
-        return null;
-//        try {
-//            String key = String.format("%s:%s", subjectId.toString(), contractType.toString());
-//            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CmsCacheConstant.PMCC_CONTRACT_TEMPLATE_SUBJECT, key);
-//            return LangUtils.singleCache(costsKeyPrefix, key, ReportTemplate.class, input -> getDbTemplate(subjectId, contractType));
-//        } catch (Exception e) {
-//            return getDbTemplate(subjectId, contractType);
-//        }
-    }
 
-    public ReportTemplate getDbTemplate(Integer subjectId, Integer contractType) {
+    public ReportTemplate getDbTemplate(Integer type, Integer category) {
 
         ReportTemplate reportTemplate = new ReportTemplate();
-        reportTemplate.setType(subjectId);
-        reportTemplate.setCategory(contractType);
+        reportTemplate.setType(type);
+        reportTemplate.setCategory(category);
         List<ReportTemplate> list = reportTemplateDao.getListObject(reportTemplate);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
@@ -95,9 +85,9 @@ public class ReportTemplateService {
         ReportTemplateVo reportTemplateVo = new ReportTemplateVo();
         BeanUtils.copyProperties(reportTemplate, reportTemplateVo);
         if (reportTemplate.getType() != null)
-            reportTemplateVo.setSubjectIdName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getType()).getName());
+            reportTemplateVo.setTypeName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getType()).getName());
         if (reportTemplate.getCategory() != null)
-            reportTemplateVo.setContractTypeName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getCategory()).getName());
+            reportTemplateVo.setCategoryName(cmsBaseDataDicService.getCacheDataDicById(reportTemplate.getCategory()).getName());
         return reportTemplateVo;
     }
 
@@ -136,7 +126,7 @@ public class ReportTemplateService {
             }
             //更新附件id
             BaseAttachment baseAttachment = new BaseAttachment();
-            baseAttachment.setTableName("tb_cms_template");
+            baseAttachment.setTableName("tb_report_template");
             baseAttachment.setTableId(reportTemplateDto.getId());
             baseAttachment.setCreater(serviceComponent.getThisUser());
             BaseAttachment sysAttachmentNew = new BaseAttachment();
@@ -172,29 +162,9 @@ public class ReportTemplateService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ReportTemplateBookmark> list = reportTemplateBookmarkDao.getListObject(templateId);
-        List<ReportTemplateBookmarkVo> transform = getTemplateBookmarkVos(list);
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(transform) ? new ArrayList<ReportTemplateBookmarkVo>() : transform);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<ReportTemplateBookmark>() : list);
         return bootstrapTableVo;
-    }
-
-    public List<ReportTemplateBookmarkVo> getTemplateBookmarkVos(List<ReportTemplateBookmark> list) {
-        if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, input -> {
-            ReportTemplateBookmarkVo reportTemplateBookmarkVo = new ReportTemplateBookmarkVo();
-            BeanUtils.copyProperties(input, reportTemplateBookmarkVo);
-            return reportTemplateBookmarkVo;
-        });
-    }
-
-    public List<ReportTemplateBookmark> getReportTemplateBookmarks(Integer templateId) {
-        return null;
-//        try {
-//            String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(CmsCacheConstant.PMCC_CONTRACT_BOOKMARK_TEMPLATE, templateId.toString());
-//            return LangUtils.listCache(costsKeyPrefix, templateId, ReportTemplateBookmark.class, input -> reportTemplateBookmarkDao.getListObject(input));
-//        } catch (Exception e) {
-//            return reportTemplateBookmarkDao.getListObject(templateId);
-//        }
     }
 
     /**

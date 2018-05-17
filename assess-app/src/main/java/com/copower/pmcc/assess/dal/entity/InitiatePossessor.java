@@ -25,11 +25,13 @@ public class InitiatePossessor {
 
     private String pUnitProperties;
 
-    private String pEnclosureLocation;
+    private String pAttachmentProjectEnclosureId;
 
     private String pName;
 
     private String spareField;
+
+    private String pIdcard;
 
     public Integer getId() {
         return id;
@@ -119,12 +121,12 @@ public class InitiatePossessor {
         this.pUnitProperties = pUnitProperties == null ? null : pUnitProperties.trim();
     }
 
-    public String getpEnclosureLocation() {
-        return pEnclosureLocation;
+    public String getpAttachmentProjectEnclosureId() {
+        return pAttachmentProjectEnclosureId;
     }
 
-    public void setpEnclosureLocation(String pEnclosureLocation) {
-        this.pEnclosureLocation = pEnclosureLocation == null ? null : pEnclosureLocation.trim();
+    public void setpAttachmentProjectEnclosureId(String pAttachmentProjectEnclosureId) {
+        this.pAttachmentProjectEnclosureId = pAttachmentProjectEnclosureId == null ? null : pAttachmentProjectEnclosureId.trim();
     }
 
     public String getpName() {
@@ -141,5 +143,13 @@ public class InitiatePossessor {
 
     public void setSpareField(String spareField) {
         this.spareField = spareField == null ? null : spareField.trim();
+    }
+
+    public String getpIdcard() {
+        return pIdcard;
+    }
+
+    public void setpIdcard(String pIdcard) {
+        this.pIdcard = pIdcard == null ? null : pIdcard.trim();
     }
 }

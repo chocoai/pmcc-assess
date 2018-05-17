@@ -31,4 +31,8 @@ public class ErpAreaService {
     public List<SysAreaDto> getAreaList(String pid){
         return erpRpcToolsService.getSysAreaDtoList(pid);
     }
+
+    public SysAreaDto getSysAreaDto(Integer id){
+        return  erpRpcToolsService.getSysAreaDto(""+id);
+    }
 }

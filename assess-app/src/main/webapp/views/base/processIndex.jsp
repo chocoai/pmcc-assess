@@ -59,12 +59,34 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            显示名称
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="显示名称" name="cnName" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             模型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
                                             <input type="hidden" id="boxName" name="boxName">
                                             <input type="text" required placeholder="模型" readonly="readonly" id="cnName"
                                                    name="cnName" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表名称
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="表名称" name="tableName" class="form-control"
                                                    maxlength="200">
                                         </div>
                                     </div>
@@ -219,7 +241,7 @@
 </div>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js"></script>
-<script src="${pageContext.request.contextPath}/js/assess-form-utils.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/assess-form-utils.dynamic-form-utils.js" type="text/javascript"></script>
 <script type="application/javascript">
     var currProcessId = 0;
     $(function () {
@@ -241,8 +263,9 @@
     function loadProcessTable() {
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
-        cols.push({field: 'cnName', title: '流程名称'});
-        cols.push({field: 'boxName', title: '模型'});
+        cols.push({field: 'cnName', title: '显示名称'});
+        cols.push({field: 'tableName', title: '表名称'});
+        cols.push({field: 'displayBoxName', title: '模型'});
         cols.push({field: 'name', title: '值'});
         cols.push({field: 'executor', title: '监听器'});
         cols.push({
@@ -490,12 +513,14 @@
             if(row){
                 $("#formId").val(row.id);
                 $("#formIdName").val(row.cnName);
+                loadFormModuleList(row.id);
             }
         });
     }
 
 
     function loadFormModuleList(formId, value) {
+        $("#formModuleId").empty();
         $.ajax({
             url: "${pageContext.request.contextPath}/formConfigure/getFormModules",
             data: {formId: formId},
@@ -506,7 +531,7 @@
                     if (result.data) {
                         var html = "";
                         $.each(result.data, function (i, item) {
-                            html += '<option value="' + item.id + '">' + item.name + '</option>';
+                            html += '<option value="' + item.id + '">' + item.cnName + '</option>';
                         })
                         $("#formModuleId").append(html).val(value);
                     }

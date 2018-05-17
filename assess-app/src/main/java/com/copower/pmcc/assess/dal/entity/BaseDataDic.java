@@ -9,7 +9,7 @@ public class BaseDataDic {
 
     private String name;
 
-    private String groupKey;
+    private String itemKey;
 
     private Boolean bisEnable;
 
@@ -55,12 +55,12 @@ public class BaseDataDic {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getGroupKey() {
-        return groupKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
-    public void setGroupKey(String groupKey) {
-        this.groupKey = groupKey == null ? null : groupKey.trim();
+    public void setItemKey(String itemKey) {
+        this.itemKey = itemKey == null ? null : itemKey.trim();
     }
 
     public Boolean getBisEnable() {

@@ -2,6 +2,8 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
+import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
+import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -12,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,9 @@ public class DataInfrastructureService {
     @Autowired
     private DataInfrastructureDao dataInfrastructureDao;
 
+    @Autowired
+    private ServiceComponent serviceComponent;
+
     public BootstrapTableVo getInfrastructure(String name){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -39,15 +45,21 @@ public class DataInfrastructureService {
         return vo;
     }
 
-    public boolean addInfrastructure(Infrastructure infrastructure) throws BusinessException{
+    public boolean addInfrastructure(InfrastructureDto infrastructureDto) throws BusinessException{
         boolean flag = false;
+        Infrastructure infrastructure = new Infrastructure();
+        infrastructureDto.setCreator(serviceComponent.getThisUser());
+        BeanUtils.copyProperties(infrastructureDto,infrastructure);
         flag = dataInfrastructureDao.addInfrastructure(infrastructure);
         return flag;
     }
 
-    public boolean editInfrastructure(Infrastructure infrastructure) throws BusinessException{
+    public boolean editInfrastructure(InfrastructureDto infrastructureDto) throws BusinessException{
         boolean flag = false;
-        flag = dataInfrastructureDao.editInfrastructure(infrastructure);
+        Infrastructure infrastructure1 = new Infrastructure();
+        infrastructureDto.setCreator(serviceComponent.getThisUser());
+        BeanUtils.copyProperties(infrastructureDto,infrastructure1);
+        flag = dataInfrastructureDao.editInfrastructure(infrastructure1);
         return  flag;
     }
 

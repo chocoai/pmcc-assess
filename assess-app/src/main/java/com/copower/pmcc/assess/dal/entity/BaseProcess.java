@@ -13,6 +13,8 @@ public class BaseProcess {
 
     private String executor;
 
+    private String tableName;
+
     private Boolean bisEnable;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class BaseProcess {
 
     public void setExecutor(String executor) {
         this.executor = executor == null ? null : executor.trim();
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName == null ? null : tableName.trim();
     }
 
     public Boolean getBisEnable() {

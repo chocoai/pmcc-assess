@@ -57,8 +57,6 @@ public class DeclareRecordDao {
         return mapper.selectByExample(example);
     }
 
-<<<<<<< Updated upstream
-=======
     public boolean addDeclareRecord(DeclareRecord declareRecord) {
         return mapper.insertSelective(declareRecord) > 0;
     }
@@ -66,5 +64,5 @@ public class DeclareRecordDao {
     public boolean deleteDeclareRecord(Integer id){
         return mapper.deleteByPrimaryKey(id) > 0;
     }
->>>>>>> Stashed changes
+
 }

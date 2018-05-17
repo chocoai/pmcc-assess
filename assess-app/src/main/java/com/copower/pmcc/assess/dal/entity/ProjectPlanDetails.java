@@ -70,6 +70,8 @@ public class ProjectPlanDetails {
 
     private String returnDetailsReason;
 
+    private Integer declareFormId;
+
     public Integer getId() {
         return id;
     }
@@ -332,5 +334,13 @@ public class ProjectPlanDetails {
 
     public void setReturnDetailsReason(String returnDetailsReason) {
         this.returnDetailsReason = returnDetailsReason == null ? null : returnDetailsReason.trim();
+    }
+
+    public Integer getDeclareFormId() {
+        return declareFormId;
+    }
+
+    public void setDeclareFormId(Integer declareFormId) {
+        this.declareFormId = declareFormId;
     }
 }

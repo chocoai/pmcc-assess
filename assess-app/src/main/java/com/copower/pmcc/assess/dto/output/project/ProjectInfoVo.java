@@ -14,6 +14,16 @@ import java.util.List;
  */
 public class ProjectInfoVo extends ProjectInfo {
 
+    private String entrustPurposeName;
+    private String provinceName;
+    private String cityName;
+    private String districtName;
+    private String urgencyName;
+    private String userAccountManagerName;
+    private String userAccountMemberName;
+    private InitiatePossessorVo possessorVo;
+    private InitiateConsignorVo consignorVo;
+    private InitiateUnitInformationVo unitInformationVo;
 
     private String projectClassName;
 
@@ -83,5 +93,85 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setTaskAllWorkStages(List<ProjectResponsibilityDto> taskAllWorkStages) {
         this.taskAllWorkStages = taskAllWorkStages;
+    }
+
+    public String getEntrustPurposeName() {
+        return entrustPurposeName;
+    }
+
+    public void setEntrustPurposeName(String entrustPurposeName) {
+        this.entrustPurposeName = entrustPurposeName;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getUrgencyName() {
+        return urgencyName;
+    }
+
+    public void setUrgencyName(String urgencyName) {
+        this.urgencyName = urgencyName;
+    }
+
+    public String getUserAccountManagerName() {
+        return userAccountManagerName;
+    }
+
+    public void setUserAccountManagerName(String userAccountManagerName) {
+        this.userAccountManagerName = userAccountManagerName;
+    }
+
+    public String getUserAccountMemberName() {
+        return userAccountMemberName;
+    }
+
+    public void setUserAccountMemberName(String userAccountMemberName) {
+        this.userAccountMemberName = userAccountMemberName;
+    }
+
+    public InitiatePossessorVo getPossessorVo() {
+        return possessorVo;
+    }
+
+    public void setPossessorVo(InitiatePossessorVo possessorVo) {
+        this.possessorVo = possessorVo;
+    }
+
+    public InitiateConsignorVo getConsignorVo() {
+        return consignorVo;
+    }
+
+    public void setConsignorVo(InitiateConsignorVo consignorVo) {
+        this.consignorVo = consignorVo;
+    }
+
+    public InitiateUnitInformationVo getUnitInformationVo() {
+        return unitInformationVo;
+    }
+
+    public void setUnitInformationVo(InitiateUnitInformationVo unitInformationVo) {
+        this.unitInformationVo = unitInformationVo;
     }
 }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeclareRecord {
@@ -8,6 +9,14 @@ public class DeclareRecord {
     private Integer projectId;
 
     private String name;
+
+    private String province;
+
+    private String city;
+
+    private String district;
+
+    private BigDecimal floorArea;
 
     private String creator;
 
@@ -37,6 +46,38 @@ public class DeclareRecord {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
+    }
+
+    public BigDecimal getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(BigDecimal floorArea) {
+        this.floorArea = floorArea;
     }
 
     public String getCreator() {

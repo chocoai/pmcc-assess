@@ -138,7 +138,7 @@
     </div>
 </div>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="${pageContext.request.contextPath}/js/assess-form-utils.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/js/assess-form-utils.dynamic-form-utils.js" type="text/javascript"></script>
 <script type="application/javascript">
     $(function () {
         loadList();

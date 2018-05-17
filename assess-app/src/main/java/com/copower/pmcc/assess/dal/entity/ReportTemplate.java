@@ -5,11 +5,15 @@ import java.util.Date;
 public class ReportTemplate {
     private Integer id;
 
+    private String name;
+
     private Integer type;
 
     private Integer category;
 
     private String prefix;
+
+    private String valueSql;
 
     private Date gmtCreated;
 
@@ -21,6 +25,14 @@ public class ReportTemplate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getType() {
@@ -45,6 +57,14 @@ public class ReportTemplate {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix == null ? null : prefix.trim();
+    }
+
+    public String getValueSql() {
+        return valueSql;
+    }
+
+    public void setValueSql(String valueSql) {
+        this.valueSql = valueSql == null ? null : valueSql.trim();
     }
 
     public Date getGmtCreated() {

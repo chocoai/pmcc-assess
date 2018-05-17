@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
+import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
@@ -55,6 +56,24 @@ public class ProjectMemberService {
             projectMemberDao.saveProjectMember(projectMember);
         }
         upateProjectMemeberToErp(projectMember.getProjectId(), projectMember.getUserAccountManager(), projectMember.getUserAccountMember());
+    }
+
+    public ProjectMember get(Integer id){
+        return projectMemberDao.getProjectMemberItem(id);
+    }
+
+    public ProjectMember getById(Integer id){
+        return projectMemberDao.get(id);
+    }
+
+    public void save(ProjectMemberDto dto)throws BusinessException {
+        if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        saveProjectMemeber(change(dto));
+    }
+
+    public int saveReturnId(ProjectMemberDto dto)throws BusinessException{
+        if (dto==null)throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        return projectMemberDao.saveProjectMemeberID(change(dto));
     }
 
     private void upateProjectMemeberToErp(Integer projectId, String projectManager, String projectMember) {
@@ -136,6 +155,12 @@ public class ProjectMemberService {
             projectMemberVo.setUserAccountQualityName(FormatUtils.transformListString(userAccountQualityName));
         }
         return projectMemberVo;
+    }
+
+    public ProjectMember change(ProjectMemberDto dto){
+        ProjectMember projectMember = new ProjectMember();
+        BeanUtils.copyProperties(dto,projectMember);
+        return projectMember;
     }
 
 }

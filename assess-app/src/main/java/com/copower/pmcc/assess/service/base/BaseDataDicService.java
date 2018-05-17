@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.dal.dao.BaseDataDicDao;
+import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dto.output.TreeViewVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -15,7 +17,10 @@ import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,12 +86,8 @@ public class BaseDataDicService {
             sysDataDicTemp = cmsBaseDataDicDao.getSingleObject(sysDataDic.getId());
             if (sysDataDicTemp != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
             {
-                sysDataDicTemp.setName(sysDataDic.getName());
-                sysDataDicTemp.setFieldName(sysDataDic.getFieldName());
-                sysDataDicTemp.setGroupKey(sysDataDic.getGroupKey());
+                BeanUtils.copyProperties(sysDataDic, sysDataDicTemp);
                 sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
-                sysDataDicTemp.setSorting(sysDataDic.getSorting());
-                sysDataDicTemp.setRemark(sysDataDic.getRemark());
                 if (!cmsBaseDataDicDao.updateObject(sysDataDicTemp)) {
                     throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
                 }
@@ -96,19 +97,9 @@ public class BaseDataDicService {
 
         } else {
             sysDataDicTemp = new BaseDataDic();
-            sysDataDicTemp.setName(sysDataDic.getName());
-            sysDataDicTemp.setFieldName(sysDataDic.getFieldName());
-            sysDataDicTemp.setGroupKey(sysDataDic.getGroupKey());
-            sysDataDicTemp.setSorting(sysDataDic.getSorting());
-            sysDataDicTemp.setRemark(sysDataDic.getRemark());
+            BeanUtils.copyProperties(sysDataDic, sysDataDicTemp);
             sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
             sysDataDicTemp.setBisDelete(false);
-            if (sysDataDic.getPid() != null) {
-                sysDataDicTemp.setPid(sysDataDic.getPid());
-
-                BaseDataDic cacheDataDicById = getCacheDataDicById(sysDataDic.getPid());
-                sysDataDicTemp.setGroupKey(cacheDataDicById.getGroupKey());
-            }
             sysDataDicTemp.setCreator(serviceComponent.getThisUser());
             if (!cmsBaseDataDicDao.addObject(sysDataDicTemp)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
@@ -239,5 +230,93 @@ public class BaseDataDicService {
 
         }
     }
+
+    public TreeViewVo getDataDicTree(String fieldName) {
+
+        BaseDataDic hrBaseDataDic = getCacheDataDicByFieldName(fieldName);
+        TreeViewVo treeViewVo = new TreeViewVo();
+        if (hrBaseDataDic != null) {
+
+            treeViewVo.setId(hrBaseDataDic.getId());
+            treeViewVo.setText(hrBaseDataDic.getName());
+            treeViewVo.setpId(0);
+            treeViewVo.setpName("");
+            treeViewVo.setNodes(getTreeView(hrBaseDataDic.getId()));
+        }
+        return treeViewVo;
+    }
+
+    private List<TreeViewVo> getTreeView(Integer pid) {
+        TreeViewVo treeViewVo;
+        List<BaseDataDic> hrBaseDataDics = getCacheDataDicListByPid(pid);
+        List<TreeViewVo> treeViewVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(hrBaseDataDics)) {
+
+            for (BaseDataDic item : hrBaseDataDics) {
+                treeViewVo = new TreeViewVo();
+                treeViewVo.setId(item.getId());
+                treeViewVo.setText(item.getName());
+                treeViewVo.setpId(item.getPid());
+                List<TreeViewVo> treeView = getTreeView(item.getId());
+                if (treeView.size() > 0) {
+                    treeViewVo.setNodes(treeView);
+                }
+                treeViewVos.add(treeViewVo);
+            }
+        }
+        return treeViewVos;
+    }
+
+
+    /**
+     * 获取数据信息
+     *
+     * @param pid
+     * @return
+     */
+    public List<ZtreeDto> getBaseDicTree(Integer pid) {
+        if (pid == null)
+            return Lists.newArrayList();
+        List<BaseDataDic> baseDataDicList = getCacheDataDicListByPid(pid);
+        if (CollectionUtils.isEmpty(baseDataDicList))
+            return Lists.newArrayList();
+        return LangUtils.transform(baseDataDicList, p -> {
+            return getZtreeDto(p);
+        });
+    }
+
+    /**
+     * 查询数据信息
+     *
+     * @param name
+     * @return
+     */
+    public List<ZtreeDto> queryBaseDicTree(String name) {
+        if (StringUtils.isBlank(name))
+            return Lists.newArrayList();
+        List<BaseDataDic> dataDicList = cmsBaseDataDicDao.getListObject(null, name);
+        if (CollectionUtils.isEmpty(dataDicList))
+            return Lists.newArrayList();
+        return LangUtils.transform(dataDicList, p -> {
+            return getZtreeDto(p);
+        });
+    }
+
+    public List<ZtreeDto> getBaseDicByKey(String key) {
+        BaseDataDic baseDataDic = getCacheDataDicByFieldName(key);
+        if (baseDataDic == null) return null;
+        return Lists.newArrayList(getZtreeDto(baseDataDic));
+    }
+
+    private ZtreeDto getZtreeDto(BaseDataDic baseDataDic) {
+        ZtreeDto ztreeDto = new ZtreeDto();
+        ztreeDto.setId(baseDataDic.getId());
+        ztreeDto.setPid(baseDataDic.getPid());
+        ztreeDto.setName(baseDataDic.getName());
+        List<BaseDataDic> dataDics = getCacheDataDicListByPid(baseDataDic.getId());
+        ztreeDto.setIsParent(CollectionUtils.isNotEmpty(dataDics));
+        return ztreeDto;
+    }
+
 
 }

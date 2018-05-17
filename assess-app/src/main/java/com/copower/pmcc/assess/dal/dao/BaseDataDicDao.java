@@ -126,7 +126,6 @@ public class BaseDataDicDao {
         BaseDataDicExample example = new BaseDataDicExample();
         example.createCriteria()
                 .andBisEnableEqualTo(true)
-                .andGroupKeyEqualTo(groupKey)
                 .andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
         List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);
@@ -191,4 +190,6 @@ public class BaseDataDicDao {
         }
         return sysDataDicMapper.countByExample(example) > 0;
     }
+
+
 }

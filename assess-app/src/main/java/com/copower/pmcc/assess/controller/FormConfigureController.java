@@ -215,9 +215,9 @@ public class FormConfigureController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDynamicFormHtml", method = RequestMethod.POST)
-    public HttpResult getDynamicFormHtml(Integer formListId, Boolean readOnly, String jsonValue) {
+    public HttpResult getDynamicFormHtml(Integer formModuleId, Boolean readOnly, String jsonValue) {
         try {
-            return HttpResult.newCorrectResult(formConfigureService.getDynamicFormHtml(formListId, readOnly, jsonValue));
+            return HttpResult.newCorrectResult(formConfigureService.getDynamicFormHtml(formModuleId, readOnly, jsonValue));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -228,15 +228,14 @@ public class FormConfigureController {
      *
      * @param tableName
      * @param tableId
-     * @param formListId
      * @param formData
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/saveDetailInfo", method = RequestMethod.POST)
-    public HttpResult saveDetailInfo(String tableName, Integer tableId, Integer formListId, String formData) {
+    public HttpResult saveDetailInfo(String tableName, Integer tableId, Integer formModuleId, String formData) {
         try {
-            formConfigureService.saveDetailInfo(tableName, tableId, formListId, formData);
+            formConfigureService.saveDetailInfo(tableName, tableId, formModuleId, formData);
         } catch (Exception e) {
             LOGGER.error("保存子表数据异常", e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -270,7 +269,7 @@ public class FormConfigureController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailInfoList", method = RequestMethod.GET)
-    public BootstrapTableVo getDetailInfoList(String tableName, String foreignKeyName, Integer foreignKeyValue, Integer formListId) {
-        return formConfigureService.getDetailInfoList(tableName, foreignKeyName, foreignKeyValue, formListId);
+    public BootstrapTableVo getDetailInfoList(String tableName, String foreignKeyName, Integer foreignKeyValue, Integer formModuleId) {
+        return formConfigureService.getDetailInfoList(tableName, foreignKeyName, foreignKeyValue, formModuleId);
     }
 }

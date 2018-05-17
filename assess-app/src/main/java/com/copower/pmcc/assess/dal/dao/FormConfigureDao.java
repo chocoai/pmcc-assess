@@ -121,7 +121,8 @@ public class FormConfigureDao {
                                 public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                                     PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                                     for (int i = 1; i <= objects.size(); i++) {
-                                        ps.setObject(i, objects.get(i - 1));
+                                        Object o = objects.get(i - 1);
+                                        ps.setObject(i, o);
                                     }
                                     return ps;
                                 }
@@ -220,6 +221,9 @@ public class FormConfigureDao {
             for (KeyValueDto keyValueDto : tableFieldList) {
                 if (map.containsKey(keyValueDto.getKey())) {
                     switch (keyValueDto.getExplain()) {
+                        case "int":
+                        case "decimal":
+                        case "bit":
                         case "timestamp":
                         case "date":
                         case "time":

@@ -9,13 +9,13 @@ public class ReportTemplateBookmark {
 
     private String name;
 
+    private String displayName;
+
     private String valueSql;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer fieldId;
 
     public Integer getId() {
         return id;
@@ -41,6 +41,14 @@ public class ReportTemplateBookmark {
         this.name = name == null ? null : name.trim();
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName == null ? null : displayName.trim();
+    }
+
     public String getValueSql() {
         return valueSql;
     }
@@ -63,13 +71,5 @@ public class ReportTemplateBookmark {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getFieldId() {
-        return fieldId;
-    }
-
-    public void setFieldId(Integer fieldId) {
-        this.fieldId = fieldId;
     }
 }

@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.InitiatePossessorDao;
 import com.copower.pmcc.assess.dto.input.project.InitiatePossessorDto;
 import com.copower.pmcc.assess.dto.output.project.InitiatePossessorVo;
+import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,21 @@ import java.util.List;
  */
 @Service
 public class InitiatePossessorService {
-
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private InitiatePossessorDao dao;
 
-    public boolean add(InitiatePossessorDto dto){
+    @Transactional
+    public int add(InitiatePossessorDto dto){
+        if (dto.getpType()==InitiatePossessorDto.PTYPEa){//对资产占有人信息 进行单独处理
+            dto.setpUnitProperties(null);
+            dto.setpScopeOperation(null);
+            dto.setpSociologyCode(null);
+            dto.setpLegalRepresentative(null);
+            dto.setpEntrustmentUnit(null);
+        }
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);
     }
 
@@ -28,11 +40,18 @@ public class InitiatePossessorService {
         return change(dao.get(id));
     }
 
+    public InitiatePossessorDto getById(Integer id){
+        return dao.get(id);
+    }
+
+    @Transactional
     public boolean remove(Integer id){
         return dao.remove(id);
     }
 
+    @Transactional
     public boolean update(InitiatePossessorDto dto){
+        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 

@@ -1,15 +1,20 @@
 package com.copower.pmcc.assess.service.project;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.ProcessUserDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.input.project.*;
+import com.copower.pmcc.assess.dto.output.project.*;
+import com.copower.pmcc.assess.service.CrmCustomerService;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -19,25 +24,31 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Console;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
  * 描述:项目基础信息
@@ -51,6 +62,18 @@ public class ProjectInfoService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    private CommonService commonService;
+    @Autowired
+    private ErpAreaService erpAreaService;
+
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
+
+    @Lazy
+    @Autowired
+    private CrmCustomerService crmCustomerService;
+
+    @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
     private BaseDataDicService bidBaseDataDicService;
@@ -62,21 +85,30 @@ public class ProjectInfoService {
     private ServiceComponent serviceComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
+
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Lazy
+    @Autowired
+    private InitiateContactsService initiateContactsService;
+
+    @Autowired
+    private InitiateConsignorService consignorService;
+    @Autowired
+    private InitiateUnitInformationService unitInformationService;
+    @Autowired
+    private InitiatePossessorService possessorService;
+
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     /**
      * 项目立项申请
      *
-     * @param projectInfoDto
+     * @param projectDto
      */
-<<<<<<< Updated upstream
-    public void projectApply(ProjectInfoDto projectInfoDto) throws BusinessException {
-        ProjectInfo projectInfo = new ProjectInfo();
-        BeanUtils.copyProperties(projectInfoDto, projectInfo);
-        projectInfoDao.saveProjectInfo(projectInfo);
-        initProjectInfo(projectInfo);
-=======
     public void projectApply(InitiateProjectDto projectDto) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
@@ -193,15 +225,16 @@ public class ProjectInfoService {
 
             }
         }
->>>>>>> Stashed changes
     }
 
     /**
      * 初始化项目信息
+     *
      * @param projectInfo
      */
+    @Transactional
     private void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0,true);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0, true);
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
@@ -232,6 +265,7 @@ public class ProjectInfoService {
 
     /**
      * 发起立项流程
+     *
      * @param projectInfo
      * @param projectWorkStage
      * @return
@@ -265,6 +299,7 @@ public class ProjectInfoService {
 
     /**
      * 立项审批
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -276,6 +311,7 @@ public class ProjectInfoService {
 
     /**
      * 返回修改
+     *
      * @param approvalModelDto
      * @throws BusinessException
      * @throws BpmException
@@ -309,8 +345,247 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
+    public ProjectInfoVo getVo(ProjectInfo projectInfo) {
+        ProjectInfoVo projectInfoVo = new ProjectInfoVo();
+        BeanUtils.copyProperties(projectInfo, projectInfoVo);
+        //大类
+        projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
+        //委托目的
+        projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
+        projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
+        projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
+        projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));
+        //紧急程度
+        projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
+        projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
+        ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
+        //项目经理 与下级
+        if (projectMember != null) {
+            projectInfoVo.setUserAccountManagerName(projectMember.getUserAccountManager());
+            projectInfoVo.setUserAccountMemberName(projectMember.getUserAccountMember());
+        }
+        //价值类型
+        projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
+        InitiatePossessorVo possessorVo = possessorService.get(projectInfo.getPossessorId());
+        InitiateConsignorVo consignorVo = consignorService.get(projectInfo.getConsignorId());
+        InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
+
+        if (consignorVo.getCsUnitProperties() != null && consignorVo.getCsUnitProperties() != "") {
+            try {
+                String csUnitPropertiesName = getConsignorMap().get(consignorVo.getCsUnitProperties()).toString();
+                consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        if (consignorVo.getCsEntrustmentUnit() != null && consignorVo.getCsEntrustmentUnit() != "") {
+            try {
+                consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+
+        if (possessorVo.getpUnitProperties() != null && possessorVo.getpUnitProperties() != "") {
+            try {
+                String pUnitPropertiesName = getConsignorMap().get(possessorVo.getpUnitProperties()).toString();
+                possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        if (possessorVo.getpEntrustmentUnit() != null && possessorVo.getpEntrustmentUnit() != "") {
+            try {
+                possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+
+        if (unitInformationVo.getuUnitProperties() != null && unitInformationVo.getuUnitProperties() != "") {
+            String uUnitPropertiesName = getConsignorMap().get(unitInformationVo.getuUnitProperties()).toString();
+            unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
+        }
+        if (unitInformationVo.getuUseUnit() != null && unitInformationVo.getuUseUnit() != ""){
+            try {
+                unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
+
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
+
+        projectInfoVo.setPossessorVo(possessorVo);
+        projectInfoVo.setConsignorVo(consignorVo);
+        projectInfoVo.setUnitInformationVo(unitInformationVo);
+        return projectInfoVo;
+    }
+
+    public String baseDataDicChange(Integer id, List<BaseDataDic> base) {
+        String v = "";
+        inner:
+        for (BaseDataDic b : base) {
+            if (b.getId().equals(id)) {
+                v = b.getName();
+                break inner;
+            }
+        }
+        return v;
+    }
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
+    }
+
+    public CrmCustomerDto getCRM(Integer id) {
+        return crmCustomerService.getCustomer(id);
+    }
+
+    /*获取所有省*/
+    public List<SysAreaDto> getProvinceList() {
+        return erpAreaService.getProvinceList();
+    }
+
+    /*省名称*/
+    public String getProvinceName(int pid) {
+        List<SysAreaDto> provinceLists = erpAreaService.getProvinceList();
+        String s = provinceAndArea(pid, provinceLists);
+        return s;
+    }
+
+    /*城市名称*/
+    public String getSysArea(Integer id) {
+        return erpAreaService.getSysAreaDto(id).getName();
+    }
+
+
+    public SysDepartmentDto getDepartmentDto(Integer id) {
+        return erpRpcDepartmentService.getDepartmentById(id);
+    }
+
+    public String provinceAndArea(int id, List<SysAreaDto> sysAreaDtos) {
+        String v = "";
+        inner:
+        for (SysAreaDto s : sysAreaDtos) {
+            if (id == s.getId()) {
+                v = s.getName();
+                break inner;
+            }
+        }
+        return v;
+    }
+
+
+    /*获取城市*/
+    public List<SysAreaDto> getAreaList(String pid) {
+        return erpAreaService.getAreaList(pid);
+    }
+
+
+    /*大类*/
+    public List<BaseDataDic> listClass_assess() {
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
+        return baseDataDics;
+    }
+
+    /*委托目的*/
+    public List<BaseDataDic> list_entrustment_purpose() {
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        return baseDataDics;
+    }
+
+    /*紧急程度*/
+    public List<BaseDataDic> project_initiate_urgency() {
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY);
+        return baseDataDics;
+    }
+
+    /*价值类型*/
+    public List<BaseDataDic> value_type() {
+        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE);
+        return baseDataDics;
+    }
+
+    /*单位性质*/
+    public Map<String, Object> getConsignorMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(InitiateConsignorEnum.ONE.getValue() + "", InitiateConsignorEnum.BANK.getDec());
+        map.put(InitiateConsignorEnum.THREE.getValue() + "", InitiateConsignorEnum.OTHER.getDec());
+        map.put(InitiateConsignorEnum.TWO.getValue() + "", InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
+        return map;
+    }
+
+    /*联系人 vo*/
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId, flag);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    /*联系人 vo*/
+    public BootstrapTableVo listContactsVos(Integer pid, Integer flag) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<InitiateContactsVo> vos = initiateContactsService.getVoList(pid, flag);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+
+    /*联系人类型*/
+    public Map<String, String> getTypeInitiateContactsMap() {
+        return initiateContactsService.getTypeMap();
+    }
+
+    //添加联系人
+    public boolean addContacts(InitiateContactsDto dto) {
+        return initiateContactsService.add(dto);
+    }
+
+    /*联系人删除*/
+    public boolean removeContacts(Integer id) {
+        return initiateContactsService.remove(id);
+    }
+
+    public ProjectInfo change(ProjectInfoDto dto) {
+        ProjectInfo projectInfo = new ProjectInfo();
+        BeanUtils.copyProperties(dto, projectInfo);
+        return projectInfo;
+    }
+
+    public ProjectMemberDto change(ProjectMember projectMember) {
+        ProjectMemberDto dto = new ProjectMemberDto();
+        BeanUtils.copyProperties(projectMember, dto);
+        return dto;
+    }
+
+
+    public InitiateProjectDto format(String val) {
+        InitiateProjectDto dto = null;
+        if (StringUtils.isNotBlank(val)) {
+            dto = JSONObject.parseObject(val, InitiateProjectDto.class);
+        }
+        return dto;
+    }
+
+    /*报告使用单位 获取*/
+    public InitiateUnitInformationVo getInitiateUnitInformation(Integer id) {
+        return unitInformationService.get(id);
+    }
+
+    /*占有人 获取*/
+    public InitiatePossessorVo getInitiatePossessor(Integer id) {
+        return possessorService.get(id);
+    }
+
+    /*委托人 获取*/
+    public InitiateConsignorVo getInitiateConsignor(Integer id) {
+        return consignorService.get(id);
     }
 }

@@ -165,6 +165,76 @@ public class ReportTemplateExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -352,6 +422,76 @@ public class ReportTemplateExample {
 
         public Criteria andPrefixNotBetween(String value1, String value2) {
             addCriterion("prefix not between", value1, value2, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlIsNull() {
+            addCriterion("value_sql is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlIsNotNull() {
+            addCriterion("value_sql is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlEqualTo(String value) {
+            addCriterion("value_sql =", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlNotEqualTo(String value) {
+            addCriterion("value_sql <>", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlGreaterThan(String value) {
+            addCriterion("value_sql >", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlGreaterThanOrEqualTo(String value) {
+            addCriterion("value_sql >=", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlLessThan(String value) {
+            addCriterion("value_sql <", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlLessThanOrEqualTo(String value) {
+            addCriterion("value_sql <=", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlLike(String value) {
+            addCriterion("value_sql like", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlNotLike(String value) {
+            addCriterion("value_sql not like", value, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlIn(List<String> values) {
+            addCriterion("value_sql in", values, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlNotIn(List<String> values) {
+            addCriterion("value_sql not in", values, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlBetween(String value1, String value2) {
+            addCriterion("value_sql between", value1, value2, "valueSql");
+            return (Criteria) this;
+        }
+
+        public Criteria andValueSqlNotBetween(String value1, String value2) {
+            addCriterion("value_sql not between", value1, value2, "valueSql");
             return (Criteria) this;
         }
 

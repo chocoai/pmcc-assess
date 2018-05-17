@@ -294,7 +294,12 @@ public class FormConfigureService {
     public String getDynamicFormHtml(Integer formModuleId, Boolean readOnly, String jsonValue) {
         BaseFormModule hrbaseFormModule = hrBaseFormDao.getBaseFormModule(formModuleId);
         if (hrbaseFormModule != null) {
-            List<BaseFormModuleField> hrBaseFormModuleFields = hrBaseFormDao.getBaseFormModuleFields(hrbaseFormModule.getId());
+            BaseFormModuleField queryParam=new BaseFormModuleField();
+            queryParam.setFormModuleId(hrbaseFormModule.getId());
+            queryParam.setBisEnable(true);
+            queryParam.setBisDelete(false);
+            queryParam.setBisShow(true);
+            List<BaseFormModuleField> hrBaseFormModuleFields =hrBaseFormDao.getBaseFormModuleFields(queryParam);
             String s = getFormHtmlString(hrbaseFormModule.getTableName(), readOnly, jsonValue, hrBaseFormModuleFields);
             if (s != null) return s;
         }
@@ -346,12 +351,12 @@ public class FormConfigureService {
 
             //为自定义控件提供的相关值
             Map<String, Object> customMap = Maps.newHashMap();
-            customMap.put("tableName", tableName);
-            customMap.put("tableId", map.containsKey("id") ? map.get("id").toString() : "0");
-            customMap.put("userAccount", serviceComponent.getThisUser());
+            customMap.put("curr_tableName", tableName);
+            customMap.put("curr_tableId", map.containsKey("id") ? map.get("id").toString() : "0");
+            customMap.put("curr_userAccount", serviceComponent.getThisUser());
             SysUserDto sysUser = erpRpcUserService.getSysUser(serviceComponent.getThisUser());
             sysUser = sysUser == null ? new SysUserDto() : sysUser;
-            customMap.put("userAccountName", sysUser.getUserName());
+            customMap.put("curr_userAccountName", sysUser.getUserName());
             for (BaseFormModuleField o : hrBaseFormModuleFields) {
                 DynamicFormField dynamicFormField = new DynamicFormField();
                 dynamicFormField.setFormField(Boolean.TRUE == o.getBisJson() ? o.getJsonName() : o.getName());
@@ -362,11 +367,13 @@ public class FormConfigureService {
                 dynamicFormField.setValueLength(o.getFieldLength());
                 dynamicFormField.setDisplaySort(o.getSorting());
                 dynamicFormField.setDefaultValue(o.getDefaultValue());
+                dynamicFormField.setBisAloneLine(o.getBisAloneLine());
+                customMap.put(dynamicFormField.getFormField(), dynamicFormField.getDefaultValue());
 
-                customMap.put("formField", dynamicFormField.getFormField());
-                customMap.put("formFieldId", dynamicFormField.getFormFieldId());
-                customMap.put("labelName", dynamicFormField.getLabelName());
-                customMap.put("value", map.containsKey(dynamicFormField.getFormField()) ? map.get(dynamicFormField.getFormField()).toString() : "");
+                customMap.put("curr_fieldName", dynamicFormField.getFormField());
+                customMap.put("curr_fieldId", dynamicFormField.getFormFieldId());
+                customMap.put("curr_labelName", dynamicFormField.getLabelName());
+                customMap.put("curr_value", map.containsKey(dynamicFormField.getFormField()) ? map.get(dynamicFormField.getFormField()).toString() : "");
                 if (readOnly) {//数据显示
                     if (StringUtils.isNotBlank(o.getCustomDisplayUrl())) {
                         String realPath = servletContext.getRealPath(o.getCustomDisplayUrl());
@@ -616,11 +623,19 @@ public class FormConfigureService {
                 for (BaseFormModuleField formListField : formListFields) {
                     if (formListField.getBisJson()) {
                         if (formListField.getJsonName().equals(stringObjectEntry.getKey())) {
-                            stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s','%s'),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            if(stringObjectEntry.getValue()==null){
+                                stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s',%s),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            }else {
+                                stringBuilder.append(String.format("%s=JSON_SET(%s,'$.%s','%s'),", formListField.getName(), formListField.getName(), formListField.getJsonName(), stringObjectEntry.getValue()));
+                            }
                         }
                     } else {
                         if (formListField.getName().equals(stringObjectEntry.getKey())) {
-                            stringBuilder.append(String.format("%s='%s',", formListField.getName(), stringObjectEntry.getValue()));
+                            if (stringObjectEntry.getValue() == null) {
+                                stringBuilder.append(String.format("%s=%s,", formListField.getName(), stringObjectEntry.getValue()));
+                            } else {
+                                stringBuilder.append(String.format("%s='%s',", formListField.getName(), stringObjectEntry.getValue()));
+                            }
                         }
                     }
                 }
@@ -844,7 +859,6 @@ public class FormConfigureService {
             detailDto.setTableId(primaryId);
             detailDto.setTableName(formConfigureDto.getPrimaryTableName());
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("phase_id", formConfigureDto.getPhaseId());
             jsonObject.put("id", primaryId);
             detailDto.setFormData(jsonObject.toJSONString());
             resultDataList.add(detailDto);

@@ -5,6 +5,8 @@ import java.util.Date;
 public class ProjectInfo {
     private Integer id;
 
+    private Integer urgency;
+
     private String projectName;
 
     private Integer province;
@@ -43,12 +45,30 @@ public class ProjectInfo {
 
     private Date gmtModified;
 
+    private String attachmentProjectInfoId;
+
+    private Integer consignorId;
+
+    private Integer unitInformationId;
+
+    private Integer possessorId;
+
+    private Integer projectMemberId;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(Integer urgency) {
+        this.urgency = urgency;
     }
 
     public String getProjectName() {
@@ -201,5 +221,45 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAttachmentProjectInfoId() {
+        return attachmentProjectInfoId;
+    }
+
+    public void setAttachmentProjectInfoId(String attachmentProjectInfoId) {
+        this.attachmentProjectInfoId = attachmentProjectInfoId == null ? null : attachmentProjectInfoId.trim();
+    }
+
+    public Integer getConsignorId() {
+        return consignorId;
+    }
+
+    public void setConsignorId(Integer consignorId) {
+        this.consignorId = consignorId;
+    }
+
+    public Integer getUnitInformationId() {
+        return unitInformationId;
+    }
+
+    public void setUnitInformationId(Integer unitInformationId) {
+        this.unitInformationId = unitInformationId;
+    }
+
+    public Integer getPossessorId() {
+        return possessorId;
+    }
+
+    public void setPossessorId(Integer possessorId) {
+        this.possessorId = possessorId;
+    }
+
+    public Integer getProjectMemberId() {
+        return projectMemberId;
+    }
+
+    public void setProjectMemberId(Integer projectMemberId) {
+        this.projectMemberId = projectMemberId;
     }
 }

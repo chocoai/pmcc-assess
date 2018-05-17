@@ -1,5 +1,6 @@
 /**
  * Created by kings on 2018-4-18.
+ * 选择动态表单 工具方法
  */
 (function ($) {
 
@@ -53,7 +54,7 @@
         if (target.length > 0) {
             $("#select_form_modal").remove();
         }
-        this.callback = callback;
+        that.callback = callback;
         var html = '<div id="select_form_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"';
         html += 'role="dialog" data-keyboard="false" tabindex="1" style="display: none;">';
         html += '<div class="modal-dialog " style="width: 1000px;">';

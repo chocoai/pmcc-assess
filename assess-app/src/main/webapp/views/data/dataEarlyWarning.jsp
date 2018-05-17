@@ -234,13 +234,6 @@
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
-        // data.id = $("#id").val();
-        // data.entrustPurpose = $("#entrustPurpose").val();
-        // data.type = $("#type").val();
-        // data.nearDay = $("#nearDay").val();
-        // data.color = $("#color").val();
-        // data.mode = $("#mode").val();
-        // data.object = $("#object").val();
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/earlyWarning/editEarlyWarning",
