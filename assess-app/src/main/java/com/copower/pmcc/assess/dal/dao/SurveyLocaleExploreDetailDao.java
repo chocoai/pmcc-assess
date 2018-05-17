@@ -45,11 +45,4 @@ public class SurveyLocaleExploreDetailDao {
         return i > 0;
     }
 
-    public List<SurveyLocaleExploreDetail> changId(Integer mainId) {
-        SurveyLocaleExploreDetailExample example = new SurveyLocaleExploreDetailExample();
-        example.createCriteria().andMainIdEqualTo(mainId);
-        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetails = surveyLocaleExploreDetailMapper.selectByExample(example);
-        return surveyLocaleExploreDetails;
-
-    }
 }
