@@ -159,4 +159,8 @@ public class DeclareRecordService {
         List<DeclareRecord> declareRecords = dao.getDeclareRecordByProjectId(projectId);
         return declareRecords;
     }
+
+    public List<DeclareRecord> getDeclareRecordById(Integer id) {
+        return dao.getDeclareRecordById(id);
+    }
 }

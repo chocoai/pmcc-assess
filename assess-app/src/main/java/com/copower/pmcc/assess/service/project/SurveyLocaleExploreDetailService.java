@@ -126,6 +126,7 @@ public class SurveyLocaleExploreDetailService {
             example.setTableId(surveyLocaleExploreDetail.getId());
             baseAttachmentDao.updateAttachementByExample(queryParam, example);
             return flag;
+
         }
     }
 

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.SurveyCaseStudyDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="correlation_card" property="correlationCard" jdbcType="VARCHAR" />
+    <result column="case_location" property="caseLocation" jdbcType="VARCHAR" />
+    <result column="house_name" property="houseName" jdbcType="VARCHAR" />
+    <result column="case_type" property="caseType" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="deal_caondition" property="dealCaondition" jdbcType="VARCHAR" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="information_source" property="informationSource" jdbcType="INTEGER" />
+    <result column="linkman" property="linkman" jdbcType="VARCHAR" />
+    <result column="contact_way" property="contactWay" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, plan_details_id, correlation_card, case_location, house_name, case_type, price, 
+    deal_caondition, deal_time, payment_method, information_source, linkman, contact_way, 
+    creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_survey_case_study_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_survey_case_study_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_survey_case_study_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetailExample" >
+    delete from tb_survey_case_study_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_survey_case_study_detail (plan_details_id, correlation_card, case_location, 
+      house_name, case_type, price, 
+      deal_caondition, deal_time, payment_method, 
+      information_source, linkman, contact_way, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{planDetailsId,jdbcType=INTEGER}, #{correlationCard,jdbcType=VARCHAR}, #{caseLocation,jdbcType=VARCHAR}, 
+      #{houseName,jdbcType=VARCHAR}, #{caseType,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, 
+      #{dealCaondition,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{paymentMethod,jdbcType=VARCHAR}, 
+      #{informationSource,jdbcType=INTEGER}, #{linkman,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_survey_case_study_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="correlationCard != null" >
+        correlation_card,
+      </if>
+      <if test="caseLocation != null" >
+        case_location,
+      </if>
+      <if test="houseName != null" >
+        house_name,
+      </if>
+      <if test="caseType != null" >
+        case_type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="dealCaondition != null" >
+        deal_caondition,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method,
+      </if>
+      <if test="informationSource != null" >
+        information_source,
+      </if>
+      <if test="linkman != null" >
+        linkman,
+      </if>
+      <if test="contactWay != null" >
+        contact_way,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="correlationCard != null" >
+        #{correlationCard,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLocation != null" >
+        #{caseLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="houseName != null" >
+        #{houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="caseType != null" >
+        #{caseType,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="dealCaondition != null" >
+        #{dealCaondition,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentMethod != null" >
+        #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="informationSource != null" >
+        #{informationSource,jdbcType=INTEGER},
+      </if>
+      <if test="linkman != null" >
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="contactWay != null" >
+        #{contactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetailExample" resultType="java.lang.Integer" >
+    select count(*) from tb_survey_case_study_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_survey_case_study_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.correlationCard != null" >
+        correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseLocation != null" >
+        case_location = #{record.caseLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.houseName != null" >
+        house_name = #{record.houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseType != null" >
+        case_type = #{record.caseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=INTEGER},
+      </if>
+      <if test="record.dealCaondition != null" >
+        deal_caondition = #{record.dealCaondition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealTime != null" >
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentMethod != null" >
+        payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.informationSource != null" >
+        information_source = #{record.informationSource,jdbcType=INTEGER},
+      </if>
+      <if test="record.linkman != null" >
+        linkman = #{record.linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactWay != null" >
+        contact_way = #{record.contactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_survey_case_study_detail
+    set id = #{record.id,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
+      case_location = #{record.caseLocation,jdbcType=VARCHAR},
+      house_name = #{record.houseName,jdbcType=VARCHAR},
+      case_type = #{record.caseType,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=INTEGER},
+      deal_caondition = #{record.dealCaondition,jdbcType=VARCHAR},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
+      information_source = #{record.informationSource,jdbcType=INTEGER},
+      linkman = #{record.linkman,jdbcType=VARCHAR},
+      contact_way = #{record.contactWay,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail" >
+    update tb_survey_case_study_detail
+    <set >
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="correlationCard != null" >
+        correlation_card = #{correlationCard,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLocation != null" >
+        case_location = #{caseLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="houseName != null" >
+        house_name = #{houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="caseType != null" >
+        case_type = #{caseType,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="dealCaondition != null" >
+        deal_caondition = #{dealCaondition,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentMethod != null" >
+        payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="informationSource != null" >
+        information_source = #{informationSource,jdbcType=INTEGER},
+      </if>
+      <if test="linkman != null" >
+        linkman = #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="contactWay != null" >
+        contact_way = #{contactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail" >
+    update tb_survey_case_study_detail
+    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      correlation_card = #{correlationCard,jdbcType=VARCHAR},
+      case_location = #{caseLocation,jdbcType=VARCHAR},
+      house_name = #{houseName,jdbcType=VARCHAR},
+      case_type = #{caseType,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      deal_caondition = #{dealCaondition,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      information_source = #{informationSource,jdbcType=INTEGER},
+      linkman = #{linkman,jdbcType=VARCHAR},
+      contact_way = #{contactWay,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

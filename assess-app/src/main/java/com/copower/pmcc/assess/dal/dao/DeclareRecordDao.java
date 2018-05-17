@@ -65,4 +65,9 @@ public class DeclareRecordDao {
         return mapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public List<DeclareRecord> getDeclareRecordById(Integer id) {
+        DeclareRecordExample example = new DeclareRecordExample();
+        example.createCriteria().andIdEqualTo(id);
+        return mapper.selectByExample(example);
+    }
 }
