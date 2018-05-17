@@ -86,4 +86,9 @@ public class SurveyLocaleExploreDetailService {
         if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
         return surveyLocaleExploreDetailDao.delete(id);
     }
+
+    public List<SurveyLocaleExploreDetail> changeId(Integer mainId) {
+        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetails = surveyLocaleExploreDetailDao.changId(mainId);
+        return surveyLocaleExploreDetails;
+    }
 }
