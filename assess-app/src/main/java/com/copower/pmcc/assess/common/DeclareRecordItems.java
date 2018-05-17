@@ -9,13 +9,13 @@ import java.util.List;
  * Created by 13426 on 2018/5/15.
  */
 public class DeclareRecordItems {
-    private List<List<DeclareRecord>> items = new ArrayList<>();
+    private List<DeclareRecordList> items = new ArrayList<>();
 
-    public List<List<DeclareRecord>> getItems() {
+    public List<DeclareRecordList> getItems() {
         return items;
     }
 
-    public void setItems(List<List<DeclareRecord>> items) {
+    public void setItems(List<DeclareRecordList> items) {
         this.items = items;
     }
 }
