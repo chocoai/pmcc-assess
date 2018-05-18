@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodExample;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodFieldExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationMethodFieldMapper;
+import com.copower.pmcc.assess.dal.mapper.EvaluationMethodMapper;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,24 @@ public class EvaluationMethodFieldDao {
 
     @Autowired
     private EvaluationMethodFieldMapper evaluationMethodFieldMapper;
+
+    @Autowired
+    private EvaluationMethodMapper methodMapper;
+
+    @Deprecated
+    public List<EvaluationMethodField> schemeassistservice(Integer method){
+        List<EvaluationMethodField> fieldList = new ArrayList<>();
+        List<EvaluationMethod> methods ;
+        EvaluationMethodExample methodExample = new EvaluationMethodExample();
+        methodExample.createCriteria().andIdIsNotNull().andMethodEqualTo(""+ method);
+        methods = methodMapper.selectByExample(methodExample);
+        for (EvaluationMethod evaluationMethod:methods){
+            Integer id = evaluationMethod.getId();
+            List<EvaluationMethodField> fields = list(id);
+            fieldList.addAll(fields);
+        }
+        return fieldList;
+    }
 
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
         boolean flag = true;

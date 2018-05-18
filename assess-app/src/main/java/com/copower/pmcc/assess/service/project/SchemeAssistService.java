@@ -2,12 +2,16 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.DeclareRecordItems;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
+import com.copower.pmcc.assess.dal.dao.EvaluationThinkingFieldDao;
+import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.DeclareRecordVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
+import com.copower.pmcc.assess.service.data.EvaluationMethodService;
+import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,14 @@ import java.util.List;
 @Service
 public class SchemeAssistService {
     @Autowired
+    private EvaluationThinkingFieldDao thinkingFieldDao;
+    @Autowired
+    private EvaluationMethodService methodService;
+    @Autowired
+    private EvaluationThinkingService thinkingService;
+    @Autowired
+    private EvaluationMethodFieldDao methodFieldDao;
+    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DeclareRecordService declareRecordService;
@@ -34,7 +46,28 @@ public class SchemeAssistService {
         return dataBestUseDescriptionService.dataBestUseDescriptionList();
     }
 
-    /*评估方法*/
+    public List<EvaluationThinkingField> schemeassistservice(Integer id){
+        return thinkingFieldDao.schemeassistservice(id);
+    }
+
+    public EvaluationThinkingDto get(Integer id){
+        return thinkingService.get(id);
+    }
+
+    public List<EvaluationMethodVo> listMethod(Integer method) {
+        return methodService.list(method);
+    }
+
+    @Deprecated
+    public List<EvaluationMethodField> list(Integer methodId) {
+       return methodFieldDao.schemeassistservice(methodId);
+    }
+
+    public List<EvaluationThinking> thinkingList(){
+        return thinkingService.list(null);
+    }
+
+    /*评估方法 字典*/
     public List<BaseDataDic> evaluationmethod(){
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         return baseDataDics;
