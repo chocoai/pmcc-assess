@@ -441,12 +441,12 @@ public class FormConfigureService {
     /**
      * 根据key获取列表显示字段数据
      *
-     * @param formListId
+     * @param formModuleId
      * @return
      */
-    public List<FormConfigureFieldVo> getListFieldsShow(Integer formListId) {
+    public List<FormConfigureFieldVo> getListFieldsShow(Integer formModuleId) {
         List<FormConfigureFieldVo> fieldVos = Lists.newArrayList();
-        List<BaseFormModuleField> listFields = getListFields(formListId);
+        List<BaseFormModuleField> listFields = getListFields(formModuleId);
         if (CollectionUtils.isNotEmpty(listFields)) {
             for (BaseFormModuleField listField : listFields) {
                 if (Boolean.TRUE == listField.getBisListShow()) {
@@ -463,6 +463,17 @@ public class FormConfigureService {
         return fieldVos;
     }
 
+    /**
+     * 获取字段json数据
+     * @param formModuleId
+     * @param tableId
+     * @param tableName
+     * @return
+     */
+    public String getFieldJsonString(Integer formModuleId,Integer tableId,String tableName){
+
+        return "";
+    }
 
     /**
      * 将json字段的数据提取到json字段中
@@ -546,25 +557,6 @@ public class FormConfigureService {
                 }
             }
         }
-    }
-
-    /**
-     * 获取流程节点下配置的所有字段信息
-     *
-     * @param processId
-     * @param activityName
-     * @return
-     */
-    public List<BaseFormModuleField> getFieldsByProcessInfo(Integer processId, String activityName) {
-        List<BaseProcessForm> hrProcessFormModule = hrBaseProcessService.getProcessFormList(processId, activityName);
-        if (CollectionUtils.isEmpty(hrProcessFormModule)) return Lists.newArrayList();
-        List<BaseFormModuleField> listFields = Lists.newArrayList();
-        for (BaseProcessForm hrBaseProcessForm : hrProcessFormModule) {
-            List<BaseFormModuleField> listFieldList = getListFields(hrBaseProcessForm.getFormModuleId());
-            if (CollectionUtils.isNotEmpty(listFieldList))
-                listFields.addAll(listFieldList);
-        }
-        return listFields;
     }
 
     /**

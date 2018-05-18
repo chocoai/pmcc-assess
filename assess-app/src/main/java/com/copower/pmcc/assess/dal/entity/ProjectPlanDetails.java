@@ -72,6 +72,8 @@ public class ProjectPlanDetails {
 
     private Integer declareFormId;
 
+    private Integer declareRecordId;
+
     public Integer getId() {
         return id;
     }
@@ -342,5 +344,13 @@ public class ProjectPlanDetails {
 
     public void setDeclareFormId(Integer declareFormId) {
         this.declareFormId = declareFormId;
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
     }
 }

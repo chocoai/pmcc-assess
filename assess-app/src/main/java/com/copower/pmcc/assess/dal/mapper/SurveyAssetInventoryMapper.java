@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.dal.mapper;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventoryExample;
 import java.util.List;
-
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
 import org.apache.ibatis.annotations.Param;
 
 public interface SurveyAssetInventoryMapper {
@@ -29,5 +27,4 @@ public interface SurveyAssetInventoryMapper {
     int updateByPrimaryKeySelective(SurveyAssetInventory record);
 
     int updateByPrimaryKey(SurveyAssetInventory record);
-
 }

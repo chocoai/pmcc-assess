@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.SurveyLocaleExploreMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.SchemeJudgeObjectMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
+    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
+    <result column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="best_use_id" property="bestUseId" jdbcType="INTEGER" />
+    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
+    <result column="group_number" property="groupNumber" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,16 +75,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, declare_record_id, creator, gmt_created, 
-    gmt_modified
+    id, project_id, declare_record_id, area_group_id, evaluation_id, number, name, best_use_id, 
+    floor_area, group_number, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_scheme_judge_object
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,47 +95,66 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_scheme_judge_object
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_survey_locale_explore
+    delete from tb_scheme_judge_object
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" >
-    delete from tb_survey_locale_explore
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" >
+    delete from tb_scheme_judge_object
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore (project_id, plan_details_id, process_ins_id, 
-      declare_record_id, creator, gmt_created, 
-      gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{declareRecordId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_judge_object (project_id, declare_record_id, area_group_id, 
+      evaluation_id, number, name, 
+      best_use_id, floor_area, group_number, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
+      #{evaluationId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{bestUseId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore
+    insert into tb_scheme_judge_object
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
       </if>
-      <if test="planDetailsId != null" >
-        plan_details_id,
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id,
-      </if>
       <if test="declareRecordId != null" >
         declare_record_id,
+      </if>
+      <if test="areaGroupId != null" >
+        area_group_id,
+      </if>
+      <if test="evaluationId != null" >
+        evaluation_id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="bestUseId != null" >
+        best_use_id,
+      </if>
+      <if test="floorArea != null" >
+        floor_area,
+      </if>
+      <if test="groupNumber != null" >
+        group_number,
       </if>
       <if test="creator != null" >
         creator,
@@ -146,14 +170,29 @@
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailsId != null" >
-        #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="areaGroupId != null" >
+        #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationId != null" >
+        #{evaluationId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bestUseId != null" >
+        #{bestUseId,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null" >
+        #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="groupNumber != null" >
+        #{groupNumber,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -166,14 +205,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample" resultType="java.lang.Integer" >
-    select count(*) from tb_survey_locale_explore
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" resultType="java.lang.Integer" >
+    select count(*) from tb_scheme_judge_object
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_scheme_judge_object
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -181,14 +220,29 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.planDetailsId != null" >
-        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="record.processInsId != null" >
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaGroupId != null" >
+        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluationId != null" >
+        evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bestUseId != null" >
+        best_use_id = #{record.bestUseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorArea != null" >
+        floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.groupNumber != null" >
+        group_number = #{record.groupNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -205,12 +259,17 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_scheme_judge_object
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
-      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      best_use_id = #{record.bestUseId,jdbcType=INTEGER},
+      floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      group_number = #{record.groupNumber,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -218,20 +277,35 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
+    update tb_scheme_judge_object
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailsId != null" >
-        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="areaGroupId != null" >
+        area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationId != null" >
+        evaluation_id = #{evaluationId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bestUseId != null" >
+        best_use_id = #{bestUseId,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null" >
+        floor_area = #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="groupNumber != null" >
+        group_number = #{groupNumber,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -245,12 +319,17 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
+    update tb_scheme_judge_object
     set project_id = #{projectId,jdbcType=INTEGER},
-      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      evaluation_id = #{evaluationId,jdbcType=INTEGER},
+      number = #{number,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      best_use_id = #{bestUseId,jdbcType=INTEGER},
+      floor_area = #{floorArea,jdbcType=DECIMAL},
+      group_number = #{groupNumber,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

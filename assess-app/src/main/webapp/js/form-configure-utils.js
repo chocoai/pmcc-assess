@@ -20,9 +20,7 @@
         },
         getDynamicFormHtml: function (options) {
             var defaluts = {
-                formName: undefined,
                 formModuleId: undefined,
-                formListName: undefined,
                 readOnly: false,
                 jsonValue: undefined,
                 success: function () {
@@ -35,9 +33,7 @@
                 type: "post",
                 dataType: "json",
                 data: {
-                    formName: defaluts.formName,
                     formModuleId: defaluts.formModuleId,
-                    formListName: defaluts.formListName,
                     readOnly: defaluts.readOnly,
                     jsonValue: defaluts.jsonValue
                 },
@@ -308,6 +304,34 @@
                 }
             }
             return data;
+        },
+
+        //获取字典的json数据
+        getFieldJson:function (options) {
+            var defaluts = {
+                formModuleId: undefined,
+                readOnly: false,
+                jsonValue: undefined,
+                success: function () {
+
+                }
+            };
+            defaluts = $.extend({}, defaluts, options);
+            $.ajax({
+                url: getContextPath() + "/formConfigure/getDynamicFormHtml",
+                type: "post",
+                dataType: "json",
+                data: {
+                    formModuleId: defaluts.formModuleId,
+                    readOnly: defaluts.readOnly,
+                    jsonValue: defaluts.jsonValue
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        defaluts.success(result.data);
+                    }
+                }
+            })
         }
 
     };

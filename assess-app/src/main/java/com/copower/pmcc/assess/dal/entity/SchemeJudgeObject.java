@@ -3,14 +3,18 @@ package com.copower.pmcc.assess.dal.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SchemeAreaGroupRecord {
+public class SchemeJudgeObject {
     private Integer id;
 
     private Integer projectId;
 
+    private Integer declareRecordId;
+
     private Integer areaGroupId;
 
-    private String number;
+    private Integer evaluationId;
+
+    private Integer number;
 
     private String name;
 
@@ -42,6 +46,14 @@ public class SchemeAreaGroupRecord {
         this.projectId = projectId;
     }
 
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
+    }
+
     public Integer getAreaGroupId() {
         return areaGroupId;
     }
@@ -50,12 +62,20 @@ public class SchemeAreaGroupRecord {
         this.areaGroupId = areaGroupId;
     }
 
-    public String getNumber() {
+    public Integer getEvaluationId() {
+        return evaluationId;
+    }
+
+    public void setEvaluationId(Integer evaluationId) {
+        this.evaluationId = evaluationId;
+    }
+
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getName() {

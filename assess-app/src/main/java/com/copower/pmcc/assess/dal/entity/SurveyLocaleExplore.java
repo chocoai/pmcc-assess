@@ -11,6 +11,8 @@ public class SurveyLocaleExplore {
 
     private String processInsId;
 
+    private Integer declareRecordId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class SurveyLocaleExplore {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
     }
 
     public String getCreator() {

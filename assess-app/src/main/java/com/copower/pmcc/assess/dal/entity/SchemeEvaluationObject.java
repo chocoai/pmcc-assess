@@ -2,16 +2,16 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class SurveyCaseStudy {
+public class SchemeEvaluationObject {
     private Integer id;
 
     private Integer projectId;
 
-    private Integer planDetailsId;
+    private Integer areaGroupId;
 
-    private String processInsId;
+    private String name;
 
-    private Integer declareRecordId;
+    private String number;
 
     private String creator;
 
@@ -35,28 +35,28 @@ public class SurveyCaseStudy {
         this.projectId = projectId;
     }
 
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
+    public Integer getAreaGroupId() {
+        return areaGroupId;
     }
 
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
     }
 
-    public String getProcessInsId() {
-        return processInsId;
+    public String getName() {
+        return name;
     }
 
-    public void setProcessInsId(String processInsId) {
-        this.processInsId = processInsId == null ? null : processInsId.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
+    public String getNumber() {
+        return number;
     }
 
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
+    public void setNumber(String number) {
+        this.number = number == null ? null : number.trim();
     }
 
     public String getCreator() {

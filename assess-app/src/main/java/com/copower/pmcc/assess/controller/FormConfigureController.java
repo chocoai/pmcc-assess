@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
+import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
@@ -214,7 +215,7 @@ public class FormConfigureController {
     }
 
     /**
-     * 获取字段信息
+     * 获取动态html
      *
      * @return
      */
@@ -223,6 +224,22 @@ public class FormConfigureController {
     public HttpResult getDynamicFormHtml(Integer formModuleId, Boolean readOnly, String jsonValue) {
         try {
             return HttpResult.newCorrectResult(formConfigureService.getDynamicFormHtml(formModuleId, readOnly, jsonValue));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 获取字段Json数据
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getFieldJsonString", method = RequestMethod.POST)
+    public HttpResult getFieldJsonString(Integer formModuleId,Integer tableId,String tableName) {
+        try {
+            List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(formModuleId);
+            return HttpResult.newCorrectResult(fieldVos);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
