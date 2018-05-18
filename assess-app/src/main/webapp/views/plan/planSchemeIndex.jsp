@@ -106,56 +106,56 @@
                         </c:if>
                     </form>
                     <c:forEach items="${dataList.items}" var="item">
-                    <table class="table">
-                        <tbody>
-                        <h2>
-                        ${item.provinceName}  ${item.cityName}
-                            <c:if test="${!empty item.districtName}">
-                                ${item.districtName}
-                            </c:if>
-                        </h2>
+                        <table class="table">
+                            <tbody>
+                            <h2>
+                                    ${item.provinceName}  ${item.cityName}
+                                <c:if test="${!empty item.districtName}">
+                                    ${item.districtName}
+                                </c:if>
+                            </h2>
+                            <tr>
+                                <th>估价对象编号</th>
+                                <th>权证号</th>
+                                <th>所有权人</th>
+                                <th>座落</th>
+                                <th>最佳利用设置</th>
+                                <th>合并测算序号</th>
+                                <th>证载面积</th>
+                                <th>评估面积</th>
+                                <th>评估方法</th>
+                                <th>操作</th>
+                            </tr>
+                            <c:forEach items="${item.declareRecords}" var="data" varStatus="status">
                                 <tr>
-                                    <th>估价对象编号</th>
-                                    <th>权证号</th>
-                                    <th>所有权人</th>
-                                    <th>座落</th>
-                                    <th>最佳利用设置</th>
-                                    <th>合并测算序号</th>
-                                    <th>证载面积</th>
-                                    <th>评估面积</th>
-                                    <th>评估方法</th>
-                                    <th>操作</th>
+                                    <td id="dataIndex${data.id}">${status.index + 1}</td>
+                                    <td id="dataName${data.id}">${data.name}</td>
+                                    <td id="dataCreator${data.id}">${data.creator}</td>
+                                    <td id="dataSeat${data.id}">座落</td>
+                                    <td id="dataBestUse${data.id}">
+                                        <select class="form-control">
+                                            <c:forEach items="${bestusedescriptionList}" var="bestUse">
+                                                <option>${bestUse.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                    <td id="dataMerge${data.id}">
+                                        <input class="form-control" placeholder="合并测算序号">
+                                    </td>
+                                    <td id="dataFloorArea${data.id}"><label class="form-control">${data.floorArea}</label></td>
+                                    <td id="dataAssessmentArea${data.id}">
+                                        <input class="form-control" placeholder="评估面积">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-success" id="btnID${data.id}" onclick="splitEvaluate(${data.id})">拆分</button>
+                                    </td>
                                 </tr>
-                                <c:forEach items="${item.declareRecords}" var="data" varStatus="status">
-                                        <tr>
-                                            <td id="dataIndex${data.id}">${status.index + 1}</td>
-                                            <td id="dataName${data.id}">${data.name}</td>
-                                            <td id="dataCreator${data.id}">${data.creator}</td>
-                                            <td id="dataSeat${data.id}">座落</td>
-                                            <td id="dataBestUse${data.id}">
-                                                <select class="form-control">
-                                                    <c:forEach items="${bestusedescriptionList}" var="bestUse">
-                                                        <option>${bestUse.name}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </td>
-                                            <td id="dataMerge${data.id}">
-                                                <input class="form-control" placeholder="合并测算序号">
-                                            </td>
-                                            <td id="dataFloorArea${data.id}"><label class="form-control">${data.floorArea}</label></td>
-                                            <td id="dataAssessmentArea${data.id}">
-                                                <input class="form-control" placeholder="评估面积">
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-success" id="btnID${data.id}" onclick="splitEvaluate(${data.id})">拆分</button>
-                                            </td>
-                                        </tr>
-                                </c:forEach>
-                        </tbody>
-                    </table>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </c:forEach>
                 </div>
             </div>
@@ -211,7 +211,7 @@
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-3 control-label" >
-                                                ${item.name}
+                                                    ${item.name}
                                                 <input type="hidden" value="${item.id}"   class="form-control" >
                                             </label>
 
@@ -299,8 +299,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group" >
+                            <div class="panel-body" id="evaluationThinkTempleGroupX">
+                                <div class="form-group" id="evaluationThinkTempleGroup1">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             评估技术思路
@@ -308,7 +308,7 @@
 
                                         <div class="col-sm-9">
                                             <select class="form-control" id="EvaluationThinkSelect">
-                                                <c:forEach items="${dataEvaluationThink}" var="item">
+                                                <c:forEach items="${dataEvaluationThink}" var="item" varStatus="status">
                                                     <option value="${item.id}" name="evaluationThink">${item.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -316,7 +316,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group" >
+                                <div class="form-group" id="evaluationThinkTempleGroup2">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             模板
@@ -328,6 +328,9 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div id="evaluationThinkTempleGroup"></div>
+
 
                             </div>
                         </div>
@@ -738,7 +741,7 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                    var templatePanel = document.getElementById("templatePanel");
+                var templatePanel = document.getElementById("templatePanel");
                 for (var i=0;i<result.length;i++){
                     var data = result[i];
                     var divElement = document.createElement("div");
@@ -773,8 +776,8 @@
                     divValidElement.appendChild(div2Element);
                     divElement.appendChild(divValidElement);
                 }
-                    templatePanel.innerHTML = "";
-                    templatePanel.appendChild(divElement);
+                templatePanel.innerHTML = "";
+                templatePanel.appendChild(divElement);
             },
             error: function (result) {
                 alert("调用服务端方法失败，失败原因:" + result);
@@ -784,30 +787,30 @@
     $(function () {
         //初始化
         <c:forEach items="${dataEvaluationMethod}" var="item">
-            $("#applyNoTemplateView"+${item.id}).hide();
-            $("#applyTemplateView"+${item.id}).hide();
-            $("#thinkView"+${item.id}).hide();
-            $("#thinkField"+${item.id}).hide();
+        $("#applyNoTemplateView"+${item.id}).hide();
+        $("#applyTemplateView"+${item.id}).hide();
+        $("#thinkView"+${item.id}).hide();
+        $("#thinkField"+${item.id}).hide();
         </c:forEach>
 
         //评估方法 模板 字段 选择
         <c:forEach items="${dataEvaluationMethod}" var="item">
-            var applyNoTemplate = "applyNoTemplate"+${item.id};
-            document.getElementById(applyNoTemplate).onclick = function () {
-                document.getElementById("templateShow").innerText = "${item.name}";
-                var id = "${item.id}";
-                $("#frmTemplate").clearAll();
-                evaluationmethodSelect(id);
-                $("#divTemplate").modal();//显示
-            }
-            var applyTemplate = "applyTemplate"+${item.id};
-            document.getElementById(applyTemplate).onclick = function () {
-                document.getElementById("templateShow").innerText = "${item.name}";
-                var id = "${item.id}";
-                $("#frmTemplate").clearAll();
-                evaluationmethodSelect(id);
-                $("#divTemplate").modal();//显示
-            }
+        var applyNoTemplate = "applyNoTemplate"+${item.id};
+        document.getElementById(applyNoTemplate).onclick = function () {
+            document.getElementById("templateShow").innerText = "${item.name}";
+            var id = "${item.id}";
+            $("#frmTemplate").clearAll();
+            evaluationmethodSelect(id);
+            $("#divTemplate").modal();//显示
+        }
+        var applyTemplate = "applyTemplate"+${item.id};
+        document.getElementById(applyTemplate).onclick = function () {
+            document.getElementById("templateShow").innerText = "${item.name}";
+            var id = "${item.id}";
+            $("#frmTemplate").clearAll();
+            evaluationmethodSelect(id);
+            $("#divTemplate").modal();//显示
+        }
         </c:forEach>
     });
     //选项卡
@@ -864,32 +867,110 @@
                 success: function (result) {
                     console.log(result);
                     var evaluationThinkTemple = document.getElementById("evaluationThinkTemple");
-                    evaluationThinkTemple.value = result.name;
-                },
-                error: function (result) {
-                    alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            $.ajax({// list
-                url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
-                data: {
-                    id: selected,
-                    type:2
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    for (var i=0; i<result.length;i++){
-
+                    var data = result.name+"";
+                    if (data!=null && data!='' && data!=""){
+                        document.getElementById("evaluationThinkTemple").value = data;
+                        writeThinkFieldS(selected);
                     }
                 },
                 error: function (result) {
                     alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
+
         }
     });
+
+    function writeThinkFieldS(id) {
+        $.ajax({// list
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
+            data: {
+                id: id,
+                type:2
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                var len = result.length;
+                var num = Math.round(len / 4);
+                var evaluationThinkTempleGroup = document.getElementById("evaluationThinkTempleGroup");
+                if (len <= 4){
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+                    for (var i=0; i < len;i++){
+                        var data = result[i];
+                        var divValid = document.createElement("div");
+                        divValid.setAttribute("class","x-valid");
+                        var divCol = document.createElement("div");
+                        divCol.setAttribute("class","col-sm-3");
+                        divCol.appendChild(document.createTextNode("    "+data.name));
+                        var inputElement = document.createElement("input");
+                        inputElement.setAttribute("type","checkbox");
+                        inputElement.setAttribute("name","thinkType");
+                        inputElement.setAttribute("value",data.id+"");
+                        divCol.appendChild(inputElement);
+
+                        divValid.appendChild(divCol);
+                        divElement.appendChild(divValid);
+                    }
+                    var evaluationThinkTempleGroupX = document.getElementById("evaluationThinkTempleGroupX").getElementsByTagName("div");
+                    for(var k = 0;k<evaluationThinkTempleGroupX.length;k++){
+                        var id = evaluationThinkTempleGroupX[k].getAttribute("id");
+                        if (id!="evaluationThinkTempleGroup1" && id!="evaluationThinkTempleGroup2" && id !="evaluationThinkTempleGroup"){
+
+                        }
+                    }
+                    evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
+
+                }else {
+                    for (var i = 0;i < num;i++){
+                        var divElement = document.createElement("div");
+                        divElement.setAttribute("class","form-group");
+                        for (var j = (1*num); j < (1*num) +4 ; j++){
+                            var data = result[i];
+                            var divValid = document.createElement("div");
+                            divValid.setAttribute("class","x-valid");
+                            var divCol = document.createElement("div");
+                            divCol.setAttribute("class","col-sm-3");
+                            divCol.appendChild(document.createTextNode("    "+data.name));
+                            var inputElement = document.createElement("input");
+                            inputElement.setAttribute("type","checkbox");
+                            inputElement.setAttribute("name","thinkType");
+                            inputElement.setAttribute("value",data.id+"");
+                            divCol.appendChild(inputElement);
+
+                            divValid.appendChild(divCol);
+                            divElement.appendChild(divValid);
+                        }
+                        evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
+                    }
+                }
+                var divElement = document.createElement("div");
+                divElement.setAttribute("class","form-group");
+                for (var i = num *4;i<len;i++){//剩余的 取模剩余的
+                    var data = result[i];
+                    var divValid = document.createElement("div");
+                    divValid.setAttribute("class","x-valid");
+                    var divCol = document.createElement("div");
+                    divCol.setAttribute("class","col-sm-3");
+                    divCol.appendChild(document.createTextNode("    "+data.name));
+                    var inputElement = document.createElement("input");
+                    inputElement.setAttribute("type","checkbox");
+                    inputElement.setAttribute("name","thinkType");
+                    inputElement.setAttribute("value",data.id+"");
+                    divCol.appendChild(inputElement);
+
+                    divValid.appendChild(divCol);
+                    divElement.appendChild(divValid);
+                }
+                evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
 
     //拆分
     function splitEvaluate(id) {
@@ -1280,7 +1361,7 @@
                 onDblClickRow: function (row) {
                     editPlan(row.id);
                 },
-            onLoadSuccess: function () {
+                onLoadSuccess: function () {
                     $(".tooltips").tooltip();
                 },
 
