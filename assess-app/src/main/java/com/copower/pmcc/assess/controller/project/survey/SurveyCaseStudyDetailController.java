@@ -1,19 +1,18 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.alibaba.dubbo.rpc.RpcInvocation;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
+import com.copower.pmcc.assess.dto.input.project.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.SurveyCaseStudyDetailVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.activiti.engine.form.FormData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,8 +85,8 @@ public class SurveyCaseStudyDetailController {
     @RequestMapping(value = "/save", name = "保存或修改数据", method = RequestMethod.POST)
     public HttpResult save(String formData) {
         try {
-            SurveyCaseStudyDetail surveyCaseStudyDetail = JSON.parseObject(formData, SurveyCaseStudyDetail.class);
-            surveyCaseStudyDetailService.save(surveyCaseStudyDetail);
+            SurveyCaseStudyDetailDto surveyCaseStudyDetailDto = JSON.parseObject(formData, SurveyCaseStudyDetailDto.class);
+            surveyCaseStudyDetailService.save(surveyCaseStudyDetailDto);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

@@ -21,7 +21,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "现场查勘类")
+@WorkFlowAnnotation(desc = "现场查勘成果")
 public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

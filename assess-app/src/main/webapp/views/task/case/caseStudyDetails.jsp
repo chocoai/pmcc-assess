@@ -11,8 +11,6 @@
 
 <body>
 
-<%--<div id="containerMap" class="map" tabindex="0"></div>--%>
-
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
@@ -125,27 +123,43 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                案例定位
+                            </label>
+                            <div class="col-sm-11">
+                                <c:if test="${surveyCaseStudyDetail.id eq 0}">
+                                    <iframe src="${pageContext.request.contextPath}/map/positionPicker?position=${surveyCaseStudyDetail.caseLocaltion}"
+                                            width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
+                                            marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
+                                </c:if>
+                                <c:if test="${surveyCaseStudyDetail.id ne 0}">
+                                    <div id="_caseLocaltion">
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            //显示定位图片
+                                            loadCaseLocaltionFiles();
+                                        })
+                                        function loadCaseLocaltionFiles() {
+                                            FileUtils.getFileShows({
+                                                target: "caseLocaltion",
+                                                formData: {
+                                                    tableName: "tb_survey_case_study_detail",
+                                                    tableId: ${surveyCaseStudyDetail.id},
+                                                    fieldsName: "case_localtion"
+                                                },
+                                                deleteFlag: false
+                                            })
+                                        }
+                                    </script>
+                                </c:if>
+                            </div>
+                        </div>
                     </form>
 
                 </div>
             </div>
-
-            <%--<div id="tip"></div>--%>
-            <%--<div id='right'>--%>
-            <%--<div>--%>
-            <%--<div class='c'>经纬度:</div>--%>
-            <%--<div id='lnglat'></div>--%>
-            <%--<div class='c'>地址:</div>--%>
-            <%--<div id='surveyLocaltion' name="surveyLocaltion"></div>--%>
-            <%--<div class='c'>最近的路口:</div>--%>
-            <%--<div id='nearestJunction'></div>--%>
-            <%--<div class='c'>最近的路:</div>--%>
-            <%--<div id='nearestRoad'></div>--%>
-            <%--<div class='c'>最近的POI:</div>--%>
-            <%--<div id='nearestPOI'></div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
 
             <div class="x_panel">
                 <div class="x_content">
@@ -165,76 +179,7 @@
 
 <script type="text/javascript">
 
-    //高德地图接入定位
-    //    AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
-    //        //var map = new AMap.Map('container', {
-    //        //     zoom: 16,
-    //        //     scrollWheel: false
-    //        // })
-    //
-    //        var map, geolocation;
-    //        //加载地图，调用浏览器定位服务
-    //        map = new AMap.Map('containerMap', {
-    //            zoom: 14,
-    //            resizeEnable: true,
-    //
-    //        });
-    //        map.plugin('AMap.Geolocation', function () {
-    //            geolocation = new AMap.Geolocation({
-    //                enableHighAccuracy: true,//是否使用高精度定位，默认:true
-    //                timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-    //                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-    //                zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-    //                buttonPosition: 'RB'
-    //            });
-    //            map.addControl(geolocation);
-    //            geolocation.getCurrentPosition();
-    //            AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-    //            AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-    //        });
-    //        //解析定位结果
-    //        function onComplete(data) {
-    //            var str = ['定位成功'];
-    //            str.push('经度：' + data.position.getLng());
-    //            str.push('纬度：' + data.position.getLat());
-    //            if (data.accuracy) {
-    //                str.push('精度：' + data.accuracy + ' 米');
-    //            }//如为IP精确定位结果则没有精度信息
-    //            str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-    //            document.getElementById('tip').innerHTML = str.join('<br>');
-    //        }
-    //
-    //        //解析定位错误信息
-    //        function onError(data) {
-    //            document.getElementById('tip').innerHTML = '定位失败';
-    //        }
-    //
-    //
-    //        var positionPicker = new PositionPicker({
-    //            mode: 'dragMap',
-    //            map: map
-    //        });
-    //
-    //        positionPicker.on('success', function (positionResult) {
-    //            document.getElementById('lnglat').innerHTML = positionResult.position;
-    //            document.getElementById('surveyLocaltion').innerHTML = positionResult.address;
-    //            document.getElementById('nearestJunction').innerHTML = positionResult.nearestJunction;
-    //            document.getElementById('nearestRoad').innerHTML = positionResult.nearestRoad;
-    //            document.getElementById('nearestPOI').innerHTML = positionResult.nearestPOI;
-    //        });
-    //        positionPicker.on('fail', function (positionResult) {
-    //            document.getElementById('lnglat').innerHTML = ' ';
-    //            document.getElementById('address').innerHTML = ' ';
-    //            document.getElementById('nearestJunction').innerHTML = ' ';
-    //            document.getElementById('nearestRoad').innerHTML = ' ';
-    //            document.getElementById('nearestPOI').innerHTML = ' ';
-    //        });
-    //
-    //        positionPicker.start();
-    //        map.panBy(0, 1);
-    //
-    //
-    //    });
+
 
 </script>
 

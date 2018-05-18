@@ -59,6 +59,22 @@ public class SurveyLocaleExploreController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/detailsIndex", name="详情页面",method = RequestMethod.GET)
+    public ModelAndView detailIndex(Integer id){
+        ModelAndView modelAndView = controllerComponent.baseModelAndView("/task/explore/localeExploreDetails");
+        SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
+        if (id != null && id > 0) {
+            surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);
+        }
+//        List<SurveyCaseStudyDetailVo> surveyCaseStudyDetailVo = surveyCaseStudyDetailService.getName(id);
+//        SurveyCaseStudyDetailVo surveyCaseStudyDetailName = surveyCaseStudyDetailVo.get(0);
+//
+//        modelAndView.addObject("surveyCaseStudyDetail", surveyCaseStudyDetail);
+//        modelAndView.addObject("surveyCaseStudyDetailName",surveyCaseStudyDetailName);
+        modelAndView.addObject("surveyLocaleExploreDetail", surveyLocaleExploreDetail);
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/save", name = "新增和修改现场查勘", method = RequestMethod.POST)
     public HttpResult save(String formData) {

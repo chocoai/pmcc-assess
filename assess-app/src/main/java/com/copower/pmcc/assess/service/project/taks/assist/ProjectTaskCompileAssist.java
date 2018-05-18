@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Component
-@WorkFlowAnnotation(desc = "资产清查成果")
-public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
+@WorkFlowAnnotation(desc = "报告编制成果")
+public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;
 
@@ -27,9 +27,6 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
         projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);//获取数据字典
-
-//        projectCheckContentService.getInitialize(modelAndView,projectPlanDetails); //初始化暂时不做
-
         return modelAndView;
     }
 

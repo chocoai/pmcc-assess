@@ -21,7 +21,7 @@ import java.util.List;
  * @time: 16:45
  */
 @Component
-@WorkFlowAnnotation(desc = "评估方案计划编制")
+@WorkFlowAnnotation(desc = "评估方案计划")
 public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
 
     @Autowired
