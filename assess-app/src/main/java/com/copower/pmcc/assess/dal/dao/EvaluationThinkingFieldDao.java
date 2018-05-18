@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingFieldExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationThinkingFieldMapper;
+import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,20 @@ import java.util.List;
 public class EvaluationThinkingFieldDao {
 
     @Autowired
+    private EvaluationThinkingDao thinkingDao;
+
+    @Autowired
     private EvaluationThinkingFieldMapper mapper;
 
     public EvaluationThinkingFieldDto get(Integer id){
         return change(mapper.selectByPrimaryKey(id));
+    }
+
+    public List<EvaluationThinkingField> schemeassistservice(Integer id){
+        EvaluationThinkingDto dto = thinkingDao.get(id);
+        EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();
+        example.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(dto.getId());
+        return mapper.selectByExample(example);
     }
 
     public List<EvaluationThinkingFieldDto> list(Integer thinkId){
