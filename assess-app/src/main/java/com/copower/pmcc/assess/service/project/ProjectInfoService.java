@@ -408,7 +408,7 @@ public class ProjectInfoService {
             }
         }
 
-        if (unitInformationVo.getuUnitProperties() != null && unitInformationVo.getuUnitProperties() != "") {
+        if (StringUtils.isNotBlank(unitInformationVo.getuUnitProperties())) {
             String uUnitPropertiesName = getConsignorMap().get(unitInformationVo.getuUnitProperties()).toString();
             unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
         }
