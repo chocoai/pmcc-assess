@@ -17,7 +17,7 @@ public class DeclareRecordConstant {
     public static String SQLSELECT3 = "select * from tb_declare_record where province in (select province from tb_declare_record group by province having count(1) > 1)";
 
     //所有数据
-    public static String SQLSELECT4 = "select * from tb_declare_record";
+    public static String SQLSELECT4 = "select * from tb_declare_record where project_id=?";
 
 
 }

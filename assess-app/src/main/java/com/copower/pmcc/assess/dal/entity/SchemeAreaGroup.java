@@ -21,6 +21,10 @@ public class SchemeAreaGroup {
 
     private Date gmtModified;
 
+    private String provinceCityDistrictStr;
+
+    private String groupId;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +95,21 @@ public class SchemeAreaGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getProvinceCityDistrictStr() {
+        return provinceCityDistrictStr;
+    }
+
+    public void setProvinceCityDistrictStr(String provinceCityDistrictStr) {
+        this.provinceCityDistrictStr = provinceCityDistrictStr == null ? null : provinceCityDistrictStr.trim();
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId == null ? null : groupId.trim();
     }
 }

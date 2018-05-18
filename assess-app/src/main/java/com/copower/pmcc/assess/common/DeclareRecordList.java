@@ -9,6 +9,7 @@ import java.util.List;
  * Created by 13426 on 2018/5/16.
  */
 public class DeclareRecordList {
+    private String uuidRecord;
     private List<DeclareRecord> declareRecords = new ArrayList<>();
     private String provinceName;
     private String cityName;
@@ -44,5 +45,13 @@ public class DeclareRecordList {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getUuidRecord() {
+        return uuidRecord;
+    }
+
+    public void setUuidRecord(String uuidRecord) {
+        this.uuidRecord = uuidRecord;
     }
 }

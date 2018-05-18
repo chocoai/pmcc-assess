@@ -21,8 +21,8 @@ public class DeclareRecordDao {
     private JdbcTemplate jdbcTemplate;
 
     /*所有记录*/
-    public List<DeclareRecord> queryAll(){
-        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT4,new DeclareRecordRowMapper());
+    public List<DeclareRecord> queryAll(String projectID){
+        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT4,new DeclareRecordRowMapper(),projectID);
         return declareRecords;
     }
 

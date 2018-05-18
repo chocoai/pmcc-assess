@@ -105,60 +105,28 @@
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </c:if>
                     </form>
-                    <c:forEach items="${dataList.items}" var="item">
-                        <table class="table">
-                            <tbody>
-                            <h2>
-                                    ${item.provinceName}  ${item.cityName}
-                                <c:if test="${!empty item.districtName}">
-                                    ${item.districtName}
-                                </c:if>
-                            </h2>
-                            <tr>
-                                <th>估价对象编号</th>
-                                <th>权证号</th>
-                                <th>所有权人</th>
-                                <th>座落</th>
-                                <th>最佳利用设置</th>
-                                <th>合并测算序号</th>
-                                <th>证载面积</th>
-                                <th>评估面积</th>
-                                <th>评估方法</th>
-                                <th>操作</th>
-                            </tr>
-                            <c:forEach items="${item.declareRecords}" var="data" varStatus="status">
-                                <tr>
-                                    <td id="dataIndex${data.id}">${status.index + 1}</td>
-                                    <td id="dataName${data.id}">${data.name}</td>
-                                    <td id="dataCreator${data.id}">${data.creator}</td>
-                                    <td id="dataSeat${data.id}">座落</td>
-                                    <td id="dataBestUse${data.id}">
-                                        <select class="form-control">
-                                            <c:forEach items="${bestusedescriptionList}" var="bestUse">
-                                                <option>${bestUse.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                    <td id="dataMerge${data.id}">
-                                        <input class="form-control" placeholder="合并测算序号">
-                                    </td>
-                                    <td id="dataFloorArea${data.id}"><label class="form-control">${data.floorArea}</label></td>
-                                    <td id="dataAssessmentArea${data.id}">
-                                        <input class="form-control" placeholder="评估面积">
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-success" id="methodID${data.id}" onclick="evaluationmethod(${data.id})">评估方法</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-success" id="btnID${data.id}" onclick="splitEvaluate(${data.id})">拆分</button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:forEach>
                 </div>
             </div>
+
+            <c:forEach items="${dataList}" var="item">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                        <c:if test="${!empty item.provinceCityDistrictStr}">
+                            ${item.provinceCityDistrictStr}
+                        </c:if>
+                    </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link" onclick="schemeareagroupTableList(${item.id})"><i class="fa fa-chevron-down"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="x_content">
+                    <table class="table" id="tableList">
+                    </table>
+                </div>
+            </div>
+            </c:forEach>
 
             <div class="x_panel">
                 <div class="x_title">
@@ -677,6 +645,11 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 
+    //
+    function schemeareagroupTableList(id) {
+        alert(id);
+    }
+
     //方法 save
     function evaluationmethodSave() {
         var frmTemplate = formParams("frmTemplate");
@@ -716,7 +689,6 @@
                     inputElement.setAttribute("name","fieldName");
                     inputElement.setAttribute("type","text");
                     inputElement.setAttribute("size","12");
-//                    inputElement.setAttribute("class","form-control");
                     inputElement.setAttribute("placeholder","自定义字段");
                     divElement.appendChild(inputElement);
                     divElement.appendChild(document.createElement("br"));

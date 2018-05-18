@@ -8,6 +8,8 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.DeclareRecordVo;
+import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
+import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
@@ -27,6 +29,10 @@ import java.util.List;
  */
 @Service
 public class SchemeAssistService {
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private SchemeAreaGroupAuxiliaryService auxiliaryService;
     @Autowired
     private EvaluationThinkingFieldDao thinkingFieldDao;
     @Autowired
@@ -73,20 +79,45 @@ public class SchemeAssistService {
         return baseDataDics;
     }
 
-    public DeclareRecordItems items(){
-        DeclareRecordItems items = declareRecordService.foreachDeclareRecord();
+    public DeclareRecordItems items(String projectID){
+        DeclareRecordItems items = declareRecordService.foreachDeclareRecord(projectID);
         if (items.getItems().size()>0){
             return items;
         }
         return null;
     }
 
-    public Collection<DeclareRecord> list(){
-        Collection<DeclareRecord> declareRecords = new ArrayList<>();
-        declareRecords.addAll(declareRecordService.queryProvinceCityAll());
-        declareRecords.addAll(declareRecordService.queryProvinceCityDistrictAll());
-        return declareRecords;
+    /**
+     * 区域分组
+     * @param auxiliaryID
+     * @return
+     */
+    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(Integer auxiliaryID){
+        SchemeAreaGroupAuxiliary schemeAreaGroupAuxiliary =  auxiliaryService.get(auxiliaryID);
+        String groupID = schemeAreaGroupAuxiliary.getGroupId();
+        List<SchemeAreaGroupVo> vos = schemeAreaGroupService.schemeAreaGroupVoList(groupID);
+        return vos;
     }
+
+    public List<SchemeAreaGroupAuxiliary> schemeareagroupauxiliary(String projectID){
+        List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries =  auxiliaryService.list();
+        if (schemeAreaGroupAuxiliaries.size()<1){
+            declareRecordService.schemeareagroupauxiliary(projectID);
+            List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries1 = auxiliaryService.list();
+            if (schemeAreaGroupAuxiliaries1.size()>=1){
+                return schemeAreaGroupAuxiliaries1;
+            }else {
+                try {
+                    throw  new Exception();
+                }catch (Exception e){
+
+                }
+            }
+        }
+        return schemeAreaGroupAuxiliaries;
+    }
+
+
 
 
     public DeclareRecordVo change(DeclareRecord declareRecord){

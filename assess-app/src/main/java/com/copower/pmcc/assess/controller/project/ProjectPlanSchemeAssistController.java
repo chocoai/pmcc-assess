@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
+import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -71,6 +72,21 @@ public class ProjectPlanSchemeAssistController {
         try {
             if (id != null) {
                 List<EvaluationMethodVo> vos = schemeAssistService.listMethod(id);
+                if (vos != null) return vos;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组 ", method = RequestMethod.POST)
+    public Object schemeAreaGroupVoList(@RequestParam(value = "auxiliaryID") Integer auxiliaryID) {
+        try {
+            if (auxiliaryID != null) {
+               List<SchemeAreaGroupVo> vos =schemeAssistService.schemeAreaGroupVoList(auxiliaryID);
                 if (vos != null) return vos;
             }
         } catch (Exception e) {
