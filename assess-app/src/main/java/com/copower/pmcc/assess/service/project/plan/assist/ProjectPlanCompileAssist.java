@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 16:45
  */
 @Component
-@WorkFlowAnnotation(desc = "报告编写计划编制")
+@WorkFlowAnnotation(desc = "报告编写计划")
 public class ProjectPlanCompileAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;

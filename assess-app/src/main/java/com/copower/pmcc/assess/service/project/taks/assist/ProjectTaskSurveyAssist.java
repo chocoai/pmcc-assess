@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Component
-@WorkFlowAnnotation(desc = "资产清查类")
+@WorkFlowAnnotation(desc = "资产清查成果")
 public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

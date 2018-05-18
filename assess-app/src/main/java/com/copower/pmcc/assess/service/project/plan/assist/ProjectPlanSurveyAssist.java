@@ -19,7 +19,7 @@ import java.util.List;
  * @time: 16:45
  */
 @Component
-@WorkFlowAnnotation(desc = "现场查勘计划设置类")
+@WorkFlowAnnotation(desc = "现场查勘计划")
 public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;

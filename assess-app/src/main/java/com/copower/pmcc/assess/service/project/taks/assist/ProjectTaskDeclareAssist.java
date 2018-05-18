@@ -30,7 +30,7 @@ import java.util.Map;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "提交资产申报成果")
+@WorkFlowAnnotation(desc = "资产申报成果")
 public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

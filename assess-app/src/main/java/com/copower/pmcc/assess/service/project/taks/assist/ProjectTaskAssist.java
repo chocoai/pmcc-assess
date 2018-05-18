@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "提交工作成果默认类")
+@WorkFlowAnnotation(desc = "工作成果(默认)")
 public class ProjectTaskAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

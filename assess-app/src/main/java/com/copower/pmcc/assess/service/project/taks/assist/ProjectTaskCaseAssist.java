@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "案例调查类")
+@WorkFlowAnnotation(desc = "案例调查成果")
 public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

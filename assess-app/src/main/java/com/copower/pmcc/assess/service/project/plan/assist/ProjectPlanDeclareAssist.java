@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 16:45
  */
 @Component
-@WorkFlowAnnotation(desc = "申报计划编制")
+@WorkFlowAnnotation(desc = "资产申报计划")
 public class ProjectPlanDeclareAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;

@@ -46,7 +46,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select id="stageForm" name="stageForm"
-                                                    class="form-control search-select select2">
+                                                    class="form-control">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${sysBaseFormListStage}">
                                                     <option value="${item.assistName}">${item.name}</option>

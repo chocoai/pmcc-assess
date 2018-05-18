@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Component
-@WorkFlowAnnotation(desc = "报告编制成果提交")
+@WorkFlowAnnotation(desc = "报告编制成果")
 public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;

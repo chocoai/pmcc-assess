@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 16:45
  */
 @Component
-@WorkFlowAnnotation(desc = "工作阶段计划设置默认类")
+@WorkFlowAnnotation(desc = "计划编制(默认)")
 public class ProjectPlanAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;
