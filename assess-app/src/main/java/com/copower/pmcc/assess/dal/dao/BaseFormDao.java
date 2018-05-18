@@ -104,6 +104,16 @@ public class BaseFormDao {
         return hrBaseFormModuleMapper.selectByExample(example);
     }
 
+    public BaseFormModule getBaseFormModuleByName(String key) {
+        BaseFormModuleExample example = new BaseFormModuleExample();
+        BaseFormModuleExample.Criteria criteria = example.createCriteria();
+        criteria.andNameEqualTo(key);
+        List<BaseFormModule> baseFormModules = hrBaseFormModuleMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(baseFormModules))
+            return baseFormModules.get(0);
+        return null;
+    }
+
     //BaseFormModuleField======================================================
     public List<BaseFormModuleField> getBaseFormModuleFields(Integer formModuleId) {
         BaseFormModuleFieldExample example = new BaseFormModuleFieldExample();

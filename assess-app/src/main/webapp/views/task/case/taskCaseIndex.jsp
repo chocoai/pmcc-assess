@@ -52,7 +52,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
+                                           id="actualHours" name="actualHours" class="form-control" maxlength="3"
+                                    value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                             <div class="x-valid">
                                 <div class="col-sm-11">
                                         <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
+                                                  class="form-control">${projectPlanDetails.taskRemarks}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +103,7 @@
 <script type="application/javascript">
 
     $(function () {
-        loadSurveyList();
+        loadCaseList();
         $("#frm_task").validate();
 
         loadUploadFiles();
@@ -151,16 +152,20 @@
         }
     }
 
-    function loadSurveyList() {
+    function loadCaseList() {
         var cols = [];
-        cols.push({field: 'surveyPeople', title: '查勘人'});
-        cols.push({
-            field: 'surveyTime', title: '查勘时间', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({field: 'ledLuminousPeople', title: '领勘人'});
+        cols.push({field: 'correlationCardName', title: '相关权证'});
+        cols.push({field: 'caseLocation', title: '案例定位'});
         cols.push({field: 'houseName', title: '楼盘名称'});
+        cols.push({field: 'caseTypeName', title: '案例类型'});
+        cols.push({field: 'price', title: '单价'});
+        cols.push({field: 'dealCaondition', title: '交易情况'});
+        cols.push({field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {return formatDate(value, false);}});
+        cols.push({field: 'paymentMethod', title: '付款方式'});
+        cols.push({field: 'informationSourceName', title: '信息来源'});
+        cols.push({field: 'linkman', title: '联系人'});
+        cols.push({field: 'contactWay', title: '联系方式'});
+
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -171,7 +176,7 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/surveyLocale/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/caseStudy/list", cols, {
             planDetailsId: ${projectPlanDetails.id}
 
         }, {
@@ -182,18 +187,18 @@
     }
 
     function addData() {
-        window.open("${pageContext.request.contextPath}/surveyLocale/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}");
+        window.open("${pageContext.request.contextPath}/caseStudy/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}");
     }
 
     function editData(id) {
-        window.open("${pageContext.request.contextPath}/surveyLocale/index?projectId=${projectId}&id=" + id);
+        window.open("${pageContext.request.contextPath}/caseStudy/index?projectId=${projectId}&id=" + id);
     }
 
     function delData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyLocale/delete",
+                url: "${pageContext.request.contextPath}/caseStudy/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -201,7 +206,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadSurveyList();//重载 (刷新)
+                        loadCaseList();//重载 (刷新)
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);

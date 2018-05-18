@@ -16,10 +16,14 @@ public class SurveyLocaleExploreDetailDao {
     @Autowired
     private SurveyLocaleExploreDetailMapper surveyLocaleExploreDetailMapper;
 
-    public List<SurveyLocaleExploreDetail> getSurveyLocaleExploreDetail(Integer mainId) {
+    public SurveyLocaleExploreDetail getSingelDetail(Integer id){
+        return surveyLocaleExploreDetailMapper.selectByPrimaryKey(id);
+    }
+
+    public List<SurveyLocaleExploreDetail> getSurveyLocaleExploreDetail(Integer planDetailId) {
         SurveyLocaleExploreDetailExample example = new SurveyLocaleExploreDetailExample();
-        if (mainId != null) {
-            example.createCriteria().andMainIdEqualTo(mainId);
+        if (planDetailId != null) {
+            example.createCriteria().andPlanDetailsIdEqualTo(planDetailId);
         }
         example.setOrderByClause(" id ASC");
         List<SurveyLocaleExploreDetail> surveyLocaleExploreDetails = surveyLocaleExploreDetailMapper.selectByExample(example);
@@ -40,4 +44,5 @@ public class SurveyLocaleExploreDetailDao {
         int i = surveyLocaleExploreDetailMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
+
 }

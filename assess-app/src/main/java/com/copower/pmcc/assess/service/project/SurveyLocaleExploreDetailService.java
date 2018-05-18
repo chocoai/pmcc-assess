@@ -1,26 +1,38 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
+import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FileUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,61 +41,108 @@ import java.util.List;
  */
 @Service
 public class SurveyLocaleExploreDetailService {
-
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SurveyLocaleExploreDetailDao surveyLocaleExploreDetailDao;
     @Autowired
     private ServiceComponent serviceComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
+    @Autowired
+    private FormConfigureService formConfigureService;
 
+    private static String mapAPiUrl = "http://restapi.amap.com/v3/staticmap";
+    private static String mapWebServiceKey = "0d3f1144352d7e2b683e37dd3757156a";
 
-    public BootstrapTableVo getList(Integer mainId) {
+    public SurveyLocaleExploreDetail getSingelDetail(Integer id) {
+        return surveyLocaleExploreDetailDao.getSingelDetail(id);
+    }
+
+    public BootstrapTableVo getList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetailList = surveyLocaleExploreDetailDao.getSurveyLocaleExploreDetail(mainId);
+        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetailList = surveyLocaleExploreDetailDao.getSurveyLocaleExploreDetail(planDetailsId);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyLocaleExploreDetailList) ? new ArrayList<DataPriceTimepointDescription>() : surveyLocaleExploreDetailList);
         return vo;
     }
 
-    public boolean save(SurveyLocaleExploreDetail surveyLocaleExploreDetail) throws BusinessException {
-        if(surveyLocaleExploreDetail == null)
+    public boolean save(SurveyLocaleExploreDetailDto surveyLocaleExploreDetail) throws BusinessException {
+        if (surveyLocaleExploreDetail == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if(surveyLocaleExploreDetail.getId() != null && surveyLocaleExploreDetail.getId() > 0){
+        if (surveyLocaleExploreDetail.getId() != null && surveyLocaleExploreDetail.getId() > 0) {
+            Integer dynamicTableId = saveDynamicForm(surveyLocaleExploreDetail);
+            surveyLocaleExploreDetail.setDynamicTableId(dynamicTableId);
             return surveyLocaleExploreDetailDao.update(surveyLocaleExploreDetail);
-        }else{
-            BaseAttachment baseAttachment = new BaseAttachment();
-            baseAttachment.setTableId(0);
-            baseAttachment.setFieldsName(SurveyLocaleExploreDetailDto.SURVEYPICTURE);
-            List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentList(baseAttachment);
-            BaseAttachment baseAttachment1 = new BaseAttachment();
-            baseAttachment1.setTableId(0);
-            baseAttachment1.setFieldsName(SurveyLocaleExploreDetailDto.SURVEYIMAGE);
-            List<BaseAttachment> baseAttachments1 = baseAttachmentDao.getAttachmentList(baseAttachment1);
-            if(baseAttachments.size() != 0){
-                baseAttachment = baseAttachments.get(0);
-                Integer surveyPicture = baseAttachment.getId();
-                surveyLocaleExploreDetail.setSurveyPicture(""+surveyPicture);
-            }
-            if(baseAttachments1.size() != 0){
-                 baseAttachment1 = baseAttachments1.get(0);
-                Integer surveyImage = baseAttachment1.getId();
-                surveyLocaleExploreDetail.setSurveyImage(""+surveyImage);
-            }
+        } else {
+            Integer dynamicTableId = saveDynamicForm(surveyLocaleExploreDetail);
+            surveyLocaleExploreDetail.setDynamicTableId(dynamicTableId);
             surveyLocaleExploreDetail.setCreator(serviceComponent.getThisUser());
             boolean flag = surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
+            //下载定位图
+            String localDir = baseAttachmentService.createBasePath(baseAttachmentService.getTempUploadPath(), DateUtils.formatNowToYMD(), DateUtils.formatNowToYMDHMS());
+            String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+            String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
+                    mapAPiUrl, surveyLocaleExploreDetail.getSurveyLocaltion(), surveyLocaleExploreDetail.getSurveyLocaltion(), mapWebServiceKey);
+            try {
+                NetDownloadUtils.download(url, imageName, localDir);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            //再将图片上传到FTP
+            String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
+            String ftpDirName = baseAttachmentService.createFTPBasePath(FormatUtils.underlineToCamel("tb_survey_locale_explore_detail", false),
+                    DateUtils.formatNowToYMD(), "surveyLocaltion");
+            try {
+                ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            //数据库添加定位图片记录
+            BaseAttachment baseAttachment = new BaseAttachment();
             baseAttachment.setTableId(surveyLocaleExploreDetail.getId());
-            baseAttachment1.setTableId(surveyLocaleExploreDetail.getId());
-            baseAttachmentDao.updateAttachment(baseAttachment);
-            baseAttachmentDao.updateAttachment(baseAttachment1);
+            baseAttachment.setTableName("tb_survey_locale_explore_detail");
+            baseAttachment.setFieldsName("survey_localtion");
+            baseAttachment.setFtpFilesName(ftpFileName);
+            baseAttachment.setFileExtension("jpg");
+            baseAttachment.setFilePath(ftpDirName);
+            baseAttachment.setFileName("定位图.jpg");
+            baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
+            baseAttachment.setCreater(serviceComponent.getThisUser());
+            baseAttachment.setModifier(serviceComponent.getThisUser());
+            baseAttachmentDao.addAttachment(baseAttachment);
+
+            //更新附件表id
+            BaseAttachment queryParam = new BaseAttachment();
+            queryParam.setTableId(0);
+            queryParam.setTableName("tb_survey_locale_explore_detail");
+
+            BaseAttachment example = new BaseAttachment();
+            example.setTableId(surveyLocaleExploreDetail.getId());
+            baseAttachmentDao.updateAttachementByExample(queryParam, example);
             return flag;
+
         }
     }
 
+    private Integer saveDynamicForm(SurveyLocaleExploreDetailDto surveyLocaleExploreDetail) throws BusinessException {
+        FormConfigureDetailDto formConfigureDetailDto = new FormConfigureDetailDto();
+        formConfigureDetailDto.setFormData(surveyLocaleExploreDetail.getDynamicFormData());
+        formConfigureDetailDto.setFormModuleId(surveyLocaleExploreDetail.getDynamicFormId());
+        formConfigureDetailDto.setTableId(surveyLocaleExploreDetail.getDynamicTableId());
+        formConfigureDetailDto.setTableName(surveyLocaleExploreDetail.getDynamicTableName());
+        return formConfigureService.saveSimpleData(formConfigureDetailDto);
+    }
+
     public boolean delete(Integer id) throws BusinessException {
-        if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
+        if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        ;
         return surveyLocaleExploreDetailDao.delete(id);
     }
+
 }

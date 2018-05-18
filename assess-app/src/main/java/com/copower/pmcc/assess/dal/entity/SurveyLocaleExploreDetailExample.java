@@ -165,63 +165,63 @@ public class SurveyLocaleExploreDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIsNull() {
-            addCriterion("main_id is null");
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIsNotNull() {
-            addCriterion("main_id is not null");
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdEqualTo(Integer value) {
-            addCriterion("main_id =", value, "mainId");
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotEqualTo(Integer value) {
-            addCriterion("main_id <>", value, "mainId");
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdGreaterThan(Integer value) {
-            addCriterion("main_id >", value, "mainId");
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("main_id >=", value, "mainId");
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdLessThan(Integer value) {
-            addCriterion("main_id <", value, "mainId");
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdLessThanOrEqualTo(Integer value) {
-            addCriterion("main_id <=", value, "mainId");
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdIn(List<Integer> values) {
-            addCriterion("main_id in", values, "mainId");
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotIn(List<Integer> values) {
-            addCriterion("main_id not in", values, "mainId");
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdBetween(Integer value1, Integer value2) {
-            addCriterion("main_id between", value1, value2, "mainId");
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andMainIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("main_id not between", value1, value2, "mainId");
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
@@ -555,76 +555,6 @@ public class SurveyLocaleExploreDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andSurveyPictureIsNull() {
-            addCriterion("survey_picture is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureIsNotNull() {
-            addCriterion("survey_picture is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureEqualTo(String value) {
-            addCriterion("survey_picture =", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureNotEqualTo(String value) {
-            addCriterion("survey_picture <>", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureGreaterThan(String value) {
-            addCriterion("survey_picture >", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureGreaterThanOrEqualTo(String value) {
-            addCriterion("survey_picture >=", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureLessThan(String value) {
-            addCriterion("survey_picture <", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureLessThanOrEqualTo(String value) {
-            addCriterion("survey_picture <=", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureLike(String value) {
-            addCriterion("survey_picture like", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureNotLike(String value) {
-            addCriterion("survey_picture not like", value, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureIn(List<String> values) {
-            addCriterion("survey_picture in", values, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureNotIn(List<String> values) {
-            addCriterion("survey_picture not in", values, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureBetween(String value1, String value2) {
-            addCriterion("survey_picture between", value1, value2, "surveyPicture");
-            return (Criteria) this;
-        }
-
-        public Criteria andSurveyPictureNotBetween(String value1, String value2) {
-            addCriterion("survey_picture not between", value1, value2, "surveyPicture");
-            return (Criteria) this;
-        }
-
         public Criteria andSurveyImageIsNull() {
             addCriterion("survey_image is null");
             return (Criteria) this;
@@ -692,6 +622,76 @@ public class SurveyLocaleExploreDetailExample {
 
         public Criteria andSurveyImageNotBetween(String value1, String value2) {
             addCriterion("survey_image not between", value1, value2, "surveyImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoIsNull() {
+            addCriterion("survey_video is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoIsNotNull() {
+            addCriterion("survey_video is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoEqualTo(String value) {
+            addCriterion("survey_video =", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoNotEqualTo(String value) {
+            addCriterion("survey_video <>", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoGreaterThan(String value) {
+            addCriterion("survey_video >", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoGreaterThanOrEqualTo(String value) {
+            addCriterion("survey_video >=", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoLessThan(String value) {
+            addCriterion("survey_video <", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoLessThanOrEqualTo(String value) {
+            addCriterion("survey_video <=", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoLike(String value) {
+            addCriterion("survey_video like", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoNotLike(String value) {
+            addCriterion("survey_video not like", value, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoIn(List<String> values) {
+            addCriterion("survey_video in", values, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoNotIn(List<String> values) {
+            addCriterion("survey_video not in", values, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoBetween(String value1, String value2) {
+            addCriterion("survey_video between", value1, value2, "surveyVideo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurveyVideoNotBetween(String value1, String value2) {
+            addCriterion("survey_video not between", value1, value2, "surveyVideo");
             return (Criteria) this;
         }
 
@@ -972,6 +972,196 @@ public class SurveyLocaleExploreDetailExample {
 
         public Criteria andHouseNameNotBetween(String value1, String value2) {
             addCriterion("house_name not between", value1, value2, "houseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIsNull() {
+            addCriterion("dynamic_form_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIsNotNull() {
+            addCriterion("dynamic_form_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdEqualTo(Integer value) {
+            addCriterion("dynamic_form_id =", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <>", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThan(Integer value) {
+            addCriterion("dynamic_form_id >", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id >=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThan(Integer value) {
+            addCriterion("dynamic_form_id <", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIn(List<Integer> values) {
+            addCriterion("dynamic_form_id in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_form_id not in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id not between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNull() {
+            addCriterion("dynamic_table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNotNull() {
+            addCriterion("dynamic_table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdEqualTo(Integer value) {
+            addCriterion("dynamic_table_id =", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <>", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThan(Integer value) {
+            addCriterion("dynamic_table_id >", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id >=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThan(Integer value) {
+            addCriterion("dynamic_table_id <", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIn(List<Integer> values) {
+            addCriterion("dynamic_table_id in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_table_id not in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id not between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNull() {
+            addCriterion("dynamic_table_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNotNull() {
+            addCriterion("dynamic_table_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameEqualTo(String value) {
+            addCriterion("dynamic_table_name =", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotEqualTo(String value) {
+            addCriterion("dynamic_table_name <>", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThan(String value) {
+            addCriterion("dynamic_table_name >", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name >=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThan(String value) {
+            addCriterion("dynamic_table_name <", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name <=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLike(String value) {
+            addCriterion("dynamic_table_name like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotLike(String value) {
+            addCriterion("dynamic_table_name not like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIn(List<String> values) {
+            addCriterion("dynamic_table_name in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotIn(List<String> values) {
+            addCriterion("dynamic_table_name not in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name not between", value1, value2, "dynamicTableName");
             return (Criteria) this;
         }
 

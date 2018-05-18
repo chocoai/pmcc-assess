@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class SurveyLocaleExplore {
+public class SurveyCaseStudy {
     private Integer id;
 
     private Integer projectId;

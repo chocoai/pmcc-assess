@@ -3,18 +3,21 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.SurveyLocaleExploreDetailMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="survey_sheet_number" property="surveySheetNumber" jdbcType="INTEGER" />
     <result column="survey_people" property="surveyPeople" jdbcType="VARCHAR" />
     <result column="survey_time" property="surveyTime" jdbcType="TIMESTAMP" />
     <result column="belong_warrant" property="belongWarrant" jdbcType="VARCHAR" />
     <result column="led_luminous_people" property="ledLuminousPeople" jdbcType="VARCHAR" />
-    <result column="survey_picture" property="surveyPicture" jdbcType="VARCHAR" />
     <result column="survey_image" property="surveyImage" jdbcType="VARCHAR" />
+    <result column="survey_video" property="surveyVideo" jdbcType="VARCHAR" />
     <result column="location_picture" property="locationPicture" jdbcType="VARCHAR" />
     <result column="survey_localtion" property="surveyLocaltion" jdbcType="VARCHAR" />
     <result column="correlation_card" property="correlationCard" jdbcType="VARCHAR" />
     <result column="house_name" property="houseName" jdbcType="VARCHAR" />
+    <result column="dynamic_form_id" property="dynamicFormId" jdbcType="INTEGER" />
+    <result column="dynamic_table_id" property="dynamicTableId" jdbcType="INTEGER" />
+    <result column="dynamic_table_name" property="dynamicTableName" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,9 +81,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, main_id, survey_sheet_number, survey_people, survey_time, belong_warrant, led_luminous_people, 
-    survey_picture, survey_image, location_picture, survey_localtion, correlation_card, 
-    house_name, creator, gmt_created, gmt_modified
+    id, plan_details_id, survey_sheet_number, survey_people, survey_time, belong_warrant, 
+    led_luminous_people, survey_image, survey_video, location_picture, survey_localtion, 
+    correlation_card, house_name, dynamic_form_id, dynamic_table_id, dynamic_table_name, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetailExample" >
     select
@@ -116,18 +120,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore_detail (main_id, survey_sheet_number, survey_people, 
-      survey_time, belong_warrant, led_luminous_people, 
-      survey_picture, survey_image, location_picture, 
-      survey_localtion, correlation_card, house_name, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{mainId,jdbcType=INTEGER}, #{surveySheetNumber,jdbcType=INTEGER}, #{surveyPeople,jdbcType=VARCHAR}, 
-      #{surveyTime,jdbcType=TIMESTAMP}, #{belongWarrant,jdbcType=VARCHAR}, #{ledLuminousPeople,jdbcType=VARCHAR}, 
-      #{surveyPicture,jdbcType=VARCHAR}, #{surveyImage,jdbcType=VARCHAR}, #{locationPicture,jdbcType=VARCHAR}, 
-      #{surveyLocaltion,jdbcType=VARCHAR}, #{correlationCard,jdbcType=VARCHAR}, #{houseName,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_survey_locale_explore_detail (plan_details_id, survey_sheet_number, 
+      survey_people, survey_time, belong_warrant, 
+      led_luminous_people, survey_image, survey_video, 
+      location_picture, survey_localtion, correlation_card, 
+      house_name, dynamic_form_id, dynamic_table_id, 
+      dynamic_table_name, creator, gmt_created, 
+      gmt_modified)
+    values (#{planDetailsId,jdbcType=INTEGER}, #{surveySheetNumber,jdbcType=INTEGER}, 
+      #{surveyPeople,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{belongWarrant,jdbcType=VARCHAR}, 
+      #{ledLuminousPeople,jdbcType=VARCHAR}, #{surveyImage,jdbcType=VARCHAR}, #{surveyVideo,jdbcType=VARCHAR}, 
+      #{locationPicture,jdbcType=VARCHAR}, #{surveyLocaltion,jdbcType=VARCHAR}, #{correlationCard,jdbcType=VARCHAR}, 
+      #{houseName,jdbcType=VARCHAR}, #{dynamicFormId,jdbcType=INTEGER}, #{dynamicTableId,jdbcType=INTEGER}, 
+      #{dynamicTableName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,8 +141,8 @@
     </selectKey>
     insert into tb_survey_locale_explore_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="mainId != null" >
-        main_id,
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="surveySheetNumber != null" >
         survey_sheet_number,
@@ -153,11 +159,11 @@
       <if test="ledLuminousPeople != null" >
         led_luminous_people,
       </if>
-      <if test="surveyPicture != null" >
-        survey_picture,
-      </if>
       <if test="surveyImage != null" >
         survey_image,
+      </if>
+      <if test="surveyVideo != null" >
+        survey_video,
       </if>
       <if test="locationPicture != null" >
         location_picture,
@@ -171,6 +177,15 @@
       <if test="houseName != null" >
         house_name,
       </if>
+      <if test="dynamicFormId != null" >
+        dynamic_form_id,
+      </if>
+      <if test="dynamicTableId != null" >
+        dynamic_table_id,
+      </if>
+      <if test="dynamicTableName != null" >
+        dynamic_table_name,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -182,8 +197,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="mainId != null" >
-        #{mainId,jdbcType=INTEGER},
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="surveySheetNumber != null" >
         #{surveySheetNumber,jdbcType=INTEGER},
@@ -200,11 +215,11 @@
       <if test="ledLuminousPeople != null" >
         #{ledLuminousPeople,jdbcType=VARCHAR},
       </if>
-      <if test="surveyPicture != null" >
-        #{surveyPicture,jdbcType=VARCHAR},
-      </if>
       <if test="surveyImage != null" >
         #{surveyImage,jdbcType=VARCHAR},
+      </if>
+      <if test="surveyVideo != null" >
+        #{surveyVideo,jdbcType=VARCHAR},
       </if>
       <if test="locationPicture != null" >
         #{locationPicture,jdbcType=VARCHAR},
@@ -217,6 +232,15 @@
       </if>
       <if test="houseName != null" >
         #{houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicFormId != null" >
+        #{dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableId != null" >
+        #{dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableName != null" >
+        #{dynamicTableName,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -241,8 +265,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.mainId != null" >
-        main_id = #{record.mainId,jdbcType=INTEGER},
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="record.surveySheetNumber != null" >
         survey_sheet_number = #{record.surveySheetNumber,jdbcType=INTEGER},
@@ -259,11 +283,11 @@
       <if test="record.ledLuminousPeople != null" >
         led_luminous_people = #{record.ledLuminousPeople,jdbcType=VARCHAR},
       </if>
-      <if test="record.surveyPicture != null" >
-        survey_picture = #{record.surveyPicture,jdbcType=VARCHAR},
-      </if>
       <if test="record.surveyImage != null" >
         survey_image = #{record.surveyImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.surveyVideo != null" >
+        survey_video = #{record.surveyVideo,jdbcType=VARCHAR},
       </if>
       <if test="record.locationPicture != null" >
         location_picture = #{record.locationPicture,jdbcType=VARCHAR},
@@ -276,6 +300,15 @@
       </if>
       <if test="record.houseName != null" >
         house_name = #{record.houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dynamicFormId != null" >
+        dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dynamicTableId != null" >
+        dynamic_table_id = #{record.dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dynamicTableName != null" >
+        dynamic_table_name = #{record.dynamicTableName,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -294,18 +327,21 @@
   <update id="updateByExample" parameterType="map" >
     update tb_survey_locale_explore_detail
     set id = #{record.id,jdbcType=INTEGER},
-      main_id = #{record.mainId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       survey_sheet_number = #{record.surveySheetNumber,jdbcType=INTEGER},
       survey_people = #{record.surveyPeople,jdbcType=VARCHAR},
       survey_time = #{record.surveyTime,jdbcType=TIMESTAMP},
       belong_warrant = #{record.belongWarrant,jdbcType=VARCHAR},
       led_luminous_people = #{record.ledLuminousPeople,jdbcType=VARCHAR},
-      survey_picture = #{record.surveyPicture,jdbcType=VARCHAR},
       survey_image = #{record.surveyImage,jdbcType=VARCHAR},
+      survey_video = #{record.surveyVideo,jdbcType=VARCHAR},
       location_picture = #{record.locationPicture,jdbcType=VARCHAR},
       survey_localtion = #{record.surveyLocaltion,jdbcType=VARCHAR},
       correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
       house_name = #{record.houseName,jdbcType=VARCHAR},
+      dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
+      dynamic_table_id = #{record.dynamicTableId,jdbcType=INTEGER},
+      dynamic_table_name = #{record.dynamicTableName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -316,8 +352,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail" >
     update tb_survey_locale_explore_detail
     <set >
-      <if test="mainId != null" >
-        main_id = #{mainId,jdbcType=INTEGER},
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="surveySheetNumber != null" >
         survey_sheet_number = #{surveySheetNumber,jdbcType=INTEGER},
@@ -334,11 +370,11 @@
       <if test="ledLuminousPeople != null" >
         led_luminous_people = #{ledLuminousPeople,jdbcType=VARCHAR},
       </if>
-      <if test="surveyPicture != null" >
-        survey_picture = #{surveyPicture,jdbcType=VARCHAR},
-      </if>
       <if test="surveyImage != null" >
         survey_image = #{surveyImage,jdbcType=VARCHAR},
+      </if>
+      <if test="surveyVideo != null" >
+        survey_video = #{surveyVideo,jdbcType=VARCHAR},
       </if>
       <if test="locationPicture != null" >
         location_picture = #{locationPicture,jdbcType=VARCHAR},
@@ -351,6 +387,15 @@
       </if>
       <if test="houseName != null" >
         house_name = #{houseName,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicFormId != null" >
+        dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableId != null" >
+        dynamic_table_id = #{dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableName != null" >
+        dynamic_table_name = #{dynamicTableName,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -366,18 +411,21 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail" >
     update tb_survey_locale_explore_detail
-    set main_id = #{mainId,jdbcType=INTEGER},
+    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       survey_sheet_number = #{surveySheetNumber,jdbcType=INTEGER},
       survey_people = #{surveyPeople,jdbcType=VARCHAR},
       survey_time = #{surveyTime,jdbcType=TIMESTAMP},
       belong_warrant = #{belongWarrant,jdbcType=VARCHAR},
       led_luminous_people = #{ledLuminousPeople,jdbcType=VARCHAR},
-      survey_picture = #{surveyPicture,jdbcType=VARCHAR},
       survey_image = #{surveyImage,jdbcType=VARCHAR},
+      survey_video = #{surveyVideo,jdbcType=VARCHAR},
       location_picture = #{locationPicture,jdbcType=VARCHAR},
       survey_localtion = #{surveyLocaltion,jdbcType=VARCHAR},
       correlation_card = #{correlationCard,jdbcType=VARCHAR},
       house_name = #{houseName,jdbcType=VARCHAR},
+      dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
+      dynamic_table_id = #{dynamicTableId,jdbcType=INTEGER},
+      dynamic_table_name = #{dynamicTableName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

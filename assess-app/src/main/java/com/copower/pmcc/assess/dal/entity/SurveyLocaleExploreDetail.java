@@ -5,7 +5,7 @@ import java.util.Date;
 public class SurveyLocaleExploreDetail {
     private Integer id;
 
-    private Integer mainId;
+    private Integer planDetailsId;
 
     private Integer surveySheetNumber;
 
@@ -17,9 +17,9 @@ public class SurveyLocaleExploreDetail {
 
     private String ledLuminousPeople;
 
-    private String surveyPicture;
-
     private String surveyImage;
+
+    private String surveyVideo;
 
     private String locationPicture;
 
@@ -28,6 +28,12 @@ public class SurveyLocaleExploreDetail {
     private String correlationCard;
 
     private String houseName;
+
+    private Integer dynamicFormId;
+
+    private Integer dynamicTableId;
+
+    private String dynamicTableName;
 
     private String creator;
 
@@ -43,12 +49,12 @@ public class SurveyLocaleExploreDetail {
         this.id = id;
     }
 
-    public Integer getMainId() {
-        return mainId;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setMainId(Integer mainId) {
-        this.mainId = mainId;
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getSurveySheetNumber() {
@@ -91,20 +97,20 @@ public class SurveyLocaleExploreDetail {
         this.ledLuminousPeople = ledLuminousPeople == null ? null : ledLuminousPeople.trim();
     }
 
-    public String getSurveyPicture() {
-        return surveyPicture;
-    }
-
-    public void setSurveyPicture(String surveyPicture) {
-        this.surveyPicture = surveyPicture == null ? null : surveyPicture.trim();
-    }
-
     public String getSurveyImage() {
         return surveyImage;
     }
 
     public void setSurveyImage(String surveyImage) {
         this.surveyImage = surveyImage == null ? null : surveyImage.trim();
+    }
+
+    public String getSurveyVideo() {
+        return surveyVideo;
+    }
+
+    public void setSurveyVideo(String surveyVideo) {
+        this.surveyVideo = surveyVideo == null ? null : surveyVideo.trim();
     }
 
     public String getLocationPicture() {
@@ -137,6 +143,30 @@ public class SurveyLocaleExploreDetail {
 
     public void setHouseName(String houseName) {
         this.houseName = houseName == null ? null : houseName.trim();
+    }
+
+    public Integer getDynamicFormId() {
+        return dynamicFormId;
+    }
+
+    public void setDynamicFormId(Integer dynamicFormId) {
+        this.dynamicFormId = dynamicFormId;
+    }
+
+    public Integer getDynamicTableId() {
+        return dynamicTableId;
+    }
+
+    public void setDynamicTableId(Integer dynamicTableId) {
+        this.dynamicTableId = dynamicTableId;
+    }
+
+    public String getDynamicTableName() {
+        return dynamicTableName;
+    }
+
+    public void setDynamicTableName(String dynamicTableName) {
+        this.dynamicTableName = dynamicTableName == null ? null : dynamicTableName.trim();
     }
 
     public String getCreator() {
