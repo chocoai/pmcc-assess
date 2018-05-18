@@ -23,7 +23,6 @@ public class InitiateUnitInformationService {
     @Autowired
     private InitiateUnitInformationDao dao;
 
-    @Transactional
     public int add(InitiateUnitInformationDto dto){
         if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);

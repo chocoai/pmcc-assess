@@ -23,7 +23,6 @@ public class InitiateConsignorService {
     @Autowired
     private InitiateConsignorDao dao;
 
-    @Transactional
     public int add(InitiateConsignorDto dto) {
 
         //对 委托人进行单独处理

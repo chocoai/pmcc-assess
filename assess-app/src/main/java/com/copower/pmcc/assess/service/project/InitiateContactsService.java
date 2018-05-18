@@ -71,7 +71,6 @@ public class InitiateContactsService {
     }
 
     /*更新主表的id值*/
-    @Transactional
     public void update(int pid, int flag){
         dao.update(pid,flag);
     }

@@ -89,7 +89,8 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
     public HttpResult projectApplySubmit(String formData, Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData));
+            boolean flag = projectInfoService.projectApply(projectInfoService.format(formData));
+            if (!flag) return HttpResult.newErrorResult("异常!");
             if (projectinfoid != null && projectinfoid != 0) {
                 projectInfoService.projectUpdate(projectInfoService.format(formData),projectinfoid,consignorid,possessorid,unitInformationid);
             }

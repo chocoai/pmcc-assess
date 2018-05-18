@@ -34,7 +34,6 @@ public class ProjectInfoDao {
         return false;
     }
 
-    @Transactional
     public int saveProjectInfo_returnID(ProjectInfo projectInfo){
         projectInfoMapper.insertSelective(projectInfo);
         return  projectInfo.getId();

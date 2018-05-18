@@ -18,4 +18,6 @@ public class DeclareRecordConstant {
 
     //所有数据
     public static String SQLSELECT4 = "select * from tb_declare_record";
+
+
 }

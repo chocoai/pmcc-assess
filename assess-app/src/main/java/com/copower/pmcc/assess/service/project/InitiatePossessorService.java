@@ -23,7 +23,6 @@ public class InitiatePossessorService {
     @Autowired
     private InitiatePossessorDao dao;
 
-    @Transactional
     public int add(InitiatePossessorDto dto){
         if (dto.getpType()==InitiatePossessorDto.PTYPEa){//对资产占有人信息 进行单独处理
             dto.setpUnitProperties(null);
