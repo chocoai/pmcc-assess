@@ -9,7 +9,7 @@ public class SurveyCaseStudyDetail {
 
     private String correlationCard;
 
-    private String caseLocation;
+    private String caseLocaltion;
 
     private String houseName;
 
@@ -28,6 +28,12 @@ public class SurveyCaseStudyDetail {
     private String linkman;
 
     private String contactWay;
+
+    private Integer dynamicFormId;
+
+    private Integer dynamicTableId;
+
+    private String dynamicTableName;
 
     private String creator;
 
@@ -59,12 +65,12 @@ public class SurveyCaseStudyDetail {
         this.correlationCard = correlationCard == null ? null : correlationCard.trim();
     }
 
-    public String getCaseLocation() {
-        return caseLocation;
+    public String getCaseLocaltion() {
+        return caseLocaltion;
     }
 
-    public void setCaseLocation(String caseLocation) {
-        this.caseLocation = caseLocation == null ? null : caseLocation.trim();
+    public void setCaseLocaltion(String caseLocaltion) {
+        this.caseLocaltion = caseLocaltion == null ? null : caseLocaltion.trim();
     }
 
     public String getHouseName() {
@@ -137,6 +143,30 @@ public class SurveyCaseStudyDetail {
 
     public void setContactWay(String contactWay) {
         this.contactWay = contactWay == null ? null : contactWay.trim();
+    }
+
+    public Integer getDynamicFormId() {
+        return dynamicFormId;
+    }
+
+    public void setDynamicFormId(Integer dynamicFormId) {
+        this.dynamicFormId = dynamicFormId;
+    }
+
+    public Integer getDynamicTableId() {
+        return dynamicTableId;
+    }
+
+    public void setDynamicTableId(Integer dynamicTableId) {
+        this.dynamicTableId = dynamicTableId;
+    }
+
+    public String getDynamicTableName() {
+        return dynamicTableName;
+    }
+
+    public void setDynamicTableName(String dynamicTableName) {
+        this.dynamicTableName = dynamicTableName == null ? null : dynamicTableName.trim();
     }
 
     public String getCreator() {

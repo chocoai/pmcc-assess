@@ -155,7 +155,7 @@
     function loadCaseList() {
         var cols = [];
         cols.push({field: 'correlationCardName', title: '相关权证'});
-        cols.push({field: 'caseLocation', title: '案例定位'});
+//        cols.push({field: 'caseLocation', title: '案例定位'});
         cols.push({field: 'houseName', title: '楼盘名称'});
         cols.push({field: 'caseTypeName', title: '案例类型'});
         cols.push({field: 'price', title: '单价'});

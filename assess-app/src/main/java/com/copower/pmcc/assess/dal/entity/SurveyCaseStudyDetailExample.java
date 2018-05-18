@@ -295,73 +295,73 @@ public class SurveyCaseStudyDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationIsNull() {
-            addCriterion("case_location is null");
+        public Criteria andCaseLocaltionIsNull() {
+            addCriterion("case_localtion is null");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationIsNotNull() {
-            addCriterion("case_location is not null");
+        public Criteria andCaseLocaltionIsNotNull() {
+            addCriterion("case_localtion is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationEqualTo(String value) {
-            addCriterion("case_location =", value, "caseLocation");
+        public Criteria andCaseLocaltionEqualTo(String value) {
+            addCriterion("case_localtion =", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationNotEqualTo(String value) {
-            addCriterion("case_location <>", value, "caseLocation");
+        public Criteria andCaseLocaltionNotEqualTo(String value) {
+            addCriterion("case_localtion <>", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationGreaterThan(String value) {
-            addCriterion("case_location >", value, "caseLocation");
+        public Criteria andCaseLocaltionGreaterThan(String value) {
+            addCriterion("case_localtion >", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationGreaterThanOrEqualTo(String value) {
-            addCriterion("case_location >=", value, "caseLocation");
+        public Criteria andCaseLocaltionGreaterThanOrEqualTo(String value) {
+            addCriterion("case_localtion >=", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationLessThan(String value) {
-            addCriterion("case_location <", value, "caseLocation");
+        public Criteria andCaseLocaltionLessThan(String value) {
+            addCriterion("case_localtion <", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationLessThanOrEqualTo(String value) {
-            addCriterion("case_location <=", value, "caseLocation");
+        public Criteria andCaseLocaltionLessThanOrEqualTo(String value) {
+            addCriterion("case_localtion <=", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationLike(String value) {
-            addCriterion("case_location like", value, "caseLocation");
+        public Criteria andCaseLocaltionLike(String value) {
+            addCriterion("case_localtion like", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationNotLike(String value) {
-            addCriterion("case_location not like", value, "caseLocation");
+        public Criteria andCaseLocaltionNotLike(String value) {
+            addCriterion("case_localtion not like", value, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationIn(List<String> values) {
-            addCriterion("case_location in", values, "caseLocation");
+        public Criteria andCaseLocaltionIn(List<String> values) {
+            addCriterion("case_localtion in", values, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationNotIn(List<String> values) {
-            addCriterion("case_location not in", values, "caseLocation");
+        public Criteria andCaseLocaltionNotIn(List<String> values) {
+            addCriterion("case_localtion not in", values, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationBetween(String value1, String value2) {
-            addCriterion("case_location between", value1, value2, "caseLocation");
+        public Criteria andCaseLocaltionBetween(String value1, String value2) {
+            addCriterion("case_localtion between", value1, value2, "caseLocaltion");
             return (Criteria) this;
         }
 
-        public Criteria andCaseLocationNotBetween(String value1, String value2) {
-            addCriterion("case_location not between", value1, value2, "caseLocation");
+        public Criteria andCaseLocaltionNotBetween(String value1, String value2) {
+            addCriterion("case_localtion not between", value1, value2, "caseLocaltion");
             return (Criteria) this;
         }
 
@@ -952,6 +952,196 @@ public class SurveyCaseStudyDetailExample {
 
         public Criteria andContactWayNotBetween(String value1, String value2) {
             addCriterion("contact_way not between", value1, value2, "contactWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIsNull() {
+            addCriterion("dynamic_form_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIsNotNull() {
+            addCriterion("dynamic_form_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdEqualTo(Integer value) {
+            addCriterion("dynamic_form_id =", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <>", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThan(Integer value) {
+            addCriterion("dynamic_form_id >", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id >=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThan(Integer value) {
+            addCriterion("dynamic_form_id <", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <=", value, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdIn(List<Integer> values) {
+            addCriterion("dynamic_form_id in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_form_id not in", values, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id not between", value1, value2, "dynamicFormId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNull() {
+            addCriterion("dynamic_table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIsNotNull() {
+            addCriterion("dynamic_table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdEqualTo(Integer value) {
+            addCriterion("dynamic_table_id =", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <>", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThan(Integer value) {
+            addCriterion("dynamic_table_id >", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id >=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThan(Integer value) {
+            addCriterion("dynamic_table_id <", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_table_id <=", value, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdIn(List<Integer> values) {
+            addCriterion("dynamic_table_id in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_table_id not in", values, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_table_id not between", value1, value2, "dynamicTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNull() {
+            addCriterion("dynamic_table_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNotNull() {
+            addCriterion("dynamic_table_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameEqualTo(String value) {
+            addCriterion("dynamic_table_name =", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotEqualTo(String value) {
+            addCriterion("dynamic_table_name <>", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThan(String value) {
+            addCriterion("dynamic_table_name >", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name >=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThan(String value) {
+            addCriterion("dynamic_table_name <", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name <=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLike(String value) {
+            addCriterion("dynamic_table_name like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotLike(String value) {
+            addCriterion("dynamic_table_name not like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIn(List<String> values) {
+            addCriterion("dynamic_table_name in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotIn(List<String> values) {
+            addCriterion("dynamic_table_name not in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name not between", value1, value2, "dynamicTableName");
             return (Criteria) this;
         }
 

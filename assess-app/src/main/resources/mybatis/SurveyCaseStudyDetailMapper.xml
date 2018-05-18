@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="correlation_card" property="correlationCard" jdbcType="VARCHAR" />
-    <result column="case_location" property="caseLocation" jdbcType="VARCHAR" />
+    <result column="case_localtion" property="caseLocaltion" jdbcType="VARCHAR" />
     <result column="house_name" property="houseName" jdbcType="VARCHAR" />
     <result column="case_type" property="caseType" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="INTEGER" />
@@ -15,6 +15,9 @@
     <result column="information_source" property="informationSource" jdbcType="INTEGER" />
     <result column="linkman" property="linkman" jdbcType="VARCHAR" />
     <result column="contact_way" property="contactWay" jdbcType="VARCHAR" />
+    <result column="dynamic_form_id" property="dynamicFormId" jdbcType="INTEGER" />
+    <result column="dynamic_table_id" property="dynamicTableId" jdbcType="INTEGER" />
+    <result column="dynamic_table_name" property="dynamicTableName" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, correlation_card, case_location, house_name, case_type, price, 
+    id, plan_details_id, correlation_card, case_localtion, house_name, case_type, price, 
     deal_caondition, deal_time, payment_method, information_source, linkman, contact_way, 
-    creator, gmt_created, gmt_modified
+    dynamic_form_id, dynamic_table_id, dynamic_table_name, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetailExample" >
     select
@@ -116,16 +119,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_case_study_detail (plan_details_id, correlation_card, case_location, 
+    insert into tb_survey_case_study_detail (plan_details_id, correlation_card, case_localtion, 
       house_name, case_type, price, 
       deal_caondition, deal_time, payment_method, 
       information_source, linkman, contact_way, 
+      dynamic_form_id, dynamic_table_id, dynamic_table_name, 
       creator, gmt_created, gmt_modified
       )
-    values (#{planDetailsId,jdbcType=INTEGER}, #{correlationCard,jdbcType=VARCHAR}, #{caseLocation,jdbcType=VARCHAR}, 
+    values (#{planDetailsId,jdbcType=INTEGER}, #{correlationCard,jdbcType=VARCHAR}, #{caseLocaltion,jdbcType=VARCHAR}, 
       #{houseName,jdbcType=VARCHAR}, #{caseType,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, 
       #{dealCaondition,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, #{paymentMethod,jdbcType=VARCHAR}, 
       #{informationSource,jdbcType=INTEGER}, #{linkman,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR}, 
+      #{dynamicFormId,jdbcType=INTEGER}, #{dynamicTableId,jdbcType=INTEGER}, #{dynamicTableName,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -141,8 +146,8 @@
       <if test="correlationCard != null" >
         correlation_card,
       </if>
-      <if test="caseLocation != null" >
-        case_location,
+      <if test="caseLocaltion != null" >
+        case_localtion,
       </if>
       <if test="houseName != null" >
         house_name,
@@ -171,6 +176,15 @@
       <if test="contactWay != null" >
         contact_way,
       </if>
+      <if test="dynamicFormId != null" >
+        dynamic_form_id,
+      </if>
+      <if test="dynamicTableId != null" >
+        dynamic_table_id,
+      </if>
+      <if test="dynamicTableName != null" >
+        dynamic_table_name,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -188,8 +202,8 @@
       <if test="correlationCard != null" >
         #{correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="caseLocation != null" >
-        #{caseLocation,jdbcType=VARCHAR},
+      <if test="caseLocaltion != null" >
+        #{caseLocaltion,jdbcType=VARCHAR},
       </if>
       <if test="houseName != null" >
         #{houseName,jdbcType=VARCHAR},
@@ -217,6 +231,15 @@
       </if>
       <if test="contactWay != null" >
         #{contactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicFormId != null" >
+        #{dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableId != null" >
+        #{dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableName != null" >
+        #{dynamicTableName,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -247,8 +270,8 @@
       <if test="record.correlationCard != null" >
         correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="record.caseLocation != null" >
-        case_location = #{record.caseLocation,jdbcType=VARCHAR},
+      <if test="record.caseLocaltion != null" >
+        case_localtion = #{record.caseLocaltion,jdbcType=VARCHAR},
       </if>
       <if test="record.houseName != null" >
         house_name = #{record.houseName,jdbcType=VARCHAR},
@@ -277,6 +300,15 @@
       <if test="record.contactWay != null" >
         contact_way = #{record.contactWay,jdbcType=VARCHAR},
       </if>
+      <if test="record.dynamicFormId != null" >
+        dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dynamicTableId != null" >
+        dynamic_table_id = #{record.dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dynamicTableName != null" >
+        dynamic_table_name = #{record.dynamicTableName,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -296,7 +328,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       correlation_card = #{record.correlationCard,jdbcType=VARCHAR},
-      case_location = #{record.caseLocation,jdbcType=VARCHAR},
+      case_localtion = #{record.caseLocaltion,jdbcType=VARCHAR},
       house_name = #{record.houseName,jdbcType=VARCHAR},
       case_type = #{record.caseType,jdbcType=INTEGER},
       price = #{record.price,jdbcType=INTEGER},
@@ -306,6 +338,9 @@
       information_source = #{record.informationSource,jdbcType=INTEGER},
       linkman = #{record.linkman,jdbcType=VARCHAR},
       contact_way = #{record.contactWay,jdbcType=VARCHAR},
+      dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
+      dynamic_table_id = #{record.dynamicTableId,jdbcType=INTEGER},
+      dynamic_table_name = #{record.dynamicTableName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -322,8 +357,8 @@
       <if test="correlationCard != null" >
         correlation_card = #{correlationCard,jdbcType=VARCHAR},
       </if>
-      <if test="caseLocation != null" >
-        case_location = #{caseLocation,jdbcType=VARCHAR},
+      <if test="caseLocaltion != null" >
+        case_localtion = #{caseLocaltion,jdbcType=VARCHAR},
       </if>
       <if test="houseName != null" >
         house_name = #{houseName,jdbcType=VARCHAR},
@@ -352,6 +387,15 @@
       <if test="contactWay != null" >
         contact_way = #{contactWay,jdbcType=VARCHAR},
       </if>
+      <if test="dynamicFormId != null" >
+        dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableId != null" >
+        dynamic_table_id = #{dynamicTableId,jdbcType=INTEGER},
+      </if>
+      <if test="dynamicTableName != null" >
+        dynamic_table_name = #{dynamicTableName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -368,7 +412,7 @@
     update tb_survey_case_study_detail
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       correlation_card = #{correlationCard,jdbcType=VARCHAR},
-      case_location = #{caseLocation,jdbcType=VARCHAR},
+      case_localtion = #{caseLocaltion,jdbcType=VARCHAR},
       house_name = #{houseName,jdbcType=VARCHAR},
       case_type = #{caseType,jdbcType=INTEGER},
       price = #{price,jdbcType=INTEGER},
@@ -378,6 +422,9 @@
       information_source = #{informationSource,jdbcType=INTEGER},
       linkman = #{linkman,jdbcType=VARCHAR},
       contact_way = #{contactWay,jdbcType=VARCHAR},
+      dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
+      dynamic_table_id = #{dynamicTableId,jdbcType=INTEGER},
+      dynamic_table_name = #{dynamicTableName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
