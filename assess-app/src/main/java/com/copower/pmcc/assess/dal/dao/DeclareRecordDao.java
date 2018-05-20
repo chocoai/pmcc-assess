@@ -20,6 +20,10 @@ public class DeclareRecordDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public DeclareRecord getByID(Integer id){
+        return mapper.selectByPrimaryKey(id);
+    }
+
     /*所有记录*/
     public List<DeclareRecord> queryAll(String projectID){
         List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT4,new DeclareRecordRowMapper(),projectID);

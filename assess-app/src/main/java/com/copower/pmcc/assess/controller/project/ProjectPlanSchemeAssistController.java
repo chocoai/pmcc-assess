@@ -86,7 +86,7 @@ public class ProjectPlanSchemeAssistController {
     public Object schemeAreaGroupVoList(@RequestParam(value = "auxiliaryID") Integer auxiliaryID) {
         try {
             if (auxiliaryID != null) {
-               List<SchemeAreaGroupVo> vos =schemeAssistService.schemeAreaGroupVoList(auxiliaryID);
+               List<SchemeAreaGroupVo> vos = schemeAssistService.schemeAreaGroupVoList(auxiliaryID);
                 if (vos != null) return vos;
             }
         } catch (Exception e) {

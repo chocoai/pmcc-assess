@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.SchemeAreaGroupMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SchemeAreaGroup" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="record_id" property="recordId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
@@ -11,7 +12,6 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="province_city_district_str" property="provinceCityDistrictStr" jdbcType="VARCHAR" />
     <result column="group_id" property="groupId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -73,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, province, city, district, value_time_point, creator, gmt_created, 
-    gmt_modified, province_city_district_str, group_id
+    id, record_id, project_id, province, city, district, value_time_point, creator, gmt_created, 
+    gmt_modified, group_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample" >
     select
@@ -110,13 +110,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_area_group (project_id, province, city, 
-      district, value_time_point, creator, 
-      gmt_created, gmt_modified, province_city_district_str, 
+    insert into tb_scheme_area_group (record_id, project_id, province, 
+      city, district, value_time_point, 
+      creator, gmt_created, gmt_modified, 
       group_id)
-    values (#{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{provinceCityDistrictStr,jdbcType=VARCHAR}, 
+    values (#{recordId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{groupId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroup" >
@@ -125,6 +125,9 @@
     </selectKey>
     insert into tb_scheme_area_group
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
       <if test="projectId != null" >
         project_id,
       </if>
@@ -149,14 +152,14 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str,
-      </if>
       <if test="groupId != null" >
         group_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
@@ -181,9 +184,6 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        #{provinceCityDistrictStr,jdbcType=VARCHAR},
-      </if>
       <if test="groupId != null" >
         #{groupId,jdbcType=VARCHAR},
       </if>
@@ -200,6 +200,9 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.recordId != null" >
+        record_id = #{record.recordId,jdbcType=INTEGER},
       </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
@@ -225,9 +228,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.provinceCityDistrictStr != null" >
-        province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
-      </if>
       <if test="record.groupId != null" >
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
@@ -239,6 +239,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_area_group
     set id = #{record.id,jdbcType=INTEGER},
+      record_id = #{record.recordId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
@@ -247,7 +248,6 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -256,6 +256,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroup" >
     update tb_scheme_area_group
     <set >
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=INTEGER},
+      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
@@ -280,9 +283,6 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
-      </if>
       <if test="groupId != null" >
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
@@ -291,7 +291,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroup" >
     update tb_scheme_area_group
-    set project_id = #{projectId,jdbcType=INTEGER},
+    set record_id = #{recordId,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
@@ -299,7 +300,6 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

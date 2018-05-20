@@ -22,8 +22,8 @@ public class SchemeAreaGroupAuxiliaryService {
         return areaGroupAuxiliaryDao.add(auxiliary);
     }
 
-    public List<SchemeAreaGroupAuxiliary> list(){
-        return areaGroupAuxiliaryDao.list();
+    public List<SchemeAreaGroupAuxiliary> list(String projectID){
+        return areaGroupAuxiliaryDao.list(projectID);
     }
 
     public SchemeAreaGroupAuxiliary get(Integer id){

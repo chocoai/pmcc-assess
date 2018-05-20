@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
+import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class DeclareRecordService {
     private DeclareRecordDao dao;
     @Autowired
     private ErpAreaService areaService;
+
+    @Autowired
+    private CommonService commonService;
 
     @Autowired
     private ProjectInfoService projectInfoService;
@@ -199,7 +203,7 @@ public class DeclareRecordService {
                             String districtID = sysAreaDto2.getId()+"";//县或者县级市标识符
                             SchemeAreaGroupDto dto = null;
                             String groupID = UUID.randomUUID().toString();
-                            for (DeclareRecord d:declareRecords){
+                            for (DeclareRecord d:declareRecords){//record_id
                                 if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getDistrict()) && !StringUtils.isEmpty(d.getCity())){
                                     if (d.getProvince().equals(parentId) && d.getCity().equals(areaId) && d.getDistrict().equals(districtID)){
                                         dto = new SchemeAreaGroupDto();
@@ -209,6 +213,8 @@ public class DeclareRecordService {
                                         dto.setCity(d.getCity());
                                         dto.setProvince(d.getProvince());
                                         dto.setDistrict(d.getDistrict());
+                                        dto.setCreator(commonService.thisUserAccount());
+                                        dto.setRecordId(d.getId());
                                         if (dto!=null) schemeAreaGroupService.addEspecially(dto);
                                         d1s.add(d);
                                     }
@@ -217,6 +223,7 @@ public class DeclareRecordService {
                             if (d1s.size()>=1){
                                 SchemeAreaGroupAuxiliary areaGroupAuxiliary = new SchemeAreaGroupAuxiliary();
                                 areaGroupAuxiliary.setGroupId(groupID);
+                                areaGroupAuxiliary.setProjectId(Integer.parseInt(projectID));
                                 StringBuilder builder = new StringBuilder(1024);
                                 if (id!=null){
                                     builder.append(projectInfoService.getProvinceName(id));
@@ -250,6 +257,8 @@ public class DeclareRecordService {
                                 dto.setCity(d.getCity());
                                 dto.setProvince(d.getProvince());
                                 dto.setDistrict(d.getDistrict());
+                                dto.setRecordId(d.getId());
+                                dto.setCreator(commonService.thisUserAccount());
                                 if (dto!=null) schemeAreaGroupService.addEspecially(dto);
                                 d2s.add(d);
                             }
@@ -258,6 +267,7 @@ public class DeclareRecordService {
                     if (d2s.size()>=1){
                         SchemeAreaGroupAuxiliary areaGroupAuxiliary = new SchemeAreaGroupAuxiliary();
                         areaGroupAuxiliary.setGroupId(groupID);
+                        areaGroupAuxiliary.setProjectId(Integer.parseInt(projectID));
                         StringBuilder builder = new StringBuilder(1024);
                         if (id!=null){
                             builder.append(projectInfoService.getProvinceName(id));
@@ -281,5 +291,9 @@ public class DeclareRecordService {
 
     public List<DeclareRecord> getDeclareRecordById(Integer id) {
         return dao.getDeclareRecordById(id);
+    }
+
+    public DeclareRecord getByID(Integer id){
+        return dao.getByID(id);
     }
 }

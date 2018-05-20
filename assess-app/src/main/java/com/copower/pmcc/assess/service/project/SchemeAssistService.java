@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
+import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ import java.util.List;
  */
 @Service
 public class SchemeAssistService {
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
@@ -100,10 +103,10 @@ public class SchemeAssistService {
     }
 
     public List<SchemeAreaGroupAuxiliary> schemeareagroupauxiliary(String projectID){
-        List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries =  auxiliaryService.list();
+        List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries =  auxiliaryService.list(projectID);
         if (schemeAreaGroupAuxiliaries.size()<1){
-            declareRecordService.schemeareagroupauxiliary(projectID);
-            List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries1 = auxiliaryService.list();
+            declareRecordService.schemeareagroupauxiliary(projectID);//初始化
+            List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries1 = auxiliaryService.list(projectID);
             if (schemeAreaGroupAuxiliaries1.size()>=1){
                 return schemeAreaGroupAuxiliaries1;
             }else {

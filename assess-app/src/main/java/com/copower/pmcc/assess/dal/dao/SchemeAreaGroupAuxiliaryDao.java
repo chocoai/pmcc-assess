@@ -21,9 +21,9 @@ public class SchemeAreaGroupAuxiliaryDao {
         return mapper.insertSelective(auxiliary)==1;
     }
 
-    public List<SchemeAreaGroupAuxiliary> list(){
+    public List<SchemeAreaGroupAuxiliary> list(String projectID){
         SchemeAreaGroupAuxiliaryExample example = new SchemeAreaGroupAuxiliaryExample();
-        example.createCriteria().andIdIsNotNull().andGroupIdIsNotNull();
+        example.createCriteria().andIdIsNotNull().andGroupIdIsNotNull().andProjectIdEqualTo(Integer.parseInt(projectID));
         return mapper.selectByExample(example);
     }
 

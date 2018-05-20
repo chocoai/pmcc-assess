@@ -4,9 +4,11 @@ import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample;
 import com.copower.pmcc.assess.dal.mapper.SchemeAreaGroupMapper;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
+import com.copower.pmcc.assess.service.project.DeclareRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ public class SchemeAreaGroupDao {
 
     @Autowired
     private SchemeAreaGroupMapper mapper;
+
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public SchemeAreaGroup get(Integer id){
         return mapper.selectByPrimaryKey(id);
@@ -40,20 +45,20 @@ public class SchemeAreaGroupDao {
     }
 
     public boolean addEspecially(SchemeAreaGroupDto dto){
-        /**
-         * 思路 加入数据库中存在项目的id那么说明已经初始化过了 就不再初始化了
-         */
         Integer projectId = dto.getProjectId();
         SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
-        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
-        if (schemeAreaGroups.size()>=1){
-            return false;
+        //这里的逻辑是省+市+projectID 以及省+市+区县+projectID
+        if (!StringUtils.isEmpty(dto.getDistrict())){
+            example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId).
+                    andCityEqualTo(dto.getCity()).andProvinceEqualTo(dto.getProvince()).andDistrictEqualTo(dto.getDistrict());
         }else {
-            //初始化
-            mapper.insert(change(dto));
-            return true;
+            example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId).
+                    andCityEqualTo(dto.getCity()).andProvinceEqualTo(dto.getProvince());
         }
+//        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
+        //初始化
+        mapper.insert(change(dto));
+        return true;
     }
 
     public boolean update(SchemeAreaGroupDto dto){
