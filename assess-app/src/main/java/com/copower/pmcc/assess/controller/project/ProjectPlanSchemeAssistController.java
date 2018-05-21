@@ -52,10 +52,10 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/evaluationmethod/fieldList", name = "评估工作方案阶段工作计划 评估方法 字段引用", method = RequestMethod.POST)
-    public Object evaluationMethodField(@RequestParam(value = "id") Integer id) {
+    public Object evaluationMethodField(@RequestParam(value = "id") Integer id,@RequestParam(value = "type")Integer type) {
         try {
-            if (id != null) {
-                List<EvaluationMethodField> fields = schemeAssistService.list(id);
+            if (id != null && type!=null) {
+                List<EvaluationMethodField> fields = schemeAssistService.list(id,type);
                 if (fields != null) return fields;
             }
         } catch (Exception e) {
