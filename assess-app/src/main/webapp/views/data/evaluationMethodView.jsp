@@ -173,8 +173,8 @@
                         </label>
                         <div class="col-sm-10">
                             <select id="type" required="required">
-                                <option value="0" selected="selected">适用原因</option>
-                                <option value="1" >不适用原因</option>
+                                <option value="0" selected="selected">不适用原因</option>
+                                <option value="1" >适用原因</option>
                             </select>
                         </div>
                     </div>

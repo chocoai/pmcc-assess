@@ -374,6 +374,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="templateShow"></h4>
                 <input type="hidden" id="templateID">
+                <input type="hidden" id="methodFlag">
             </div>
             <form id="frmTemplate" class="form-horizontal">
                 <div class="modal-body">
@@ -714,8 +715,8 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
+    //初始化
     $(function () {
-        //初始化
         <c:forEach items="${dataEvaluationMethod}" var="item">
         $("#applyNoTemplateView"+${item.id}).hide();
         $("#applyTemplateView"+${item.id}).hide();
@@ -881,8 +882,13 @@
     function evaluationmethodSave() {
         var frmTemplate = formParams("frmTemplate");
         var templateID = document.getElementById("templateID").value;
+        var methodFlag = document.getElementById("methodFlag").value;
         if (templateID!=null && templateID!=''){
-            alert(templateID);
+            if (methodFlag==0){//判断方法是否适用
+                $("#applicableReasonNo"+templateID).val($("#evaluationMethodTemple").val());
+            }else {
+                $("#applicableReason"+templateID).val($("#evaluationMethodTemple").val());
+            }
         }
         document.getElementById("divTemplate").style.display = "none";
     }
@@ -890,6 +896,7 @@
     //方法选择
     function evaluationmethodSelect(id,type) {
         document.getElementById("templateID").value = id;
+        document.getElementById("methodFlag").value = type;
         $.ajax({
             url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/getList",
             data: {
@@ -984,6 +991,8 @@
                         var inputElement = document.createElement("input");
                         inputElement.setAttribute("type","text");
                         inputElement.setAttribute("name","methodType");
+                        inputElement.setAttribute("id","methodTypeID"+data.id);
+                        inputElement.setAttribute("onblur","methodFildReplace(evaluationMethodTemple,methodTypeID"+data.id+",'"+data.name+"')");
                         inputElement.setAttribute("class","form-control");
                         inputElement.setAttribute("placeholder","替换字段");
                         divCol.appendChild(inputElement);
@@ -1012,6 +1021,7 @@
                             var inputElement = document.createElement("input");
                             inputElement.setAttribute("type","text");
                             inputElement.setAttribute("name","methodType");
+                            inputElement.setAttribute("onblur","methodFildReplace(evaluationMethodTemple,methodTypeID"+data.id+",'"+data.name+"')");
                             inputElement.setAttribute("class","form-control");
                             inputElement.setAttribute("placeholder","替换字段");
                             divCol.appendChild(inputElement);
@@ -1038,6 +1048,7 @@
                         var inputElement = document.createElement("input");
                         inputElement.setAttribute("type","text");
                         inputElement.setAttribute("name","methodType");
+                        inputElement.setAttribute("onblur","methodFildReplace(evaluationMethodTemple,methodTypeID"+data.id+",'"+data.name+"')");
                         inputElement.setAttribute("class","form-control");
                         inputElement.setAttribute("placeholder","替换字段");
                         divCol.appendChild(inputElement);
@@ -1054,13 +1065,21 @@
             }
         });
     }
-    //评估方法
+    //方法字段替换
+    function methodFildReplace(id1,id2,name) {
+        var value = $(id2).val();
+        var regex = '/\{' +name +'\}/g';
+        console.log(regex);
+        var x1 = $(id1).val().replace(eval(regex),value);
+        $(id1).val(x1);
+    }
+    //评估方法 视图
     function evaluationmethod(id) {
         $("#frmMethod").clearAll();
         $("#divBoxMethod").modal();//显示
     }
 
-    //评估思路
+    //评估思路 视图
     function evaluationthinking() {
         $("#frmThink").clearAll();
         $("#divBoxThink").modal();//显示
@@ -1068,6 +1087,8 @@
 
     //评估思路 保存
     function evaluationthinkingSave() {
+        var evaluationThinkTemple = $("#evaluationThinkTemple").val();
+        alert(evaluationThinkTemple);
         $("#divBoxThink").hide();
     }
 
@@ -1076,10 +1097,19 @@
         $("#divBoxThink").hide();
     }
 
+    //评估思路 字段替换
+    function thinkFildReplace(id1,id2,name) {
+        var value = $(id2).val();
+        var regex = '/\{' +name +'\}/g';
+        var x1 = $(id1).val().replace(eval(regex),value);
+        $(id1).val(x1);
+    }
+
     //评估方法模板字段 关闭
     function divTemplateClose() {
         $("#divTemplate").hide();
     }
+    //评估思路  选择
     $("#EvaluationThinkSelect").change(function () {
         var selected =$(this).children('option:selected').val();
         if (selected!="" && selected!='' && selected!=null){
@@ -1106,6 +1136,7 @@
 
         }
     });
+    //评估思路 字段
     function writeThinkFieldS(id) {
         $.ajax({// list
             url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
@@ -1138,7 +1169,9 @@
                         var inputElement = document.createElement("input");
                         inputElement.setAttribute("type","text");
                         inputElement.setAttribute("name","thinkType");
+                        inputElement.setAttribute("id","thinkTypeID"+data.id);
                         inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("onblur","thinkFildReplace(evaluationThinkTemple,thinkTypeID"+data.id+",'"+data.name+"')");
                         inputElement.setAttribute("placeholder","替换字段");
                         divCol.appendChild(inputElement);
 
