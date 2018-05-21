@@ -32,13 +32,13 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/evaluationThink/think", name = "评估工作方案阶段工作计划 评估技术思路 获取,以及字段引用", method = RequestMethod.POST)
-    public Object evaluationThinkGet(@RequestParam(value = "id") Integer id,Integer type) {
+    public Object evaluationThinkGet(@RequestParam(value = "id") Integer id,Integer type,Integer flag) {
         try {
-            if (id != null && type!=null) {
-                if (type==2){
-                    List<EvaluationThinkingField> fields = schemeAssistService.schemeassistservice(id);
+            if (id != null ) {
+                if (flag.equals(2)){
+                    List<EvaluationThinkingField> fields = schemeAssistService.schemeassistserviceThinkFilds(id,type);
                     if (fields!=null)return fields;
-                }else if (type==1){
+                }else if (flag.equals(1)){
                     EvaluationThinkingDto evaluationThinkingDto = schemeAssistService.get(id);
                     if (evaluationThinkingDto != null) return evaluationThinkingDto;
                 }
