@@ -67,4 +67,9 @@ public class DataReportAnalysisFieldService {
         flag = dataReportAnalysisFieldDao.deleteField(id);
         return flag;
     }
+
+    public List<DataReportAnalysisField> getDataReportAnalysisField(Integer analysisId) {
+       return dataReportAnalysisFieldDao.getDataReportAnalysisField(analysisId);
+
+    }
 }

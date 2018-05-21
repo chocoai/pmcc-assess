@@ -13,6 +13,35 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+
+            <c:forEach items="${dataReportAnalysisVos}" var="items">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>${items.categoryFieldName}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <form id="frm_compile" class="form-horizontal">
+
+                        <div class="form-group">
+                            <c:forEach items="${dataReportAnalysisFields}" var="items">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">${items.name}</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" data-rule-maxlength="50" placeholder=""
+                                               id="surveyPeople" name="surveyPeople" required
+                                               class="form-control">
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </form>
+
+                </div>
+
+            </c:forEach>
+
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -21,20 +50,6 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                客户
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text"  placeholder="客户"
-                                           id="customerName" name="customerName" class="form-control" >
-                                    <span class="input-group-btn">
-                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 实际工时
@@ -89,8 +104,10 @@
     </div>
 </div>
 </body>
+
+
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
+<%--<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>--%>
 <script type="application/javascript">
 
     $(function () {
@@ -102,7 +119,7 @@
                 }
             });
         })
-        
+
         $("#frm_task").validate();
 
         loadUploadFiles();
@@ -118,8 +135,8 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadUploadFiles();
             }
         });
