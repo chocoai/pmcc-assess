@@ -27,8 +27,7 @@ public class EvaluationMethodFieldDao {
     @Autowired
     private EvaluationMethodMapper methodMapper;
 
-    @Deprecated
-    public List<EvaluationMethodField> schemeassistservice(Integer method){
+    public List<EvaluationMethodField> schemeassistservice(Integer method,Integer type){
         List<EvaluationMethodField> fieldList = new ArrayList<>();
         List<EvaluationMethod> methods ;
         EvaluationMethodExample methodExample = new EvaluationMethodExample();
@@ -36,7 +35,7 @@ public class EvaluationMethodFieldDao {
         methods = methodMapper.selectByExample(methodExample);
         for (EvaluationMethod evaluationMethod:methods){
             Integer id = evaluationMethod.getId();
-            List<EvaluationMethodField> fields = list(id);
+            List<EvaluationMethodField> fields = list(id,type);
             fieldList.addAll(fields);
         }
         return fieldList;
@@ -76,6 +75,14 @@ public class EvaluationMethodFieldDao {
         List<EvaluationMethodField> evaluationMethodFields = new ArrayList<>();
         EvaluationMethodFieldExample evaluationMethodFieldExample = new EvaluationMethodFieldExample();
         evaluationMethodFieldExample.createCriteria().andMethodIdEqualTo(methodId);
+        evaluationMethodFields = evaluationMethodFieldMapper.selectByExample(evaluationMethodFieldExample);
+        return evaluationMethodFields;
+    }
+
+    public List<EvaluationMethodField> list(Integer methodId,Integer type) {
+        List<EvaluationMethodField> evaluationMethodFields = new ArrayList<>();
+        EvaluationMethodFieldExample evaluationMethodFieldExample = new EvaluationMethodFieldExample();
+        evaluationMethodFieldExample.createCriteria().andMethodIdEqualTo(methodId).andTypeEqualTo(type);
         evaluationMethodFields = evaluationMethodFieldMapper.selectByExample(evaluationMethodFieldExample);
         return evaluationMethodFields;
     }

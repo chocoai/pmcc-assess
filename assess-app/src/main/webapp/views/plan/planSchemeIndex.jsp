@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -121,31 +122,61 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div id="x_content">
-                    <form id="evaluationObject" class="form-horizontal">
-                    <table class="table" id="tableList${item.id}">
-                        <thead>
-                            <tr>
-                                <th>估价对象编号</th>
-                                <th>权证号</th>
-                                <th>所有权人</th>
-                                <th>座落</th>
-                                <th>最佳利用设置</th>
-                                <th>合并测算序号</th>
-                                <th>证载面积</th>
-                                <th>评估面积</th>
-                                <th>评估方法</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableListBody${item.id}">
-
-                        </tbody>
-                    </table>
+                <div id="contentList${item.id}">
+                    <form id="evaluationObject${item.id}" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    价值时点
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" size="22" required="required" class="form-control" placeholder="价值时间点"><br>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table" id="tableList${item.id}">
+                            <thead>
+                                <tr>
+                                    <th>估价对象编号</th>
+                                    <th>权证号</th>
+                                    <th>所有权人</th>
+                                    <th>座落</th>
+                                    <th>最佳利用设置</th>
+                                    <th>合并测算序号</th>
+                                    <th>证载面积</th>
+                                    <th>评估面积</th>
+                                    <th>评估方法</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableListBody${item.id}">
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-success" onclick="evaluationObject(${item.id})">保存</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
             </c:forEach>
+            <div class="x_panel">
+                <div class="x_title">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-sm-4 col-sm-offset-5">
+                        <button class="btn btn-success">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <div class="x_panel">
                 <div class="x_title">
@@ -235,11 +266,6 @@
 
                                                 </textarea>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="thinkField${item.id}">
-                                        <div id="thinkFieldWrite${item.id}" >
-
                                         </div>
                                     </div>
 
@@ -336,7 +362,7 @@
     </div>
 </div>
 
-<!-- 模板 -->
+<!-- 方法模板 -->
 <div id="divTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="170">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -351,7 +377,24 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body" id="templatePanel">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group" id="evaluationMethodTempleGroup">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            方法数据
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" placeholder="模板显示数据" id="evaluationMethodTemple">
 
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="evaluationMethodTempleGroupFields"></div>
                             </div>
                         </div>
                     </div>
@@ -663,226 +706,6 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
-
-    // table list 数据列表显示
-    <c:forEach items="${dataList}" var="item">
-    document.getElementById("tableList"+${item.id}).style.display = "none";
-    </c:forEach>
-    function schemeareagroupTableList(id) {
-        var dis = document.getElementById("tableList"+id).style.display;
-        if (dis=="none"){
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
-                data: {
-                    auxiliaryID: id
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    for(var i = 0;i<result.length;i++){
-                        var data = result[i];
-                        console.log(data);
-                        var tableListBody = document.getElementById("tableListBody"+id);
-                        var trElement = document.createElement("tr");
-
-                        var dataIndex = document.createElement("td");
-                        dataIndex.appendChild(document.createTextNode(i));
-                        dataIndex.setAttribute("id","dataIndex"+data.id);
-
-                        var dataName = document.createElement("td");
-                        dataName.appendChild(document.createTextNode(data.recordName));
-                        dataName.setAttribute("id","dataName"+data.id);
-
-                        var dataCreator = document.createElement("td");
-                        dataCreator.appendChild(document.createTextNode(data.creator));
-                        dataCreator.setAttribute("id","dataCreator"+data.id);
-
-                        var dataSeat = document.createElement("td");
-                        dataSeat.appendChild(document.createTextNode("座落"));
-                        dataSeat.setAttribute("id","dataSeat"+data.id);
-
-                        var dataBestUse = document.createElement("td");
-                        var selectElement = document.createElement("input");
-                        selectElement.setAttribute("class","form-control");
-                        selectElement.setAttribute("type","select");
-                        <c:forEach items="${bestusedescriptionList}" var="bestUse">
-                            var optionElement = document.createElement("select");
-                            optionElement.appendChild(document.createTextNode("${bestUse.name}"));
-                            selectElement.appendChild(optionElement);
-                        </c:forEach>
-                        dataBestUse.appendChild(selectElement);
-                        dataBestUse.setAttribute("id","dataBestUse"+data.id);
-
-                        var dataMerge = document.createElement("td");
-                        var inputMerge = document.createElement("input");
-                        inputMerge.setAttribute("class","form-control");
-                        inputMerge.setAttribute("type","text");
-                        inputMerge.setAttribute("placeholder","合并测算序号");
-                        dataMerge.appendChild(inputMerge);
-                        dataMerge.setAttribute("id","dataMerge"+data.id);
-
-                        var dataFloorArea = document.createElement("td");
-                        var labelFloor = document.createElement("label");
-                        labelFloor.setAttribute("class","form-control");
-                        labelFloor.appendChild(document.createTextNode(data.floorArea));
-                        dataFloorArea.appendChild(labelFloor);
-                        dataFloorArea.setAttribute("id","dataFloorArea"+data.id);
-
-                        var dataAssessmentArea = document.createElement("td");
-                        var inputAssessmentArea = document.createElement("input");
-                        inputAssessmentArea.setAttribute("class","form-control");
-                        inputAssessmentArea.setAttribute("type","text");
-                        inputAssessmentArea.setAttribute("placeholder","评估面积");
-                        dataAssessmentArea.appendChild(inputAssessmentArea);
-                        dataAssessmentArea.setAttribute("id","dataAssessmentArea"+data.id);
-
-                        var dataMethodID = document.createElement("td");
-                        var inputButton1 = document.createElement("input");
-                        inputButton1.setAttribute("class","btn btn-success");
-                        inputButton1.setAttribute("type","button");
-                        inputButton1.setAttribute("value","评估方法");
-                        inputButton1.setAttribute("onclick","evaluationmethod("+data.id+")");
-                        dataMethodID.appendChild(inputButton1);
-                        dataMethodID.setAttribute("id","methodID"+data.id);
-
-                        var dataSplitEvaluate = document.createElement("td");
-                        var inputButton2 = document.createElement("input");
-                        inputButton2.setAttribute("class","btn btn-success");
-                        inputButton2.setAttribute("type","button");
-                        inputButton2.setAttribute("value","拆分");
-                        inputButton2.setAttribute("onclick","splitEvaluate("+data.id+")");
-                        dataSplitEvaluate.appendChild(inputButton2);
-                        dataSplitEvaluate.setAttribute("id","btnID"+data.id);
-
-                        trElement.appendChild(dataIndex);
-                        trElement.appendChild(dataName);
-                        trElement.appendChild(dataCreator);
-                        trElement.appendChild(dataSeat);
-                        trElement.appendChild(dataBestUse);
-                        trElement.appendChild(dataMerge);
-                        trElement.appendChild(dataFloorArea);
-                        trElement.appendChild(dataAssessmentArea);
-                        trElement.appendChild(dataMethodID);
-                        trElement.appendChild(dataSplitEvaluate);
-                        tableListBody.appendChild(trElement);
-                    }
-                },
-                error: function (result) {
-                    alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            document.getElementById("tableList"+id).style.display = "";
-        }else {
-            document.getElementById("tableList"+id).style.display = "none";
-        }
-    }
-
-    //方法 save
-    function evaluationmethodSave() {
-        var frmTemplate = formParams("frmTemplate");
-        var templateID = document.getElementById("templateID").value;
-        if (templateID!=null && templateID!=''){
-            var applicableReason = document.getElementById("applicableReason"+templateID);
-            var applicableReasonNo = document.getElementById("applicableReasonNo"+templateID);
-            applicableReason.value = "";
-            applicableReasonNo.value = "";
-            var methodType = frmTemplate.methodType;
-            var methodNOType = frmTemplate.methodNOType;
-            if (methodType!=null && methodType!='' && methodType!=""){
-                applicableReason.value = methodType;
-            }else if (methodNOType!=null && methodNOType!='' && methodNOType!=""){
-                applicableReasonNo.value = methodNOType;
-            }
-        }
-        document.getElementById("divTemplate").style.display = "none";
-        //加载方法字段
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/fieldList",
-            data: {
-                id: templateID
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                var thinkFieldWriteID = "thinkFieldWrite"+templateID;
-                var thinkFieldElement = document.getElementById(thinkFieldWriteID);
-                thinkFieldElement.innerHTML = "";
-                for(var i = 0;i<result.length;i++){
-                    var data = result[i];
-                    var divElement = document.createElement("div");
-                    divElement.setAttribute("class","col-sm"+(12/result.length));
-                    divElement.appendChild(document.createTextNode(data.name));
-                    var inputElement = document.createElement("input");
-                    inputElement.setAttribute("name","fieldName");
-                    inputElement.setAttribute("type","text");
-                    inputElement.setAttribute("size","12");
-                    inputElement.setAttribute("placeholder","自定义字段");
-                    divElement.appendChild(inputElement);
-                    divElement.appendChild(document.createElement("br"));
-                    thinkFieldElement.appendChild(divElement);
-                }
-            },
-            error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $("#thinkField"+templateID).show();
-    }
-
-    //方法选择
-    function evaluationmethodSelect(id) {
-        document.getElementById("templateID").value = id;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/getList",
-            data: {
-                id: id
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                var templatePanel = document.getElementById("templatePanel");
-                for (var i=0;i<result.length;i++){
-                    var data = result[i];
-                    var divElement = document.createElement("div");
-                    divElement.setAttribute("class","form-group");
-
-                    var divValidElement = document.createElement("div");
-                    divValidElement.setAttribute("class","x-valid");
-
-                    var div1Element = document.createElement("div");
-                    div1Element.setAttribute("class","col-sm-4");
-                    div1Element.appendChild(document.createTextNode("模板选择"));
-                    divValidElement.appendChild(div1Element);
-
-                    var div2Element = document.createElement("div");
-                    div2Element.setAttribute("class","col-sm-8");
-
-                    var inputElementA = document.createElement("input");
-                    inputElementA.setAttribute("type","checkbox");
-                    inputElementA.setAttribute("class","form-control");
-                    inputElementA.setAttribute("value",data.applicableReason);
-                    inputElementA.setAttribute("name","methodType");
-                    div2Element.appendChild(document.createTextNode("适用原因:"+data.applicableReason));
-                    div2Element.appendChild(inputElementA);
-                    var inputElementB = document.createElement("input");
-                    inputElementB.setAttribute("type","checkbox");
-                    inputElementB.setAttribute("class","form-control");
-                    inputElementB.setAttribute("value",data.notApplicableReason);
-                    inputElementB.setAttribute("name","methodNOType");
-                    div2Element.appendChild(document.createTextNode("不适用原因:"+data.notApplicableReason));
-                    div2Element.appendChild(inputElementB);
-
-                    divValidElement.appendChild(div2Element);
-                    divElement.appendChild(divValidElement);
-                }
-                templatePanel.innerHTML = "";
-                templatePanel.appendChild(divElement);
-            },
-            error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-    }
     $(function () {
         //初始化
         <c:forEach items="${dataEvaluationMethod}" var="item">
@@ -895,19 +718,19 @@
         //评估方法 模板 字段 选择
         <c:forEach items="${dataEvaluationMethod}" var="item">
         var applyNoTemplate = "applyNoTemplate"+${item.id};
-        document.getElementById(applyNoTemplate).onclick = function () {
+        document.getElementById(applyNoTemplate).onclick = function () {//不适用
             document.getElementById("templateShow").innerText = "${item.name}";
             var id = "${item.id}";
             $("#frmTemplate").clearAll();
-            evaluationmethodSelect(id);
+            evaluationmethodSelect(id,0);
             $("#divTemplate").modal();//显示
         }
-        var applyTemplate = "applyTemplate"+${item.id};
+        var applyTemplate = "applyTemplate"+${item.id};//适用
         document.getElementById(applyTemplate).onclick = function () {
             document.getElementById("templateShow").innerText = "${item.name}";
             var id = "${item.id}";
             $("#frmTemplate").clearAll();
-            evaluationmethodSelect(id);
+            evaluationmethodSelect(id,1);
             $("#divTemplate").modal();//显示
         }
         </c:forEach>
@@ -915,7 +738,6 @@
     //选项卡
     function applyMethodA(id,name) {
         $("#applyNoTemplateView"+id).hide();
-        $("#thinkField"+id).hide();
         $("#thinkView"+id).show();
         $("#applyTemplateView"+id).show();
     }
@@ -924,7 +746,302 @@
         $("#applyNoTemplateView"+id).show();
         $("#thinkView"+id).hide();
         $("#applyTemplateView"+id).hide();
-        $("#thinkField"+id).hide();
+    }
+    //分组保存
+    function evaluationObject(id) {
+        alert(id);
+        var data = formParams("evaluationObject"+id);//项目信息
+        console.log(data);
+    }
+    // table list 数据列表显示
+    <c:forEach items="${dataList}" var="item">
+        document.getElementById("contentList"+${item.id}).style.display = "none";
+    </c:forEach>
+    function schemeareagroupTableList(id) {
+        var dis = document.getElementById("contentList"+id).style.display;
+        if (dis=="none"){
+            document.getElementById("contentList"+id).style.display = "";
+            var tableListBody = document.getElementById("tableListBody"+id);
+            var len = tableListBody.getElementsByTagName("tr").length;
+            if (!len>=1){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
+                    data: {
+                        auxiliaryID: id
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        for(var i = 0;i<result.length;i++){
+                            var data = result[i];
+                            var tableListBody = document.getElementById("tableListBody"+id);
+                            var trElement = document.createElement("tr");
+
+                            var dataIndex = document.createElement("td");
+                            dataIndex.appendChild(document.createTextNode(i));
+                            dataIndex.setAttribute("id","dataIndex"+data.id);
+
+                            var dataName = document.createElement("td");
+                            dataName.appendChild(document.createTextNode(data.recordName));
+                            dataName.setAttribute("id","dataName"+data.id);
+
+                            var dataCreator = document.createElement("td");
+                            dataCreator.appendChild(document.createTextNode(data.creator));
+                            dataCreator.setAttribute("id","dataCreator"+data.id);
+
+                            var dataSeat = document.createElement("td");
+                            dataSeat.appendChild(document.createTextNode("座落"));
+                            dataSeat.setAttribute("id","dataSeat"+data.id);
+
+                            var dataBestUse = document.createElement("td");
+                            var selectElement = document.createElement("select");
+                            selectElement.setAttribute("class","form-control");
+                            <c:forEach items="${bestusedescriptionList}" var="bestUse">
+                                var optionElement = document.createElement("option");
+                                optionElement.appendChild(document.createTextNode("${bestUse.name}"));
+                                selectElement.appendChild(optionElement);
+                            </c:forEach>
+                            dataBestUse.appendChild(selectElement);
+                            dataBestUse.setAttribute("id","dataBestUse"+data.id);
+
+                            var dataMerge = document.createElement("td");
+                            var inputMerge = document.createElement("input");
+                            inputMerge.setAttribute("class","form-control");
+                            inputMerge.setAttribute("type","text");
+                            inputMerge.setAttribute("placeholder","合并测算序号");
+                            dataMerge.appendChild(inputMerge);
+                            dataMerge.setAttribute("id","dataMerge"+data.id);
+
+                            var dataFloorArea = document.createElement("td");
+                            var labelFloor = document.createElement("label");
+                            labelFloor.setAttribute("class","form-control");
+                            labelFloor.appendChild(document.createTextNode(data.floorArea));
+                            dataFloorArea.appendChild(labelFloor);
+                            dataFloorArea.setAttribute("id","dataFloorArea"+data.id);
+
+                            var dataAssessmentArea = document.createElement("td");
+                            var inputAssessmentArea = document.createElement("input");
+                            inputAssessmentArea.setAttribute("class","form-control");
+                            inputAssessmentArea.setAttribute("type","text");
+                            inputAssessmentArea.setAttribute("placeholder","评估面积");
+                            dataAssessmentArea.appendChild(inputAssessmentArea);
+                            dataAssessmentArea.setAttribute("id","dataAssessmentArea"+data.id);
+
+                            var dataMethodID = document.createElement("td");
+                            var inputButton1 = document.createElement("input");
+                            inputButton1.setAttribute("class","btn btn-success");
+                            inputButton1.setAttribute("type","button");
+                            inputButton1.setAttribute("value","评估方法");
+                            inputButton1.setAttribute("onclick","evaluationmethod("+data.id+")");
+                            dataMethodID.appendChild(inputButton1);
+                            dataMethodID.setAttribute("id","methodID"+data.id);
+
+                            var dataSplitEvaluate = document.createElement("td");
+                            var inputButton2 = document.createElement("input");
+                            inputButton2.setAttribute("class","btn btn-success");
+                            inputButton2.setAttribute("type","button");
+                            inputButton2.setAttribute("value","拆分");
+                            inputButton2.setAttribute("onclick","splitEvaluate("+data.id+")");
+                            dataSplitEvaluate.appendChild(inputButton2);
+                            dataSplitEvaluate.setAttribute("id","btnID"+data.id);
+
+                            trElement.appendChild(dataIndex);
+                            trElement.appendChild(dataName);
+                            trElement.appendChild(dataCreator);
+                            trElement.appendChild(dataSeat);
+                            trElement.appendChild(dataBestUse);
+                            trElement.appendChild(dataMerge);
+                            trElement.appendChild(dataFloorArea);
+                            trElement.appendChild(dataAssessmentArea);
+                            trElement.appendChild(dataMethodID);
+                            trElement.appendChild(dataSplitEvaluate);
+                            tableListBody.appendChild(trElement);
+                        }
+                    },
+                    error: function (result) {
+                        alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+
+            }
+        }else {
+            document.getElementById("contentList"+id).style.display = "none";
+        }
+    }
+
+    //方法 save
+    function evaluationmethodSave() {
+        var frmTemplate = formParams("frmTemplate");
+        var templateID = document.getElementById("templateID").value;
+        if (templateID!=null && templateID!=''){
+            alert(templateID);
+        }
+        document.getElementById("divTemplate").style.display = "none";
+    }
+
+    //方法选择
+    function evaluationmethodSelect(id,type) {
+        document.getElementById("templateID").value = id;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/getList",
+            data: {
+                id: id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                var templatePanel = document.getElementById("templatePanel");
+                for (var i=0;i<result.length;i++){
+                    var data = result[i];
+                    console.log(data);
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+
+                    var divValidElement = document.createElement("div");
+                    divValidElement.setAttribute("class","x-valid");
+
+                    var labelElement = document.createElement("label");
+                    labelElement.setAttribute("class","col-sm-3 control-label");
+
+                    var divXElement = document.createElement("div");
+                    divXElement.setAttribute("class","col-sm-9");
+                    var selectElement = document.createElement("select");
+                    selectElement.setAttribute("class","form-control");
+                    selectElement.setAttribute("name","methodID");
+                    if (type==0){
+                        labelElement.appendChild(document.createTextNode("不适用模板"));
+                        var optionElement = document.createElement("option");
+                        optionElement.appendChild(document.createTextNode(""+data.methodStr));
+                        $("#evaluationMethodTemple").val(data.applicableReason+"");
+                        selectElement.appendChild(optionElement);
+                        methodFilds(0);
+                    }else {
+                        labelElement.appendChild(document.createTextNode("适用模板"));
+                        var optionElement = document.createElement("option");
+                        optionElement.appendChild(document.createTextNode(""+data.methodStr));
+                        $("#evaluationMethodTemple").val(data.notApplicableReason+"");
+                        selectElement.appendChild(optionElement);
+                        methodFilds(1);
+                    }
+
+                    divXElement.appendChild(selectElement);
+                    divValidElement.appendChild(labelElement);
+                    divValidElement.appendChild(divXElement);
+
+
+                    divElement.appendChild(divValidElement);
+                }
+                templatePanel.innerHTML = "";
+                templatePanel.appendChild(divElement);
+                $("#evaluationMethodTempleGroup").show();
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+    //方法字段加载
+    function methodFilds(type) {
+        var templateID = document.getElementById("templateID").value;
+        //加载方法字段
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationmethod/fieldList",
+            data: {
+                id: templateID,
+                type:type
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                var len = result.length;
+                var num = Math.round(len / 4);
+                var evaluationMethodTempleGroup = document.getElementById("evaluationMethodTempleGroupFields");
+                if (len <= 4){
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+                    for (var i=0; i < len;i++){
+                        var data = result[i];
+                        var divValid = document.createElement("div");
+                        divValid.setAttribute("class","x-valid");
+
+                        var labelElement = document.createElement("label");
+                        labelElement.setAttribute("class","col-sm-1");
+                        labelElement.appendChild(document.createTextNode("    "+data.name));
+
+                        var divCol = document.createElement("div");
+                        divCol.setAttribute("class","col-sm-2");
+                        var inputElement = document.createElement("input");
+                        inputElement.setAttribute("type","text");
+                        inputElement.setAttribute("name","methodType");
+                        inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("placeholder","替换字段");
+                        divCol.appendChild(inputElement);
+
+                        divValid.appendChild(labelElement);
+                        divValid.appendChild(divCol);
+                        divElement.appendChild(divValid);
+                    }
+                    evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
+
+                }else {
+                    for (var i = 0;i < num;i++){
+                        var divElement = document.createElement("div");
+                        divElement.setAttribute("class","form-group");
+                        for (var j = (1*num); j < (1*num) +4 ; j++){
+                            var data = result[i];
+                            var divValid = document.createElement("div");
+                            divValid.setAttribute("class","x-valid");
+
+                            var labelElement = document.createElement("label");
+                            labelElement.setAttribute("class","col-sm-1");
+                            labelElement.appendChild(document.createTextNode("    "+data.name));
+
+                            var divCol = document.createElement("div");
+                            divCol.setAttribute("class","col-sm-2");
+                            var inputElement = document.createElement("input");
+                            inputElement.setAttribute("type","text");
+                            inputElement.setAttribute("name","methodType");
+                            inputElement.setAttribute("class","form-control");
+                            inputElement.setAttribute("placeholder","替换字段");
+                            divCol.appendChild(inputElement);
+
+                            divValid.appendChild(labelElement);
+                            divValid.appendChild(divCol);
+                            divElement.appendChild(divValid);
+                        }
+                        evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
+                    }
+                }
+                var divElement = document.createElement("div");
+                divElement.setAttribute("class","form-group");
+                for (var i = num *4;i<len;i++){//剩余的 取模剩余的
+                    var data = result[i];
+                    var divValid = document.createElement("div");
+                    divValid.setAttribute("class","x-valid");
+
+                    var labelElement = document.createElement("label");
+                    labelElement.setAttribute("class","col-sm-1");
+                    labelElement.appendChild(document.createTextNode("    "+data.name));
+
+                    var divCol = document.createElement("div");
+                    divCol.setAttribute("class","col-sm-2");
+                    var inputElement = document.createElement("input");
+                    inputElement.setAttribute("type","text");
+                    inputElement.setAttribute("name","methodType");
+                    inputElement.setAttribute("class","form-control");
+                    inputElement.setAttribute("placeholder","替换字段");
+                    divCol.appendChild(inputElement);
+
+                    divValid.appendChild(labelElement);
+                    divValid.appendChild(divCol);
+                    divElement.appendChild(divValid);
+                }
+                evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
     //评估方法
     function evaluationmethod(id) {
@@ -966,7 +1083,7 @@
                 success: function (result) {
                     console.log(result);
                     var evaluationThinkTemple = document.getElementById("evaluationThinkTemple");
-                    var data = result.name+"";
+                    var data = result.applicableReason+"";
                     if (data!=null && data!='' && data!=""){
                         document.getElementById("evaluationThinkTemple").value = data;
                         writeThinkFieldS(selected);
@@ -1001,15 +1118,21 @@
                         var data = result[i];
                         var divValid = document.createElement("div");
                         divValid.setAttribute("class","x-valid");
+
+                        var labelElement = document.createElement("label");
+                        labelElement.setAttribute("class","col-sm-1");
+                        labelElement.appendChild(document.createTextNode("    "+data.name));
+
                         var divCol = document.createElement("div");
-                        divCol.setAttribute("class","col-sm-3");
-                        divCol.appendChild(document.createTextNode("    "+data.name));
+                        divCol.setAttribute("class","col-sm-2");
                         var inputElement = document.createElement("input");
-                        inputElement.setAttribute("type","checkbox");
+                        inputElement.setAttribute("type","text");
                         inputElement.setAttribute("name","thinkType");
-                        inputElement.setAttribute("value",data.id+"");
+                        inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("placeholder","替换字段");
                         divCol.appendChild(inputElement);
 
+                        divValid.appendChild(labelElement);
                         divValid.appendChild(divCol);
                         divElement.appendChild(divValid);
                     }
@@ -1030,15 +1153,21 @@
                             var data = result[i];
                             var divValid = document.createElement("div");
                             divValid.setAttribute("class","x-valid");
+
+                            var labelElement = document.createElement("label");
+                            labelElement.setAttribute("class","col-sm-1");
+                            labelElement.appendChild(document.createTextNode("    "+data.name));
+
                             var divCol = document.createElement("div");
-                            divCol.setAttribute("class","col-sm-3");
-                            divCol.appendChild(document.createTextNode("    "+data.name));
+                            divCol.setAttribute("class","col-sm-2");
                             var inputElement = document.createElement("input");
-                            inputElement.setAttribute("type","checkbox");
+                            inputElement.setAttribute("type","text");
                             inputElement.setAttribute("name","thinkType");
-                            inputElement.setAttribute("value",data.id+"");
+                            inputElement.setAttribute("class","form-control");
+                            inputElement.setAttribute("placeholder","替换字段");
                             divCol.appendChild(inputElement);
 
+                            divValid.appendChild(labelElement);
                             divValid.appendChild(divCol);
                             divElement.appendChild(divValid);
                         }
@@ -1051,15 +1180,21 @@
                     var data = result[i];
                     var divValid = document.createElement("div");
                     divValid.setAttribute("class","x-valid");
+
+                    var labelElement = document.createElement("label");
+                    labelElement.setAttribute("class","col-sm-1");
+                    labelElement.appendChild(document.createTextNode("    "+data.name));
+
                     var divCol = document.createElement("div");
-                    divCol.setAttribute("class","col-sm-3");
-                    divCol.appendChild(document.createTextNode("    "+data.name));
+                    divCol.setAttribute("class","col-sm-2");
                     var inputElement = document.createElement("input");
-                    inputElement.setAttribute("type","checkbox");
+                    inputElement.setAttribute("type","text");
                     inputElement.setAttribute("name","thinkType");
-                    inputElement.setAttribute("value",data.id+"");
+                    inputElement.setAttribute("class","form-control");
+                    inputElement.setAttribute("placeholder","替换字段");
                     divCol.appendChild(inputElement);
 
+                    divValid.appendChild(labelElement);
                     divValid.appendChild(divCol);
                     divElement.appendChild(divValid);
                 }
@@ -1074,7 +1209,7 @@
     //拆分
     function splitEvaluate(id) {
         var btnID = document.getElementById("btnID"+id);
-        var parentElement = btnID.parentNode.parentNode;
+        var parentElement = btnID.parentNode;
         var trElement = document.createElement("tr");
         var len = 10;
         var dataIndex = document.getElementById("dataIndex"+id).innerText;
@@ -1084,6 +1219,7 @@
         var dataFloorArea = document.getElementById("dataFloorArea"+id).innerText;
         var dataBestUse = document.getElementById("dataBestUse"+id).innerHTML;
         var dataMerge = document.getElementById("dataMerge"+id).innerHTML;
+        var dataMethodID = document.getElementById("methodID"+id).innerHTML;
         for (var i = 0;i< len;i++){
             var tdElement = document.createElement("td");
             var j =0;
@@ -1110,9 +1246,7 @@
                 inputElement.setAttribute("placeholder","评估面积");
                 tdElement.appendChild(inputElement);
             }else if (i==j++){
-
-            }else if (i==j++){
-
+                tdElement.innerHTML = dataMethodID;
             }else if (i==j++){
 
             }

@@ -67,9 +67,8 @@ public class SchemeAssistService {
         return methodService.list(method);
     }
 
-    @Deprecated
-    public List<EvaluationMethodField> list(Integer methodId) {
-       return methodFieldDao.schemeassistservice(methodId);
+    public List<EvaluationMethodField> list(Integer methodId,Integer type) {
+       return methodFieldDao.schemeassistservice(methodId,type);
     }
 
     public List<EvaluationThinking> thinkingList(){
