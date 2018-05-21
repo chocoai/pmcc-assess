@@ -13,6 +13,7 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
+            <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
                     <h2>案例调查明细</h2>
@@ -43,9 +44,13 @@
                                 <label class="col-sm-1 control-label">
                                     相关权证
                                 </label>
-                                <div class="col-sm-2">
-                                    <c:forEach items="${declareRecords}" var="item">
-                                        <input type="checkbox" name="correlationCard" value="${item.id}">${item.name}
+                                <div class="col-sm-11">
+                                    <c:forEach items="${surveyCorrelationCardVos}" var="item">
+                                        <span class="checkbox-inline">
+                                            <input type="checkbox" ${item.bisChecked?"checked=\"checked\"":""}
+                                                   id="correlationCard_${item.id}"
+                                                   name="correlationCard" value="${item.id}">
+                                        <label for="correlationCard_${item.id}">${item.name}</label></span>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -57,7 +62,7 @@
                                 <label class="col-sm-1 control-label">
                                     案例类型
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <select class="form-control" id="caseType" name="caseType">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${caseType}">
@@ -71,7 +76,7 @@
                                 <label class="col-sm-1 control-label">
                                     信息来源
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <select class="form-control" id="informationSource" name="informationSource">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${caseInfoSource}">
@@ -85,7 +90,7 @@
                                 <label class="col-sm-1 control-label">
                                     楼盘名称
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="楼盘名称"
                                            id="houseName" name="houseName"
                                            value="${surveyCaseStudyDetail.houseName}"
@@ -100,7 +105,7 @@
                                 <label class="col-sm-1 control-label">
                                     单价
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="单价"
                                            id="price" name="price"
                                            value="${surveyCaseStudyDetail.price}"
@@ -112,7 +117,7 @@
                                 <label class="col-sm-1 control-label">
                                     交易情况
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="交易情况"
                                            id="dealCaondition" name="dealCaondition"
                                            value="${surveyCaseStudyDetail.dealCaondition}"
@@ -124,7 +129,7 @@
                                 <label class="col-sm-1 control-label">
                                     交易时间
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input placeholder="交易时间" id="dealTime" name="dealTime"
                                            data-date-format="yyyy-mm-dd"
                                            value="<fmt:formatDate value="${surveyCaseStudyDetail.dealTime}"   pattern="yyyy-MM-dd"/>"
@@ -141,7 +146,7 @@
                                 <label class="col-sm-1 control-label">
                                     付款方式
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="付款方式"
                                            id="paymentMethod" name="paymentMethod"
                                            value="${surveyCaseStudyDetail.paymentMethod}"
@@ -153,7 +158,7 @@
                                 <label class="col-sm-1 control-label">
                                     联系人
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="联系人"
                                            id="linkman" name="linkman"
                                            value="${surveyCaseStudyDetail.linkman}"
@@ -165,7 +170,7 @@
                                 <label class="col-sm-1 control-label">
                                     联系方式
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="联系方式"
                                            id="contactWay" name="contactWay"
                                            value="${surveyCaseStudyDetail.contactWay}"
@@ -233,6 +238,23 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
+    $(function () {
+        if("${surveyCaseStudyDetail.dynamicFormId}"!="0"){
+            showDynamicForm();
+        }
+    })
+
+    //显示动态表单数据
+    function showDynamicForm() {
+        FormConfigureUtils.getDynamicFormHtml({
+            formModuleId: $("#frm_survey").find('[name=dynamicFormId]').val(),
+            readOnly: false,
+            jsonValue: $("#JsonValue").val(),
+            success: function (html) {
+                $("#frm_dynamic_content").append(html).closest('.x_panel').show();
+            }
+        });
+    }
 
     //保存数据
     function saveData() {

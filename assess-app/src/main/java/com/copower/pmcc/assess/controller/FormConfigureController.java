@@ -303,7 +303,7 @@ public class FormConfigureController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDataDicFormInfo", method = RequestMethod.POST)
-    public HttpResult getDataDicFormInfo(Integer baseDataDicId) {
+    public HttpResult getDataDicFormInfo(Integer baseDataDicId,Integer tableId) {
         try {
             BaseFormModuleVo baseFormModuleVo=new BaseFormModuleVo();
             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(baseDataDicId);

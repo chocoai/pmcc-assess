@@ -5,14 +5,22 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dto.input.project.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.SurveyCaseStudyDetailVo;
+import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +45,10 @@ public class SurveyCaseStudyDetailController {
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private FormConfigureService formConfigureService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     @RequestMapping(value = "/index", name = "案例调查管理页面", method = RequestMethod.GET)
     public ModelAndView index(Integer id, Integer planDetailsId, Integer projectId) {
@@ -46,12 +58,32 @@ public class SurveyCaseStudyDetailController {
         SurveyCaseStudyDetail surveyCaseStudyDetail = null;
         if (id != null && id > 0) {
             surveyCaseStudyDetail = surveyCaseStudyDetailService.getSingelDetail(id);
+            String moduleJsonString = formConfigureService.getModuleJsonString(surveyCaseStudyDetail.getDynamicFormId(), surveyCaseStudyDetail.getDynamicTableId());
+            modelAndView.addObject("JsonValue", moduleJsonString);
         } else {
             surveyCaseStudyDetail = new SurveyCaseStudyDetail();
             surveyCaseStudyDetail.setId(0);
         }
+
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
-        modelAndView.addObject("declareRecords", declareRecords);
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
+            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
+            List<Integer> correlationCardIds = Lists.newArrayList();
+            if (StringUtils.isNotBlank(surveyCaseStudyDetail.getCorrelationCard())) {
+                List<String> list = FormatUtils.transformString2List(surveyCaseStudyDetail.getCorrelationCard());
+                correlationCardIds = FormatUtils.ListStringToListInteger(list);
+            }
+            for (DeclareRecord declareRecord : declareRecords) {
+                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
+                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
+                surveyCorrelationCardVo.setId(declareRecord.getId());
+                surveyCorrelationCardVo.setName(declareRecord.getName());
+                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
+                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
+            }
+            modelAndView.addObject("surveyCorrelationCardVos", surveyCorrelationCardVos);
+        }
         modelAndView.addObject("caseType", caseType);
         modelAndView.addObject("caseInfoSource", caseInfoSource);
         modelAndView.addObject("surveyCaseStudyDetail", surveyCaseStudyDetail);

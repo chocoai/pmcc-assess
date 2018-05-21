@@ -2,8 +2,16 @@ package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
+import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
+import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +29,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private SurveyCaseStudyService surveyCaseStudyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -52,8 +66,15 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
+        SurveyCaseStudy surveyCaseStudy=new SurveyCaseStudy();
+        surveyCaseStudy.setProjectId(projectPlanDetails.getProjectId());
+        surveyCaseStudy.setPlanDetailsId(projectPlanDetails.getId());
+        surveyCaseStudy.setProcessInsId(processInsId);
+        surveyCaseStudy.setCreator(commonService.thisUserAccount());
+        surveyCaseStudy.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyLocaleExploreEvent.class.getSimpleName());//修改监听器
+        surveyCaseStudyService.save(surveyCaseStudy);
     }
 
     @Override

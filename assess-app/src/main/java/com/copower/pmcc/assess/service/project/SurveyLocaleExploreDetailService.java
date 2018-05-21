@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
@@ -24,10 +25,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -52,9 +56,6 @@ public class SurveyLocaleExploreDetailService {
     @Autowired
     private FormConfigureService formConfigureService;
 
-    private static String mapAPiUrl = "http://restapi.amap.com/v3/staticmap";
-    private static String mapWebServiceKey = "0d3f1144352d7e2b683e37dd3757156a";
-
     public SurveyLocaleExploreDetail getSingelDetail(Integer id) {
         return surveyLocaleExploreDetailDao.getSingelDetail(id);
     }
@@ -69,12 +70,17 @@ public class SurveyLocaleExploreDetailService {
         return vo;
     }
 
+    public List<SurveyLocaleExploreDetail> getDetailList(Integer planDetailsId) {
+        List<SurveyLocaleExploreDetail> surveyLocaleExploreDetailList = surveyLocaleExploreDetailDao.getSurveyLocaleExploreDetail(planDetailsId);
+        return surveyLocaleExploreDetailList;
+    }
+
+    @Transactional
     public boolean save(SurveyLocaleExploreDetailDto surveyLocaleExploreDetail) throws BusinessException {
         if (surveyLocaleExploreDetail == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (surveyLocaleExploreDetail.getId() != null && surveyLocaleExploreDetail.getId() > 0) {
-            Integer dynamicTableId = saveDynamicForm(surveyLocaleExploreDetail);
-            surveyLocaleExploreDetail.setDynamicTableId(dynamicTableId);
+            saveDynamicForm(surveyLocaleExploreDetail);
             return surveyLocaleExploreDetailDao.update(surveyLocaleExploreDetail);
         } else {
             Integer dynamicTableId = saveDynamicForm(surveyLocaleExploreDetail);
@@ -85,7 +91,7 @@ public class SurveyLocaleExploreDetailService {
             String localDir = baseAttachmentService.createBasePath(baseAttachmentService.getTempUploadPath(), DateUtils.formatNowToYMD(), DateUtils.formatNowToYMDHMS());
             String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
             String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
-                    mapAPiUrl, surveyLocaleExploreDetail.getSurveyLocaltion(), surveyLocaleExploreDetail.getSurveyLocaltion(), mapWebServiceKey);
+                    BaseConstant.MPA_API_URL, surveyLocaleExploreDetail.getSurveyLocaltion(), surveyLocaleExploreDetail.getSurveyLocaltion(), BaseConstant.MAP_WEB_SERVICE_KEY);
             try {
                 NetDownloadUtils.download(url, imageName, localDir);
             } catch (Exception e) {
@@ -118,6 +124,7 @@ public class SurveyLocaleExploreDetailService {
             BaseAttachment queryParam = new BaseAttachment();
             queryParam.setTableId(0);
             queryParam.setTableName("tb_survey_locale_explore_detail");
+            queryParam.setCreater(serviceComponent.getThisUser());
 
             BaseAttachment example = new BaseAttachment();
             example.setTableId(surveyLocaleExploreDetail.getId());
@@ -127,7 +134,8 @@ public class SurveyLocaleExploreDetailService {
         }
     }
 
-    private Integer saveDynamicForm(SurveyLocaleExploreDetailDto surveyLocaleExploreDetail) throws BusinessException {
+    public Integer saveDynamicForm(SurveyLocaleExploreDetailDto surveyLocaleExploreDetail) throws BusinessException {
+        if (surveyLocaleExploreDetail.getDynamicFormId() == null) return 0;
         FormConfigureDetailDto formConfigureDetailDto = new FormConfigureDetailDto();
         formConfigureDetailDto.setFormData(surveyLocaleExploreDetail.getDynamicFormData());
         formConfigureDetailDto.setFormModuleId(surveyLocaleExploreDetail.getDynamicFormId());

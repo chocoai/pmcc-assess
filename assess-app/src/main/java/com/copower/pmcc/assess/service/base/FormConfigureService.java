@@ -25,6 +25,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
+import com.copower.pmcc.erp.common.utils.GenerateDynamicFormUtil;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
@@ -53,13 +54,7 @@ public class FormConfigureService {
     @Autowired
     private BaseFormDao hrBaseFormDao;
     @Autowired
-    private BaseProcessDao hrProcessDao;
-    @Autowired
     private FormConfigureDao formConfigureDao;
-    @Autowired
-    private ErpRpcToolsService erpRpcToolsService;
-    @Autowired
-    private BaseProcessService hrBaseProcessService;
     @Autowired
     private ServiceComponent serviceComponent;
     @Autowired
@@ -420,8 +415,8 @@ public class FormConfigureService {
                 }
                 transform.add(dynamicFormField);
             }
-
-            String s = erpRpcToolsService.buildDynamicForm(transform, readOnly, mapToJsonString(map));
+            GenerateDynamicFormUtil dynamic = new GenerateDynamicFormUtil();
+            String s = dynamic.buildDynamicForm(transform, readOnly, mapToJsonString(map));
             return s;
         }
         return null;
@@ -463,17 +458,7 @@ public class FormConfigureService {
         return fieldVos;
     }
 
-    /**
-     * 获取字段json数据
-     * @param formModuleId
-     * @param tableId
-     * @param tableName
-     * @return
-     */
-    public String getFieldJsonString(Integer formModuleId,Integer tableId,String tableName){
 
-        return "";
-    }
 
     /**
      * 将json字段的数据提取到json字段中
@@ -991,5 +976,17 @@ public class FormConfigureService {
             }
         }
         return map;
+    }
+
+    /**
+     * 获取module的json字符串
+     * @param moduleId
+     * @param tableId
+     * @return
+     */
+    public String getModuleJsonString(Integer moduleId,Integer tableId){
+        BaseFormModule baseFormModule = hrBaseFormDao.getBaseFormModule(moduleId);
+        Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
+        return mapToJsonString(objectMap);
     }
 }

@@ -49,13 +49,13 @@
         });
 
         positionPicker.on('success', function (positionResult) {
-            if(window.top.positionPickerSuccess){
-                window.top.positionPickerSuccess(positionResult);
+            if(window.parent.positionPickerSuccess){
+                window.parent.positionPickerSuccess(positionResult);
             }
         });
         positionPicker.on('fail', function (positionResult) {
-            if(window.top.positionPickerFail){
-                window.top.positionPickerFail(positionResult);
+            if(window.parent.positionPickerFail){
+                window.parent.positionPickerFail(positionResult);
             }
         });
         positionPicker.start();
