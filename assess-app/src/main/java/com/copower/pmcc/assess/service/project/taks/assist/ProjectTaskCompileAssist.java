@@ -25,14 +25,14 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileIndex", "", 0, "0", "");
         projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);//获取数据字典
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
         projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
         surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
@@ -40,7 +40,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
         projectCheckContentService.getBaseDataDicList(modelAndView,projectPlanDetails);
         surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView,processInsId);
         return modelAndView;
@@ -53,7 +53,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 
