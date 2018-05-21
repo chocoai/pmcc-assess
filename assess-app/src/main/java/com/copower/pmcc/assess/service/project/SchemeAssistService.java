@@ -55,8 +55,8 @@ public class SchemeAssistService {
         return dataBestUseDescriptionService.dataBestUseDescriptionList();
     }
 
-    public List<EvaluationThinkingField> schemeassistservice(Integer id){
-        return thinkingFieldDao.schemeassistservice(id);
+    public List<EvaluationThinkingField> schemeassistserviceThinkFilds(Integer id,Integer type){
+        return thinkingFieldDao.schemeassistservice(id,type);
     }
 
     public EvaluationThinkingDto get(Integer id){

@@ -342,9 +342,12 @@
                                     </div>
                                 </div>
 
-                                <div id="evaluationThinkTempleGroup"></div>
 
 
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="evaluationThinkTempleGroup" class="panel-body">
                             </div>
                         </div>
                     </div>
@@ -394,10 +397,15 @@
                                     </div>
                                 </div>
 
-                                <div id="evaluationMethodTempleGroupFields"></div>
                             </div>
                         </div>
+
+                        <div class="col-md-12">
+                                <div id="evaluationMethodTempleGroupFields" class="panel-body">
+                                </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" onclick="divTemplateClose()" class="btn btn-default">
@@ -893,7 +901,6 @@
                 var templatePanel = document.getElementById("templatePanel");
                 for (var i=0;i<result.length;i++){
                     var data = result[i];
-                    console.log(data);
                     var divElement = document.createElement("div");
                     divElement.setAttribute("class","form-group");
 
@@ -942,6 +949,7 @@
     }
     //方法字段加载
     function methodFilds(type) {
+        $("#evaluationMethodTempleGroupFields div").remove();
         var templateID = document.getElementById("templateID").value;
         //加载方法字段
         $.ajax({
@@ -955,6 +963,9 @@
             success: function (result) {
                 var len = result.length;
                 var num = Math.round(len / 4);
+                console.log(result);
+                console.log(num);
+                console.log(len);
                 var evaluationMethodTempleGroup = document.getElementById("evaluationMethodTempleGroupFields");
                 if (len <= 4){
                     var divElement = document.createElement("div");
@@ -981,7 +992,7 @@
                         divValid.appendChild(divCol);
                         divElement.appendChild(divValid);
                     }
-                    evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
+                    evaluationMethodTempleGroup.appendChild(divElement);
 
                 }else {
                     for (var i = 0;i < num;i++){
@@ -1009,34 +1020,34 @@
                             divValid.appendChild(divCol);
                             divElement.appendChild(divValid);
                         }
-                        evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
+                        evaluationMethodTempleGroup.appendChild(divElement);
                     }
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+                    for (var i = num *4;i<len;i++){//剩余的 取模剩余的
+                        var data = result[i];
+                        var divValid = document.createElement("div");
+                        divValid.setAttribute("class","x-valid");
+
+                        var labelElement = document.createElement("label");
+                        labelElement.setAttribute("class","col-sm-1");
+                        labelElement.appendChild(document.createTextNode("    "+data.name));
+
+                        var divCol = document.createElement("div");
+                        divCol.setAttribute("class","col-sm-2");
+                        var inputElement = document.createElement("input");
+                        inputElement.setAttribute("type","text");
+                        inputElement.setAttribute("name","methodType");
+                        inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("placeholder","替换字段");
+                        divCol.appendChild(inputElement);
+
+                        divValid.appendChild(labelElement);
+                        divValid.appendChild(divCol);
+                        divElement.appendChild(divValid);
+                    }
+                    evaluationMethodTempleGroup.appendChild(divElement);
                 }
-                var divElement = document.createElement("div");
-                divElement.setAttribute("class","form-group");
-                for (var i = num *4;i<len;i++){//剩余的 取模剩余的
-                    var data = result[i];
-                    var divValid = document.createElement("div");
-                    divValid.setAttribute("class","x-valid");
-
-                    var labelElement = document.createElement("label");
-                    labelElement.setAttribute("class","col-sm-1");
-                    labelElement.appendChild(document.createTextNode("    "+data.name));
-
-                    var divCol = document.createElement("div");
-                    divCol.setAttribute("class","col-sm-2");
-                    var inputElement = document.createElement("input");
-                    inputElement.setAttribute("type","text");
-                    inputElement.setAttribute("name","methodType");
-                    inputElement.setAttribute("class","form-control");
-                    inputElement.setAttribute("placeholder","替换字段");
-                    divCol.appendChild(inputElement);
-
-                    divValid.appendChild(labelElement);
-                    divValid.appendChild(divCol);
-                    divElement.appendChild(divValid);
-                }
-                evaluationMethodTempleGroup.parentNode.insertBefore(divElement,evaluationMethodTempleGroup);
             },
             error: function (result) {
                 alert("调用服务端方法失败，失败原因:" + result);
@@ -1076,12 +1087,11 @@
                 url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
                 data: {
                     id: selected,
-                    type:1
+                    flag:1
                 },
                 type: "post",
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
                     var evaluationThinkTemple = document.getElementById("evaluationThinkTemple");
                     var data = result.applicableReason+"";
                     if (data!=null && data!='' && data!=""){
@@ -1096,20 +1106,20 @@
 
         }
     });
-
     function writeThinkFieldS(id) {
         $.ajax({// list
             url: "${pageContext.request.contextPath}/projectplanschemeassist/evaluationThink/think",
             data: {
                 id: id,
-                type:2
+                flag:2,
+                type:0
             },
             type: "post",
             dataType: "json",
             success: function (result) {
-                console.log(result);
                 var len = result.length;
                 var num = Math.round(len / 4);
+                $("#evaluationThinkTempleGroup div").remove();
                 var evaluationThinkTempleGroup = document.getElementById("evaluationThinkTempleGroup");
                 if (len <= 4){
                     var divElement = document.createElement("div");
@@ -1136,14 +1146,7 @@
                         divValid.appendChild(divCol);
                         divElement.appendChild(divValid);
                     }
-                    var evaluationThinkTempleGroupX = document.getElementById("evaluationThinkTempleGroupX").getElementsByTagName("div");
-                    for(var k = 0;k<evaluationThinkTempleGroupX.length;k++){
-                        var id = evaluationThinkTempleGroupX[k].getAttribute("id");
-                        if (id!="evaluationThinkTempleGroup1" && id!="evaluationThinkTempleGroup2" && id !="evaluationThinkTempleGroup"){
-
-                        }
-                    }
-                    evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
+                    evaluationThinkTempleGroup.appendChild(divElement);
 
                 }else {
                     for (var i = 0;i < num;i++){
@@ -1171,34 +1174,34 @@
                             divValid.appendChild(divCol);
                             divElement.appendChild(divValid);
                         }
-                        evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
+                        evaluationThinkTempleGroup.appendChild(divElement);
                     }
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class","form-group");
+                    for (var i = num *4;i<len;i++){//剩余的 取模剩余的
+                        var data = result[i];
+                        var divValid = document.createElement("div");
+                        divValid.setAttribute("class","x-valid");
+
+                        var labelElement = document.createElement("label");
+                        labelElement.setAttribute("class","col-sm-1");
+                        labelElement.appendChild(document.createTextNode("    "+data.name));
+
+                        var divCol = document.createElement("div");
+                        divCol.setAttribute("class","col-sm-2");
+                        var inputElement = document.createElement("input");
+                        inputElement.setAttribute("type","text");
+                        inputElement.setAttribute("name","thinkType");
+                        inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("placeholder","替换字段");
+                        divCol.appendChild(inputElement);
+
+                        divValid.appendChild(labelElement);
+                        divValid.appendChild(divCol);
+                        divElement.appendChild(divValid);
+                    }
+                    evaluationThinkTempleGroup.appendChild(divElement);
                 }
-                var divElement = document.createElement("div");
-                divElement.setAttribute("class","form-group");
-                for (var i = num *4;i<len;i++){//剩余的 取模剩余的
-                    var data = result[i];
-                    var divValid = document.createElement("div");
-                    divValid.setAttribute("class","x-valid");
-
-                    var labelElement = document.createElement("label");
-                    labelElement.setAttribute("class","col-sm-1");
-                    labelElement.appendChild(document.createTextNode("    "+data.name));
-
-                    var divCol = document.createElement("div");
-                    divCol.setAttribute("class","col-sm-2");
-                    var inputElement = document.createElement("input");
-                    inputElement.setAttribute("type","text");
-                    inputElement.setAttribute("name","thinkType");
-                    inputElement.setAttribute("class","form-control");
-                    inputElement.setAttribute("placeholder","替换字段");
-                    divCol.appendChild(inputElement);
-
-                    divValid.appendChild(labelElement);
-                    divValid.appendChild(divCol);
-                    divElement.appendChild(divValid);
-                }
-                evaluationThinkTempleGroup.parentNode.insertBefore(divElement,evaluationThinkTempleGroup);
             },
             error: function (result) {
                 alert("调用服务端方法失败，失败原因:" + result);
