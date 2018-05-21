@@ -29,10 +29,10 @@ public class EvaluationThinkingFieldDao {
         return change(mapper.selectByPrimaryKey(id));
     }
 
-    public List<EvaluationThinkingField> schemeassistservice(Integer id){
+    public List<EvaluationThinkingField> schemeassistservice(Integer id,Integer type){
         EvaluationThinkingDto dto = thinkingDao.get(id);
         EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();
-        example.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(dto.getId());
+        example.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(dto.getId()).andTypeEqualTo(type);
         return mapper.selectByExample(example);
     }
 
