@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreExample;
 import com.copower.pmcc.assess.dal.mapper.SurveyLocaleExploreMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,13 +32,14 @@ public class SurveyLocaleExploreDao {
         return i > 0;
     }
 
-    public List<SurveyLocaleExplore> getSurveyLocaleExplore(String processInsId) {
+    public SurveyLocaleExplore getSurveyLocaleExplore(String processInsId) {
         SurveyLocaleExploreExample example = new SurveyLocaleExploreExample();
-        if (processInsId != null) {
-            example.createCriteria().andProcessInsIdEqualTo(processInsId);
-        }
+        example.createCriteria().andProcessInsIdEqualTo(processInsId);
         example.setOrderByClause(" id ASC");
         List<SurveyLocaleExplore> surveyLocaleExplores = surveyLocaleExploreMapper.selectByExample(example);
-        return surveyLocaleExplores;
+        if(CollectionUtils.isNotEmpty(surveyLocaleExplores)){
+            return surveyLocaleExplores.get(0);
+        }
+        return null;
     }
 }

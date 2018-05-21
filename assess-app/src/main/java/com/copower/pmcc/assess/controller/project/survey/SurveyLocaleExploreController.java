@@ -2,15 +2,22 @@ package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
+import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +41,12 @@ public class SurveyLocaleExploreController {
     private SurveyLocaleExploreDetailService surveyLocaleExploreDetailService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private FormConfigureService formConfigureService;
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得现场查勘详情", method = RequestMethod.GET)
@@ -48,29 +61,46 @@ public class SurveyLocaleExploreController {
         SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
         if (id != null && id > 0) {
             surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);
+            String moduleJsonString = formConfigureService.getModuleJsonString(surveyLocaleExploreDetail.getDynamicFormId(), surveyLocaleExploreDetail.getDynamicTableId());
+            modelAndView.addObject("JsonValue", moduleJsonString);
         } else {
             surveyLocaleExploreDetail = new SurveyLocaleExploreDetail();
             surveyLocaleExploreDetail.setId(0);
         }
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
-        modelAndView.addObject("declareRecords", declareRecords);
-        modelAndView.addObject("planDetailsId", planDetailsId);
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
+            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
+            List<Integer> correlationCardIds = Lists.newArrayList();
+            if (StringUtils.isNotBlank(surveyLocaleExploreDetail.getCorrelationCard())) {
+                List<String> list = FormatUtils.transformString2List(surveyLocaleExploreDetail.getCorrelationCard());
+                correlationCardIds = FormatUtils.ListStringToListInteger(list);
+            }
+            for (DeclareRecord declareRecord : declareRecords) {
+                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
+                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
+                surveyCorrelationCardVo.setId(declareRecord.getId());
+                surveyCorrelationCardVo.setName(declareRecord.getName());
+                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
+                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
+            }
+            modelAndView.addObject("surveyCorrelationCardVos", surveyCorrelationCardVos);
+        }
+
+        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("surveyLocaleExploreDetail", surveyLocaleExploreDetail);
         return modelAndView;
     }
 
-    @RequestMapping(value="/detailsIndex", name="详情页面",method = RequestMethod.GET)
-    public ModelAndView detailIndex(Integer id){
+    @RequestMapping(value = "/detailsIndex", name = "详情页面", method = RequestMethod.GET)
+    public ModelAndView detailIndex(Integer id) {
         ModelAndView modelAndView = controllerComponent.baseModelAndView("/task/explore/localeExploreDetails");
         SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
         if (id != null && id > 0) {
             surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);
+            String moduleJsonString = formConfigureService.getModuleJsonString(surveyLocaleExploreDetail.getDynamicFormId(), surveyLocaleExploreDetail.getDynamicTableId());
+            modelAndView.addObject("JsonValue", moduleJsonString);
         }
-//        List<SurveyCaseStudyDetailVo> surveyCaseStudyDetailVo = surveyCaseStudyDetailService.getName(id);
-//        SurveyCaseStudyDetailVo surveyCaseStudyDetailName = surveyCaseStudyDetailVo.get(0);
-//
-//        modelAndView.addObject("surveyCaseStudyDetail", surveyCaseStudyDetail);
-//        modelAndView.addObject("surveyCaseStudyDetailName",surveyCaseStudyDetailName);
         modelAndView.addObject("surveyLocaleExploreDetail", surveyLocaleExploreDetail);
         return modelAndView;
     }

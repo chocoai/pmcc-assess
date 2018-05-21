@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanDetailsMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -54,6 +55,15 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByDeclareId(List<Integer> declareRecordIds, Integer projectPhaseId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andDeclareRecordIdIn(declareRecordIds);
+        if (projectPhaseId != null) {
+            criteria.andProjectPhaseIdEqualTo(projectPhaseId);
+        }
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
 
     public ProjectPlanDetails getProjectPlanDetailsItemByProcessInsId(String processInsId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
@@ -117,7 +127,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectIdAndName(Integer projectId, String name,Integer workStageId){
+    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectIdAndName(Integer projectId, String name, Integer workStageId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andProjectPhaseNameEqualTo(name).andProjectWorkStageIdEqualTo(workStageId);
         return projectPlanDetailsMapper.selectByExample(example);

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDetailDao;
 import com.copower.pmcc.assess.dal.entity.*;
@@ -22,6 +23,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -55,9 +57,6 @@ public class SurveyCaseStudyDetailService {
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
-
-    private static String mapAPiUrl = "http://restapi.amap.com/v3/staticmap";
-    private static String mapWebServiceKey = "0d3f1144352d7e2b683e37dd3757156a";
 
 
     public BootstrapTableVo getList(Integer planDetailsId) {
@@ -138,7 +137,7 @@ public class SurveyCaseStudyDetailService {
             String localDir = baseAttachmentService.createBasePath(baseAttachmentService.getTempUploadPath(), DateUtils.formatNowToYMD(), DateUtils.formatNowToYMDHMS());
             String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
             String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
-                    mapAPiUrl, surveyCaseStudyDetailDto.getCaseLocaltion(), surveyCaseStudyDetailDto.getCaseLocaltion(), mapWebServiceKey);
+                    BaseConstant.MPA_API_URL, surveyCaseStudyDetailDto.getCaseLocaltion(), surveyCaseStudyDetailDto.getCaseLocaltion(), BaseConstant.MAP_WEB_SERVICE_KEY);
             try {
                 NetDownloadUtils.download(url, imageName, localDir);
             } catch (Exception e) {
@@ -171,6 +170,7 @@ public class SurveyCaseStudyDetailService {
             BaseAttachment queryParam = new BaseAttachment();
             queryParam.setTableId(0);
             queryParam.setTableName("tb_survey_case_study_detail");
+            queryParam.setCreater(serviceComponent.getThisUser());
 
             BaseAttachment example = new BaseAttachment();
             example.setTableId(surveyCaseStudyDetailDto.getId());
@@ -181,12 +181,13 @@ public class SurveyCaseStudyDetailService {
     }
 
     private Integer saveDynamicForm(SurveyCaseStudyDetailDto surveyCaseStudyDetailDto) throws BusinessException {
-        FormConfigureDetailDto formConfigureDetailDto = new FormConfigureDetailDto();
-        formConfigureDetailDto.setFormData(surveyCaseStudyDetailDto.getDynamicFormData());
-        formConfigureDetailDto.setFormModuleId(surveyCaseStudyDetailDto.getDynamicFormId());
-        formConfigureDetailDto.setTableId(surveyCaseStudyDetailDto.getDynamicTableId());
-        formConfigureDetailDto.setTableName(surveyCaseStudyDetailDto.getDynamicTableName());
-        return formConfigureService.saveSimpleData(formConfigureDetailDto);
+        if (surveyCaseStudyDetailDto.getDynamicFormId() == null) return 0;
+        FormConfigureDetailDto configureDetailDto = new FormConfigureDetailDto();
+        configureDetailDto.setFormData(surveyCaseStudyDetailDto.getDynamicFormData());
+        configureDetailDto.setFormModuleId(surveyCaseStudyDetailDto.getDynamicFormId());
+        configureDetailDto.setTableId(surveyCaseStudyDetailDto.getDynamicTableId());
+        configureDetailDto.setTableName(surveyCaseStudyDetailDto.getDynamicTableName());
+        return formConfigureService.saveSimpleData(configureDetailDto);
     }
 
     public boolean delete(Integer id) {

@@ -25,18 +25,9 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    相关权证
-                                </label>
-                                <div class="col-sm-2">
-                                            <label class="form-control">${surveyCaseStudyDetailName.correlationCardName}</label>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
                                     案例类型
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetailName.caseTypeName}</label>
                                 </div>
                             </div>
@@ -45,19 +36,18 @@
                                 <label class="col-sm-1 control-label">
                                     信息来源
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetailName.informationSourceName}</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     楼盘名称
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.houseName}</label>
                                 </div>
                             </div>
@@ -66,7 +56,7 @@
                                 <label class="col-sm-1 control-label">
                                     单价
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.price}</label>
                                 </div>
                             </div>
@@ -75,7 +65,7 @@
                                 <label class="col-sm-1 control-label">
                                     交易情况
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.dealCaondition}</label>
                                 </div>
                             </div>
@@ -88,7 +78,7 @@
                                 <label class="col-sm-1 control-label">
                                     交易时间
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control"><fmt:formatDate value="${surveyCaseStudyDetail.dealTime}" pattern="yyyy-MM-dd"/></label>
                                 </div>
                             </div>
@@ -97,7 +87,7 @@
                                 <label class="col-sm-1 control-label">
                                     付款方式
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.paymentMethod}</label>
                                 </div>
                             </div>
@@ -106,7 +96,7 @@
                                 <label class="col-sm-1 control-label">
                                     联系人
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.linkman}</label>
                                 </div>
                             </div>
@@ -118,7 +108,7 @@
                                 <label class="col-sm-1 control-label">
                                     联系方式
                                 </label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <label class="form-control">${surveyCaseStudyDetail.contactWay}</label>
                                 </div>
                             </div>

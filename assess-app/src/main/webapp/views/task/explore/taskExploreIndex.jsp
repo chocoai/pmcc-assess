@@ -186,7 +186,7 @@
     }
 
     function editData(id) {
-        window.open("${pageContext.request.contextPath}/surveyLocale/index?projectId=${projectId}&id=" + id);
+        window.open("${pageContext.request.contextPath}/surveyLocale/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}&id=" + id);
     }
 
     function delData(id, tbId) {

@@ -11,6 +11,7 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
+            <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
                     <h2>查勘明细</h2>
@@ -36,14 +37,15 @@
                         <input type="hidden" name="id" value="${surveyLocaleExploreDetail.id}">
                         <input type="hidden" name="dynamicFormId" value="${surveyLocaleExploreDetail.dynamicFormId}">
                         <input type="hidden" name="dynamicTableId" value="${surveyLocaleExploreDetail.dynamicTableId}">
-                        <input type="hidden" name="dynamicTableName" value="${surveyLocaleExploreDetail.dynamicTableName}">
-                        <input type="hidden" name="planDetailsId" value="${planDetailsId}">
+                        <input type="hidden" name="dynamicTableName"
+                               value="${surveyLocaleExploreDetail.dynamicTableName}">
+                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" id="surveyLocaltion" name="surveyLocaltion"
                                value="${surveyLocaleExploreDetail.surveyLocaltion}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="查勘人"
                                            id="surveyPeople" name="surveyPeople" required
                                            value="${surveyLocaleExploreDetail.surveyPeople}"
@@ -52,7 +54,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input placeholder="查勘时间" id="surveyTime" name="surveyTime"
                                            data-date-format="yyyy-mm-dd" required
                                            value="<fmt:formatDate value="${surveyLocaleExploreDetail.surveyTime}"   pattern="yyyy-MM-dd"/>"
@@ -61,7 +63,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">领勘人<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="领勘人" required
                                            id="ledLuminousPeople" name="ledLuminousPeople"
                                            value="${surveyLocaleExploreDetail.ledLuminousPeople}"
@@ -70,12 +72,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">相关权证<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
-                                    <c:forEach items="${declareRecords}" var="item">
-                                        <input type="checkbox" name="correlationCard" value="${item.id}">${item.name}
+                                <label class="col-sm-1 control-label">相关权证</label>
+                                <div class="col-sm-11">
+                                    <c:forEach items="${surveyCorrelationCardVos}" var="item">
+                                        <span class="checkbox-inline">
+                                            <input type="checkbox" ${item.bisChecked?"checked=\"checked\"":""}
+                                                   id="correlationCard_${item.id}"
+                                                   name="correlationCard" value="${item.id}">
+                                        <label for="correlationCard_${item.id}">${item.name}</label></span>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -83,7 +88,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50" placeholder="楼盘名称"
                                            id="houseName" name="houseName" required
                                            value="${surveyLocaleExploreDetail.houseName}"
@@ -164,10 +169,16 @@
     </div>
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+<script src='/assets/js/comm/pmcc.js'></script>
+<script src='/assets/js/comm/erp-footer.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
+    $(function () {
+        if("${surveyLocaleExploreDetail.dynamicFormId}"!="0"){
+            showDynamicForm();
+        }
+    })
 
     //保存数据
     function saveData() {
@@ -209,7 +220,7 @@
             onSelected: function (nodes) {
                 if (nodes) {
                     var node = nodes[0];
-                    var form=$("#frm_survey");
+                    var form = $("#frm_survey");
                     $.ajax({
                         url: "${pageContext.request.contextPath}/formConfigure/getDataDicFormInfo",
                         type: "post",
@@ -217,7 +228,7 @@
                         data: {baseDataDicId: node.id},
                         success: function (result) {
                             if (result.ret) {
-                                form.find('[name=dynamicFormId]').val(node.id);
+                                form.find('[name=dynamicFormId]').val(result.data.id);
                                 form.find('[name=dynamicTableId]').val(result.data.tableId);
                                 form.find('[name=dynamicTableName]').val(result.data.tableName);
                                 FormConfigureUtils.getDynamicFormHtml({
@@ -234,6 +245,18 @@
                 }
             }
         })
+    }
+
+    //显示动态表单数据
+    function showDynamicForm() {
+        FormConfigureUtils.getDynamicFormHtml({
+            formModuleId: $("#frm_survey").find('[name=dynamicFormId]').val(),
+            readOnly: false,
+            jsonValue: $("#JsonValue").val(),
+            success: function (html) {
+                $("#frm_dynamic_content").append(html).closest('.x_panel').show();
+            }
+        });
     }
 
     //map选址成功回调
