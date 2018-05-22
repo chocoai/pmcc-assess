@@ -30,6 +30,8 @@ public class SchemeJudgeObject {
 
     private Date gmtModified;
 
+    private String groupId;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +134,13 @@ public class SchemeJudgeObject {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId == null ? null : groupId.trim();
     }
 }

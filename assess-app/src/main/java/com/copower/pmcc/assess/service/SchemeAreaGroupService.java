@@ -32,6 +32,16 @@ public class SchemeAreaGroupService {
     @Autowired
     private SchemeAreaGroupDao dao;
 
+
+    /**
+     * 由于add () 失效不能返回id 因此....
+     * @param dto
+     * @return
+     */
+    public int getID(SchemeAreaGroupDto dto){
+        return dao.getID(dto);
+    }
+
     @Transactional
     public int add(SchemeAreaGroupDto dto) {
         return dao.add(dto);
@@ -86,4 +96,5 @@ public class SchemeAreaGroupService {
         BeanUtils.copyProperties(dto, vo);
         return vo;
     }
+
 }

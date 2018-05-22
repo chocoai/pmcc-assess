@@ -39,24 +39,22 @@ public class SchemeAreaGroupDao {
         return schemeAreaGroupDtoList;
     }
 
+
     public int add(SchemeAreaGroupDto dto){
-        mapper.insert(change(dto));
-        return dto.getId();
+        SchemeAreaGroup schemeAreaGroup = change(dto);
+        mapper.insert(schemeAreaGroup);
+        return schemeAreaGroup.getId();
+    }
+
+    public int getID(SchemeAreaGroupDto dto){
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andIdIsNotNull().andCityEqualTo(dto.getCity()).andDistrictEqualTo(dto.getDistrict()).andProvinceEqualTo(dto.getProvince())
+                .andGroupIdEqualTo(dto.getGroupId()).andGmtCreatedEqualTo(dto.getGmtCreated());
+        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
+        return schemeAreaGroups.get(0).getId();
     }
 
     public boolean addEspecially(SchemeAreaGroupDto dto){
-        Integer projectId = dto.getProjectId();
-        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        //这里的逻辑是省+市+projectID 以及省+市+区县+projectID
-        if (!StringUtils.isEmpty(dto.getDistrict())){
-            example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId).
-                    andCityEqualTo(dto.getCity()).andProvinceEqualTo(dto.getProvince()).andDistrictEqualTo(dto.getDistrict());
-        }else {
-            example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId).
-                    andCityEqualTo(dto.getCity()).andProvinceEqualTo(dto.getProvince());
-        }
-//        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
-        //初始化
         mapper.insert(change(dto));
         return true;
     }

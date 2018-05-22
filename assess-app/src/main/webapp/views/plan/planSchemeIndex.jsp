@@ -224,18 +224,18 @@
                         <div class="col-md-12">
                             <div class="panel-body">
 
-
+                                <input type="text" name="judgeObjectId" id="judgeObjectIdMethod" placeholder="估价对象在方法中的id">
+                                <input type="text" name="methodType" id="methodTypeID" >
                                 <c:forEach items="${dataEvaluationMethod}" var="item">
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-3 control-label" >
                                                     ${item.name}
-                                                <input type="hidden" value="${item.id}"   class="form-control" >
                                             </label>
 
                                             <label class="col-sm-9 control-label" >
-                                                适用<input type="radio" name="apply" onclick="applyMethodA('${item.id}','${item.name}')" >
-                                                不适用<input type="radio" name="apply" onclick="applyMethodB('${item.id}','${item.name}')" >
+                                                适用<input type="radio" name="bisApplicable" value="1"  onclick="applyMethodA('${item.id}','${item.name}')" >
+                                                不适用<input type="radio" name="bisApplicable" value="0"  onclick="applyMethodB('${item.id}','${item.name}')" >
                                             </label>
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@
                                                 评估思路
                                             </label>
                                             <label class="col-sm-9 control-label">
-                                                <label class="btn btn-success" onclick="evaluationthinking()">思路选择</label>
+                                                <label class="btn btn-success" onclick="evaluationthinking(${item.id})">思路选择</label>
                                             </label>
                                         </div>
                                     </div>
@@ -290,7 +290,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMethod()">
                         保存
                     </button>
                 </div>
@@ -330,6 +330,7 @@
                                 </div>
 
                                 <div class="form-group" id="evaluationThinkTempleGroup2">
+                                    <input type="text" name="methodID" id="thinkMethodID">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             模板
@@ -391,7 +392,7 @@
                                             方法数据
                                         </label>
                                         <div class="col-sm-9">
-                                            <textarea class="form-control" placeholder="模板显示数据" id="evaluationMethodTemple">
+                                            <textarea class="form-control" placeholder="模板显示数据" name="evaluationMethodTemple" id="evaluationMethodTemple">
 
                                             </textarea>
                                         </div>
@@ -715,6 +716,7 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
+
     //初始化
     $(function () {
         <c:forEach items="${dataEvaluationMethod}" var="item">
@@ -731,6 +733,7 @@
             document.getElementById("templateShow").innerText = "${item.name}";
             var id = "${item.id}";
             $("#frmTemplate").clearAll();
+            $("#methodTypeID").val(id);
             evaluationmethodSelect(id,0);
             $("#divTemplate").modal();//显示
         }
@@ -739,6 +742,7 @@
             document.getElementById("templateShow").innerText = "${item.name}";
             var id = "${item.id}";
             $("#frmTemplate").clearAll();
+            $("#methodTypeID").val(id);
             evaluationmethodSelect(id,1);
             $("#divTemplate").modal();//显示
         }
@@ -762,6 +766,7 @@
         var data = formParams("evaluationObject"+id);//项目信息
         console.log(data);
     }
+
     // table list 数据列表显示
     <c:forEach items="${dataList}" var="item">
         document.getElementById("contentList"+${item.id}).style.display = "none";
@@ -791,7 +796,7 @@
                             dataIndex.setAttribute("id","dataIndex"+data.id);
 
                             var dataName = document.createElement("td");
-                            dataName.appendChild(document.createTextNode(data.recordName));
+                            dataName.appendChild(document.createTextNode(data.name));
                             dataName.setAttribute("id","dataName"+data.id);
 
                             var dataCreator = document.createElement("td");
@@ -878,9 +883,8 @@
         }
     }
 
-    //方法 save
+    //评估方法 save 页面处理数据
     function evaluationmethodSave() {
-        var frmTemplate = formParams("frmTemplate");
         var templateID = document.getElementById("templateID").value;
         var methodFlag = document.getElementById("methodFlag").value;
         if (templateID!=null && templateID!=''){
@@ -893,7 +897,34 @@
         document.getElementById("divTemplate").style.display = "none";
     }
 
-    //方法选择
+    //评估方法 确定后保存 相当于总保存
+    function saveMethod() {
+        var data = formParams("frmMethod");
+        var evaluationMethodTemple = $("#evaluationMethodTemple").val();
+        //judgeObjectId
+        console.log(evaluationMethodTemple);
+        console.log(data);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/judgeFunctionSave",
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Alert("提交数据成功!", 1, null, function () {
+                    if (result.ret) {
+                        $("#divBoxMethod").hide();
+                    } else {
+                        alert("保存失败:" + result.errmsg);
+                    }
+                });
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
+    //评估方法选择
     function evaluationmethodSelect(id,type) {
         document.getElementById("templateID").value = id;
         document.getElementById("methodFlag").value = type;
@@ -954,7 +985,8 @@
             }
         });
     }
-    //方法字段加载
+
+    //评估方法字段加载
     function methodFilds(type) {
         $("#evaluationMethodTempleGroupFields div").remove();
         var templateID = document.getElementById("templateID").value;
@@ -1065,31 +1097,65 @@
             }
         });
     }
-    //方法字段替换
+
+    //评估方法字段替换
     function methodFildReplace(id1,id2,name) {
         var value = $(id2).val();
         var regex = '/\{' +name +'\}/g';
-        console.log(regex);
-        var x1 = $(id1).val().replace(eval(regex),value);
-        $(id1).val(x1);
+        if (value!=null && value!=''){
+            var x1 = $(id1).val().replace(eval(regex),value);
+            $(id1).val(x1);
+        }
     }
+
+    //评估方法模板字段 关闭
+    function divTemplateClose() {
+        $("#divTemplate").hide();
+    }
+
     //评估方法 视图
     function evaluationmethod(id) {
+        //估价对象 id
         $("#frmMethod").clearAll();
+        $("#judgeObjectIdMethod").val(id);
         $("#divBoxMethod").modal();//显示
     }
 
     //评估思路 视图
-    function evaluationthinking() {
+    function evaluationthinking(id) {
         $("#frmThink").clearAll();
+        $("#thinkMethodID").val(id);
         $("#divBoxThink").modal();//显示
     }
+
 
     //评估思路 保存
     function evaluationthinkingSave() {
         var evaluationThinkTemple = $("#evaluationThinkTemple").val();
-        alert(evaluationThinkTemple);
-        $("#divBoxThink").hide();
+        var thinkMethodID = $("#thinkMethodID").val();
+        var data = formParams("frmThink");
+        data.thinking = evaluationThinkTemple;
+        data.methodType = thinkMethodID;
+        data.judgeObjectId = $("#judgeObjectIdMethod").val();
+        console.log(data);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/judgeFunctionSave",
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Alert("提交数据成功!", 1, null, function () {
+                    if (result.ret) {
+                        $("#divBoxThink").hide();
+                    } else {
+                        alert("保存失败:" + result.errmsg);
+                    }
+                });
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
     }
 
     //评估思路 关闭
@@ -1101,14 +1167,12 @@
     function thinkFildReplace(id1,id2,name) {
         var value = $(id2).val();
         var regex = '/\{' +name +'\}/g';
-        var x1 = $(id1).val().replace(eval(regex),value);
-        $(id1).val(x1);
+        if (value!=null && value!=''){
+            var x1 = $(id1).val().replace(eval(regex),value);
+            $(id1).val(x1);
+        }
     }
 
-    //评估方法模板字段 关闭
-    function divTemplateClose() {
-        $("#divTemplate").hide();
-    }
     //评估思路  选择
     $("#EvaluationThinkSelect").change(function () {
         var selected =$(this).children('option:selected').val();
@@ -1168,7 +1232,6 @@
                         divCol.setAttribute("class","col-sm-2");
                         var inputElement = document.createElement("input");
                         inputElement.setAttribute("type","text");
-                        inputElement.setAttribute("name","thinkType");
                         inputElement.setAttribute("id","thinkTypeID"+data.id);
                         inputElement.setAttribute("class","form-control");
                         inputElement.setAttribute("onblur","thinkFildReplace(evaluationThinkTemple,thinkTypeID"+data.id+",'"+data.name+"')");
@@ -1198,8 +1261,9 @@
                             divCol.setAttribute("class","col-sm-2");
                             var inputElement = document.createElement("input");
                             inputElement.setAttribute("type","text");
-                            inputElement.setAttribute("name","thinkType");
+                            inputElement.setAttribute("id","thinkTypeID"+data.id);
                             inputElement.setAttribute("class","form-control");
+                            inputElement.setAttribute("onblur","thinkFildReplace(evaluationThinkTemple,thinkTypeID"+data.id+",'"+data.name+"')");
                             inputElement.setAttribute("placeholder","替换字段");
                             divCol.appendChild(inputElement);
 
@@ -1224,8 +1288,9 @@
                         divCol.setAttribute("class","col-sm-2");
                         var inputElement = document.createElement("input");
                         inputElement.setAttribute("type","text");
-                        inputElement.setAttribute("name","thinkType");
+                        inputElement.setAttribute("id","thinkTypeID"+data.id);
                         inputElement.setAttribute("class","form-control");
+                        inputElement.setAttribute("onblur","thinkFildReplace(evaluationThinkTemple,thinkTypeID"+data.id+",'"+data.name+"')");
                         inputElement.setAttribute("placeholder","替换字段");
                         divCol.appendChild(inputElement);
 
@@ -1288,7 +1353,29 @@
             }
             trElement.appendChild(tdElement);
         }
-        parentElement.parentNode.insertBefore(trElement,parentElement);
+        var data = {};
+        data.number = dataIndex;
+        data.areaGroupId = id;
+        var url = "${pageContext.request.contextPath}/projectplanschemeassist/schemeEvaluationObjectSave";
+        $.ajax({
+            url: url,
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        parentElement.parentNode.insertBefore(trElement,parentElement);
+                    });
+                } else {
+                    alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
     }
 </script>
 <script type="text/javascript">

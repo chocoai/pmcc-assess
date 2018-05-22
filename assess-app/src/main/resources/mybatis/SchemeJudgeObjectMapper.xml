@@ -15,6 +15,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, declare_record_id, area_group_id, evaluation_id, number, name, best_use_id, 
-    floor_area, group_number, creator, gmt_created, gmt_modified
+    floor_area, group_number, creator, gmt_created, gmt_modified, group_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" >
     select
@@ -115,13 +116,13 @@
     insert into tb_scheme_judge_object (project_id, declare_record_id, area_group_id, 
       evaluation_id, number, name, 
       best_use_id, floor_area, group_number, 
-      creator, gmt_created, gmt_modified
-      )
+      creator, gmt_created, gmt_modified, 
+      group_id)
     values (#{projectId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{evaluationId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{bestUseId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{groupId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -165,6 +166,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
@@ -202,6 +206,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -253,6 +260,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +282,8 @@
       group_number = #{record.groupNumber,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      group_id = #{record.groupId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +327,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -332,7 +346,8 @@
       group_number = #{groupNumber,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      group_id = #{groupId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
