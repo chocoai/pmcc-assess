@@ -54,4 +54,9 @@ public class DataReportAnalysisFieldDao {
         return dataReportAnalysisFieldMapper.selectByExample(example);
     }
 
+    public List<DataReportAnalysisField> getAllList() {
+        DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
+        example.createCriteria().andIdIsNotNull();
+        return dataReportAnalysisFieldMapper.selectByExample(example);
+    }
 }
