@@ -127,4 +127,10 @@ public class DataReportAnalysisService {
         flag = dataReportAnalysisDao.deleteReportAnalysis(id);
         return flag;
     }
+
+    public List<DataReportAnalysisVo> getDataReportAnalysisByCategory(Integer category) {
+        List<DataReportAnalysis> dataReportAnalyses = dataReportAnalysisDao.getDataReportAnalysisByCategory(category);
+        List<DataReportAnalysisVo> dataReportAnalysisVos = getVoList(dataReportAnalyses);
+        return dataReportAnalysisVos;
+    }
 }

@@ -74,6 +74,8 @@ public class ProjectPlanDetails {
 
     private Integer declareRecordId;
 
+    private Integer reportAnalysisId;
+
     public Integer getId() {
         return id;
     }
@@ -352,5 +354,13 @@ public class ProjectPlanDetails {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
+    }
+
+    public Integer getReportAnalysisId() {
+        return reportAnalysisId;
+    }
+
+    public void setReportAnalysisId(Integer reportAnalysisId) {
+        this.reportAnalysisId = reportAnalysisId;
     }
 }
