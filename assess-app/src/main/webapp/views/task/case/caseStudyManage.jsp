@@ -28,6 +28,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
+                <div class="x_title">
+                    <h2>案例信息</h2>
+                    <div class="clearfix"></div>
+                </div>
                 <div class="x_content">
                     <button type="button" class="btn btn-primary" onclick="selectDynamicForm()">
                         选择表单模板
@@ -38,7 +42,8 @@
                         <input type="hidden" name="dynamicFormId" value="${surveyCaseStudyDetail.dynamicFormId}">
                         <input type="hidden" name="dynamicTableId" value="${surveyCaseStudyDetail.dynamicTableId}">
                         <input type="hidden" name="dynamicTableName" value="${surveyCaseStudyDetail.dynamicTableName}">
-                        <input type="hidden" id="caseLocaltion" name="caseLocaltion" value="${surveyCaseStudyDetail.caseLocaltion}">
+                        <input type="hidden" id="caseLocaltion" name="caseLocaltion"
+                               value="${surveyCaseStudyDetail.caseLocaltion}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -66,7 +71,7 @@
                                     <select class="form-control" id="caseType" name="caseType">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${caseType}">
-                                            <option value="${item.id}">${item.name}</option>
+                                            <option ${item.id eq surveyCaseStudyDetail.caseType?"selected=\"selected\"":""}  value="${item.id}">${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -80,7 +85,7 @@
                                     <select class="form-control" id="informationSource" name="informationSource">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${caseInfoSource}">
-                                            <option value="${item.id}">${item.name}</option>
+                                            <option ${item.id eq surveyCaseStudyDetail.informationSource?"selected=\"selected\"":""} value="${item.id}">${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -239,7 +244,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
     $(function () {
-        if("${surveyCaseStudyDetail.dynamicFormId}"!="0"){
+        if ("${surveyCaseStudyDetail.dynamicFormId}" > "0") {
             showDynamicForm();
         }
     })
@@ -299,7 +304,7 @@
             onSelected: function (nodes) {
                 if (nodes) {
                     var node = nodes[0];
-                    var form=$("#frm_survey");
+                    var form = $("#frm_survey");
                     $.ajax({
                         url: "${pageContext.request.contextPath}/formConfigure/getDataDicFormInfo",
                         type: "post",
@@ -307,7 +312,7 @@
                         data: {baseDataDicId: node.id},
                         success: function (result) {
                             if (result.ret) {
-                                form.find('[name=dynamicFormId]').val(node.id);
+                                form.find('[name=dynamicFormId]').val(result.data.id);
                                 form.find('[name=dynamicTableId]').val(result.data.tableId);
                                 form.find('[name=dynamicTableName]').val(result.data.tableName);
                                 FormConfigureUtils.getDynamicFormHtml({

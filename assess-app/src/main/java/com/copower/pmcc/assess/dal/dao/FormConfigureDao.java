@@ -228,7 +228,7 @@ public class FormConfigureDao {
                         case "date":
                         case "time":
                         case "datetime":
-                            if (StringUtils.isBlank(map.get(keyValueDto.getKey()).toString())) {
+                            if (StringUtils.isBlank(map.get(keyValueDto.getKey())+"")) {
                                 map.put(keyValueDto.getKey(), null);
                             }
                             break;

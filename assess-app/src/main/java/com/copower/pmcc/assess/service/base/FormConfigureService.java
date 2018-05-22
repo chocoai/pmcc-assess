@@ -460,7 +460,6 @@ public class FormConfigureService {
     }
 
 
-
     /**
      * 将json字段的数据提取到json字段中
      *
@@ -744,7 +743,14 @@ public class FormConfigureService {
                             if (StringUtils.isNotBlank(item.getDataViewSql())) {
                                 String viewSql = item.getDataViewSql();
                                 viewSql = getRegexString(map, "#\\{(.*?)\\}", viewSql);
-                                String text = Boolean.TRUE == item.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
+                                String text = new String();
+                                try {
+                                    //可以先判断对应的参数值是否为空，如果为空则直接返回
+                                    text = Boolean.TRUE == item.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
+                                } catch (Exception e) {
+                                    text = "";
+                                    e.printStackTrace();
+                                }
                                 if (customTableTypeEnum != null) {
                                     switch (customTableTypeEnum) {
                                         case RADIOUSER:
@@ -981,11 +987,12 @@ public class FormConfigureService {
 
     /**
      * 获取module的json字符串
+     *
      * @param moduleId
      * @param tableId
      * @return
      */
-    public String getModuleJsonString(Integer moduleId,Integer tableId){
+    public String getModuleJsonString(Integer moduleId, Integer tableId) {
         BaseFormModule baseFormModule = hrBaseFormDao.getBaseFormModule(moduleId);
         Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
         return mapToJsonString(objectMap);

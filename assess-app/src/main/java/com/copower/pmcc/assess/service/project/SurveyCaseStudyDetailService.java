@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDetailDao;
@@ -50,13 +51,9 @@ public class SurveyCaseStudyDetailService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private FormConfigureService formConfigureService;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
+    private SurveyCommonService surveyCommonService;
 
 
     public BootstrapTableVo getList(Integer planDetailsId) {
@@ -76,6 +73,11 @@ public class SurveyCaseStudyDetailService {
         return surveyCaseStudyDetailVos;
     }
 
+    public List<SurveyCaseStudyDetail> getDetailList(Integer planDetailsId) {
+        List<SurveyCaseStudyDetail> surveyCaseStudyDetails = surveyCaseStudyDetailDao.getSurveyCaseStudyDetail(planDetailsId);
+        return surveyCaseStudyDetails;
+    }
+
 
     private List<SurveyCaseStudyDetailVo> getVoList(List<SurveyCaseStudyDetail> list) {
         if (CollectionUtils.isEmpty(list)) return null;
@@ -93,7 +95,7 @@ public class SurveyCaseStudyDetailService {
                     surveyCaseStudyDetailVo.setInformationSourceName(baseDataDic1.getName());
                 }
             }
-            changeName(surveyCaseStudyDetailVo, p);
+            //changeName(surveyCaseStudyDetailVo, p);
 
             return surveyCaseStudyDetailVo;
         });
@@ -120,75 +122,35 @@ public class SurveyCaseStudyDetailService {
         return surveyCaseStudyDetailDao.getSingelDetail(id);
     }
 
-    public boolean save(SurveyCaseStudyDetailDto surveyCaseStudyDetailDto) throws BusinessException {
-        if (surveyCaseStudyDetailDto == null)
+    public boolean save(SurveyCaseStudyDetailDto detailDto) throws BusinessException {
+        if (detailDto == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if (surveyCaseStudyDetailDto.getId() != 0 && surveyCaseStudyDetailDto.getId() > 0) {
-            Integer dynamicTableId = saveDynamicForm(surveyCaseStudyDetailDto);
-            surveyCaseStudyDetailDto.setDynamicTableId(dynamicTableId);
-            return surveyCaseStudyDetailDao.update(surveyCaseStudyDetailDto);
+        if (detailDto.getId() != 0 && detailDto.getId() > 0) {
+            surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
+            return surveyCaseStudyDetailDao.update(detailDto);
         } else {
-            Integer dynamicTableId = saveDynamicForm(surveyCaseStudyDetailDto);
-            surveyCaseStudyDetailDto.setDynamicTableId(dynamicTableId);
-            surveyCaseStudyDetailDto.setCreator(serviceComponent.getThisUser());
-            boolean flag = surveyCaseStudyDetailDao.save(surveyCaseStudyDetailDto);
+            Integer dynamicTableId = surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
+            detailDto.setDynamicTableId(dynamicTableId);
+            detailDto.setCreator(serviceComponent.getThisUser());
+            boolean flag = surveyCaseStudyDetailDao.save(detailDto);
 
             //下载定位图
-            String localDir = baseAttachmentService.createBasePath(baseAttachmentService.getTempUploadPath(), DateUtils.formatNowToYMD(), DateUtils.formatNowToYMDHMS());
-            String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
-            String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
-                    BaseConstant.MPA_API_URL, surveyCaseStudyDetailDto.getCaseLocaltion(), surveyCaseStudyDetailDto.getCaseLocaltion(), BaseConstant.MAP_WEB_SERVICE_KEY);
-            try {
-                NetDownloadUtils.download(url, imageName, localDir);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
-            //再将图片上传到FTP
-            String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
-            String ftpDirName = baseAttachmentService.createFTPBasePath(FormatUtils.underlineToCamel("tb_survey_case_study_detail", false),
-                    DateUtils.formatNowToYMD(), "caseLocaltion");
-            try {
-                ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
-            //数据库添加定位图片记录
-            BaseAttachment baseAttachment = new BaseAttachment();
-            baseAttachment.setTableId(surveyCaseStudyDetailDto.getId());
-            baseAttachment.setTableName("tb_survey_case_study_detail");
-            baseAttachment.setFieldsName("case_localtion");
-            baseAttachment.setFtpFilesName(ftpFileName);
-            baseAttachment.setFileExtension("jpg");
-            baseAttachment.setFilePath(ftpDirName);
-            baseAttachment.setFileName("定位图.jpg");
-            baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
-            baseAttachment.setCreater(serviceComponent.getThisUser());
-            baseAttachment.setModifier(serviceComponent.getThisUser());
-            baseAttachmentDao.addAttachment(baseAttachment);
+            surveyCommonService.downLoadLocationImage(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL,detailDto.getId(),detailDto.getCaseLocaltion());
 
             //更新附件表id
             BaseAttachment queryParam = new BaseAttachment();
             queryParam.setTableId(0);
-            queryParam.setTableName("tb_survey_case_study_detail");
+            queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
             queryParam.setCreater(serviceComponent.getThisUser());
 
             BaseAttachment example = new BaseAttachment();
-            example.setTableId(surveyCaseStudyDetailDto.getId());
+            example.setTableId(detailDto.getId());
             baseAttachmentDao.updateAttachementByExample(queryParam, example);
-
             return flag;
         }
     }
 
-    private Integer saveDynamicForm(SurveyCaseStudyDetailDto surveyCaseStudyDetailDto) throws BusinessException {
-        if (surveyCaseStudyDetailDto.getDynamicFormId() == null) return 0;
-        FormConfigureDetailDto configureDetailDto = new FormConfigureDetailDto();
-        configureDetailDto.setFormData(surveyCaseStudyDetailDto.getDynamicFormData());
-        configureDetailDto.setFormModuleId(surveyCaseStudyDetailDto.getDynamicFormId());
-        configureDetailDto.setTableId(surveyCaseStudyDetailDto.getDynamicTableId());
-        configureDetailDto.setTableName(surveyCaseStudyDetailDto.getDynamicTableName());
-        return formConfigureService.saveSimpleData(configureDetailDto);
-    }
+
 
     public boolean delete(Integer id) {
         return surveyCaseStudyDetailDao.delete(id);

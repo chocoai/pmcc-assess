@@ -5,19 +5,19 @@ import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
+import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDetailDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
+import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +30,17 @@ import java.util.Map;
  * Created by kings on 2018-5-21.
  */
 @Component
-public class SurveyLocaleExploreEvent extends ProjectTaskEvent {
+public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     @Autowired
     private ServiceComponent serviceComponent;
     @Autowired
-    private SurveyLocaleExploreService surveyLocaleExploreService;
+    private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
-    private SurveyLocaleExploreDetailService surveyLocaleExploreDetailService;
+    private SurveyCaseStudyDetailService surveyCaseStudyDetailService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
-    private SurveyLocaleExploreDetailDao surveyLocaleExploreDetailDao;
+    private SurveyCaseStudyDetailDao surveyCaseStudyDetailDao;
     @Autowired
     private FormConfigureDao formConfigureDao;
     @Autowired
@@ -58,41 +58,41 @@ public class SurveyLocaleExploreEvent extends ProjectTaskEvent {
 
         //现场查勘 如果关联了多个权证信息 则自动更新其它权证的查勘信息
         try {
-            SurveyLocaleExplore surveyLocaleExplore = surveyLocaleExploreService.getSurveyLocaleExplore(processExecution.getProcessInstanceId());
-            if (surveyLocaleExplore == null)
+            SurveyCaseStudy surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(processExecution.getProcessInstanceId());
+            if (surveyCaseStudy == null)
                 return;
-            List<SurveyLocaleExploreDetail> detailList = surveyLocaleExploreDetailService.getDetailList(surveyLocaleExplore.getPlanDetailsId());
+            List<SurveyCaseStudyDetail> detailList = surveyCaseStudyDetailService.getDetailList(surveyCaseStudy.getPlanDetailsId());
             if (CollectionUtils.isNotEmpty(detailList)) {
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.LOCALE_EXPLORE);
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY);
                 if(projectPhase==null) return;
-                for (SurveyLocaleExploreDetail surveyLocaleExploreDetail : detailList) {
-                    if (StringUtils.isNotBlank(surveyLocaleExploreDetail.getCorrelationCard())) {
-                        String belongWarrant = surveyLocaleExploreDetail.getCorrelationCard();
+                for (SurveyCaseStudyDetail surveyCaseStudyDetail : detailList) {
+                    if (StringUtils.isNotBlank(surveyCaseStudyDetail.getCorrelationCard())) {
+                        String belongWarrant = surveyCaseStudyDetail.getCorrelationCard();
                         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(belongWarrant));
                         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByDeclareId(integers, projectPhase.getId());//待调整
                         if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
-                            Map<String, Object> objectMap = formConfigureDao.getObjectSingle(surveyLocaleExploreDetail.getDynamicTableName(), surveyLocaleExploreDetail.getDynamicTableId());
+                            Map<String, Object> objectMap = formConfigureDao.getObjectSingle(surveyCaseStudyDetail.getDynamicTableName(), surveyCaseStudyDetail.getDynamicTableId());
                             objectMap.remove("id");
 
                             //找出附件信息
                             BaseAttachment queryParam = new BaseAttachment();
-                            queryParam.setTableId(surveyLocaleExploreDetail.getId());
-                            queryParam.setTableName(AssessTableNameConstant.SURVEY_LOCALE_EXPLORE_DETAIL);
+                            queryParam.setTableId(surveyCaseStudyDetail.getId());
+                            queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
                             List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParam);
 
                             for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
                                 //先将动态表单数据复制
-                                Integer id = formConfigureDao.addObject(surveyLocaleExploreDetail.getDynamicTableName(), objectMap);
-                                surveyLocaleExploreDetail.setDynamicTableId(id);
-                                surveyLocaleExploreDetail.setPlanDetailsId(projectPlanDetail.getId());
-                                surveyLocaleExploreDetail.setCorrelationCard(null);
-                                surveyLocaleExploreDetailDao.save(surveyLocaleExploreDetail);
+                                Integer id = formConfigureDao.addObject(surveyCaseStudyDetail.getDynamicTableName(), objectMap);
+                                surveyCaseStudyDetail.setDynamicTableId(id);
+                                surveyCaseStudyDetail.setPlanDetailsId(projectPlanDetail.getId());
+                                surveyCaseStudyDetail.setCorrelationCard(null);
+                                surveyCaseStudyDetailDao.save(surveyCaseStudyDetail);
 
                                 if (CollectionUtils.isNotEmpty(attachmentList)) {
                                     for (BaseAttachment baseAttachment : attachmentList) {
-                                        baseAttachment.setTableId(surveyLocaleExploreDetail.getId());
+                                        baseAttachment.setTableId(surveyCaseStudyDetail.getId());
                                         //拷贝真实文件
-                                        String filePath = baseAttachmentService.createFTPBasePath(SurveyLocaleExploreDetail.class.getSimpleName(),
+                                        String filePath = baseAttachmentService.createFTPBasePath(SurveyCaseStudyDetail.class.getSimpleName(),
                                                 DateUtils.formatNowToYMD(), serviceComponent.getThisUser());
                                         ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), baseAttachment.getFtpFilesName(), filePath);
                                         baseAttachment.setFilePath(filePath);
