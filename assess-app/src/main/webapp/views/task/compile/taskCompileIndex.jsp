@@ -16,30 +16,44 @@
 
 
             <c:forEach items="${dataReportAnalysisVos}" var="items">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>${items.categoryFieldName}</h2>
-                        <div class="clearfix"></div>
-                    </div>
-
-                    <form id="frm_compile" class="form-horizontal">
+                <form id="frm_compile" class="form-horizontal">
+                    <input type="hidden" name="evaluationType" value="${items.categoryFieldName}">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>${items.categoryFieldName}</h2>
+                            <div class="clearfix"></div>
+                        </div>
 
                         <div class="form-group">
-                            <c:forEach items="${dataReportAnalysisFields}" var="items">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">${items.name}</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="50" placeholder=""
-                                               id="surveyPeople" name="surveyPeople" required
-                                               class="form-control">
-                                    </div>
-                                </div>
+                            <label class="col-sm-1 control-label">
+                                结果预览
+                            </label>
+                            <div class="col-sm-11">
+                                <label class="form-control" id="${items.id}" value="">${items.template}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <c:forEach items="${dataReportAnalysisFields}" var="item">
+                                <c:choose>
+                                    <c:when test="${items.id eq item.analysisId}">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label"
+                                                   id="newName${item.id}">${item.name}</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-maxlength="50" placeholder=""
+                                                       id="${item.id}" name="${item.id}" required
+                                                       class="form-control"
+                                                       onblur="textReplaces('${item.name}','${items.template}','${items.id}','${item.id}')">
+                                            </div>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
                             </c:forEach>
                         </div>
-                    </form>
 
-                </div>
 
+                    </div>
+                </form>
             </c:forEach>
 
             <!--填写表单-->
@@ -58,7 +72,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
+                                           id="actualHours" name="actualHours" class="form-control" maxlength="3"
+                                           value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -69,7 +84,7 @@
                             <div class="x-valid">
                                 <div class="col-sm-11">
                                         <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
+                                                  class="form-control">${projectPlanDetails.taskRemarks}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +126,7 @@
 <script type="application/javascript">
 
     $(function () {
+
         $("#btn_select_customer").click(function () {
             crmCustomer.select({
                 multi: false,//是否允许多选
@@ -155,19 +171,63 @@
         })
     }
 
+    //替换自定义字段
+    var textId; //被替换文本id
+    function textReplaces(name, template, id1, id2) {
+        var value = document.getElementById(id2).value; //被替换文本内容
+        var newName = 'newName' + id2;    //替换字段id
+        var tempName = document.getElementById(newName).innerHTML;  //替换字段内容
+        textId = id1;
+        if (value != "") {
+            if (tempName != name) {
+                //第二次替换走这里
+                name = tempName;
+                var regex = '/' + name + '/g';
+                var temp = document.getElementById(id1).innerHTML;
+                var text = temp.replace(eval(regex), value);
+                document.getElementById(id1).innerHTML = text;  //更新被替换内容
+                document.getElementById(newName).innerHTML = value;     //更新替换字段内容
+            } else {
+                //初始状态的替换
+                var regex = '/\{' + name + '\}/g';
+                var temp = document.getElementById(id1).innerHTML;
+                var text = temp.replace(eval(regex), value);
+                document.getElementById(id1).innerHTML = text;
+                document.getElementById(newName).innerHTML = value;
+            }
+        } else {
+            document.getElementById(id1).innerHTML = template;
+            document.getElementById(newName).innerHTML = name;
+        }
+    }
 
+    //封装参数
+    var formData = {};
+    function param(){
+        var data = formParams('frm_compile');
+        var id = textId;
+        var text = document.getElementById(id).innerHTML;
+        data.textReplace = text;
+        formData = JSON.stringify(data);
+        console.info(formData);
+    }
+
+    //提交
     function submit() {
         if (!$("#frm_task").valid()) {
             return false;
         }
 
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            param();
+            submitEditToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            param();
+            submitToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
+
 
 </script>
 
