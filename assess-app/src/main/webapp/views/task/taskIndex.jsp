@@ -23,20 +23,6 @@
                     <form id="frm_task" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                客户
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text"  placeholder="客户"
-                                           id="customerName" name="customerName" class="form-control" >
-                                    <span class="input-group-btn">
-                                              <button type="button" id="btn_select_customer" class="btn btn-primary">选择</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
                                 实际工时
                             </label>
                             <div class="x-valid">
@@ -90,18 +76,9 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
 
     $(function () {
-        $("#btn_select_customer").click(function () {
-            crmCustomer.select({
-                multi: false,//是否允许多选
-                onSelected: function (nodes) {
-                    console.log(nodes);
-                }
-            });
-        })
         
         $("#frm_task").validate();
 

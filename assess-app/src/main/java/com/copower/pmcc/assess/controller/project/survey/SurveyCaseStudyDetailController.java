@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
+import com.copower.pmcc.assess.service.project.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -49,6 +50,8 @@ public class SurveyCaseStudyDetailController {
     private FormConfigureService formConfigureService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     @RequestMapping(value = "/index", name = "案例调查管理页面", method = RequestMethod.GET)
     public ModelAndView index(Integer id, Integer planDetailsId, Integer projectId) {
@@ -64,24 +67,10 @@ public class SurveyCaseStudyDetailController {
             surveyCaseStudyDetail = new SurveyCaseStudyDetail();
             surveyCaseStudyDetail.setId(0);
         }
-
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(declareRecords)) {
-            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
-            List<Integer> correlationCardIds = Lists.newArrayList();
-            if (StringUtils.isNotBlank(surveyCaseStudyDetail.getCorrelationCard())) {
-                List<String> list = FormatUtils.transformString2List(surveyCaseStudyDetail.getCorrelationCard());
-                correlationCardIds = FormatUtils.ListStringToListInteger(list);
-            }
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
-                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
-                surveyCorrelationCardVo.setId(declareRecord.getId());
-                surveyCorrelationCardVo.setName(declareRecord.getName());
-                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
-                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
-            }
+            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = surveyCommonService.getSurveyCorrelationCardVos(surveyCaseStudyDetail.getCorrelationCard(), projectPlanDetails, declareRecords);
             modelAndView.addObject("surveyCorrelationCardVos", surveyCorrelationCardVos);
         }
         modelAndView.addObject("caseType", caseType);

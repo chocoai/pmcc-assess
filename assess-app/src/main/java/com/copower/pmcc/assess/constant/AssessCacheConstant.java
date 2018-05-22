@@ -19,7 +19,9 @@ public class AssessCacheConstant {
     //阶段事项
     public static final String PMCC_ASSESS_WORK_PHASE = "pmcc:assess:work:phase";
     public static final String PMCC_ASSESS_WORK_PHASE_ID = "pmcc:assess:work:phase:id";
+    public static final String PMCC_ASSESS_WORK_PHASE_KEY = "pmcc:assess:work:phase:key";
     public static final String PMCC_ASSESS_WORK_PHASE_CATEGORYID = "pmcc:assess:work:phase:categoryid";
+
     
     //数据字典
     public static final String PMCC_ASSESS_DATA_DIC = "pmcc:assess:data:dic";

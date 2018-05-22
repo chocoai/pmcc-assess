@@ -175,7 +175,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
     $(function () {
-        if("${surveyLocaleExploreDetail.dynamicFormId}"!="0"){
+        if ("${surveyLocaleExploreDetail.dynamicFormId}" > "0") {
             showDynamicForm();
         }
     })
@@ -236,7 +236,7 @@
                                     readOnly: false,
                                     jsonValue: result.data.fieldVos,
                                     success: function (html) {
-                                        $("#frm_dynamic_content").append(html).closest('.x_panel').show();
+                                        $("#frm_dynamic_content").empty().append(html).closest('.x_panel').show();
                                     }
                                 });
                             }

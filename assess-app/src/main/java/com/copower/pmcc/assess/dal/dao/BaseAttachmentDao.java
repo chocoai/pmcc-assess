@@ -165,6 +165,7 @@ public class BaseAttachmentDao {
 
     public List<BaseAttachment> getApprovalLogList(String processInsId,List<String> strings)
     {
+        if(CollectionUtils.isEmpty(strings)) return null;
         BaseAttachmentExample example=new BaseAttachmentExample();
         example.createCriteria().andTableNameEqualTo("tb_box_approval_log").andProcessInsIdEqualTo(processInsId).andProcessTaskIdIn(strings);
         return sysAttachmentMapper.selectByExample(example);
