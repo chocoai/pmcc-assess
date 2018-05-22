@@ -985,6 +985,76 @@ public class SchemeJudgeObjectExample {
             addCriterion("group_id not between", value1, value2, "groupId");
             return (Criteria) this;
         }
+
+        public Criteria andEvaluationAreaIsNull() {
+            addCriterion("evaluation_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaIsNotNull() {
+            addCriterion("evaluation_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaEqualTo(String value) {
+            addCriterion("evaluation_area =", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaNotEqualTo(String value) {
+            addCriterion("evaluation_area <>", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaGreaterThan(String value) {
+            addCriterion("evaluation_area >", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaGreaterThanOrEqualTo(String value) {
+            addCriterion("evaluation_area >=", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaLessThan(String value) {
+            addCriterion("evaluation_area <", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaLessThanOrEqualTo(String value) {
+            addCriterion("evaluation_area <=", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaLike(String value) {
+            addCriterion("evaluation_area like", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaNotLike(String value) {
+            addCriterion("evaluation_area not like", value, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaIn(List<String> values) {
+            addCriterion("evaluation_area in", values, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaNotIn(List<String> values) {
+            addCriterion("evaluation_area not in", values, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaBetween(String value1, String value2) {
+            addCriterion("evaluation_area between", value1, value2, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationAreaNotBetween(String value1, String value2) {
+            addCriterion("evaluation_area not between", value1, value2, "evaluationArea");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

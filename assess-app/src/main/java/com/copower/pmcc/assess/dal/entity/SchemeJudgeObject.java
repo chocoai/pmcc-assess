@@ -32,6 +32,8 @@ public class SchemeJudgeObject {
 
     private String groupId;
 
+    private String evaluationArea;
+
     public Integer getId() {
         return id;
     }
@@ -142,5 +144,13 @@ public class SchemeJudgeObject {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId == null ? null : groupId.trim();
+    }
+
+    public String getEvaluationArea() {
+        return evaluationArea;
+    }
+
+    public void setEvaluationArea(String evaluationArea) {
+        this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
     }
 }

@@ -83,6 +83,11 @@ public class SchemeAreaGroupService {
         return dao.update(dto);
     }
 
+    @Transactional
+    public boolean update(SchemeAreaGroup oo){
+        return dao.update(oo);
+    }
+
     @Transactional(readOnly = true)
     public SchemeAreaGroup get(Integer id) {
         return dao.get(id);

@@ -130,7 +130,8 @@
                                     价值时点
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" size="22" required="required" class="form-control" placeholder="价值时间点"><br>
+                                    <input type="text"  name="valueTimePoint" required="required" placeholder="价值时间点"
+                                           data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate" readonly="readonly"  pattern='yyyy-MM-dd'>
                                 </div>
                             </div>
                         </div>
@@ -762,9 +763,30 @@
     }
     //分组保存
     function evaluationObject(id) {
-        alert(id);
         var data = formParams("evaluationObject"+id);//项目信息
         console.log(data);
+        console.log(data.floorArea);
+        console.log(data.evaluationArea);
+        console.log(data.id);
+        var url = "${pageContext.request.contextPath}/projectplanschemeassist/evaluationObjectSave";
+        $.ajax({
+            url: url,
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                    });
+                } else {
+                    alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
     }
 
     // table list 数据列表显示
@@ -810,8 +832,11 @@
                             var dataBestUse = document.createElement("td");
                             var selectElement = document.createElement("select");
                             selectElement.setAttribute("class","form-control");
+                            selectElement.setAttribute("name","bestUseId");
                             <c:forEach items="${bestusedescriptionList}" var="bestUse">
                                 var optionElement = document.createElement("option");
+                                optionElement.setAttribute("name","bestUseId");
+                                optionElement.setAttribute("value","${bestUse.id}");
                                 optionElement.appendChild(document.createTextNode("${bestUse.name}"));
                                 selectElement.appendChild(optionElement);
                             </c:forEach>
@@ -822,21 +847,34 @@
                             var inputMerge = document.createElement("input");
                             inputMerge.setAttribute("class","form-control");
                             inputMerge.setAttribute("type","text");
+                            inputMerge.setAttribute("name","groupNumber");
                             inputMerge.setAttribute("placeholder","合并测算序号");
                             dataMerge.appendChild(inputMerge);
                             dataMerge.setAttribute("id","dataMerge"+data.id);
 
                             var dataFloorArea = document.createElement("td");
                             var labelFloor = document.createElement("label");
-                            labelFloor.setAttribute("class","form-control");
                             labelFloor.appendChild(document.createTextNode(data.floorArea));
                             dataFloorArea.appendChild(labelFloor);
                             dataFloorArea.setAttribute("id","dataFloorArea"+data.id);
+
+                            var inputHidden = document.createElement("input");
+                            inputHidden.setAttribute("type","hidden");
+                            inputHidden.setAttribute("name","floorArea");
+                            inputHidden.setAttribute("value",""+data.floorArea+"");
+                            var inputID = document.createElement("input");
+                            inputID.setAttribute("type","hidden");
+                            inputID.setAttribute("id","idX"+data.id);
+                            inputID.setAttribute("name","id");
+                            inputID.setAttribute("value",""+data.id+"");
+                            dataFloorArea.appendChild(inputID);
+                            dataFloorArea.appendChild(inputHidden);
 
                             var dataAssessmentArea = document.createElement("td");
                             var inputAssessmentArea = document.createElement("input");
                             inputAssessmentArea.setAttribute("class","form-control");
                             inputAssessmentArea.setAttribute("type","text");
+                            inputAssessmentArea.setAttribute("name","evaluationArea");
                             inputAssessmentArea.setAttribute("placeholder","评估面积");
                             dataAssessmentArea.appendChild(inputAssessmentArea);
                             dataAssessmentArea.setAttribute("id","dataAssessmentArea"+data.id);
@@ -1313,6 +1351,7 @@
         var parentElement = btnID.parentNode;
         var trElement = document.createElement("tr");
         var len = 10;
+        var idX = document.getElementById("idX"+id).value;
         var dataIndex = document.getElementById("dataIndex"+id).innerText;
         var dataName = document.getElementById("dataName"+id).innerText;
         var dataCreator = document.getElementById("dataCreator"+id).innerText;
@@ -1339,12 +1378,20 @@
             }else if (i==j++){
                 var inputElement = document.createElement("input");
                 inputElement.setAttribute("class","form-control");
+                inputElement.setAttribute("name","floorArea");
+                inputElement.setAttribute("type","text");
                 inputElement.setAttribute("placeholder","证载面积");
                 tdElement.appendChild(inputElement);
+                var inputID = document.createElement("input");
+                inputID.setAttribute("type","hidden");
+                inputID.setAttribute("name","id");
+                inputID.setAttribute("value",""+idX);
+                tdElement.appendChild(inputID);
             }else if (i==j++){
                 var inputElement = document.createElement("input");
                 inputElement.setAttribute("class","form-control");
                 inputElement.setAttribute("placeholder","评估面积");
+                inputElement.setAttribute("name","evaluationArea");
                 tdElement.appendChild(inputElement);
             }else if (i==j++){
                 tdElement.innerHTML = dataMethodID;
@@ -1356,26 +1403,8 @@
         var data = {};
         data.number = dataIndex;
         data.areaGroupId = id;
+        parentElement.parentNode.insertBefore(trElement,parentElement);
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/schemeEvaluationObjectSave";
-        $.ajax({
-            url: url,
-            data: data,
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        parentElement.parentNode.insertBefore(trElement,parentElement);
-                    });
-                } else {
-                    alert("保存失败:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
     }
 </script>
 <script type="text/javascript">

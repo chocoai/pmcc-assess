@@ -63,6 +63,10 @@ public class SchemeAreaGroupDao {
         return mapper.updateByPrimaryKey(change(dto))==1;
     }
 
+    public boolean update(SchemeAreaGroup dto){
+        return mapper.updateByPrimaryKey(dto)==1;
+    }
+
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }

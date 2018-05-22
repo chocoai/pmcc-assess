@@ -1,0 +1,71 @@
+package com.copower.pmcc.assess.dto.input.project;
+
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+/**
+ * Created by 13426 on 2018/5/22.
+ */
+public class SchemeJudgeObjectStringDto  {
+    private String id;
+    private String bestUseId;
+
+    private String floorArea;
+
+    private String groupNumber;
+
+    private String evaluationArea;
+
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    private Date valueTimePoint;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBestUseId() {
+        return bestUseId;
+    }
+
+    public void setBestUseId(String bestUseId) {
+        this.bestUseId = bestUseId;
+    }
+
+    public String getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(String floorArea) {
+        this.floorArea = floorArea;
+    }
+
+    public String getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(String groupNumber) {
+        this.groupNumber = groupNumber;
+    }
+
+    public Date getValueTimePoint() {
+        return valueTimePoint;
+    }
+
+    public void setValueTimePoint(Date valueTimePoint) {
+        this.valueTimePoint = valueTimePoint;
+    }
+
+    public String getEvaluationArea() {
+        return evaluationArea;
+    }
+
+    public void setEvaluationArea(String evaluationArea) {
+        this.evaluationArea = evaluationArea;
+    }
+}

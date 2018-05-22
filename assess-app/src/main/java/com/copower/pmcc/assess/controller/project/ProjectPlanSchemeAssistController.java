@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectStringDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
@@ -115,11 +116,10 @@ public class ProjectPlanSchemeAssistController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/schemeEvaluationObjectSave", name = "委估对象 拆分的记录 ", method = RequestMethod.POST)
-    public Object schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
+    @RequestMapping(value = "/evaluationObjectSave", name = "区域组 保存 ", method = RequestMethod.POST)
+    public Object evaluationObjectSave(SchemeJudgeObjectStringDto dto) {
         try {
-            if (dto != null) {
-                schemeAssistService.schemeEvaluationObjectSave(dto);
+            if (dto!=null){
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -127,5 +127,7 @@ public class ProjectPlanSchemeAssistController {
         }
         return HttpResult.newCorrectResult();
     }
+
+
 
 }
