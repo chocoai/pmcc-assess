@@ -44,6 +44,14 @@ public class ProjectPhaseDao {
         return projectPhaseMapper.selectByPrimaryKey(id);
     }
 
+    public ProjectPhase getProjectPhaseByKey(String key) {
+        ProjectPhaseExample example = new ProjectPhaseExample();
+        example.createCriteria().andPhaseKeyEqualTo(key);
+        List<ProjectPhase> projectPhases = projectPhaseMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(projectPhases))
+            return projectPhases.get(0);
+        return null;
+    }
 
     public boolean createProjectPhase(ProjectPhase projectPhase) {
         return projectPhaseMapper.insertSelective(projectPhase) == 1;

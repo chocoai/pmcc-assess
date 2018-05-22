@@ -82,4 +82,10 @@ public class SchemeAreaGroupDao {
         BeanUtils.copyProperties(dto,oo);
         return oo;
     }
+
+    public List<SchemeAreaGroup> getSchemeAreaGroupByProjectId(Integer projectId) {
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return mapper.selectByExample(example);
+    }
 }

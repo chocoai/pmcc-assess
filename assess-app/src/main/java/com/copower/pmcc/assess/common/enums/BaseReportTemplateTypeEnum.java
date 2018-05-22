@@ -39,6 +39,7 @@ public enum BaseReportTemplateTypeEnum {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(e.getKey()));
             keyValueDto.setValue(e.getName());
+            keyValueDtos.add(keyValueDto);
         }
         return keyValueDtos;
     }

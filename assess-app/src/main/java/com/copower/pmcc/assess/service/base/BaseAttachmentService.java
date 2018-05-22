@@ -127,8 +127,8 @@ public class BaseAttachmentService {
         String extension = strings.get(strings.size() - 1);//取得扩展名
         strings.remove(extension);
         String newFilesName = createNoRepeatFileName(extension);
-        String filePath = createFTPBasePath(FormatUtils.underlineToCamel(attachmentDto.getTableName(), false), DateUtils.formatDate(new Date(), "yyyy-MM"), String.valueOf(attachmentDto.getTableId()
-        ), attachmentDto.getReActivityName(), DateUtils.formatNowToYMD());
+        String filePath = createFTPBasePath(FormatUtils.underlineToCamel(attachmentDto.getTableName(), false), DateUtils.formatDate(new Date(), "yyyy-MM"), serviceComponent.getThisUser(),
+        attachmentDto.getReActivityName(), DateUtils.formatNowToYMD());
         try {
             ftpUtilsExtense.uploadFilesToFTP(filePath, multipartFile.getInputStream(), newFilesName);
         } catch (IOException e) {

@@ -23,6 +23,8 @@ public class BaseReportTemplate {
 
     private Boolean bisEnable;
 
+    private Integer pid;
+
     public Integer getId() {
         return id;
     }
@@ -109,5 +111,13 @@ public class BaseReportTemplate {
 
     public void setBisEnable(Boolean bisEnable) {
         this.bisEnable = bisEnable;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

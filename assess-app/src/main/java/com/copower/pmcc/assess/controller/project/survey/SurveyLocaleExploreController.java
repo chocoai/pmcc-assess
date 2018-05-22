@@ -44,7 +44,7 @@ public class SurveyLocaleExploreController {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private SurveyCommonService surveyCommonService;
     @Autowired
     private FormConfigureService formConfigureService;
 
@@ -70,27 +70,15 @@ public class SurveyLocaleExploreController {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(declareRecords)) {
-            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
-            List<Integer> correlationCardIds = Lists.newArrayList();
-            if (StringUtils.isNotBlank(surveyLocaleExploreDetail.getCorrelationCard())) {
-                List<String> list = FormatUtils.transformString2List(surveyLocaleExploreDetail.getCorrelationCard());
-                correlationCardIds = FormatUtils.ListStringToListInteger(list);
-            }
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
-                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
-                surveyCorrelationCardVo.setId(declareRecord.getId());
-                surveyCorrelationCardVo.setName(declareRecord.getName());
-                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
-                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
-            }
+            List<SurveyCorrelationCardVo> surveyCorrelationCardVos = surveyCommonService.getSurveyCorrelationCardVos(surveyLocaleExploreDetail.getCorrelationCard(), projectPlanDetails, declareRecords);
             modelAndView.addObject("surveyCorrelationCardVos", surveyCorrelationCardVos);
         }
-
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         modelAndView.addObject("surveyLocaleExploreDetail", surveyLocaleExploreDetail);
         return modelAndView;
     }
+
+
 
     @RequestMapping(value = "/detailsIndex", name = "详情页面", method = RequestMethod.GET)
     public ModelAndView detailIndex(Integer id) {

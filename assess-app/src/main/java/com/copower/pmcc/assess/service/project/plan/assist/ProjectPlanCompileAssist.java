@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.project.plan.assist;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
-import com.copower.pmcc.assess.service.project.ProjectPlanSurveyService;
+import com.copower.pmcc.assess.service.project.ProjectPlanCompileService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,16 +21,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectPlanCompileAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;
-
     @Autowired
-    private ProjectPlanSurveyService projectPlanSurveyService;
+    private ProjectPlanCompileService projectPlanComplieService;
+
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/compile/planCompileIndex", "", 0, "-1", "");
-        projectPlanSurveyService.getProjectPlanSurvey(modelAndView,projectPlan);
-            return modelAndView;
-        }
+//        projectPlanSurveyService.getProjectPlanSurvey(modelAndView,projectPlan);
+        projectPlanComplieService.getInitialize(modelAndView, projectPlan);
+        return modelAndView;
+    }
 
 
     @Override
