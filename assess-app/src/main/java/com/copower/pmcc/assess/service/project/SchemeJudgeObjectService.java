@@ -36,22 +36,57 @@ public class SchemeJudgeObjectService {
     private SchemeJudgeObjectDao dao;
 
     public void evaluationObjectSave(SchemeJudgeObjectStringDto objectDto) {
+        String groupID = null;
         String[] ids = objectDto.getId().split(",");
         String[] bestUseIds = objectDto.getBestUseId().split(",");
         String[] floorAreas = objectDto.getFloorArea().split(",");
         String[] groupNumbers = objectDto.getGroupNumber().split(",");
         String[] evaluationAreas = objectDto.getEvaluationArea().split(",");
+        String[] seats = objectDto.getSeat().split(",");
+        String[] flags = objectDto.getFlag().split(",");
         Date valueTimePoint = objectDto.getValueTimePoint();
         for (int i = 0; i < ids.length; i++) {
             try {
                 Integer id = Integer.parseInt(ids[i]);
                 SchemeJudgeObjectDto dto = get(id);
+                groupID = dto.getGroupId();
                 BigDecimal bigDecimal = new BigDecimal(floorAreas[i]);
                 dto.setFloorArea(bigDecimal);
                 dto.setBestUseId(Integer.parseInt(bestUseIds[i]));
                 dto.setGroupNumber(groupNumbers[i]);
                 dto.setEvaluationArea(evaluationAreas[i]);
+                dto.setSeat(seats[i]);
+                dto.setFlag(flags[i]);
                 update(dto);
+                if (flags[i].equals("1")){//说明是拆分之后的添加的数据
+                    SchemeJudgeObjectDto dtoA = get(id);
+                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(dtoA.getGroupId());
+                    SchemeEvaluationObjectDto evaluationObjectDto = new SchemeEvaluationObjectDto();
+                    evaluationObjectDto.setCreator(commonService.thisUserAccount());
+                    evaluationObjectDto.setName(dtoA.getName());
+                    evaluationObjectDto.setProjectId(dtoA.getProjectId());
+                    evaluationObjectDto.setAreaGroupId(schemeAreaGroup.getId());
+                    dtoA.setFloorArea(bigDecimal);
+                    dtoA.setBestUseId(Integer.parseInt(bestUseIds[i]));
+                    dtoA.setGroupNumber(groupNumbers[i]);
+                    dtoA.setEvaluationArea(evaluationAreas[i]);
+                    dtoA.setSeat(seats[i]);
+                    dtoA.setFlag(flags[i]);
+                    try {
+                        int idE = evaluationObjectService.add(evaluationObjectDto);
+                        dtoA.setEvaluationId(idE);
+                        update(dtoA);
+                        dtoA.setId(null);
+                        add(dtoA);//增加一条记录
+                    }catch (Exception e){
+                        logger.error(e.getMessage());
+                        try {
+                            throw e;
+                        }catch (Exception e1){
+
+                        }
+                    }
+                }
             }catch (Exception e){
                 logger.error(e.getMessage());
                 try {
@@ -62,33 +97,13 @@ public class SchemeJudgeObjectService {
             }
         }
 
+        //区域分组进行修改
         Integer id = Integer.parseInt(ids[0]);
         SchemeJudgeObjectDto dto = get(id);
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(dto.getAreaGroupId());
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(groupID);
         schemeAreaGroup.setValueTimePoint(valueTimePoint);
         schemeAreaGroupService.update(schemeAreaGroup);
 
-        List<Integer> integers = hashMapChange(ids);
-        for (Integer integer:integers){
-            SchemeJudgeObjectDto dtoA = get(integer);
-            SchemeEvaluationObjectDto evaluationObjectDto = new SchemeEvaluationObjectDto();
-            evaluationObjectDto.setCreator(commonService.thisUserAccount());
-            evaluationObjectDto.setName(dtoA.getName());
-            evaluationObjectDto.setAreaGroupId(dtoA.getAreaGroupId());
-            evaluationObjectDto.setProjectId(dtoA.getProjectId());
-            try {
-                int idE = evaluationObjectService.add(evaluationObjectDto);
-                dtoA.setEvaluationId(idE);
-                update(dtoA);
-            }catch (Exception e){
-                logger.error(e.getMessage());
-                try {
-                    throw e;
-                }catch (Exception e1){
-
-                }
-            }
-        }
     }
 
     @Transactional
@@ -111,9 +126,9 @@ public class SchemeJudgeObjectService {
         return dao.remove(id);
     }
 
-    public List<SchemeJudgeObjectVo> listGroupId(String groupId) {
+    public List<SchemeJudgeObjectVo> listGroupId(String groupID) {
         List<SchemeJudgeObjectVo> schemeJudgeObjectVos = new ArrayList<>();
-        for (SchemeJudgeObject s : dao.list(groupId)) {
+        for (SchemeJudgeObject s : dao.list(groupID)) {
             schemeJudgeObjectVos.add(change(s));
         }
         return schemeJudgeObjectVos;

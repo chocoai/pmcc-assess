@@ -5,8 +5,6 @@ import java.util.Date;
 public class SchemeAreaGroup {
     private Integer id;
 
-    private Integer recordId;
-
     private Integer projectId;
 
     private String province;
@@ -25,20 +23,14 @@ public class SchemeAreaGroup {
 
     private String groupId;
 
+    private String provinceCityDistrictStr;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(Integer recordId) {
-        this.recordId = recordId;
     }
 
     public Integer getProjectId() {
@@ -111,5 +103,13 @@ public class SchemeAreaGroup {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId == null ? null : groupId.trim();
+    }
+
+    public String getProvinceCityDistrictStr() {
+        return provinceCityDistrictStr;
+    }
+
+    public void setProvinceCityDistrictStr(String provinceCityDistrictStr) {
+        this.provinceCityDistrictStr = provinceCityDistrictStr == null ? null : provinceCityDistrictStr.trim();
     }
 }

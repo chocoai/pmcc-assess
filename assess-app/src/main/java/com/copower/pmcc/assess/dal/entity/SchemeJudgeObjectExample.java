@@ -286,66 +286,6 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaGroupIdIsNull() {
-            addCriterion("area_group_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdIsNotNull() {
-            addCriterion("area_group_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdEqualTo(Integer value) {
-            addCriterion("area_group_id =", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdNotEqualTo(Integer value) {
-            addCriterion("area_group_id <>", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdGreaterThan(Integer value) {
-            addCriterion("area_group_id >", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("area_group_id >=", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdLessThan(Integer value) {
-            addCriterion("area_group_id <", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdLessThanOrEqualTo(Integer value) {
-            addCriterion("area_group_id <=", value, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdIn(List<Integer> values) {
-            addCriterion("area_group_id in", values, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdNotIn(List<Integer> values) {
-            addCriterion("area_group_id not in", values, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdBetween(Integer value1, Integer value2) {
-            addCriterion("area_group_id between", value1, value2, "areaGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("area_group_id not between", value1, value2, "areaGroupId");
-            return (Criteria) this;
-        }
-
         public Criteria andEvaluationIdIsNull() {
             addCriterion("evaluation_id is null");
             return (Criteria) this;
@@ -1053,6 +993,146 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andEvaluationAreaNotBetween(String value1, String value2) {
             addCriterion("evaluation_area not between", value1, value2, "evaluationArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNull() {
+            addCriterion("flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNotNull() {
+            addCriterion("flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagEqualTo(String value) {
+            addCriterion("flag =", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotEqualTo(String value) {
+            addCriterion("flag <>", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThan(String value) {
+            addCriterion("flag >", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("flag >=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThan(String value) {
+            addCriterion("flag <", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThanOrEqualTo(String value) {
+            addCriterion("flag <=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLike(String value) {
+            addCriterion("flag like", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotLike(String value) {
+            addCriterion("flag not like", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIn(List<String> values) {
+            addCriterion("flag in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotIn(List<String> values) {
+            addCriterion("flag not in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagBetween(String value1, String value2) {
+            addCriterion("flag between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotBetween(String value1, String value2) {
+            addCriterion("flag not between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatIsNull() {
+            addCriterion("seat is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatIsNotNull() {
+            addCriterion("seat is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatEqualTo(String value) {
+            addCriterion("seat =", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatNotEqualTo(String value) {
+            addCriterion("seat <>", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatGreaterThan(String value) {
+            addCriterion("seat >", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatGreaterThanOrEqualTo(String value) {
+            addCriterion("seat >=", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatLessThan(String value) {
+            addCriterion("seat <", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatLessThanOrEqualTo(String value) {
+            addCriterion("seat <=", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatLike(String value) {
+            addCriterion("seat like", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatNotLike(String value) {
+            addCriterion("seat not like", value, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatIn(List<String> values) {
+            addCriterion("seat in", values, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatNotIn(List<String> values) {
+            addCriterion("seat not in", values, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatBetween(String value1, String value2) {
+            addCriterion("seat between", value1, value2, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSeatNotBetween(String value1, String value2) {
+            addCriterion("seat not between", value1, value2, "seat");
             return (Criteria) this;
         }
     }

@@ -64,7 +64,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h3 class="modal-title">基础设施维护</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -72,11 +72,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            省
+                                            省<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="province" class="form-control" id="province">
@@ -92,7 +91,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            市
+                                            市<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="city" class="form-control" id="city" required="required">
@@ -108,7 +107,8 @@
                                             县
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="district" class="form-control" id="district" required="required">
+                                            <select name="district" class="form-control" id="district"
+                                                    required="required">
                                                 <option>请选择</option>
                                             </select>
                                         </div>
@@ -130,7 +130,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            文号
+                                            文号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input placeholder="文号" class="form-control" id="number" name="number"/>
@@ -209,40 +209,6 @@
     </div>
 </div>
 
-<!-- 显示基础设施费用列表 -->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">基础设施费用</h4>
-
-                <div>
-                    <label class="col-sm-1 control-label">
-                        名称
-                    </label>
-                    <div class="col-sm-2">
-                        <input type="text" data-rule-maxlength="50"
-                               placeholder="名称" id="queryName1" name="queryName1"
-                               class="form-control">
-                    </div>
-                </div>
-            </div>
-            <div class="panel-body">
-        <span id="toolbarSub">
-            <button type="button" class="btn btn-success"
-                    data-toggle="modal" href="#firSub1"> 新增
-            </button>
-        </span>
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- 基础设施费用 添加 ===========-->
 <div id="firSub1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -251,77 +217,43 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">字段</h4>
+                <h3 class="modal-title" id="titleContent2">基础设施费</h3>
             </div>
-            <form id="firSubA">
-                <div class="panel-body">
+
+            <div class="panel-body">
+                <form id="firSubA" class="form-horizontal">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                名称
+                                名称<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input type="text" id="name" name="name" class="form-control" required="required">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">.</div>
-                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                费用
+                                费用<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
-                                <input type="text" id="numberCost" name="number" class="form-control" required="required">
+                            <div class="col-sm-4">
+                                <input type="text" id="numberCost" name="number" class="form-control"
+                                       required="required">
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                        保存
-                    </button>
-                </div>
-            </form>
-            <table class="table table-bordered" id="tb_List1">
-                <!-- cerare document add ajax data-->
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- 显示公共设施费用列表 -->
-<div id="divSubDataDic1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent1">公共设施费用</h4>
-
-                <div>
-                    <label class="col-sm-1 control-label">
-                        名称
-                    </label>
-                    <div class="col-sm-2">
-                        <input type="text" data-rule-maxlength="50"
-                               placeholder="名称" id="queryName2" name="queryName2"
-                               class="form-control">
-                    </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                    保存
+                </button>
             </div>
             <div class="panel-body">
-        <span id="toolbarSub2">
-            <button type="button" class="btn btn-success"
-                    data-toggle="modal" href="#firSub2"> 新增
-            </button>
-        </span>
-                <table class="table table-bordered" id="tbDataDicList2">
+                <table class="table table-bordered" id="tb_List1">
+                    <!-- cerare document add ajax data-->
                 </table>
             </div>
         </div>
@@ -336,28 +268,26 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent3">字段</h4>
+                <h3 class="modal-title" id="titleContent3">公共设施费用</h3>
             </div>
-            <form id="firSubA1">
+            <form id="firSubA1" class="form-horizontal">
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                名称
+                                名称<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <input type="text" id="name1" name="name" class="form-control" required="required">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">.</div>
-                    <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                金额
+                                金额<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-10">
-                                <input type="text" id="numberCost1" name="number" class="form-control" required="required">
+                            <div class="col-sm-4">
+                                <input type="text" id="numberCost1" name="number" class="form-control"
+                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -372,9 +302,11 @@
                     </button>
                 </div>
             </form>
-            <table class="table table-bordered" id="tb_List2">
-                <!-- cerare document add ajax data-->
-            </table>
+            <div class="panel-body">
+                <table class="table table-bordered" id="tb_List2">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -447,7 +379,7 @@
     }
 
     //删除 基础设施费用
-    function deleteBestUseDescription1(id,tbId1) {
+    function deleteBestUseDescription1(id, tbId1) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructureCost/delete",
@@ -556,7 +488,7 @@
     }
 
     //删除 公共设施费用
-    function deleteBestUseDescription2(id,tbId2) {
+    function deleteBestUseDescription2(id, tbId2) {
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructureMatchingCost/delete",
@@ -687,8 +619,8 @@
             //检测  然后操作
             removeChild();//删除市
             removeChild_district();//删除县
-            var selected =$(this).children('option:selected').val();//获取到省
-            var data = "pid="+selected;
+            var selected = $(this).children('option:selected').val();//获取到省
+            var data = "pid=" + selected;
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
                 type: "post",
@@ -709,8 +641,8 @@
         $("#city").change(function () {//监听 选择的城市
             //检测  然后操作
             removeChild_district();
-            var selected =$(this).children('option:selected').val();//获取到城市
-            var data = "pid="+selected;
+            var selected = $(this).children('option:selected').val();//获取到城市
+            var data = "pid=" + selected;
             $.ajax({
                 url: "${pageContext.request.contextPath}/infrastructure/getAreaList",
                 type: "post",
@@ -729,13 +661,13 @@
     selectCity();
     function removeChild() { //删除市
         var optionLen = $("#city option").size();
-        if (optionLen>2){
+        if (optionLen > 2) {
             $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
         }
     }
     function removeChild_district() {//删除县或者区
         var optionLen = $("#district option").size();
-        if (optionLen>2){
+        if (optionLen > 2) {
             $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
         }
     }
@@ -743,10 +675,10 @@
         var TableField = $("#city");
         var TableFieldElement = document.getElementById("city");
         var len = item.length;
-        for (var i = 0 ; i < len;i++){
+        for (var i = 0; i < len; i++) {
             var optionLen = $("#city option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value",item[i].areaId);
+            fieldElment.setAttribute("value", item[i].areaId);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
 
@@ -757,10 +689,10 @@
         var TableField = $("#district");
         var TableFieldElement = document.getElementById("district");
         var len = item.length;
-        for (var i = 0 ; i < len;i++){
+        for (var i = 0; i < len; i++) {
             var optionLen = $("#district option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value",item[i].id);
+            fieldElment.setAttribute("value", item[i].id);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
 

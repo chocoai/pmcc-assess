@@ -118,7 +118,7 @@
                         </c:if>
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link" onclick="schemeareagroupTableList(${item.id})"><i class="fa fa-chevron-down"></i></a> </li>
+                        <li><a class="collapse-link" onclick="schemeareagroupTableList('${item.id}','${item.groupId}')"><i class="fa fa-chevron-down"></i></a> </li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -223,8 +223,8 @@
                         <div class="col-md-12">
                             <div class="panel-body">
 
-                                <input type="text" name="judgeObjectId" id="judgeObjectIdMethod" placeholder="估价对象在方法中的id">
-                                <input type="text" name="methodType" id="methodTypeID" >
+                                <input type="hidden" name="judgeObjectId" id="judgeObjectIdMethod" placeholder="估价对象在方法中的id">
+                                <input type="hidden" name="methodType" id="methodTypeID" >
                                 <c:forEach items="${dataEvaluationMethod}" var="item">
                                     <div class="form-group">
                                         <div class="x-valid">
@@ -329,7 +329,7 @@
                                 </div>
 
                                 <div class="form-group" id="evaluationThinkTempleGroup2">
-                                    <input type="text" name="methodID" id="thinkMethodID">
+                                    <input type="hidden" name="methodID" id="thinkMethodID">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
                                             模板
@@ -791,7 +791,7 @@
     <c:forEach items="${dataList}" var="item">
         document.getElementById("contentList"+${item.id}).style.display = "none";
     </c:forEach>
-    function schemeareagroupTableList(id) {
+    function schemeareagroupTableList(id,groupID) {
         var dis = document.getElementById("contentList"+id).style.display;
         if (dis=="none"){
             document.getElementById("contentList"+id).style.display = "";
@@ -801,7 +801,7 @@
                 $.ajax({
                     url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
                     data: {
-                        auxiliaryID: id
+                        groupID: groupID
                     },
                     type: "post",
                     dataType: "json",
@@ -824,7 +824,12 @@
                             dataCreator.setAttribute("id","dataCreator"+data.id);
 
                             var dataSeat = document.createElement("td");
-                            dataSeat.appendChild(document.createTextNode("座落"));
+                            var inputSeat = document.createElement("input");
+                            inputSeat.setAttribute("class","form-control");
+                            inputSeat.setAttribute("type","text");
+                            inputSeat.setAttribute("name","seat");
+                            inputSeat.setAttribute("placeholder","座落");
+                            dataSeat.appendChild(inputSeat);
                             dataSeat.setAttribute("id","dataSeat"+data.id);
 
                             var dataBestUse = document.createElement("td");
@@ -852,6 +857,7 @@
 
                             var dataFloorArea = document.createElement("td");
                             var labelFloor = document.createElement("label");
+                            labelFloor.setAttribute("class","form-control");
                             labelFloor.appendChild(document.createTextNode(data.floorArea));
                             dataFloorArea.appendChild(labelFloor);
                             dataFloorArea.setAttribute("id","dataFloorArea"+data.id);
@@ -860,12 +866,17 @@
                             inputHidden.setAttribute("type","hidden");
                             inputHidden.setAttribute("name","floorArea");
                             inputHidden.setAttribute("value",""+data.floorArea+"");
+                            var inputHiddenFlag = document.createElement("input");
+                            inputHiddenFlag.setAttribute("type","hidden");
+                            inputHiddenFlag.setAttribute("name","flag");
+                            inputHiddenFlag.setAttribute("value","0");
                             var inputID = document.createElement("input");
                             inputID.setAttribute("type","hidden");
-                            inputID.setAttribute("id","idX"+data.id);
-                            inputID.setAttribute("name","id");
+                            inputID.setAttribute("id","idX"+data.id+"");
                             inputID.setAttribute("value",""+data.id+"");
+                            inputID.setAttribute("name","id");
                             dataFloorArea.appendChild(inputID);
+                            dataFloorArea.appendChild(inputHiddenFlag);
                             dataFloorArea.appendChild(inputHidden);
 
                             var dataAssessmentArea = document.createElement("td");
@@ -1236,6 +1247,7 @@
 
         }
     });
+
     //评估思路 字段
     function writeThinkFieldS(id) {
         $.ajax({// list
@@ -1368,18 +1380,31 @@
             }else if (i==j++){
                 tdElement.innerHTML = dataCreator;
             }else if (i==j++){
-                tdElement.innerHTML = dataSeat;
+                var inputSeat = document.createElement("input");
+                inputSeat.setAttribute("class","form-control");
+                inputSeat.setAttribute("type","text");
+                inputSeat.setAttribute("name","seat");
+                inputSeat.setAttribute("placeholder","座落");
+                tdElement.appendChild(inputSeat);
             }else if (i==j++){
                 tdElement.innerHTML = dataBestUse;
             }else if (i==j++){
                 tdElement.innerHTML = dataMerge;
             }else if (i==j++){
+                var labelFloor = document.createElement("label");
+                labelFloor.setAttribute("class","form-control");
+                labelFloor.appendChild(document.createTextNode(dataFloorArea));
                 var inputElement = document.createElement("input");
-                inputElement.setAttribute("class","form-control");
                 inputElement.setAttribute("name","floorArea");
-                inputElement.setAttribute("type","text");
-                inputElement.setAttribute("placeholder","证载面积");
+                inputElement.setAttribute("type","hidden");
+                inputElement.setAttribute("value","1");
+                var inputFlag = document.createElement("input");
+                inputFlag.setAttribute("name","flag");
+                inputFlag.setAttribute("type","hidden");
+                inputFlag.setAttribute("value","1");
                 tdElement.appendChild(inputElement);
+                tdElement.appendChild(labelFloor);
+                tdElement.appendChild(inputFlag);
                 var inputID = document.createElement("input");
                 inputID.setAttribute("type","hidden");
                 inputID.setAttribute("name","id");

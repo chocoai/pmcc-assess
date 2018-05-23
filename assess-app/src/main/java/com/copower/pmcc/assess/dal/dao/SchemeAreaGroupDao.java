@@ -30,10 +30,17 @@ public class SchemeAreaGroupDao {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public List<SchemeAreaGroupDto> areaGroupDtoList(String groupId){
+    public SchemeAreaGroup get(String groupID){
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andIdIsNotNull().andGroupIdEqualTo(groupID);
+        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
+        return schemeAreaGroups.get(0);
+    }
+
+    public List<SchemeAreaGroupDto> areaGroupDtoList(Integer projectID){
         List<SchemeAreaGroupDto> schemeAreaGroupDtoList = new ArrayList<>();
         SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andIdIsNotNull().andProjectIdIsNotNull().andGroupIdEqualTo(groupId);
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectID);
         List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
         schemeAreaGroups.parallelStream().forEach(schemeAreaGroup -> schemeAreaGroupDtoList.add(change(schemeAreaGroup)));
         return schemeAreaGroupDtoList;

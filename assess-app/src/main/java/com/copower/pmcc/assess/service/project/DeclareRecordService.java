@@ -44,8 +44,6 @@ public class DeclareRecordService {
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
 
-    @Autowired
-    private SchemeAreaGroupAuxiliaryService schemeAreaGroupAuxiliaryService;
 
     /*相同省 市 ====>注意必须重写equals*/
     @Transactional(readOnly = true)
@@ -119,37 +117,20 @@ public class DeclareRecordService {
                             List<DeclareRecord> d1s = new ArrayList<>();
                             SysAreaDto sysAreaDto2 = districts.get(k);
                             String districtID = sysAreaDto2.getId() + "";//县或者县级市标识符
-                            SchemeAreaGroupDto dto = null;
                             SchemeJudgeObjectDto objectDto = null;
                             String groupID = UUID.randomUUID().toString();
                             for (DeclareRecord d : declareRecords) {//record_id
                                 if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getDistrict()) && !StringUtils.isEmpty(d.getCity())) {
                                     if (d.getProvince().equals(parentId) && d.getCity().equals(areaId) && d.getDistrict().equals(districtID)) {
-                                        dto = new SchemeAreaGroupDto();
                                         objectDto = new SchemeJudgeObjectDto();
-                                        dto.setProjectId(Integer.parseInt(projectID));
-                                        dto.setGroupId(groupID);
-                                        dto.setCreator(d.getCreator());
-                                        dto.setCity(d.getCity());
-                                        dto.setProvince(d.getProvince());
-                                        dto.setDistrict(d.getDistrict());
-                                        dto.setCreator(commonService.thisUserAccount());
-                                        dto.setRecordId(d.getId());
-                                        int idx = 0;
-                                        if (dto != null) {
-                                            idx = schemeAreaGroupService.add(dto);
-                                        }
-
                                         d1s.add(d);
-
                                         objectDto.setProjectId(Integer.parseInt(projectID));
-                                        objectDto.setAreaGroupId(dto.getId());
                                         objectDto.setDeclareRecordId(d.getId());
                                         objectDto.setCreator(commonService.thisUserAccount());
                                         objectDto.setGroupId(groupID);
                                         objectDto.setFloorArea(d.getFloorArea());
                                         objectDto.setName(d.getName());
-                                        objectDto.setAreaGroupId(idx);
+                                        objectDto.setFlag("0");
                                         if (objectDto!=null) {
                                             schemeJudgeObjectService.add(objectDto);
                                         }
@@ -157,9 +138,15 @@ public class DeclareRecordService {
                                 }
                             }
                             if (d1s.size() >= 1) {
-                                SchemeAreaGroupAuxiliary areaGroupAuxiliary = new SchemeAreaGroupAuxiliary();
-                                areaGroupAuxiliary.setGroupId(groupID);
-                                areaGroupAuxiliary.setProjectId(Integer.parseInt(projectID));
+                                SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
+                                groupDto.setGroupId(groupID);
+                                groupDto.setProjectId(Integer.parseInt(projectID));
+                                groupDto.setGroupId(groupID);
+                                groupDto.setCreator(commonService.thisUserAccount());
+                                groupDto.setCity(areaId);
+                                groupDto.setProvince(id+"");
+                                groupDto.setDistrict(districtID);
+                                groupDto.setCreator(commonService.thisUserAccount());
                                 StringBuilder builder = new StringBuilder(1024);
                                 if (id != null) {
                                     builder.append(projectInfoService.getProvinceName(id));
@@ -170,8 +157,8 @@ public class DeclareRecordService {
                                 if (!StringUtils.isEmpty(districtID)) {
                                     builder.append(projectInfoService.getSysArea(Integer.parseInt(districtID)));
                                 }
-                                areaGroupAuxiliary.setProvinceCityDistrictStr(builder.toString());
-                                schemeAreaGroupAuxiliaryService.add(areaGroupAuxiliary);
+                                groupDto.setProvinceCityDistrictStr(builder.toString());
+                                schemeAreaGroupService.add(groupDto);
                             }
                         } catch (Exception e) {
                             logger.error(e.getMessage());
@@ -180,27 +167,12 @@ public class DeclareRecordService {
                     }
                 } else {
                     //直辖市判断 并且初始化
-                    SchemeAreaGroupDto dto = null;
                     SchemeJudgeObjectDto objectDto = null;
                     String groupID = UUID.randomUUID().toString();
                     List<DeclareRecord> d2s = new ArrayList<>();
                     for (DeclareRecord d : declareRecords) {
-                        if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getDistrict()) && !StringUtils.isEmpty(d.getCity())) {
-                            if (d.getProvince().equals(parentId) && d.getCity().equals(areaId)) {
-                                dto = new SchemeAreaGroupDto();
-                                dto.setProjectId(Integer.parseInt(projectID));
-                                dto.setGroupId(groupID);
-                                dto.setCreator(d.getCreator());
-                                dto.setCity(d.getCity());
-                                dto.setProvince(d.getProvince());
-                                dto.setDistrict(d.getDistrict());
-                                dto.setRecordId(d.getId());
-                                dto.setCreator(commonService.thisUserAccount());
-                                if (dto != null) {
-                                    int idx = schemeAreaGroupService.add(dto);
-                                    int idN = schemeAreaGroupService.getID(dto);
-                                    objectDto.setAreaGroupId(idN);
-                                }
+                        if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getCity())) {
+                            if (d.getProvince().equals(id) && d.getCity().equals(areaId)) {
                                 d2s.add(d);
                                 objectDto.setProjectId(Integer.parseInt(projectID));
                                 objectDto.setDeclareRecordId(d.getId());
@@ -208,14 +180,20 @@ public class DeclareRecordService {
                                 objectDto.setGroupId(groupID);
                                 objectDto.setFloorArea(d.getFloorArea());
                                 objectDto.setName(d.getName());
+                                objectDto.setFlag("0");
                                 if (objectDto!=null) schemeJudgeObjectService.add(objectDto);
                             }
                         }
                     }
                     if (d2s.size() >= 1) {
-                        SchemeAreaGroupAuxiliary areaGroupAuxiliary = new SchemeAreaGroupAuxiliary();
-                        areaGroupAuxiliary.setGroupId(groupID);
-                        areaGroupAuxiliary.setProjectId(Integer.parseInt(projectID));
+                        SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
+                        groupDto.setGroupId(groupID);
+                        groupDto.setProjectId(Integer.parseInt(projectID));
+                        groupDto.setGroupId(groupID);
+                        groupDto.setCreator(commonService.thisUserAccount());
+                        groupDto.setCity(areaId);
+                        groupDto.setProvince(id+"");
+                        groupDto.setCreator(commonService.thisUserAccount());
                         StringBuilder builder = new StringBuilder(1024);
                         if (id != null) {
                             builder.append(projectInfoService.getProvinceName(id));
@@ -223,8 +201,8 @@ public class DeclareRecordService {
                         if (!StringUtils.isEmpty(areaId)) {
                             builder.append(projectInfoService.getSysArea(Integer.parseInt(areaId)));
                         }
-                        areaGroupAuxiliary.setProvinceCityDistrictStr(builder.toString());
-                        schemeAreaGroupAuxiliaryService.add(areaGroupAuxiliary);
+                        groupDto.setProvinceCityDistrictStr(builder.toString());
+                        schemeAreaGroupService.add(groupDto);
                     }
                 }
             }

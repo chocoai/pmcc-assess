@@ -50,7 +50,7 @@ public class SchemeJudgeObjectDao {
 
     public List<SchemeJudgeObject> list(String groupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
-        example.createCriteria().andIdIsNotNull().andGroupIdEqualTo(groupId);
+        example.createCriteria().andIdIsNotNull().andGroupIdEqualTo(groupId).andFlagEqualTo("0");
         return mapper.selectByExample(example);
     }
 }

@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
-    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -17,6 +16,8 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="group_id" property="groupId" jdbcType="VARCHAR" />
     <result column="evaluation_area" property="evaluationArea" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="seat" property="seat" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, declare_record_id, area_group_id, evaluation_id, number, name, best_use_id, 
-    floor_area, group_number, creator, gmt_created, gmt_modified, group_id, evaluation_area
+    id, project_id, declare_record_id, evaluation_id, number, name, best_use_id, floor_area, 
+    group_number, creator, gmt_created, gmt_modified, group_id, evaluation_area, flag, 
+    seat
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" >
     select
@@ -114,16 +116,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_object (project_id, declare_record_id, area_group_id, 
-      evaluation_id, number, name, 
-      best_use_id, floor_area, group_number, 
-      creator, gmt_created, gmt_modified, 
-      group_id, evaluation_area)
-    values (#{projectId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
-      #{evaluationId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{bestUseId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{groupId,jdbcType=VARCHAR}, #{evaluationArea,jdbcType=VARCHAR})
+    insert into tb_scheme_judge_object (project_id, declare_record_id, evaluation_id, 
+      number, name, best_use_id, 
+      floor_area, group_number, creator, 
+      gmt_created, gmt_modified, group_id, 
+      evaluation_area, flag, seat
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{evaluationId,jdbcType=INTEGER}, 
+      #{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{bestUseId,jdbcType=INTEGER}, 
+      #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{groupId,jdbcType=VARCHAR}, 
+      #{evaluationArea,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,9 +140,6 @@
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
-      </if>
-      <if test="areaGroupId != null" >
-        area_group_id,
       </if>
       <if test="evaluationId != null" >
         evaluation_id,
@@ -173,6 +174,12 @@
       <if test="evaluationArea != null" >
         evaluation_area,
       </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="seat != null" >
+        seat,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
@@ -180,9 +187,6 @@
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="areaGroupId != null" >
-        #{areaGroupId,jdbcType=INTEGER},
       </if>
       <if test="evaluationId != null" >
         #{evaluationId,jdbcType=INTEGER},
@@ -217,6 +221,12 @@
       <if test="evaluationArea != null" >
         #{evaluationArea,jdbcType=VARCHAR},
       </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        #{seat,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" resultType="java.lang.Integer" >
@@ -236,9 +246,6 @@
       </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="record.areaGroupId != null" >
-        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       </if>
       <if test="record.evaluationId != null" >
         evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
@@ -273,6 +280,12 @@
       <if test="record.evaluationArea != null" >
         evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
       </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seat != null" >
+        seat = #{record.seat,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -283,7 +296,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -294,7 +306,9 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       group_id = #{record.groupId,jdbcType=VARCHAR},
-      evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR}
+      evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      seat = #{record.seat,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -307,9 +321,6 @@
       </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="areaGroupId != null" >
-        area_group_id = #{areaGroupId,jdbcType=INTEGER},
       </if>
       <if test="evaluationId != null" >
         evaluation_id = #{evaluationId,jdbcType=INTEGER},
@@ -344,6 +355,12 @@
       <if test="evaluationArea != null" >
         evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
       </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        seat = #{seat,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -351,7 +368,6 @@
     update tb_scheme_judge_object
     set project_id = #{projectId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
-      area_group_id = #{areaGroupId,jdbcType=INTEGER},
       evaluation_id = #{evaluationId,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
@@ -362,7 +378,9 @@
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       group_id = #{groupId,jdbcType=VARCHAR},
-      evaluation_area = #{evaluationArea,jdbcType=VARCHAR}
+      evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      seat = #{seat,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

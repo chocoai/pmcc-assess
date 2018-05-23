@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.dal.dao.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;
@@ -33,14 +34,6 @@ public class SchemeAreaGroupService {
     private SchemeAreaGroupDao dao;
 
 
-    /**
-     * 由于add () 失效不能返回id 因此....
-     * @param dto
-     * @return
-     */
-    public int getID(SchemeAreaGroupDto dto){
-        return dao.getID(dto);
-    }
 
     @Transactional
     public int add(SchemeAreaGroupDto dto) {
@@ -50,19 +43,17 @@ public class SchemeAreaGroupService {
     /**
      * 根据分组 获取数据信息
      *
-     * @param groupId
+     * @param projectID
      * @return
      */
-    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(String groupId) {
+    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(Integer projectID) {
         List<SchemeAreaGroupVo> schemeAreaGroupVos = new ArrayList<>();
-        List<SchemeAreaGroupDto> dtos = dao.areaGroupDtoList(groupId);
+        List<SchemeAreaGroupDto> dtos = dao.areaGroupDtoList(projectID);
         dtos.parallelStream().forEach(s -> schemeAreaGroupVos.add(change(s)));
         return schemeAreaGroupVos;
     }
 
     /**
-     * 初始化
-     *
      * @param dto
      * @return
      */
@@ -93,11 +84,12 @@ public class SchemeAreaGroupService {
         return dao.get(id);
     }
 
+    public SchemeAreaGroup get(String groupID){
+        return dao.get(groupID);
+    }
+
     public SchemeAreaGroupVo change(SchemeAreaGroupDto dto) {
         SchemeAreaGroupVo vo = new SchemeAreaGroupVo();
-        DeclareRecord declareRecord = declareRecordService.getByID(dto.getRecordId());
-        vo.setFloorArea(declareRecord.getFloorArea());
-        vo.setRecordName(declareRecord.getName());
         BeanUtils.copyProperties(dto, vo);
         return vo;
     }

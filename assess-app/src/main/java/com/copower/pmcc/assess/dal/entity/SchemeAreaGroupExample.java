@@ -165,66 +165,6 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andRecordIdIsNull() {
-            addCriterion("record_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdIsNotNull() {
-            addCriterion("record_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdEqualTo(Integer value) {
-            addCriterion("record_id =", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdNotEqualTo(Integer value) {
-            addCriterion("record_id <>", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdGreaterThan(Integer value) {
-            addCriterion("record_id >", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("record_id >=", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdLessThan(Integer value) {
-            addCriterion("record_id <", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdLessThanOrEqualTo(Integer value) {
-            addCriterion("record_id <=", value, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdIn(List<Integer> values) {
-            addCriterion("record_id in", values, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdNotIn(List<Integer> values) {
-            addCriterion("record_id not in", values, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdBetween(Integer value1, Integer value2) {
-            addCriterion("record_id between", value1, value2, "recordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecordIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("record_id not between", value1, value2, "recordId");
-            return (Criteria) this;
-        }
-
         public Criteria andProjectIdIsNull() {
             addCriterion("project_id is null");
             return (Criteria) this;
@@ -812,6 +752,76 @@ public class SchemeAreaGroupExample {
 
         public Criteria andGroupIdNotBetween(String value1, String value2) {
             addCriterion("group_id not between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrIsNull() {
+            addCriterion("province_city_district_str is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrIsNotNull() {
+            addCriterion("province_city_district_str is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrEqualTo(String value) {
+            addCriterion("province_city_district_str =", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotEqualTo(String value) {
+            addCriterion("province_city_district_str <>", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrGreaterThan(String value) {
+            addCriterion("province_city_district_str >", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrGreaterThanOrEqualTo(String value) {
+            addCriterion("province_city_district_str >=", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLessThan(String value) {
+            addCriterion("province_city_district_str <", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLessThanOrEqualTo(String value) {
+            addCriterion("province_city_district_str <=", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLike(String value) {
+            addCriterion("province_city_district_str like", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotLike(String value) {
+            addCriterion("province_city_district_str not like", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrIn(List<String> values) {
+            addCriterion("province_city_district_str in", values, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotIn(List<String> values) {
+            addCriterion("province_city_district_str not in", values, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrBetween(String value1, String value2) {
+            addCriterion("province_city_district_str between", value1, value2, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotBetween(String value1, String value2) {
+            addCriterion("province_city_district_str not between", value1, value2, "provinceCityDistrictStr");
             return (Criteria) this;
         }
     }

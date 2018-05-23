@@ -3,12 +3,15 @@ package com.copower.pmcc.assess.dto.input.project;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by 13426 on 2018/5/22.
  */
-public class SchemeJudgeObjectStringDto  {
+public class SchemeJudgeObjectStringDto implements Serializable {
+    private String flag;
+    private String seat;
     private String id;
     private String bestUseId;
 
@@ -67,5 +70,21 @@ public class SchemeJudgeObjectStringDto  {
 
     public void setEvaluationArea(String evaluationArea) {
         this.evaluationArea = evaluationArea;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getSeat() {
+        return seat;
+    }
+
+    public void setSeat(String seat) {
+        this.seat = seat;
     }
 }

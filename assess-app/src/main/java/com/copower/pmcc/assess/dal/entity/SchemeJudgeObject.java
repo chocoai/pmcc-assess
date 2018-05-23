@@ -10,8 +10,6 @@ public class SchemeJudgeObject {
 
     private Integer declareRecordId;
 
-    private Integer areaGroupId;
-
     private Integer evaluationId;
 
     private Integer number;
@@ -33,6 +31,10 @@ public class SchemeJudgeObject {
     private String groupId;
 
     private String evaluationArea;
+
+    private String flag;
+
+    private String seat;
 
     public Integer getId() {
         return id;
@@ -56,14 +58,6 @@ public class SchemeJudgeObject {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
-    }
-
-    public Integer getAreaGroupId() {
-        return areaGroupId;
-    }
-
-    public void setAreaGroupId(Integer areaGroupId) {
-        this.areaGroupId = areaGroupId;
     }
 
     public Integer getEvaluationId() {
@@ -152,5 +146,21 @@ public class SchemeJudgeObject {
 
     public void setEvaluationArea(String evaluationArea) {
         this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
+    }
+
+    public String getSeat() {
+        return seat;
+    }
+
+    public void setSeat(String seat) {
+        this.seat = seat == null ? null : seat.trim();
     }
 }

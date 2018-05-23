@@ -91,10 +91,10 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组 ", method = RequestMethod.POST)
-    public Object schemeAreaGroupVoList(@RequestParam(value = "auxiliaryID") Integer auxiliaryID) {
+    public Object schemeAreaGroupVoList(@RequestParam(value = "groupID") String groupID) {
         try {
-            if (auxiliaryID != null) {
-               List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(auxiliaryID);
+            if (!StringUtils.isEmpty(groupID)) {
+               List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(groupID);
                 if (vos != null) return vos;
             }
         } catch (Exception e) {

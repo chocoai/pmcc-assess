@@ -3,7 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
+            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -58,13 +59,14 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" data-height="300"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h3 class="modal-title">建筑成新率管理</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -86,21 +88,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            经济耐用年限<span class="symbol required"></span>
+                                            用途<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-digits="true" placeholder="经济耐用年限(请输入数字)"
-                                                   id="durableLife" name="durableLife" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            用途
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="buildingUse" class="form-control" id="buildingUse">
+                                            <select name="buildingUse" required class="form-control" placeholder="用途" id="buildingUse">
                                                 <c:forEach items="${useList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
@@ -112,13 +103,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            经济耐用年限
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text"  data-rule-digits="true"
+                                                   placeholder="经济耐用年限(请输入数字)"
+                                                   id="durableLife" name="durableLife" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             残值率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" required data-rule-digits="true" placeholder="残值率"
+                                            <input type="text"   placeholder="残值率"
                                                    id="residualValue" name="residualValue" class="form-control">
-                                            <%--<textarea placeholder="残值率" id="residualValue" name="residualValue"--%>
-                                            <%--class="form-control"></textarea>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -139,45 +140,25 @@
     </div>
 </div>
 
-
-<!--建筑成新率数据子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">建筑成新率数据</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
     $(function () {
-        loadDataDicList();
+        loadArchitectureList();
     })
     //加载 建筑成新率 数据列表
-    function loadDataDicList() {
+    function loadArchitectureList() {
         var cols = [];
         cols.push({field: 'buildingStructure', title: '建筑结构'});
         cols.push({field: 'useChange', title: '用途'});
         cols.push({field: 'durableLife', title: '经济耐用年限'});
-        // cols.push({field: 'creator', title: '创建人'});
         cols.push({field: 'residualValue', title: '残值率'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:removeDataBuildingNewRate(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a data-placement="top" data-original-title="编辑" class="btn btn-xs btn-warning tooltips" onclick="editHrProfessional(' + index + ');"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a data-placement="top" data-original-title="删除" class="btn btn-xs btn-warning tooltips" onclick="editHrProfessional(' + index + ');"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -188,7 +169,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
         });
     }
 
@@ -295,8 +279,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

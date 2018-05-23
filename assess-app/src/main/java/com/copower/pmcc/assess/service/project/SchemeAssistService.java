@@ -47,8 +47,6 @@ public class SchemeAssistService {
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
-    private SchemeAreaGroupAuxiliaryService auxiliaryService;
-    @Autowired
     private EvaluationThinkingFieldDao thinkingFieldDao;
     @Autowired
     private EvaluationMethodService methodService;
@@ -118,37 +116,18 @@ public class SchemeAssistService {
     /**
      * 区域分组
      *
-     * @param auxiliaryID
+     * @param projectID
      * @return
      */
-    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(Integer auxiliaryID) {
-        SchemeAreaGroupAuxiliary schemeAreaGroupAuxiliary = auxiliaryService.get(auxiliaryID);
-        String groupID = schemeAreaGroupAuxiliary.getGroupId();
-        List<SchemeAreaGroupVo> vos = schemeAreaGroupService.schemeAreaGroupVoList(groupID);
-        return vos;
-    }
-
-    /**
-     * 区域分组 修改之后
-     *
-     * @param auxiliaryID
-     * @return
-     */
-    public List<SchemeJudgeObjectVo> schemeAreaGroupVoListX(Integer auxiliaryID) {
-        SchemeAreaGroupAuxiliary schemeAreaGroupAuxiliary = auxiliaryService.get(auxiliaryID);
-        String groupID = schemeAreaGroupAuxiliary.getGroupId();
-        List<SchemeJudgeObjectVo> vos = null;
-        vos = judgeObjectService.listGroupId(groupID);
-        return vos;
-    }
-
-    public List<SchemeAreaGroupAuxiliary> schemeareagroupauxiliary(String projectID) {
-        List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries = auxiliaryService.list(projectID);
-        if (schemeAreaGroupAuxiliaries.size() < 1) {
-            declareRecordService.schemeareagroupauxiliary(projectID);//初始化
-            List<SchemeAreaGroupAuxiliary> schemeAreaGroupAuxiliaries1 = auxiliaryService.list(projectID);
-            if (schemeAreaGroupAuxiliaries1.size() >= 1) {
-                return schemeAreaGroupAuxiliaries1;
+    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(Integer projectID) {
+        List<SchemeAreaGroupVo> vos = null;
+        vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
+        if (vos.size() < 1) {
+            //说明需要初始化
+            declareRecordService.schemeareagroupauxiliary(projectID + "");//初始化
+            vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
+            if (vos.size() >= 1) {
+                return vos;
             } else {
                 try {
                     throw new Exception();
@@ -157,8 +136,20 @@ public class SchemeAssistService {
                 }
             }
         }
-        return schemeAreaGroupAuxiliaries;
+        return vos;
     }
+
+    /**
+     *
+     * @param groupID
+     * @return
+     */
+    public List<SchemeJudgeObjectVo> schemeAreaGroupVoListX(String groupID) {
+        List<SchemeJudgeObjectVo> vos = null;
+        vos = judgeObjectService.listGroupId(groupID);
+        return vos;
+    }
+
 
     public DeclareRecordVo change(DeclareRecord declareRecord) {
         DeclareRecordVo vo = new DeclareRecordVo();
