@@ -12,7 +12,7 @@ public class SchemeJudgeObject {
 
     private Integer areaGroupId;
 
-    private Integer evaluationId;
+    private boolean evaluationId;
 
     private Integer number;
 
@@ -66,11 +66,11 @@ public class SchemeJudgeObject {
         this.areaGroupId = areaGroupId;
     }
 
-    public Integer getEvaluationId() {
+    public boolean getEvaluationId() {
         return evaluationId;
     }
 
-    public void setEvaluationId(Integer evaluationId) {
+    public void setEvaluationId(boolean evaluationId) {
         this.evaluationId = evaluationId;
     }
 

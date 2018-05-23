@@ -77,7 +77,7 @@ public class SchemeJudgeObjectService {
             evaluationObjectDto.setAreaGroupId(dtoA.getAreaGroupId());
             evaluationObjectDto.setProjectId(dtoA.getProjectId());
             try {
-                int idE = evaluationObjectService.add(evaluationObjectDto);
+                boolean idE = evaluationObjectService.add(evaluationObjectDto);
                 dtoA.setEvaluationId(idE);
                 update(dtoA);
             }catch (Exception e){
