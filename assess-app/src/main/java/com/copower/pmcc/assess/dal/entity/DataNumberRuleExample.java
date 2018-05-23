@@ -605,6 +605,76 @@ public class DataNumberRuleExample {
             return (Criteria) this;
         }
 
+        public Criteria andRecountIsNull() {
+            addCriterion("recount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountIsNotNull() {
+            addCriterion("recount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountEqualTo(String value) {
+            addCriterion("recount =", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountNotEqualTo(String value) {
+            addCriterion("recount <>", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountGreaterThan(String value) {
+            addCriterion("recount >", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountGreaterThanOrEqualTo(String value) {
+            addCriterion("recount >=", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountLessThan(String value) {
+            addCriterion("recount <", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountLessThanOrEqualTo(String value) {
+            addCriterion("recount <=", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountLike(String value) {
+            addCriterion("recount like", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountNotLike(String value) {
+            addCriterion("recount not like", value, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountIn(List<String> values) {
+            addCriterion("recount in", values, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountNotIn(List<String> values) {
+            addCriterion("recount not in", values, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountBetween(String value1, String value2) {
+            addCriterion("recount between", value1, value2, "recount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecountNotBetween(String value1, String value2) {
+            addCriterion("recount not between", value1, value2, "recount");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

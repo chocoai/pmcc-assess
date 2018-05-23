@@ -80,7 +80,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h3 class="modal-title">文号规则管理</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -135,10 +135,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            日期规则<span class="symbol required"></span>
+                                            文号规则<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" required data-rule-digits="true" placeholder="日期规则"
+                                            <input type="text" required data-rule-digits="true" placeholder="文号规则"
                                                    id="dateRule" name="dateRule" class="form-control">
                                         </div>
                                     </div>
@@ -176,9 +176,25 @@
                                         <div class="col-sm-9">
                                             <select class="form-control" required id="sameReportType" name="sameReportType">
                                                 <option value="">-请选择-</option>
+                                                <option value="0">新号</option>
                                                 <c:forEach var="items" items="${reportTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
                                                 </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            文号重新计算方式<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" required id="recount" name="recount">
+                                                <option value="">-请选择-</option>
+                                                    <option value="一直连续">一直连续</option>
+                                                    <option value="按年分断">按年分断</option>
                                             </select>
                                         </div>
                                     </div>
@@ -201,7 +217,7 @@
 </div>
 
 
-<!--价值时点数据子项数据 ===========-->
+<!--文号规则数据子项数据 ===========-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -236,12 +252,13 @@
         cols.push({field: 'figures', title: '位数'});
         cols.push({field: 'startNumber', title: '起始编号'});
         cols.push({field: 'sameReportType', title: '同号的报告类型'});
+        cols.push({field: 'recount', title: '文号重新计算方式'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delData(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -253,7 +270,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
         });
     }
 
