@@ -37,6 +37,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,7 @@ import java.util.regex.Pattern;
  */
 @Service
 public class FormConfigureService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseFormDao hrBaseFormDao;
     @Autowired
@@ -401,8 +404,16 @@ public class FormConfigureService {
                 if (StringUtils.isNotBlank(jsonValue) && StringUtils.isNotBlank(o.getDataViewSql())) {
                     String viewSql = o.getDataViewSql();
                     //根据参数处理一下sql
-                    viewSql = getRegexString(map, "#\\{(.*?)\\}", viewSql);
-                    String text = Boolean.TRUE == o.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
+                    String text = new String();
+                    viewSql = getRegexSql(map, "#\\{(.*?)\\}", viewSql);
+                    if (StringUtils.isNotBlank(viewSql)){
+                        try {
+                            text = Boolean.TRUE == o.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
+                        } catch (Exception e) {
+                           logger.error(e.getMessage());
+                        }
+                    }
+
                     CustomTableTypeEnum customTableTypeEnum = CustomTableTypeEnum.getCustomTypeByColumnsPrefix(o.getFieldType());
                     if (customTableTypeEnum != null) {
                         switch (customTableTypeEnum) {
@@ -742,14 +753,14 @@ public class FormConfigureService {
 
                             if (StringUtils.isNotBlank(item.getDataViewSql())) {
                                 String viewSql = item.getDataViewSql();
-                                viewSql = getRegexString(map, "#\\{(.*?)\\}", viewSql);
+                                viewSql = getRegexSql(map, "#\\{(.*?)\\}", viewSql);
                                 String text = new String();
-                                try {
-                                    //可以先判断对应的参数值是否为空，如果为空则直接返回
-                                    text = Boolean.TRUE == item.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
-                                } catch (Exception e) {
-                                    text = "";
-                                    e.printStackTrace();
+                                if(StringUtils.isNotBlank(viewSql)){
+                                    try {
+                                        text = Boolean.TRUE == item.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
+                                    } catch (Exception e) {
+                                        logger.error(e.getMessage());
+                                    }
                                 }
                                 if (customTableTypeEnum != null) {
                                     switch (customTableTypeEnum) {
@@ -781,6 +792,21 @@ public class FormConfigureService {
             String s = new String();
             if (map != null && map.containsKey(group1))
                 s = map.get(group1).toString();
+            source = source.replace(group, s);
+        }
+        return source;
+    }
+
+    private String getRegexSql(Map<String, Object> map, String regex, String source) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        while (matcher.find()) {
+            String group = matcher.group(0);
+            String group1 = matcher.group(1);
+            String s = new String();
+            if (map != null && map.containsKey(group1))
+                s = map.get(group1).toString();
+            if (StringUtils.isBlank(s)) return "";//被替换的参数值一但为空 则直接返回空
             source = source.replace(group, s);
         }
         return source;
