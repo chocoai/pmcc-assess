@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -58,7 +60,7 @@ public class SchemeAssistService {
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
-    public boolean schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
+    public int schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
         return schemeEvaluationObjectService.add(dto);
     }
 

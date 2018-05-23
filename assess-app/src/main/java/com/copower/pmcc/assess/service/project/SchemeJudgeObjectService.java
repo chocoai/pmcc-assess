@@ -83,39 +83,6 @@ public class SchemeJudgeObjectService {
                         try {
                             throw e;
                         }catch (Exception e1){
-            }catch (Exception e){
-                logger.error(e.getMessage());
-                try {
-                    throw e;
-                }catch (Exception e1){
-
-                }
-            }
-        }
-
-        Integer id = Integer.parseInt(ids[0]);
-        SchemeJudgeObjectDto dto = get(id);
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(dto.getAreaGroupId());
-        schemeAreaGroup.setValueTimePoint(valueTimePoint);
-        schemeAreaGroupService.update(schemeAreaGroup);
-
-        List<Integer> integers = hashMapChange(ids);
-        for (Integer integer:integers){
-            SchemeJudgeObjectDto dtoA = get(integer);
-            SchemeEvaluationObjectDto evaluationObjectDto = new SchemeEvaluationObjectDto();
-            evaluationObjectDto.setCreator(commonService.thisUserAccount());
-            evaluationObjectDto.setName(dtoA.getName());
-            evaluationObjectDto.setAreaGroupId(dtoA.getAreaGroupId());
-            evaluationObjectDto.setProjectId(dtoA.getProjectId());
-            try {
-                boolean idE = evaluationObjectService.add(evaluationObjectDto);
-                dtoA.setEvaluationId(idE);
-                update(dtoA);
-            }catch (Exception e){
-                logger.error(e.getMessage());
-                try {
-                    throw e;
-                }catch (Exception e1){
 
                         }
                     }

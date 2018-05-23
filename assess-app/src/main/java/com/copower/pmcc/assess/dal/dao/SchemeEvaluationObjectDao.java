@@ -38,7 +38,8 @@ public class SchemeEvaluationObjectDao {
         SchemeEvaluationObject object = change(dto);
         mapper.insertSelective(object);
         int id = object.getId();
-        return id;}
+        return id;
+    }
 
     public boolean remove(Integer id) {
         return mapper.deleteByPrimaryKey(id) == 1;

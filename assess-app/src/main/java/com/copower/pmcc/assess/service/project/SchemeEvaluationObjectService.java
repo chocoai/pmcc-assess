@@ -22,7 +22,7 @@ public class SchemeEvaluationObjectService {
     private SchemeEvaluationObjectDao dao;
 
     @Transactional
-    public boolean add(SchemeEvaluationObjectDto dto) {
+    public int add(SchemeEvaluationObjectDto dto) {
         dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);
     }
