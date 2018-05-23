@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -119,8 +120,8 @@ public class DeclareRecordService {
                             String districtID = sysAreaDto2.getId() + "";//县或者县级市标识符
                             SchemeJudgeObjectDto objectDto = null;
                             String groupID = UUID.randomUUID().toString();
-                            for (DeclareRecord d : declareRecords) {//record_id
-                                if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getDistrict()) && !StringUtils.isEmpty(d.getCity())) {
+                            for (DeclareRecord d : declareRecords) {
+                                if (!ObjectUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getDistrict()) && !StringUtils.isEmpty(d.getCity())) {
                                     if (d.getProvince().equals(parentId) && d.getCity().equals(areaId) && d.getDistrict().equals(districtID)) {
                                         objectDto = new SchemeJudgeObjectDto();
                                         d1s.add(d);
@@ -171,8 +172,11 @@ public class DeclareRecordService {
                     String groupID = UUID.randomUUID().toString();
                     List<DeclareRecord> d2s = new ArrayList<>();
                     for (DeclareRecord d : declareRecords) {
-                        if (!StringUtils.isEmpty(d) && !StringUtils.isEmpty(d.getProvince()) && !StringUtils.isEmpty(d.getCity())) {
-                            if (d.getProvince().equals(id) && d.getCity().equals(areaId)) {
+                        objectDto = new SchemeJudgeObjectDto();
+                        String getProvince = d.getProvince();
+                        String getCity = d.getCity();
+                        if (!ObjectUtils.isEmpty(d) && !StringUtils.isEmpty(getProvince) && !StringUtils.isEmpty(getCity)) {
+                            if (getProvince.equals(parentId) && getCity.equals(areaId)) {
                                 d2s.add(d);
                                 objectDto.setProjectId(Integer.parseInt(projectID));
                                 objectDto.setDeclareRecordId(d.getId());
