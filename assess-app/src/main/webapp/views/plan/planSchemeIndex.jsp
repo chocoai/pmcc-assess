@@ -172,7 +172,7 @@
                 </div>
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
-                        <input type="button" class="btn btn-success" value="确定">
+                        <input type="button" class="btn btn-success" value="确定" onclick="evaluationLastSave()">
                     </div>
                 </div>
             </div>
@@ -762,10 +762,6 @@
     //分组保存
     function evaluationObject(id) {
         var data = formParams("evaluationObject"+id);//项目信息
-        console.log(data);
-        console.log(data.floorArea);
-        console.log(data.evaluationArea);
-        console.log(data.id);
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/evaluationObjectSave";
         $.ajax({
             url: url,
@@ -785,6 +781,10 @@
                 alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+    }
+    //最后保存
+    function evaluationLastSave() {
+        console.log("last save()");
     }
 
     // table list 数据列表显示
