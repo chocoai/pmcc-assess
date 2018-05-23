@@ -63,7 +63,7 @@ public class SchemeAssistService {
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
-    public boolean schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
+    public int schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
         return schemeEvaluationObjectService.add(dto);
     }
 

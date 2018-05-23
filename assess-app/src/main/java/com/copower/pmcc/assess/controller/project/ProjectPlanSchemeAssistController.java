@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
+import com.copower.pmcc.assess.service.project.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class ProjectPlanSchemeAssistController {
     @Autowired
     private SchemeAssistService schemeAssistService;
 
+    @Autowired
+    private SchemeJudgeObjectService judgeObjectService;
 
     @ResponseBody
     @RequestMapping(value = "/evaluationThink/think", name = "评估工作方案阶段工作计划 评估技术思路 获取,以及字段引用", method = RequestMethod.POST)
@@ -120,6 +123,7 @@ public class ProjectPlanSchemeAssistController {
     public Object evaluationObjectSave(SchemeJudgeObjectStringDto dto) {
         try {
             if (dto!=null){
+                judgeObjectService.evaluationObjectSave(dto);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

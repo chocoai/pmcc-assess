@@ -158,7 +158,7 @@
                                 <div class="col-sm-6">
                                 </div>
                                 <div class="col-sm-6">
-                                    <button class="btn btn-success" onclick="evaluationObject(${item.id})">保存</button>
+                                    <input type="button" class="btn btn-success" onclick="evaluationObject(${item.id})" value="保存">
                                 </div>
                             </div>
                         </div>
@@ -172,9 +172,7 @@
                 </div>
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
-                        <button class="btn btn-success">
-                            确定
-                        </button>
+                        <input type="button" class="btn btn-success" value="确定">
                     </div>
                 </div>
             </div>
