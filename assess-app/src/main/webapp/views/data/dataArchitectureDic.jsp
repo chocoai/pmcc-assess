@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="loadArchitectureList()">
                                     查询
                                 </button>
 
@@ -157,8 +157,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a data-placement="top" data-original-title="编辑" class="btn btn-xs btn-warning tooltips" onclick="editHrProfessional(' + index + ');"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a data-placement="top" data-original-title="删除" class="btn btn-xs btn-warning tooltips" onclick="editHrProfessional(' + index + ');"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a data-placement="top" data-original-title="编辑" class="btn btn-xs btn-success tooltips" onclick="editHrProfessional(' + index + ');"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a data-placement="top" data-original-title="删除" class="btn btn-xs btn-warning tooltips" onclick="removeDataBuildingNewRate(' + index + ');"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -189,7 +189,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadDataDicList();//重载 (刷新)
+                        loadArchitectureList();//重载 (刷新)
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
@@ -226,7 +226,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadDataDicList();
+                        loadArchitectureList();
                         $('#divBox').modal('hide');
                     }
                     else {

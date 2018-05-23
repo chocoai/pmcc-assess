@@ -10,6 +10,7 @@
     <result column="figures" property="figures" jdbcType="INTEGER" />
     <result column="start_number" property="startNumber" jdbcType="INTEGER" />
     <result column="same_report_type" property="sameReportType" jdbcType="INTEGER" />
+    <result column="recount" property="recount" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, assess_class, report_type, prefix, date_rule, figures, start_number, same_report_type, 
-    creator, gmt_created, gmt_modified
+    recount, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DataNumberRuleExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_data_number_rule (assess_class, report_type, prefix, 
       date_rule, figures, start_number, 
-      same_report_type, creator, gmt_created, 
-      gmt_modified)
+      same_report_type, recount, creator, 
+      gmt_created, gmt_modified)
     values (#{assessClass,jdbcType=INTEGER}, #{reportType,jdbcType=INTEGER}, #{prefix,jdbcType=VARCHAR}, 
       #{dateRule,jdbcType=VARCHAR}, #{figures,jdbcType=INTEGER}, #{startNumber,jdbcType=INTEGER}, 
-      #{sameReportType,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{sameReportType,jdbcType=INTEGER}, #{recount,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DataNumberRule" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +146,9 @@
       </if>
       <if test="sameReportType != null" >
         same_report_type,
+      </if>
+      <if test="recount != null" >
+        recount,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +181,9 @@
       </if>
       <if test="sameReportType != null" >
         #{sameReportType,jdbcType=INTEGER},
+      </if>
+      <if test="recount != null" >
+        #{recount,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +229,9 @@
       <if test="record.sameReportType != null" >
         same_report_type = #{record.sameReportType,jdbcType=INTEGER},
       </if>
+      <if test="record.recount != null" >
+        recount = #{record.recount,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +256,7 @@
       figures = #{record.figures,jdbcType=INTEGER},
       start_number = #{record.startNumber,jdbcType=INTEGER},
       same_report_type = #{record.sameReportType,jdbcType=INTEGER},
+      recount = #{record.recount,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +288,9 @@
       <if test="sameReportType != null" >
         same_report_type = #{sameReportType,jdbcType=INTEGER},
       </if>
+      <if test="recount != null" >
+        recount = #{recount,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +312,7 @@
       figures = #{figures,jdbcType=INTEGER},
       start_number = #{startNumber,jdbcType=INTEGER},
       same_report_type = #{sameReportType,jdbcType=INTEGER},
+      recount = #{recount,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

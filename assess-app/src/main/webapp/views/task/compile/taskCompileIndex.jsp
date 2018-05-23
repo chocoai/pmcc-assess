@@ -217,7 +217,6 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
-
         if ("${processInsId}" != "0") {
             param();
             submitEditToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());

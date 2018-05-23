@@ -38,7 +38,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-success" onclick="addDataDic()"
-                                        data-toggle="modal" href="#divBox"> 新增数据
+                                        data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估假设</h4>
+                <h3 class="modal-title">评估假设</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -143,7 +143,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">子项数据</h4>
+                <h3 class="modal-title" id="titleContent">子项数据</h3>
             </div>
             <input type="hidden" name="hypothesisIdN" id="hypothesisIdN">
             <div class="panel-body">
@@ -167,7 +167,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">字段</h4>
+                <h3 class="modal-title" id="titleContent2">字段</h3>
             </div>
             <form id="firSubA">
                 <div class="panel-body">
@@ -216,10 +216,10 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >查看选项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:removeData(' + row.id + ',\'tb_List\')">删除</a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:editHrProfessional(' + row.id + ',\'tb_List\')">修改</a>';
+//                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
+                str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -231,7 +231,11 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess:function () {
+                $('.tooltips').tooltip();
+
+            }
         });
     }
 
