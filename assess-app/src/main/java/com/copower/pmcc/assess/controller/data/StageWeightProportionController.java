@@ -43,8 +43,8 @@ public class StageWeightProportionController {
 
     @ResponseBody
     @RequestMapping(value="/list",name="取得阶段权重占比",method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer entrustmentPurpose,Integer stage){
-        BootstrapTableVo vo = stageWeightProportionService.getList(entrustmentPurpose,stage);
+    public BootstrapTableVo list(Integer entrustmentPurpose){
+        BootstrapTableVo vo = stageWeightProportionService.getList(entrustmentPurpose);
         return vo;
     }
     @ResponseBody
@@ -62,9 +62,9 @@ public class StageWeightProportionController {
 
     @ResponseBody
     @RequestMapping(value="delete",name="删除阶段权重占比",method = RequestMethod.POST)
-    public HttpResult delete(Integer id){
+    public HttpResult delete(Integer entrustPurpose){
         try {
-            stageWeightProportionService.delete(id);
+            stageWeightProportionService.delete(entrustPurpose);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
