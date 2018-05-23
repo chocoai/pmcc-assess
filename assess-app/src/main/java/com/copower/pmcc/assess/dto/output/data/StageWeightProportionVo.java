@@ -21,4 +21,7 @@ public class StageWeightProportionVo extends StageWeightProportion{
     public void setStageName(String stageName) {
         this.stageName = stageName;
     }
+
+
+
 }

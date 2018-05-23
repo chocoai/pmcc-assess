@@ -14,16 +14,14 @@ public class StageWeightProportionDao {
     @Autowired
     private StageWeightProportionMapper stageWeightProportionMapper;
 
-    public List<StageWeightProportion> getList(Integer entrustmentPurpose, Integer stage) {
+    public List<StageWeightProportion> getList(Integer entrustmentPurpose) {
         StageWeightProportionExample example = new StageWeightProportionExample();
         StageWeightProportionExample.Criteria criteria = example.createCriteria();
 
         if (entrustmentPurpose != null) {
             criteria.andEntrustPurposeEqualTo(entrustmentPurpose);
         }
-        if (stage != null) {
-            criteria.andStageEqualTo(stage);
-        }
+
         example.setOrderByClause("entrust_purpose ASC,stage ASC");
         List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
 
@@ -49,8 +47,10 @@ public class StageWeightProportionDao {
         }
     }
 
-    public boolean delete(Integer id) {
-        int i = stageWeightProportionMapper.deleteByPrimaryKey(id);
+    public boolean delete(Integer entrustPurpose) {
+        StageWeightProportionExample example = new StageWeightProportionExample();
+        example.createCriteria().andEntrustPurposeEqualTo(entrustPurpose);
+        int i = stageWeightProportionMapper.deleteByExample(example);
         return i > 0;
     }
 

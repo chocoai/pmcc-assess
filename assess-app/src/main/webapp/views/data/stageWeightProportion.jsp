@@ -138,89 +138,6 @@
 </div>
 
 
-<!--子项管理-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">子项数据</h4>
-            </div>
-            <div class="panel-body">
-        <span id="toolbarSub">
-            <button type="button" class="btn btn-success" onclick="addSubDataDic()"
-                    data-toggle="modal" href="#divSubDataDicManage"> 新增
-            </button>
-        </span>
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="divSubDataDicManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">子项管理</h4>
-            </div>
-            <input type="hidden" id="mainId" name="mainId" value="0">
-            <form id="frmSub" class="form-horizontal">
-                <input type="hidden" id="subId" name="subId" value="0">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            委托目的<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="subEntrustPurpose" name="subEntrustPurpose">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${stageList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            占比<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="占比"
-                                                   id="subProportion" name="subProportion" class="form-control">
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
 
 <script type="application/javascript">
@@ -232,14 +149,15 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'entrustPurposeName', title: '委托目的'});
-        cols.push({field: 'stageName', title: '阶段'});
-        cols.push({field: 'proportion', title: '占比'});
+//        cols.push({field: 'stageName', title: '阶段'});
+//        cols.push({field: 'proportion', title: '占比'});
+        cols.push({field: 'stageProportionName', title: '阶段:占比'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.entrustPurpose + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -258,14 +176,14 @@
     }
 
     //删除 阶段权重占比数据
-    function delData(id, tbId) {
+    function delData(entrustPurpose, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/stageWeightProportion/delete",
                 type: "post",
                 dataType: "json",
-                data: {id: id},
+                data: {entrustPurpose: entrustPurpose},
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
