@@ -1,12 +1,18 @@
 package com.copower.pmcc.assess.service.project.plan.assist;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.GenerateReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -20,10 +26,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
     @Autowired
     private ControllerComponent serviceComponent;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private GenerateReportService generateReportService;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planGenerateIndex", "", 0, "-1", "");
+        //获取报告类型
+        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        modelAndView.addObject("reportTypeList",reportTypeList);
+        List<GenerateReportRecordVo> reportRecordList = generateReportService.getGenerateReportRecordList(projectPlan.getProjectId(), projectPlan.getId());
+        modelAndView.addObject("reportRecordList",reportRecordList);
         return modelAndView;
     }
 

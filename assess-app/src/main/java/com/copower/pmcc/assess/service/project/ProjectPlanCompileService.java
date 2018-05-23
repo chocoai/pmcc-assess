@@ -53,54 +53,59 @@ public class ProjectPlanCompileService {
         String address = "";
         int i = 1;
         //一级分类 地址
-        for (SchemeAreaGroup schemeAreaGroup : voList) {
-            address = schemeAreaGroup.getProvince() + schemeAreaGroup.getCity() + schemeAreaGroup.getDistrict();
+        if(CollectionUtils.isNotEmpty(voList)){
+            for (SchemeAreaGroup schemeAreaGroup : voList) {
+                address = schemeAreaGroup.getProvince() + schemeAreaGroup.getCity() + schemeAreaGroup.getDistrict();
 
-            List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsDao.getProjectPlanDetailsByProjectIdAndName(projectId, address, workStageId);
-            if (projectPlanDetailss != null && projectPlanDetailss.size() > 0) {
-                return modelAndView;
-            } else {
-                ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                projectPlanDetails.setProjectWorkStageId(workStageId);
-                projectPlanDetails.setPlanId(planId);
-                projectPlanDetails.setProjectId(projectId);
-                projectPlanDetails.setProjectPhaseName(address);
-                projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetails.setBisLastLayer(false);
-                projectPlanDetails.setSorting(i++);
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-            }
-            List<ProjectPlanDetails> projectPlanDetailsss = projectPlanDetailsDao.getProjectPlanDetailsByProjectIdAndName(projectId, address, workStageId);
+                List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsDao.getProjectPlanDetailsByProjectIdAndName(projectId, address, workStageId);
+                if (projectPlanDetailss != null && projectPlanDetailss.size() > 0) {
+                    return modelAndView;
+                } else {
+                    ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+                    projectPlanDetails.setProjectWorkStageId(workStageId);
+                    projectPlanDetails.setPlanId(planId);
+                    projectPlanDetails.setProjectId(projectId);
+                    projectPlanDetails.setProjectPhaseName(address);
+                    projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                    projectPlanDetails.setBisLastLayer(false);
+                    projectPlanDetails.setSorting(i++);
+                    projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+                }
+                List<ProjectPlanDetails> projectPlanDetailsss = projectPlanDetailsDao.getProjectPlanDetailsByProjectIdAndName(projectId, address, workStageId);
 
 
-            int j = 1;
-            Integer pid = 0;
-            Integer groupId = schemeAreaGroup.getId();
-            List<SchemeEvaluationObject> evaluationObjects = schemeEvaluationObjectDao.getSchemeEvaluationObjectByGroupId(groupId, projectId);
-            //二级分类 评估对象
-            for (ProjectPlanDetails projectPlanDetail : projectPlanDetailsss) {
-                pid = projectPlanDetail.getId();
+                int j = 1;
+                Integer pid = 0;
+                Integer groupId = schemeAreaGroup.getId();
+                List<SchemeEvaluationObject> evaluationObjects = schemeEvaluationObjectDao.getSchemeEvaluationObjectByGroupId(groupId, projectId);
+                //二级分类 评估对象
+                if(CollectionUtils.isNotEmpty(projectPlanDetailsss)){
+                    for (ProjectPlanDetails projectPlanDetail : projectPlanDetailsss) {
+                        pid = projectPlanDetail.getId();
 
-                String name = "";
-                Integer projectPhaseId = 0;
-                for (SchemeEvaluationObject evaluationObject : evaluationObjects) {
-                    name = evaluationObject.getName();
-                    projectPhaseId = evaluationObject.getId();
+                        String name = "";
+                        Integer projectPhaseId = 0;
+                        for (SchemeEvaluationObject evaluationObject : evaluationObjects) {
+                            name = evaluationObject.getName();
+                            projectPhaseId = evaluationObject.getId();
 
-                    ProjectPlanDetails projectPlanDetailTwo = new ProjectPlanDetails();
-                    projectPlanDetailTwo.setProjectWorkStageId(workStageId);
-                    projectPlanDetailTwo.setPlanId(planId);
-                    projectPlanDetailTwo.setProjectId(projectId);
-                    projectPlanDetailTwo.setProjectPhaseName(name);
-                    projectPlanDetailTwo.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                    projectPlanDetailTwo.setPid(pid);
-                    projectPlanDetailTwo.setFirstPid(pid);
-                    projectPlanDetailTwo.setProjectPhaseId(projectPhaseId);
-                    projectPlanDetailTwo.setSorting(j++);
-                    projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetailTwo);
+                            ProjectPlanDetails projectPlanDetailTwo = new ProjectPlanDetails();
+                            projectPlanDetailTwo.setProjectWorkStageId(workStageId);
+                            projectPlanDetailTwo.setPlanId(planId);
+                            projectPlanDetailTwo.setProjectId(projectId);
+                            projectPlanDetailTwo.setProjectPhaseName(name);
+                            projectPlanDetailTwo.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                            projectPlanDetailTwo.setPid(pid);
+                            projectPlanDetailTwo.setFirstPid(pid);
+                            projectPlanDetailTwo.setProjectPhaseId(projectPhaseId);
+                            projectPlanDetailTwo.setSorting(j++);
+                            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetailTwo);
+                        }
+                    }
                 }
             }
         }
+
         return modelAndView;
     }
     //转换具体数据
