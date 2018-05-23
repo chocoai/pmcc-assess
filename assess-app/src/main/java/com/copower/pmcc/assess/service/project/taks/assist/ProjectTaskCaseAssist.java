@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
 import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
@@ -73,7 +74,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         surveyCaseStudy.setProcessInsId(processInsId);
         surveyCaseStudy.setCreator(commonService.thisUserAccount());
         surveyCaseStudy.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyLocaleExploreEvent.class.getSimpleName());//修改监听器
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
         surveyCaseStudyService.save(surveyCaseStudy);
     }
 

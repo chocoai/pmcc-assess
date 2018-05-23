@@ -27,11 +27,18 @@ public class BaseReportDao {
     @Autowired
     private BaseReportTemplateMapper baseReportTemplateMapper;
 
-    public List<BaseReportTable> getBaseReportTableList() {
+    public List<BaseReportTable> getBaseReportTableList(Integer typeId) {
         BaseReportTableExample example = new BaseReportTableExample();
-        example.createCriteria().andBisEnableEqualTo(true);
+        BaseReportTableExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if (typeId != null) {
+            criteria.andTableTypeEqualTo(typeId);
+        }
         List<BaseReportTable> baseReportTables = baseReportTableMapper.selectByExample(example);
         return baseReportTables;
+    }
+
+    public BaseReportTable getBaseReportTableById(Integer id) {
+        return baseReportTableMapper.selectByPrimaryKey(id);
     }
 
     public List<BaseReportColumns> getBaseReportColumnsList(Integer tableId) {
@@ -39,6 +46,10 @@ public class BaseReportDao {
         example.createCriteria().andBisEnableEqualTo(true).andTableIdEqualTo(tableId);
         List<BaseReportColumns> baseReportColumns = baseReportColumnsMapper.selectByExample(example);
         return baseReportColumns;
+    }
+
+    public BaseReportColumns getBaseReportColumnsById(Integer id) {
+        return baseReportColumnsMapper.selectByPrimaryKey(id);
     }
 
     public List<BaseReportTemplate> getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, String bookMarkName) {
@@ -51,6 +62,10 @@ public class BaseReportDao {
         List<BaseReportTemplate> baseReportTemplates = baseReportTemplateMapper.selectByExample(example);
         return baseReportTemplates;
 
+    }
+
+    public BaseReportTemplate getBaseReportTemplateById(Integer id) {
+        return baseReportTemplateMapper.selectByPrimaryKey(id);
     }
 
     public Boolean deleteBaseReportTemplate(Integer id) {

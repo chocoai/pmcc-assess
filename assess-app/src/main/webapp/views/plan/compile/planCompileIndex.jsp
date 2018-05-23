@@ -199,6 +199,21 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            报告分析
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="reportAnalysisId" id="reportAnalysisId" class="form-control search-select select2">
+                                                <option value="">-选择-</option>
+                                                <c:forEach var="item" items="${reportAnalysisList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             开始时间
                                         </label>
                                         <div class="col-sm-4">
@@ -439,7 +454,7 @@
     $(function () {
         getPlanItemList();
         $("#projectPhaseId").select2();
-
+        $("#reportAnalysisId").select2();
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
     });
@@ -635,6 +650,7 @@
         $("#planStartDate").val(formatDate(row["planStartDate"]));
         $("#planEndDate").val(formatDate(row["planEndDate"]));
         $("#projectPhaseId").select2().val(row.projectPhaseId).trigger("change");
+        $("#reportAnalysisId").select2().val(row.reportAnalysisId).trigger("change");
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
     function deletePlan(id) {

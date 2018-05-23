@@ -56,12 +56,16 @@
 
                     </form>
 
+
+                    <div class="x_title">
+                        <h2><small><i class="fa fa-bars"></i>清查内容</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
                     </table>
 
                     <form id="frm_checkbox" class="form-horizontal">
-
                         <div class="form-group">
 
                             <label class="col-sm-2 control-label" data-label="&lt;label&gt;">
@@ -83,7 +87,7 @@
                                 他权登记人
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="他权登记人"
                                            id="otherRightsRegistrar" name="otherRightsRegistrar" class="form-control"
                                            value="${surveyAssetOtherTemplate.otherRightsRegistrar}">
@@ -94,7 +98,7 @@
                                 实际行权人
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="实际行权人"
                                            id="rightHander" name="rightHander" class="form-control"
                                            value="${surveyAssetOtherTemplate.rightHander}">
@@ -105,7 +109,7 @@
                                 登记面积
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="登记面积"
                                            id="registerArea" name="registerArea" class="form-control"
                                            value="${surveyAssetOtherTemplate.registerArea}">
@@ -120,7 +124,7 @@
                                 实际面积
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="实际面积"
                                            id="actualArea" name="actualArea" class="form-control"
                                            value="${surveyAssetOtherTemplate.actualArea}">
@@ -131,7 +135,7 @@
                                 登记用途
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="登记用途"
                                            id="registerPurpose" name="registerPurpose" class="form-control"
                                            value="${surveyAssetOtherTemplate.registerPurpose}">
@@ -142,7 +146,7 @@
                                 实际用途
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" placeholder="实际用途"
                                            id="actualPurpose" name="actualPurpose" class="form-control"
                                            value="${surveyAssetOtherTemplate.actualPurpose}">
@@ -155,7 +159,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">登记日期<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input required="required" placeholder="登记日期" id="registerDate" name="registerDate"
                                            data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
@@ -165,7 +169,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">到期日<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input required="required" placeholder="到期日" id="dueDate" name="dueDate"
                                            data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
@@ -176,7 +180,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">实际行权人行权日期<span
                                         class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input required="required" placeholder="实际行权人行权日期" id="exerciseDate"
                                            name="exerciseDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
@@ -190,7 +194,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">预计到期日<span class="symbol required"></span></label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input required="required" placeholder="预计到期日" id="predictDueDate"
                                            name="predictDueDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"

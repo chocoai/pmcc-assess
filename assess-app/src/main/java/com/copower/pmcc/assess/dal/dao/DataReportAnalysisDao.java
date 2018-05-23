@@ -37,4 +37,11 @@ public class DataReportAnalysisDao {
         int flag = dataReportAnalysisMapper.deleteByPrimaryKey(id);
         return flag > 0;
     }
+
+    public List<DataReportAnalysis> getDataReportAnalysisByCategory(Integer category){
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        example.createCriteria().andCategoryEqualTo(category);
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
 }

@@ -13,6 +13,7 @@
     <result column="data_pool_columns_id" property="dataPoolColumnsId" jdbcType="INTEGER" />
     <result column="data_pool_template_id" property="dataPoolTemplateId" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, customer_id, entrust_id, report_type_id, template_type, bookmark_name, data_pool_type, 
-    data_pool_table_id, data_pool_columns_id, data_pool_template_id, bis_enable
+    data_pool_table_id, data_pool_columns_id, data_pool_template_id, bis_enable, pid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateExample" >
     select
@@ -113,11 +114,11 @@
     insert into tb_base_report_template (customer_id, entrust_id, report_type_id, 
       template_type, bookmark_name, data_pool_type, 
       data_pool_table_id, data_pool_columns_id, data_pool_template_id, 
-      bis_enable)
+      bis_enable, pid)
     values (#{customerId,jdbcType=INTEGER}, #{entrustId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, 
       #{templateType,jdbcType=INTEGER}, #{bookmarkName,jdbcType=VARCHAR}, #{dataPoolType,jdbcType=INTEGER}, 
       #{dataPoolTableId,jdbcType=INTEGER}, #{dataPoolColumnsId,jdbcType=INTEGER}, #{dataPoolTemplateId,jdbcType=INTEGER}, 
-      #{bisEnable,jdbcType=BIT})
+      #{bisEnable,jdbcType=BIT}, #{pid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -155,6 +156,9 @@
       <if test="bisEnable != null" >
         bis_enable,
       </if>
+      <if test="pid != null" >
+        pid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="customerId != null" >
@@ -186,6 +190,9 @@
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +258,8 @@
       data_pool_table_id = #{record.dataPoolTableId,jdbcType=INTEGER},
       data_pool_columns_id = #{record.dataPoolColumnsId,jdbcType=INTEGER},
       data_pool_template_id = #{record.dataPoolTemplateId,jdbcType=INTEGER},
-      bis_enable = #{record.bisEnable,jdbcType=BIT}
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      pid = #{record.pid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +297,9 @@
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -300,7 +314,8 @@
       data_pool_table_id = #{dataPoolTableId,jdbcType=INTEGER},
       data_pool_columns_id = #{dataPoolColumnsId,jdbcType=INTEGER},
       data_pool_template_id = #{dataPoolTemplateId,jdbcType=INTEGER},
-      bis_enable = #{bisEnable,jdbcType=BIT}
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      pid = #{pid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -47,4 +47,16 @@ public class DataReportAnalysisFieldDao {
         int flag = dataReportAnalysisFieldMapper.deleteByExample(dataReportAnalysisFieldExample);
         return flag > 0;
     }
+
+    public List<DataReportAnalysisField> getDataReportAnalysisField(Integer analysisId) {
+        DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
+        example.createCriteria().andAnalysisIdEqualTo(analysisId);
+        return dataReportAnalysisFieldMapper.selectByExample(example);
+    }
+
+    public List<DataReportAnalysisField> getAllList() {
+        DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
+        example.createCriteria().andIdIsNotNull();
+        return dataReportAnalysisFieldMapper.selectByExample(example);
+    }
 }
