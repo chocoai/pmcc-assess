@@ -2,11 +2,9 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
+import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.BaseReportDao;
-import com.copower.pmcc.assess.dal.entity.BaseReportColumns;
-import com.copower.pmcc.assess.dal.entity.BaseReportTable;
-import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
-import com.copower.pmcc.assess.dal.entity.BaseReportTemplateExample;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -17,6 +15,7 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,10 @@ import java.util.List;
 public class BaseReportService {
     @Autowired
     private BaseReportDao baseReportDao;
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
+    @Autowired
+    private ServiceComponent serviceComponent;
 
     public List<BaseReportTable> getBaseReportTableList(Integer typeId) {
         return baseReportDao.getBaseReportTableList(typeId);
@@ -55,6 +58,16 @@ public class BaseReportService {
 
     public void addBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
         baseReportDao.addBaseReportTemplate(baseReportTemplate);
+        //更新附件信息
+        BaseAttachment baseAttachment = new BaseAttachment();
+        baseAttachment.setTableName("tb_base_report_template");
+        baseAttachment.setTableId(0);
+        baseAttachment.setCreater(serviceComponent.getThisUser());
+
+        BaseAttachment baseAttachmentNew = new BaseAttachment();
+        baseAttachmentNew.setTableId(baseReportTemplate.getId());
+
+        baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
     //根据条件取得设置的报告模板书签
@@ -72,8 +85,7 @@ public class BaseReportService {
         return bootstrapTableVo;
     }
 
-    public BaseReportTemplate getBaseReportTemplateById(Integer id)
-    {
+    public BaseReportTemplate getBaseReportTemplateById(Integer id) {
         return baseReportDao.getBaseReportTemplateById(id);
     }
 
@@ -81,11 +93,22 @@ public class BaseReportService {
         BaseReportTemplateVo baseReportTemplateVo = new BaseReportTemplateVo();
         if (baseReportTemplate != null) {
             BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
-            if(baseReportTemplate.getTemplateType()==BaseReportTemplateTypeEnum.TEMPLATE.getKey())
-            {
+            if (baseReportTemplate.getTemplateType() == BaseReportTemplateTypeEnum.TEMPLATE.getKey()) {
                 baseReportTemplateVo.setTypeName("");
-            }
-            else {
+                List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName("tb_base_report_template", Lists.newArrayList(baseReportTemplate.getId()));
+                if (CollectionUtils.isNotEmpty(baseAttachments)) {
+                    List<KeyValueDto> transform = LangUtils.transform(baseAttachments, o -> {
+                        KeyValueDto keyValueDto = new KeyValueDto();
+                        keyValueDto.setKey(String.valueOf(o.getId()));
+                        keyValueDto.setValue(o.getFileName());
+                        keyValueDto.setExplain(o.getFileExtension());
+                        return keyValueDto;
+                    });
+                    baseReportTemplateVo.setKeyValueDtos(transform);
+
+                }
+                baseReportTemplateVo.setDataPoolTypename("");
+            } else {
                 BaseReportDataPoolTypeEnum enumByName = BaseReportDataPoolTypeEnum.getEnumByName(baseReportTemplate.getDataPoolType());
                 baseReportTemplateVo.setTypeName(enumByName.getName());
                 switch (enumByName) {
