@@ -11,6 +11,9 @@ public class SchemeJudgeObject {
     private Integer declareRecordId;
 
     private Integer evaluationId;
+    private Integer areaGroupId;
+
+    private boolean evaluationId;
 
     private Integer number;
 
@@ -61,10 +64,19 @@ public class SchemeJudgeObject {
     }
 
     public Integer getEvaluationId() {
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
+    }
+
+    public boolean getEvaluationId() {
         return evaluationId;
     }
 
-    public void setEvaluationId(Integer evaluationId) {
+    public void setEvaluationId(boolean evaluationId) {
         this.evaluationId = evaluationId;
     }
 

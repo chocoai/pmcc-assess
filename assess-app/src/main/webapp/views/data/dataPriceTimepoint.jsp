@@ -3,7 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
+            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -58,13 +59,14 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">字典管理</h4>
+                <h3 class="modal-title">价值时点说明管理</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -91,23 +93,25 @@
                                             描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="描述" class="form-control" id="description" name="description">
+                                            <textarea placeholder="描述" class="form-control" id="description"
+                                                      name="description">
 
                                             </textarea>
                                         </div>
                                     </div>
                                 </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
-                        保存
-                    </button>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                            保存
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -116,7 +120,8 @@
 
 
 <!--价值时点数据子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -148,8 +153,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deletePriceTimepointDescription(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deletePriceTimepointDescription(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -160,7 +165,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess : function(){
+               $('.tooltips').tooltip();
+            }
         });
     }
 
@@ -262,8 +270,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.dto.output.report;
 
 import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -13,6 +16,8 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
     private String typeName;//数据类型名称
 
     private String dataPoolTypename;//数据来源
+
+    private List<KeyValueDto> keyValueDtos;
 
     public String getTypeName() {
         return typeName;
@@ -28,5 +33,13 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
 
     public void setDataPoolTypename(String dataPoolTypename) {
         this.dataPoolTypename = dataPoolTypename;
+    }
+
+    public List<KeyValueDto> getKeyValueDtos() {
+        return keyValueDtos;
+    }
+
+    public void setKeyValueDtos(List<KeyValueDto> keyValueDtos) {
+        this.keyValueDtos = keyValueDtos;
     }
 }

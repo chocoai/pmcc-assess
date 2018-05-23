@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.common.DeclareRecordItems;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationThinkingFieldDao;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -61,7 +58,7 @@ public class SchemeAssistService {
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
-    public int schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
+    public boolean schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
         return schemeEvaluationObjectService.add(dto);
     }
 

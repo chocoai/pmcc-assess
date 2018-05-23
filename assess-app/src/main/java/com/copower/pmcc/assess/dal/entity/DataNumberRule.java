@@ -19,6 +19,8 @@ public class DataNumberRule {
 
     private Integer sameReportType;
 
+    private String recount;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class DataNumberRule {
 
     public void setSameReportType(Integer sameReportType) {
         this.sameReportType = sameReportType;
+    }
+
+    public String getRecount() {
+        return recount;
+    }
+
+    public void setRecount(String recount) {
+        this.recount = recount == null ? null : recount.trim();
     }
 
     public String getCreator() {

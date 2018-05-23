@@ -146,10 +146,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div class='x-valid'><label
-                                            class='col-sm-2 control-label'>数据来源<span
-                                            class="symbol required"></span></label>
+                                            class='col-sm-2 control-label'>数据来源</label>
                                         <div class='col-sm-10'>
-                                            <select id='dataPoolType' name='dataPoolType' required class='form-control' onclick="changePool()">
+                                            <select id='dataPoolType' name='dataPoolType'  class='form-control' onclick="changePool()">
                                                 <c:forEach var="item" items="${baseReportDataPoolTypeEnumList}">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -175,6 +174,17 @@
                                             <select id='dataPoolTemplateId' name='dataPoolTemplateId' class='form-control  search-select select2'>
                                                 <option value="">--请选择--</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'>
+                                        <label
+                                                class='col-sm-2 control-label'>模板文件</label>
+                                        <div class='col-sm-10'>
+                                            <input id="uploadFile" name="uploadFile" type="file" multiple="false">
+                                            <div id="_uploadFile">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +218,36 @@
         $("#dataPoolTableId").select2();
         $("#dataPoolColumnsId").select2();
         $("#dataPoolTemplateId").select2();
+        FileUtils.uploadFiles({
+            target: "uploadFile",
+            showFileList: false,
+            fileExtArray: ["doc", "docx"]
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_base_report_template",
+                    creater: "${currUserInfo.userAccount}",
+                    tableId: $("#id").val()
+                };
+                $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadTemplateAttachment($("#id").val());
+            }
+        });
     });
+    //加载附件
+    function loadTemplateAttachment(tableId) {
+        FileUtils.getFileShows({
+            target: "uploadFile",
+            formData: {
+                tableName: "tb_base_report_template",
+                creater: "${currUserInfo.userAccount}",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function changeTabs(id) {
         $("#lab_entrust").html($("#tabs_a_" + id + "").html());
         $("#tabs_index_value").val(id);
@@ -247,7 +286,7 @@
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
         cols.push({
-            field: 'bookmarkName', title: '书签名称', width: '50%', formatter: function (value, row, index) {
+            field: 'bookmarkName', title: '书签名称', width: '40%', formatter: function (value, row, index) {
                 var s = value;
                 if (row.templateType == "${templateTypeId}") {
                     s = "<a href='javascript:;' class='btn btn-xs btn-danger tooltips'  data-toggle='tooltip' data-original-title='模板' style='margin-left: 5px'><i  class='fa fa-tag' title='模板'></i></a>" + value;
@@ -256,17 +295,35 @@
             }
         });
         cols.push({field: 'typeName', width: '10%', title: '字段类型'});
-        cols.push({field: 'dataPoolTypename', width: '20%', title: '数据来源', formatter: function (value, row, index) {
-            var s = value;
-            if (row.templateType == "${templateId}") {
-                s = "<a href='javascript:;' onclick='showSubTemplate("+row.dataPoolTemplateId+")'>" + value + "</a>"
+        cols.push({
+            field: 'dataPoolTypename', width: '30%', title: '数据来源', formatter: function (value, row, index) {
+                var s = value;
+                if (value == "") {
+                    if (row.templateType == "${templateId}") {
+                        s = "<a href='javascript:;' onclick='showSubTemplate(" + row.dataPoolTemplateId + ")'>" + value + "</a>"
+                    }
+                }
+                else {
+                    if (row.keyValueDtos) {
+                        $.each(row.keyValueDtos, function (index, item) {
+                            s = "<div id='div_files_" + item.id + "' class='alert alert-info'>";
+                            //在线编辑历史记录
+                            s += "<i class='fa fa-folder' onclick='FileUtils.showAttachmentKeepList(" + item.key + ")'  style='margin-right: 10px;font-size: 15px;cursor: pointer;'></i>";
+
+                            s += "<i class='fa fa-download' onclick='FileUtils.downAttachments(" + item.key + ")'  style='margin-right: 10px;font-size: 15px;cursor: pointer;'></i>";
+
+                            s += "<a onclick='FileUtils.showAttachment(" + item.key + ",\"" + item.explain + "\")' style='cursor: pointer;'> " + item.value + "</a>";
+                            s += "</div>";
+                        });
+                    }
+                }
+                return s;
             }
-            return s;
-        }});
+        });
         cols.push({
             field: 'opation', title: '操作', width: '15%', formatter: function (value, row, index) {
                 var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editBookmark(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
-                s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='删除' onclick='deleteBookmark("+row.id+")' style='margin-left: 5px'><i class='fa fa-minus fa-white' title='删除'></i></a>";
+                s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='删除' onclick='deleteBookmark(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-minus fa-white' title='删除'></i></a>";
                 return s;
             }
         });
@@ -289,7 +346,7 @@
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
         cols.push({
-            field: 'bookmarkName', title: '书签名称', width: '50%', formatter: function (value, row, index) {
+            field: 'bookmarkName', title: '书签名称', width: '40%', formatter: function (value, row, index) {
                 var s = value;
                 if (row.templateType == "${templateTypeId}") {
                     s = "<a href='javascript:;' onclick='showSubTemplate(" + row.id + ")' class='btn btn-xs btn-danger tooltips'  data-toggle='tooltip' data-original-title='模板' style='margin-left: 5px'><i  class='fa fa-tag' title='模板'></i></a>" + value;
@@ -299,10 +356,23 @@
         });
         cols.push({field: 'typeName', width: '10%', title: '字段类型'});
         cols.push({
-            field: 'dataPoolTypename', width: '20%', title: '数据来源', formatter: function (value, row, index) {
+            field: 'dataPoolTypename', width: '30%', title: '数据来源', formatter: function (value, row, index) {
                 var s = value;
-                if (row.dataPoolType == "${templateId}") {
-                    s = "<a href='javascript:;' onclick='showSubTemplate("+row.dataPoolTemplateId+")'>" + value + "</a>"
+                if (value != "") {
+                    if (row.templateType == "${templateId}") {
+                        s = "<a href='javascript:;' onclick='showSubTemplate(" + row.dataPoolTemplateId + ")'>" + value + "</a>"
+                    }
+                }
+                else {
+                    if (row.keyValueDtos) {
+                        $.each(row.keyValueDtos, function (index, item) {
+                            // s = "<div  class='alert alert-info'>";
+                            //在线编辑历史记录
+                            s = "<i class='fa fa-download' onclick='FileUtils.downAttachments(" + item.key + ")'  style='margin-right: 10px;font-size: 15px;cursor: pointer;'></i>";
+                            s += "<a onclick='FileUtils.showAttachment(" + item.key + ",\"" + item.explain + "\")' style='cursor: pointer;'> " + item.value + "</a>";
+                            // s += "</div>";
+                        });
+                    }
                 }
                 return s;
             }
@@ -310,7 +380,7 @@
         cols.push({
             field: 'opation', title: '操作', width: '15%', formatter: function (value, row, index) {
                 var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editBookmark(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
-                s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='删除' onclick='deleteBookmark("+row.id+")' style='margin-left: 5px'><i class='fa fa-minus fa-white' title='删除'></i></a>";
+                s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='删除' onclick='deleteBookmark(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-minus fa-white' title='删除'></i></a>";
                 return s;
             }
         });
@@ -341,6 +411,7 @@
         else {
             $("#pid").val(pid);
         }
+        loadTemplateAttachment(0);
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
 
@@ -355,7 +426,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                   var data=result.data;
+                    var data = result.data;
                     $("#frm").clearAll();
                     $("#frm").initForm(data);
                     $("#dataPoolTableId").select2().val(data.dataPoolTableId).trigger("change");
@@ -364,6 +435,7 @@
                     $("#dataPoolType").val(data.dataPoolType);
                     changePool();
                     loadTableCloumns();
+                    loadTemplateAttachment(id);
                     $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
                 }
                 else {

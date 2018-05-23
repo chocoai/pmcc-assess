@@ -47,7 +47,6 @@
 </body>
 <%@include file="/views/share/model_employee.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="/js/report/pageIndex.js"></script>
 <script type="application/javascript">
     var selNumber = [];
     var index = 1;

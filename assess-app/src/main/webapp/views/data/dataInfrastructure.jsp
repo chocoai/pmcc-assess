@@ -209,6 +209,40 @@
     </div>
 </div>
 
+<!-- 显示基础设施费用列表 -->
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="titleContent">基础设施费用</h3>
+
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName1" name="queryName1"
+                               class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success"
+                    data-toggle="modal" href="#firSub1"> 新增
+            </button>
+        </span>
+                <table class="table table-bordered" id="tbDataDicList">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 基础设施费用 添加 ===========-->
 <div id="firSub1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -241,20 +275,44 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                    保存
-                </button>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tb_List1">
-                    <!-- cerare document add ajax data-->
-                </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                        保存
+                    </button>
+                </div>
+            </form>
+            <table class="table table-bordered" id="tb_List1">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 显示公共设施费用列表 -->
+<div id="divSubDataDic1" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="titleContent1">公共设施费用</h3>
+
+                <div>
+                    <label class="col-sm-1 control-label">
+                        名称
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" data-rule-maxlength="50"
+                               placeholder="名称" id="queryName2" name="queryName2"
+                               class="form-control">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -268,7 +326,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent3">公共设施费用</h3>
+                <h3 class="modal-title" id="titleContent3">字段</h3>
             </div>
             <form id="firSubA1" class="form-horizontal">
                 <div class="panel-body">
@@ -330,8 +388,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional1(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription1(' + row.id + ',\'tb_List1\')">删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional1(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteBestUseDescription1(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -439,8 +497,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional2(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription2(' + row.id + ',\'tb_List2\')">删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional2(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteBestUseDescription2(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -565,8 +623,8 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + index + ');" >基础设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + index + ');" >公共配套设施费</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editHrProfessional(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:deleteBestUseDescription(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteBestUseDescription(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -577,7 +635,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess:function () {
+                $('.tooltips').tooltip();
+            }
         });
     }
 
