@@ -3,10 +3,14 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectStringDto;
 import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
+import com.copower.pmcc.erp.common.CommonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,9 @@ import java.util.*;
  */
 @Service
 public class SchemeJudgeObjectService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private SchemeEvaluationObjectService evaluationObjectService;
     @Autowired
@@ -36,13 +43,23 @@ public class SchemeJudgeObjectService {
         String[] evaluationAreas = objectDto.getEvaluationArea().split(",");
         Date valueTimePoint = objectDto.getValueTimePoint();
         for (int i = 0; i < ids.length; i++) {
-            Integer id = Integer.parseInt(ids[i]);
-            SchemeJudgeObjectDto dto = get(id);
-            BigDecimal bigDecimal = new BigDecimal(floorAreas[i]);
-            dto.setFloorArea(bigDecimal);
-            dto.setGroupNumber(groupNumbers[i]);
-            dto.setEvaluationArea(evaluationAreas[i]);
-            update(dto);
+            try {
+                Integer id = Integer.parseInt(ids[i]);
+                SchemeJudgeObjectDto dto = get(id);
+                BigDecimal bigDecimal = new BigDecimal(floorAreas[i]);
+                dto.setFloorArea(bigDecimal);
+                dto.setBestUseId(Integer.parseInt(bestUseIds[i]));
+                dto.setGroupNumber(groupNumbers[i]);
+                dto.setEvaluationArea(evaluationAreas[i]);
+                update(dto);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                try {
+                    throw e;
+                }catch (Exception e1){
+
+                }
+            }
         }
 
         Integer id = Integer.parseInt(ids[0]);
@@ -52,7 +69,26 @@ public class SchemeJudgeObjectService {
         schemeAreaGroupService.update(schemeAreaGroup);
 
         List<Integer> integers = hashMapChange(ids);
-        //tb_scheme_evaluation_object
+        for (Integer integer:integers){
+            SchemeJudgeObjectDto dtoA = get(integer);
+            SchemeEvaluationObjectDto evaluationObjectDto = new SchemeEvaluationObjectDto();
+            evaluationObjectDto.setCreator(commonService.thisUserAccount());
+            evaluationObjectDto.setName(dtoA.getName());
+            evaluationObjectDto.setAreaGroupId(dtoA.getAreaGroupId());
+            evaluationObjectDto.setProjectId(dtoA.getProjectId());
+            try {
+                int idE = evaluationObjectService.add(evaluationObjectDto);
+                dtoA.setEvaluationId(idE);
+                update(dtoA);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                try {
+                    throw e;
+                }catch (Exception e1){
+
+                }
+            }
+        }
     }
 
     @Transactional
@@ -111,7 +147,7 @@ public class SchemeJudgeObjectService {
         for (Integer integer:map.keySet()){
             Integer key = integer;
             Integer value = map.get(key);
-            if (value>=2){//拆分一次
+            if (value>=2){//拆分一次以上
                 System.out.println(key+" "+value);
                 arr.add(key);
             }

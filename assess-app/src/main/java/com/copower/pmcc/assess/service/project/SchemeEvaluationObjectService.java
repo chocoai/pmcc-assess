@@ -23,11 +23,8 @@ public class SchemeEvaluationObjectService {
     private SchemeEvaluationObjectDao dao;
 
     @Transactional
-    public boolean add(SchemeEvaluationObjectDto dto) {
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(dto.getAreaGroupId());
+    public int add(SchemeEvaluationObjectDto dto) {
         dto.setCreator(commonService.thisUserAccount());
-        dto.setName(schemeAreaGroup.getProvince()+","+schemeAreaGroup.getCity()+","+schemeAreaGroup.getDistrict());
-        dto.setProjectId(schemeAreaGroup.getProjectId());
         return dao.add(dto);
     }
 
