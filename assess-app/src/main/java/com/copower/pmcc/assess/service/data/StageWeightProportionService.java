@@ -35,13 +35,13 @@ public class StageWeightProportionService {
 
     public BootstrapTableVo getList(Integer entrustmentPurpose) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        //RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        //Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<StageWeightProportion> list = stageWeightProportionDao.getList(entrustmentPurpose);
         List<StageWeightProportionVo> stageWeightProportionVos = getVoList(list);
-        List<ProportionTempVo> proportionTempVos = getStageProportion(stageWeightProportionVos);    //把相同委托目的添加到一起
-        page.setTotal(proportionTempVos.size());    //同步数据
-        vo.setTotal(page.getTotal());
+        List<ProportionTempVo> proportionTempVos = getStageProportion(stageWeightProportionVos);    //把相同委托目的拼接到一起
+        //page.setTotal();
+        vo.setTotal((long) proportionTempVos.size());  //同步记录数
         vo.setRows(CollectionUtils.isEmpty(proportionTempVos) ? new ArrayList<ProportionTempVo>() : proportionTempVos);
         return vo;
     }
@@ -105,5 +105,10 @@ public class StageWeightProportionService {
                 }
         }
         return proportionTempVos;
+    }
+
+    public List<StageWeightProportion> edit(StageWeightProportion stageWeightProportion) {
+        List<StageWeightProportion> stageWeightProportions = stageWeightProportionDao.edit(stageWeightProportion);
+        return stageWeightProportions;
     }
 }

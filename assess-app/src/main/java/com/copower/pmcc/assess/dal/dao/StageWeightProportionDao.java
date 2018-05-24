@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObjectExample;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportionExample;
 import com.copower.pmcc.assess.dal.mapper.StageWeightProportionMapper;
@@ -59,4 +60,10 @@ public class StageWeightProportionDao {
         return stageWeightProportion;
     }
 
+    public List<StageWeightProportion> edit(StageWeightProportion stageWeightProportion) {
+        StageWeightProportionExample example = new StageWeightProportionExample();
+        example.createCriteria().andEntrustPurposeEqualTo(stageWeightProportion.getEntrustPurpose());
+        List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
+        return stageWeightProportions;
+    }
 }
