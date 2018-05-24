@@ -68,7 +68,7 @@ public class EvaluationHypothesisService {
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationHypothesisDto> listN(String name) {
+    public List<EvaluationHypothesisDto> listN(String name) {
         return evaluationHypothesisDao.list(name);
     }
 

@@ -39,9 +39,15 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_judge_object " domainObjectName="SchemeJudgeObject">
+
+        <table tableName="tb_scheme_info" domainObjectName="SchemeInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <table tableName="tb_scheme_info_detail" domainObjectName="SchemeInfoDetail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
     </context>
 
 </generatorConfiguration>

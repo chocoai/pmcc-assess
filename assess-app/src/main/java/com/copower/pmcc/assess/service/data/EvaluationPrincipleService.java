@@ -69,7 +69,7 @@ public class EvaluationPrincipleService {
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationPrincipleDto> listN(String name) {
+    public List<EvaluationPrincipleDto> listN(String name) {
         return evaluationPrincipleDao.list(name);
     }
 

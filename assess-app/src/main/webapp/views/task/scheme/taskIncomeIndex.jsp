@@ -13,10 +13,13 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <%--<%@include file="/views/share/evaluationPrinciplePublic.jsp" %>--%>
+            <%@include file="/views/share/evaluationHypothesisPublic.jsp" %>
+            <%--<%@include file="/views/share/evaluationBasisPublic.jsp" %>--%>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
+                    <h2>${projectPlanDetails.projectPhaseName}成果提交------------</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
