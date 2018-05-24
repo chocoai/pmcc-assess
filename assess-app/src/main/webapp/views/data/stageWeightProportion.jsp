@@ -3,7 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/excludes/assets/plugins/laydate/laydate.js"
+            type="text/javascript"></script>
 </head>
 
 <body class="nav-md footer_fixed">
@@ -29,7 +30,8 @@
                                     委托目的
                                 </label>
                                 <div class="col-sm-2">
-                                    <select class="form-control" id="queryEntrustmentPurpose" name="queryEntrustmentPurpose">
+                                    <select class="form-control" id="queryEntrustmentPurpose"
+                                            name="queryEntrustmentPurpose">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${entrustmentPurposeList}">
                                             <option value="${item.id}">${item.name}</option>
@@ -60,7 +62,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -81,7 +84,8 @@
                                             委托目的<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" required id="entrustPurpose" name="entrustPurpose">
+                                            <select class="form-control" required id="entrustPurpose"
+                                                    name="entrustPurpose">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${entrustmentPurposeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -132,7 +136,24 @@
                             保存
                         </button>
                     </div>
-            </form>
+                </div></form>
+        </div>
+    </div>
+</div>
+
+<div id="divEdit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="editTitle"></h3>
+            </div>
+            <div id="divShow">
+
+            </div>
+
         </div>
     </div>
 </div>
@@ -169,7 +190,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function(){
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
@@ -291,7 +312,6 @@
     }
 
 
-
     //编辑字典数据
     function editDataDic(id) {
         $("#frm").clearAll();
@@ -367,9 +387,31 @@
 
     function editHrProfessional(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
-        $('#divBox').modal();
+        var data = {};
+        data.entrustPurpose = row.entrustPurpose;
+        document.getElementById('editTitle').innerHTML = row.entrustPurposeName;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/stageWeightProportion/edit",
+            type: "post",
+            dataType: "html",
+            data: data,
+            success: function (result) {
+                alert(result);
+                if (result.ret) {
+                    console.info(result.data.stageWeightProportions);
+                    $("#frm_edit").clearAll();
+                    $('#divEdit').modal();
+                    $('#divShow').html(result);
+                }
+                else {
+                    Alert("请求数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                console.info(result);
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     //设置子项数据
@@ -381,8 +423,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }
