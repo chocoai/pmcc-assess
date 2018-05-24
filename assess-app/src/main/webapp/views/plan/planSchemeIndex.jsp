@@ -158,7 +158,7 @@
                                 <div class="col-sm-6">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="button" class="btn btn-success" onclick="evaluationObject(${item.id})" value="保存">
+                                    <input type="button" class="btn btn-success" onclick="evaluationObject('${item.id}','${item.groupId}')" value="保存">
                                 </div>
                             </div>
                         </div>
@@ -166,16 +166,7 @@
                 </div>
             </div>
             </c:forEach>
-            <div class="x_panel">
-                <div class="x_title">
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <input type="button" class="btn btn-success" value="确定" onclick="evaluationLastSave()">
-                    </div>
-                </div>
-            </div>
+
 
             <div class="x_panel">
                 <div class="x_title">
@@ -760,8 +751,10 @@
         $("#applyTemplateView"+id).hide();
     }
     //分组保存
-    function evaluationObject(id) {
-        var data = formParams("evaluationObject"+id);//项目信息
+    function evaluationObject(id,groupId) {
+        var data = formParams("evaluationObject"+id);//数据
+        data.projectPlanID = '${projectPlan.id}';
+        data.groupId = groupId;
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/evaluationObjectSave";
         $.ajax({
             url: url,
@@ -773,6 +766,7 @@
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
                     });
+                    location.reload();
                 } else {
                     alert("保存失败:" + result.errmsg);
                 }
@@ -781,10 +775,6 @@
                 alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
-    }
-    //最后保存
-    function evaluationLastSave() {
-        console.log("last save()");
     }
 
     // table list 数据列表显示
@@ -1427,7 +1417,6 @@
         data.number = dataIndex;
         data.areaGroupId = id;
         parentElement.parentNode.insertBefore(trElement,parentElement);
-        var url = "${pageContext.request.contextPath}/projectplanschemeassist/schemeEvaluationObjectSave";
     }
 </script>
 <script type="text/javascript">
@@ -1609,6 +1598,7 @@
         $("#projectPhaseId").select2();
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
+
     function addPlan(id) {
 
         $("#frm_planDetails").clearAll();
@@ -1634,6 +1624,7 @@
         $("#projectPhaseId").select2().val(row.projectPhaseId).trigger("change");
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
+
     function deletePlan(id) {
         Alert("删除后将不可恢复,确认删除？", 2, null, function () {
             Loading.progressShow();
@@ -1756,6 +1747,7 @@
 
 
     }
+
     function treeGridload() {
         $("#PlanItemListed").treegrid({
                 data: treeGridJson,
@@ -1949,6 +1941,48 @@
             }
         });
     }
+
+    //----------------||--------------------------------
+    //组数据
+    function taskGrpup() {
+        //projectPlan
+        var url2 = '${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList';
+        var url1 = '${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupPrototypeList';
+        var projectId = '${projectPlan.projectId}';
+        var data = {};
+        data.projectId = projectId;
+        $.ajax({
+            url: url1,
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                taskarrangement(url2,result[0].groupId);
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+    //拉出组下面数据数据
+    function taskarrangement(url,groupId) {
+        var data = {};
+        data.groupID = groupId;
+        $.ajax({
+            url: url,
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+    //----------------||--------------------------------
 
 
 </script>

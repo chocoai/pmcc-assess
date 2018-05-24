@@ -10,6 +10,7 @@ import java.util.Date;
  * Created by 13426 on 2018/5/22.
  */
 public class SchemeJudgeObjectStringDto implements Serializable {
+    private String projectPlanID;
     private String flag;
     private String seat;
     private String id;
@@ -86,5 +87,13 @@ public class SchemeJudgeObjectStringDto implements Serializable {
 
     public void setSeat(String seat) {
         this.seat = seat;
+    }
+
+    public String getProjectPlanID() {
+        return projectPlanID;
+    }
+
+    public void setProjectPlanID(String projectPlanID) {
+        this.projectPlanID = projectPlanID;
     }
 }

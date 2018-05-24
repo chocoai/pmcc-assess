@@ -30,9 +30,9 @@ public class ProjectPlanSurveyAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSurveyIndex", "", 0, "-1", "");
-        projectPlanSurveyService.getProjectPlanSurvey(modelAndView,projectPlan);
-            return modelAndView;
-        }
+        projectPlanSurveyService.getProjectPlanSurvey(modelAndView, projectPlan);
+        return modelAndView;
+    }
 
 
     @Override

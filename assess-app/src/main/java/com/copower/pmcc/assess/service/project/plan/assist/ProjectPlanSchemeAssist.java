@@ -28,13 +28,15 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
     private SchemeAssistService schemeAssistService;
     @Autowired
     private ControllerComponent serviceComponent;
+
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSchemeIndex", "", 0, "-1", "");
-        modelAndView.addObject("bestusedescriptionList",schemeAssistService.dataBestUseDescriptionList());
-        modelAndView.addObject("dataList",schemeAssistService.schemeAreaGroupVoList(projectPlan.getProjectId()));
-        modelAndView.addObject("dataEvaluationMethod",schemeAssistService.evaluationmethod());
-        modelAndView.addObject("dataEvaluationThink",schemeAssistService.thinkingList());
+        modelAndView.addObject("bestusedescriptionList", schemeAssistService.dataBestUseDescriptionList());
+        modelAndView.addObject("dataList", schemeAssistService.schemeAreaGroupVoList(projectPlan.getProjectId()));
+        modelAndView.addObject("dataEvaluationMethod", schemeAssistService.evaluationmethod());
+        modelAndView.addObject("dataEvaluationThink", schemeAssistService.thinkingList());
+        modelAndView.addObject("projectPlan", projectPlan);
         return modelAndView;
     }
 

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,12 +91,27 @@ public class ProjectPlanSchemeAssistController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组 ", method = RequestMethod.POST)
+    @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组数据 ", method = RequestMethod.POST)
     public Object schemeAreaGroupVoList(@RequestParam(value = "groupID") String groupID) {
         try {
             if (!StringUtils.isEmpty(groupID)) {
                List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(groupID);
                 if (vos != null) return vos;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/schemeAreaGroupPrototypeList", name = "评估工作方案阶段工作计划 区域数据 ", method = RequestMethod.POST)
+    public Object schemeAreaGroupPrototypeList(@RequestParam(value = "projectId") String projectId) {
+        try {
+            if (!StringUtils.isEmpty(projectId)) {
+                List<SchemeAreaGroupVo> vos = schemeAssistService.schemeAreaGroupVoList(Integer.parseInt(projectId));
+                if (!ObjectUtils.isEmpty(vos))return vos;
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
