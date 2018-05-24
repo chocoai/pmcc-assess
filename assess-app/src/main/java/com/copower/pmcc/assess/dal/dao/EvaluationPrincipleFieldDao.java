@@ -24,7 +24,7 @@ public class EvaluationPrincipleFieldDao {
     public boolean add(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){
         boolean flag = true;
         EvaluationPrincipleFieldExample example = new EvaluationPrincipleFieldExample();
-        example.createCriteria().andNameEqualTo(evaluationPrincipleFieldDto.getName());
+        example.createCriteria().andNameEqualTo(evaluationPrincipleFieldDto.getName()).andPrincipleIdEqualTo(evaluationPrincipleFieldDto.getPrincipleId());
         if (mapper.selectByExample(example).size()>0)flag = false;
         if (flag) return mapper.insertSelective(change(evaluationPrincipleFieldDto))==1;
         return false;

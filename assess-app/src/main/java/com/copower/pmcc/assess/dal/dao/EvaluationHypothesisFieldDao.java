@@ -24,7 +24,7 @@ public class EvaluationHypothesisFieldDao {
     public boolean add(EvaluationHypothesisFieldDto evaluationHypothesisFieldDto){
         boolean flag = true;
         EvaluationHypothesisFieldExample example = new EvaluationHypothesisFieldExample();
-        example.createCriteria().andNameEqualTo(evaluationHypothesisFieldDto.getName());
+        example.createCriteria().andNameEqualTo(evaluationHypothesisFieldDto.getName()).andHypothesisIdEqualTo(evaluationHypothesisFieldDto.getHypothesisId());
         if (evaluationHypothesisFieldMapper.selectByExample(example).size()>0){
             flag = false;
         }

@@ -70,7 +70,7 @@ public class EvaluationHypothesisFieldService {
     }
 
     @Transactional(readOnly = true)
-    private List<EvaluationHypothesisFieldVo> list(Integer hypothesisId){
+    public List<EvaluationHypothesisFieldVo> list(Integer hypothesisId){
         List<EvaluationHypothesisFieldVo> vos = new ArrayList<>();
         evaluationHypothesisFieldDao.list(hypothesisId).parallelStream().forEach(evaluationHypothesisFieldDto -> vos.add(change(evaluationHypothesisFieldDto)));
         return vos;

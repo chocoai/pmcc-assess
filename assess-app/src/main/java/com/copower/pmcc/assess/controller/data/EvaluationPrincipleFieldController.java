@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleFieldVo;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 评估原则 字段
@@ -52,6 +55,14 @@ public class EvaluationPrincipleFieldController {
         BootstrapTableVo vo = null;
         if (principleId!=null) vo = service.list(principleId);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listFields",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
+    public Object lists(Integer principleId){
+        List<EvaluationPrincipleFieldDto> vos = null;
+        vos = service.listN(principleId);
+        return vos;
     }
 
     @ResponseBody

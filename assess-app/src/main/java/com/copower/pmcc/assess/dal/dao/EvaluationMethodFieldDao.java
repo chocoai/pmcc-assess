@@ -44,7 +44,7 @@ public class EvaluationMethodFieldDao {
     public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
         boolean flag = true;
         EvaluationMethodFieldExample example = new EvaluationMethodFieldExample();
-        example.createCriteria().andNameEqualTo(evaluationMethodFieldDto.getName());
+        example.createCriteria().andNameEqualTo(evaluationMethodFieldDto.getName()).andMethodIdEqualTo(evaluationMethodFieldDto.getMethodId());
         if (evaluationMethodFieldMapper.selectByExample(example).size() > 0) flag = false;
         if (flag) {
             return evaluationMethodFieldMapper.insertSelective(change(evaluationMethodFieldDto)) == 1;

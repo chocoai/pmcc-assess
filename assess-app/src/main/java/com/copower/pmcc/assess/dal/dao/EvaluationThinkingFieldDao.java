@@ -50,7 +50,7 @@ public class EvaluationThinkingFieldDao {
     public boolean add(EvaluationThinkingFieldDto evaluationThinkingFieldDto) {
         boolean flag = true;
         EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();
-        example.createCriteria().andNameEqualTo(evaluationThinkingFieldDto.getName());
+        example.createCriteria().andNameEqualTo(evaluationThinkingFieldDto.getName()).andThinkingIdEqualTo(evaluationThinkingFieldDto.getThinkingId());
         if (mapper.selectByExample(example).size()>0)flag = false;
         if (flag) return mapper.insertSelective(change(evaluationThinkingFieldDto)) == 1;
         return false;

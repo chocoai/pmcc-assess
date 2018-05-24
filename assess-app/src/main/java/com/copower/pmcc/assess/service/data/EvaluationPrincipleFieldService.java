@@ -80,6 +80,10 @@ public class EvaluationPrincipleFieldService {
         return vo;
     }
 
+    public List<EvaluationPrincipleFieldDto> listN(Integer principleId){
+        return evaluationPrincipleFieldDao.list(principleId);
+    }
+
     public EvaluationPrincipleFieldVo change(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){
         EvaluationPrincipleFieldVo evaluationPrincipleFieldVo = new EvaluationPrincipleFieldVo();
         BeanUtils.copyProperties(evaluationPrincipleFieldDto,evaluationPrincipleFieldVo);

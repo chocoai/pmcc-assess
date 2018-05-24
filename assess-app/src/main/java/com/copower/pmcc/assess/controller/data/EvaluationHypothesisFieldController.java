@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisFieldDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisFieldVo;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -8,10 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 评估假设 字段
@@ -52,6 +56,20 @@ public class EvaluationHypothesisFieldController {
         BootstrapTableVo vo = null;
         if (hypothesisId!=null) vo = service.listBoot(hypothesisId);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listFields",method = {RequestMethod.POST},name = "获取列表")
+    public List<EvaluationHypothesisFieldVo> lists(Integer hypothesisId){
+        try {
+            List<EvaluationHypothesisFieldVo> vo = service.list(hypothesisId);
+            if (!ObjectUtils.isEmpty(vo)){
+                return vo;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
     }
 
     @ResponseBody

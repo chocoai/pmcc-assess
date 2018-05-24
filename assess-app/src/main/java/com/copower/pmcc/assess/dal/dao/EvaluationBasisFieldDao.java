@@ -24,7 +24,7 @@ public class EvaluationBasisFieldDao {
     public boolean add(EvaluationBasisFieldDto dto){
         boolean flag = true;
         EvaluationBasisFieldExample example = new EvaluationBasisFieldExample();
-        example.createCriteria().andNameEqualTo(dto.getName());
+        example.createCriteria().andNameEqualTo(dto.getName()).andBasisIdEqualTo(dto.getBasisId());
         if (mapper.selectByExample(example).size()>0)flag=false;
         if (flag){
             return mapper.insertSelective(change(dto))==1;

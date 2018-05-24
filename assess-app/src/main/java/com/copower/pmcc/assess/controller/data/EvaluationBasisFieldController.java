@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisFieldDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationBasisFieldVo;
 import com.copower.pmcc.assess.service.data.EvaluationBasisFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 评估依据 字段
@@ -52,6 +55,13 @@ public class EvaluationBasisFieldController {
         BootstrapTableVo vo = null;
         if (basisId!=null) vo = service.listBoot(basisId);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listFields",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
+    public List<EvaluationBasisFieldVo> lists(Integer basisId){
+        List<EvaluationBasisFieldVo> vos = service.list(basisId);
+        return vos;
     }
 
     @ResponseBody
