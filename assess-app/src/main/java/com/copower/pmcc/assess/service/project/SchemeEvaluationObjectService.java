@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SchemeEvaluationObjectDao;
+import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObject;
 import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -22,7 +23,7 @@ public class SchemeEvaluationObjectService {
     private SchemeEvaluationObjectDao dao;
 
     @Transactional
-    public int add(SchemeEvaluationObjectDto dto) {
+    public int add(SchemeEvaluationObject dto) {
         dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);
     }

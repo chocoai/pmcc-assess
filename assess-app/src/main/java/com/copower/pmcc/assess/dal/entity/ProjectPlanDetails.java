@@ -76,6 +76,8 @@ public class ProjectPlanDetails {
 
     private Integer reportAnalysisId;
 
+    private Integer evaluationId;
+
     public Integer getId() {
         return id;
     }
@@ -362,5 +364,13 @@ public class ProjectPlanDetails {
 
     public void setReportAnalysisId(Integer reportAnalysisId) {
         this.reportAnalysisId = reportAnalysisId;
+    }
+
+    public Integer getEvaluationId() {
+        return evaluationId;
+    }
+
+    public void setEvaluationId(Integer evaluationId) {
+        this.evaluationId = evaluationId;
     }
 }

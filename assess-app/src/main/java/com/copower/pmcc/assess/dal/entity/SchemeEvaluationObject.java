@@ -11,7 +11,7 @@ public class SchemeEvaluationObject {
 
     private String name;
 
-    private String number;
+    private Integer groupNumber;
 
     private String creator;
 
@@ -51,12 +51,12 @@ public class SchemeEvaluationObject {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getNumber() {
-        return number;
+    public Integer getGroupNumber() {
+        return groupNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
+    public void setGroupNumber(Integer groupNumber) {
+        this.groupNumber = groupNumber;
     }
 
     public String getCreator() {

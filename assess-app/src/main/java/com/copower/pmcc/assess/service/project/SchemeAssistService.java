@@ -139,13 +139,22 @@ public class SchemeAssistService {
     }
 
     /**
-     *
-     * @param groupID
+     * 获取申报信息区域分组 或初始化
+     * @param projectId
      * @return
      */
-    public List<SchemeJudgeObjectVo> schemeAreaGroupVoListX(String groupID) {
+    public List<SchemeAreaGroupVo> getSchemeGroup(Integer projectId) {
+        return declareRecordService.getSchemeGroup(projectId);
+    }
+
+    /**
+     *
+     * @param areaGroupId
+     * @return
+     */
+    public List<SchemeJudgeObjectVo> schemeAreaGroupVoListX(Integer areaGroupId) {
         List<SchemeJudgeObjectVo> vos = null;
-        vos = judgeObjectService.listGroupId(groupID);
+        vos = judgeObjectService.listGroupId(areaGroupId);
         return vos;
     }
 

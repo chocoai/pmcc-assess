@@ -37,28 +37,15 @@ public class DeclareRecordDao {
         return declareRecords;
     }
 
-    /*相同省*/
-    public List<DeclareRecord> queryProvinceAll(){
-        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT3,new DeclareRecordRowMapper());
-        return declareRecords;
-    }
-
-    /*相同省 市*/
-    public List<DeclareRecord> queryProvinceCityAll(){
-        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT2,new DeclareRecordRowMapper());
-        return declareRecords;
-    }
-
-    /*相同省 市 县*/
-    public List<DeclareRecord> queryProvinceCityDistrictAll(){
-        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT1,new DeclareRecordRowMapper());
-        return declareRecords;
-    }
 
     public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
         return mapper.selectByExample(example);
+    }
+
+    public boolean updateDeclareRecord(DeclareRecord declareRecord) {
+        return mapper.updateByPrimaryKeySelective(declareRecord) > 0;
     }
 
     public boolean addDeclareRecord(DeclareRecord declareRecord) {

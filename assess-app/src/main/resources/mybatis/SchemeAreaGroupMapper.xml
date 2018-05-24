@@ -7,12 +7,11 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="province_city_district_str" property="provinceCityDistrictStr" jdbcType="VARCHAR" />
     <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
-    <result column="province_city_district_str" property="provinceCityDistrictStr" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, province, city, district, value_time_point, creator, gmt_created, 
-    gmt_modified, group_id, province_city_district_str
+    id, project_id, province, city, district, province_city_district_str, value_time_point, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample" >
     select
@@ -111,13 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_area_group (project_id, province, city, 
-      district, value_time_point, creator, 
-      gmt_created, gmt_modified, group_id, 
-      province_city_district_str)
+      district, province_city_district_str, value_time_point, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{groupId,jdbcType=VARCHAR}, 
-      #{provinceCityDistrictStr,jdbcType=VARCHAR})
+      #{district,jdbcType=VARCHAR}, #{provinceCityDistrictStr,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeAreaGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +136,9 @@
       <if test="district != null" >
         district,
       </if>
+      <if test="provinceCityDistrictStr != null" >
+        province_city_district_str,
+      </if>
       <if test="valueTimePoint != null" >
         value_time_point,
       </if>
@@ -148,12 +150,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -169,6 +165,9 @@
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
       </if>
+      <if test="provinceCityDistrictStr != null" >
+        #{provinceCityDistrictStr,jdbcType=VARCHAR},
+      </if>
       <if test="valueTimePoint != null" >
         #{valueTimePoint,jdbcType=TIMESTAMP},
       </if>
@@ -180,12 +179,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceCityDistrictStr != null" >
-        #{provinceCityDistrictStr,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -213,6 +206,9 @@
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
       </if>
+      <if test="record.provinceCityDistrictStr != null" >
+        province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
+      </if>
       <if test="record.valueTimePoint != null" >
         value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       </if>
@@ -224,12 +220,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.groupId != null" >
-        group_id = #{record.groupId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.provinceCityDistrictStr != null" >
-        province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -243,12 +233,11 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
+      province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
       value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      group_id = #{record.groupId,jdbcType=VARCHAR},
-      province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -268,6 +257,9 @@
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
       </if>
+      <if test="provinceCityDistrictStr != null" >
+        province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
+      </if>
       <if test="valueTimePoint != null" >
         value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       </if>
@@ -280,12 +272,6 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=VARCHAR},
-      </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -295,12 +281,11 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
+      province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
       value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      group_id = #{groupId,jdbcType=VARCHAR},
-      province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

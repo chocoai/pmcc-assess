@@ -30,12 +30,6 @@ public class SchemeAreaGroupDao {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public SchemeAreaGroup get(String groupID){
-        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andIdIsNotNull().andGroupIdEqualTo(groupID);
-        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
-        return schemeAreaGroups.get(0);
-    }
 
     public List<SchemeAreaGroupDto> areaGroupDtoList(Integer projectID){
         List<SchemeAreaGroupDto> schemeAreaGroupDtoList = new ArrayList<>();
@@ -46,20 +40,11 @@ public class SchemeAreaGroupDao {
         return schemeAreaGroupDtoList;
     }
 
-
-    public int add(SchemeAreaGroupDto dto){
-        SchemeAreaGroup schemeAreaGroup = change(dto);
+    public int add(SchemeAreaGroup schemeAreaGroup){
         mapper.insert(schemeAreaGroup);
         return schemeAreaGroup.getId();
     }
 
-    public int getID(SchemeAreaGroupDto dto){
-        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andIdIsNotNull().andCityEqualTo(dto.getCity()).andDistrictEqualTo(dto.getDistrict()).andProvinceEqualTo(dto.getProvince())
-                .andGroupIdEqualTo(dto.getGroupId()).andGmtCreatedEqualTo(dto.getGmtCreated());
-        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
-        return schemeAreaGroups.get(0).getId();
-    }
 
     public boolean addEspecially(SchemeAreaGroupDto dto){
         mapper.insert(change(dto));

@@ -33,7 +33,7 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSchemeIndex", "", 0, "-1", "");
         modelAndView.addObject("bestusedescriptionList", schemeAssistService.dataBestUseDescriptionList());
-        modelAndView.addObject("dataList", schemeAssistService.schemeAreaGroupVoList(projectPlan.getProjectId()));
+        modelAndView.addObject("dataList", schemeAssistService.getSchemeGroup(projectPlan.getProjectId()));
         modelAndView.addObject("dataEvaluationMethod", schemeAssistService.evaluationmethod());
         modelAndView.addObject("dataEvaluationThink", schemeAssistService.thinkingList());
         modelAndView.addObject("projectPlan", projectPlan);

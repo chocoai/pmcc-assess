@@ -16,7 +16,17 @@ public class DeclareRecord {
 
     private String district;
 
+    private Integer areaGroupId;
+
     private BigDecimal floorArea;
+
+    private BigDecimal assessArea;
+
+    private BigDecimal assessUnitPrice;
+
+    private BigDecimal alreadyOutArea;
+
+    private Boolean bisGenerateAll;
 
     private String creator;
 
@@ -72,12 +82,52 @@ public class DeclareRecord {
         this.district = district == null ? null : district.trim();
     }
 
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
+    }
+
     public BigDecimal getFloorArea() {
         return floorArea;
     }
 
     public void setFloorArea(BigDecimal floorArea) {
         this.floorArea = floorArea;
+    }
+
+    public BigDecimal getAssessArea() {
+        return assessArea;
+    }
+
+    public void setAssessArea(BigDecimal assessArea) {
+        this.assessArea = assessArea;
+    }
+
+    public BigDecimal getAssessUnitPrice() {
+        return assessUnitPrice;
+    }
+
+    public void setAssessUnitPrice(BigDecimal assessUnitPrice) {
+        this.assessUnitPrice = assessUnitPrice;
+    }
+
+    public BigDecimal getAlreadyOutArea() {
+        return alreadyOutArea;
+    }
+
+    public void setAlreadyOutArea(BigDecimal alreadyOutArea) {
+        this.alreadyOutArea = alreadyOutArea;
+    }
+
+    public Boolean getBisGenerateAll() {
+        return bisGenerateAll;
+    }
+
+    public void setBisGenerateAll(Boolean bisGenerateAll) {
+        this.bisGenerateAll = bisGenerateAll;
     }
 
     public String getCreator() {
@@ -102,55 +152,5 @@ public class DeclareRecord {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    @Override
-    public String toString() {
-        return "DeclareRecord{" +
-                "id=" + id +
-                ", projectId=" + projectId +
-                ", name='" + name + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                ", floorArea=" + floorArea +
-                ", creator='" + creator + '\'' +
-                ", gmtCreated=" + gmtCreated +
-                ", gmtModified=" + gmtModified +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DeclareRecord that = (DeclareRecord) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (projectId != null ? !projectId.equals(that.projectId) : that.projectId != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (province != null ? !province.equals(that.province) : that.province != null) return false;
-        if (city != null ? !city.equals(that.city) : that.city != null) return false;
-        if (district != null ? !district.equals(that.district) : that.district != null) return false;
-        if (floorArea != null ? !floorArea.equals(that.floorArea) : that.floorArea != null) return false;
-        if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
-        if (gmtCreated != null ? !gmtCreated.equals(that.gmtCreated) : that.gmtCreated != null) return false;
-        return gmtModified != null ? gmtModified.equals(that.gmtModified) : that.gmtModified == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (projectId != null ? projectId.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (province != null ? province.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (district != null ? district.hashCode() : 0);
-        result = 31 * result + (floorArea != null ? floorArea.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (gmtCreated != null ? gmtCreated.hashCode() : 0);
-        result = 31 * result + (gmtModified != null ? gmtModified.hashCode() : 0);
-        return result;
     }
 }

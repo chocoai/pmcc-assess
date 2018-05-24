@@ -20,7 +20,7 @@ public class SchemeJudgeObjectDao {
     @Autowired
     private SchemeJudgeObjectMapper mapper;
 
-    public boolean add(SchemeJudgeObjectDto dto){
+    public boolean add(SchemeJudgeObject dto){
         return mapper.insertSelective(change(dto))==1;
     }
 
@@ -28,7 +28,7 @@ public class SchemeJudgeObjectDao {
         return mapper.deleteByPrimaryKey(id)==1;
     }
 
-    public boolean update(SchemeJudgeObjectDto dto){
+    public boolean update(SchemeJudgeObject dto){
         return mapper.updateByPrimaryKey(change(dto))==1;
     }
 
@@ -48,9 +48,9 @@ public class SchemeJudgeObjectDao {
         return oo;
     }
 
-    public List<SchemeJudgeObject> list(String groupId){
+    public List<SchemeJudgeObject> list(Integer areaGroupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
-        example.createCriteria().andIdIsNotNull().andGroupIdEqualTo(groupId).andFlagEqualTo("0");
+        example.createCriteria().andIdIsNotNull().andAreaGroupIdEqualTo(areaGroupId);
         return mapper.selectByExample(example);
     }
 }

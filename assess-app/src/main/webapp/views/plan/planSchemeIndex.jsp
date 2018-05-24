@@ -118,7 +118,7 @@
                         </c:if>
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link" onclick="schemeareagroupTableList('${item.id}','${item.groupId}')"><i class="fa fa-chevron-down"></i></a> </li>
+                        <li><a class="collapse-link" onclick="schemeareagroupTableList('${item.id}')"><i class="fa fa-chevron-down"></i></a> </li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -158,7 +158,7 @@
                                 <div class="col-sm-6">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="button" class="btn btn-success" onclick="evaluationObject('${item.id}','${item.groupId}')" value="保存">
+                                    <input type="button" class="btn btn-success" onclick="evaluationObject('${item.id}')" value="保存">
                                 </div>
                             </div>
                         </div>
@@ -751,10 +751,10 @@
         $("#applyTemplateView"+id).hide();
     }
     //分组保存
-    function evaluationObject(id,groupId) {
+    function evaluationObject(id) {
         var data = formParams("evaluationObject"+id);//数据
         data.projectPlanID = '${projectPlan.id}';
-        data.groupId = groupId;
+        data.areaGroupId = id;
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/evaluationObjectSave";
         $.ajax({
             url: url,
@@ -781,7 +781,7 @@
     <c:forEach items="${dataList}" var="item">
         document.getElementById("contentList"+${item.id}).style.display = "none";
     </c:forEach>
-    function schemeareagroupTableList(id,groupID) {
+    function schemeareagroupTableList(id) {
         var dis = document.getElementById("contentList"+id).style.display;
         if (dis=="none"){
             document.getElementById("contentList"+id).style.display = "";
@@ -791,7 +791,7 @@
                 $.ajax({
                     url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
                     data: {
-                        groupID: groupID
+                        areaGroupId: id
                     },
                     type: "post",
                     dataType: "json",

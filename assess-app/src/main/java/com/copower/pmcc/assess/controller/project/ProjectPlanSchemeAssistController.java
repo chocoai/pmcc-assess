@@ -41,13 +41,13 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/evaluationThink/think", name = "评估工作方案阶段工作计划 评估技术思路 获取,以及字段引用", method = RequestMethod.POST)
-    public Object evaluationThinkGet(@RequestParam(value = "id") Integer id,Integer type,Integer flag) {
+    public Object evaluationThinkGet(@RequestParam(value = "id") Integer id, Integer type, Integer flag) {
         try {
-            if (id != null ) {
-                if (flag.equals(2)){
-                    List<EvaluationThinkingField> fields = schemeAssistService.schemeassistserviceThinkFilds(id,type);
-                    if (fields!=null)return fields;
-                }else if (flag.equals(1)){
+            if (id != null) {
+                if (flag.equals(2)) {
+                    List<EvaluationThinkingField> fields = schemeAssistService.schemeassistserviceThinkFilds(id, type);
+                    if (fields != null) return fields;
+                } else if (flag.equals(1)) {
                     EvaluationThinkingDto evaluationThinkingDto = schemeAssistService.get(id);
                     if (evaluationThinkingDto != null) return evaluationThinkingDto;
                 }
@@ -61,10 +61,10 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/evaluationmethod/fieldList", name = "评估工作方案阶段工作计划 评估方法 字段引用", method = RequestMethod.POST)
-    public Object evaluationMethodField(@RequestParam(value = "id") Integer id,@RequestParam(value = "type")Integer type) {
+    public Object evaluationMethodField(@RequestParam(value = "id") Integer id, @RequestParam(value = "type") Integer type) {
         try {
-            if (id != null && type!=null) {
-                List<EvaluationMethodField> fields = schemeAssistService.list(id,type);
+            if (id != null && type != null) {
+                List<EvaluationMethodField> fields = schemeAssistService.list(id, type);
                 if (fields != null) return fields;
             }
         } catch (Exception e) {
@@ -92,10 +92,10 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组数据 ", method = RequestMethod.POST)
-    public Object schemeAreaGroupVoList(@RequestParam(value = "groupID") String groupID) {
+    public Object schemeAreaGroupVoList(@RequestParam(value = "areaGroupId") Integer areaGroupId) {
         try {
-            if (!StringUtils.isEmpty(groupID)) {
-               List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(groupID);
+            if (areaGroupId != null) {
+                List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(areaGroupId);
                 if (vos != null) return vos;
             }
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class ProjectPlanSchemeAssistController {
         try {
             if (!StringUtils.isEmpty(projectId)) {
                 List<SchemeAreaGroupVo> vos = schemeAssistService.schemeAreaGroupVoList(Integer.parseInt(projectId));
-                if (!ObjectUtils.isEmpty(vos))return vos;
+                if (!ObjectUtils.isEmpty(vos)) return vos;
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -138,7 +138,7 @@ public class ProjectPlanSchemeAssistController {
     @RequestMapping(value = "/evaluationObjectSave", name = "区域组 保存 ", method = RequestMethod.POST)
     public Object evaluationObjectSave(SchemeJudgeObjectStringDto dto) {
         try {
-            if (dto!=null){
+            if (dto != null) {
                 judgeObjectService.evaluationObjectSave(dto);
             }
         } catch (Exception e) {
@@ -147,7 +147,6 @@ public class ProjectPlanSchemeAssistController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
 
 }

@@ -8,11 +8,13 @@ public class SchemeJudgeObject {
 
     private Integer projectId;
 
+    private Integer areaGroupId;
+
     private Integer declareRecordId;
 
     private Integer evaluationId;
 
-    private Integer number;
+    private String number;
 
     private String name;
 
@@ -20,7 +22,7 @@ public class SchemeJudgeObject {
 
     private BigDecimal floorArea;
 
-    private String groupNumber;
+    private Integer groupNumber;
 
     private String creator;
 
@@ -28,11 +30,9 @@ public class SchemeJudgeObject {
 
     private Date gmtModified;
 
-    private String groupId;
-
     private String evaluationArea;
 
-    private String flag;
+    private Boolean bisSplit;
 
     private String seat;
 
@@ -52,6 +52,14 @@ public class SchemeJudgeObject {
         this.projectId = projectId;
     }
 
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
+    }
+
     public Integer getDeclareRecordId() {
         return declareRecordId;
     }
@@ -68,12 +76,12 @@ public class SchemeJudgeObject {
         this.evaluationId = evaluationId;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setNumber(String number) {
+        this.number = number == null ? null : number.trim();
     }
 
     public String getName() {
@@ -100,12 +108,12 @@ public class SchemeJudgeObject {
         this.floorArea = floorArea;
     }
 
-    public String getGroupNumber() {
+    public Integer getGroupNumber() {
         return groupNumber;
     }
 
-    public void setGroupNumber(String groupNumber) {
-        this.groupNumber = groupNumber == null ? null : groupNumber.trim();
+    public void setGroupNumber(Integer groupNumber) {
+        this.groupNumber = groupNumber;
     }
 
     public String getCreator() {
@@ -132,14 +140,6 @@ public class SchemeJudgeObject {
         this.gmtModified = gmtModified;
     }
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId == null ? null : groupId.trim();
-    }
-
     public String getEvaluationArea() {
         return evaluationArea;
     }
@@ -148,12 +148,12 @@ public class SchemeJudgeObject {
         this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
     }
 
-    public String getFlag() {
-        return flag;
+    public Boolean getBisSplit() {
+        return bisSplit;
     }
 
-    public void setFlag(String flag) {
-        this.flag = flag == null ? null : flag.trim();
+    public void setBisSplit(Boolean bisSplit) {
+        this.bisSplit = bisSplit;
     }
 
     public String getSeat() {

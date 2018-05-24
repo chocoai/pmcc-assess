@@ -2355,6 +2355,66 @@ public class ProjectPlanDetailsExample {
             addCriterion("report_analysis_id not between", value1, value2, "reportAnalysisId");
             return (Criteria) this;
         }
+
+        public Criteria andEvaluationIdIsNull() {
+            addCriterion("evaluation_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdIsNotNull() {
+            addCriterion("evaluation_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdEqualTo(Integer value) {
+            addCriterion("evaluation_id =", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdNotEqualTo(Integer value) {
+            addCriterion("evaluation_id <>", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdGreaterThan(Integer value) {
+            addCriterion("evaluation_id >", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("evaluation_id >=", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdLessThan(Integer value) {
+            addCriterion("evaluation_id <", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdLessThanOrEqualTo(Integer value) {
+            addCriterion("evaluation_id <=", value, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdIn(List<Integer> values) {
+            addCriterion("evaluation_id in", values, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdNotIn(List<Integer> values) {
+            addCriterion("evaluation_id not in", values, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdBetween(Integer value1, Integer value2) {
+            addCriterion("evaluation_id between", value1, value2, "evaluationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvaluationIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("evaluation_id not between", value1, value2, "evaluationId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

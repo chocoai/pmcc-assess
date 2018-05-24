@@ -15,6 +15,7 @@ public class SchemeJudgeObjectStringDto implements Serializable {
     private String seat;
     private String id;
     private String bestUseId;
+    private Integer areaGroupId;
 
     private String floorArea;
 
@@ -95,5 +96,13 @@ public class SchemeJudgeObjectStringDto implements Serializable {
 
     public void setProjectPlanID(String projectPlanID) {
         this.projectPlanID = projectPlanID;
+    }
+
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
     }
 }

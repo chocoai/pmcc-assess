@@ -47,15 +47,11 @@ public class ProjectPlanCompileService {
         Integer workStageId = projectPlan.getWorkStageId();
 
         List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
-        List<SchemeAreaGroup> voList = getVoList(schemeAreaGroups);
-//        List<SchemeEvaluationObject> schemeEvaluationObjects = schemeEvaluationObjectDao.getSchemeEvaluationObjectByProjectId(projectId);
-
         String address = "";
         int i = 1;
         //一级分类 地址
-        if(CollectionUtils.isNotEmpty(voList)){
-            for (SchemeAreaGroup schemeAreaGroup : voList) {
-                address = schemeAreaGroup.getProvince() + schemeAreaGroup.getCity() + schemeAreaGroup.getDistrict();
+        if(CollectionUtils.isNotEmpty(schemeAreaGroups)){
+            for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
 
                 List<ProjectPlanDetails> projectPlanDetailss = projectPlanDetailsDao.getProjectPlanDetailsByProjectIdAndName(projectId, address, workStageId);
                 if (projectPlanDetailss != null && projectPlanDetailss.size() > 0) {
@@ -65,7 +61,7 @@ public class ProjectPlanCompileService {
                     projectPlanDetails.setProjectWorkStageId(workStageId);
                     projectPlanDetails.setPlanId(planId);
                     projectPlanDetails.setProjectId(projectId);
-                    projectPlanDetails.setProjectPhaseName(address);
+                    projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getProvinceCityDistrictStr());
                     projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                     projectPlanDetails.setBisLastLayer(false);
                     projectPlanDetails.setSorting(i++);
@@ -105,33 +101,6 @@ public class ProjectPlanCompileService {
                 }
             }
         }
-
         return modelAndView;
-    }
-    //转换具体数据
-    private List<SchemeAreaGroup> getVoList(List<SchemeAreaGroup> list) {
-        if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, p -> {
-            SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
-            BeanUtils.copyProperties(p, schemeAreaGroup);
-            if (p.getProvince() != null) {
-                SysAreaDto sysAreaDto = erpAreaService.getSysAreaDto(Integer.valueOf(p.getProvince()));
-                if (sysAreaDto != null)
-                    schemeAreaGroup.setProvince(sysAreaDto.getName());
-            }
-            if(p.getCity() != null){
-                SysAreaDto sysAreaDto = erpAreaService.getSysAreaDto(Integer.valueOf(p.getCity()));
-                if(sysAreaDto != null){
-                    schemeAreaGroup.setCity(sysAreaDto.getName());
-                }
-            }
-            if (p.getDistrict() !=null) {
-                SysAreaDto sysAreaDto = erpAreaService.getSysAreaDto(Integer.valueOf(p.getDistrict()));
-                if (sysAreaDto != null) {
-                    schemeAreaGroup.setDistrict(sysAreaDto.getName());
-                }
-            }
-            return schemeAreaGroup;
-        });
     }
 }

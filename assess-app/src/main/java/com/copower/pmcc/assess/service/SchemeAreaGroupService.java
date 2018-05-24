@@ -36,8 +36,8 @@ public class SchemeAreaGroupService {
 
 
     @Transactional
-    public int add(SchemeAreaGroupDto dto) {
-        return dao.add(dto);
+    public int add(SchemeAreaGroup schemeAreaGroup) {
+        return dao.add(schemeAreaGroup);
     }
 
     /**
@@ -84,9 +84,7 @@ public class SchemeAreaGroupService {
         return dao.get(id);
     }
 
-    public SchemeAreaGroup get(String groupID){
-        return dao.get(groupID);
-    }
+
 
     public SchemeAreaGroupVo change(SchemeAreaGroupDto dto) {
         SchemeAreaGroupVo vo = new SchemeAreaGroupVo();

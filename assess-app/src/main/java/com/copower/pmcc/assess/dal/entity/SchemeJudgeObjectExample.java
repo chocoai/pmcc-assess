@@ -226,6 +226,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andAreaGroupIdIsNull() {
+            addCriterion("area_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIsNotNull() {
+            addCriterion("area_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdEqualTo(Integer value) {
+            addCriterion("area_group_id =", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotEqualTo(Integer value) {
+            addCriterion("area_group_id <>", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThan(Integer value) {
+            addCriterion("area_group_id >", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id >=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThan(Integer value) {
+            addCriterion("area_group_id <", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id <=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIn(List<Integer> values) {
+            addCriterion("area_group_id in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotIn(List<Integer> values) {
+            addCriterion("area_group_id not in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andDeclareRecordIdIsNull() {
             addCriterion("declare_record_id is null");
             return (Criteria) this;
@@ -356,52 +416,62 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andNumberEqualTo(Integer value) {
+        public Criteria andNumberEqualTo(String value) {
             addCriterion("number =", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotEqualTo(Integer value) {
+        public Criteria andNumberNotEqualTo(String value) {
             addCriterion("number <>", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThan(Integer value) {
+        public Criteria andNumberGreaterThan(String value) {
             addCriterion("number >", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andNumberGreaterThanOrEqualTo(String value) {
             addCriterion("number >=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThan(Integer value) {
+        public Criteria andNumberLessThan(String value) {
             addCriterion("number <", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andNumberLessThanOrEqualTo(String value) {
             addCriterion("number <=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberIn(List<Integer> values) {
+        public Criteria andNumberLike(String value) {
+            addCriterion("number like", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotLike(String value) {
+            addCriterion("number not like", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIn(List<String> values) {
             addCriterion("number in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotIn(List<Integer> values) {
+        public Criteria andNumberNotIn(List<String> values) {
             addCriterion("number not in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberBetween(Integer value1, Integer value2) {
+        public Criteria andNumberBetween(String value1, String value2) {
             addCriterion("number between", value1, value2, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andNumberNotBetween(String value1, String value2) {
             addCriterion("number not between", value1, value2, "number");
             return (Criteria) this;
         }
@@ -606,62 +676,52 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberEqualTo(String value) {
+        public Criteria andGroupNumberEqualTo(Integer value) {
             addCriterion("group_number =", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberNotEqualTo(String value) {
+        public Criteria andGroupNumberNotEqualTo(Integer value) {
             addCriterion("group_number <>", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberGreaterThan(String value) {
+        public Criteria andGroupNumberGreaterThan(Integer value) {
             addCriterion("group_number >", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberGreaterThanOrEqualTo(String value) {
+        public Criteria andGroupNumberGreaterThanOrEqualTo(Integer value) {
             addCriterion("group_number >=", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberLessThan(String value) {
+        public Criteria andGroupNumberLessThan(Integer value) {
             addCriterion("group_number <", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberLessThanOrEqualTo(String value) {
+        public Criteria andGroupNumberLessThanOrEqualTo(Integer value) {
             addCriterion("group_number <=", value, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberLike(String value) {
-            addCriterion("group_number like", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberNotLike(String value) {
-            addCriterion("group_number not like", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberIn(List<String> values) {
+        public Criteria andGroupNumberIn(List<Integer> values) {
             addCriterion("group_number in", values, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberNotIn(List<String> values) {
+        public Criteria andGroupNumberNotIn(List<Integer> values) {
             addCriterion("group_number not in", values, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberBetween(String value1, String value2) {
+        public Criteria andGroupNumberBetween(Integer value1, Integer value2) {
             addCriterion("group_number between", value1, value2, "groupNumber");
             return (Criteria) this;
         }
 
-        public Criteria andGroupNumberNotBetween(String value1, String value2) {
+        public Criteria andGroupNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("group_number not between", value1, value2, "groupNumber");
             return (Criteria) this;
         }
@@ -856,76 +916,6 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNull() {
-            addCriterion("group_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIsNotNull() {
-            addCriterion("group_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdEqualTo(String value) {
-            addCriterion("group_id =", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotEqualTo(String value) {
-            addCriterion("group_id <>", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThan(String value) {
-            addCriterion("group_id >", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThanOrEqualTo(String value) {
-            addCriterion("group_id >=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThan(String value) {
-            addCriterion("group_id <", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThanOrEqualTo(String value) {
-            addCriterion("group_id <=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLike(String value) {
-            addCriterion("group_id like", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotLike(String value) {
-            addCriterion("group_id not like", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIn(List<String> values) {
-            addCriterion("group_id in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotIn(List<String> values) {
-            addCriterion("group_id not in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdBetween(String value1, String value2) {
-            addCriterion("group_id between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotBetween(String value1, String value2) {
-            addCriterion("group_id not between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
         public Criteria andEvaluationAreaIsNull() {
             addCriterion("evaluation_area is null");
             return (Criteria) this;
@@ -996,73 +986,63 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andFlagIsNull() {
-            addCriterion("flag is null");
+        public Criteria andBisSplitIsNull() {
+            addCriterion("bis_split is null");
             return (Criteria) this;
         }
 
-        public Criteria andFlagIsNotNull() {
-            addCriterion("flag is not null");
+        public Criteria andBisSplitIsNotNull() {
+            addCriterion("bis_split is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFlagEqualTo(String value) {
-            addCriterion("flag =", value, "flag");
+        public Criteria andBisSplitEqualTo(Boolean value) {
+            addCriterion("bis_split =", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagNotEqualTo(String value) {
-            addCriterion("flag <>", value, "flag");
+        public Criteria andBisSplitNotEqualTo(Boolean value) {
+            addCriterion("bis_split <>", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagGreaterThan(String value) {
-            addCriterion("flag >", value, "flag");
+        public Criteria andBisSplitGreaterThan(Boolean value) {
+            addCriterion("bis_split >", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagGreaterThanOrEqualTo(String value) {
-            addCriterion("flag >=", value, "flag");
+        public Criteria andBisSplitGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split >=", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagLessThan(String value) {
-            addCriterion("flag <", value, "flag");
+        public Criteria andBisSplitLessThan(Boolean value) {
+            addCriterion("bis_split <", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagLessThanOrEqualTo(String value) {
-            addCriterion("flag <=", value, "flag");
+        public Criteria andBisSplitLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split <=", value, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagLike(String value) {
-            addCriterion("flag like", value, "flag");
+        public Criteria andBisSplitIn(List<Boolean> values) {
+            addCriterion("bis_split in", values, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagNotLike(String value) {
-            addCriterion("flag not like", value, "flag");
+        public Criteria andBisSplitNotIn(List<Boolean> values) {
+            addCriterion("bis_split not in", values, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagIn(List<String> values) {
-            addCriterion("flag in", values, "flag");
+        public Criteria andBisSplitBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split between", value1, value2, "bisSplit");
             return (Criteria) this;
         }
 
-        public Criteria andFlagNotIn(List<String> values) {
-            addCriterion("flag not in", values, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagBetween(String value1, String value2) {
-            addCriterion("flag between", value1, value2, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagNotBetween(String value1, String value2) {
-            addCriterion("flag not between", value1, value2, "flag");
+        public Criteria andBisSplitNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split not between", value1, value2, "bisSplit");
             return (Criteria) this;
         }
 

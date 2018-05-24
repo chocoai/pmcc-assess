@@ -34,7 +34,7 @@ public class SchemeEvaluationObjectDao {
         return schemeEvaluationObjectMapper.selectByExample(example);
     }
 
-    public int add(SchemeEvaluationObjectDto dto) {
+    public int add(SchemeEvaluationObject dto) {
         SchemeEvaluationObject object = change(dto);
         mapper.insertSelective(object);
         int id = object.getId();

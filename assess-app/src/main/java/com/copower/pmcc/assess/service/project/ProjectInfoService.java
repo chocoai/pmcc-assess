@@ -461,7 +461,7 @@ public class ProjectInfoService {
 
     /*城市名称*/
     public String getSysArea(Integer id) {
-        return erpAreaService.getSysAreaDto(id).getName();
+        return erpAreaService.getSysAreaDto(String.valueOf(id)).getName();
     }
 
 

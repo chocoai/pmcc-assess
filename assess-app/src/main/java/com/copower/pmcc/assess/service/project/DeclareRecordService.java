@@ -6,21 +6,23 @@ import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupAuxiliary;
+import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectDto;
+import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -49,48 +51,8 @@ public class DeclareRecordService {
 
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
-
-
-    /*相同省 市 ====>注意必须重写equals*/
-    @Transactional(readOnly = true)
-    public List<DeclareRecord> queryProvinceCityAll() {
-        List<DeclareRecord> declareRecords = dao.queryProvinceCityAll();
-        List<DeclareRecord> declareRecords2 = dao.queryProvinceCityDistrictAll();
-        declareRecords.removeAll(declareRecords2);
-        return declareRecords;
-    }
-
-    /*相同省 市 县*/
-    @Transactional(readOnly = true)
-    public List<DeclareRecord> queryProvinceCityDistrictAll() {
-        List<DeclareRecord> declareRecords = dao.queryProvinceCityDistrictAll();
-        return declareRecords;
-    }
-
-    public List<DeclareRecord> queryNotSelect() {
-        List<DeclareRecord> declareRecords = dao.queryDeclareRecords();
-        List<DeclareRecord> declareRecords2 = dao.queryProvinceAll();
-        declareRecords.removeAll(declareRecords2);
-        int size = declareRecords.size();
-        if (declareRecords.size() == size) {//说明没有删除掉,那么暴力删除
-            declareRecords2.parallelStream().forEach(declareRecord -> {
-                declareRecords.remove(declareRecord);//remove
-            });
-        }
-
-        List<DeclareRecord> declareRecordk = new ArrayList<>();
-        if (declareRecords.size() == size) {//继续删除
-            for (DeclareRecord record : declareRecords) {
-                for (DeclareRecord r : declareRecords2) {
-                    if (!record.equals(r)) {
-                        declareRecordk.add(record);
-                    }
-                }
-            }
-            return declareRecordk;
-        }
-        return declareRecords;
-    }
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     /**
      * 初始化
@@ -133,10 +95,10 @@ public class DeclareRecordService {
                                         objectDto.setProjectId(Integer.parseInt(projectID));
                                         objectDto.setDeclareRecordId(d.getId());
                                         objectDto.setCreator(commonService.thisUserAccount());
-                                        objectDto.setGroupId(groupID);
+                                        objectDto.setAreaGroupId(0);
                                         objectDto.setFloorArea(d.getFloorArea());
                                         objectDto.setName(d.getName());
-                                        objectDto.setFlag("0");
+                                        objectDto.setBisSplit(false);
                                         if (objectDto != null) {
                                             schemeJudgeObjectService.add(objectDto);
                                         }
@@ -145,9 +107,7 @@ public class DeclareRecordService {
                             }
                             if (d1s.size() >= 1) {
                                 SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
-                                groupDto.setGroupId(groupID);
                                 groupDto.setProjectId(Integer.parseInt(projectID));
-                                groupDto.setGroupId(groupID);
                                 groupDto.setCreator(commonService.thisUserAccount());
                                 groupDto.setCity(areaId);
                                 groupDto.setProvince(id + "");
@@ -186,19 +146,17 @@ public class DeclareRecordService {
                                 objectDto.setProjectId(Integer.parseInt(projectID));
                                 objectDto.setDeclareRecordId(d.getId());
                                 objectDto.setCreator(commonService.thisUserAccount());
-                                objectDto.setGroupId(groupID);
+                                objectDto.setAreaGroupId(0);
                                 objectDto.setFloorArea(d.getFloorArea());
                                 objectDto.setName(d.getName());
-                                objectDto.setFlag("0");
+                                objectDto.setBisSplit(false);
                                 if (objectDto != null) schemeJudgeObjectService.add(objectDto);
                             }
                         }
                     }
                     if (d2s.size() >= 1) {
                         SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
-                        groupDto.setGroupId(groupID);
                         groupDto.setProjectId(Integer.parseInt(projectID));
-                        groupDto.setGroupId(groupID);
                         groupDto.setCreator(commonService.thisUserAccount());
                         groupDto.setCity(areaId);
                         groupDto.setProvince(id + "");
@@ -238,7 +196,7 @@ public class DeclareRecordService {
                 areaKey += declareRecord.getCity() + "_";
             }
             if (StringUtils.isNotBlank(declareRecord.getDistrict())) {
-                areaKey += declareRecord.getDistrict() + "_";
+                areaKey += declareRecord.getDistrict();
             }
             if (!hashSet.contains(areaKey)) {
                 hashSet.add(areaKey);
@@ -250,19 +208,69 @@ public class DeclareRecordService {
             SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
             String[] areaIds = p.split("_");
             if (areaIds.length > 2)
-                schemeAreaGroup.setProvince(areaIds[2]);
+                schemeAreaGroup.setDistrict(areaIds[2]);
             if (areaIds.length > 1)
                 schemeAreaGroup.setCity(areaIds[1]);
             if (areaIds.length > 0)
-                schemeAreaGroup.setDistrict(areaIds[0]);
+                schemeAreaGroup.setProvince(areaIds[0]);
             schemeAreaGroups.add(schemeAreaGroup);
         });
         return schemeAreaGroups;
     }
 
-    public String aa(){
-        return "";
+    /**
+     * 获取申报信息的区域分组
+     *
+     * @param projectId
+     * @return
+     */
+    public List<SchemeAreaGroupVo> getSchemeGroup(Integer projectId) {
+        List<SchemeAreaGroupVo> voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
+        if (CollectionUtils.isNotEmpty(voList))
+            return voList;
+        List<DeclareRecord> declareRecords = dao.getDeclareRecordByProjectId(projectId);
+        List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
+        if (CollectionUtils.isNotEmpty(areaGroups)) {
+            List<DeclareRecord> removeList = Lists.newArrayList();
+
+            for (SchemeAreaGroup areaGroup : areaGroups) {
+                String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
+                areaGroup.setProvinceCityDistrictStr(areaFullName);
+                areaGroup.setProjectId(projectId);
+                areaGroup.setCreator(commonService.thisUserAccount());
+                schemeAreaGroupService.add(areaGroup);
+
+                //初始化估价对象
+                for (DeclareRecord declareRecord : declareRecords) {
+                    boolean isSameProvince = StringUtils.equals(declareRecord.getProvince(), areaGroup.getProvince());
+                    boolean isSameCity = StringUtils.equals(declareRecord.getCity(), areaGroup.getCity());
+                    boolean isSameDistrict = StringUtils.equals(declareRecord.getDistrict(), areaGroup.getDistrict());
+                    if (isSameProvince && isSameCity && isSameDistrict) {
+                        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+                        schemeJudgeObject.setProjectId(projectId);
+                        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+                        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
+                        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+                        schemeJudgeObject.setName(declareRecord.getName());
+                        schemeJudgeObject.setBisSplit(false);
+                        schemeJudgeObject.setCreator(commonService.thisUserAccount());
+                        schemeJudgeObjectService.add(schemeJudgeObject);
+
+                        //反写申报数据的区域id
+                        declareRecord.setAreaGroupId(areaGroup.getId());
+                        dao.updateDeclareRecord(declareRecord);
+
+                        removeList.add(declareRecord);//已被添加到区域的数据下次循环移除掉
+                    }
+                }
+            }
+        }
+        voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
+
+        return voList;
     }
+
 
 
     public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {

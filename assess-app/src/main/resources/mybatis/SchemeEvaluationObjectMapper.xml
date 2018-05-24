@@ -6,7 +6,7 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="group_number" property="groupNumber" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, area_group_id, name, number, creator, gmt_created, gmt_modified
+    id, project_id, area_group_id, name, group_number, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeEvaluationObjectExample" >
     select
@@ -107,10 +107,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_evaluation_object (project_id, area_group_id, name, 
-      number, creator, gmt_created, 
+      group_number, creator, gmt_created, 
       gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{number,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{groupNumber,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeEvaluationObject" >
@@ -128,8 +128,8 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="number != null" >
-        number,
+      <if test="groupNumber != null" >
+        group_number,
       </if>
       <if test="creator != null" >
         creator,
@@ -151,8 +151,8 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="number != null" >
-        #{number,jdbcType=VARCHAR},
+      <if test="groupNumber != null" >
+        #{groupNumber,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -186,8 +186,8 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=VARCHAR},
+      <if test="record.groupNumber != null" >
+        group_number = #{record.groupNumber,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -209,7 +209,7 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      number = #{record.number,jdbcType=VARCHAR},
+      group_number = #{record.groupNumber,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -229,8 +229,8 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=VARCHAR},
+      <if test="groupNumber != null" >
+        group_number = #{groupNumber,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
     set project_id = #{projectId,jdbcType=INTEGER},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      number = #{number,jdbcType=VARCHAR},
+      group_number = #{groupNumber,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -435,6 +435,76 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andProvinceCityDistrictStrIsNull() {
+            addCriterion("province_city_district_str is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrIsNotNull() {
+            addCriterion("province_city_district_str is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrEqualTo(String value) {
+            addCriterion("province_city_district_str =", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotEqualTo(String value) {
+            addCriterion("province_city_district_str <>", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrGreaterThan(String value) {
+            addCriterion("province_city_district_str >", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrGreaterThanOrEqualTo(String value) {
+            addCriterion("province_city_district_str >=", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLessThan(String value) {
+            addCriterion("province_city_district_str <", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLessThanOrEqualTo(String value) {
+            addCriterion("province_city_district_str <=", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrLike(String value) {
+            addCriterion("province_city_district_str like", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotLike(String value) {
+            addCriterion("province_city_district_str not like", value, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrIn(List<String> values) {
+            addCriterion("province_city_district_str in", values, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotIn(List<String> values) {
+            addCriterion("province_city_district_str not in", values, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrBetween(String value1, String value2) {
+            addCriterion("province_city_district_str between", value1, value2, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
+        public Criteria andProvinceCityDistrictStrNotBetween(String value1, String value2) {
+            addCriterion("province_city_district_str not between", value1, value2, "provinceCityDistrictStr");
+            return (Criteria) this;
+        }
+
         public Criteria andValueTimePointIsNull() {
             addCriterion("value_time_point is null");
             return (Criteria) this;
@@ -682,146 +752,6 @@ public class SchemeAreaGroupExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIsNull() {
-            addCriterion("group_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIsNotNull() {
-            addCriterion("group_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdEqualTo(String value) {
-            addCriterion("group_id =", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotEqualTo(String value) {
-            addCriterion("group_id <>", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThan(String value) {
-            addCriterion("group_id >", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdGreaterThanOrEqualTo(String value) {
-            addCriterion("group_id >=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThan(String value) {
-            addCriterion("group_id <", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLessThanOrEqualTo(String value) {
-            addCriterion("group_id <=", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdLike(String value) {
-            addCriterion("group_id like", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotLike(String value) {
-            addCriterion("group_id not like", value, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdIn(List<String> values) {
-            addCriterion("group_id in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotIn(List<String> values) {
-            addCriterion("group_id not in", values, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdBetween(String value1, String value2) {
-            addCriterion("group_id between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupIdNotBetween(String value1, String value2) {
-            addCriterion("group_id not between", value1, value2, "groupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrIsNull() {
-            addCriterion("province_city_district_str is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrIsNotNull() {
-            addCriterion("province_city_district_str is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrEqualTo(String value) {
-            addCriterion("province_city_district_str =", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrNotEqualTo(String value) {
-            addCriterion("province_city_district_str <>", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrGreaterThan(String value) {
-            addCriterion("province_city_district_str >", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrGreaterThanOrEqualTo(String value) {
-            addCriterion("province_city_district_str >=", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrLessThan(String value) {
-            addCriterion("province_city_district_str <", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrLessThanOrEqualTo(String value) {
-            addCriterion("province_city_district_str <=", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrLike(String value) {
-            addCriterion("province_city_district_str like", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrNotLike(String value) {
-            addCriterion("province_city_district_str not like", value, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrIn(List<String> values) {
-            addCriterion("province_city_district_str in", values, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrNotIn(List<String> values) {
-            addCriterion("province_city_district_str not in", values, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrBetween(String value1, String value2) {
-            addCriterion("province_city_district_str between", value1, value2, "provinceCityDistrictStr");
-            return (Criteria) this;
-        }
-
-        public Criteria andProvinceCityDistrictStrNotBetween(String value1, String value2) {
-            addCriterion("province_city_district_str not between", value1, value2, "provinceCityDistrictStr");
             return (Criteria) this;
         }
     }

@@ -4,19 +4,19 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="best_use_id" property="bestUseId" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
-    <result column="group_number" property="groupNumber" jdbcType="VARCHAR" />
+    <result column="group_number" property="groupNumber" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
     <result column="evaluation_area" property="evaluationArea" jdbcType="VARCHAR" />
-    <result column="flag" property="flag" jdbcType="VARCHAR" />
+    <result column="bis_split" property="bisSplit" jdbcType="BIT" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -78,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, declare_record_id, evaluation_id, number, name, best_use_id, floor_area, 
-    group_number, creator, gmt_created, gmt_modified, group_id, evaluation_area, flag, 
+    id, project_id, area_group_id, declare_record_id, evaluation_id, number, name, best_use_id, 
+    floor_area, group_number, creator, gmt_created, gmt_modified, evaluation_area, bis_split, 
     seat
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObjectExample" >
@@ -116,17 +116,17 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_object (project_id, declare_record_id, evaluation_id, 
-      number, name, best_use_id, 
-      floor_area, group_number, creator, 
-      gmt_created, gmt_modified, group_id, 
-      evaluation_area, flag, seat
+    insert into tb_scheme_judge_object (project_id, area_group_id, declare_record_id, 
+      evaluation_id, number, name, 
+      best_use_id, floor_area, group_number, 
+      creator, gmt_created, gmt_modified, 
+      evaluation_area, bis_split, seat
       )
-    values (#{projectId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{evaluationId,jdbcType=INTEGER}, 
-      #{number,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{bestUseId,jdbcType=INTEGER}, 
-      #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{groupId,jdbcType=VARCHAR}, 
-      #{evaluationArea,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}
+    values (#{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{evaluationId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{bestUseId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{groupNumber,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{evaluationArea,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{seat,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
@@ -137,6 +137,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="areaGroupId != null" >
+        area_group_id,
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
@@ -168,14 +171,11 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
       <if test="evaluationArea != null" >
         evaluation_area,
       </if>
-      <if test="flag != null" >
-        flag,
+      <if test="bisSplit != null" >
+        bis_split,
       </if>
       <if test="seat != null" >
         seat,
@@ -185,6 +185,9 @@
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="areaGroupId != null" >
+        #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
       </if>
@@ -192,7 +195,7 @@
         #{evaluationId,jdbcType=INTEGER},
       </if>
       <if test="number != null" >
-        #{number,jdbcType=INTEGER},
+        #{number,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -204,7 +207,7 @@
         #{floorArea,jdbcType=DECIMAL},
       </if>
       <if test="groupNumber != null" >
-        #{groupNumber,jdbcType=VARCHAR},
+        #{groupNumber,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -215,14 +218,11 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=VARCHAR},
-      </if>
       <if test="evaluationArea != null" >
         #{evaluationArea,jdbcType=VARCHAR},
       </if>
-      <if test="flag != null" >
-        #{flag,jdbcType=VARCHAR},
+      <if test="bisSplit != null" >
+        #{bisSplit,jdbcType=BIT},
       </if>
       <if test="seat != null" >
         #{seat,jdbcType=VARCHAR},
@@ -244,6 +244,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.areaGroupId != null" >
+        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
@@ -251,7 +254,7 @@
         evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
       </if>
       <if test="record.number != null" >
-        number = #{record.number,jdbcType=INTEGER},
+        number = #{record.number,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -263,7 +266,7 @@
         floor_area = #{record.floorArea,jdbcType=DECIMAL},
       </if>
       <if test="record.groupNumber != null" >
-        group_number = #{record.groupNumber,jdbcType=VARCHAR},
+        group_number = #{record.groupNumber,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -274,14 +277,11 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.groupId != null" >
-        group_id = #{record.groupId,jdbcType=VARCHAR},
-      </if>
       <if test="record.evaluationArea != null" >
         evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
       </if>
-      <if test="record.flag != null" >
-        flag = #{record.flag,jdbcType=VARCHAR},
+      <if test="record.bisSplit != null" >
+        bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
       <if test="record.seat != null" >
         seat = #{record.seat,jdbcType=VARCHAR},
@@ -295,19 +295,19 @@
     update tb_scheme_judge_object
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
-      number = #{record.number,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       best_use_id = #{record.bestUseId,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
-      group_number = #{record.groupNumber,jdbcType=VARCHAR},
+      group_number = #{record.groupNumber,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      group_id = #{record.groupId,jdbcType=VARCHAR},
       evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
-      flag = #{record.flag,jdbcType=VARCHAR},
+      bis_split = #{record.bisSplit,jdbcType=BIT},
       seat = #{record.seat,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -319,6 +319,9 @@
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="areaGroupId != null" >
+        area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
@@ -326,7 +329,7 @@
         evaluation_id = #{evaluationId,jdbcType=INTEGER},
       </if>
       <if test="number != null" >
-        number = #{number,jdbcType=INTEGER},
+        number = #{number,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -338,7 +341,7 @@
         floor_area = #{floorArea,jdbcType=DECIMAL},
       </if>
       <if test="groupNumber != null" >
-        group_number = #{groupNumber,jdbcType=VARCHAR},
+        group_number = #{groupNumber,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -349,14 +352,11 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=VARCHAR},
-      </if>
       <if test="evaluationArea != null" >
         evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
       </if>
-      <if test="flag != null" >
-        flag = #{flag,jdbcType=VARCHAR},
+      <if test="bisSplit != null" >
+        bis_split = #{bisSplit,jdbcType=BIT},
       </if>
       <if test="seat != null" >
         seat = #{seat,jdbcType=VARCHAR},
@@ -367,19 +367,19 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeObject" >
     update tb_scheme_judge_object
     set project_id = #{projectId,jdbcType=INTEGER},
+      area_group_id = #{areaGroupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       evaluation_id = #{evaluationId,jdbcType=INTEGER},
-      number = #{number,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       best_use_id = #{bestUseId,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},
-      group_number = #{groupNumber,jdbcType=VARCHAR},
+      group_number = #{groupNumber,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      group_id = #{groupId,jdbcType=VARCHAR},
       evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=VARCHAR},
+      bis_split = #{bisSplit,jdbcType=BIT},
       seat = #{seat,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
