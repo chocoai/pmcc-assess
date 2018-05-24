@@ -10,8 +10,12 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
+import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
 import com.copower.pmcc.assess.service.project.DeclareInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Maps;
@@ -44,6 +48,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     private BaseProcessService baseProcessService;
     @Autowired
     private DeclareInfoService declareInfoService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
 
     @Override
@@ -111,12 +117,13 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         DeclareInfoDto declareInfoDto = JSON.parseObject(formData, DeclareInfoDto.class);
         declareInfoDto.setPlanDetailId(projectPlanDetails.getId());
         declareInfoDto.setProcessInsId(processInsId);
         declareInfoDto.setProjectId(projectPlanDetails.getProjectId());
         declareInfoService.saveDeclareInfo(declareInfoDto);
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRecordEvent.class.getSimpleName());//修改监听器
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.DeclareInfoExample;
 import com.copower.pmcc.assess.dal.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.entity.DeclareInfoExample;
 import com.copower.pmcc.assess.dal.mapper.DeclareInfoMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,17 @@ public class DeclareInfoDao {
 
     public DeclareInfo getDeclareInfo(Integer id){
         return declareInfoMapper.selectByPrimaryKey(id);
+    }
+    
+    public DeclareInfo getDeclareInfoByProcessInsId(String processInsId){
+        if(StringUtils.isBlank(processInsId)) return null;
+        DeclareInfoExample example = new DeclareInfoExample();
+        DeclareInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andProcessInsIdEqualTo(processInsId);
+        List<DeclareInfo> declareInfos = declareInfoMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(declareInfos))
+            return declareInfos.get(0);
+        return null;
     }
 
     public boolean addDeclareInfo(DeclareInfo declareInfo) {

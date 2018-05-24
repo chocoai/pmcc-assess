@@ -13,6 +13,8 @@ public class DeclareInfo {
 
     private String status;
 
+    private String dynamicTableName;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class DeclareInfo {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getDynamicTableName() {
+        return dynamicTableName;
+    }
+
+    public void setDynamicTableName(String dynamicTableName) {
+        this.dynamicTableName = dynamicTableName == null ? null : dynamicTableName.trim();
     }
 
     public String getCreator() {

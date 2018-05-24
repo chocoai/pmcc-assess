@@ -69,6 +69,7 @@ public class GenerateReportService {
      * 生成报告
      */
     public void generate(){
+        //1.确认需要报告的数据，将数据按区域分组
 
     }
 }

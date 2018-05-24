@@ -425,6 +425,76 @@ public class DeclareInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andDynamicTableNameIsNull() {
+            addCriterion("dynamic_table_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIsNotNull() {
+            addCriterion("dynamic_table_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameEqualTo(String value) {
+            addCriterion("dynamic_table_name =", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotEqualTo(String value) {
+            addCriterion("dynamic_table_name <>", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThan(String value) {
+            addCriterion("dynamic_table_name >", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name >=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThan(String value) {
+            addCriterion("dynamic_table_name <", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLessThanOrEqualTo(String value) {
+            addCriterion("dynamic_table_name <=", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameLike(String value) {
+            addCriterion("dynamic_table_name like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotLike(String value) {
+            addCriterion("dynamic_table_name not like", value, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameIn(List<String> values) {
+            addCriterion("dynamic_table_name in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotIn(List<String> values) {
+            addCriterion("dynamic_table_name not in", values, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDynamicTableNameNotBetween(String value1, String value2) {
+            addCriterion("dynamic_table_name not between", value1, value2, "dynamicTableName");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

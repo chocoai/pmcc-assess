@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.weaver.patterns.Declare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,6 +42,16 @@ public class DeclareInfoService {
     private DeclareRecordDao declareRecordDao;
 
     /**
+     * 获取申报信息by processInsId
+     * @param processInsId
+     * @return
+     */
+    public DeclareInfo getDeclareInfoByProcessInsId(String processInsId){
+        if(StringUtils.isBlank(processInsId)) return null;
+        return declareInfoDao.getDeclareInfoByProcessInsId(processInsId);
+    }
+
+    /**
      * 保存申报数据
      *
      * @param declareInfoDto
@@ -48,7 +59,6 @@ public class DeclareInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void saveDeclareInfo(DeclareInfoDto declareInfoDto) throws BusinessException {
         FormConfigureDto formConfigureDto = declareInfoDto.getFormConfigureDto();
-
         Integer mainId = 0;
         if (declareInfoDto.getId() != null && declareInfoDto.getId() > 0) {
             //暂不处理
@@ -59,50 +69,9 @@ public class DeclareInfoService {
             declareInfo.setProjectId(declareInfoDto.getProjectId());
             declareInfo.setProcessInsId(declareInfoDto.getProcessInsId());
             declareInfo.setPlanDetailId(declareInfoDto.getPlanDetailId());
+            declareInfo.setDynamicTableName(declareInfoDto.getFormConfigureDto().getMultipleFormList().get(0).getTableName());
             declareInfo.setCreator(serviceComponent.getThisUser());
             declareInfoDao.editDeclareInfo(declareInfo);
-        }
-
-        //申报信息写入到 固定的申报记录表中 tb_declare_record
-        //循环申报数据将申报的 位置信息写入 并且拼接出权证号的名称
-
-        //先清空原有数据
-        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordByProjectId(declareInfoDto.getProjectId());
-        if (CollectionUtils.isNotEmpty(declareRecordList)) {
-            declareRecordList.forEach(p -> declareRecordDao.deleteDeclareRecord(p.getId()));
-        }
-
-        List<FormConfigureDetailDto> multipleFormList = formConfigureDto.getMultipleFormList();
-        if (CollectionUtils.isNotEmpty(multipleFormList)) {
-            String sql = "select * from %s where main_id=%s";
-            for (FormConfigureDetailDto formConfigureDetailDto : multipleFormList) {
-                List<Map<String, Object>> mapList = formConfigureDao.getObjectList(String.format(sql, formConfigureDetailDto.getTableName(), mainId));
-                if (CollectionUtils.isNotEmpty(mapList)) {
-                    for (Map<String, Object> map : mapList) {
-                        //记录申报数据
-                        DeclareRecord declareRecord = new DeclareRecord();
-                        declareRecord.setProjectId(declareInfoDto.getProjectId());
-                        //申报数据特定字段记录
-                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)) {
-                            declareRecord.setName(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)));
-                        }
-                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)) {
-                            declareRecord.setProvince(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)));
-                        }
-                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)) {
-                            declareRecord.setCity(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)));
-                        }
-                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)) {
-                            declareRecord.setDistrict(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)));
-                        }
-                        if (map.containsKey(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)) {
-                            declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(BaseConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA))));
-                        }
-                        declareRecord.setCreator(serviceComponent.getThisUser());
-                        declareRecordDao.addDeclareRecord(declareRecord);
-                    }
-                }
-            }
         }
     }
 }

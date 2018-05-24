@@ -40,7 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_scheme_judge_object" domainObjectName="SchemeJudgeObject">
+        <table tableName="tb_declare_info" domainObjectName="DeclareInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

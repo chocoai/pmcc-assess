@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.DeclareRecordItems;
 import com.copower.pmcc.assess.common.DeclareRecordList;
 import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupAuxiliary;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectDto;
@@ -11,15 +12,19 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -132,7 +137,7 @@ public class DeclareRecordService {
                                         objectDto.setFloorArea(d.getFloorArea());
                                         objectDto.setName(d.getName());
                                         objectDto.setFlag("0");
-                                        if (objectDto!=null) {
+                                        if (objectDto != null) {
                                             schemeJudgeObjectService.add(objectDto);
                                         }
                                     }
@@ -145,7 +150,7 @@ public class DeclareRecordService {
                                 groupDto.setGroupId(groupID);
                                 groupDto.setCreator(commonService.thisUserAccount());
                                 groupDto.setCity(areaId);
-                                groupDto.setProvince(id+"");
+                                groupDto.setProvince(id + "");
                                 groupDto.setDistrict(districtID);
                                 groupDto.setCreator(commonService.thisUserAccount());
                                 StringBuilder builder = new StringBuilder(1024);
@@ -185,7 +190,7 @@ public class DeclareRecordService {
                                 objectDto.setFloorArea(d.getFloorArea());
                                 objectDto.setName(d.getName());
                                 objectDto.setFlag("0");
-                                if (objectDto!=null) schemeJudgeObjectService.add(objectDto);
+                                if (objectDto != null) schemeJudgeObjectService.add(objectDto);
                             }
                         }
                     }
@@ -196,7 +201,7 @@ public class DeclareRecordService {
                         groupDto.setGroupId(groupID);
                         groupDto.setCreator(commonService.thisUserAccount());
                         groupDto.setCity(areaId);
-                        groupDto.setProvince(id+"");
+                        groupDto.setProvince(id + "");
                         groupDto.setCreator(commonService.thisUserAccount());
                         StringBuilder builder = new StringBuilder(1024);
                         if (id != null) {
@@ -211,6 +216,52 @@ public class DeclareRecordService {
                 }
             }
         }
+    }
+
+    /**
+     * 申报记录信息按区域分组
+     *
+     * @param declareRecords
+     * @return
+     */
+    public List<SchemeAreaGroup> groupDeclareRecord(List<DeclareRecord> declareRecords) {
+        if (CollectionUtils.isEmpty(declareRecords)) return null;
+        //1.查看区域信息
+        HashSet<String> hashSet = Sets.newHashSet();
+        String areaKey = "";
+        for (DeclareRecord declareRecord : declareRecords) {
+            areaKey = "";
+            if (StringUtils.isNotBlank(declareRecord.getProvince())) {
+                areaKey += declareRecord.getProvince() + "_";
+            }
+            if (StringUtils.isNotBlank(declareRecord.getCity())) {
+                areaKey += declareRecord.getCity() + "_";
+            }
+            if (StringUtils.isNotBlank(declareRecord.getDistrict())) {
+                areaKey += declareRecord.getDistrict() + "_";
+            }
+            if (!hashSet.contains(areaKey)) {
+                hashSet.add(areaKey);
+            }
+        }
+        if (hashSet.isEmpty()) return null;
+        List<SchemeAreaGroup> schemeAreaGroups = Lists.newArrayList();
+        hashSet.forEach(p -> {
+            SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
+            String[] areaIds = p.split("_");
+            if (areaIds.length > 2)
+                schemeAreaGroup.setProvince(areaIds[2]);
+            if (areaIds.length > 1)
+                schemeAreaGroup.setCity(areaIds[1]);
+            if (areaIds.length > 0)
+                schemeAreaGroup.setDistrict(areaIds[0]);
+            schemeAreaGroups.add(schemeAreaGroup);
+        });
+        return schemeAreaGroups;
+    }
+
+    public String aa(){
+        return "";
     }
 
 
