@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dto.output.data.StageWeightTempVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.StageWeightProportionService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -11,6 +12,7 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,6 +71,15 @@ public class StageWeightProportionController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+
+    @RequestMapping(value="/edit", name="点编辑请求的数据")
+    public ModelAndView edit(StageWeightProportion stageWeightProportion,ModelAndView modelAndView){
+        List<StageWeightProportion> stageWeightProportions = stageWeightProportionService.edit(stageWeightProportion);
+        modelAndView.addObject("stageWeightProportions",stageWeightProportions);
+        modelAndView.setViewName("showEdit");
+        return modelAndView;
     }
 
 }
