@@ -416,63 +416,113 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andNumberEqualTo(String value) {
+        public Criteria andNumberEqualTo(Integer value) {
             addCriterion("number =", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotEqualTo(String value) {
+        public Criteria andNumberNotEqualTo(Integer value) {
             addCriterion("number <>", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThan(String value) {
+        public Criteria andNumberGreaterThan(Integer value) {
             addCriterion("number >", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberGreaterThanOrEqualTo(String value) {
+        public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
             addCriterion("number >=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThan(String value) {
+        public Criteria andNumberLessThan(Integer value) {
             addCriterion("number <", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLessThanOrEqualTo(String value) {
+        public Criteria andNumberLessThanOrEqualTo(Integer value) {
             addCriterion("number <=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberLike(String value) {
-            addCriterion("number like", value, "number");
-            return (Criteria) this;
-        }
-
-        public Criteria andNumberNotLike(String value) {
-            addCriterion("number not like", value, "number");
-            return (Criteria) this;
-        }
-
-        public Criteria andNumberIn(List<String> values) {
+        public Criteria andNumberIn(List<Integer> values) {
             addCriterion("number in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotIn(List<String> values) {
+        public Criteria andNumberNotIn(List<Integer> values) {
             addCriterion("number not in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberBetween(String value1, String value2) {
+        public Criteria andNumberBetween(Integer value1, Integer value2) {
             addCriterion("number between", value1, value2, "number");
             return (Criteria) this;
         }
 
-        public Criteria andNumberNotBetween(String value1, String value2) {
+        public Criteria andNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("number not between", value1, value2, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberIsNull() {
+            addCriterion("split_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberIsNotNull() {
+            addCriterion("split_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberEqualTo(Integer value) {
+            addCriterion("split_number =", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberNotEqualTo(Integer value) {
+            addCriterion("split_number <>", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberGreaterThan(Integer value) {
+            addCriterion("split_number >", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("split_number >=", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberLessThan(Integer value) {
+            addCriterion("split_number <", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("split_number <=", value, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberIn(List<Integer> values) {
+            addCriterion("split_number in", values, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberNotIn(List<Integer> values) {
+            addCriterion("split_number not in", values, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberBetween(Integer value1, Integer value2) {
+            addCriterion("split_number between", value1, value2, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSplitNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("split_number not between", value1, value2, "splitNumber");
             return (Criteria) this;
         }
 
@@ -543,6 +593,76 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipIsNull() {
+            addCriterion("ownership is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipIsNotNull() {
+            addCriterion("ownership is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipEqualTo(String value) {
+            addCriterion("ownership =", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotEqualTo(String value) {
+            addCriterion("ownership <>", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipGreaterThan(String value) {
+            addCriterion("ownership >", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipGreaterThanOrEqualTo(String value) {
+            addCriterion("ownership >=", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLessThan(String value) {
+            addCriterion("ownership <", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLessThanOrEqualTo(String value) {
+            addCriterion("ownership <=", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLike(String value) {
+            addCriterion("ownership like", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotLike(String value) {
+            addCriterion("ownership not like", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipIn(List<String> values) {
+            addCriterion("ownership in", values, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotIn(List<String> values) {
+            addCriterion("ownership not in", values, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipBetween(String value1, String value2) {
+            addCriterion("ownership between", value1, value2, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotBetween(String value1, String value2) {
+            addCriterion("ownership not between", value1, value2, "ownership");
             return (Criteria) this;
         }
 
@@ -1113,6 +1233,66 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andSeatNotBetween(String value1, String value2) {
             addCriterion("seat not between", value1, value2, "seat");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdIsNull() {
+            addCriterion("source_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdIsNotNull() {
+            addCriterion("source_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdEqualTo(Integer value) {
+            addCriterion("source_id =", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdNotEqualTo(Integer value) {
+            addCriterion("source_id <>", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdGreaterThan(Integer value) {
+            addCriterion("source_id >", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("source_id >=", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdLessThan(Integer value) {
+            addCriterion("source_id <", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("source_id <=", value, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdIn(List<Integer> values) {
+            addCriterion("source_id in", values, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdNotIn(List<Integer> values) {
+            addCriterion("source_id not in", values, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdBetween(Integer value1, Integer value2) {
+            addCriterion("source_id between", value1, value2, "sourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("source_id not between", value1, value2, "sourceId");
             return (Criteria) this;
         }
     }

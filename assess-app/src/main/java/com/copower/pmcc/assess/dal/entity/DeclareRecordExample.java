@@ -296,6 +296,76 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andOwnershipIsNull() {
+            addCriterion("ownership is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipIsNotNull() {
+            addCriterion("ownership is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipEqualTo(String value) {
+            addCriterion("ownership =", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotEqualTo(String value) {
+            addCriterion("ownership <>", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipGreaterThan(String value) {
+            addCriterion("ownership >", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipGreaterThanOrEqualTo(String value) {
+            addCriterion("ownership >=", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLessThan(String value) {
+            addCriterion("ownership <", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLessThanOrEqualTo(String value) {
+            addCriterion("ownership <=", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipLike(String value) {
+            addCriterion("ownership like", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotLike(String value) {
+            addCriterion("ownership not like", value, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipIn(List<String> values) {
+            addCriterion("ownership in", values, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotIn(List<String> values) {
+            addCriterion("ownership not in", values, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipBetween(String value1, String value2) {
+            addCriterion("ownership between", value1, value2, "ownership");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnershipNotBetween(String value1, String value2) {
+            addCriterion("ownership not between", value1, value2, "ownership");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;

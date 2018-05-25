@@ -52,11 +52,11 @@ public class SchemeAreaGroupDao {
     }
 
     public boolean update(SchemeAreaGroupDto dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+        return mapper.updateByPrimaryKeySelective(change(dto))==1;
     }
 
     public boolean update(SchemeAreaGroup dto){
-        return mapper.updateByPrimaryKey(dto)==1;
+        return mapper.updateByPrimaryKeySelective(dto)==1;
     }
 
     public boolean remove(Integer id){
