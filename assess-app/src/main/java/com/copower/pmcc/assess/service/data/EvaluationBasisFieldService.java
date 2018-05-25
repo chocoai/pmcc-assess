@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,6 +73,17 @@ public class EvaluationBasisFieldService {
     public List<EvaluationBasisFieldVo> list(Integer basisId){
         List<EvaluationBasisFieldVo> vos = new ArrayList<>();
         dao.list(basisId).parallelStream().forEach(e -> vos.add(change(e)));
+        return vos;
+    }
+
+    public List<List<EvaluationBasisFieldVo>> listN(String id){
+        List<List<EvaluationBasisFieldVo>> vos = new ArrayList<>();
+        String[] ids = id.split(",");
+        for (String s:ids){
+            if (!StringUtils.isEmpty(s)){
+                vos.add(list(Integer.parseInt(s)));
+            }
+        }
         return vos;
     }
 

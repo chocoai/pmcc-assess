@@ -14,9 +14,13 @@ public class SchemeJudgeObject {
 
     private Integer evaluationId;
 
-    private String number;
+    private Integer number;
+
+    private Integer splitNumber;
 
     private String name;
+
+    private String ownership;
 
     private Integer bestUseId;
 
@@ -35,6 +39,8 @@ public class SchemeJudgeObject {
     private Boolean bisSplit;
 
     private String seat;
+
+    private Integer sourceId;
 
     public Integer getId() {
         return id;
@@ -76,12 +82,20 @@ public class SchemeJudgeObject {
         this.evaluationId = evaluationId;
     }
 
-    public String getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getSplitNumber() {
+        return splitNumber;
+    }
+
+    public void setSplitNumber(Integer splitNumber) {
+        this.splitNumber = splitNumber;
     }
 
     public String getName() {
@@ -90,6 +104,14 @@ public class SchemeJudgeObject {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(String ownership) {
+        this.ownership = ownership == null ? null : ownership.trim();
     }
 
     public Integer getBestUseId() {
@@ -162,5 +184,13 @@ public class SchemeJudgeObject {
 
     public void setSeat(String seat) {
         this.seat = seat == null ? null : seat.trim();
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 }

@@ -29,10 +29,10 @@ public class SchemeJudgeObjectDao {
     }
 
     public boolean update(SchemeJudgeObject dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+        return mapper.updateByPrimaryKeySelective(change(dto))==1;
     }
 
-    public SchemeJudgeObjectDto get(Integer id){
+    public SchemeJudgeObject get(Integer id){
         return change(mapper.selectByPrimaryKey(id));
     }
 
@@ -51,6 +51,7 @@ public class SchemeJudgeObjectDao {
     public List<SchemeJudgeObject> list(Integer areaGroupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andIdIsNotNull().andAreaGroupIdEqualTo(areaGroupId);
+        example.setOrderByClause("group_number,number");
         return mapper.selectByExample(example);
     }
 }

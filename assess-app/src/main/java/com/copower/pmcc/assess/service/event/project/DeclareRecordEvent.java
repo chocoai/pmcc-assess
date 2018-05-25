@@ -70,6 +70,9 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
                 if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)) {
                     declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA))));
                 }
+                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)) {
+                    declareRecord.setOwnership(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)));
+                }
                 declareRecord.setCreator(serviceComponent.getThisUser());
                 declareRecordDao.addDeclareRecord(declareRecord);
             }

@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +83,18 @@ public class EvaluationPrincipleFieldService {
 
     public List<EvaluationPrincipleFieldDto> listN(Integer principleId){
         return evaluationPrincipleFieldDao.list(principleId);
+    }
+
+    public List<List<EvaluationPrincipleFieldDto>> listN(String id){
+        List<List<EvaluationPrincipleFieldDto>> voS = new ArrayList<>();
+        String[] ids = id.split(",");
+        for (String s:ids){
+            if (!StringUtils.isEmpty(s)){
+                List<EvaluationPrincipleFieldDto> dtos = evaluationPrincipleFieldDao.list(Integer.parseInt(s));
+                voS.add(dtos);
+            }
+        }
+        return voS;
     }
 
     public EvaluationPrincipleFieldVo change(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){

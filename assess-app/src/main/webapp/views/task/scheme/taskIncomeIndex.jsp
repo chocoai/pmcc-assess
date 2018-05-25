@@ -17,55 +17,7 @@
             <%@include file="/views/share/evaluationHypothesisPublic.jsp" %>
             <%@include file="/views/share/evaluationBasisPublic.jsp" %>
 
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>收益法</h2>
-                    <div class="clearfix"></div>
-                </div>
 
-                <div class="x_content">
-                    <form id="frm_scheme_info_detail" class="form-horizontal">
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    经营方式
-                                </label>
-                                <div class="col-sm-3" id="operationMode">
-                                    <input type="radio" name="operationMode" value="0">自营
-                                    <input type="radio" name="operationMode" value="1">租赁
-                                </div>
-                            </div>
-
-                            <div class="x-valid" id="Leasehold">
-                                <label class="col-sm-1 control-label">
-                                    租赁方式
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="radio" name="Leasehold" value="0">无限制
-                                    <input type="radio" name="Leasehold" value="1">限制
-                                </div>
-                            </div>
-
-                            <div class="x-valid" id="XLeasehold">
-                                <label class="col-sm-1 control-label">租约限制说明<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <input required="required" placeholder="租约限制说明"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="YLeasehold">
-                            <div class="col-sm-12 panel-footer">
-                                xxx
-                            </div>
-                        </div>
-
-
-                    </form>
-                </div>
-            </div>
 
             <!--填写表单-->
             <div class="x_panel">
@@ -132,33 +84,10 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script>
-    $("#Leasehold").hide();
-    $("#XLeasehold").hide();
-    $("#YLeasehold").hide();
-    $("#operationMode input").each(function () {
-        $(this).click(function () {
-            if ($(this).val()==1){
-                $("#Leasehold").show();
-            }else {
-                $("#Leasehold").hide();
-                $("#XLeasehold").hide();
-            }
-        });
-    });
-    $("#Leasehold input[name='Leasehold']").each(function () {
-        $(this).click(function () {
-            if ($(this).val()==1){
-                $("#XLeasehold").show();
-                $("#YLeasehold").hide();
-            }else {
-                $("#YLeasehold").show();
-                $("#XLeasehold").hide();
-            }
-        });
-    });
-</script>
+
 <script type="application/javascript">
+    function saveTask() {
+    }
 
     $(function () {
         
@@ -202,12 +131,33 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
+        //js校验
+        if (!$("#frm_task_evaluationPrinciPleTemple").valid()) {
+            return false;
+        }
+        if (!$("#frm_task_evaluationHypothesis").valid()) {
+            return false;
+        }
+        if (!$("#frm_task_evaluationBasis").valid()) {
+            return false;
+        }
+        var json = "";
+        //数据收集
+        var princiPle = formParams("frm_task_evaluationPrinciPleTemple");
+        var hypothesis = formParams("frm_task_evaluationHypothesis");
+        var basis = formParams("frm_task_evaluationBasis");
+        var data = {};
+        data.princiPle = princiPle;
+        data.hypothesis = hypothesis;
+        data.basis = basis;
+        //合并json
+        json = JSON.stringify(data);
 
         if ("${processInsId}" != "0") {
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer("formData="+json, $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 

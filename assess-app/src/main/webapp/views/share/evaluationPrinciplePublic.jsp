@@ -12,85 +12,99 @@
         <h2>评估原则</h2>
         <div class="clearfix"></div>
     </div>
-    <form id="frm_task_evaluationprinciPleTemple" class="form-horizontal">
-        <div class="x_content">
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    请选择原则
-                </label>
-                <div class="x-valid">
-                    <div class="col-sm-11">
-                        <select name="DataID" class="form-control" id="evaluationPrincipleSelectID">
-                            <option value="">请选择</option>
-                            <c:forEach items="${principleList}" var="data">
+    <form id="frm_task_evaluationPrinciPleTemple" class="form-horizontal">
+        <c:forEach items="${principleList}" var="data">
+            <div class="x_content">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            请选择原则
+                        </label>
+                        <div class="col-sm-11">
+                            <select name="DataID" class="form-control" id="evaluationPrincipleSelectID${data.id}">
                                 <option name="DataID" value="${data.id}">${data.name}</option>
-                            </c:forEach>
-                        </select>
+                            </select>
+                        </div>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            模板数据
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea required="required" id="principleTemple${data.id}" placeholder="原则模板" class="form-control" name="Content">
+
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="viewH2${data.id}" class="form-group">
+
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    模板数据
-                </label>
-                <div class="x-valid">
-                    <div class="col-sm-11">
-                        <textarea required="required" id="principleTemple" placeholder="原则模板" class="form-control"
-                                  name="Content">
+        </c:forEach>
 
-                        </textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div id="viewH2">
-
-            </div>
-        </div>
 
     </form>
 </div>
-<script type="text/javascript">
-    $("#evaluationPrincipleSelectID").change(function () {
-        var selected = $(this).children('option:selected').val();
-        var data = {};
-        data.id = selected;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationPrinciple/get",
-            type: "GET",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                $("#principleTemple").val(result.template);
-                getPrincipleField(selected);
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    });
 
-    function getPrincipleField(principleId) {
-        var data = {};
-        data.principleId = principleId;
+<script type="text/javascript">
+    
+    (function () {
+        var ids = "";
+        var itemsX = new Array();
+        var j = 0;
+        <c:forEach items="${principleList}" var="data">
+            (function () {
+                var selectID = "#evaluationPrincipleSelectID" + '${data.id}';
+                var selected = $(selectID+" option:selected").val();
+                var data = {};
+                data.id = selected;
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/evaluationPrinciple/get",
+                    type: "GET",
+                    dataType: "json",
+                    data: data,
+                    async:false,
+                    success: function (result) {
+                        $("#principleTemple"+"${data.id}").val(result.template);
+                        ids += selected +",";
+                        itemsX[j++] = "${data.id}";
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            }());
+        </c:forEach>
+        ids = ids.substring(0,ids.length-1);
+        var dataX = {};
+        dataX.id = ids;
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationPrincipleNG/listFields",
+            url: "${pageContext.request.contextPath}/evaluationPrincipleNG/listFieldsS",
             type: "POST",
             dataType: "json",
-            data: data,
+            data: dataX,
+            async:true,
             success: function (result) {
-                writePrincipleField(result);
+                for (var k = 0;k < result.length;k++){
+                    writePrincipleField(result[k],itemsX[k]);
+                }
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
-    }
+    }());
+
 
     //字段写入
-    function writePrincipleField(result) {
-        var viewH = document.getElementById("viewH2");
+    function writePrincipleField(result,id) {
+        var viewH = document.getElementById("viewH2"+id);
         var len = result.length;
         var num = Math.round(len / 4);
         if (len <= 4) {
@@ -102,16 +116,15 @@
                 divValid.setAttribute("class", "x-valid");
 
                 var labelElement = document.createElement("label");
-                labelElement.setAttribute("class", "col-sm-1");
+                labelElement.setAttribute("class", "col-sm-1 control-label");
                 labelElement.appendChild(document.createTextNode("" + data.name));
 
                 var divCol = document.createElement("div");
                 divCol.setAttribute("class", "col-sm-2");
                 var inputElement = document.createElement("input");
                 inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("name", "principleType");
-                inputElement.setAttribute("id", "ZTypeID" + data.id);
-                inputElement.setAttribute("onblur", "principleFildReplace(principleTemple,ZTypeID" + data.id + ",'" + data.name + "')");
+                inputElement.setAttribute("id", "ZTypeID" + data.id+""+id);
+                inputElement.setAttribute("onblur", "principleFildReplace('principleTemple"+id+"','ZTypeID" + data.id +""+id+ "','" + data.name + "')");
                 inputElement.setAttribute("class", "form-control");
                 inputElement.setAttribute("placeholder", "替换字段");
                 divCol.appendChild(inputElement);
@@ -120,55 +133,57 @@
                 divValid.appendChild(divCol);
                 divElement.appendChild(divValid);
             }
-            $("#viewH2 div").remove();
-            viewH.appendChild(divElement);
-        } else {
-            $("#viewH2 div").remove();
-            var divElement = document.createElement("div");
-            divElement.setAttribute("class", "form-group");
-            for (var j = 0; j < num * 4; j++) {
-                var data = result[j];
-                var divValid = document.createElement("div");
-                divValid.setAttribute("class", "x-valid");
+            viewH.parentNode.insertBefore(divElement,viewH);
+        }else {
+            for (var j = 0; j < num * 4; j++){
+                if (j % 4 == 0){
+                    var data = result[j];
+                    var divElement = document.createElement("div");
+                    divElement.setAttribute("class", "form-group");
 
-                var labelElement = document.createElement("label");
-                labelElement.setAttribute("class", "col-sm-1");
-                labelElement.appendChild(document.createTextNode("" + data.name));
+                    var divValid = document.createElement("div");
+                    divValid.setAttribute("class", "x-valid");
 
-                var divCol = document.createElement("div");
-                divCol.setAttribute("class", "col-sm-2");
-                var inputElement = document.createElement("input");
-                inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("name", "principleType");
-                inputElement.setAttribute("id", "ZTypeID" + data.id);
-                inputElement.setAttribute("onblur", "principleFildReplace(principleTemple,ZTypeID" + data.id + ",'" + data.name + "')");
-                inputElement.setAttribute("class", "form-control");
-                inputElement.setAttribute("placeholder", "替换字段");
-                divCol.appendChild(inputElement);
+                    var labelElement = document.createElement("label");
+                    labelElement.setAttribute("class", "col-sm-1 control-label");
+                    labelElement.appendChild(document.createTextNode("" + data.name));
 
-                divValid.appendChild(labelElement);
-                divValid.appendChild(divCol);
-                divElement.appendChild(divValid);
+                    var divCol = document.createElement("div");
+                    divCol.setAttribute("class", "col-sm-2");
+                    var inputElement = document.createElement("input");
+                    inputElement.setAttribute("type", "text");
+                    inputElement.setAttribute("id", "ZTypeID" + data.id+""+id);
+                    inputElement.setAttribute("onblur", "principleFildReplace('principleTemple"+id+"','ZTypeID" + data.id +""+id+ "','" + data.name + "')");
+                    inputElement.setAttribute("class", "form-control");
+                    inputElement.setAttribute("placeholder", "替换字段");
+                    divCol.appendChild(inputElement);
+
+                    divValid.appendChild(labelElement);
+                    divValid.appendChild(divCol);
+                    divElement.appendChild(divValid);
+
+                    viewH.parentNode.insertBefore(divElement,viewH);
+                }
             }
-            viewH.appendChild(divElement);
-            var divElement2 = document.createElement("div");
-            divElement2.setAttribute("class", "form-group");
-            for (var i = num * 4; i < len; i++) {//剩余的 取模剩余的
+            for (var i = num * 4; i < len; i++){//剩余的 取模剩余的
                 var data = result[i];
+                console.log(data);
+                var divElement = document.createElement("div");
+                divElement.setAttribute("class", "form-group");
+
                 var divValid = document.createElement("div");
                 divValid.setAttribute("class", "x-valid");
 
                 var labelElement = document.createElement("label");
-                labelElement.setAttribute("class", "col-sm-1");
+                labelElement.setAttribute("class", "col-sm-1 control-label");
                 labelElement.appendChild(document.createTextNode("" + data.name));
 
                 var divCol = document.createElement("div");
                 divCol.setAttribute("class", "col-sm-2");
                 var inputElement = document.createElement("input");
                 inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("name", "principleType");
-                inputElement.setAttribute("id", "ZTypeID" + data.id);
-                inputElement.setAttribute("onblur", "principleFildReplace(principleTemple,ZTypeID" + data.id + ",'" + data.name + "')");
+                inputElement.setAttribute("id", "ZTypeID" + data.id+""+id);
+                inputElement.setAttribute("onblur", "principleFildReplace('principleTemple"+id+"','ZTypeID" + data.id +""+id+ "','" + data.name + "')");
                 inputElement.setAttribute("class", "form-control");
                 inputElement.setAttribute("placeholder", "替换字段");
                 divCol.appendChild(inputElement);
@@ -176,18 +191,19 @@
                 divValid.appendChild(labelElement);
                 divValid.appendChild(divCol);
                 divElement.appendChild(divValid);
+
+                viewH.parentNode.insertBefore(divElement,viewH);
             }
-            viewH.appendChild(divElement2);
         }
     }
 
     //字段替换
     function principleFildReplace(id1, id2, name) {
-        var value = $(id2).val();
+        var value = $("#"+id2).val();
         var regex = '/\{' + name + '\}/g';
         if (value != null && value != '') {
-            var x1 = $(id1).val().replace(eval(regex), value);
-            $(id1).val(x1);
+            var x1 = $("#"+id1).val().replace(eval(regex), value);
+            $("#"+id1).val(x1);
         }
     }
 </script>

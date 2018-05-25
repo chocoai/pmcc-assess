@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectApplyDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectStringDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
@@ -12,12 +14,12 @@ import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
 import com.copower.pmcc.assess.service.project.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -134,12 +136,14 @@ public class ProjectPlanSchemeAssistController {
         return HttpResult.newCorrectResult();
     }
 
+
     @ResponseBody
-    @RequestMapping(value = "/evaluationObjectSave", name = "区域组 保存 ", method = RequestMethod.POST)
-    public Object evaluationObjectSave(SchemeJudgeObjectStringDto dto) {
+    @RequestMapping(value = "/saveEvaluationObject", name = "保存估价对象 ", method = RequestMethod.POST)
+    public HttpResult saveEvaluationObject(String formData) {
         try {
-            if (dto != null) {
-                judgeObjectService.evaluationObjectSave(dto);
+            if (StringUtils.isNotBlank(formData)) {
+                SchemeJudgeObjectApplyDto applyDto = JSON.parseObject(formData, SchemeJudgeObjectApplyDto.class);
+                judgeObjectService.saveEvaluationObject(applyDto);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -147,6 +151,4 @@ public class ProjectPlanSchemeAssistController {
         }
         return HttpResult.newCorrectResult();
     }
-
-
 }

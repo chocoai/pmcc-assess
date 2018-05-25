@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,21 @@ public class EvaluationPrincipleFieldController {
         List<EvaluationPrincipleFieldDto> vos = null;
         vos = service.listN(principleId);
         return vos;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listFieldsS",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
+    public Object listsS(String id){
+        try {
+            List<List<EvaluationPrincipleFieldDto>> voS = service.listN(id);
+            if (!ObjectUtils.isEmpty(voS)){
+                return voS;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
