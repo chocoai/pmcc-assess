@@ -70,82 +70,91 @@
 </c:forEach>
 
 <div id="divBoxMethodExtend" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true" data-height="260">
+     aria-hidden="true" data-height="360">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">评估方法</h4>
+                <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
+                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <c:forEach items="${dataEvaluationMethod}" var="item" varStatus="status">
+                            <li role="presentation" ${status.index==0?'class="active"':''} >
+                                <a href="#tab_content${item.id}" id="tab${item.id}" role="tab"
+                                   data-toggle="tab" aria-expanded="true">${item.name}</a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                    <div id="myTabContent" class="tab-content form-horizontal">
 
-                <!-- start accordion -->
-                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel">
-                        <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h4 class="panel-title">Collapsible Group Items #1</h4>
-                        </a>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
-                            <div class="panel-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <c:forEach items="${dataEvaluationMethod}" var="item" varStatus="status">
+                            <div role="tabpanel" class="tab-pane fade ${status.index==0?'active in':''} "
+                                 id="tab_content${item.id}"
+                                 aria-labelledby="home-tab">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+
+                                    </label>
+                                    <div class="x-valid">
+                                        <div class="col-sm-10">
+                                            <div id="gender" class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                    <input type="radio" name="gender" value="male"> 适用
+                                                </label>
+                                                <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                    <input type="radio" name="gender" value="female"> 不适用
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        适用原因
+                                        <span class="input-group-btn">
+                                                    <button type="button" id="applyTemplate${item.id}"
+                                                            class="btn btn-primary">选择模板</button>
+                                                </span>
+                                    </label>
+                                    <div class="x-valid">
+                                        <div class="col-sm-10">
+                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
+                                                  class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        评估思路
+                                        <span class="input-group-btn">
+                                                    <button type="button" id="applyTemplate${item.id}"
+                                                            class="btn btn-primary">选择模板</button>
+                                                </span>
+                                    </label>
+                                    <div class="x-valid">
+                                        <div class="col-sm-10">
+                                        <textarea required placeholder="成果描述" id="11" name="taskRemarks"
+                                                  class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <h4 class="panel-title">Collapsible Group Items #2</h4>
-                        </a>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <p><strong>Collapsible Item 2 data</strong>
-                                </p>
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <h4 class="panel-title">Collapsible Group Items #3</h4>
-                        </a>
-                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
-                            <div class="panel-body">
-                                <p><strong>Collapsible Item 3 data</strong>
-                                </p>
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor
-                            </div>
-                        </div>
+
+                        </c:forEach>
+
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMethod()">
+                    保存
+                </button>
             </div>
         </div>
     </div>
@@ -686,7 +695,7 @@
         //估价对象 id
         $("#frmMethod").clearAll();
         $("#judgeObjectIdMethod").val(id);
-        $("#divBoxMethod").modal();//显示
+        $("#divBoxMethodExtend").modal();//显示
     }
 
     //评估思路 视图
@@ -913,13 +922,13 @@
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/saveEvaluationObject";
         $.ajax({
             url: url,
-            data: {formData:JSON.stringify(data)},
+            data: {formData: JSON.stringify(data)},
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
                     Alert("保存成功!");
-                    loadJudgeObjectList(tbody,areaGroupId);
+                    loadJudgeObjectList(tbody, areaGroupId);
                 } else {
                     Alert("保存失败:" + result.errmsg);
                 }
