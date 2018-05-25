@@ -10,6 +10,8 @@ public class DeclareRecord {
 
     private String name;
 
+    private String ownership;
+
     private String province;
 
     private String city;
@@ -56,6 +58,14 @@ public class DeclareRecord {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(String ownership) {
+        this.ownership = ownership == null ? null : ownership.trim();
     }
 
     public String getProvince() {

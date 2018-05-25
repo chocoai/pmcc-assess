@@ -14,4 +14,5 @@ public class AssessFieldNameConstant {
     public static final String PMCC_ASSESS_DECLARE_RECORD_CITY = "city"; //申报记录市
     public static final String PMCC_ASSESS_DECLARE_RECORD_DISTRICT = "district"; //申报记录区县
     public static final String PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA = "floor_area"; //申报记录建筑面积
+    public static final String PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP = "ownership"; //所有权人
 }

@@ -239,7 +239,7 @@ public class DeclareRecordService {
                 areaGroup.setProjectId(projectId);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 schemeAreaGroupService.add(areaGroup);
-
+                int i=1;
                 //初始化估价对象
                 for (DeclareRecord declareRecord : declareRecords) {
                     boolean isSameProvince = StringUtils.equals(declareRecord.getProvince(), areaGroup.getProvince());
@@ -249,10 +249,12 @@ public class DeclareRecordService {
                         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
                         schemeJudgeObject.setProjectId(projectId);
                         schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+                        schemeJudgeObject.setNumber(i++);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
                         schemeJudgeObject.setName(declareRecord.getName());
+                        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
                         schemeJudgeObject.setBisSplit(false);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObjectService.add(schemeJudgeObject);
