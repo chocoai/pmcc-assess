@@ -44,10 +44,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
+        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
         List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
         List<EvaluationBasisDto> basisDtos = basisService.listN(null);
         List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
         modelAndView.addObject("hypothesisList",hypothesisDtos);
         modelAndView.addObject("principleList",principleDtos);
         modelAndView.addObject("basisList",basisDtos);
@@ -60,9 +60,24 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         return modelAndView;
     }
 
+    /**
+     * 返回修改
+     * @param processInsId
+     * @param taskId
+     * @param boxId
+     * @param projectPlanDetails
+     * @param agentUserAccount
+     * @return
+     */
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
+        List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
+        List<EvaluationBasisDto> basisDtos = basisService.listN(null);
+        List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
+        modelAndView.addObject("hypothesisList",hypothesisDtos);
+        modelAndView.addObject("principleList",principleDtos);
+        modelAndView.addObject("basisList",basisDtos);
         return modelAndView;
     }
 
@@ -78,6 +93,13 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         return modelAndView;
     }
 
+    /**
+     * save
+     * @param projectPlanDetails
+     * @param processInsId
+     * @param formData
+     * @throws BusinessException
+     */
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         if (!StringUtils.isEmpty(formData)){

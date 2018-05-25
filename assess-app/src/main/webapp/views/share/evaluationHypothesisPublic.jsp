@@ -199,11 +199,11 @@
 
     //字段替换
     function hypothesisFildReplace(id1, id2, name) {
-        var value = $(id2).val();
+        var value = $("#"+id2).val();
         var regex = '/\{' + name + '\}/g';
         if (value != null && value != '') {
-            var x1 = $(id1).val().replace(eval(regex), value);
-            $(id1).val(x1);
+            var x1 = $("#"+id1).val().replace(eval(regex), value);
+            $("#"+id1).val(x1);
         }
     }
 </script>
