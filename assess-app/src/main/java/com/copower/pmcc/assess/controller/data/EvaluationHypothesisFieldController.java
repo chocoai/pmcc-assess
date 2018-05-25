@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisFieldDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisFieldVo;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -70,6 +71,21 @@ public class EvaluationHypothesisFieldController {
             logger.error(e.getMessage());
         }
         return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listFieldsS",method = {RequestMethod.POST,RequestMethod.GET},name = "获取列表")
+    public Object listsS(String id){
+        try {
+            List<List<EvaluationHypothesisFieldVo>> voS = service.listN(id);
+            if (!ObjectUtils.isEmpty(voS)){
+                return voS;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

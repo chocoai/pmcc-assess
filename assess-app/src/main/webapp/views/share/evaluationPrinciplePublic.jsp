@@ -95,7 +95,7 @@
             type: "POST",
             dataType: "json",
             data: dataX,
-            async:false,
+            async:true,
             success: function (result) {
                 for (var k = 0;k < result.length;k++){
                     writePrincipleField(result[k],itemsX[k]);

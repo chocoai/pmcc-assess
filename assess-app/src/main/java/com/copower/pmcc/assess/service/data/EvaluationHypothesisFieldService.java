@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +74,20 @@ public class EvaluationHypothesisFieldService {
     public List<EvaluationHypothesisFieldVo> list(Integer hypothesisId){
         List<EvaluationHypothesisFieldVo> vos = new ArrayList<>();
         evaluationHypothesisFieldDao.list(hypothesisId).parallelStream().forEach(evaluationHypothesisFieldDto -> vos.add(change(evaluationHypothesisFieldDto)));
+        return vos;
+    }
+
+    @Transactional(readOnly = true)
+    public List<List<EvaluationHypothesisFieldVo>> listN(String id){
+        List<List<EvaluationHypothesisFieldVo>> vos = new ArrayList<>();
+        String[] ids = id.split(",");
+        for (String s:ids){
+            if (!StringUtils.isEmpty(s)){
+                List<EvaluationHypothesisFieldVo> vo = new ArrayList<>();
+                evaluationHypothesisFieldDao.list(Integer.parseInt(s)).parallelStream().forEach(evaluationHypothesisFieldDto -> vo.add(change(evaluationHypothesisFieldDto)));
+                vos.add(vo);
+            }
+        }
         return vos;
     }
 
