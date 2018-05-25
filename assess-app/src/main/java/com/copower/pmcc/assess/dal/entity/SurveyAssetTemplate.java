@@ -9,7 +9,7 @@ public class SurveyAssetTemplate {
 
     private Integer planDetailId;
 
-    private Integer inventoryContent;
+    private String inventoryContent;
 
     private String areConsistent;
 
@@ -61,12 +61,12 @@ public class SurveyAssetTemplate {
         this.planDetailId = planDetailId;
     }
 
-    public Integer getInventoryContent() {
+    public String getInventoryContent() {
         return inventoryContent;
     }
 
-    public void setInventoryContent(Integer inventoryContent) {
-        this.inventoryContent = inventoryContent;
+    public void setInventoryContent(String inventoryContent) {
+        this.inventoryContent = inventoryContent == null ? null : inventoryContent.trim();
     }
 
     public String getAreConsistent() {

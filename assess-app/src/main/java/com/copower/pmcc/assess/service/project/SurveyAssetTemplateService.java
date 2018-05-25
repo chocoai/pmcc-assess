@@ -45,26 +45,26 @@ public class SurveyAssetTemplateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(serviceComponent.getThisUser(),pid);
-        List<SurveyAssetTemplateVo> surveyAssetTemplateVos = getVoList(surveyAssetTemplatesList);
+        List<SurveyAssetTemplate> surveyAssetTemplatesList = surveyAssetTemplateDao.getSurveyAssetTemplate(pid);
+//        List<SurveyAssetTemplateVo> surveyAssetTemplateVos = getVoList(surveyAssetTemplatesList);
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(surveyAssetTemplateVos) ? new ArrayList<DataNumberRuleVo>() : surveyAssetTemplateVos);
+        vo.setRows(CollectionUtils.isEmpty(surveyAssetTemplatesList) ? new ArrayList<SurveyAssetTemplate>() : surveyAssetTemplatesList);
         return vo;
     }
 
-    private List<SurveyAssetTemplateVo> getVoList(List<SurveyAssetTemplate> list) {
-        if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, p -> {
-            SurveyAssetTemplateVo surveyAssetTemplateVo = new SurveyAssetTemplateVo();
-            BeanUtils.copyProperties(p, surveyAssetTemplateVo);
-            if (p.getInventoryContent() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getInventoryContent());
-                if (baseDataDic != null)
-                    surveyAssetTemplateVo.setInventoryContentName(baseDataDic.getName());
-            }
-            return surveyAssetTemplateVo;
-        });
-    }
+//    private List<SurveyAssetTemplateVo> getVoList(List<SurveyAssetTemplate> list) {
+//        if (CollectionUtils.isEmpty(list)) return null;
+//        return LangUtils.transform(list, p -> {
+//            SurveyAssetTemplateVo surveyAssetTemplateVo = new SurveyAssetTemplateVo();
+//            BeanUtils.copyProperties(p, surveyAssetTemplateVo);
+//            if (p.getInventoryContent() != null) {
+//                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getInventoryContent());
+//                if (baseDataDic != null)
+//                    surveyAssetTemplateVo.setInventoryContentName(baseDataDic.getName());
+//            }
+//            return surveyAssetTemplateVo;
+//        });
+//    }
 
     public boolean save(SurveyAssetTemplateDto surveyAssetTemplateDto,Integer pid) throws BusinessException {
         if(surveyAssetTemplateDto == null)
@@ -77,7 +77,7 @@ public class SurveyAssetTemplateService {
             sysAttachment.setFieldsName(SurveyAssetTemplateDto.CREDENTIALACCESSORY);
             List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentList(sysAttachment);
             BaseAttachment baseAttachment = new BaseAttachment();
-            if(baseAttachments.size() != 0){
+            if(baseAttachments != null){
                  baseAttachment = baseAttachments.get(0);
                 Integer credentialAccessory = baseAttachment.getId();
                 surveyAssetTemplateDto.setCredentialAccessory("" + credentialAccessory);
@@ -97,5 +97,14 @@ public class SurveyAssetTemplateService {
     public boolean delete(Integer id) throws BusinessException {
         if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
         return surveyAssetTemplateDao.delete(id);
+    }
+
+    public ModelAndView getSurveyAssetTemplateByPid(ModelAndView modelAndView, Integer pid) {
+        List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplateByPid(pid);
+        if (surveyAssetTemplates != null){
+            modelAndView.addObject("surveyAssetTemplates",surveyAssetTemplates);
+            return modelAndView;
+        }
+        return modelAndView;
     }
 }

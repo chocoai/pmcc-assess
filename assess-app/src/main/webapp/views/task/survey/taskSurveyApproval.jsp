@@ -14,9 +14,6 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-
-
-
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -49,22 +46,12 @@
                         <!-- cerare document add ajax data-->
                     </table>
 
-
-
                     <form id="frm_checkbox" class="form-horizontal">
-
                         <div class="form-group">
-
                             <label class="col-sm-2 control-label" data-label="&lt;label&gt;">
-                                他项权利与实际情况是否一致
-                            </label>
-
-                            <label class="col-sm-0.5 control-label" >
-                                <input id="yizhiBox" type="checkbox" value="checkbox" style="vertical-align:middle;"/>
-                                <span style="vertical-align:middle;">一致</span>
+                                他项权利与实际情况
                             </label>
                         </div>
-
                     </form>
 
 
@@ -233,8 +220,9 @@
 
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'inventoryContentName', title: '清查内容'});
-        cols.push({field: 'are_consistent', title: '是否一致'});
+//        cols.push({field: 'inventoryContentName', title: '清查内容'});
+//        cols.push({field: 'areConsistent', title: '是否一致'});
+        cols.push({field: 'inventoryContent', title: '清查内容'});
         cols.push({field: 'registrationAddress', title: '登记面积'});
         cols.push({field: 'actualAddress', title: '实际面积'});
         cols.push({field: 'differenceReason', title: '差异原因'});

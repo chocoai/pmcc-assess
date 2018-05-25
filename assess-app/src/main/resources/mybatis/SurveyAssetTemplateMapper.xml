@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
-    <result column="Inventory_content" property="inventoryContent" jdbcType="INTEGER" />
+    <result column="inventory_content" property="inventoryContent" jdbcType="VARCHAR" />
     <result column="are_consistent" property="areConsistent" jdbcType="VARCHAR" />
     <result column="registration_address" property="registrationAddress" jdbcType="VARCHAR" />
     <result column="actual_address" property="actualAddress" jdbcType="VARCHAR" />
@@ -79,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_detail_id, Inventory_content, are_consistent, registration_address, 
+    id, project_id, plan_detail_id, inventory_content, are_consistent, registration_address, 
     actual_address, difference_reason, credential, credential_accessory, voucher, survey_time, 
     creator, gmt_created, gmt_modified, spare_field, pid
   </sql>
@@ -117,13 +117,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_asset_template (project_id, plan_detail_id, Inventory_content, 
+    insert into tb_survey_asset_template (project_id, plan_detail_id, inventory_content, 
       are_consistent, registration_address, actual_address, 
       difference_reason, credential, credential_accessory, 
       voucher, survey_time, creator, 
       gmt_created, gmt_modified, spare_field, 
       pid)
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=INTEGER}, 
+    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=VARCHAR}, 
       #{areConsistent,jdbcType=VARCHAR}, #{registrationAddress,jdbcType=VARCHAR}, #{actualAddress,jdbcType=VARCHAR}, 
       #{differenceReason,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR}, #{credentialAccessory,jdbcType=VARCHAR}, 
       #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
@@ -143,7 +143,7 @@
         plan_detail_id,
       </if>
       <if test="inventoryContent != null" >
-        Inventory_content,
+        inventory_content,
       </if>
       <if test="areConsistent != null" >
         are_consistent,
@@ -193,7 +193,7 @@
         #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="inventoryContent != null" >
-        #{inventoryContent,jdbcType=INTEGER},
+        #{inventoryContent,jdbcType=VARCHAR},
       </if>
       <if test="areConsistent != null" >
         #{areConsistent,jdbcType=VARCHAR},
@@ -255,7 +255,7 @@
         plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       </if>
       <if test="record.inventoryContent != null" >
-        Inventory_content = #{record.inventoryContent,jdbcType=INTEGER},
+        inventory_content = #{record.inventoryContent,jdbcType=VARCHAR},
       </if>
       <if test="record.areConsistent != null" >
         are_consistent = #{record.areConsistent,jdbcType=VARCHAR},
@@ -306,7 +306,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
-      Inventory_content = #{record.inventoryContent,jdbcType=INTEGER},
+      inventory_content = #{record.inventoryContent,jdbcType=VARCHAR},
       are_consistent = #{record.areConsistent,jdbcType=VARCHAR},
       registration_address = #{record.registrationAddress,jdbcType=VARCHAR},
       actual_address = #{record.actualAddress,jdbcType=VARCHAR},
@@ -334,7 +334,7 @@
         plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="inventoryContent != null" >
-        Inventory_content = #{inventoryContent,jdbcType=INTEGER},
+        inventory_content = #{inventoryContent,jdbcType=VARCHAR},
       </if>
       <if test="areConsistent != null" >
         are_consistent = #{areConsistent,jdbcType=VARCHAR},
@@ -382,7 +382,7 @@
     update tb_survey_asset_template
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
-      Inventory_content = #{inventoryContent,jdbcType=INTEGER},
+      inventory_content = #{inventoryContent,jdbcType=VARCHAR},
       are_consistent = #{areConsistent,jdbcType=VARCHAR},
       registration_address = #{registrationAddress,jdbcType=VARCHAR},
       actual_address = #{actualAddress,jdbcType=VARCHAR},
