@@ -83,6 +83,13 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--正则表达式字段 取出--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -92,7 +99,6 @@
                                             <select id="method" name="method" class="form-control" required="required">
                                                 <option selected="selected" value="0">请选择</option>
                                                 <c:forEach items="${useList}" var="item">
-                                                    <%--${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">--%>
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -222,7 +228,6 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-//                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
                 str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';

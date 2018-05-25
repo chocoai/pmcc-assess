@@ -54,12 +54,6 @@
 
 <script type="text/javascript">
     
-    function savePrinciPle() {
-        $("#frm_task_evaluationPrinciPleTemple").validate();
-        var data = formParams("frm_task_evaluationPrinciPleTemple");//数据
-        data.planDetailsId = '${projectPlanDetails.id}';
-        console.log(data);
-    }
     (function () {
         var ids = "";
         var itemsX = new Array();

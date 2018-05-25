@@ -102,7 +102,7 @@
 
     //字段写入
     function writeBasisField(result,id) {
-        var viewH = document.getElementById("viewH2"+id);
+        var viewH = document.getElementById("viewH1"+id);
         var len = result.length;
         var num = Math.round(len / 4);
         if (len <= 4) {
