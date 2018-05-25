@@ -128,6 +128,9 @@
             var divElement = document.createElement("div");
             divElement.setAttribute("class", "form-group");
             for (var j = 0; j < num * 4; j++) {
+                if (j % 4==0){
+                    console.log("取模"+j);
+                }
                 var data = result[j];
                 var divValid = document.createElement("div");
                 divValid.setAttribute("class", "x-valid");

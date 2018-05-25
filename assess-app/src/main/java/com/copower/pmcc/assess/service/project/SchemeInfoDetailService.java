@@ -15,7 +15,6 @@ public class SchemeInfoDetailService {
     @Autowired
     private SchemeInfoDetailDao dao;
 
-    @Transactional
     public int addReturnID(SchemeInfoDetail SchemeInfoDetail) {
         return dao.addReturnID(SchemeInfoDetail);
     }

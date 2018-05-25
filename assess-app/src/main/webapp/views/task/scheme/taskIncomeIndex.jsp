@@ -120,7 +120,7 @@
                             取消
                         </button>
 
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                        <button id="btn_submit" class="btn btn-success" onclick="saveTask();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
@@ -140,9 +140,11 @@
         $(this).click(function () {
             if ($(this).val()==1){
                 $("#Leasehold").show();
+                $("#YLeasehold").hide();
             }else {
                 $("#Leasehold").hide();
                 $("#XLeasehold").hide();
+                $("#YLeasehold").hide();
             }
         });
     });
@@ -159,6 +161,8 @@
     });
 </script>
 <script type="application/javascript">
+    function saveTask() {
+    }
 
     $(function () {
         
@@ -199,6 +203,18 @@
 
 
     function submit() {
+        var basisTemple = $("#basisTemple").val();
+        var hypothesisTemple = $("#hypothesisTemple").val();
+        var principleTemple = $("#principleTemple").val();
+        var evaluationPrincipleSelectID = $("#evaluationPrincipleSelectID option:selected").val();
+        var hypothesisSelectID = $("#hypothesisSelectID option:selected").val();
+        var BasisSelectID = $("#BasisSelectID option:selected").val();
+
+        var content = basisTemple+","+hypothesisTemple+","+principleTemple;
+        var DataID = BasisSelectID+","+hypothesisSelectID+","+evaluationPrincipleSelectID;
+        var  data = {};
+        data.formData = content +"-"+DataID;
+        data.id = "${projectPlanDetails.id}";
         if (!$("#frm_task").valid()) {
             return false;
         }
