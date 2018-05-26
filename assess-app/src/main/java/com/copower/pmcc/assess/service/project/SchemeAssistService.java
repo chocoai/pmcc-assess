@@ -67,7 +67,7 @@ public class SchemeAssistService {
     @Transactional
     public boolean addSchemeJudgeFunctionDto(SchemeJudgeFunctionDto dto) {
         //只是保存评估方法中的评估思路
-        if (StringUtils.isEmpty(dto.getNotApplicableReason()) && StringUtils.isEmpty(dto.getApplicableReason()) && !StringUtils.isEmpty(dto.getThinking())) {
+        if (StringUtils.isEmpty(dto.getNotApplicableReason()) && StringUtils.isEmpty(dto.getApplicableReason()) && !StringUtils.isEmpty(dto.getApplicableThinking())) {
             dto.setCreator(commonService.thisUserAccount());
             dto.setBisApplicable(true);//适用
             return schemeJudgeFunctionService.add(dto);
@@ -101,12 +101,16 @@ public class SchemeAssistService {
         return methodFieldDao.schemeassistservice(methodId, type);
     }
 
-    public List<EvaluationThinking> thinkingList() {
+    public List<EvaluationThinking> getEvaluationThinkingList() {
         return thinkingService.list(null);
     }
 
+    public List<EvaluationMethodVo> getEvaluationMethodList() {
+        return methodService.list(null);
+    }
+
     /*评估方法 字典*/
-    public List<BaseDataDic> evaluationmethod() {
+    public List<BaseDataDic> dataDicMethodList() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         return baseDataDics;
     }

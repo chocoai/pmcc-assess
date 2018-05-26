@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodExample;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationThinkingMapper;
@@ -48,6 +50,18 @@ public class EvaluationThinkingDao {
             evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
         }
         return evaluationThinkings;
+    }
+
+    /**
+     * 根据评估方法获取匹配的评估思路
+     * @param method
+     * @return
+     */
+    public List<EvaluationThinking> getListByMethod(Integer method){
+        EvaluationThinkingExample example = new EvaluationThinkingExample();
+        EvaluationThinkingExample.Criteria criteria = example.createCriteria();
+        criteria.andMethodLike(String.format("%s,%s,%s","%",String.valueOf(method),"%"));
+        return evaluationThinkingMapper.selectByExample(example);
     }
 
     public EvaluationThinking change(EvaluationThinkingDto evaluationThinkingDto) {

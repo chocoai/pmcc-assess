@@ -485,73 +485,143 @@ public class SchemeJudgeFunctionExample {
             return (Criteria) this;
         }
 
-        public Criteria andThinkingIsNull() {
-            addCriterion("thinking is null");
+        public Criteria andApplicableThinkingIsNull() {
+            addCriterion("applicable_thinking is null");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingIsNotNull() {
-            addCriterion("thinking is not null");
+        public Criteria andApplicableThinkingIsNotNull() {
+            addCriterion("applicable_thinking is not null");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingEqualTo(String value) {
-            addCriterion("thinking =", value, "thinking");
+        public Criteria andApplicableThinkingEqualTo(String value) {
+            addCriterion("applicable_thinking =", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingNotEqualTo(String value) {
-            addCriterion("thinking <>", value, "thinking");
+        public Criteria andApplicableThinkingNotEqualTo(String value) {
+            addCriterion("applicable_thinking <>", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingGreaterThan(String value) {
-            addCriterion("thinking >", value, "thinking");
+        public Criteria andApplicableThinkingGreaterThan(String value) {
+            addCriterion("applicable_thinking >", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingGreaterThanOrEqualTo(String value) {
-            addCriterion("thinking >=", value, "thinking");
+        public Criteria andApplicableThinkingGreaterThanOrEqualTo(String value) {
+            addCriterion("applicable_thinking >=", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingLessThan(String value) {
-            addCriterion("thinking <", value, "thinking");
+        public Criteria andApplicableThinkingLessThan(String value) {
+            addCriterion("applicable_thinking <", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingLessThanOrEqualTo(String value) {
-            addCriterion("thinking <=", value, "thinking");
+        public Criteria andApplicableThinkingLessThanOrEqualTo(String value) {
+            addCriterion("applicable_thinking <=", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingLike(String value) {
-            addCriterion("thinking like", value, "thinking");
+        public Criteria andApplicableThinkingLike(String value) {
+            addCriterion("applicable_thinking like", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingNotLike(String value) {
-            addCriterion("thinking not like", value, "thinking");
+        public Criteria andApplicableThinkingNotLike(String value) {
+            addCriterion("applicable_thinking not like", value, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingIn(List<String> values) {
-            addCriterion("thinking in", values, "thinking");
+        public Criteria andApplicableThinkingIn(List<String> values) {
+            addCriterion("applicable_thinking in", values, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingNotIn(List<String> values) {
-            addCriterion("thinking not in", values, "thinking");
+        public Criteria andApplicableThinkingNotIn(List<String> values) {
+            addCriterion("applicable_thinking not in", values, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingBetween(String value1, String value2) {
-            addCriterion("thinking between", value1, value2, "thinking");
+        public Criteria andApplicableThinkingBetween(String value1, String value2) {
+            addCriterion("applicable_thinking between", value1, value2, "applicableThinking");
             return (Criteria) this;
         }
 
-        public Criteria andThinkingNotBetween(String value1, String value2) {
-            addCriterion("thinking not between", value1, value2, "thinking");
+        public Criteria andApplicableThinkingNotBetween(String value1, String value2) {
+            addCriterion("applicable_thinking not between", value1, value2, "applicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingIsNull() {
+            addCriterion("not_applicable_thinking is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingIsNotNull() {
+            addCriterion("not_applicable_thinking is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingEqualTo(String value) {
+            addCriterion("not_applicable_thinking =", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingNotEqualTo(String value) {
+            addCriterion("not_applicable_thinking <>", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingGreaterThan(String value) {
+            addCriterion("not_applicable_thinking >", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingGreaterThanOrEqualTo(String value) {
+            addCriterion("not_applicable_thinking >=", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingLessThan(String value) {
+            addCriterion("not_applicable_thinking <", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingLessThanOrEqualTo(String value) {
+            addCriterion("not_applicable_thinking <=", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingLike(String value) {
+            addCriterion("not_applicable_thinking like", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingNotLike(String value) {
+            addCriterion("not_applicable_thinking not like", value, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingIn(List<String> values) {
+            addCriterion("not_applicable_thinking in", values, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingNotIn(List<String> values) {
+            addCriterion("not_applicable_thinking not in", values, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingBetween(String value1, String value2) {
+            addCriterion("not_applicable_thinking between", value1, value2, "notApplicableThinking");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotApplicableThinkingNotBetween(String value1, String value2) {
+            addCriterion("not_applicable_thinking not between", value1, value2, "notApplicableThinking");
             return (Criteria) this;
         }
 

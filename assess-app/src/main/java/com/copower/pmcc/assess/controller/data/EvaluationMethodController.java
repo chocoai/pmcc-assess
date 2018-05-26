@@ -73,6 +73,17 @@ public class EvaluationMethodController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getEvaluationMethodList", name = "获取评估方法模板数据by method",method = {RequestMethod.GET})
+    public HttpResult getEvaluationMethodList(@RequestParam(value = "method") Integer method) {
+        try {
+            return HttpResult.newCorrectResult(service.getEvaluationMethodList(method));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
     public HttpResult add(EvaluationMethodDto evaluationMethodDto) {
         try {

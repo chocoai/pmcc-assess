@@ -72,6 +72,17 @@ public class EvaluationThinkingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getEvaluationThinkingList", name = "获取评估思路模板数据by method",method = {RequestMethod.GET})
+    public HttpResult getEvaluationThinkingList(@RequestParam(value = "method") Integer method) {
+        try {
+            return HttpResult.newCorrectResult(service.getListByMethod(method));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
     public HttpResult add(EvaluationThinkingDto evaluationThinkingDto) {
         try {

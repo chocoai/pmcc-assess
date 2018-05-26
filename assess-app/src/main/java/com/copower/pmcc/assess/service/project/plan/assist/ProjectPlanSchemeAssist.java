@@ -3,8 +3,11 @@ package com.copower.pmcc.assess.service.project.plan.assist;
 import com.copower.pmcc.assess.common.DeclareRecordItems;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
+import com.copower.pmcc.assess.service.data.EvaluationMethodService;
+import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +31,19 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
     private SchemeAssistService schemeAssistService;
     @Autowired
     private ControllerComponent serviceComponent;
+    @Autowired
+    private EvaluationMethodService evaluationMethodService;
+    @Autowired
+    private EvaluationThinkingService evaluationThinkingService;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/plan/planSchemeIndex", "", 0, "-1", "");
         modelAndView.addObject("bestusedescriptionList", schemeAssistService.dataBestUseDescriptionList());
         modelAndView.addObject("dataList", schemeAssistService.getSchemeGroup(projectPlan.getProjectId()));
-        modelAndView.addObject("dataEvaluationMethod", schemeAssistService.evaluationmethod());
-        modelAndView.addObject("dataEvaluationThink", schemeAssistService.thinkingList());
+        modelAndView.addObject("dataDicMethodList", schemeAssistService.dataDicMethodList());
+        modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
+        modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("projectPlan", projectPlan);
         return modelAndView;
     }

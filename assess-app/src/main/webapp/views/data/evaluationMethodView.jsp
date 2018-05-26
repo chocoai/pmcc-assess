@@ -70,26 +70,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            不适用原因模板
+                                            名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason" required="required">
-
-                                            </textarea>
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                   placeholder="请填写名称" required="required">
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--正则表达式字段 取出--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -113,6 +104,19 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea required="required" placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            不适用原因模板
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason" required="required">
 
                                             </textarea>
                                         </div>
@@ -222,9 +226,10 @@
     //加载 评估技术方法 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'applicableReason', title: '适用原因模板'});
+        cols.push({field: 'name', title: '名称'});
         cols.push({field: 'methodStr', title: '评估方法'});
-
+        cols.push({field: 'applicableReason', title: '适用原因模板'});
+        cols.push({field: 'applicableReason', title: '不适用原因模板'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -286,6 +291,7 @@
         var flag = false;
         var data = formParams("frm");
         data.id = $("#id").val();
+        data.name = $("#name").val();
         data.method = $("#method option:selected").val();
         data.applicableReason = $("#applicableReason").val();
         data.notApplicableReason = $("#notApplicableReason").val();

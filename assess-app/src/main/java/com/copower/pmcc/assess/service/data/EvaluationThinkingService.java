@@ -3,7 +3,9 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinking;
+import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,10 +13,15 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +31,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 评估技术思路
@@ -69,22 +77,13 @@ public class EvaluationThinkingService {
         return evaluationThinkingDao.get(id);
     }
 
+    public List<EvaluationThinking> getListByMethod(Integer method){
+        return evaluationThinkingDao.getListByMethod(method);
+    }
+
     @Transactional(readOnly = true)
     public List<EvaluationThinking> list(String name) {
-        try {
-            if (name == null || name == "") {
-                return evaluationThinkingDao.list(null);
-            } else {
-                return evaluationThinkingDao.list(name);
-            }
-        } catch (Exception e) {
-            try {
-                throw e;
-            } catch (Exception e1) {
-
-            }
-        }
-        return null;
+        return evaluationThinkingDao.list(name);
     }
 
     public BootstrapTableVo listVo(String method) {
@@ -109,39 +108,37 @@ public class EvaluationThinkingService {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
         BeanUtils.copyProperties(evaluationThinking, evaluationThinkingVo);
-        if (evaluationThinking.getMethod() != null && evaluationThinking.getMethod() != "") {
-            StringBuilder builder = new StringBuilder(1024);
-            String[] methods = evaluationThinkingVo.getMethod().split(",");
-            for (int i = 0; i < methods.length; i++) {
-                if (i < 3) {// 只显示3条
-                    int id = Integer.parseInt(methods[i]);
-                    if (i == methods.length - 1) {
-                        builder.append(principleService.changeMethodC(id));
-                    } else {
-                        builder.append(principleService.changeMethodC(id) + ",");
-                    }
+        if (StringUtils.isNotBlank(evaluationThinking.getMethod())) {
+            String s = StringUtils.replacePattern(evaluationThinking.getMethod(), "^,+|,+$", "");
+            List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(s));
+            String methodString=new String();
+            for (Integer integer : integerList) {
+                for (BaseDataDic baseDataDic : baseDataDics) {
+                    if(integer.equals(baseDataDic.getId()))
+                        methodString+=baseDataDic.getName()+",";
                 }
             }
-            evaluationThinkingVo.setMethodStr(builder.toString());
+            evaluationThinkingVo.setMethodStr(StringUtils.replacePattern(methodString, "^,+|,+$", ""));
         }
         return evaluationThinkingVo;
     }
 
-    public String changeMethod(String methodStr) {
-        Integer key = null;
+    /**
+     * 将所有模板以评估方法作为分类
+     * @return
+     */
+    public Map<Integer,List<EvaluationThinking>> getEvaluationThinkingMap(){
+        Map<Integer,List<EvaluationThinking>> map= Maps.newConcurrentMap();
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        inner:
-        for (BaseDataDic b : baseDataDics) {
-            for (int i = 0; i < baseDataDics.size() - 1; i++) {
-                String v = baseDataDics.get(i).getName();
-                if (methodStr.equals(v)) {
-                    key = i;
-                    break inner;
+        if(CollectionUtils.isNotEmpty(baseDataDics)){
+            for (BaseDataDic baseDataDic : baseDataDics) {
+                List<EvaluationThinking> thinkingList = getListByMethod(baseDataDic.getId());
+                if(CollectionUtils.isNotEmpty(thinkingList)){
+                    map.put(baseDataDic.getId(),thinkingList);
                 }
             }
         }
-        return key + "";
+        return map;
     }
-
 
 }

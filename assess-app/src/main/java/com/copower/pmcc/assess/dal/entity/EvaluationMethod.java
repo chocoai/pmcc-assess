@@ -5,7 +5,9 @@ import java.util.Date;
 public class EvaluationMethod {
     private Integer id;
 
-    private String method;
+    private String name;
+
+    private Integer method;
 
     private String applicableReason;
 
@@ -25,12 +27,20 @@ public class EvaluationMethod {
         this.id = id;
     }
 
-    public String getMethod() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
-        this.method = method == null ? null : method.trim();
+    public void setMethod(Integer method) {
+        this.method = method;
     }
 
     public String getApplicableReason() {

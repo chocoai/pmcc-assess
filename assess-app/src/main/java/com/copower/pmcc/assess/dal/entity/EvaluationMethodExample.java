@@ -165,6 +165,76 @@ public class EvaluationMethodExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
         public Criteria andMethodIsNull() {
             addCriterion("method is null");
             return (Criteria) this;
@@ -175,62 +245,52 @@ public class EvaluationMethodExample {
             return (Criteria) this;
         }
 
-        public Criteria andMethodEqualTo(String value) {
+        public Criteria andMethodEqualTo(Integer value) {
             addCriterion("method =", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodNotEqualTo(String value) {
+        public Criteria andMethodNotEqualTo(Integer value) {
             addCriterion("method <>", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodGreaterThan(String value) {
+        public Criteria andMethodGreaterThan(Integer value) {
             addCriterion("method >", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodGreaterThanOrEqualTo(String value) {
+        public Criteria andMethodGreaterThanOrEqualTo(Integer value) {
             addCriterion("method >=", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodLessThan(String value) {
+        public Criteria andMethodLessThan(Integer value) {
             addCriterion("method <", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodLessThanOrEqualTo(String value) {
+        public Criteria andMethodLessThanOrEqualTo(Integer value) {
             addCriterion("method <=", value, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodLike(String value) {
-            addCriterion("method like", value, "method");
-            return (Criteria) this;
-        }
-
-        public Criteria andMethodNotLike(String value) {
-            addCriterion("method not like", value, "method");
-            return (Criteria) this;
-        }
-
-        public Criteria andMethodIn(List<String> values) {
+        public Criteria andMethodIn(List<Integer> values) {
             addCriterion("method in", values, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodNotIn(List<String> values) {
+        public Criteria andMethodNotIn(List<Integer> values) {
             addCriterion("method not in", values, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodBetween(String value1, String value2) {
+        public Criteria andMethodBetween(Integer value1, Integer value2) {
             addCriterion("method between", value1, value2, "method");
             return (Criteria) this;
         }
 
-        public Criteria andMethodNotBetween(String value1, String value2) {
+        public Criteria andMethodNotBetween(Integer value1, Integer value2) {
             addCriterion("method not between", value1, value2, "method");
             return (Criteria) this;
         }

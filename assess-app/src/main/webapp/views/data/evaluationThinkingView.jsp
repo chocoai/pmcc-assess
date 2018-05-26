@@ -70,17 +70,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            不适用原因模板
+                                            名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control"
-                                                      id="notApplicableReason" name="notApplicableReason" required="required">
-
-                                            </textarea>
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                   placeholder="请填写名称" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -90,10 +87,12 @@
                                             评估方法
                                         </label>
                                         <div class="col-sm-10" id="method">
-                                            <label class="checkbox-inline">
-                                                <c:forEach items="${useList}" var="item">
-                                                <input type="checkbox" name="method" value="${item.id}"><label >${item.name}</label>
-                                            </c:forEach></label>
+                                            <c:forEach items="${useList}" var="item">
+                                                    <span class="checkbox-inline">
+                                                    <input type="checkbox" name="method"
+                                                           value="${item.id}"><label>${item.name}</label>
+                                                        </span>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
@@ -110,19 +109,20 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            不适用原因模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name" id="name"
-                                                   placeholder="请填写名称" required="required">
+                                            <textarea placeholder="请填写不适用原因" class="form-control"
+                                                      id="notApplicableReason" name="notApplicableReason"
+                                                      required="required">
+
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -224,6 +224,10 @@
 
     $(function () {
         loadDataDicList();
+
+        var text = "我是\#{国家}人，我的\#{语言}很牛。\#{国家}面积有";
+
+        console.log(resultArray);
     })
     //加载 评估技术思路 数据列表
     function loadDataDicList() {
@@ -250,7 +254,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function() {
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
@@ -292,10 +296,7 @@
     function saveSubDataDic() {
         var flag = false;
         var data = formParams("frm");
-        data.id = $("#id").val();
-        data.applicableReason = $("#applicableReason").val();
-        data.notApplicableReason = $("#notApplicableReason").val();
-        data.name = $("#name").val();
+        data.method = ',' + data.method + ',';//方便like查询
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinking/save",
@@ -357,7 +358,7 @@
         var data = formParams("firSubA");
         data.name = $("#nameA").val();
         data.thinkingId = $("#thinkingId").val();
-        data.type = $("#type option:selected").val()
+        data.type = $("#type option:selected").val();
         if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinkingNG/addField",

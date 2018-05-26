@@ -31,7 +31,7 @@ public class EvaluationMethodFieldDao {
         List<EvaluationMethodField> fieldList = new ArrayList<>();
         List<EvaluationMethod> methods ;
         EvaluationMethodExample methodExample = new EvaluationMethodExample();
-        methodExample.createCriteria().andIdIsNotNull().andMethodEqualTo(""+ method);
+        methodExample.createCriteria().andIdIsNotNull().andMethodEqualTo(method);
         methods = methodMapper.selectByExample(methodExample);
         for (EvaluationMethod evaluationMethod:methods){
             Integer id = evaluationMethod.getId();

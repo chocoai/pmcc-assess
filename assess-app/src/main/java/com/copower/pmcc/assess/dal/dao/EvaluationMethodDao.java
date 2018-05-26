@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodExample;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationMethodMapper;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +41,13 @@ public class EvaluationMethodDao {//evaluationMethodDao
         return evaluationMethodMapper.updateByPrimaryKey(change(evaluationMethodDto)) == 1;
     }
 
+    public List<EvaluationMethod> getEvaluationMethodList(EvaluationMethod evaluationMethod){
+        EvaluationMethodExample example = new EvaluationMethodExample();
+        MybatisUtils.convertObj2Example(evaluationMethod, example);
+        return evaluationMethodMapper.selectByExample(example);
+    }
+
+
     /**
      * 按条件查询
      *
@@ -51,7 +60,7 @@ public class EvaluationMethodDao {//evaluationMethodDao
         EvaluationMethodExample evaluationMethodExample = new EvaluationMethodExample();
         if (map != null) {
             if (map.get(EvaluationMethodDto.METHOD_FIELD) != null) {//按方法查询
-                String v = map.get(EvaluationMethodDto.METHOD_FIELD)+"";
+                Integer v = map.get(EvaluationMethodDto.METHOD_FIELD);
                 evaluationMethodExample.createCriteria().andMethodEqualTo(v);
                 evaluationMethodDtos = change(evaluationMethodExample);
             }

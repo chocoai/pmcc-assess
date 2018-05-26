@@ -8,7 +8,8 @@
     <result column="bis_applicable" property="bisApplicable" jdbcType="BIT" />
     <result column="applicable_reason" property="applicableReason" jdbcType="VARCHAR" />
     <result column="not_applicable_reason" property="notApplicableReason" jdbcType="VARCHAR" />
-    <result column="thinking" property="thinking" jdbcType="VARCHAR" />
+    <result column="applicable_thinking" property="applicableThinking" jdbcType="VARCHAR" />
+    <result column="not_applicable_thinking" property="notApplicableThinking" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, judge_object_id, method_type, bis_applicable, applicable_reason, not_applicable_reason, 
-    thinking, creator, gmt_created, gmt_modified
+    applicable_thinking, not_applicable_thinking, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeFunctionExample" >
     select
@@ -111,12 +112,14 @@
     </selectKey>
     insert into tb_scheme_judge_function (judge_object_id, method_type, bis_applicable, 
       applicable_reason, not_applicable_reason, 
-      thinking, creator, gmt_created, 
-      gmt_modified)
+      applicable_thinking, not_applicable_thinking, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, #{bisApplicable,jdbcType=BIT}, 
       #{applicableReason,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
-      #{thinking,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{applicableThinking,jdbcType=VARCHAR}, #{notApplicableThinking,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,8 +142,11 @@
       <if test="notApplicableReason != null" >
         not_applicable_reason,
       </if>
-      <if test="thinking != null" >
-        thinking,
+      <if test="applicableThinking != null" >
+        applicable_thinking,
+      </if>
+      <if test="notApplicableThinking != null" >
+        not_applicable_thinking,
       </if>
       <if test="creator != null" >
         creator,
@@ -168,8 +174,11 @@
       <if test="notApplicableReason != null" >
         #{notApplicableReason,jdbcType=VARCHAR},
       </if>
-      <if test="thinking != null" >
-        #{thinking,jdbcType=VARCHAR},
+      <if test="applicableThinking != null" >
+        #{applicableThinking,jdbcType=VARCHAR},
+      </if>
+      <if test="notApplicableThinking != null" >
+        #{notApplicableThinking,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -209,8 +218,11 @@
       <if test="record.notApplicableReason != null" >
         not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
       </if>
-      <if test="record.thinking != null" >
-        thinking = #{record.thinking,jdbcType=VARCHAR},
+      <if test="record.applicableThinking != null" >
+        applicable_thinking = #{record.applicableThinking,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notApplicableThinking != null" >
+        not_applicable_thinking = #{record.notApplicableThinking,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -234,7 +246,8 @@
       bis_applicable = #{record.bisApplicable,jdbcType=BIT},
       applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
-      thinking = #{record.thinking,jdbcType=VARCHAR},
+      applicable_thinking = #{record.applicableThinking,jdbcType=VARCHAR},
+      not_applicable_thinking = #{record.notApplicableThinking,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -260,8 +273,11 @@
       <if test="notApplicableReason != null" >
         not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
       </if>
-      <if test="thinking != null" >
-        thinking = #{thinking,jdbcType=VARCHAR},
+      <if test="applicableThinking != null" >
+        applicable_thinking = #{applicableThinking,jdbcType=VARCHAR},
+      </if>
+      <if test="notApplicableThinking != null" >
+        not_applicable_thinking = #{notApplicableThinking,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -282,7 +298,8 @@
       bis_applicable = #{bisApplicable,jdbcType=BIT},
       applicable_reason = #{applicableReason,jdbcType=VARCHAR},
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
-      thinking = #{thinking,jdbcType=VARCHAR},
+      applicable_thinking = #{applicableThinking,jdbcType=VARCHAR},
+      not_applicable_thinking = #{notApplicableThinking,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

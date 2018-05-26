@@ -15,7 +15,9 @@ public class SchemeJudgeFunction {
 
     private String notApplicableReason;
 
-    private String thinking;
+    private String applicableThinking;
+
+    private String notApplicableThinking;
 
     private String creator;
 
@@ -71,12 +73,20 @@ public class SchemeJudgeFunction {
         this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
     }
 
-    public String getThinking() {
-        return thinking;
+    public String getApplicableThinking() {
+        return applicableThinking;
     }
 
-    public void setThinking(String thinking) {
-        this.thinking = thinking == null ? null : thinking.trim();
+    public void setApplicableThinking(String applicableThinking) {
+        this.applicableThinking = applicableThinking == null ? null : applicableThinking.trim();
+    }
+
+    public String getNotApplicableThinking() {
+        return notApplicableThinking;
+    }
+
+    public void setNotApplicableThinking(String notApplicableThinking) {
+        this.notApplicableThinking = notApplicableThinking == null ? null : notApplicableThinking.trim();
     }
 
     public String getCreator() {
