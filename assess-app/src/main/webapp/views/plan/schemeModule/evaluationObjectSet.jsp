@@ -396,7 +396,7 @@
     //评估方法模板选项change
     function evaluationMethodChange(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
+        var bisApplicable = tabPane.find('[name=bisApplicable][checked="checked"]').val();
         var option = $(_this).find('option:selected');
         if (bisApplicable == "true") {
             tabPane.find('[name="applicableReason"]').val(option.attr("data-applicable"));
@@ -418,7 +418,7 @@
     //评估思路模板选项change
     function evaluationThinkingChange(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
+        var bisApplicable = tabPane.find('[name=bisApplicable][checked="checked"]').val();
         var option = $(_this).find('option:selected');
         if (bisApplicable == "true") {
             tabPane.find('[name="applicableThinking"]').val(option.attr("data-applicable"));
