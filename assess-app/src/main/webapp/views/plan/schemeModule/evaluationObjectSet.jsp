@@ -79,6 +79,7 @@
                 <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="judgeObjectId">
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                         <c:forEach items="${dataDicMethodList}" var="item" varStatus="status">
@@ -94,6 +95,8 @@
                             <div role="tabpanel" class="tab-pane fade ${status.index==0?'active in':''} "
                                  id="tab_content${method.id}"
                                  aria-labelledby="home-tab">
+                                <input type="hidden" name="id" value="0">
+                                <input type="hidden" name="methodType" value="${method.id}">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">
 
@@ -211,9 +214,7 @@
                                     <div class="notApplicableThinking-field"></div>
                                 </div>
                             </div>
-
                         </c:forEach>
-
                     </div>
                 </div>
             </div>
@@ -221,7 +222,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveMethod()">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="savesEvaluationMethod()">
                     保存
                 </button>
             </div>
@@ -231,24 +232,13 @@
 
 <script type="text/javascript">
 
-
-    //评估方法字段替换
-    function methodFildReplace(id1, id2, name) {
-        var value = $(id2).val();
-        var regex = '/\{' + name + '\}/g';
-        if (value != null && value != '') {
-            var x1 = $(id1).val().replace(eval(regex), value);
-            $(id1).val(x1);
-        }
-    }
-
     //方法适用原因字段替换
     function methodApplicableFieldReplace(_this) {
         //1.先找到模板 2.再依次找到字段填写的信息
         var tabPane = $(_this).closest(".tab-pane");
         var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-applicable");
         tabPane.find('.applicableReason-field').find('input:text').each(function () {
-            if ($(this).val()){
+            if ($(this).val()) {
                 template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
             }
         })
@@ -260,7 +250,7 @@
         var tabPane = $(_this).closest(".tab-pane");
         var template = tabPane.find('[name="methodTemplate"]').find('option:selected').attr("data-not-applicable");
         tabPane.find('.notApplicableReason-field').find('input:text').each(function () {
-            if ($(this).val()){
+            if ($(this).val()) {
                 template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
             }
         })
@@ -272,7 +262,7 @@
         var tabPane = $(_this).closest(".tab-pane");
         var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-applicable");
         tabPane.find('.applicableThinking-field').find('input:text').each(function () {
-            if ($(this).val()){
+            if ($(this).val()) {
                 template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
             }
         })
@@ -284,7 +274,7 @@
         var tabPane = $(_this).closest(".tab-pane");
         var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-not-applicable");
         tabPane.find('.notApplicableThinking-field').find('input:text').each(function () {
-            if ($(this).val()){
+            if ($(this).val()) {
                 template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
             }
         })
@@ -310,10 +300,98 @@
         }
     }
 
-    //-------------------------------------------------------------------------
+    //保存评估方法
+    function savesEvaluationMethod() {
+        var data = {};
+        data.judgeFunctionList = [];
+        $("#myTabContent").find('.tab-pane').each(function () {
+            var judgeFunction = {};
+            judgeFunction.judgeObjectId = $("#judgeObjectId").val();
+            judgeFunction.id = $(this).find('[name="id"]').val();
+            judgeFunction.methodType = $(this).find('[name="methodType"]').val();
+            judgeFunction.bisApplicable = $(this).find('[name="bisApplicable"]:checked').val();
+            judgeFunction.applicableReason = $(this).find('[name="applicableReason"]').val();
+            judgeFunction.notApplicableReason = $(this).find('[name="notApplicableReason"]').val();
+            judgeFunction.applicableThinking = $(this).find('[name="applicableThinking"]').val();
+            judgeFunction.notApplicableThinking = $(this).find('[name="notApplicableThinking"]').val();
+            data.judgeFunctionList.push(judgeFunction);
+        })
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectplanschemeassist/saveJudgeFunction',
+            data: {formData: JSON.stringify(data)},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                } else {
+                    Alert("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
     //设置评估方法
-    function setEvaluationMethod() {
+    function setEvaluationMethod(_this) {
+        var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
+        $("#judgeObjectId").val(judgeObjectId);
+        //还原数据状态
+        cleanEvaluationMethod();
+        //如果该估计对象已经设置过评估方法，则将数据填充回去
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectplanschemeassist/getListByJudgeObjectId',
+            data: {judgeObjectId: judgeObjectId},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret&&result.data) {
+                    $.each(result.data,function (i,item) {
+                        var methodTypeEle = $("#myTabContent").find('.tab-pane').find('[name="methodType"][value="'+item.methodType+'"]')
+                        var tabPane = $(methodTypeEle).closest(".tab-pane");
+                        tabPane.find('[name="id"]').val(item.id);
+                        if(item.bisApplicable){
+                            tabPane.find('[name="bisApplicable"][value="true"]').parent().get(0).click();
+                            tabPane.find('.applicable').show();
+                        }else{
+                            tabPane.find('[name="bisApplicable"][value="false"]').parent().get(0).click();
+                            tabPane.find('.not-applicable').show();
+                        }
+                        tabPane.find('[name="applicableReason"]').val(item.applicableReason);
+                        tabPane.find('[name="notApplicableReason"]').val(item.notApplicableReason);
+                        tabPane.find('[name="applicableThinking"]').val(item.applicableThinking);
+                        tabPane.find('[name="notApplicableThinking"]').val(item.notApplicableThinking);
+                    })
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
         $("#divBoxMethodExtend").modal();
+    }
+
+    //清空
+    function cleanEvaluationMethod() {
+        $("#myTabContent").find('[name="id"]').val('0');
+        $("#myTabContent").find('[name="bisApplicable"]').parent().removeClass('active')
+        $("#myTabContent").find('[name="applicableReason"]').val('');
+        $("#myTabContent").find('[name="notApplicableReason"]').val('');
+        $("#myTabContent").find('[name="applicableThinking"]').val('');
+        $("#myTabContent").find('[name="notApplicableThinking"]').val('');
+
+        $("#myTabContent").find('[name="methodTemplate"]').val('');
+        $("#myTabContent").find('[name="thinkingTemplate"]').val('');
+
+        $("#myTabContent").find('.applicable').hide();
+        $("#myTabContent").find('.not-applicable').hide();
+        $("#myTabContent").find('.applicableReason-field').empty();
+        $("#myTabContent").find('.applicableThinking-field').empty();
+        $("#myTabContent").find('.notApplicableReason-field').empty();
+        $("#myTabContent").find('.notApplicableThinking-field').empty();
     }
 
     //评估方法模板选项change
@@ -412,8 +490,10 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    Alert("保存成功!");
+                    toastr.success('保存成功');
                     loadJudgeObjectList(tbody, areaGroupId);
+                    //刷新treegride
+                    getPlanItemList();
                 } else {
                     Alert("保存失败:" + result.errmsg);
                 }

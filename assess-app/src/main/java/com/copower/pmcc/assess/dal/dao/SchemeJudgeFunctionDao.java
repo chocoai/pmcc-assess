@@ -19,40 +19,47 @@ public class SchemeJudgeFunctionDao {
     @Autowired
     private SchemeJudgeFunctionMapper mapper;
 
-    public boolean add(SchemeJudgeFunctionDto dto){
-        return mapper.insertSelective(change(dto)) ==1;
+    public boolean add(SchemeJudgeFunction dto) {
+        return mapper.insertSelective(change(dto)) == 1;
     }
 
-    public boolean remove(Integer id){
-        return mapper.deleteByPrimaryKey(id)==1;
+    public boolean remove(Integer id) {
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public boolean update(SchemeJudgeFunctionDto dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+    public boolean update(SchemeJudgeFunction dto) {
+        return mapper.updateByPrimaryKeySelective(change(dto)) == 1;
     }
 
-    public SchemeJudgeFunctionDto get(Integer id){
+    public SchemeJudgeFunction get(Integer id) {
         return change(mapper.selectByPrimaryKey(id));
     }
 
-    public SchemeJudgeFunctionDto get(String creator,Integer methodType, Integer judgeObjectId){
+    public List<SchemeJudgeFunction> getListByJudgeObjectId(Integer judgeObjectId) {
+        SchemeJudgeFunctionExample example = new SchemeJudgeFunctionExample();
+        example.createCriteria().andIdIsNotNull().andJudgeObjectIdEqualTo(judgeObjectId);
+        List<SchemeJudgeFunction> schemeJudgeFunctions = mapper.selectByExample(example);
+        return schemeJudgeFunctions;
+    }
+
+    public SchemeJudgeFunction get(String creator, Integer methodType, Integer judgeObjectId) {
         SchemeJudgeFunctionExample example = new SchemeJudgeFunctionExample();
         example.createCriteria().andIdIsNotNull().andCreatorEqualTo(creator).andMethodTypeEqualTo(methodType).andJudgeObjectIdEqualTo(judgeObjectId);
         //应该只有一个
         List<SchemeJudgeFunction> schemeJudgeFunctions = mapper.selectByExample(example);
-        SchemeJudgeFunctionDto dto = change(schemeJudgeFunctions.get(0));
+        SchemeJudgeFunction dto = change(schemeJudgeFunctions.get(0));
         return dto;
     }
 
-    public SchemeJudgeFunctionDto change(SchemeJudgeFunction oo){
+    public SchemeJudgeFunction change(SchemeJudgeFunction oo) {
         SchemeJudgeFunctionDto dto = new SchemeJudgeFunctionDto();
-        BeanUtils.copyProperties(oo,dto);
+        BeanUtils.copyProperties(oo, dto);
         return dto;
     }
 
-    public SchemeJudgeFunction change(SchemeJudgeFunctionDto dto){
+    public SchemeJudgeFunction change(SchemeJudgeFunctionDto dto) {
         SchemeJudgeFunction oo = new SchemeJudgeFunction();
-        BeanUtils.copyProperties(dto,oo);
+        BeanUtils.copyProperties(dto, oo);
         return oo;
     }
 }

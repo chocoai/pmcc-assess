@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.dao.EvaluationThinkingFieldDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.DeclareRecordVo;
@@ -17,11 +18,12 @@ import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,12 +74,30 @@ public class SchemeAssistService {
             dto.setBisApplicable(true);//适用
             return schemeJudgeFunctionService.add(dto);
         } else {
-            SchemeJudgeFunctionDto functionDto = schemeJudgeFunctionService.get(commonService.thisUserAccount(), dto.getMethodType(), dto.getJudgeObjectId());
+            SchemeJudgeFunction functionDto = schemeJudgeFunctionService.get(commonService.thisUserAccount(), dto.getMethodType(), dto.getJudgeObjectId());
             functionDto.setApplicableReason(dto.getApplicableReason());
             functionDto.setBisApplicable(true);
             functionDto.setNotApplicableReason(dto.getNotApplicableReason());
             functionDto.setJudgeObjectId(dto.getJudgeObjectId());
             return schemeJudgeFunctionService.update(functionDto);
+        }
+    }
+
+    /**
+     * 保存评估方法
+     * @param schemeJudgeFunctionApplyDto
+     */
+    public void saveJudgeFunction(SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto){
+        List<SchemeJudgeFunction> judgeFunctionList = schemeJudgeFunctionApplyDto.getJudgeFunctionList();
+        if(CollectionUtils.isNotEmpty(judgeFunctionList)){
+            judgeFunctionList.forEach(p->{
+                if(p.getId()!=null&&p.getId()>0){
+                    schemeJudgeFunctionService.update(p);
+                }else {
+                    p.setCreator(commonService.thisUserAccount());
+                    schemeJudgeFunctionService.add(p);
+                }
+            });
         }
     }
 
@@ -99,14 +119,6 @@ public class SchemeAssistService {
 
     public List<EvaluationMethodField> list(Integer methodId, Integer type) {
         return methodFieldDao.schemeassistservice(methodId, type);
-    }
-
-    public List<EvaluationThinking> getEvaluationThinkingList() {
-        return thinkingService.list(null);
-    }
-
-    public List<EvaluationMethodVo> getEvaluationMethodList() {
-        return methodService.list(null);
     }
 
     /*评估方法 字典*/
