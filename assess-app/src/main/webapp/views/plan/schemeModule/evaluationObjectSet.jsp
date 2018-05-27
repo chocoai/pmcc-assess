@@ -156,9 +156,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
 
-                                </div>
                                 <div class="applicable" style="display: none;">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
@@ -171,6 +169,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="applicableReason-field">
 
                                     </div>
@@ -354,10 +353,10 @@
                         var tabPane = $(methodTypeEle).closest(".tab-pane");
                         tabPane.find('[name="id"]').val(item.id);
                         if(item.bisApplicable){
-                            tabPane.find('[name="bisApplicable"][value="true"]').parent().get(0).click();
+                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked',true).parent().get(0).click();
                             tabPane.find('.applicable').show();
                         }else{
-                            tabPane.find('[name="bisApplicable"][value="false"]').parent().get(0).click();
+                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked',true).parent().get(0).click();
                             tabPane.find('.not-applicable').show();
                         }
                         tabPane.find('[name="applicableReason"]').val(item.applicableReason);
@@ -441,6 +440,9 @@
     //适用切换
     function applicableChange(_this, isApplicable) {
         var tabPane = $(_this).closest(".tab-pane");
+        var thisRadio=$(_this).find('input:radio');
+        thisRadio.attr('checked',true);
+        $(_this).closest('.btn-group').find('input:radio').not(thisRadio).attr('checked',false);
         if (isApplicable) {
             tabPane.find('.applicable').show();
             tabPane.find('.not-applicable').hide();
