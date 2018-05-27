@@ -72,12 +72,16 @@
                             取消
                         </button>
 
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                        <button id="btn_submit" class="btn btn-success" onclick="frmTaskSave();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </div>
             </div>
+
+
+
+
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
@@ -86,7 +90,29 @@
 <%@include file="/views/share/main_footer.jsp" %>
 
 <script type="application/javascript">
-    function saveTask() {
+    function frmTaskSave() {
+        //js校验
+        if (!$("#frm_task_evaluationPrinciPleTemple").valid()) {
+            return false;
+        }
+        if (!$("#frm_task_evaluationHypothesis").valid()) {
+            return false;
+        }
+        if (!$("#frm_task_evaluationBasis").valid()) {
+            return false;
+        }
+        var json = "";
+        //数据收集
+        var princiPle = formParams("frm_task_evaluationPrinciPleTemple");
+        var hypothesis = formParams("frm_task_evaluationHypothesis");
+        var basis = formParams("frm_task_evaluationBasis");
+        var data = {};
+        data.princiPle = princiPle;
+        data.hypothesis = hypothesis;
+        data.basis = basis;
+        //合并json
+        json = JSON.stringify(data);
+        console.log(json);
     }
 
     $(function () {

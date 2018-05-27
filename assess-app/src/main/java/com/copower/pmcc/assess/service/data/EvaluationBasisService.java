@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationBasisFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +42,9 @@ public class EvaluationBasisService {
 
     @Autowired
     private EvaluationPrincipleService principleService;
+
+    @Autowired
+    private EvaluationBasisFieldService basisFieldService;
 
     @Autowired
     private EvaluationBasisDao evaluationBasisDao;
@@ -72,12 +77,22 @@ public class EvaluationBasisService {
         return evaluationBasisDao.list(name);
     }
 
+    public List<EvaluationBasisVo> listNs(String name){
+        List<EvaluationBasisDto> dtos = listN(name);
+        List<EvaluationBasisVo> vos = new ArrayList<>();
+        for (EvaluationBasisDto dto:dtos){
+            vos.add(change(dto));
+        }
+        return vos;
+    }
+
     public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationBasisVo> vos = new ArrayList<>();
-        boolean flag = (name == null) || (name == "");
+//        boolean flag = (name == null) || (name == "");
+        boolean flag = StringUtils.isEmpty(name);
         listN(flag ? null : name).parallelStream().forEach(evaluationBasisDto -> vos.add(change(evaluationBasisDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationBasisVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -87,9 +102,12 @@ public class EvaluationBasisService {
     public EvaluationBasisVo change(EvaluationBasisDto dto) {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationBasisVo vo = new EvaluationBasisVo();
+        List<EvaluationBasisFieldVo> vos = basisFieldService.list(dto.getId());
+        vo.setFieldVos(vos);
+        vo.setSize(vos.size());
         BeanUtils.copyProperties(dto, vo);
         try {
-            if (vo.getMethod() != "" && vo.getMethod() != null) {
+            if (!StringUtils.isEmpty(vo.getMethod())) {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] methods = vo.getMethod().split(",");
                 for (int i = 0; i < methods.length; i++) {
@@ -104,7 +122,7 @@ public class EvaluationBasisService {
                 }
                 vo.setMethodStr(builder.toString());
             }
-            if (vo.getEntrustmentPurpose() != null && vo.getEntrustmentPurpose() != "") {
+            if (StringUtils.isEmpty(vo.getEntrustmentPurpose())) {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
                 for (int i = 0; i < entrustmentPurposeS.length; i++) {

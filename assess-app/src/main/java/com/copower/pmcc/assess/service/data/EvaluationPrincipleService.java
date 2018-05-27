@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -20,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +38,9 @@ public class EvaluationPrincipleService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private EvaluationPrincipleFieldService principleFieldService;
 
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -73,12 +79,23 @@ public class EvaluationPrincipleService {
         return evaluationPrincipleDao.list(name);
     }
 
+    public List<EvaluationPrincipleVo> listNs(String name){
+        List<EvaluationPrincipleVo> vos = new ArrayList<>();
+        List<EvaluationPrincipleDto> dtos = listN(name);
+        for (EvaluationPrincipleDto dto:dtos){
+            vos.add(change(dto));
+        }
+        return vos;
+    }
+
+
     public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationPrincipleVo> vos = new ArrayList<>();
-        boolean flag = (name == null) || (name == "");
+//        boolean flag = (name == null) || (name == "");
+        boolean flag = StringUtils.isEmpty(name);
         listN(flag ? null : name).forEach(evaluationPrincipleDto -> vos.add(change(evaluationPrincipleDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationPrincipleVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -89,9 +106,13 @@ public class EvaluationPrincipleService {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         EvaluationPrincipleVo vo = new EvaluationPrincipleVo();
+        List<EvaluationPrincipleFieldDto> fieldVos;
+        fieldVos = principleFieldService.listN(evaluationPrincipleDto.getId());
+        vo.setFieldVos(fieldVos);
+        vo.setSize(fieldVos.size());
         BeanUtils.copyProperties(evaluationPrincipleDto, vo);
         try {
-            if (vo.getMethod() != "" && vo.getMethod() != null) {
+            if (!StringUtils.isEmpty(vo.getMethod()) && vo.getMethod() != null) {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] methods = vo.getMethod().split(",");
                 for (int i = 0; i < methods.length; i++) {
@@ -106,7 +127,7 @@ public class EvaluationPrincipleService {
                 }
                 vo.setMethodStr(builder.toString());
             }
-            if (vo.getEntrustmentPurpose() != null && vo.getEntrustmentPurpose() != "") {
+            if (!StringUtils.isEmpty(vo.getEntrustmentPurpose())) {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
                 for (int i = 0; i < entrustmentPurposeS.length; i++) {
