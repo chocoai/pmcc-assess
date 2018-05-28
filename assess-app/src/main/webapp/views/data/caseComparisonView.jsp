@@ -23,11 +23,11 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    案例对比
+                                    名称
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="案例对比 名称" id="queryName" name="queryName"
+                                           placeholder="名称" id="queryName" name="queryName"
                                            class="form-control">
                                 </div>
                             </div>
@@ -69,31 +69,51 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            合并名称
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="合并名称" class="form-control" required="required">
+                                            <input type="text" name="name" id="name" placeholder="名称" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            说明
+                                            模板内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写说明" class="form-control" id="uExplain" name="uExplain" required="required">
-
+                                            <textarea placeholder="模板内容" class="form-control" id="uExplain" name="uExplain" required="required">
                                             </textarea>
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            查勘表单<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <input type="text" name="dynamicFormName" id="dynamicFormName" placeholder="查勘表单" class="form-control" required="required">
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="selectDepartment();" data-toggle="tooltip"
+                                                        data-original-title="选择">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                 <button type="button" class="btn btn-default docs-tooltip"
+                                                         onclick="$(this).closest('.input-group').find('input').val('');"
+                                                         data-toggle="tooltip" data-original-title="清除">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,13 +238,24 @@
     $(function () {
         loadDataDicList();
     })
+
+    //选择动态表单
+    function selectDynamicForm() {
+        assessDataDic.select({
+            key:"assess.class",
+            onSelected:function (nodes) {
+                console.log(nodes);
+                $("#declareFormId").val(nodes[0].id);
+                $("#declareFormName").val(nodes[0].name);
+            }
+        })
+    }
+
     //加载 案例对比配置 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'uExplain', title: '说明'});
-        cols.push({field: 'typeStr', title: '类型'});
-
+        cols.push({field: 'uExplain', title: '模板内容'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
