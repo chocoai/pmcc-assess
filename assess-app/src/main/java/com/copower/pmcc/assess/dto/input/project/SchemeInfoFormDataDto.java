@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.dto.input.project;
 
 import com.copower.pmcc.assess.dal.entity.SchemeInfo;
 
+import java.io.Serializable;
+
 /**
  * Created by 13426 on 2018/5/25.
  */
-public class SchemeInfoFormDataDto {
+public class SchemeInfoFormDataDto implements Serializable{
 
    private String Content;
    private String DataID;
@@ -24,5 +26,13 @@ public class SchemeInfoFormDataDto {
 
     public void setDataID(String dataID) {
         DataID = dataID;
+    }
+
+    @Override
+    public String toString() {
+        return "SchemeInfoFormDataDto{" +
+                "Content='" + Content + '\'' +
+                ", DataID='" + DataID + '\'' +
+                '}';
     }
 }

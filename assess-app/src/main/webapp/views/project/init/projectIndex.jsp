@@ -90,7 +90,7 @@
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="province" name="province" class="form-control" required="required">
-                                        <option value="">请选择</option>
+                                        <option value="" name="province">请选择</option>
                                         <c:forEach items="${ProvinceList}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.province}">
@@ -115,7 +115,7 @@
                                                         value="${projectInfo.city}">${projectInfo.cityName}</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="">请选择</option>
+                                                <option value="" name="city">请选择</option>
                                             </c:otherwise>
                                         </c:choose>
                                     </select>
@@ -132,7 +132,7 @@
                                                         value="${projectInfo.district}">${projectInfo.districtName}</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="">请选择</option>
+                                                <option value="" name="district">请选择</option>
                                             </c:otherwise>
                                         </c:choose>
                                     </select>
@@ -183,7 +183,7 @@
                                 <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" id="departmentId" name="departmentId">
-                                        <input id='departmentName' required class='form-control' required
+                                        <input id='departmentName'  class='form-control' required="required"
                                                readonly="readonly" maxlength="200">
                                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -206,17 +206,21 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="userAccountManager" name="userAccountManager" class="form-control"
-                                            required="required">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.projectMemberId != null}">
-                                                <option selected="selected">${projectInfo.userAccountManagerName}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="">请选择</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </select>
+                                    <div class="input-group">
+                                        <input type="hidden" id="userAccountManagerID" name="userAccountManager">
+                                        <input type="text" class="form-control" readonly="readonly" value="${projectInfo.userAccountManagerName}" required="required" id="userAccountManager"  maxlength="200">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                    data-original-title="选择" onclick="selectUserAccountMember()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -302,15 +306,24 @@
                                         委托单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"
-                                               class="form-control" required="required">
-                                        <input type="text" id="csEntrustmentUnitX" placeholder="委托单位"
-                                               value="${projectInfo.consignorVo.csEntrustmentUnitName}"
-                                               class="form-control" required="required">
-                                        <span class="input-group-btn">
-                                          <button type="button" id="btn_select_customer"
-                                                  class="btn btn-primary">选择</button>
-                                        </span>
+                                        <div class="input-group">
+                                            <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"
+                                                   class="form-control" required="required">
+                                            <input type="text" id="csEntrustmentUnitX" placeholder="委托单位"
+                                                   value="${projectInfo.consignorVo.csEntrustmentUnitName}"
+                                                   class="form-control" required="required" readonly="readonly">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                        data-original-title="选择" id="btn_select_customer">
+                                                <i class="fa fa-search"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');"
+                                                        data-toggle="tooltip" data-original-title="清除">
+                                                <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -401,14 +414,13 @@
                                     <div class="col-sm-3">
                                         <select class="form-control" id="csUnitProperties" name="csUnitProperties">
                                             <option value="">请选择</option>
-                                            <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                            <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
-                                                    <c:when test="${mymap.key == projectInfo.consignorVo.csUnitProperties}">
-                                                        <option value="${mymap.key}"
-                                                                selected="selected">${mymap.value}</option>
+                                                    <c:when test="${item.id == projectInfo.consignorVo.csUnitProperties}">
+                                                        <option value="${item.id}" selected="selected">${item.name}</option>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <option value="${mymap.key}">${mymap.value}</option>
+                                                        <option value="${item.id}">${item.name}</option>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </c:forEach>
@@ -419,7 +431,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证附件
+                                        附件
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="file" name="csAttachmentProjectEnclosureId"
@@ -495,7 +507,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证附件
+                                        附件
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="file" name="csAttachmentProjectEnclosureId2"
@@ -508,7 +520,7 @@
                         </div>
                     </form>
                     <div class="x_title">
-                        <h4> 委托人联系人</h4>
+                        <h3> 委托人联系人</h3>
                     </div>
                     <div class="x_content">
                         <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
@@ -551,15 +563,24 @@
                                     占有单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"
-                                           class="form-control" required="required">
-                                    <input type="text" id="pEntrustmentUnitX"
-                                           value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="占有单位"
-                                           class="form-control" required="required">
-                                    <span class="input-group-btn">
-                                          <button type="button" id="btn_select_customer1"
-                                                  class="btn btn-primary">选择</button>
-                                        </span>
+                                    <div class="input-group">
+                                        <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"
+                                               class="form-control" required="required">
+                                        <input type="text" id="pEntrustmentUnitX"
+                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="占有单位"
+                                               class="form-control" required="required" readonly="readonly">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                    data-original-title="选择" id="btn_select_customer1">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+			                            </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -648,14 +669,13 @@
                                 <div class="col-sm-3">
                                     <select class="form-control" id="pUnitProperties" name="pUnitProperties">
                                         <option value="">请选择</option>
-                                        <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
+                                        <c:forEach items="${ProjectAFFILIATED}" var="item">
                                             <c:choose>
-                                                <c:when test="${mymap.key == projectInfo.possessorVo.pUnitProperties}">
-                                                    <option value="${mymap.key}"
-                                                            selected="selected">${mymap.value}</option>
+                                                <c:when test="${item.id == projectInfo.possessorVo.pUnitProperties}">
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <option value="${mymap.key}">${mymap.value}</option>
+                                                    <option value="${item.id}">${item.name}</option>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
@@ -666,7 +686,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    身份证附件
+                                    附件
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="file" name="pAttachmentProjectEnclosureId"
@@ -744,7 +764,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    身份证附件
+                                    附件
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="file" name="pAttachmentProjectEnclosureId2"
@@ -756,18 +776,19 @@
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="x_panel">
+
                 <div class="x_title">
-                    <h2> 占有人联系人</h2>
-                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                    <h3> 占有人联系人</h3>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
                     <table class="table table-bordered" id="tb_ListB">
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
+
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 报告使用单位</h2>
@@ -776,6 +797,7 @@
                 <div class="x_content">
 
                 </div>
+
                 <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div>
@@ -785,22 +807,31 @@
                                     报告使用单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
-                                           required="required">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
-                                            <input type="text" id="uUseUnitX"
-                                                   value="${projectInfo.unitInformationVo.uUseUnitName}"
-                                                   class="form-control">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" id="uUseUnitX" placeholder="报告使用单位" class="form-control">
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <span class="input-group-btn">
-                                          <button type="button" id="btn_select_customer2"
-                                                  class="btn btn-primary">选择</button>
-                                        </span>
+                                    <div class="input-group">
+                                        <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
+                                               required="required">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
+                                                <input type="text" id="uUseUnitX"
+                                                       value="${projectInfo.unitInformationVo.uUseUnitName}"
+                                                       class="form-control">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" id="uUseUnitX" readonly="readonly" placeholder="报告使用单位" class="form-control"  maxlength="200">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                            data-original-title="选择" id="btn_select_customer2">
+                                                    <i class="fa fa-search"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default docs-tooltip"
+                                                            onclick="$(this).closest('.input-group').find('input').val('');"
+                                                            data-toggle="tooltip" data-original-title="清除">
+                                                    <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
 
@@ -849,21 +880,22 @@
                                     单位性质
                                 </label>
                                 <div class="col-sm-3">
-                                    <select class="form-control" id="uUnitProperties" name="uUnitProperties">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${InitiateAFFILIATEDMap}" var="mymap">
-                                            <c:choose>
-                                                <c:when test="${mymap.key == projectInfo.unitInformationVo.uUnitProperties}">
-                                                    <option value="${mymap.key}"
-                                                            selected="selected">${mymap.value}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${mymap.key}">${mymap.value}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
+                                    <div class="input-group">
+                                        <select name="uUnitProperties" id="uUnitProperties" class="form-control">
+                                            <option value="" name="uUnitProperties">请选择</option>
+                                            <c:forEach items="${ProjectAFFILIATED}" var="item">
+                                                <c:choose>
+                                                    <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
+                                                        <option value="${item.id}" selected="selected">${item.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
-                                    </select>
                                 </div>
                             </div>
 
@@ -907,20 +939,21 @@
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="x_panel">
+
                 <div class="x_title">
-                    <h2> 报告使用单位联系人</h2>
+                    <h3> 报告使用单位联系人</h3>
                     <div class="clearfix">
-                        <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
                     </div>
                 </div>
                 <div class="x_content">
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
                     <table class="table table-bordered" id="tb_ListC">
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
+
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -1219,7 +1252,13 @@
             fieldElment.setAttribute("value", item[i].areaId);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
-
+            if (i == (len-1) ){
+                var optionEle = document.createElement("option");
+                optionEle.setAttribute("value","");
+                optionEle.setAttribute("name","city");
+                optionEle.appendChild("请选择");
+                TableFieldElement.appendChild(optionEle);
+            }
         }
     }
     function appendChildElement_district(item) {//县或者区域添加
@@ -1235,6 +1274,8 @@
 
         }
     }
+
+
     //执业部门
     function selectDepartment() {
         erpDepartment.select({
@@ -1246,19 +1287,16 @@
     }
 
     // 项目经理
-    var userAccountManager = document.getElementById("userAccountManager");
-    userAccountManager.onclick = function () {
+    //userAccountManager
+    function selectUserAccountMember() {
         erpEmployee.select({
             onSelected: function (data) {
-                userAccountManager.removeChild(userAccountManager.firstChild);
-                var fieldElment = document.createElement("option");
-                fieldElment.setAttribute("value", data.account);
-                fieldElment.setAttribute("selected", "selected");
-                fieldElment.appendChild(document.createTextNode(data.name));
-                userAccountManager.appendChild(fieldElment);
+                $("#userAccountManager").val(data.name);
+                $("#userAccountManagerID").val(data.account);
             }
         });
     }
+
     // 项目经理下级
     var userAccountMember = document.getElementById("userAccountMember");
     userAccountMember.onclick = function () {

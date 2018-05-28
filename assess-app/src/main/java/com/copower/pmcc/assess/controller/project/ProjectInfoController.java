@@ -14,6 +14,7 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
@@ -25,11 +26,14 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
+import jodd.util.ObjectUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +46,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/25
  * @time: 14:12
  */
@@ -56,14 +60,20 @@ public class ProjectInfoController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
+
+    @Lazy
     @Autowired
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
+
+    @Lazy
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private ProjectFollowService projectFollowService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+
+    @Lazy
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
@@ -76,6 +86,7 @@ public class ProjectInfoController {
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
 
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
+        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
@@ -92,7 +103,7 @@ public class ProjectInfoController {
             boolean flag = projectInfoService.projectApply(projectInfoService.format(formData));
             if (!flag) return HttpResult.newErrorResult("异常!");
             if (projectinfoid != null && projectinfoid != 0) {
-                projectInfoService.projectUpdate(projectInfoService.format(formData),projectinfoid,consignorid,possessorid,unitInformationid);
+                projectInfoService.projectUpdate(projectInfoService.format(formData), projectinfoid, consignorid, possessorid, unitInformationid);
             }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -354,6 +365,21 @@ public class ProjectInfoController {
         try {
             if (id != null) {
                 return projectInfoService.getInitiateConsignor(id);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getUnitPropertiesList", method = {RequestMethod.POST}, name = "单位性质")
+    public Object getUnitPropertiesList() {
+        try {
+            List<CrmBaseDataDicDto> crmBaseDataDicDtos = projectInfoService.getUnitPropertiesList();
+            if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
+                return crmBaseDataDicDtos;
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

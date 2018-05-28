@@ -24,7 +24,9 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -68,6 +70,10 @@ public class ProjectInfoService {
 
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
+
+    @Lazy
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
 
     @Lazy
     @Autowired
@@ -593,5 +599,14 @@ public class ProjectInfoService {
     /*委托人 获取*/
     public InitiateConsignorVo getInitiateConsignor(Integer id) {
         return consignorService.get(id);
+    }
+
+    /**
+     * 单位性质
+     * @return
+     */
+    public List<CrmBaseDataDicDto> getUnitPropertiesList(){
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        return crmBaseDataDicDtos;
     }
 }
