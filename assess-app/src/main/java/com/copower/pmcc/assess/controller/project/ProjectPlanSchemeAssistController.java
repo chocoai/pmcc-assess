@@ -3,15 +3,14 @@ package com.copower.pmcc.assess.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
+import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectApplyDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectStringDto;
+import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.project.SchemeAssistService;
+import com.copower.pmcc.assess.service.project.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
@@ -37,9 +36,10 @@ public class ProjectPlanSchemeAssistController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SchemeAssistService schemeAssistService;
-
     @Autowired
     private SchemeJudgeObjectService judgeObjectService;
+    @Autowired
+    private SchemeJudgeFunctionService schemeJudgeFunctionService;
 
     @ResponseBody
     @RequestMapping(value = "/evaluationThink/think", name = "评估工作方案阶段工作计划 评估技术思路 获取,以及字段引用", method = RequestMethod.POST)
@@ -108,12 +108,25 @@ public class ProjectPlanSchemeAssistController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getListByJudgeObjectId", name = "获取估价对象设置的评估方法 ", method = RequestMethod.GET)
+    public Object getListByJudgeObjectId(Integer judgeObjectId) {
+        try {
+            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getListByJudgeObjectId(judgeObjectId);
+            return HttpResult.newCorrectResult(judgeFunctions);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/schemeAreaGroupPrototypeList", name = "评估工作方案阶段工作计划 区域数据 ", method = RequestMethod.POST)
-    public Object schemeAreaGroupPrototypeList(@RequestParam(value = "projectId") String projectId) {
+    public HttpResult schemeAreaGroupPrototypeList(@RequestParam(value = "projectId") String projectId) {
         try {
             if (!StringUtils.isEmpty(projectId)) {
                 List<SchemeAreaGroupVo> vos = schemeAssistService.schemeAreaGroupVoList(Integer.parseInt(projectId));
-                if (!ObjectUtils.isEmpty(vos)) return vos;
+                if (!ObjectUtils.isEmpty(vos))
+                    return HttpResult.newCorrectResult(vos);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -129,6 +142,19 @@ public class ProjectPlanSchemeAssistController {
             if (dto != null) {
                 schemeAssistService.addSchemeJudgeFunctionDto(dto);
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveJudgeFunction", name = "评估方法 保存 ", method = RequestMethod.POST)
+    public HttpResult saveJudgeFunction(String formData) {
+        try {
+            SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto=JSON.parseObject(formData,SchemeJudgeFunctionApplyDto.class);
+            schemeAssistService.saveJudgeFunction(schemeJudgeFunctionApplyDto);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
