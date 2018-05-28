@@ -7,31 +7,22 @@ import com.copower.pmcc.assess.dal.entity.SchemeInfo;
  */
 public class SchemeInfoFormDataDto {
 
-    private SchemeInfo princiPle;
-    private SchemeInfo hypothesis;
-    private SchemeInfo basis;
+   private String Content;
+   private String DataID;
 
-    public SchemeInfo getPrinciPle() {
-        return princiPle;
+    public String getContent() {
+        return Content;
     }
 
-    public void setPrinciPle(SchemeInfo princiPle) {
-        this.princiPle = princiPle;
+    public void setContent(String content) {
+        Content = content;
     }
 
-    public SchemeInfo getHypothesis() {
-        return hypothesis;
+    public String getDataID() {
+        return DataID;
     }
 
-    public void setHypothesis(SchemeInfo hypothesis) {
-        this.hypothesis = hypothesis;
-    }
-
-    public SchemeInfo getBasis() {
-        return basis;
-    }
-
-    public void setBasis(SchemeInfo basis) {
-        this.basis = basis;
+    public void setDataID(String dataID) {
+        DataID = dataID;
     }
 }

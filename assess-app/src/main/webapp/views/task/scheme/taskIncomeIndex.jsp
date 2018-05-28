@@ -72,14 +72,14 @@
                             取消
                         </button>
 
-                        <button id="btn_submit" class="btn btn-success" onclick="frmTaskSave();">
+                        <button id="btn_submit" class="btn btn-success">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
+
+                        <input type="button" onclick="frmTaskSave()" value="save" class="btn btn-succcess">
                     </div>
                 </div>
             </div>
-
-
 
 
             <%@include file="/views/share/form_log.jsp" %>
@@ -112,7 +112,25 @@
         data.basis = basis;
         //合并json
         json = JSON.stringify(data);
-        console.log(json);
+        console.log(data);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeInfo/save",
+            type: "POST",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     $(function () {
