@@ -73,7 +73,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称
+                                            名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" id="name"
@@ -84,7 +84,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            评估方法
+                                            评估方法<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select id="method" name="method" class="form-control" required="required">
@@ -93,32 +93,32 @@
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
-
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            适用原因模板
+                                            适用原因模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea required="required" placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason">
+                                            <textarea required="required" placeholder="请填写适用原因" class="form-control" id="applicableReason" name="applicableReason" onkeyup="extractApplicableField();"></textarea>
+                                            <div class="applicableReason-field">
 
-                                            </textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            不适用原因模板
+                                            不适用原因模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason" required="required">
+                                            <textarea placeholder="请填写不适用原因" class="form-control" id="notApplicableReason" name="notApplicableReason" required="required" onkeyup="extractNotApplicableField();"></textarea>
+                                            <div class="not-applicableReason-field">
 
-                                            </textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -223,6 +223,35 @@
     $(function () {
         loadDataDicList();
     })
+
+    //提取显示适用的字段
+    function extractApplicableField() {
+        var text=$("#applicableReason").val();
+        $('.applicableReason-field').empty();
+        var fieldArray = AssessCommon.extractField(text);
+        if(fieldArray&&fieldArray.length>0){
+            var html='';
+            $.each(fieldArray,function (i,item) {
+                html+='<span class="label label-default">'+item+'</span> ';
+            })
+            $('.applicableReason-field').append(html);
+        }
+    }
+
+    //提取显示不适用的字段
+    function extractNotApplicableField() {
+        var text=$("#notApplicableReason").val();
+        $('.not-applicableReason-field').empty();
+        var fieldArray = AssessCommon.extractField(text);
+        if(fieldArray&&fieldArray.length>0){
+            var html='';
+            $.each(fieldArray,function (i,item) {
+                html+='<span class="label label-default">'+item+'</span> ';
+            })
+            $('.not-applicableReason-field').append(html);
+        }
+    }
+
     //加载 评估技术方法 数据列表
     function loadDataDicList() {
         var cols = [];
@@ -233,7 +262,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+//                str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -285,6 +314,8 @@
     //对新增 评估技术方法 数据处理
     function addDataDic() {
         $("#frm").clearAll();
+        extractApplicableField();
+        extractApplicableField();
     }
     //新增 评估技术方法 数据
     function saveSubDataDic() {
@@ -326,11 +357,15 @@
             data: {id: index},
             success: function (result) {
                 Loading.progressHide();
+                $("#frm").clearAll();
                 $('#divBox').modal();
                 $("#id").val(result.id);
                 $("#name").val(result.name);
+                $("#method").val(result.method);
                 $("#notApplicableReason").val(result.notApplicableReason);
                 $("#applicableReason").val(result.applicableReason);
+                extractApplicableField();
+                extractNotApplicableField();
             },
             error: function (result) {
                 Loading.progressHide();
@@ -343,6 +378,7 @@
     function addMethodField(id) {
         $("#firSub").clearAll();
         $('#firSub').modal();
+
         var methodId = document.getElementById("methodId");
         methodId.value = id;
         if (id==null || id=='' || id==0 ){//说明是从选子项添加的

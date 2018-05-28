@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.CaseComparisonEnum;
 import com.copower.pmcc.assess.dal.dao.CaseComparisonDao;
+import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -11,7 +12,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,17 +58,17 @@ public class CaseComparisonService {
     }
 
     @Transactional(readOnly = true)
-    private List<CaseComparisonVo> list(String name) {
+    private List<DataCaseComparison> list(String name) {
         List<CaseComparisonVo> vos = new ArrayList<>();
-        caseComparisonDao.list(name).parallelStream().forEach(c -> vos.add(change(c)));
-        return vos;
+        List<DataCaseComparison> list = caseComparisonDao.list(name);
+        return list;
     }
 
     public BootstrapTableVo listVos(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseComparisonVo> vos = list(name);
+        List<DataCaseComparison> vos = list(name);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CaseComparisonVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -80,14 +80,9 @@ public class CaseComparisonService {
         return dto;
     }
 
-    private CaseComparisonVo change(CaseComparisonDto dto) {
+    private CaseComparisonVo change(DataCaseComparison dto) {
         CaseComparisonVo vo = new CaseComparisonVo();
         BeanUtils.copyProperties(dto, vo);
-        if (Integer.parseInt(vo.getType())== CaseComparisonEnum.CASE_COMPARISON_ONE_ENUM.getNum()){
-            vo.setTypeStr(CaseComparisonEnum.Text.getVar());
-        }else if (Integer.parseInt(vo.getType())== CaseComparisonEnum.CASE_COMPARISON_TWO_ENUM.getNum()){
-            vo.setTypeStr(CaseComparisonEnum.NO_Text.getVar());
-        }
         return vo;
     }
 

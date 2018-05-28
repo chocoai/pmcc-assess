@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CaseComparisonExample {
+public class DataCaseComparisonExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public CaseComparisonExample() {
+    public DataCaseComparisonExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -305,73 +305,63 @@ public class CaseComparisonExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andDynamicFormIdIsNull() {
+            addCriterion("dynamic_form_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andDynamicFormIdIsNotNull() {
+            addCriterion("dynamic_form_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("type =", value, "type");
+        public Criteria andDynamicFormIdEqualTo(Integer value) {
+            addCriterion("dynamic_form_id =", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andDynamicFormIdNotEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <>", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("type >", value, "type");
+        public Criteria andDynamicFormIdGreaterThan(Integer value) {
+            addCriterion("dynamic_form_id >", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andDynamicFormIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id >=", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("type <", value, "type");
+        public Criteria andDynamicFormIdLessThan(Integer value) {
+            addCriterion("dynamic_form_id <", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andDynamicFormIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dynamic_form_id <=", value, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
+        public Criteria andDynamicFormIdIn(List<Integer> values) {
+            addCriterion("dynamic_form_id in", values, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
+        public Criteria andDynamicFormIdNotIn(List<Integer> values) {
+            addCriterion("dynamic_form_id not in", values, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andDynamicFormIdBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id between", value1, value2, "dynamicFormId");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("type not between", value1, value2, "type");
+        public Criteria andDynamicFormIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dynamic_form_id not between", value1, value2, "dynamicFormId");
             return (Criteria) this;
         }
 

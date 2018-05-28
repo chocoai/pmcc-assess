@@ -71,8 +71,6 @@ public class EvaluationMethodService {
 
     @Transactional
     public boolean update(EvaluationMethodDto evaluationMethodDto) {
-        if (evaluationMethodDto.getCreator() == null) evaluationMethodDto.setCreator(commonService.thisUserAccount());
-        if (evaluationMethodDto.getGmtCreated() == null) evaluationMethodDto.setGmtCreated(new Date());
         return methodDao.updateEvaluationMethod(evaluationMethodDto);
     }
 

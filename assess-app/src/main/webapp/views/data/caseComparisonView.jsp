@@ -93,23 +93,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类型
-                                        </label>
-                                        <div class="col-sm-10" id="method">
-
-                                            <select id="type" name="type" class="form-control" required="required">
-                                                <option selected="selected" value="0">请选择类型</option>
-                                                <c:forEach items="${typeMap}" var="mymap">
-                                                    <option value="${mymap.key}">${mymap.value}</option>
-                                                </c:forEach>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </div>
 
                             </div>
                         </div>
@@ -305,7 +288,6 @@
         data.id = $("#id").val();
         data.name = $("#name").val();
         data.uExplain = $("#uExplain").val();
-        data.type = $("#type option:selected").val();
         console.info(data.type);
         if ($("#frm").valid()) {
             $.ajax({
@@ -498,15 +480,6 @@
             })
         })
     }
-    function isNot(val) {
-        if (val!=null){
-            if (val!=''){
-                return true;
-            }
-        }
-        return false;
-    }
-    
 
 </script>
 

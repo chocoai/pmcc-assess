@@ -1,14 +1,14 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.CaseComparison;
-import com.copower.pmcc.assess.dal.entity.CaseComparisonExample;
-import com.copower.pmcc.assess.dal.mapper.CaseComparisonMapper;
+import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
+import com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample;
+import com.copower.pmcc.assess.dal.mapper.DataCaseComparisonMapper;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
 public class CaseComparisonDao {
 
     @Autowired
-    private CaseComparisonMapper caseComparisonMapper;
+    private DataCaseComparisonMapper caseComparisonMapper;
 
     public boolean add(CaseComparisonDto dto) {
         return caseComparisonMapper.insertSelective(change(dto)) == 1;
@@ -37,28 +37,24 @@ public class CaseComparisonDao {
         return change(caseComparisonMapper.selectByPrimaryKey(id));
     }
 
-    public List<CaseComparisonDto> list(String name) {
-        List<CaseComparison> caseComparisons = null;
-        CaseComparisonExample example = new CaseComparisonExample();
-        if (name == null || name == "") {
-            example.createCriteria().andIdIsNotNull();
-        } else {
+    public List<DataCaseComparison> list(String name) {
+        List<DataCaseComparison> caseComparisons = null;
+        DataCaseComparisonExample example = new DataCaseComparisonExample();
+        if(StringUtils.isNotBlank(name)){
             example.createCriteria().andNameLike("%" + name + "%");
         }
         caseComparisons = caseComparisonMapper.selectByExample(example);
-        List<CaseComparisonDto> dtos = new ArrayList<>();
-        caseComparisons.parallelStream().forEach(caseComparison -> dtos.add(change(caseComparison)));
-        return dtos;
+        return caseComparisons;
     }
 
 
-    public CaseComparison change(CaseComparisonDto dto) {
-        CaseComparison caseComparison = new CaseComparison();
+    public DataCaseComparison change(CaseComparisonDto dto) {
+        DataCaseComparison caseComparison = new DataCaseComparison();
         BeanUtils.copyProperties(dto, caseComparison);
         return caseComparison;
     }
 
-    public CaseComparisonDto change(CaseComparison caseC) {
+    public CaseComparisonDto change(DataCaseComparison caseC) {
         CaseComparisonDto dto = new CaseComparisonDto();
         BeanUtils.copyProperties(caseC, dto);
         return dto;

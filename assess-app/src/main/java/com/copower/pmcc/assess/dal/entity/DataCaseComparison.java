@@ -2,14 +2,14 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class CaseComparison {
+public class DataCaseComparison {
     private Integer id;
 
     private String name;
 
     private String uExplain;
 
-    private String type;
+    private Integer dynamicFormId;
 
     private String creator;
 
@@ -41,12 +41,12 @@ public class CaseComparison {
         this.uExplain = uExplain == null ? null : uExplain.trim();
     }
 
-    public String getType() {
-        return type;
+    public Integer getDynamicFormId() {
+        return dynamicFormId;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setDynamicFormId(Integer dynamicFormId) {
+        this.dynamicFormId = dynamicFormId;
     }
 
     public String getCreator() {

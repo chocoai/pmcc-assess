@@ -49,11 +49,7 @@ public class CaseComparisonController {
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo list(String methodStr) {
         BootstrapTableVo vo = null;
-        if (methodStr == null || methodStr == "") {//查询所有
-            vo = service.listVos(null);
-        } else {
-            vo = service.listVos(methodStr);//关键字查询
-        }
+        vo = service.listVos(methodStr);//关键字查询
         return vo;
     }
 

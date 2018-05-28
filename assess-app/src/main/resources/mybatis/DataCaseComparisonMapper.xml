@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.CaseComparisonMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CaseComparison" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.DataCaseComparisonMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="u_explain" property="uExplain" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="dynamic_form_id" property="dynamicFormId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,9 +69,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, u_explain, type, creator, gmt_created, gmt_modified
+    id, name, u_explain, dynamic_form_id, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample" >
     select
     <if test="distinct" >
       distinct
@@ -95,24 +95,24 @@
     delete from tb_data_case_comparison
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample" >
     delete from tb_data_case_comparison
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparison" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_case_comparison (name, u_explain, type, 
+    insert into tb_data_case_comparison (name, u_explain, dynamic_form_id, 
       creator, gmt_created, gmt_modified
       )
-    values (#{name,jdbcType=VARCHAR}, #{uExplain,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{uExplain,jdbcType=VARCHAR}, #{dynamicFormId,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparison" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -124,8 +124,8 @@
       <if test="uExplain != null" >
         u_explain,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="dynamicFormId != null" >
+        dynamic_form_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -144,8 +144,8 @@
       <if test="uExplain != null" >
         #{uExplain,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="dynamicFormId != null" >
+        #{dynamicFormId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -158,7 +158,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparisonExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample" resultType="java.lang.Integer" >
     select count(*) from tb_data_case_comparison
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -176,8 +176,8 @@
       <if test="record.uExplain != null" >
         u_explain = #{record.uExplain,jdbcType=VARCHAR},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.dynamicFormId != null" >
+        dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -198,7 +198,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       u_explain = #{record.uExplain,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
+      dynamic_form_id = #{record.dynamicFormId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -206,7 +206,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparison" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     update tb_data_case_comparison
     <set >
       <if test="name != null" >
@@ -215,8 +215,8 @@
       <if test="uExplain != null" >
         u_explain = #{uExplain,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="dynamicFormId != null" >
+        dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -230,11 +230,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CaseComparison" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     update tb_data_case_comparison
     set name = #{name,jdbcType=VARCHAR},
       u_explain = #{uExplain,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
+      dynamic_form_id = #{dynamicFormId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
