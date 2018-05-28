@@ -13,6 +13,339 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>${projectPlanDetails.projectPhaseName}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <div class="form-group">
+                        <div class="x-valid">
+
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
+                                           aria-expanded="true">
+                                            估价对象与可比实例比较因素说明表
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab"
+                                           aria-expanded="false">
+                                            估价对象与可比实例修正指数表
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab"
+                                           aria-expanded="false">
+                                            比准价格测算表
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab"
+                                           aria-expanded="false">
+                                            房价指数表
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                         aria-labelledby="home-tab">
+                                        <%--第一页表--%>
+                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                            <thead>
+                                            <tr>
+                                                <th class="gray">项目</th>
+                                                <th class="gray">${schemeEvaluationObject.name}</th>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
+                                                    <th class="gray">实例${s.index + 1}</th>
+                                                </c:forEach>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row" class="gray">楼盘名称</th>
+                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.houseName}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">案例类型</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.caseType}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">单价（元/㎡）</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.price}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易情况</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.dealCaondition}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易时间</th>
+                                                <td>评估基准日</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>
+                                                        <fmt:formatDate value="${items.dealTime}" pattern="yyyy-MM-dd"/>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">付款方式</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.paymentMethod}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2"
+                                         aria-labelledby="profile-tab">
+                                        <%--第二页表--%>
+                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                            <thead>
+                                            <tr>
+                                                <th class="gray">项目</th>
+                                                <th class="gray">${schemeEvaluationObject.name}</th>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
+                                                    <th class="gray">实例${s.index + 1}</th>
+                                                </c:forEach>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row" class="gray">楼盘名称</th>
+                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.houseName}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">案例类型</th>
+                                                <td>100</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.caseType}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">单价（元/㎡）</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.price}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易情况</th>
+                                                <td>100</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>
+                                                        <input type="text" name="" required data-rule-digits="true"
+                                                               min="80" max="120" step="1" style="width: 80px">
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易时间</th>
+                                                <td>100</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>
+                                                        <input type="text" name="" required data-rule-digits="true"
+                                                               min="80" max="120" step="1" style="width: 80px">
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">付款方式</th>
+                                                <td>100</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>
+                                                        <input type="text" name="" required data-rule-digits="true"
+                                                               min="80" max="120" step="1" style="width: 80px">
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3"
+                                         aria-labelledby="profile-tab">
+                                        <%--第三页表--%>
+                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                            <thead>
+                                            <tr>
+                                                <th class="gray">项目</th>
+                                                <th class="gray">${schemeEvaluationObject.name}</th>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
+                                                    <th class="gray">实例${s.index + 1}</th>
+                                                </c:forEach>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row" class="gray">楼盘名称</th>
+                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.houseName}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">案例类型</th>
+                                                <td>1</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.caseType}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">单价（元/㎡）</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>${items.price}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易情况</th>
+                                                <td>1</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td></td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">交易时间</th>
+                                                <td>1</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td></td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">付款方式</th>
+                                                <td>1</td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td></td>
+                                                </c:forEach>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content4"
+                                         aria-labelledby="profile-tab">
+                                        <%--第四页表--%>
+                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                            <thead>
+                                            <tr>
+                                                <th>年份</th>
+                                                <th>指数</th>
+                                                <th>年份</th>
+                                                <th>指数</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>2017年10月</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th>2017年11月</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <th>2017年12月</th>
+                                                <td>Larry</td>
+                                                <td>the Bird</td>
+                                                <td>@twitter</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <%--固定表格格式用--%>
+                                <label class="col-sm-2 control-label rightfloat"></label>
+
+                                <%--右侧固定表格--%>
+                                <table class="table table-bordered rightfloat" style="width: 30%">
+                                    <thead>
+                                    <tr>
+                                        <th class="gray">项目</th>
+                                        <th class="gray">${schemeEvaluationObject.name}</th>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
+                                            <th class="gray">实例${s.index + 1}</th>
+                                        </c:forEach>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row" class="gray">楼盘名称</th>
+                                        <td>${surveyLocaleExploreDetail.houseName}</td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td>${items.houseName}</td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="gray">比准价格</th>
+                                        <td></td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="gray">修正差额</th>
+                                        <td></td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="gray">案例差异</th>
+                                        <td></td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td></td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="gray">权重</th>
+                                        <td></td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td>
+                                                <input type="text" name="" min="0.0" max="1" step="0.1" style="width: 80px">
+                                            </td>
+                                        </c:forEach>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="gray">加权平均价</th>
+                                        <td>6</td>
+                                        <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                            <td></td>
+                                        </c:forEach>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -79,7 +412,8 @@
 <script type="application/javascript">
 
     $(function () {
-        
+        getGray();
+
         $("#frm_task").validate();
 
         loadUploadFiles();
@@ -95,8 +429,8 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadUploadFiles();
             }
         });
@@ -127,6 +461,16 @@
         else {
             submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
+    }
+
+    //颜色加灰
+    function getGray() {
+        $('.gray').css('background', '#C9C9C9');
+        $('.gray').css('color', 'black');
+        $('th,td').css('text-align', 'center');
+//        $('table,td').css('border','1px,black');
+        $('.leftfloat').css('float', 'left');
+        $('.rightfloat').css('float', 'right');
     }
 
 </script>

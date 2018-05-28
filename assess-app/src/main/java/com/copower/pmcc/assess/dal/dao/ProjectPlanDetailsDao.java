@@ -132,4 +132,10 @@ public class ProjectPlanDetailsDao {
         example.createCriteria().andProjectIdEqualTo(projectId).andProjectPhaseNameEqualTo(name).andProjectWorkStageIdEqualTo(workStageId);
         return projectPlanDetailsMapper.selectByExample(example);
     }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPid(Integer pid) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPidEqualTo(pid);
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
 }
