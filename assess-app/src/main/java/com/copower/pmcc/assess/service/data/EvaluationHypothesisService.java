@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +44,9 @@ public class EvaluationHypothesisService {
 
     @Autowired
     private EvaluationHypothesisDao evaluationHypothesisDao;
+
+    @Autowired
+    private EvaluationHypothesisFieldService hypothesisFieldService;
 
     @Transactional
     public boolean add(EvaluationHypothesisDto evaluationHypothesisDto){
@@ -72,12 +77,22 @@ public class EvaluationHypothesisService {
         return evaluationHypothesisDao.list(name);
     }
 
+    public List<EvaluationHypothesisVo> listNs(String name){
+        List<EvaluationHypothesisDto> dtos = listN(name);
+        List<EvaluationHypothesisVo> vos = new ArrayList<>();
+        for (EvaluationHypothesisDto dto:dtos){
+            vos.add(change(dto));
+        }
+        return vos;
+    }
+
     public BootstrapTableVo list(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<EvaluationHypothesisVo> vos = new ArrayList<>();
-        boolean flag = (name == null) || (name == "");
+//        boolean flag = (name == null) || (name == "");
+        boolean flag = StringUtils.isEmpty(name);
         listN(flag ? null : name).forEach(evaluationHypothesisDto -> vos.add(change(evaluationHypothesisDto)));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -87,6 +102,9 @@ public class EvaluationHypothesisService {
     private EvaluationHypothesisVo change(EvaluationHypothesisDto evaluationHypothesisDto){
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationHypothesisVo vo = new EvaluationHypothesisVo();
+        List<EvaluationHypothesisFieldVo> fieldVos = hypothesisFieldService.list(evaluationHypothesisDto.getId());
+        vo.setFieldVos(fieldVos);
+        vo.setSize(fieldVos.size());
         BeanUtils.copyProperties(evaluationHypothesisDto,vo);
         try {
             if (vo.getMethod() != "" && vo.getMethod() != null) {

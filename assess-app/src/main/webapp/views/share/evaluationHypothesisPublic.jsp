@@ -42,9 +42,38 @@
                     </div>
                 </div>
 
-                <div id="viewH${data.id}" class="form-group">
-
-                </div>
+                <c:choose>
+                    <c:when test="${data.size <= 4}">
+                        <div class="form-group">
+                            <c:forEach items="${data.fieldVos}" var="item" varStatus="sta">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label"> ${item.name} </label>
+                                    <div class="col-sm-2">
+                                        <input class="form-control" type="text" placeholder="替换字段"
+                                               id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="${data.fieldVos}" var="item"  varStatus="status">
+                            <c:if test="${status.index % 4 == 0}">
+                                <div class="form-group">
+                                    <c:forEach items="${data.fieldVos}" var="item" begin="${status.index}" end="${status.index+3}">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">${status.index} ${item.name} </label>
+                                            <div class="col-sm-2">
+                                                <input class="form-control" type="text" placeholder="替换字段"
+                                                       id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
         </c:forEach>
@@ -54,9 +83,6 @@
 </div>
 <script type="text/javascript">
     (function () {
-        var ids = "";
-        var itemsX = new Array();
-        var j = 0;
         <c:forEach items="${hypothesisList}" var="data">
         (function () {
             var selectID = "#hypothesisSelectID" + '${data.id}';
@@ -68,11 +94,9 @@
                 type: "GET",
                 dataType: "json",
                 data: data,
-                async:false,
+                async:true,
                 success: function (result) {
                     $("#hypothesisTemple"+"${data.id}").val(result.template);
-                    ids += selected +",";
-                    itemsX[j++] = "${data.id}";
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -80,122 +104,7 @@
             })
         }());
         </c:forEach>
-        ids = ids.substring(0,ids.length-1);
-        var dataX = {};
-        dataX.id = ids;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationHypothesisNG/listFieldsS",
-            type: "POST",
-            dataType: "json",
-            data: dataX,
-            async:true,
-            success: function (result) {
-                for (var k = 0;k < result.length;k++){
-                    writeHypothesisField(result[k],itemsX[k]);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
     }());
-
-
-    //字段写入
-    function writeHypothesisField(result,id) {
-        var viewH = document.getElementById("viewH"+id);
-        var len = result.length;
-        var num = Math.round(len / 4);
-        if (len <= 4) {
-            var divElement = document.createElement("div");
-            divElement.setAttribute("class", "form-group");
-            for (var i = 0; i < len; i++) {
-                var data = result[i];
-                var divValid = document.createElement("div");
-                divValid.setAttribute("class", "x-valid");
-
-                var labelElement = document.createElement("label");
-                labelElement.setAttribute("class", "col-sm-1 control-label");
-                labelElement.appendChild(document.createTextNode("" + data.name));
-
-                var divCol = document.createElement("div");
-                divCol.setAttribute("class", "col-sm-2");
-                var inputElement = document.createElement("input");
-                inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("id", "XTypeID" + data.id+""+id);
-                inputElement.setAttribute("onblur", "hypothesisFildReplace('hypothesisTemple"+id+"','XTypeID" + data.id +""+id+ "','" + data.name + "')");
-                inputElement.setAttribute("class", "form-control");
-                inputElement.setAttribute("placeholder", "替换字段");
-                divCol.appendChild(inputElement);
-
-                divValid.appendChild(labelElement);
-                divValid.appendChild(divCol);
-                divElement.appendChild(divValid);
-            }
-            viewH.parentNode.insertBefore(divElement,viewH);
-        }else {
-            for (var j = 0; j < num * 4; j++){
-                if (j % 4 == 0){
-                    var data = result[j];
-                    var divElement = document.createElement("div");
-                    divElement.setAttribute("class", "form-group");
-
-                    var divValid = document.createElement("div");
-                    divValid.setAttribute("class", "x-valid");
-
-                    var labelElement = document.createElement("label");
-                    labelElement.setAttribute("class", "col-sm-1 control-label");
-                    labelElement.appendChild(document.createTextNode("" + data.name));
-
-                    var divCol = document.createElement("div");
-                    divCol.setAttribute("class", "col-sm-2");
-                    var inputElement = document.createElement("input");
-                    inputElement.setAttribute("type", "text");
-                    inputElement.setAttribute("id", "XTypeID" + data.id+""+id);
-                    inputElement.setAttribute("onblur", "hypothesisFildReplace('hypothesisTemple"+id+"','XTypeID" + data.id +""+id+ "','" + data.name + "')");
-                    inputElement.setAttribute("class", "form-control");
-                    inputElement.setAttribute("placeholder", "替换字段");
-                    divCol.appendChild(inputElement);
-
-                    divValid.appendChild(labelElement);
-                    divValid.appendChild(divCol);
-                    divElement.appendChild(divValid);
-
-                    viewH.parentNode.insertBefore(divElement,viewH);
-                }
-            }
-            for (var i = num * 4; i < len; i++){//剩余的 取模剩余的
-                var data = result[i];
-                console.log(data);
-                var divElement = document.createElement("div");
-                divElement.setAttribute("class", "form-group");
-
-                var divValid = document.createElement("div");
-                divValid.setAttribute("class", "x-valid");
-
-                var labelElement = document.createElement("label");
-                labelElement.setAttribute("class", "col-sm-1 control-label");
-                labelElement.appendChild(document.createTextNode("" + data.name));
-
-                var divCol = document.createElement("div");
-                divCol.setAttribute("class", "col-sm-2");
-                var inputElement = document.createElement("input");
-                inputElement.setAttribute("type", "text");
-                inputElement.setAttribute("id", "XTypeID" + data.id+""+id);
-                inputElement.setAttribute("onblur", "hypothesisFildReplace('hypothesisTemple"+id+"','XTypeID" + data.id +""+id+ "','" + data.name + "')");
-                inputElement.setAttribute("class", "form-control");
-                inputElement.setAttribute("placeholder", "替换字段");
-                divCol.appendChild(inputElement);
-
-                divValid.appendChild(labelElement);
-                divValid.appendChild(divCol);
-                divElement.appendChild(divValid);
-
-                viewH.parentNode.insertBefore(divElement,viewH);
-            }
-        }
-    }
-
 
     //字段替换
     function hypothesisFildReplace(id1, id2, name) {

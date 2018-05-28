@@ -5,6 +5,9 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
+import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.EvaluationBasisService;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
@@ -72,12 +75,12 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
-        List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
-        List<EvaluationBasisDto> basisDtos = basisService.listN(null);
-        List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
+        List<EvaluationHypothesisVo> hypothesisDtos = hypothesisService.listNs(null);
+        List<EvaluationBasisVo> basisVos = basisService.listNs(null);
+        List<EvaluationPrincipleVo> principleVos = principleService.listNs(null);
         modelAndView.addObject("hypothesisList",hypothesisDtos);
-        modelAndView.addObject("principleList",principleDtos);
-        modelAndView.addObject("basisList",basisDtos);
+        modelAndView.addObject("principleList",principleVos);
+        modelAndView.addObject("basisList",basisVos);
         return modelAndView;
     }
 

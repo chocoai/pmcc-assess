@@ -1,11 +1,15 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.SchemeInfoDetailEnum;
 import com.copower.pmcc.assess.dal.dao.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.entity.SchemeInfoDetail;
+import com.copower.pmcc.assess.dto.input.project.SchemeInfoFormDataDto;
 import com.copower.pmcc.erp.common.CommonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,7 @@ import org.springframework.util.StringUtils;
  */
 @Service
 public class SchemeInfoService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SchemeInfoDetailService schemeInfoDetailService;
@@ -30,8 +35,14 @@ public class SchemeInfoService {
     @Autowired
     private SchemeInfoDao dao;
 
+    public void saveChange(SchemeInfoFormDataDto p,SchemeInfoFormDataDto h,SchemeInfoFormDataDto b) {
+        logger.info(p+"");
+
+    }
+
     /**
      * 这里的分隔符必须和页面相对应
+     *
      * @param planDetailsId
      * @param processInsId
      * @param formData
@@ -91,5 +102,13 @@ public class SchemeInfoService {
     @Transactional
     public boolean update(SchemeInfo schemeInfo) {
         return dao.update(schemeInfo);
+    }
+
+    public SchemeInfoFormDataDto formDataDto(String formData) {
+        SchemeInfoFormDataDto schemeInfoFormDataDto = null;
+        if (!StringUtils.isEmpty(formData)) {
+            schemeInfoFormDataDto = JSONObject.parseObject(formData, SchemeInfoFormDataDto.class);
+        }
+        return schemeInfoFormDataDto;
     }
 }
