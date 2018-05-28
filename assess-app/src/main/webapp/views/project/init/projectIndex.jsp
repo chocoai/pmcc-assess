@@ -123,9 +123,9 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">县<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">县</label>
                                 <div class="col-sm-3">
-                                    <select id="district" name="district" class="form-control" required="required">
+                                    <select id="district" name="district" class="form-control">
                                         <c:choose>
                                             <c:when test="${projectInfo.city != null}">
                                                 <option selected="selected"
@@ -183,7 +183,7 @@
                                 <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" id="departmentId" name="departmentId">
-                                        <input id='departmentName'  class='form-control' required="required"
+                                        <input id='departmentName' class='form-control' required="required"
                                                readonly="readonly" maxlength="200">
                                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -202,15 +202,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" id="userAccountManagerID" name="userAccountManager">
-                                        <input type="text" class="form-control" readonly="readonly" value="${projectInfo.userAccountManagerName}" required="required" id="userAccountManager"  maxlength="200">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               value="${projectInfo.userAccountManagerName}" required="required"
+                                               id="userAccountManager" maxlength="200">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
                                                     data-original-title="选择" onclick="selectUserAccountMember()">
                                             <i class="fa fa-search"></i>
                                             </button>
@@ -259,7 +261,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目说明</label>
                                 <div class="col-sm-11">
-                                    <textarea id="remarks" name="remarks" class="form-control">${projectInfo.remarks}</textarea>
+                                    <textarea id="remarks" name="remarks"
+                                              class="form-control">${projectInfo.remarks}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -313,7 +316,8 @@
                                                    value="${projectInfo.consignorVo.csEntrustmentUnitName}"
                                                    class="form-control" required="required" readonly="readonly">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        data-toggle="tooltip"
                                                         data-original-title="选择" id="btn_select_customer">
                                                 <i class="fa fa-search"></i>
                                                 </button>
@@ -417,7 +421,8 @@
                                             <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
                                                     <c:when test="${item.id == projectInfo.consignorVo.csUnitProperties}">
-                                                        <option value="${item.id}" selected="selected">${item.name}</option>
+                                                        <option value="${item.id}"
+                                                                selected="selected">${item.name}</option>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <option value="${item.id}">${item.name}</option>
@@ -567,10 +572,12 @@
                                         <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"
                                                class="form-control" required="required">
                                         <input type="text" id="pEntrustmentUnitX"
-                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="占有单位"
+                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}"
+                                               placeholder="占有单位"
                                                class="form-control" required="required" readonly="readonly">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
                                                     data-original-title="选择" id="btn_select_customer1">
                                             <i class="fa fa-search"></i>
                                             </button>
@@ -817,9 +824,11 @@
                                                        class="form-control">
                                             </c:when>
                                             <c:otherwise>
-                                                <input type="text" id="uUseUnitX" readonly="readonly" placeholder="报告使用单位" class="form-control"  maxlength="200">
+                                                <input type="text" id="uUseUnitX" readonly="readonly"
+                                                       placeholder="报告使用单位" class="form-control" maxlength="200">
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default docs-tooltip" data-toggle="tooltip"
+                                                    <button type="button" class="btn btn-default docs-tooltip"
+                                                            data-toggle="tooltip"
                                                             data-original-title="选择" id="btn_select_customer2">
                                                     <i class="fa fa-search"></i>
                                                     </button>
@@ -886,7 +895,8 @@
                                             <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
                                                     <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
-                                                        <option value="${item.id}" selected="selected">${item.name}</option>
+                                                        <option value="${item.id}"
+                                                                selected="selected">${item.name}</option>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <option value="${item.id}">${item.name}</option>
@@ -1207,7 +1217,9 @@
             })
         });
     }
+
     tableNameA();
+
     function tableName_district() {
         $("#city").change(function () {//监听 选择的城市
             //检测  然后操作
@@ -1229,19 +1241,23 @@
             })
         });
     }
+
     tableName_district();
+
     function removeChild() { //删除市
         var optionLen = $("#city option").size();
         if (optionLen > 2) {
             $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
         }
     }
+
     function removeChild_district() {//删除县或者区
         var optionLen = $("#district option").size();
         if (optionLen > 2) {
             $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
         }
     }
+
     function appendChildElement(item) {//市添加
         var TableField = $("#city");
         var TableFieldElement = document.getElementById("city");
@@ -1252,15 +1268,16 @@
             fieldElment.setAttribute("value", item[i].areaId);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
-            if (i == (len-1) ){
+            if (i == (len - 1)) {
                 var optionEle = document.createElement("option");
-                optionEle.setAttribute("value","");
-                optionEle.setAttribute("name","city");
+                optionEle.setAttribute("value", "");
+                optionEle.setAttribute("name", "city");
                 optionEle.appendChild("请选择");
                 TableFieldElement.appendChild(optionEle);
             }
         }
     }
+
     function appendChildElement_district(item) {//县或者区域添加
         var TableField = $("#district");
         var TableFieldElement = document.getElementById("district");
@@ -1336,6 +1353,7 @@
             }
         });
     });
+
     //获取crm 信息
     function getCRM(id) {
         var info;
@@ -1349,6 +1367,7 @@
             }
         });
     }
+
     function writeCRM(msg, id1, id2, id3, id4) {
         var legalRepresentative = msg.legalRepresentative;//法定代表人
         var address = msg.address;//地址
@@ -1359,6 +1378,7 @@
         $("#" + id3).val(businessScope);
         $("#" + id4).val(certificateNumber);
     }
+
     //CRM
     document.getElementById("btn_select_customer").onclick = function () {
         crmCustomer.select({
@@ -1426,6 +1446,7 @@
 
     var flags = new Array();
     flags[0] = 1, flags[1] = 2, flags[2] = 3;
+
     //加载联系人列表
     function loadInitContactsListA(id) {
         var cols = [];
@@ -1450,6 +1471,7 @@
             search: false
         });
     }
+
     function loadInitContactsListB(id) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
@@ -1473,6 +1495,7 @@
             search: false
         });
     }
+
     function loadInitContactsListC(id) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
@@ -1513,6 +1536,7 @@
             search: false
         });
     }
+
     $(function () {//修改专用
         var csType = ${projectInfo.consignorVo.csType}+"";
         var pType = ${projectInfo.possessorVo.pType}+"";
@@ -1556,6 +1580,7 @@
         $("#frmContacts").clearAll();
         $('#divBoxContacts').modal("show");
     }
+
     //新增  联系人
     function saveContacts() {
         var data = formParams("frmContacts");//收集参数
@@ -1688,6 +1713,7 @@
     }
 
     var json = "";
+
     function params() {
         var data = {};
         var projectInfo = formParams("frm_project_info");//项目信息
@@ -1701,6 +1727,7 @@
         //合并json
         json = JSON.stringify(data);
     }
+
     function projectApply() {
         //js校验
         if (!$("#frm_project_info").valid()) {

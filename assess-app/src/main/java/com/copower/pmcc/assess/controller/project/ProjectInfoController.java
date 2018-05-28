@@ -257,7 +257,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表", method = {RequestMethod.GET})
+    @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得", method = {RequestMethod.GET})
     public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
         BootstrapTableVo vo = null;
         vo = projectInfoService.listContactsVo(crmId, flag);
@@ -265,7 +265,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getProjectContactsVosX", name = "取得联系人列表", method = {RequestMethod.GET})
+    @RequestMapping(value = "/getProjectContactsVosX", name = "取得联系人列表  非crm中取得", method = {RequestMethod.GET})
     public BootstrapTableVo listContactsVoX(Integer flag, Integer pid) {
         BootstrapTableVo vo = null;
         if (pid != null) {

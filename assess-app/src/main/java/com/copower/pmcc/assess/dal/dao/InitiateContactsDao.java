@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.entity.InitiateContactsExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateContactsMapper;
@@ -34,7 +35,7 @@ public class InitiateContactsDao {
     }
 
     public void update(int pid,int flag){
-        List<InitiateContactsDto> dtos = getList(flag);
+        List<InitiateContactsDto> dtos = getList(InitiateContactsEnum.Zero.getNum(),flag);
         for (InitiateContactsDto dto:dtos){
             dto.setcPid(pid);
             update(dto);
@@ -56,7 +57,7 @@ public class InitiateContactsDao {
     public List<InitiateContactsDto> getList(Integer cPid,Integer flag){
         List<InitiateContactsDto> dtos = new ArrayList<>();
         InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(flag);
+        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(flag).andIdIsNotNull();
         mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
         return dtos;
     }

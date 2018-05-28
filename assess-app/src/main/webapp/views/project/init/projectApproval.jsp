@@ -96,12 +96,6 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.remarks}</label>                                </div>
-                            </div>
-
-                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${projectInfo.userAccountManagerName}</label>
@@ -114,13 +108,18 @@
                                     <label class="form-control">${projectInfo.userAccountMemberName}</label>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${projectInfo.remarks}</label>                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">附件</label>
                                 <div class="col-sm-3">
-                                    <input id="attachmentProjectInfoId" name="attachmentProjectInfoId" required="required" placeholder="附件"  class="form-control" type="file">
                                     <div id="_attachmentProjectInfoId"></div>
                                 </div>
                             </div>
@@ -193,10 +192,9 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    身份证附件
+                                    附件
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="file" name="csAttachmentProjectEnclosureId" id="csAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
                                     <div id="_csAttachmentProjectEnclosureId"></div>
                                 </div>
                             </div>
@@ -235,10 +233,9 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    身份证附件
+                                    附件
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="file" name="csAttachmentProjectEnclosureId" id="csAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
                                     <div id="_csAttachmentProjectEnclosureId2"></div>
                                 </div>
                             </div>
@@ -328,10 +325,9 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证附件
+                                        附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="pAttachmentProjectEnclosureId" id="pAttachmentProjectEnclosureId" placeholder="上传附件" class="form-control" required="required">
                                         <div id="_pAttachmentProjectEnclosureId"></div>
                                     </div>
                                 </div>
@@ -374,10 +370,9 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证附件
+                                        附件
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="file" name="pAttachmentProjectEnclosureId2" id="pAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control" required="required">
                                         <div id="_pAttachmentProjectEnclosureId2"></div>
                                     </div>
                                 </div>
@@ -488,109 +483,54 @@
 <script>
     $(function () {
         //---------
-        FileUtils.uploadFiles({
-            target: "attachmentProjectInfoId",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_project_info",
-                tableId: 0,
-                fieldsName: "attachmentProjectInfoId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: "tb_project_info",
                 tableId: ${projectInfo.id}
             },
-            deleteFlag: true
+            deleteFlag: false
         })
         //---------
         //---------
-        FileUtils.uploadFiles({
-            target: "pAttachmentProjectEnclosureId",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: 0,
-                fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
         FileUtils.getFileShows({
             target: "pAttachmentProjectEnclosureId",
             formData: {
                 tableName: "tb_initiate_possessor",
                 tableId: ${projectInfo.possessorVo.id}
             },
-            deleteFlag: true
+            deleteFlag: false
         })
         //---------
         //---------
-        FileUtils.uploadFiles({
-            target: "pAttachmentProjectEnclosureId2",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: 0,
-                fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
         FileUtils.getFileShows({
             target: "pAttachmentProjectEnclosureId2",
             formData: {
                 tableName: "tb_initiate_possessor",
                 tableId: ${projectInfo.possessorVo.id}
             },
-            deleteFlag: true
+            deleteFlag: false
         })
         //---------
         //---------
-        FileUtils.uploadFiles({
-            target: "csAttachmentProjectEnclosureId",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_consignor",
-                tableId: 0,
-                fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
         FileUtils.getFileShows({
             target: "csAttachmentProjectEnclosureId",
             formData: {
                 tableName: "tb_initiate_consignor",
                 tableId: ${projectInfo.consignorVo.id}
             },
-            deleteFlag: true
+            deleteFlag: false
         })
         //---------
 
         //---------
-        FileUtils.uploadFiles({
-            target: "csAttachmentProjectEnclosureId2",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_consignor",
-                tableId: 0,
-                fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
         FileUtils.getFileShows({
             target: "csAttachmentProjectEnclosureId2",
             formData: {
                 tableName: "tb_initiate_consignor",
                 tableId: ${projectInfo.consignorVo.id}
             },
-            deleteFlag: true
+            deleteFlag: false
         })
         //---------
     });
