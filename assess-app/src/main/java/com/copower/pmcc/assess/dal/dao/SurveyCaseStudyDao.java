@@ -42,4 +42,10 @@ public class SurveyCaseStudyDao {
         }
         return null;
     }
+
+    public List<SurveyCaseStudy> getByDeclareRecordId(Integer declareRecordId) {
+        SurveyCaseStudyExample example = new SurveyCaseStudyExample();
+        example.createCriteria().andDeclareRecordIdEqualTo(declareRecordId);
+        return surveyCaseStudyMapper.selectByExample(example);
+    }
 }

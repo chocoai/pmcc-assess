@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.project.TaskCompareService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Autowired
     private ControllerComponent serviceComponent;
+    @Autowired
+    private TaskCompareService taskCompareService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskCompareIndex", "", 0, "0", "");
+        taskCompareService.getTaskCompare(modelAndView, projectPlanDetails);
         return modelAndView;
     }
 
@@ -46,7 +50,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
+    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskCompareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }

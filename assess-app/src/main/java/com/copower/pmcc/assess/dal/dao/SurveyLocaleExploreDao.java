@@ -42,4 +42,10 @@ public class SurveyLocaleExploreDao {
         }
         return null;
     }
+
+    public List<SurveyLocaleExplore> getByDeclareRecordId(Integer declareRecordId) {
+        SurveyLocaleExploreExample example = new SurveyLocaleExploreExample();
+        example.createCriteria().andDeclareRecordIdEqualTo(declareRecordId);
+        return surveyLocaleExploreMapper.selectByExample(example);
+    }
 }
