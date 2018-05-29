@@ -425,7 +425,7 @@ public class ProjectPlanService {
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(projectPlan.getId());
         projectPlanResponsibility.setPlanDetailsId(0);
-        projectPlanResponsibility.setPlanDetailsName(workStageName+ " → " + responsibileModelEnum.getName());
+        projectPlanResponsibility.setPlanDetailsName(workStageName + " → " + responsibileModelEnum.getName());
         projectPlanResponsibility.setProjectId(projectPlan.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(nextUser);
@@ -656,4 +656,41 @@ public class ProjectPlanService {
             }
         }
     }
+
+    /**
+     * 拷贝目录
+     *
+     * @param planDetailsId
+     * @param recursion
+     */
+    public void copyPlanDetails(Integer planDetailsId, Boolean recursion) {
+        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
+        if (planDetails != null) {
+            planDetails.setSorting(planDetails.getSorting().intValue() + 1);
+            planDetails.setId(null);
+            projectPlanDetailsDao.addProjectPlanDetails(planDetails);
+        }
+        if (recursion) {//如果是递归拷贝则不断循环获取下级的数据
+            copyPlanDetailsRecursion(planDetailsId,planDetails.getId());
+        }
+    }
+
+    /**
+     * 递归拷贝
+     *
+     * @param planDetailsId
+     */
+    private void copyPlanDetailsRecursion(Integer planDetailsId, Integer pid) {
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPId(planDetailsId);
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
+                Integer sourcePlanDetailsId = projectPlanDetails.getId();
+                projectPlanDetails.setId(null);
+                projectPlanDetails.setPid(pid);
+                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+                copyPlanDetailsRecursion(sourcePlanDetailsId, projectPlanDetails.getId());
+            }
+        }
+    }
+
 }

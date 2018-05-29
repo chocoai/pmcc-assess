@@ -33,16 +33,14 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="loadCaseComparisonList();">
                                     查询
                                 </button>
-
-                                <button type="button" class="btn btn-success" onclick="addDataDic()"
+                                <button type="button" class="btn btn-success" onclick="addCaseComparison();"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
@@ -55,7 +53,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -75,7 +74,8 @@
                                             名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" id="name" placeholder="名称" class="form-control" required="required">
+                                            <input type="text" name="name" id="name" placeholder="名称"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -85,22 +85,24 @@
                                             模板内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="模板内容" class="form-control" id="uExplain" name="uExplain" required="required">
-                                            </textarea>
+                                            <textarea placeholder="模板内容" class="form-control" id="uExplain"
+                                                      name="uExplain" required="required"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            查勘表单<span class="symbol required"></span>
+                                            查勘表单类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
-                                                <input type="text" name="dynamicFormName" id="dynamicFormName" placeholder="查勘表单" class="form-control" required="required">
+                                                <input type="hidden" id="formTypeId" name="formTypeId">
+                                                <input type="text" name="formTypeName" id="formTypeName" readonly="readonly"
+                                                       placeholder="查勘表单" class="form-control" required="required">
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="selectDepartment();" data-toggle="tooltip"
+                                                        onclick="selectFormType();" data-toggle="tooltip"
                                                         data-original-title="选择">
                                                     <i class="fa fa-search"></i>
                                                 </button>
@@ -122,7 +124,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                    <button type="button" class="btn btn-primary" onclick="saveCaseComparison()">
                         保存
                     </button>
                 </div>
@@ -132,7 +134,8 @@
 </div>
 
 <!-- 显示子项列表 -->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -156,7 +159,8 @@
 
 
 <!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" >
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -168,99 +172,102 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form id="firSubA" name="firSubA" class="form-horizontal">
-                        <div class="panel-body">
+                            <div class="panel-body">
 
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        字段名称
-                                        <input type="hidden" name="caseId" id="caseIdNG">
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="nameA" name="nameA" class="form-control" required="required">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            字段名称
+                                            <input type="hidden" name="caseId" id="caseIdNG">
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="nameA" name="nameA" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="tableName" id="tableName"
+                                                    required="required">
+                                                <option>请选择</option>
+                                                <c:forEach items="${userList}" var="tableVar">
+                                                    <option value="${tableVar.key}">${tableVar.key}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表字段
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="TableField" id="TableField"
+                                                    required="required">
+                                                <option>请选择</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        表
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="tableName" id="tableName" required="required">
-                                            <option>请选择</option>
-                                            <c:forEach items="${userList}" var="tableVar">
-                                                <option value="${tableVar.key}">${tableVar.key}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default">
+                                    取消
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                                    保存
+                                </button>
                             </div>
-
-
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-2 control-label">
-                                        表字段
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" name="TableField" id="TableField" required="required">
-                                            <option>请选择</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-default">
-                                取消
-                            </button>
-                            <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                                保存
-                            </button>
-                        </div>
                         </form>
                     </div>
-
                 </div><!--row -->
             </div>
         </div>
     </div>
 </div>
 
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
     $(function () {
-        loadDataDicList();
+        loadCaseComparisonList();
     })
 
-    //选择动态表单
-    function selectDynamicForm() {
+    //选择对应的表单类型
+    function selectFormType() {
         assessDataDic.select({
-            key:"assess.class",
-            onSelected:function (nodes) {
-                console.log(nodes);
-                $("#declareFormId").val(nodes[0].id);
-                $("#declareFormName").val(nodes[0].name);
+            key: "assess.class",
+            onSelected: function (nodes) {
+                $("#formTypeId").val(nodes[0].id);
+                $("#formTypeName").val(nodes[0].name);
             }
         })
     }
 
+
     //加载 案例对比配置 数据列表
-    function loadDataDicList() {
+    function loadCaseComparisonList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'uExplain', title: '模板内容'});
+        cols.push({field: 'formTypeName', title: '查勘表单类型'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="查看选项"  onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑"  onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑"  onclick="editCaseComparison(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -274,14 +281,14 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function() {
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
     }
 
     //删除 案例对比配置 数据()
-    function removeData(id, tbId) {
+    function removeData(id) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -293,8 +300,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadDataDicList();//重载 (刷新)
-                        $('#' + tbId).bootstrapTable("refresh");
+                        loadCaseComparisonList();//重载 (刷新)
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -309,17 +315,12 @@
     }
 
     //对新增 案例对比配置 数据处理
-    function addDataDic() {
+    function addCaseComparison() {
         $("#frm").clearAll();
     }
     //新增 案例对比配置 数据
-    function saveSubDataDic() {
-        var flag = false;
-        var data = formParams("frm");
-        data.id = $("#id").val();
-        data.name = $("#name").val();
-        data.uExplain = $("#uExplain").val();
-        console.info(data.type);
+    function saveCaseComparison() {
+        var data = formParams("frm")
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparison/save",
@@ -329,7 +330,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadDataDicList();
+                        loadCaseComparisonList();
                         $('#divBox').modal('hide');
                     }
                     else {
@@ -343,7 +344,7 @@
         }
     }
     //案例对比配置 修改
-    function editHrProfessional(index) {
+    function editCaseComparison(index) {
         $.ajax({
             url: "${pageContext.request.contextPath}/caseComparison/get",
             type: "GET",
@@ -351,11 +352,9 @@
             data: {id: index},
             success: function (result) {
                 Loading.progressHide();
+                $("#frm").clearAll();
+                $("#frm").initForm(result);
                 $('#divBox').modal();
-                $("#id").val(result.id);
-                $("#name").val(result.name);
-                $("#notApplicableReason").val(result.notApplicableReason);
-                $("#applicableReason").val(result.applicableReason);
             },
             error: function (result) {
                 Loading.progressHide();
@@ -368,10 +367,10 @@
         var TableField = $("#TableField");
         var TableFieldElement = document.getElementById("TableField");
         var len = item.length;
-        for (var i = 0 ; i < len;i++){
+        for (var i = 0; i < len; i++) {
             var optionLen = $("#TableField option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value",item[i].key);
+            fieldElment.setAttribute("value", item[i].key);
             fieldElment.appendChild(document.createTextNode(item[i].key));
             TableFieldElement.appendChild(fieldElment);
 
@@ -380,7 +379,7 @@
     }
     function removeChild() {
         var optionLen = $("#TableField option").size();
-        if (optionLen>2){
+        if (optionLen > 2) {
             $("#TableField option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
         }
     }
@@ -388,8 +387,8 @@
         $("#tableName").change(function () {
             //检测  然后操作
             removeChild();
-            var selected= $(this).children('option:selected').val();
-            var data = "tableName="+selected;
+            var selected = $(this).children('option:selected').val();
+            var data = "tableName=" + selected;
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparisonNG/listTableField",
                 type: "post",
@@ -406,7 +405,7 @@
         });
     }
     tableNameA();
-//    $("#firSub .form-group").css({"margin-top":"20px","margin-bottom":"40px"});
+    //    $("#firSub .form-group").css({"margin-top":"20px","margin-bottom":"40px"});
 
     //新增 子项 字段数据
     function addMethodField() {
@@ -423,7 +422,7 @@
 //        data.caseId = $("#caseId").val();
         data.tableName = $("#tableName option:selected").val();
         data.name = $("#TableField option:selected").val();
-        if ($("#firSubA").valid()){
+        if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparisonNG/addField",
                 type: "post",
@@ -431,12 +430,12 @@
                 data: data,
                 success: function (result) {
                     console.info(result);
-                    if (result.ret){
+                    if (result.ret) {
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var caseId = document.getElementById("caseId").value;
                         setSubDataDic(caseId);
-                    }else {
+                    } else {
                         toastr.success('调用服务端方法失败');
                     }
                 },

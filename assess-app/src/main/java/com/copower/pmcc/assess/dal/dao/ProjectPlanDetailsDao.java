@@ -55,6 +55,13 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPId(Integer pId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPidEqualTo(pId);
+        example.setOrderByClause("sorting");
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
+
     public List<ProjectPlanDetails> getProjectPlanDetailsByDeclareId(List<Integer> declareRecordIds, Integer projectPhaseId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();

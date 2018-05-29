@@ -4,7 +4,7 @@
 (function ($) {
     var assessCommon = {
         //iframe的宽高自适应
-        autoIframeHeight:function (iframe) {
+        autoIframeHeight: function (iframe) {
             if (iframe) {
                 var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
                 if (iframeWin.document.body) {
@@ -13,8 +13,8 @@
             }
         },
         //提取字段
-        extractField:function (text) {
-            if(!text) return text;
+        extractField: function (text) {
+            if (!text) return text;
             var regex = /({.*?})/g;
             var group = text.match(regex);
             var resultArray = [];
@@ -30,10 +30,29 @@
         },
 
         //替换模板数据
-        replaceTemplate:function (text,temp,value) {
-            if(!text) return text;
-            var regex = '/({'+temp+'})/g';
-            return text.replace(eval(regex),value);
+        replaceTemplate: function (text, temp, value) {
+            if (!text) return text;
+            var regex = '/({' + temp + '})/g';
+            return text.replace(eval(regex), value);
+        },
+
+        //根据id获取单个数据字典信息
+        getDataDicInfo: function (id) {
+            if (id == undefined) return null;
+            var data = {};
+            $.ajax({
+                url: getContextPath() + '/baseDataDic/getDataDicInfo',
+                type: 'get',
+                async: false,//通用方法只提供同步的方法
+                data: {id: id},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret) {
+                        data = result.data;
+                    }
+                }
+            })
+            return data;
         }
     };
 

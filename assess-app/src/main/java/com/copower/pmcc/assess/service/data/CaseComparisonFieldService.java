@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.CaseComparisonFieldDao;
+import com.copower.pmcc.assess.dal.entity.DataCaseComparisonField;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonFieldDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonFieldVo;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
@@ -57,18 +58,10 @@ public class CaseComparisonFieldService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseComparisonFieldVo> vos = list(caseId,name);
+        List<DataCaseComparisonField> vos = dao.list(caseId,name);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CaseComparisonFieldVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
-    }
-
-    @Transactional(readOnly = true)
-    private List<CaseComparisonFieldVo> list(Integer caseId,String name){
-        List<CaseComparisonFieldDto> dtos = dao.list(caseId,name);
-        List<CaseComparisonFieldVo> vos = new ArrayList<>();
-        dtos.parallelStream().forEach(c -> vos.add(change(c)));
-        return vos;
     }
 
     public List<KeyValueDto> getTableList() {
@@ -79,15 +72,4 @@ public class CaseComparisonFieldService {
         return configureService.getFieldList(tableName);
     }
 
-    public CaseComparisonFieldDto change(CaseComparisonFieldVo vo) {
-        CaseComparisonFieldDto dto = new CaseComparisonFieldDto();
-        BeanUtils.copyProperties(vo, dto);
-        return dto;
-    }
-
-    public CaseComparisonFieldVo change(CaseComparisonFieldDto dto1) {
-        CaseComparisonFieldVo fieldVo = new CaseComparisonFieldVo();
-        BeanUtils.copyProperties(dto1, fieldVo);
-        return fieldVo;
-    }
 }
