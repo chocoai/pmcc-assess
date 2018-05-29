@@ -11,6 +11,8 @@ public class BaseReportTemplate {
 
     private Integer templateType;
 
+    private Integer cstype;
+
     private String bookmarkName;
 
     private Integer dataPoolType;
@@ -63,6 +65,14 @@ public class BaseReportTemplate {
 
     public void setTemplateType(Integer templateType) {
         this.templateType = templateType;
+    }
+
+    public Integer getCstype() {
+        return cstype;
+    }
+
+    public void setCstype(Integer cstype) {
+        this.cstype = cstype;
     }
 
     public String getBookmarkName() {
