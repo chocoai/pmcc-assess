@@ -120,7 +120,7 @@ public class ProjectMemberService {
         upateProjectMemeberToErp(projectMember.getProjectId(), projectMember.getUserAccountManager(), projectMember.getUserAccountMember());
     }
 
-    public String getProjectManagerMember(Integer projectId) {
+    public String getProjectManager(Integer projectId) {
         ProjectMember projectMemberItem = projectMemberDao.getProjectMemberItem(projectId);
         if (projectMemberItem != null) {
             return projectMemberItem.getUserAccountManager();

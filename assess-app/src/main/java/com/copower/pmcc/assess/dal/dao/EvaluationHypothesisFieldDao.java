@@ -32,6 +32,15 @@ public class EvaluationHypothesisFieldDao {
         return false;
     }
 
+    public void delete(String field,Integer hypothesisField){
+        EvaluationHypothesisFieldExample example = new EvaluationHypothesisFieldExample();
+        example.createCriteria().andIdIsNotNull().andHypothesisIdEqualTo(hypothesisField).andNameEqualTo(field);
+        List<EvaluationHypothesisField> fieldList = evaluationHypothesisFieldMapper.selectByExample(example);
+        for (EvaluationHypothesisField field1:fieldList){
+            evaluationHypothesisFieldMapper.deleteByPrimaryKey(field1.getId());
+        }
+    }
+
     public boolean remove(Integer id){
         return evaluationHypothesisFieldMapper.deleteByPrimaryKey(id)==1;
     }

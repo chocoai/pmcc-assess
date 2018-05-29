@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationBasisDao;
+import com.copower.pmcc.assess.dal.dao.EvaluationBasisFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationBasisFieldDto;
+import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -21,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -49,12 +53,83 @@ public class EvaluationBasisService {
     @Autowired
     private EvaluationBasisDao evaluationBasisDao;
 
+    @Autowired
+    private EvaluationBasisFieldDao fieldDao;
+
     @Transactional
     public boolean add(EvaluationBasisDto dto) {
         if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
         return evaluationBasisDao.add(dto);
     }
+
+    @Transactional
+    public void saveAndUpdate(EvaluationBasisDto dto, String field) {
+        if (!ObjectUtils.isEmpty(dto.getId())) {//update
+            dto.setCreator(evaluationBasisDao.get(dto.getId()).getCreator());
+            evaluationBasisDao.update(dto);
+            if (!StringUtils.isEmpty(field)) {// 字段
+                // 因为是修改所以可能所有的数据数据库中都已经有相关信息了  有可能增加一些字段,有可能删去一些字段
+                String[] fields = field.split(",");
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) fieldDao.delete(f, dto.getId());
+                }
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationBasisFieldDto fieldDto = new EvaluationBasisFieldDto();
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setBasisId(dto.getId());
+                        try {
+                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        } catch (Exception e) {
+                            try {
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {// add
+            dto.setCreator(commonService.thisUserAccount());
+            Integer id = null;
+            try {
+                id = evaluationBasisDao.save(dto);
+            } catch (Exception e) {
+                try {
+                    logger.error("异常啦!"+e.getMessage());
+                    throw e;
+                }catch (Exception e1){
+
+                }
+            }
+            if (!StringUtils.isEmpty(field)) {
+                String[] fields = field.split(",");
+                for (String f : fields) {//字段
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationBasisFieldDto fieldDto = new EvaluationBasisFieldDto();
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setBasisId(id);
+                        try {
+                            if (id!=null) fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        } catch (Exception e) {
+                            try {
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
 
     @Transactional
     public boolean remove(Integer id) {
@@ -122,7 +197,7 @@ public class EvaluationBasisService {
                 }
                 vo.setMethodStr(builder.toString());
             }
-            if (StringUtils.isEmpty(vo.getEntrustmentPurpose())) {
+            if (!StringUtils.isEmpty(vo.getEntrustmentPurpose())) {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] entrustmentPurposeS = vo.getEntrustmentPurpose().split(",");
                 for (int i = 0; i < entrustmentPurposeS.length; i++) {

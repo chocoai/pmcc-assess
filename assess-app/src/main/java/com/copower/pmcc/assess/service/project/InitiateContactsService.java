@@ -36,6 +36,7 @@ public class InitiateContactsService {
     private InitiateContactsDao dao;
 
 
+    @Transactional
     public List<InitiateContactsVo> listVo(Integer crmId,Integer flag){
         List<InitiateContactsVo> vos = new ArrayList<>();
         if (crmId!=null){
@@ -43,12 +44,16 @@ public class InitiateContactsService {
             InitiateContactsVo vo = null;
             try {
                 for (CrmCustomerLinkmanDto dto:linkmanDtos){
-                    vo = new InitiateContactsVo();
-                    vo.setId(dto.getId());
-                    vo.setcEmail(dto.getEmail());
-                    vo.setcDept(dto.getDepartment());
-                    vo.setcName(dto.getName());
-                    vo.setcPhone(dto.getPhoneNumber());
+                    InitiateContactsDto contactsDto = new InitiateContactsDto();
+                    contactsDto.setcDept(dto.getDepartment());
+                    contactsDto.setcEmail(dto.getEmail());
+                    contactsDto.setcName(dto.getName());
+                    contactsDto.setcPhone(dto.getPhoneNumber());
+                    contactsDto.setcPid(InitiateContactsDto.CPID);
+                    contactsDto.setcType(flag);
+                    int id = dao.save(contactsDto);
+                    contactsDto.setId(id);
+                    vo = change(contactsDto);
                     vos.add(vo);
                 }
             }catch (Exception e){

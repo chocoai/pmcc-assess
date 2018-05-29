@@ -133,7 +133,7 @@
     </div>
 </div>
 
-<!-- 显示子项列表 -->
+<!-- 显示字段列表 -->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -141,7 +141,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent">子项数据</h3>
+                <h3 class="modal-title" id="titleContent">字段管理</h3>
             </div>
             <input type="hidden" name="caseId" id="caseId">
             <div class="panel-body">
@@ -159,9 +159,9 @@
 
 
 <!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" data-height="300"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 520px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -173,8 +173,6 @@
                     <div class="col-md-12">
                         <form id="firSubA" name="firSubA" class="form-horizontal">
                             <div class="panel-body">
-
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -182,7 +180,7 @@
                                             <input type="hidden" name="caseId" id="caseIdNG">
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" id="nameA" name="nameA" class="form-control"
+                                            <input type="text" id="uName" name="uName" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -194,7 +192,7 @@
                                             表
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="tableName" id="tableName"
+                                            <select class="form-control search-select select2" name="tableName" id="tableName"
                                                     required="required">
                                                 <option>请选择</option>
                                                 <c:forEach items="${userList}" var="tableVar">
@@ -212,7 +210,7 @@
                                             表字段
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="TableField" id="TableField"
+                                            <select class="form-control search-select select2" name="fieldName" id="fieldName"
                                                     required="required">
                                                 <option>请选择</option>
                                             </select>
@@ -243,6 +241,10 @@
 
     $(function () {
         loadCaseComparisonList();
+
+        $("#tableName").select2();
+        $("#fieldName").select2();
+        tableNameChange();
     })
 
     //选择对应的表单类型
@@ -364,11 +366,10 @@
     }
 
     function appendChildElement(item) {
-        var TableField = $("#TableField");
-        var TableFieldElement = document.getElementById("TableField");
+        var TableFieldElement = document.getElementById("fieldName");
         var len = item.length;
         for (var i = 0; i < len; i++) {
-            var optionLen = $("#TableField option").size();
+            var optionLen = $("#fieldName option").size();
             var fieldElment = document.createElement("option");
             fieldElment.setAttribute("value", item[i].key);
             fieldElment.appendChild(document.createTextNode(item[i].key));
@@ -378,12 +379,9 @@
         console.info(len);
     }
     function removeChild() {
-        var optionLen = $("#TableField option").size();
-        if (optionLen > 2) {
-            $("#TableField option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
-        }
+       $("#fieldName").empty();
     }
-    function tableNameA() {
+    function tableNameChange() {
         $("#tableName").change(function () {
             //检测  然后操作
             removeChild();
@@ -395,7 +393,6 @@
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    console.info(result);
                     appendChildElement(result);
                 },
                 error: function (result) {
@@ -404,8 +401,7 @@
             })
         });
     }
-    tableNameA();
-    //    $("#firSub .form-group").css({"margin-top":"20px","margin-bottom":"40px"});
+
 
     //新增 子项 字段数据
     function addMethodField() {
@@ -418,10 +414,6 @@
     //保存新增 子项 字段的数据
     function saveFileld() {
         var data = formParams("firSubA");//应该是自动form参数
-        data.uName = $("#nameA").val();
-//        data.caseId = $("#caseId").val();
-        data.tableName = $("#tableName option:selected").val();
-        data.name = $("#TableField option:selected").val();
         if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparisonNG/addField",
@@ -449,8 +441,9 @@
     //加载子项节点数据
     function loadSubDataDicList(pid, fn) {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'uName', title: '用户自定义名称'});
+        cols.push({field: 'uName', title: '名称'});
+        cols.push({field: 'tableName', title: '表名称'});
+        cols.push({field: 'fieldName', title: '字段名称'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

@@ -76,13 +76,9 @@ public class EvaluationHypothesisController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationHypothesisDto evaluationHypothesisDto) {
+    public HttpResult add(EvaluationHypothesisDto evaluationHypothesisDto,String field) {
         try {
-            if (evaluationHypothesisDto.getId() != null && evaluationHypothesisDto.getId() != 0) {//不再使用专门的 update controller
-                service.update(evaluationHypothesisDto);
-            } else {
-                service.add(evaluationHypothesisDto);
-            }
+            service.saveAndUpdate(evaluationHypothesisDto,field);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
