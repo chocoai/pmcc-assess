@@ -51,11 +51,11 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    结束日期1<span class="symbol required"></span>
+                                    结束日期<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" required
-                                           placeholder="结束日期1"
+                                           placeholder="结束日期"
                                            value="<fmt:formatDate value="${projectPlan.projectPlanEnd}" pattern="yyyy-MM-dd"/>"
                                            id="projectPlanEnd" name="projectPlanEnd"
                                            data-date-format='yyyy-mm-dd'

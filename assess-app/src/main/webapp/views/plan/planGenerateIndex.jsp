@@ -100,8 +100,8 @@
                                                            data-rule-digits="true"
                                                            style="width: 120px;height: 30px;"></div>
                                             </td>
-                                            <td>${item.assessTotalPrince}</td>
-                                            <td>${item.reportTotalPrice}</td>
+                                            <%--<td>${item.assessTotalPrince}</td>--%>
+                                            <%--<td>${item.reportTotalPrice}</td>--%>
                                             <td></td>
                                         </tr>
                                     </c:forEach>
