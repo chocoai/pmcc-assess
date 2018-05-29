@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.dao.EvaluationBasisDao;
+import com.copower.pmcc.assess.dal.dao.EvaluationBasisFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
@@ -25,16 +27,17 @@ import java.util.List;
  * 评估依据
  * Created by 13426 on 2018/4/28.
  */
-@RequestMapping(value = "/evaluationBasis",name = "评估依据")
+@RequestMapping(value = "/evaluationBasis", name = "评估依据")
 @Controller
 public class EvaluationBasisController {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private EvaluationBasisService service;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+
 
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -62,7 +65,7 @@ public class EvaluationBasisController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/get", name = "获取",method = {RequestMethod.GET})
+    @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
     public Object get(@RequestParam(value = "id") Integer id) {
         EvaluationBasisVo basisVo = null;
         try {
@@ -76,13 +79,9 @@ public class EvaluationBasisController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationBasisDto evaluationbasisdto) {
+    public HttpResult add(EvaluationBasisDto evaluationbasisdto,String field) {
         try {
-            if (evaluationbasisdto.getId() != null && evaluationbasisdto.getId() != 0) {//不再使用专门的 update controller
-                service.update(evaluationbasisdto);
-            } else {
-                service.add(evaluationbasisdto);
-            }
+            service.saveAndUpdate(evaluationbasisdto,field);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -91,7 +90,7 @@ public class EvaluationBasisController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete", name = "删除",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", name = "删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             service.remove(id);

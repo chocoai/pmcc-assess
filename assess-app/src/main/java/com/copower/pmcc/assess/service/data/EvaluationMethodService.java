@@ -83,9 +83,18 @@ public class EvaluationMethodService {
                     if (!StringUtils.isEmpty(f)){
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(type);
+                        fieldDto.setName(f);
                         fieldDto.setCreator(commonService.thisUserAccount());
                         fieldDto.setMethodId(evaluationMethodDto.getId());
-                        evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
                     }
                 }
             }
@@ -99,9 +108,18 @@ public class EvaluationMethodService {
                     if (!StringUtils.isEmpty(f)){
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(type);
+                        fieldDto.setName(f);
                         fieldDto.setCreator(commonService.thisUserAccount());
                         fieldDto.setMethodId(evaluationMethodDto.getId());
-                        evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
                     }
                 }
             }
@@ -115,21 +133,39 @@ public class EvaluationMethodService {
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(FieldEnum.APPLICABLE.getNum());
                         fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setName(f);
                         fieldDto.setMethodId(id);
-                        evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
                     }
                 }
 
             }
-            if (!StringUtils.isEmpty(Nofield)) {
+            if (!StringUtils.isEmpty(Nofield)) {//不适用字段
                 String[] noFields = Nofield.split(",");
                 for (String f : noFields) {
                     if (!StringUtils.isEmpty(f)) {
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(FieldEnum.NO_APPLICABLE.getNum());
                         fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setName(f);
                         fieldDto.setMethodId(id);
-                        evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
                     }
                 }
 

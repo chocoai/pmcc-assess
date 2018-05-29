@@ -351,8 +351,6 @@
         data.method = $("#method option:selected").val();
         data.applicableReason = $("#applicableReason").val();
         data.notApplicableReason = $("#notApplicableReason").val();
-        console.log(field);
-        console.log(Nofield);
         data.field = fieldExtract(field);
         data.Nofield = fieldExtract(Nofield);
         if ($("#frm").valid()) {

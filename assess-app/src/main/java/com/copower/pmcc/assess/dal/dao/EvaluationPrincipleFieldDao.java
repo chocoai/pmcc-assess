@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.dao;
 
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
+import com.copower.pmcc.assess.dal.entity.EvaluationMethodFieldExample;
 import com.copower.pmcc.assess.dal.entity.EvaluationPrincipleField;
 import com.copower.pmcc.assess.dal.entity.EvaluationPrincipleFieldExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationPrincipleFieldMapper;
@@ -28,6 +30,15 @@ public class EvaluationPrincipleFieldDao {
         if (mapper.selectByExample(example).size()>0)flag = false;
         if (flag) return mapper.insertSelective(change(evaluationPrincipleFieldDto))==1;
         return false;
+    }
+
+    public void delete(String field,Integer principleID){
+        EvaluationPrincipleFieldExample example = new EvaluationPrincipleFieldExample();
+        example.createCriteria().andIdIsNotNull().andNameEqualTo(field).andPrincipleIdEqualTo(principleID);
+        List<EvaluationPrincipleField> fieldList = mapper.selectByExample(example);
+        for (EvaluationPrincipleField field1:fieldList){
+            mapper.deleteByPrimaryKey(field1.getId());
+        }
     }
 
     public boolean update(EvaluationPrincipleFieldDto evaluationPrincipleFieldDto){

@@ -449,7 +449,7 @@
     //加载子项节点数据
     function loadSubDataDicList(pid, fn) {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
+        // cols.push({field: 'name', title: '名称'});
         cols.push({field: 'uName', title: '用户自定义名称'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {

@@ -25,6 +25,12 @@ public class EvaluationHypothesisDao {
         return evaluationHypothesisMapper.insert(change(evaluationHypothesisDto)) == 1;
     }
 
+    public int save(EvaluationHypothesisDto dto){
+        EvaluationHypothesis hypothesis = change(dto);
+        evaluationHypothesisMapper.insertSelective(hypothesis);
+        return hypothesis.getId();
+    }
+
     public boolean update(EvaluationHypothesisDto evaluationHypothesisDto) {
         return evaluationHypothesisMapper.updateByPrimaryKey(change(evaluationHypothesisDto)) == 1;
     }

@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
@@ -229,7 +229,8 @@
     $(function () {
         loadDataDicList();
     })
-
+    var field = null;
+    var Nofield = null;
     //提取显示适用的字段
     function extractApplicableField() {
         var text=$("#applicableReason").val();
@@ -238,6 +239,7 @@
         if(fieldArray&&fieldArray.length>0){
             var html='';
             $.each(fieldArray,function (i,item) {
+                field  = fieldArray;
                 html+='<span class="label label-default">'+item+'</span> ';
             })
             $('.applicableReason-field').append(html);
@@ -252,10 +254,23 @@
         if(fieldArray&&fieldArray.length>0){
             var html='';
             $.each(fieldArray,function (i,item) {
+                Nofield  = fieldArray;
                 html+='<span class="label label-default">'+item+'</span> ';
             })
             $('.not-applicableReason-field').append(html);
         }
+    }
+
+    function fieldExtract(result) {
+        var str = "";
+        for (var i = 0;i<result.length;i++){
+            if (i == result.length-1){
+                str += result[i];
+            }else {
+                str += result[i] +",";
+            }
+        }
+        return str;
     }
 
     //加载 评估技术思路 数据列表
@@ -267,7 +282,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+                // str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -316,15 +331,24 @@
         })
     }
 
+    //取消 新增 评估技术思路
+    function removeSubDataDic() {
+        field = null;
+        Nofield = null;
+        $("#divBox").hide();
+    }
     //对新增 评估技术思路 数据处理
     function addDataDic() {
         $("#frm").clearAll();
     }
     //新增 评估技术思路 数据
     function saveSubDataDic() {
-        var flag = false;
         var data = formParams("frm");
+        data.field = fieldExtract(field);
+        data.Nofield = fieldExtract(Nofield);
         data.method = ',' + data.method + ',';//方便like查询
+        data.field = fieldExtract(field);
+        data.Nofield = fieldExtract(Nofield);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinking/save",
