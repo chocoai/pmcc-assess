@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleFieldVo;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

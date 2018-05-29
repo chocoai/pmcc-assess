@@ -1,17 +1,16 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectCheckContentService;
 import com.copower.pmcc.assess.service.project.SurveyAssetInventoryService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import java.util.List;
 @WorkFlowAnnotation(desc = "资产清查成果")
 public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     @Autowired
-    private ControllerComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectCheckContentService projectCheckContentService;
     @Autowired
@@ -33,13 +32,11 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent1;
-    @Autowired
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
 
 //        for (BaseDataDic baseDataDic : baseDataDicList) {
@@ -53,7 +50,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 //            surveyAssetTemplateDao.save(surveyAssetTemplate);
 //        }
         List<SurveyAssetTemplate> surveyAssetTemplate = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
-        SysUserDto thisUserInfo = serviceComponent1.getThisUserInfo();
+        SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("checkContentList", baseDataDicList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         return modelAndView;
@@ -61,7 +58,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", processInsId, boxId, taskId, agentUserAccount);
         projectCheckContentService.getBaseDataDicList(modelAndView, projectPlanDetails);
         surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView, processInsId);
         return modelAndView;
@@ -69,7 +66,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", processInsId, boxId, taskId, agentUserAccount);
         projectCheckContentService.getBaseDataDicList(modelAndView, projectPlanDetails);
         surveyAssetInventoryService.getSurveyAssetInventoryByProcessInsId(modelAndView, processInsId);
         return modelAndView;
@@ -82,7 +79,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

@@ -1,10 +1,11 @@
 package com.copower.pmcc.assess.controller;
 
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.List;
 public class BaseDataDicController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseDataDicController.class);
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
@@ -36,7 +37,7 @@ public class BaseDataDicController {
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/dataDic");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/dataDic");
         return modelAndView;
     }
     //endregion

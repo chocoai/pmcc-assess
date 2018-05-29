@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanTaskAll;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
@@ -11,6 +10,9 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ import java.util.List;
 public class ProjectTaskAllController {
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectTaskAllService projectTaskAllService;
     @Autowired
@@ -42,10 +44,12 @@ public class ProjectTaskAllController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
 
     @RequestMapping(value = "/projectTaskAllIndex", name = "整体复核页面")
     public ModelAndView projectTaskAllIndex(Integer planId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/taskAll/taskAllIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/taskAll/taskAllIndex", "", 0, "0", "");
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
 
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-整体复核");
@@ -60,7 +64,7 @@ public class ProjectTaskAllController {
         modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
 
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        modelAndView.addObject("bisSelectUser", controllerComponent.checkNextNodeSelectUser(projectWorkStage.getReviewBoxName(), -1));
+        modelAndView.addObject("bisSelectUser", checkNextNodeSelectUser(projectWorkStage.getReviewBoxName(), -1));
         return modelAndView;
     }
 
@@ -78,7 +82,7 @@ public class ProjectTaskAllController {
 
     @RequestMapping(value = "/projectTaskAllApproval", name = "整体复核页面")
     public ModelAndView projectTaskAllApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", processInsId, boxId, taskId, agentUserAccount);
 
         ProjectPlanTaskAll projectPlanTaskAll = projectTaskAllService.getObjectByProcessInsId(processInsId);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanTaskAll.getProjectPlanId());
@@ -95,7 +99,7 @@ public class ProjectTaskAllController {
 
     @RequestMapping(value = "/projectTaskAllEdit", name = "整体复核返回修改")
     public ModelAndView projectTaskAllEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/taskAll/taskAllIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/taskAll/taskAllIndex", processInsId, boxId, taskId, agentUserAccount);
 
         ProjectPlanTaskAll projectPlanTaskAll = projectTaskAllService.getObjectByProcessInsId(processInsId);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanTaskAll.getProjectPlanId());
@@ -107,7 +111,7 @@ public class ProjectTaskAllController {
 
         modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        modelAndView.addObject("bisSelectUser", controllerComponent.checkNextNodeSelectUser(projectWorkStage.getReviewBoxName(), -1));
+        modelAndView.addObject("bisSelectUser", checkNextNodeSelectUser(projectWorkStage.getReviewBoxName(), -1));
         return modelAndView;
     }
 
@@ -136,7 +140,7 @@ public class ProjectTaskAllController {
 
     @RequestMapping(value = "/projectTaskAllDetails", name = "整体复核详情")
     public ModelAndView projectTaskAllDetails(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", processInsId, boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", processInsId, boxId, "-1", "");
         ProjectPlanTaskAll projectPlanTaskAll = projectTaskAllService.getObjectByProcessInsId(processInsId);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanTaskAll.getProjectPlanId());
         modelAndView.addObject("planId", projectPlan.getId());
@@ -152,7 +156,7 @@ public class ProjectTaskAllController {
     @RequestMapping(value = "/projectTaskAllDetailsById", name = "整体复核详情")
     public ModelAndView projectTaskAllDetailsById(Integer taskAllId) {
         ProjectPlanTaskAll projectPlanTaskAll = projectTaskAllService.getObjectById(taskAllId);
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", projectPlanTaskAll.getProcessInsId(), 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/taskAll/taskAllApproval", projectPlanTaskAll.getProcessInsId(), 0, "-1", "");
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanTaskAll.getProjectPlanId());
         modelAndView.addObject("planId", projectPlan.getId());
         modelAndView.addObject("planName", projectPlan.getPlanName());
@@ -161,5 +165,16 @@ public class ProjectTaskAllController {
         modelAndView.addObject("projectFlog", "1");
 
         return modelAndView;
+    }
+
+    public String checkNextNodeSelectUser(String boxName, Integer currentStep) {
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        BoxReActivityDto nextBoxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, currentStep + 1);
+        if (nextBoxReActivityDto != null) {
+            if (nextBoxReActivityDto.getBisSelectUser()) {
+                return "1";
+            }
+        }
+        return "";
     }
 }

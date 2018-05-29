@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SchemeJudgeFunctionDao;
 import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

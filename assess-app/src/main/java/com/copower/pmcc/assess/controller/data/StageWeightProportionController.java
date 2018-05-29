@@ -1,18 +1,15 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
-import com.copower.pmcc.assess.dto.output.data.StageWeightTempVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.StageWeightProportionService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,14 +25,14 @@ public class StageWeightProportionController {
     private StageWeightProportionService stageWeightProportionService;
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value="/Index",name="阶段权重占比视图")
     public ModelAndView index(){
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/stageWeightProportion");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/stageWeightProportion");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         List<BaseDataDic> baseDataDics1 = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_WORK_STAGE);
         modelAndView.addObject("entrustmentPurposeList",baseDataDics);

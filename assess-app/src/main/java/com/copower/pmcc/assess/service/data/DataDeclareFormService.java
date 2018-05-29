@@ -6,12 +6,9 @@ import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dto.output.data.DataDeclareFormVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseFormService;
-import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
-import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
-import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -22,9 +19,7 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.record.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,11 +37,9 @@ public class DataDeclareFormService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseFormService baseFormService;
-    @Autowired
-    private CrmRpcCustomerService crmRpcCustomerService;
 
     /**
      * 获取数据列表
@@ -110,7 +103,7 @@ public class DataDeclareFormService {
         if (dataDeclareFormDto.getId() != null && dataDeclareFormDto.getId() > 0) {
             dataDeclareFormDao.updateDataDeclareForm(dataDeclareFormDto);
         } else {
-            dataDeclareFormDto.setCreator(serviceComponent.getThisUser());
+            dataDeclareFormDto.setCreator(processControllerComponent.getThisUser());
             dataDeclareFormDao.addDataDeclareForm(dataDeclareFormDto);
         }
     }

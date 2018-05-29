@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.xmlbeans.impl.inst2xsd.SalamiSliceStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +25,7 @@ import java.util.List;
 @Controller
 public class DataInfrastructureController {
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
 
@@ -36,7 +34,7 @@ public class DataInfrastructureController {
 
     @RequestMapping(value = "/Index" , name = "发文单位查看")
     public ModelAndView index(){
-       ModelAndView modelAndView =  controllerComponent.baseModelAndView("/data/dataInfrastructure");
+       ModelAndView modelAndView =  processControllerComponent.baseModelAndView("/data/dataInfrastructure");
        //获取省
         List<SysAreaDto> provinceList = erpAreaService.getProvinceList();
         modelAndView.addObject("provinceList",provinceList);

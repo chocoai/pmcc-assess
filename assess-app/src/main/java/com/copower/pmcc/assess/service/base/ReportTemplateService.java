@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.base;
 
-
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ReportTemplateBookmarkDao;
 import com.copower.pmcc.assess.dal.dao.ReportTemplateDao;
@@ -9,14 +8,13 @@ import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;
 import com.copower.pmcc.assess.dto.output.report.ReportTemplateBookmarkVo;
 import com.copower.pmcc.assess.dto.output.report.ReportTemplateVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -41,7 +39,7 @@ public class ReportTemplateService {
     @Autowired
     private BaseDataDicService cmsBaseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ReportTemplateBookmarkDao reportTemplateBookmarkDao;
     @Autowired
@@ -128,12 +126,12 @@ public class ReportTemplateService {
             BaseAttachment baseAttachment = new BaseAttachment();
             baseAttachment.setTableName("tb_report_template");
             baseAttachment.setTableId(reportTemplateDto.getId());
-            baseAttachment.setCreater(serviceComponent.getThisUser());
+            baseAttachment.setCreater(processControllerComponent.getThisUser());
             BaseAttachment sysAttachmentNew = new BaseAttachment();
             sysAttachmentNew.setTableId(reportTemplate.getId());
             baseAttachmentDao.updateAttachementByExample(baseAttachment, sysAttachmentNew);
         }
-        //serviceComponentCms.RemoveRedisKeyValues(CmsCacheConstant.PMCC_CONTRACT_TEMPLATE, "");
+        //processControllerComponentCms.RemoveRedisKeyValues(CmsCacheConstant.PMCC_CONTRACT_TEMPLATE, "");
     }
 
     /**

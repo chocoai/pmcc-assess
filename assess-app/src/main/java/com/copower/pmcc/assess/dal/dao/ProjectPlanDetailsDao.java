@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanDetailsMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

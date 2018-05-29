@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.CaseComparisonFieldService;
 import com.copower.pmcc.assess.service.data.CaseComparisonService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class CaseComparisonController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -39,7 +39,7 @@ public class CaseComparisonController {
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/caseComparisonView");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/caseComparisonView");
         modelAndView.addObject("typeMap",service.getTypeMap());
         modelAndView.addObject("userList",fieldService.getTableList());
         return modelAndView;

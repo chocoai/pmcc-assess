@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonField;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonFieldExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DataCaseComparisonFieldMapper {
     int countByExample(DataCaseComparisonFieldExample example);

@@ -4,8 +4,8 @@ import com.copower.pmcc.assess.dal.dao.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -33,7 +33,7 @@ public class DataNumberRuleService {
     private BaseDataDicService baseDataDicService;
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public BootstrapTableVo getList(Integer assessClass,Integer reportType) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -73,7 +73,7 @@ public class DataNumberRuleService {
         if(dataNumberRule.getId() != null && dataNumberRule.getId() > 0){
             return dataNumberRuleDao.update(dataNumberRule);
         }else{
-            dataNumberRule.setCreator(serviceComponent.getThisUser());
+            dataNumberRule.setCreator(processControllerComponent.getThisUser());
             return dataNumberRuleDao.save(dataNumberRule);
         }
     }

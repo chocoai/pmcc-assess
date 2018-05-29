@@ -3,22 +3,17 @@ package com.copower.pmcc.assess.controller.report;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.BaseReportColumns;
+import com.copower.pmcc.assess.dal.entity.BaseReportTable;
+import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dto.output.CrmTreeDto;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
-import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
-import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
-import com.copower.pmcc.erp.api.dto.DepartmentTree;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.MenuTree;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Adler32;
 
 /**
  * 描述:
@@ -44,7 +38,7 @@ import java.util.zip.Adler32;
 @RequestMapping(value = "/templateSet", name = "设置评估报告模板")
 public class TemplateSetController {
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private TemplateSetService templateSetService;
     @Autowired
@@ -54,7 +48,7 @@ public class TemplateSetController {
 
     @RequestMapping(value = "/templateSetIndex", name = "进入报告配置页面")
     public ModelAndView templateSetIndex() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/templateSetIndex");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/templateSetIndex");
         List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrust", baseDataDicsA);
         modelAndView.addObject("firstEntrust", baseDataDicsA.get(0).getId());//第一个抵押评估对象

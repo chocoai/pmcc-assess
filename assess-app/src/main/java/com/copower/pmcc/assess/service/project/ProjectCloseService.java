@@ -5,11 +5,10 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.*;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectCloseEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -20,6 +19,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -48,7 +48,7 @@ import java.util.List;
 @Service
 public class ProjectCloseService {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
@@ -103,12 +103,12 @@ public class ProjectCloseService {
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
         if (StringUtils.isNotBlank(boxName)) {
             Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
-            SysUserDto sysUser = serviceComponent.getThisUserInfo();
+            SysUserDto sysUser = processControllerComponent.getThisUserInfo();
 
             projectClose = new ProjectClose();
             projectClose.setProjectId(projectId);
             projectClose.setReason(reason);
-            projectClose.setCreator(serviceComponent.getThisUser());
+            projectClose.setCreator(processControllerComponent.getThisUser());
             projectClose.setProjectName(projectInfo.getProjectName());
             projectClose.setActivityName(projectPlanService.getProjectCurrStage(projectId));
 
@@ -130,7 +130,7 @@ public class ProjectCloseService {
             processInfo.setProcessEventExecutorName(ProjectCloseEvent.class.getSimpleName());
 
             try {
-                processUserDto = serviceComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processInfo, "", false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -142,7 +142,7 @@ public class ProjectCloseService {
             projectPauseService.pauseProject(projectId);//发起申请时就暂停相应的任务
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
-                    serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                    processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
                 } catch (BpmException e) {
                     throw new BusinessException("跳过节点自动提交失败");
                 }
@@ -155,7 +155,7 @@ public class ProjectCloseService {
         //更新附件
         BaseAttachment sysAttachment = new BaseAttachment();
         sysAttachment.setProcessInsId("0");
-        sysAttachment.setCreater(serviceComponent.getThisUser());
+        sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_close");
         BaseAttachment sysAttachmentNew = new BaseAttachment();
         sysAttachmentNew.setProcessInsId(processInsId);
@@ -250,7 +250,7 @@ public class ProjectCloseService {
         approvalModelDto.setCurrentStep(-1);
         approvalModelDto.setBisNext("0");
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -259,7 +259,7 @@ public class ProjectCloseService {
     @Transactional(rollbackFor = Exception.class)
     public void approvalSubmit(ApprovalModelDto approvalModelDto) throws BusinessException {
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

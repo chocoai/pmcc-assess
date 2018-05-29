@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.assist;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.dto.output.BaseBussinessVo;
@@ -15,6 +14,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Maps;
@@ -32,7 +32,7 @@ import java.util.Map;
 @WorkFlowAnnotation(desc = "通用模板")
 public class FormConfigureAssist implements BaseInterface {
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private FormConfigureService formConfigureService;
     @Autowired
@@ -54,7 +54,7 @@ public class FormConfigureAssist implements BaseInterface {
 
     @Override
     public ModelAndView applyView(Integer boxId, Integer phaseId, Integer ruId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/form/formApply", "0", boxId, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/form/formApply", "0", boxId, "0", "");
         Map<String, Object> primaryData = null;
         if (ruId != null) {
 
@@ -71,7 +71,7 @@ public class FormConfigureAssist implements BaseInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, Integer phaseId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/form/formApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/form/formApproval", processInsId, boxId, taskId, agentUserAccount);
         String tableName = getTableName(boxId);
         Map<String, Object> map = formConfigureService.getObjectSingle(tableName, processInsId);
         Map<String, Object> primaryData = Maps.newHashMap();
@@ -87,7 +87,7 @@ public class FormConfigureAssist implements BaseInterface {
 
     @Override
     public ModelAndView editView(String processInsId, Integer phaseId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/form/formApply", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/form/formApply", processInsId, boxId, taskId, agentUserAccount);
         String tableName = getTableName(boxId);
         Map<String, Object> map = formConfigureService.getObjectSingle(tableName, processInsId);
         Map<String, Object> primaryData = Maps.newHashMap();
@@ -103,7 +103,7 @@ public class FormConfigureAssist implements BaseInterface {
 
     @Override
     public ModelAndView detailsView(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/form/formApproval", processInsId, boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/form/formApproval", processInsId, boxId, "-1", "");
         String tableName = getTableName(boxId);
         Map<String, Object> map = formConfigureService.getObjectSingle(tableName, processInsId);
         Map<String, Object> primaryData = Maps.newHashMap();

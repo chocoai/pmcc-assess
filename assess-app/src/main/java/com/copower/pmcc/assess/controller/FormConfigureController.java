@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
@@ -31,7 +32,7 @@ import java.util.List;
 public class FormConfigureController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FormConfigureController.class);
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private FormConfigureService formConfigureService;
     @Autowired
@@ -39,7 +40,7 @@ public class FormConfigureController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/formConfigure");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/formConfigure");
         modelAndView.addObject("tableList", formConfigureService.getTableList());
         List<CustomTableTypeDto> fieldTypeList = CustomTableTypeEnum.getCustomSetType();
         modelAndView.addObject("fieldTypeList", fieldTypeList);

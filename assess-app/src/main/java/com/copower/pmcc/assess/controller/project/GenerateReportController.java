@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dal.entity.GenerateReport;
 import com.copower.pmcc.assess.dto.input.project.GenerateReportApplyDto;
 import com.copower.pmcc.assess.service.project.GenerateReportService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

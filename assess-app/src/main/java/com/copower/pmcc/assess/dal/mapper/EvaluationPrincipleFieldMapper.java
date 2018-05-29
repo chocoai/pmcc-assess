@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.EvaluationPrincipleField;
 import com.copower.pmcc.assess.dal.entity.EvaluationPrincipleFieldExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EvaluationPrincipleFieldMapper {
     int countByExample(EvaluationPrincipleFieldExample example);

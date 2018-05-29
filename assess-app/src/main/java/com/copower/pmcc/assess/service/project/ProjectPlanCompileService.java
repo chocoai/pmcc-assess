@@ -8,16 +8,11 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.erp.api.dto.SysAreaDto;
-import com.copower.pmcc.erp.common.utils.LangUtils;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.collections.CollectionUtils;
 
-import javax.rmi.PortableRemoteObject;
 import java.util.List;
 
 /**

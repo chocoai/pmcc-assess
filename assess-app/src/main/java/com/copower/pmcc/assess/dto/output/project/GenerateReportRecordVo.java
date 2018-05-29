@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project;
 
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
 
 import java.math.BigDecimal;
 

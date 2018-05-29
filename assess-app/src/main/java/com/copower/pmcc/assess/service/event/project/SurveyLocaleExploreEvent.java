@@ -7,17 +7,15 @@ import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.SurveyLocaleExploreDetailService;
+import com.copower.pmcc.assess.service.project.SurveyLocaleExploreService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
-import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,7 @@ import java.util.Map;
 @Component
 public class SurveyLocaleExploreEvent extends ProjectTaskEvent {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SurveyLocaleExploreService surveyLocaleExploreService;
     @Autowired
@@ -93,7 +91,7 @@ public class SurveyLocaleExploreEvent extends ProjectTaskEvent {
                                         baseAttachment.setTableId(surveyLocaleExploreDetail.getId());
                                         //拷贝真实文件
                                         String filePath = baseAttachmentService.createFTPBasePath(SurveyLocaleExploreDetail.class.getSimpleName(),
-                                                DateUtils.formatNowToYMD(), serviceComponent.getThisUser());
+                                                DateUtils.formatNowToYMD(), processControllerComponent.getThisUser());
                                         ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), baseAttachment.getFtpFilesName(), filePath);
                                         baseAttachment.setFilePath(filePath);
                                         baseAttachmentDao.addAttachment(baseAttachment);

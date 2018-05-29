@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page import="org.omg.CORBA.Request" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: red
   Date: 2017/06/13

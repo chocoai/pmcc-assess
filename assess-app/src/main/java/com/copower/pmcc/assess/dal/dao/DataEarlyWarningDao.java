@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample;
-import com.copower.pmcc.assess.dal.entity.EarlyWarning;
 import com.copower.pmcc.assess.dal.mapper.DataEarlyWarningMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

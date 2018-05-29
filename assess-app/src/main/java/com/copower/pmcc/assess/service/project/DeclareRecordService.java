@@ -1,11 +1,8 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.common.DeclareRecordItems;
-import com.copower.pmcc.assess.common.DeclareRecordList;
 import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupAuxiliary;
 import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectDto;
@@ -22,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;

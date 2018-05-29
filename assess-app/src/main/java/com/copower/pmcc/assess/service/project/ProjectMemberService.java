@@ -1,17 +1,17 @@
 package com.copower.pmcc.assess.service.project;
 
+
 import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -38,11 +38,9 @@ public class ProjectMemberService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
-    @Autowired
-    private CommonService commonService;
     @Autowired
     private ApplicationConstant applicationConstant;
 
@@ -52,7 +50,7 @@ public class ProjectMemberService {
         if (projectMember.getId() != null && projectMember.getId() > 0) {
             projectMemberDao.updateProjectMember(projectMember);
         } else {
-            projectMember.setCreator(serviceComponent.getThisUser());
+            projectMember.setCreator(processControllerComponent.getThisUser());
             projectMemberDao.saveProjectMember(projectMember);
         }
         upateProjectMemeberToErp(projectMember.getProjectId(), projectMember.getUserAccountManager(), projectMember.getUserAccountMember());
@@ -94,7 +92,7 @@ public class ProjectMemberService {
             projectMemberItem.setUserAccountMember(projectMember.getUserAccountMember());
             projectMemberItem.setUserAccountQuality(projectMember.getUserAccountQuality());
             projectMemberItem.setProjectId(projectMember.getProjectId());
-            projectMemberItem.setCreator(serviceComponent.getThisUser());
+            projectMemberItem.setCreator(processControllerComponent.getThisUser());
             projectMemberItem.setRemarks("项目成员变更");
             if (!projectMemberDao.saveProjectMember(projectMemberItem)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
@@ -108,7 +106,7 @@ public class ProjectMemberService {
             projectMemberHistory.setUserAccountMemberOld(projectMemberItem.getUserAccountMember());
             projectMemberHistory.setUserAccountQualityOld(projectMemberItem.getUserAccountQuality());
             projectMemberHistory.setProjectId(projectMember.getProjectId());
-            projectMemberHistory.setCreator(serviceComponent.getThisUser());
+            projectMemberHistory.setCreator(processControllerComponent.getThisUser());
             if (!projectMemberDao.saveProjectMemberHistory(projectMemberHistory)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }

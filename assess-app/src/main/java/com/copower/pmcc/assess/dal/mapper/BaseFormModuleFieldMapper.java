@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleFieldExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BaseFormModuleFieldMapper {
     int countByExample(BaseFormModuleFieldExample example);

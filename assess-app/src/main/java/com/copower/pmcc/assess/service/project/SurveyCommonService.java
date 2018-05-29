@@ -3,12 +3,15 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
@@ -25,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zly on 2018/5/15.
@@ -40,7 +42,7 @@ public class SurveyCommonService {
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private FormConfigureService formConfigureService;
 
@@ -108,8 +110,8 @@ public class SurveyCommonService {
         baseAttachment.setFilePath(ftpDirName);
         baseAttachment.setFileName("定位图.jpg");
         baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
-        baseAttachment.setCreater(serviceComponent.getThisUser());
-        baseAttachment.setModifier(serviceComponent.getThisUser());
+        baseAttachment.setCreater(processControllerComponent.getThisUser());
+        baseAttachment.setModifier(processControllerComponent.getThisUser());
         baseAttachmentDao.addAttachment(baseAttachment);
     }
 

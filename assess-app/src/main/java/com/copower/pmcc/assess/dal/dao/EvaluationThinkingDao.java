@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
-import com.copower.pmcc.assess.dal.entity.EvaluationMethodExample;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dal.entity.EvaluationThinkingExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationThinkingMapper;

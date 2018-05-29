@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
-import com.copower.pmcc.assess.dal.entity.SurveyAssetInventoryExample;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplateExample;
-import com.copower.pmcc.assess.dal.mapper.SurveyAssetInventoryMapper;
 import com.copower.pmcc.assess.dal.mapper.SurveyAssetOtherTemplateMapper;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
 import org.apache.commons.collections.CollectionUtils;

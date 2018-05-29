@@ -5,11 +5,10 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanTaskAllDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanTaskAllEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -20,6 +19,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,7 +50,7 @@ public class ProjectTaskAllService {
     @Autowired
     private ProjectPlanTaskAllDao projectPlanTaskAllDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
@@ -71,7 +71,7 @@ public class ProjectTaskAllService {
             //发起流程
             String reviewBoxName = projectWorkStage.getReviewBoxName();//复核模型
             ProjectPlanTaskAll projectPlanTaskAll = new ProjectPlanTaskAll();
-            projectPlanTaskAll.setCreator(serviceComponent.getThisUser());
+            projectPlanTaskAll.setCreator(processControllerComponent.getThisUser());
             projectPlanTaskAll.setProjectId(projectPlan.getProjectId());
             projectPlanTaskAll.setProjectPlanId(projectPlan.getId());
             projectPlanTaskAll.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -92,7 +92,7 @@ public class ProjectTaskAllService {
             processInfo.setProcessEventExecutorName(ProjectPlanTaskAllEvent.class.getSimpleName());
             processInfo.setWorkStageId(projectWorkStage.getId());
             try {
-                processUserDto = serviceComponent.processStart(processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
+                processUserDto = processControllerComponent.processStart(processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -103,7 +103,7 @@ public class ProjectTaskAllService {
             bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
-                    serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                    processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
                 } catch (BpmException e) {
                     throw new BusinessException("跳过节点自动提交失败");
                 }
@@ -157,7 +157,7 @@ public class ProjectTaskAllService {
             approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
             approvalModelDto.setCurrentStep(-1);
             try {
-                serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+                processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -204,7 +204,7 @@ public class ProjectTaskAllService {
         approvalModelDto.setWorkPhaseId(0);
         approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.office;
 
-
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.dao.BaseDataRegionDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataRegion;
-import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.ReportTemplateService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -51,7 +49,7 @@ public class ZhuoZhengController {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private HttpServletRequest request;
     @Autowired

@@ -7,12 +7,12 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -48,7 +48,7 @@ public class ProjectPlanController {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -85,7 +85,7 @@ public class ProjectPlanController {
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectPlan.getProjectId());
         projectResponsibilityDto.setPlanId(projectPlan.getId());
-        projectResponsibilityDto.setUserAccount(serviceComponent.getThisUser());
+        projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         projectResponsibilityDto.setModel(1);
         List<ProjectResponsibilityDto> planResponsibilities = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
         modelAndView.addObject("bisChildren", "0");
@@ -108,7 +108,7 @@ public class ProjectPlanController {
         modelAndView.addObject("boxCnName", projectInfo.getProjectName() + "-" + projectPlan.getPlanName());
         modelAndView.addObject("boxprocessIcon", "fa-list-alt");
         modelAndView.addObject("currentStepName", "计划编制");
-        modelAndView.addObject("currUserName", serviceComponent.getThisUserInfo().getUserName());
+        modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
         modelAndView.addObject("projectPhases", projectPhases);
         modelAndView.addObject("projectId", projectPlan.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -348,7 +348,7 @@ public class ProjectPlanController {
             approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
             approvalModelDto.setWorkStageId(projectPlan.getWorkStageId());
             approvalModelDto.setWorkPhaseId(0);
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
 
         } catch (BpmException e) {
             return HttpResult.newErrorResult(e.getMessage());

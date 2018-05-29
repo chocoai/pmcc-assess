@@ -1,17 +1,15 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStageRestart;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageRestartService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -36,11 +34,7 @@ import java.util.List;
 @RequestMapping(value = "/ProjectWorkStageRestart", name = "项目阶段重启功能实现")
 public class ProjectWorkStageRestartController {
     @Autowired
-    private ControllerComponent controllerComponent;
-    @Autowired
     private ProjectWorkStageRestartService projectWorkStageRestartService;
-    @Autowired
-    private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -48,11 +42,11 @@ public class ProjectWorkStageRestartController {
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @RequestMapping(value = "/restartApply", name = "申请页面")
     public ModelAndView restartApply(Integer projectId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/workStageRestart/restartApply", "0", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/workStageRestart/restartApply", "0", 0, "0", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStageRestart projectWorkStageRestart = new ProjectWorkStageRestart();
         projectWorkStageRestart.setProjectId(projectId);
@@ -76,13 +70,13 @@ public class ProjectWorkStageRestartController {
         modelAndView.addObject("boxCnName", projectInfo.getProjectName() + "-阶段重启");
         modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "阶段重启");
-        modelAndView.addObject("currUserName", serviceComponent.getThisUserInfo().getUserName());
+        modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
         return modelAndView;
     }
 
     @RequestMapping(value = "/restartApproval", name = "审批")
     public ModelAndView restartApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/workStageRestart/restartApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/workStageRestart/restartApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectWorkStageRestart projectWorkStageRestart = projectWorkStageRestartService.getProjectWorkStageRestartItem(processInsId);
         modelAndView.addObject("projectWorkStageRestart", projectWorkStageRestart);
         return modelAndView;
@@ -97,7 +91,7 @@ public class ProjectWorkStageRestartController {
 
     @RequestMapping(value = "/restartEdit", name = "返回修改")
     public ModelAndView restartEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/workStageRestart/restartApply", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/workStageRestart/restartApply", processInsId, boxId, taskId, agentUserAccount);
         ProjectWorkStageRestart projectWorkStageRestart = projectWorkStageRestartService.getProjectWorkStageRestartItem(processInsId);
         modelAndView.addObject("projectWorkStageRestart", projectWorkStageRestart);
 

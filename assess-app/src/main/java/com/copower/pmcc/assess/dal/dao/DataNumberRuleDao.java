@@ -1,10 +1,8 @@
 package com.copower.pmcc.assess.dal.dao;
 
-
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.entity.DataNumberRuleExample;
 import com.copower.pmcc.assess.dal.mapper.DataNumberRuleMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

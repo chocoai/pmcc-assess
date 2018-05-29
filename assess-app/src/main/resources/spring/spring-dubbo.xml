@@ -30,6 +30,7 @@
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService" id="bpmRpcProcessExecutionService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService" id="bpmRpcBoxRoleUserService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService" id="bpmRpcProjectTaskService" check="false" retries="0" timeout="10000" url="${bpm.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.bpm.api.provider.BpmRpcToolsService" id="bpmRpcToolsService" check="false" retries="0" timeout="10000" url="${bpm.api.url}"/>
     <!-- ======================hr - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcUserService" id="hrRpcUserService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />
     <dubbo:reference interface="com.copower.pmcc.hr.api.provider.HrRpcProfessionalService" id="hrRpcProfessionalService" check="false" retries="0" timeout="10000" url="${hr.api.url}" />

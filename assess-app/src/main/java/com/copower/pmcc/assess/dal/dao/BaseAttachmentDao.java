@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentExample;
 import com.copower.pmcc.assess.dal.mapper.BaseAttachmentMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

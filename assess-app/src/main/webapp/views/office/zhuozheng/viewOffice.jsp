@@ -1,8 +1,7 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*"
+         import="com.copower.pmcc.erp.common.CommonService,com.copower.pmcc.erp.common.utils.SpringContextUtils,com.zhuozhengsoft.pageoffice.OpenModeType"
          pageEncoding="utf-8" %>
-<%@ page import="com.copower.pmcc.erp.common.utils.SpringContextUtils" %>
-<%@ page import="com.copower.pmcc.erp.common.CommonService" %>
+<%@ page import="com.zhuozhengsoft.pageoffice.PageOfficeCtrl" %>
 <%@ taglib uri="http://java.pageoffice.cn" prefix="po" %>
 <%
     PageOfficeCtrl poCtrl = new PageOfficeCtrl(request);

@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonField;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonFieldExample;
 import com.copower.pmcc.assess.dal.mapper.DataCaseComparisonFieldMapper;
-import com.copower.pmcc.assess.dto.input.data.CaseComparisonFieldDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,15 +1,12 @@
 package com.copower.pmcc.assess.service.base;
 
-
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ReportMergeRuleDao;
 import com.copower.pmcc.assess.dal.dao.ReportTemplateDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ReportMergeRule;
 import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dto.output.report.ReportMergeRuleVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -40,7 +37,7 @@ public class ReportMergeRuleService {
     @Autowired
     private ReportTemplateDao reportTemplateDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
@@ -97,7 +94,7 @@ public class ReportMergeRuleService {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         } else {
-            reportMergeRuleDto.setCreator(serviceComponent.getThisUser());
+            reportMergeRuleDto.setCreator(processControllerComponent.getThisUser());
             if (!reportMergeRuleDao.addObject(reportMergeRuleDto)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.BaseDataRegion;
 import com.copower.pmcc.assess.dal.entity.BaseDataRegionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BaseDataRegionMapper {
     int countByExample(BaseDataRegionExample example);

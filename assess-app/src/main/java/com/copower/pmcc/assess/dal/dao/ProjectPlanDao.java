@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanChildrenMapper;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;

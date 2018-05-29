@@ -1,10 +1,8 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObjectExample;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportionExample;
 import com.copower.pmcc.assess.dal.mapper.StageWeightProportionMapper;
-import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.common;
 
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-
 import java.util.ArrayList;
 import java.util.List;
 

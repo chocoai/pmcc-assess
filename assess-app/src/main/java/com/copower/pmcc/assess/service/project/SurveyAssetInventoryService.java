@@ -6,19 +6,18 @@ import com.copower.pmcc.assess.dal.dao.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetOtherTemplateDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.project.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetInventoryDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -30,7 +29,7 @@ import java.util.List;
 public class SurveyAssetInventoryService {
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SurveyAssetInventoryDao surveyAssetInventoryDao;
     @Autowired
@@ -80,12 +79,12 @@ public class SurveyAssetInventoryService {
                 surveyAssetInventoryDto.setProjectId(projectId);
                 surveyAssetInventoryDto.setPlanDetailId(planId);
                 surveyAssetInventoryDto.setProcessInsId(processInsId);
-                surveyAssetInventoryDto.setCreator(serviceComponent.getThisUser());
+                surveyAssetInventoryDto.setCreator(processControllerComponent.getThisUser());
                 int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
 
                 surveyAssetOtherTemplateDto.setProjectId(projectId);
                 surveyAssetOtherTemplateDto.setPlanDetailId(planId);
-                surveyAssetOtherTemplateDto.setCreator(serviceComponent.getThisUser());
+                surveyAssetOtherTemplateDto.setCreator(processControllerComponent.getThisUser());
                 surveyAssetOtherTemplateDto.setPid(pid);
                 surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
 

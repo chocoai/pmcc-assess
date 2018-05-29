@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescriptionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DataPriceTimepointDescriptionMapper {
     int countByExample(DataPriceTimepointDescriptionExample example);

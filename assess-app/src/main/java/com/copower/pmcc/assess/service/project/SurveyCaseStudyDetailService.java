@@ -3,17 +3,20 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDetailDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dto.input.project.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.SurveyCaseStudyDetailVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class SurveyCaseStudyDetailService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -121,7 +125,7 @@ public class SurveyCaseStudyDetailService {
         } else {
             Integer dynamicTableId = surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
             detailDto.setDynamicTableId(dynamicTableId);
-            detailDto.setCreator(serviceComponent.getThisUser());
+            detailDto.setCreator(processControllerComponent.getThisUser());
             boolean flag = surveyCaseStudyDetailDao.save(detailDto);
 
             //下载定位图
@@ -131,7 +135,7 @@ public class SurveyCaseStudyDetailService {
             BaseAttachment queryParam = new BaseAttachment();
             queryParam.setTableId(0);
             queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
-            queryParam.setCreater(serviceComponent.getThisUser());
+            queryParam.setCreater(processControllerComponent.getThisUser());
 
             BaseAttachment example = new BaseAttachment();
             example.setTableId(detailDto.getId());

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.EvaluationHypothesis;
 import com.copower.pmcc.assess.dal.entity.EvaluationHypothesisExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EvaluationHypothesisMapper {
     int countByExample(EvaluationHypothesisExample example);

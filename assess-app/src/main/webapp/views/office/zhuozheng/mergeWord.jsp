@@ -1,14 +1,11 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*"
+         import="com.copower.pmcc.erp.common.CommonService,com.copower.pmcc.erp.common.utils.SpringContextUtils,com.zhuozhengsoft.pageoffice.OpenModeType"
          pageEncoding="utf-8" %>
-<%@ page import="java.text.MessageFormat" %>
+<%@ page import="com.zhuozhengsoft.pageoffice.PageOfficeCtrl" %>
+<%@ page import="com.zhuozhengsoft.pageoffice.wordwriter.DataRegion" %>
+<%@ page import="com.zhuozhengsoft.pageoffice.wordwriter.WordDocument" %>
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
-<%@ page import="java.awt.*" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="java.io.File" %>
-<%@ page import="com.copower.pmcc.erp.common.CommonService" %>
-<%@ page import="com.copower.pmcc.erp.common.utils.SpringContextUtils" %>
 <%@ taglib uri="http://java.pageoffice.cn" prefix="po" %>
 <%
     PageOfficeCtrl poCtrl = new PageOfficeCtrl(request);

@@ -1,9 +1,6 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*"
+         import="com.copower.pmcc.erp.common.utils.SysUtils,com.zhuozhengsoft.pageoffice.PDFCtrl"
          pageEncoding="utf-8" %>
-<%@ page import="java.text.MessageFormat" %>
-<%@ page import="org.apache.commons.collections.CollectionUtils" %>
-<%@ page import="com.copower.pmcc.erp.common.utils.SysUtils" %>
 <%@ taglib uri="http://java.pageoffice.cn" prefix="po" %>
 <%
     PDFCtrl poCtrl1 = new PDFCtrl(request);

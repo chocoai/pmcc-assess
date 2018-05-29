@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dal.entity.InfrastructureExample;
 import com.copower.pmcc.assess.dal.mapper.InfrastructureMapper;
-import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

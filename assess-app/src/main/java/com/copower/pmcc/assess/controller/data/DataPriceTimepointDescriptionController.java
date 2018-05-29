@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.service.data.DataPriceTimepointDescriptionService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -10,23 +10,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping(value = "/priceTimepoint")
 @Controller
-public class DataPriceTimepointDescriptionController {
+public class
+DataPriceTimepointDescriptionController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataPriceTimepointDescriptionService dataPriceTimepointDescriptionService;
 
     @RequestMapping(value = "/Index", name = "价值时点描述查看")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataPriceTimepoint");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataPriceTimepoint");
         return modelAndView;
     }
 

@@ -1,10 +1,8 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.dao.DataBestUseDescriptionDao;
 import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
-import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -13,7 +11,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +24,7 @@ public class DataBestUseDescriptionService {
     private DataBestUseDescriptionDao dataBestUseDescriptionDao;
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public List<DataBestUseDescription> dataBestUseDescriptionList(){
         return dataBestUseDescriptionDao.dataBestUseDescriptionList();
@@ -45,7 +42,7 @@ public class DataBestUseDescriptionService {
 
     public boolean addDataBestUseDescription(DataBestUseDescription dataBestUseDescription) throws BusinessException {
         boolean flag = false;
-        dataBestUseDescription.setCreator(serviceComponent.getThisUser());
+        dataBestUseDescription.setCreator(processControllerComponent.getThisUser());
         flag = dataBestUseDescriptionDao.addDataBestUseDescription(dataBestUseDescription);
         return flag;
     }

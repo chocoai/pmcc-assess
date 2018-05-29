@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class SurveyCaseStudyService {
     @Autowired
     private SurveyCaseStudyDao surveyCaseStudyDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public boolean save(SurveyCaseStudy surveyCaseStudyDto) throws BusinessException {
         if(surveyCaseStudyDto == null)
@@ -25,7 +25,7 @@ public class SurveyCaseStudyService {
         if(surveyCaseStudyDto.getId() != null && surveyCaseStudyDto.getId() > 0){
             return surveyCaseStudyDao.update(surveyCaseStudyDto);
         }else{
-            surveyCaseStudyDto.setCreator(serviceComponent.getThisUser());
+            surveyCaseStudyDto.setCreator(processControllerComponent.getThisUser());
             return surveyCaseStudyDao.save(surveyCaseStudyDto);
         }
     }

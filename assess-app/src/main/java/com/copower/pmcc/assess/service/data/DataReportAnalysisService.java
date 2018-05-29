@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.service.data;
 
-
 import com.copower.pmcc.assess.dal.dao.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.dao.DataReportAnalysisFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -30,7 +28,7 @@ public class DataReportAnalysisService {
 
     @Autowired
 
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataReportAnalysisDao dataReportAnalysisDao;
@@ -50,7 +48,7 @@ public class DataReportAnalysisService {
      */
     public boolean addDataReportAnalysis(DataReportAnalysis dataReportAnalysis) throws Exception{
         boolean flag = false;
-        dataReportAnalysis.setCreator(serviceComponent.getThisUser());
+        dataReportAnalysis.setCreator(processControllerComponent.getThisUser());
         dataReportAnalysis.setGmtCreated(new Date());
         flag = dataReportAnalysisDao.addDataReportAnalysis(dataReportAnalysis);
         return flag;

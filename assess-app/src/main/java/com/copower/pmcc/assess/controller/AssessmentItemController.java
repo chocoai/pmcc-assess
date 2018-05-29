@@ -4,6 +4,7 @@ import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -32,11 +33,11 @@ public class AssessmentItemController {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/assessment/baseIndex");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/assessment/baseIndex");
 
         BootstrapTableVo boxReDtoList = bpmRpcBoxService.getBoxReDtoList("", "", 0, 1000);
         modelAndView.addObject("boxRe", (List<BoxReDto>) boxReDtoList.getRows());
