@@ -91,7 +91,7 @@
                                                     <span class="checkbox-inline">
                                                     <input type="checkbox" name="method"
                                                            value="${item.id}"><label>${item.name}</label>
-                                                        </span>
+                                                    </span>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -103,9 +103,11 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason"
-                                                      name="applicableReason" required="required">
-
+                                                      name="applicableReason" required="required" onkeyup="extractApplicableField();">
                                             </textarea>
+                                            <div class="applicableReason-field">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,9 +119,11 @@
                                         <div class="col-sm-10">
                                             <textarea placeholder="请填写不适用原因" class="form-control"
                                                       id="notApplicableReason" name="notApplicableReason"
-                                                      required="required">
-
+                                                      required="required" onkeyup="extractNotApplicableField();">
                                             </textarea>
+                                            <div class="not-applicableReason-field">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -224,11 +228,36 @@
 
     $(function () {
         loadDataDicList();
-
-        var text = "我是\#{国家}人，我的\#{语言}很牛。\#{国家}面积有";
-
-        console.log(resultArray);
     })
+
+    //提取显示适用的字段
+    function extractApplicableField() {
+        var text=$("#applicableReason").val();
+        $('.applicableReason-field').empty();
+        var fieldArray = AssessCommon.extractField(text);
+        if(fieldArray&&fieldArray.length>0){
+            var html='';
+            $.each(fieldArray,function (i,item) {
+                html+='<span class="label label-default">'+item+'</span> ';
+            })
+            $('.applicableReason-field').append(html);
+        }
+    }
+
+    //提取显示不适用的字段
+    function extractNotApplicableField() {
+        var text=$("#notApplicableReason").val();
+        $('.not-applicableReason-field').empty();
+        var fieldArray = AssessCommon.extractField(text);
+        if(fieldArray&&fieldArray.length>0){
+            var html='';
+            $.each(fieldArray,function (i,item) {
+                html+='<span class="label label-default">'+item+'</span> ';
+            })
+            $('.not-applicableReason-field').append(html);
+        }
+    }
+
     //加载 评估技术思路 数据列表
     function loadDataDicList() {
         var cols = [];
@@ -238,7 +267,6 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-//                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
                 str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
@@ -329,10 +357,25 @@
             success: function (result) {
                 Loading.progressHide();
                 $('#divBox').modal();
+                var methodstr = ""+ result.method +"";
+                var methodArr = methodstr.split(",");
+                for (var j = 0;j<methodArr.length;j++){
+                    $("#method input[name='method']").each(function () {
+                        var str = methodArr[j];
+                        if (str!=''){
+                            if (str == $(this).val()){
+                                $(this).attr("checked",true);
+                            }
+                        }
+                    });
+
+                }
                 $("#id").val(result.id);
                 $("#name").val(result.name);
                 $("#notApplicableReason").val(result.notApplicableReason);
                 $("#applicableReason").val(result.applicableReason);
+                extractApplicableField();
+                extractNotApplicableField();
             },
             error: function (result) {
                 Loading.progressHide();

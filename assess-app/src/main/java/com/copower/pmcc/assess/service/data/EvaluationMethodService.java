@@ -29,6 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -59,6 +60,13 @@ public class EvaluationMethodService {
         if (evaluationMethodDto.getGmtCreated() == null) evaluationMethodDto.setGmtCreated(new Date());
         if (evaluationMethodDto.getCreator() == null) evaluationMethodDto.setCreator(commonService.thisUserAccount());
         return methodDao.addEvaluationMethod(evaluationMethodDto);
+    }
+
+    public void save(EvaluationMethodDto evaluationMethodDto,String field,String Nofield){
+        if (!StringUtils.isEmpty(field)  && !StringUtils.isEmpty(Nofield)){
+            String[] fields = field.split(",");
+            String[] noFields = Nofield.split(",");
+        }
     }
 
     @Transactional

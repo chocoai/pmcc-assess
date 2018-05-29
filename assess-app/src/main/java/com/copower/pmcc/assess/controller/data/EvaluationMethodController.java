@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,12 +86,16 @@ public class EvaluationMethodController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationMethodDto evaluationMethodDto) {
+    public HttpResult add(EvaluationMethodDto evaluationMethodDto,String field,String Nofield) {
         try {
-            if (evaluationMethodDto.getId() != null && evaluationMethodDto.getId() != 0) {//不再使用专门的 update controller
+            if ( !StringUtils.isEmpty(evaluationMethodDto.getId()) && evaluationMethodDto.getId() != 0) {//不再使用专门的 update controller
+               if (!StringUtils.isEmpty(field) && !StringUtils.isEmpty(Nofield)){
                 service.update(evaluationMethodDto);
+               }
             } else {
-                service.add(evaluationMethodDto);
+                if (!StringUtils.isEmpty(field) && !StringUtils.isEmpty(Nofield)){
+                    service.add(evaluationMethodDto);
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
