@@ -175,12 +175,13 @@ public class TemplateSetController {
 
     @ResponseBody
     @RequestMapping(value = "/getBaseReportTemplateList", name = "取得模板列表 ", method = RequestMethod.GET)
-    public BootstrapTableVo getBaseReportTemplateList(Integer customId, Integer entrustId, Integer reportId) {
+    public BootstrapTableVo getBaseReportTemplateList(Integer customId, Integer entrustId, Integer reportId,Integer csType) {
 
         BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
         baseReportTemplate.setCustomerId(customId);
         baseReportTemplate.setEntrustId(entrustId);
         baseReportTemplate.setReportTypeId(reportId);
+        baseReportTemplate.setCstype(csType);
         baseReportTemplate.setPid(0);
         BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
         return baseReportTemplateByExample;

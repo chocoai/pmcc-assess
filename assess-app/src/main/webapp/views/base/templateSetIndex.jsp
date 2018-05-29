@@ -54,6 +54,11 @@
                                                     <a class="btn btn-success" onclick="addBookmark(0)">
                                                         新增
                                                     </a>
+                                                    <label class="radio-inline"><input type="radio" value="0" name="csType" checked="checked"
+                                                                                       onclick="reloadTableList()"> 自然人</label>
+                                                    <label class="radio-inline"><input type="radio" value="1" name="csType"
+                                                                                       onclick="reloadTableList()"> 法人</label>
+
                                                 </p>
                                                 <table id="tb_fileds_list" class="table table-bordered"></table>
                                             </div>
@@ -257,7 +262,8 @@
         TableReload(tableList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateList", {
             customId: $("#tree_value").val(),
             entrustId: $("#tabs_index_value").val(),
-            reportId: $("input[name='reportType']:checked").val()
+            reportId: $("input[name='reportType']:checked").val(),
+            csType: $("input[name='csType']:checked").val(),
         });
     }
 
@@ -389,7 +395,8 @@
             {
                 customId: $("#tree_value").val(),
                 entrustId: $("#tabs_index_value").val(),
-                reportId: $("input[name='reportType']:checked").val()
+                reportId: $("input[name='reportType']:checked").val(),
+                csType: $("input[name='csType']:checked").val()
             }, {
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
@@ -569,6 +576,7 @@
         data["customerId"] = $("#tree_value").val();
         data["entrustId"] = $("#tabs_index_value").val();
         data["reportTypeId"] = $("input[name='reportType']:checked").val();
+        data["cstype"] = $("input[name='csType']:checked").val();
 
         $.ajax({
             url: "${pageContext.request.contextPath}/templateSet/saveTemplateData",
