@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.common;
 
+import com.copower.pmcc.assess.dal.entity.ProjectMember;
+import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.bpm.core.process.support.ApprovalUsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +15,12 @@ import org.springframework.stereotype.Component;
  */
 @Component("approvalUsersService")
 public class ApprovalUser extends ApprovalUsersService {
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     @Override
     public String project_manager(String currUserAccount, Integer projectId) {
-        return null;
+        String projectManager = projectMemberService.getProjectManager(projectId);
+        return projectManager;
     }
 }
