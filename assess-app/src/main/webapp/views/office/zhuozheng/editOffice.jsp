@@ -1,5 +1,5 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*,java.awt.*"
+         import="com.zhuozhengsoft.pageoffice.OpenModeType,com.zhuozhengsoft.pageoffice.PageOfficeCtrl"
          pageEncoding="utf-8" %>
 <%
     PageOfficeCtrl poCtrl = new PageOfficeCtrl(request);

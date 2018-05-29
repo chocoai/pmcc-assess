@@ -1,13 +1,16 @@
 package com.copower.pmcc.assess.controller;
 
+
+
+import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
 import com.copower.pmcc.bpm.api.dto.ProcessGroupDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService;
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysWorkPredictDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
@@ -44,7 +47,7 @@ public class HomeController {
     @Autowired
     private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
@@ -54,7 +57,7 @@ public class HomeController {
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView homeMain() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("main");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("main");
         return modelAndView;
     }
 

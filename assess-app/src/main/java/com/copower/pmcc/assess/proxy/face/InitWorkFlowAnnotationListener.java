@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.proxy.face;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.entity.BaseAssist;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotationBeanFactory;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotationEntity;

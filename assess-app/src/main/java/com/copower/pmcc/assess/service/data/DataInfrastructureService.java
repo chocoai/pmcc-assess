@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.dal.dao.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -33,7 +33,7 @@ public class DataInfrastructureService {
     private DataInfrastructureDao dataInfrastructureDao;
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public BootstrapTableVo getInfrastructure(String name){
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -48,7 +48,7 @@ public class DataInfrastructureService {
     public boolean addInfrastructure(InfrastructureDto infrastructureDto) throws BusinessException{
         boolean flag = false;
         Infrastructure infrastructure = new Infrastructure();
-        infrastructureDto.setCreator(serviceComponent.getThisUser());
+        infrastructureDto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(infrastructureDto,infrastructure);
         flag = dataInfrastructureDao.addInfrastructure(infrastructure);
         return flag;
@@ -57,7 +57,7 @@ public class DataInfrastructureService {
     public boolean editInfrastructure(InfrastructureDto infrastructureDto) throws BusinessException{
         boolean flag = false;
         Infrastructure infrastructure1 = new Infrastructure();
-        infrastructureDto.setCreator(serviceComponent.getThisUser());
+        infrastructureDto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(infrastructureDto,infrastructure1);
         flag = dataInfrastructureDao.editInfrastructure(infrastructure1);
         return  flag;

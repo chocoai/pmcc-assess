@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class EvaluationHypothesisController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -43,7 +43,7 @@ public class EvaluationHypothesisController {
     public ModelAndView index() {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/evaluationHypothesisView");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationHypothesisView");
         modelAndView.addObject("useList", baseDataDics);
         modelAndView.addObject("useListA", baseDataDicsA);
         return modelAndView;

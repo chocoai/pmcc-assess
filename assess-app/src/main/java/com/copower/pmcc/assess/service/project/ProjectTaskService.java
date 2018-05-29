@@ -3,10 +3,9 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -17,6 +16,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -51,7 +51,7 @@ public class ProjectTaskService {
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
@@ -94,7 +94,7 @@ public class ProjectTaskService {
             processInfo.setWorkStageId(projectWorkStage.getId());
 
             try {
-                processUserDto = serviceComponent.processStart(processInfo, nextApproval, false);
+                processUserDto = processControllerComponent.processStart(processInfo, nextApproval, false);
 
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
@@ -103,7 +103,7 @@ public class ProjectTaskService {
             //更新附件
             BaseAttachment sysAttachment = new BaseAttachment();
             sysAttachment.setProcessInsId("0");
-            sysAttachment.setCreater(serviceComponent.getThisUser());
+            sysAttachment.setCreater(processControllerComponent.getThisUser());
             sysAttachment.setTableName("tb_project_plan_details");
             sysAttachment.setTableId(projectDetailsId);
             BaseAttachment sysAttachmentNew = new BaseAttachment();
@@ -158,7 +158,7 @@ public class ProjectTaskService {
 
         if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
             try {
-                serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
             } catch (BpmException e) {
                 throw new BusinessException("跳过节点自动提交失败");
             }
@@ -177,7 +177,7 @@ public class ProjectTaskService {
         approvalModelDto.setWorkPhaseId(projectPlanDetails.getProjectPhaseId());
         approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -201,7 +201,7 @@ public class ProjectTaskService {
         projectPlanDetails.setTaskRemarks(taskRemarks);
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

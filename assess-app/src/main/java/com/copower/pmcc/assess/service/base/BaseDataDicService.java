@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.BaseDataDicDao;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.TreeViewVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -12,8 +14,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -35,7 +35,7 @@ public class BaseDataDicService {
     @Autowired
     private BaseDataDicDao cmsBaseDataDicDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     //region 获取数据字典列表
 
@@ -100,12 +100,12 @@ public class BaseDataDicService {
             BeanUtils.copyProperties(sysDataDic, sysDataDicTemp);
             sysDataDicTemp.setBisEnable(sysDataDic.getBisEnable() == null ? false : sysDataDic.getBisEnable());
             sysDataDicTemp.setBisDelete(false);
-            sysDataDicTemp.setCreator(serviceComponent.getThisUser());
+            sysDataDicTemp.setCreator(processControllerComponent.getThisUser());
             if (!cmsBaseDataDicDao.addObject(sysDataDicTemp)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         }
-        serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_DATA_DIC, "");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_DATA_DIC, "");
     }
     //endregion
 
@@ -122,7 +122,7 @@ public class BaseDataDicService {
             sysDataDic.setBisDelete(true);
             if (!cmsBaseDataDicDao.updateObject(sysDataDic))
                 throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
-            serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_DATA_DIC, "");
+            processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_DATA_DIC, "");
         }
     }
     //endregion

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.InfrastructureCost;
 import com.copower.pmcc.assess.dal.entity.InfrastructureCostExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface InfrastructureCostMapper {
     int countByExample(InfrastructureCostExample example);

@@ -305,63 +305,63 @@ public class DataCaseComparisonExample {
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdIsNull() {
-            addCriterion("dynamic_form_id is null");
+        public Criteria andFormTypeIdIsNull() {
+            addCriterion("form_type_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdIsNotNull() {
-            addCriterion("dynamic_form_id is not null");
+        public Criteria andFormTypeIdIsNotNull() {
+            addCriterion("form_type_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdEqualTo(Integer value) {
-            addCriterion("dynamic_form_id =", value, "dynamicFormId");
+        public Criteria andFormTypeIdEqualTo(Integer value) {
+            addCriterion("form_type_id =", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdNotEqualTo(Integer value) {
-            addCriterion("dynamic_form_id <>", value, "dynamicFormId");
+        public Criteria andFormTypeIdNotEqualTo(Integer value) {
+            addCriterion("form_type_id <>", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdGreaterThan(Integer value) {
-            addCriterion("dynamic_form_id >", value, "dynamicFormId");
+        public Criteria andFormTypeIdGreaterThan(Integer value) {
+            addCriterion("form_type_id >", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("dynamic_form_id >=", value, "dynamicFormId");
+        public Criteria andFormTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_type_id >=", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdLessThan(Integer value) {
-            addCriterion("dynamic_form_id <", value, "dynamicFormId");
+        public Criteria andFormTypeIdLessThan(Integer value) {
+            addCriterion("form_type_id <", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdLessThanOrEqualTo(Integer value) {
-            addCriterion("dynamic_form_id <=", value, "dynamicFormId");
+        public Criteria andFormTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("form_type_id <=", value, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdIn(List<Integer> values) {
-            addCriterion("dynamic_form_id in", values, "dynamicFormId");
+        public Criteria andFormTypeIdIn(List<Integer> values) {
+            addCriterion("form_type_id in", values, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdNotIn(List<Integer> values) {
-            addCriterion("dynamic_form_id not in", values, "dynamicFormId");
+        public Criteria andFormTypeIdNotIn(List<Integer> values) {
+            addCriterion("form_type_id not in", values, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdBetween(Integer value1, Integer value2) {
-            addCriterion("dynamic_form_id between", value1, value2, "dynamicFormId");
+        public Criteria andFormTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("form_type_id between", value1, value2, "formTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDynamicFormIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("dynamic_form_id not between", value1, value2, "dynamicFormId");
+        public Criteria andFormTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_type_id not between", value1, value2, "formTypeId");
             return (Criteria) this;
         }
 

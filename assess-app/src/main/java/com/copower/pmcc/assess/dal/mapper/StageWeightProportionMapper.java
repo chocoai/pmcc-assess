@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StageWeightProportionMapper {
     int countByExample(StageWeightProportionExample example);

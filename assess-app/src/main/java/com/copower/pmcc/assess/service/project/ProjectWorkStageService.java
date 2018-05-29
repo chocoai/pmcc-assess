@@ -5,9 +5,8 @@ import com.copower.pmcc.assess.common.ApprovalUser;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.ProjectWorkStageDao;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
-import com.copower.pmcc.assess.service.ServiceComponent;
-import com.copower.pmcc.assess.service.base.ApprovalUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -32,13 +31,13 @@ public class ProjectWorkStageService {
     @Autowired
     private ProjectWorkStageDao projectWorkStageDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
     @Autowired
     private CommonService commonService;
     @Autowired
-    private ApprovalUserService approvalUserService;
+    private ApprovalUser approvalUser;
 
     public ProjectWorkStage cacheProjectWorkStage(int id) {
 
@@ -86,11 +85,11 @@ public class ProjectWorkStageService {
                 projectWorkStage.setBisLoadDefalut(Boolean.FALSE);
             projectWorkStageDao.updateWorkStageById(projectWorkStage);
         }
-        serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
     }
 
     public boolean updateWorkStage(ProjectWorkStage projectWorkStage) {
-        serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_STAGE,"");
         return projectWorkStageDao.updateWorkStageById(projectWorkStage);
     }
 
@@ -121,7 +120,7 @@ public class ProjectWorkStageService {
             case "2": {
                 String boxRoleKey = projectWorkStage.getBoxRoleKey();
                 if (StringUtils.isNotBlank(boxRoleKey)) {
-                    userAccounts = approvalUserService.getRoleUserAccountList(boxRoleKey, commonService.thisUserAccount(), projectId);
+                    userAccounts = approvalUser.getRoleUserAccountList(boxRoleKey, commonService.thisUserAccount(), projectId);
                 }
                 break;
             }

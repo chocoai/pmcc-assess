@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dal.entity.DataDeclareFormExample;
 import com.copower.pmcc.assess.dal.mapper.DataDeclareFormMapper;
-import com.copower.pmcc.erp.common.utils.MybatisUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

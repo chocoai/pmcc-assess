@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistoryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ProjectMemberHistoryMapper {
     int countByExample(ProjectMemberHistoryExample example);

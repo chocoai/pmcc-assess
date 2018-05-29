@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysisFieldExample;
 import com.copower.pmcc.assess.dal.mapper.DataReportAnalysisFieldMapper;

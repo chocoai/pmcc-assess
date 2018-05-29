@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -30,14 +30,14 @@ public class DataBuildingNewRateController {
     private DataBuildingNewRateService dataBuildingNewRateService;
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
 
     @RequestMapping(value = "/Index")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataArchitectureDic");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataArchitectureDic");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.BUILDING_NEW_RATE_USE);
         modelAndView.addObject("useList",baseDataDics);
 

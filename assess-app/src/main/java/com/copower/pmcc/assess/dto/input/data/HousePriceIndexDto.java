@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dto.input.data;
 
-import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

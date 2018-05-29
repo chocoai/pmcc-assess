@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;

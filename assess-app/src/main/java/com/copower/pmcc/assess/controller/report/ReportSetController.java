@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.report;
 
-
+import com.copower.pmcc.assess.dal.dao.VwDbInfoDao;
+import com.copower.pmcc.assess.dal.entity.VwDbColumnsInfo;
+import com.copower.pmcc.assess.dal.entity.VwDbTableInfo;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
@@ -12,9 +14,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.copower.pmcc.assess.dal.entity.VwDbColumnsInfo;
-import com.copower.pmcc.assess.dal.entity.VwDbTableInfo;
-import com.copower.pmcc.assess.dal.dao.VwDbInfoDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

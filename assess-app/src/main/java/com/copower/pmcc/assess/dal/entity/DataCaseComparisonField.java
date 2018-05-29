@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class CaseComparisonField {
+public class DataCaseComparisonField {
     private Integer id;
 
     private Integer caseId;
@@ -11,7 +11,7 @@ public class CaseComparisonField {
 
     private String tableName;
 
-    private String name;
+    private String fieldName;
 
     private String creator;
 
@@ -51,12 +51,12 @@ public class CaseComparisonField {
         this.tableName = tableName == null ? null : tableName.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public String getCreator() {

@@ -3,8 +3,8 @@ package com.copower.pmcc.assess.service.base;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAssistDao;
 import com.copower.pmcc.assess.dal.entity.BaseAssist;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotationEntity;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class BaseAssistService {
     @Autowired
     private BaseAssistDao baseAssistDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public List<BaseAssist> getBaseAssist(String assistType, String search) {
         List<BaseAssist> BaseAssists = null;
@@ -52,6 +52,6 @@ public class BaseAssistService {
                 baseAssistDao.insertBaseAssist(BaseAssist);
             }
         }
-        serviceComponent.RemoveRedisKeyValues(BaseConstant.PMCC_ASSESS_BASE_ASSIST, type);
+        processControllerComponent.removeRedisKeyValues(BaseConstant.PMCC_ASSESS_BASE_ASSIST, type);
     }
 }

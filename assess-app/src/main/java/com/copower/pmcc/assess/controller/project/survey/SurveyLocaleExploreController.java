@@ -1,23 +1,20 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
-import com.copower.pmcc.assess.service.project.*;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.assess.service.project.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.SurveyLocaleExploreDetailService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +33,7 @@ import java.util.List;
 public class SurveyLocaleExploreController {
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SurveyLocaleExploreDetailService surveyLocaleExploreDetailService;
     @Autowired
@@ -57,7 +54,7 @@ public class SurveyLocaleExploreController {
 
     @RequestMapping(value = "/index", name = "现场查勘管理页面", method = RequestMethod.GET)
     public ModelAndView index(Integer id, Integer planDetailsId, Integer projectId) {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/task/explore/localeExploreManage");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/task/explore/localeExploreManage");
         SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
         if (id != null && id > 0) {
             surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);
@@ -82,7 +79,7 @@ public class SurveyLocaleExploreController {
 
     @RequestMapping(value = "/detailsIndex", name = "详情页面", method = RequestMethod.GET)
     public ModelAndView detailIndex(Integer id) {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/task/explore/localeExploreDetails");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/task/explore/localeExploreDetails");
         SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
         if (id != null && id > 0) {
             surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);

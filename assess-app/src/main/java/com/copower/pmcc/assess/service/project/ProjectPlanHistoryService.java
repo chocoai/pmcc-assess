@@ -8,11 +8,10 @@ import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanHistory;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanHistoryDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanHistoryEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -20,6 +19,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -46,7 +46,7 @@ public class ProjectPlanHistoryService {
     @Autowired
     private ProjectPlanHistoryDao projectPlanHistoryDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
@@ -71,7 +71,7 @@ if(CollectionUtils.isNotEmpty(projectPlanHistories))
     throw new BusinessException("已申请计划变更，请不要重复申请");
 }
 projectPlanHistories=new ArrayList<>();
-        SysUserDto sysUser = serviceComponent.getThisUserInfo();
+        SysUserDto sysUser = processControllerComponent.getThisUserInfo();
         List<ProjectPlanHistoryDto> projectPlanHistoryDtos = JSON.parseArray(planString, ProjectPlanHistoryDto.class);
         List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(Integer.valueOf(projectId), "");
         projectPlans = LangUtils.filter(projectPlans, o -> {
@@ -126,7 +126,7 @@ projectPlanHistories=new ArrayList<>();
             processInfo.setProcessEventExecutorName(ProjectPlanHistoryEvent.class.getSimpleName());
 
             try {
-                processUserDto = serviceComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processInfo, "", false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -140,7 +140,7 @@ projectPlanHistories=new ArrayList<>();
 
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
-                    serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                    processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
                 } catch (BpmException e) {
                     throw new BusinessException("跳过节点自动提交失败");
                 }
@@ -166,7 +166,7 @@ projectPlanHistories=new ArrayList<>();
         //更新附件
         BaseAttachment sysAttachment = new BaseAttachment();
         sysAttachment.setProcessInsId("0");
-        sysAttachment.setCreater(serviceComponent.getThisUser());
+        sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_plan_history");
         BaseAttachment sysAttachmentNew = new BaseAttachment();
         sysAttachmentNew.setProcessInsId(processInsId);
@@ -204,7 +204,7 @@ projectPlanHistories=new ArrayList<>();
         approvalModelDto.setCurrentStep(-1);
         approvalModelDto.setBisNext("0");
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -212,7 +212,7 @@ projectPlanHistories=new ArrayList<>();
 
     public void approvalSubmit(ApprovalModelDto approvalModelDto) throws BusinessException {
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

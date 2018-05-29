@@ -7,14 +7,12 @@ import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDetailDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
-import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
@@ -32,7 +30,7 @@ import java.util.Map;
 @Component
 public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
@@ -93,7 +91,7 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
                                         baseAttachment.setTableId(surveyCaseStudyDetail.getId());
                                         //拷贝真实文件
                                         String filePath = baseAttachmentService.createFTPBasePath(SurveyCaseStudyDetail.class.getSimpleName(),
-                                                DateUtils.formatNowToYMD(), serviceComponent.getThisUser());
+                                                DateUtils.formatNowToYMD(), processControllerComponent.getThisUser());
                                         ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), baseAttachment.getFtpFilesName(), filePath);
                                         baseAttachment.setFilePath(filePath);
                                         baseAttachmentDao.addAttachment(baseAttachment);

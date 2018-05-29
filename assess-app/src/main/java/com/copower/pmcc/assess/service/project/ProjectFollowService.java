@@ -3,10 +3,9 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.ProjectFollowDao;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -35,9 +34,7 @@ public class ProjectFollowService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ErpRpcUserService erpRpcUserService;
-    @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectCenterService projectCenterService;
 
@@ -47,8 +44,8 @@ public class ProjectFollowService {
     public void followProject(Integer projectId, String followReason) throws BusinessException {
         ProjectFollow projectFollow = new ProjectFollow();
         projectFollow.setProjectId(projectId);
-        projectFollow.setUserAccount(serviceComponent.getThisUser());
-        projectFollow.setCreator(serviceComponent.getThisUser());
+        projectFollow.setUserAccount(processControllerComponent.getThisUser());
+        projectFollow.setCreator(processControllerComponent.getThisUser());
         projectFollow.setFollowReason(followReason);
         if (!projectFollowDao.addFollow(projectFollow)) {
             throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
@@ -59,7 +56,7 @@ public class ProjectFollowService {
      * 取消项目关注
      */
     public void cancelFollowProject(Integer projectId, String cancelReason) throws BusinessException {
-        ProjectFollow projectFollow = projectFollowDao.getProjectFollowByUserAccountAndProjectId(serviceComponent.getThisUser(), projectId);
+        ProjectFollow projectFollow = projectFollowDao.getProjectFollowByUserAccountAndProjectId(processControllerComponent.getThisUser(), projectId);
         projectFollow.setCancelReason(cancelReason);
         projectFollow.setCancelDate(new Date());
         projectFollow.setBisEnable(false);
@@ -72,7 +69,7 @@ public class ProjectFollowService {
 
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectFollow> projectFollows = projectFollowDao.getProjectFollowByUserAccount(serviceComponent.getThisUser());
+        List<ProjectFollow> projectFollows = projectFollowDao.getProjectFollowByUserAccount(processControllerComponent.getThisUser());
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         if (CollectionUtils.isNotEmpty(projectFollows)) {
             List<Integer> projectIds = LangUtils.transform(projectFollows, input -> input.getProjectId());
@@ -85,7 +82,7 @@ public class ProjectFollowService {
     }
 
     public ProjectFollow getProjectFollowByUser(Integer projectId) {
-        ProjectFollow projectFollow = projectFollowDao.getProjectFollowByUserAccountAndProjectId(serviceComponent.getThisUser(), projectId);
+        ProjectFollow projectFollow = projectFollowDao.getProjectFollowByUserAccountAndProjectId(processControllerComponent.getThisUser(), projectId);
         return projectFollow;
     }
 }

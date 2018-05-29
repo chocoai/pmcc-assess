@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.EvaluationMethod;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodExample;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanExample;
 import com.copower.pmcc.assess.dal.mapper.EvaluationMethodMapper;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;

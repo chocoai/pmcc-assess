@@ -4,25 +4,19 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
-import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
-import com.copower.pmcc.assess.dto.output.project.SurveyAssetTemplateVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +31,7 @@ public class SurveyAssetTemplateService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
 
@@ -84,7 +78,7 @@ public class SurveyAssetTemplateService {
             }
 
             surveyAssetTemplateDto.setPid(pid);
-            surveyAssetTemplateDto.setCreator(serviceComponent.getThisUser());
+            surveyAssetTemplateDto.setCreator(processControllerComponent.getThisUser());
             surveyAssetTemplateDao.save(surveyAssetTemplateDto);
 
             int tableId = surveyAssetTemplateDto.getId();

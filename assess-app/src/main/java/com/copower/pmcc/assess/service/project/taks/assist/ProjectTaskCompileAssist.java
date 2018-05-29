@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.dao.CompileReportDao;
 import com.copower.pmcc.assess.dal.dao.CompileReportDetailsDao;
 import com.copower.pmcc.assess.dal.dao.DataReportAnalysisFieldDao;
@@ -14,6 +13,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisFieldService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.List;
 @WorkFlowAnnotation(desc = "报告编制成果")
 public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
-    private ControllerComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DataReportAnalysisService dataReportAnalysisService;
     @Autowired
@@ -43,7 +43,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", "", 0, "0", "");
         Integer category = projectPlanDetails.getReportAnalysisId();
         List<DataReportAnalysisVo> dataReportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(category);
         List<DataReportAnalysisField> dataReportAnalysisFields = dataReportAnalysisFieldDao.getAllList();
@@ -55,7 +55,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
         List<CompileReport> compileReports = compileReportDao.getByProcessInsId(processInsId);
         CompileReport compileReport = compileReports.get(0);
         Integer pid = compileReport.getId();
@@ -66,7 +66,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
         Integer category = projectPlanDetails.getReportAnalysisId();
         List<DataReportAnalysisVo> dataReportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(category);
         List<DataReportAnalysisField> dataReportAnalysisFields = dataReportAnalysisFieldDao.getAllList();
@@ -83,7 +83,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/compile/taskCompileApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

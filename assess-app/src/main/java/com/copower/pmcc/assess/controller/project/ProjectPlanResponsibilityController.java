@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,14 +23,14 @@ import java.util.List;
 @RequestMapping(value = "/ProjectPlanResponsibility")
 public class ProjectPlanResponsibilityController {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
     @ResponseBody
     @RequestMapping(value = "/getProjectPlanResponsibilityListByCurruser", name = "取得当前责任人工作任务", method = RequestMethod.GET)
     public HttpResult getProjectPlanResponsibilityListByCurruser() {
-        List<ProjectResponsibilityDto> projectTaskListByUserAccount = bpmRpcProjectTaskService.getProjectTaskListByUserAccount(serviceComponent.getThisUser());
+        List<ProjectResponsibilityDto> projectTaskListByUserAccount = bpmRpcProjectTaskService.getProjectTaskListByUserAccount(processControllerComponent.getThisUser());
         return HttpResult.newCorrectResult(projectTaskListByUserAccount);
     }
 }

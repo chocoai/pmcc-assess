@@ -5,11 +5,11 @@ import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataDeclareFormService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -45,7 +45,7 @@ public class ProjectPlanDetailsService {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DataDeclareFormService dataDeclareFormService;
 
@@ -72,7 +72,7 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, true);
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
-        projectResponsibilityDto.setUserAccount(serviceComponent.getThisUser());
+        projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
         if (CollectionUtils.isNotEmpty(projectTaskList) && CollectionUtils.isNotEmpty(projectPlanDetailsVos)) {
             for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
@@ -138,4 +138,6 @@ public class ProjectPlanDetailsService {
         }
         return projectPlanDetailsVos;
     }
+
+
 }

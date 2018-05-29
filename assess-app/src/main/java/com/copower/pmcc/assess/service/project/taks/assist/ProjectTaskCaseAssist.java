@@ -1,17 +1,14 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
-import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
-import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 @WorkFlowAnnotation(desc = "案例调查成果")
 public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
-    private ControllerComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -39,19 +36,19 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/case/taskCaseIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", "", 0, "0", "");
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/case/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/case/taskCaseIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", processInsId, boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
@@ -62,7 +59,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/case/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

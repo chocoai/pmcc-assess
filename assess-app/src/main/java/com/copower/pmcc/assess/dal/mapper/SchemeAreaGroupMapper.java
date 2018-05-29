@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SchemeAreaGroupMapper {
     int countByExample(SchemeAreaGroupExample example);

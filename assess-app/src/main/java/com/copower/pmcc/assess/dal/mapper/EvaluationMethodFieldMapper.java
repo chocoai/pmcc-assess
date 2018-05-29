@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dal.entity.EvaluationMethodFieldExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EvaluationMethodFieldMapper {
     int countByExample(EvaluationMethodFieldExample example);

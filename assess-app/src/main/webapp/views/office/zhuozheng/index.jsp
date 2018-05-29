@@ -1,5 +1,4 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*"
          pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.pageoffice.cn" prefix="po" %>
 

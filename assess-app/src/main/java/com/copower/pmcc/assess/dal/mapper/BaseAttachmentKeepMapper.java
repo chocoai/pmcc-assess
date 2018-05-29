@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeepExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BaseAttachmentKeepMapper {
     int countByExample(BaseAttachmentKeepExample example);

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.DataPriceTimepointDescriptionDao;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -23,7 +23,7 @@ public class DataPriceTimepointDescriptionService {
     private DataPriceTimepointDescriptionDao dataPriceTimepointDescriptionDao;
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public BootstrapTableVo getPriceTimepointListVo(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -37,7 +37,7 @@ public class DataPriceTimepointDescriptionService {
 
     public boolean addPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) throws BusinessException {
         boolean flag = false;
-        dataPriceTimepointDescription.setCreator(serviceComponent.getThisUser());
+        dataPriceTimepointDescription.setCreator(processControllerComponent.getThisUser());
         flag = dataPriceTimepointDescriptionDao.addDataPriceTimepointDescription(dataPriceTimepointDescription);
         return flag;
     }

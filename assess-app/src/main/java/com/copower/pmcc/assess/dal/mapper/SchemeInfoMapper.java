@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.entity.SchemeInfoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SchemeInfoMapper {
     int countByExample(SchemeInfoExample example);

@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +26,7 @@ public class DataReportAnalysisController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private BaseDataDicService baseDataDicService;
@@ -43,7 +42,7 @@ public class DataReportAnalysisController {
     public ModelAndView index() {
         //获取报告分析类别名称
         List<BaseDataDic> categoryList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataReportAnalysis");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
         modelAndView.addObject("categoryList",categoryList);
         return modelAndView;
     }

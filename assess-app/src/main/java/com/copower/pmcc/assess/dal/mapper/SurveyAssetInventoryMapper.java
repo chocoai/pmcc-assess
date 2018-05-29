@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventoryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SurveyAssetInventoryMapper {
     int countByExample(SurveyAssetInventoryExample example);

@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
-import com.copower.pmcc.assess.dal.entity.EarlyWarning;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataEarlyWarningService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class DataEarlyWarningController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataEarlyWarningService dataEarlyWarningService;
@@ -47,7 +46,7 @@ public class DataEarlyWarningController {
         List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_TYPE);
         //获取预警方式字典列表
         List<BaseDataDic> modeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EARLYWARNING_MODE);
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataEarlyWarning");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataEarlyWarning");
         modelAndView.addObject("entrustPurposeList",entrustPurposeList);
         modelAndView.addObject("typeList",typeList);
         modelAndView.addObject("modeList",modeList);

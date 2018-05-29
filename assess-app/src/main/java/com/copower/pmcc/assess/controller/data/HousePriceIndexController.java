@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
 import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -22,14 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class HousePriceIndexController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private HousePriceIndexService housePriceIndexService;
 
     @RequestMapping(value = "/view")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/housePriceIndex");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/housePriceIndex");
         return modelAndView;
     }
 

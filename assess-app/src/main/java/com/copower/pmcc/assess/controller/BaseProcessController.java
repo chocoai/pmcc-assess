@@ -12,6 +12,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -37,7 +38,7 @@ public class BaseProcessController {
     @Autowired
     private BaseProcessService hrBaseProcessService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseFormService hrBaseFormService;
     @Autowired
@@ -45,7 +46,7 @@ public class BaseProcessController {
 
     @RequestMapping(value = "/processIndex", name = "流程设置首页")
     public ModelAndView processIndex() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/processIndex");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/processIndex");
 
         List<BaseForm> hrBaseForm = hrBaseFormService.getBaseFormList();
         modelAndView.addObject("hrBaseForm", hrBaseForm);

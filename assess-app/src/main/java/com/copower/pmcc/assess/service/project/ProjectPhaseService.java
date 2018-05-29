@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.dao.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.apache.commons.lang3.StringUtils;
@@ -34,10 +34,10 @@ public class ProjectPhaseService {
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public void updateProjectPhaseById(ProjectPhase projectPhase) {
-        serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
         projectPhaseDao.updateProjectPhaseById(projectPhase);
     }
 
@@ -82,7 +82,7 @@ public class ProjectPhaseService {
                 projectPhase.setBoxName("");
             projectPhaseDao.updateProjectPhaseById(projectPhase);
         }
-        serviceComponent.RemoveRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
+        processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
     }
 
     public ProjectPhase getProjectPhaseById(Integer id) {
