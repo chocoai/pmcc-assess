@@ -138,6 +138,7 @@ public class ProjectInfoService {
         ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
         projectDto.getProjectInfo().setId(projectinfoid);
         projectMember.setId(projectInfoID.getProjectMemberId());
+        projectMember.setProjectId(projectinfoid);
         projectDto.getConsignor().setId(projectInfoID.getConsignorId());
         projectDto.getUnitinformation().setId(projectInfoID.getUnitInformationId());
         projectDto.getPossessor().setId(projectInfoID.getPossessorId());
