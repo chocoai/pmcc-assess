@@ -107,9 +107,9 @@
         var hypothesis = formParams("frm_task_evaluationHypothesis");
         var basis = formParams("frm_task_evaluationBasis");
         var data = {};
-        data.princiPle = princiPle;
-        data.hypothesis = hypothesis;
-        data.basis = basis;
+        data.princiPle = princiPle.Content+"."+princiPle.DataID;
+        data.hypothesis = hypothesis.Content+"."+hypothesis.DataID;
+        data.basis = basis.Content+"."+basis.DataID;
         //合并json
         json = JSON.stringify(data);
         console.log(data);

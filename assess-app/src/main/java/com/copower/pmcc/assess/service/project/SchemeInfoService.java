@@ -35,27 +35,35 @@ public class SchemeInfoService {
     @Autowired
     private SchemeInfoDao dao;
 
-    public void saveChange(SchemeInfoFormDataDto p,SchemeInfoFormDataDto h,SchemeInfoFormDataDto b) {
-        logger.info(p+"");
-
-    }
-
     /**
      * 这里的分隔符必须和页面相对应
-     *
      * @param planDetailsId
      * @param processInsId
-     * @param formData
+     * @param princiPle
+     * @param hypothesis
+     * @param basis
      */
-    public void saveChange(Integer planDetailsId, String processInsId, String formData) {
-        if (!StringUtils.isEmpty(processInsId) && !StringUtils.isEmpty(formData)) {
-            String[] strings = formData.split(".");
-            for (String s : strings) {
-                String[] ss = s.split(",");
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.HYPOTHESIS.getDataType());
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.PRINCIPLE.getDataType());
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.Basis.getDataType());
-            }
+    public void saveChange(Integer planDetailsId, String processInsId, String princiPle, String hypothesis, String basis) {
+        String[] princiPles = princiPle.split(".");
+        String[] hypothesisS = hypothesis.split(".");
+        String[] basisS = basis.split(".");
+        for (String s:princiPles){
+            String[] strs = s.split(",");
+            String content = strs[0];
+            String dataID = strs[1];
+            save(planDetailsId,processInsId,content,dataID,SchemeInfoDetailEnum.HYPOTHESIS.getDataType());
+        }
+        for (String s:hypothesisS){
+            String[] strs = s.split(",");
+            String content = strs[0];
+            String dataID = strs[1];
+            save(planDetailsId,processInsId,content,dataID,SchemeInfoDetailEnum.HYPOTHESIS.getDataType());
+        }
+        for (String s:basisS){
+            String[] strs = s.split(",");
+            String content = strs[0];
+            String dataID = strs[1];
+            save(planDetailsId,processInsId,content,dataID,SchemeInfoDetailEnum.HYPOTHESIS.getDataType());
         }
     }
 
@@ -69,7 +77,7 @@ public class SchemeInfoService {
      * @param dataType
      */
     @Transactional
-    private void save(Integer planDetailsId, String content, String dataID, String processInsId, Integer dataType) {
+    public void save(Integer planDetailsId, String processInsId,String content, String dataID, Integer dataType) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setCreator(commonService.thisUserAccount());
@@ -77,9 +85,9 @@ public class SchemeInfoService {
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         int id = addReturnID(schemeInfo);
-        String[] contentS = content.split(",");
+        String[] contentS = content.split(",");//这里最好是页面强制适用一种特定符号结尾如$
         String[] dataIDS = dataID.split(",");
-        for (int i = 0; i < contentS.length; i++) {
+        for (int i = 0; i < dataIDS.length; i++) {
             SchemeInfoDetail schemeInfoDetail = new SchemeInfoDetail();
             schemeInfoDetail.setCreator(commonService.thisUserAccount());
             schemeInfoDetail.setContent(contentS[i]);

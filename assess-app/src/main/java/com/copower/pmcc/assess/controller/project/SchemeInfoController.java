@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.SchemeInfoFormDataDto;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.SchemeInfoDetailService;
 import com.copower.pmcc.assess.service.project.SchemeInfoService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -20,22 +23,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SchemeInfoController {
 
     @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
     private SchemeInfoService schemeInfoService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
-    @RequestMapping(value = "/save",method = {RequestMethod.POST},name = "保存  方案主表")
-    public Object save(String princiPle, String hypothesis, String basis) {//SchemeInfoFormDataDto
+    @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "保存  方案主表")
+    public Object save(String princiPle, String hypothesis, String basis, Integer planDetailsId) {//SchemeInfoFormDataDto
         try {
             if (!StringUtils.isEmpty(princiPle)) {
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 if (!StringUtils.isEmpty(hypothesis) && !StringUtils.isEmpty(basis)) {
-                    SchemeInfoFormDataDto  p = schemeInfoService.formDataDto(princiPle);
-                    SchemeInfoFormDataDto  h = schemeInfoService.formDataDto(hypothesis);
-                    SchemeInfoFormDataDto  b = schemeInfoService.formDataDto(basis);
-                    logger.info(p+"");
-                    logger.info(h+"");
-                    logger.info(b+"");
-                    schemeInfoService.saveChange(p,h,b);
+                    schemeInfoService.saveChange(planDetailsId, projectPlanDetails.getProcessInsId(), princiPle, hypothesis, basis);
                 }
             }
         } catch (Exception e) {
