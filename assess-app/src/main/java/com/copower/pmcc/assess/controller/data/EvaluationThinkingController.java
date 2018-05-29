@@ -84,13 +84,9 @@ public class EvaluationThinkingController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationThinkingDto evaluationThinkingDto) {
+    public HttpResult add(EvaluationThinkingDto evaluationThinkingDto,String field,String Nofield) {
         try {
-            if (evaluationThinkingDto.getId() != null && evaluationThinkingDto.getId() != 0) {//不再使用专门的 update controller
-                service.update(evaluationThinkingDto);
-            } else {
-                service.add(evaluationThinkingDto);
-            }
+           service.saveAndUpdate(evaluationThinkingDto,field,Nofield);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleDao;
+import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
@@ -21,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -45,6 +49,9 @@ public class EvaluationPrincipleService {
     private BaseDataDicService baseDataDicService;
 
     @Autowired
+    private EvaluationPrincipleFieldDao fieldDao;
+
+    @Autowired
     private EvaluationPrincipleDao evaluationPrincipleDao;
 
     @Transactional
@@ -54,6 +61,74 @@ public class EvaluationPrincipleService {
         if (evaluationPrincipleDto.getGmtCreated() == null) evaluationPrincipleDto.setGmtCreated(new Date());
         return evaluationPrincipleDao.add(evaluationPrincipleDto);
     }
+
+    @Transactional
+    public void saveAndUpdate(EvaluationPrincipleDto evaluationPrincipleDto, String field) {
+        if (!ObjectUtils.isEmpty(evaluationPrincipleDto.getId())) {//update
+            evaluationPrincipleDto.setCreator(evaluationPrincipleDao.get(evaluationPrincipleDto.getId()).getCreator());
+            evaluationPrincipleDao.update(evaluationPrincipleDto);
+            if (!StringUtils.isEmpty(field)) {// 字段
+                // 因为是修改所以可能所有的数据数据库中都已经有相关信息了  有可能增加一些字段,有可能删去一些字段
+                String[] fields = field.split(",");
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) fieldDao.delete(f, evaluationPrincipleDto.getId());
+                }
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationPrincipleFieldDto fieldDto = new EvaluationPrincipleFieldDto();
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setPrincipleId(evaluationPrincipleDto.getId());
+                        try {
+                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        } catch (Exception e) {
+                            try {
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {// add
+            evaluationPrincipleDto.setCreator(commonService.thisUserAccount());
+            Integer id = null;
+            try {
+                id = evaluationPrincipleDao.save(evaluationPrincipleDto);
+            } catch (Exception e) {
+                try {
+                    logger.error("异常啦!"+e.getMessage());
+                    throw e;
+                }catch (Exception e1){
+
+                }
+            }
+            if (!StringUtils.isEmpty(field)) {
+                String[] fields = field.split(",");
+                for (String f : fields) {//字段
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationPrincipleFieldDto fieldDto = new EvaluationPrincipleFieldDto();
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setPrincipleId(id);
+                        try {
+                            if (id!=null) fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        } catch (Exception e) {
+                            try {
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
 
     @Transactional
     public boolean remove(Integer id) {
@@ -78,10 +153,10 @@ public class EvaluationPrincipleService {
         return evaluationPrincipleDao.list(name);
     }
 
-    public List<EvaluationPrincipleVo> listNs(String name){
+    public List<EvaluationPrincipleVo> listNs(String name) {
         List<EvaluationPrincipleVo> vos = new ArrayList<>();
         List<EvaluationPrincipleDto> dtos = listN(name);
-        for (EvaluationPrincipleDto dto:dtos){
+        for (EvaluationPrincipleDto dto : dtos) {
             vos.add(change(dto));
         }
         return vos;
@@ -115,12 +190,12 @@ public class EvaluationPrincipleService {
                 StringBuilder builder = new StringBuilder(1024);
                 String[] methods = vo.getMethod().split(",");
                 for (int i = 0; i < methods.length; i++) {
-                    if (i < 3){//只显示3条
+                    if (i < 3) {//只显示3条
                         int id = Integer.parseInt(methods[i]);
                         if (i == methods.length - 1) {
                             builder.append(changeMethodC(id));
                         } else {
-                            builder.append(changeMethodC(id)+",");
+                            builder.append(changeMethodC(id) + ",");
                         }
                     }
                 }
@@ -135,7 +210,7 @@ public class EvaluationPrincipleService {
                         if (i == entrustmentPurposeS.length - 1) {
                             builder.append(changeEntrustmentPurpose(id));
                         } else {
-                            builder.append(changeEntrustmentPurpose(id)+",");
+                            builder.append(changeEntrustmentPurpose(id) + ",");
                         }
                     }
                 }
@@ -149,6 +224,7 @@ public class EvaluationPrincipleService {
 
     /**
      * 特别处理 方法 int
+     *
      * @param methodStr
      * @return
      */
@@ -170,15 +246,16 @@ public class EvaluationPrincipleService {
 
     /**
      * 特别处理 方法
+     *
      * @param id
      * @return
      */
-    public String changeMethodC(Integer id){
+    public String changeMethodC(Integer id) {
         List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         String v = "";
         inner:
-        for (BaseDataDic b : baseDataDicsA){
-            if (b.getId()==id){
+        for (BaseDataDic b : baseDataDicsA) {
+            if (b.getId() == id) {
                 v = b.getName();
                 break inner;
             }
@@ -188,15 +265,16 @@ public class EvaluationPrincipleService {
 
     /**
      * 特别处理 委托
+     *
      * @param id
      * @return
      */
-    public String changeEntrustmentPurpose(Integer id){
+    public String changeEntrustmentPurpose(Integer id) {
         List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         String v = "";
         inner:
-        for (BaseDataDic b : baseDataDicsA){
-            if (b.getId()==id){
+        for (BaseDataDic b : baseDataDicsA) {
+            if (b.getId() == id) {
                 v = b.getName();
                 break inner;
             }

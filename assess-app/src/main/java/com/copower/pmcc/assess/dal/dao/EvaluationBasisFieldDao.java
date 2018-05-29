@@ -32,6 +32,15 @@ public class EvaluationBasisFieldDao {
         return false;
     }
 
+    public void delete(String field,Integer basisID){
+        EvaluationBasisFieldExample example = new EvaluationBasisFieldExample();
+        example.createCriteria().andIdIsNotNull().andNameEqualTo(field).andBasisIdEqualTo(basisID);
+        List<EvaluationBasisField> fieldList = mapper.selectByExample(example);
+        for (EvaluationBasisField field1:fieldList){
+            mapper.deleteByPrimaryKey(field1.getId());
+        }
+    }
+
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }

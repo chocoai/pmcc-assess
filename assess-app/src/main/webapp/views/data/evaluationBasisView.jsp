@@ -112,9 +112,12 @@
                                             模板
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea required="required" placeholder="请填写模板" class="form-control" id="template" name="template">
+                                            <textarea required="required" placeholder="请填写模板" class="form-control" id="template" name="template" onkeyup="extractTemplateField()">
 
                                             </textarea>
+                                            <div class="template-field">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +127,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
@@ -201,7 +204,32 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-
+    var field = null;
+    function fieldExtract(result) {
+        var str = "";
+        for (var i = 0;i<result.length;i++){
+            if (i == result.length-1){
+                str += result[i];
+            }else {
+                str += result[i] +",";
+            }
+        }
+        return str;
+    }
+    //提取字段
+    function extractTemplateField() {
+        var text=$("#template").val();
+        $('.template-field').empty();
+        var fieldArray = AssessCommon.extractField(text);
+        if(fieldArray&&fieldArray.length>0){
+            var html='';
+            $.each(fieldArray,function (i,item) {
+                field  = fieldArray;
+                html+='<span class="label label-default">'+item+'</span> ';
+            })
+            $('.template-field').append(html);
+        }
+    }
     $(function () {
         loadDataDicList();
     })
@@ -217,7 +245,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
 //                str += '<a class="btn btn-xs btn-success" href="javascript:addMethodField(' + row.id + ');" >新增字段</i></a>';
-                str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+//                 str += '<a class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -266,6 +294,12 @@
         })
     }
 
+    //取消 新增 评估依据
+    function removeSubDataDic() {
+        field = null;
+        $("#divBox").hide();
+    }
+
     //对新增 评估依据 数据处理
     function addDataDic() {
         $("#frm").clearAll();
@@ -277,8 +311,7 @@
         data.id = $("#id").val();
         data.name = $("#name").val();
         data.template = $("#template").val();
-        console.info(data.entrustmentPurpose);
-        console.info(data.method);
+        data.field = fieldExtract(field);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationBasis/save",
@@ -313,8 +346,34 @@
                 $('#divBox').modal();
                 $("#id").val(result.id);
                 $("#name").val(result.name);
-                $("#notApplicableReason").val(result.notApplicableReason);
-                $("#applicableReason").val(result.applicableReason);
+                $("#template").val(result.template);
+                var methodstr = ""+ result.method +"";
+                var methodArr = methodstr.split(",");
+                for (var j = 0;j < methodArr.length; j++){
+                    $("#method input[name='method']").each(function () {
+                        var str = methodArr[j];
+                        if (str!=''){
+                            if (str == $(this).val()){
+                                $(this).attr("checked",true);
+                            }
+                        }
+                    });
+
+                }
+                var entrustmentPurposeStr = ""+result.entrustmentPurpose +"";
+                var entrustmentPurposeArr = entrustmentPurposeStr.split(",");
+                for (var j = 0;j < entrustmentPurposeArr.length;j++){
+                    $("#entrustmentPurpose input[name='entrustmentPurpose']").each(function () {
+                        var str = entrustmentPurposeArr[j];
+                        if (str!=''){
+                            if (str == $(this).val()){
+                                $(this).attr("checked",true);
+                            }
+                        }
+                    });
+
+                }
+                extractTemplateField();
             },
             error: function (result) {
                 Loading.progressHide();

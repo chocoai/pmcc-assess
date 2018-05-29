@@ -2296,63 +2296,63 @@ public class ProjectPlanDetailsExample {
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdIsNull() {
-            addCriterion("report_analysis_id is null");
+        public Criteria andReportAnalysisCategoryIsNull() {
+            addCriterion("report_analysis_category is null");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdIsNotNull() {
-            addCriterion("report_analysis_id is not null");
+        public Criteria andReportAnalysisCategoryIsNotNull() {
+            addCriterion("report_analysis_category is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdEqualTo(Integer value) {
-            addCriterion("report_analysis_id =", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryEqualTo(Integer value) {
+            addCriterion("report_analysis_category =", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdNotEqualTo(Integer value) {
-            addCriterion("report_analysis_id <>", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryNotEqualTo(Integer value) {
+            addCriterion("report_analysis_category <>", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdGreaterThan(Integer value) {
-            addCriterion("report_analysis_id >", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryGreaterThan(Integer value) {
+            addCriterion("report_analysis_category >", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("report_analysis_id >=", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("report_analysis_category >=", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdLessThan(Integer value) {
-            addCriterion("report_analysis_id <", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryLessThan(Integer value) {
+            addCriterion("report_analysis_category <", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdLessThanOrEqualTo(Integer value) {
-            addCriterion("report_analysis_id <=", value, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("report_analysis_category <=", value, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdIn(List<Integer> values) {
-            addCriterion("report_analysis_id in", values, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryIn(List<Integer> values) {
+            addCriterion("report_analysis_category in", values, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdNotIn(List<Integer> values) {
-            addCriterion("report_analysis_id not in", values, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryNotIn(List<Integer> values) {
+            addCriterion("report_analysis_category not in", values, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdBetween(Integer value1, Integer value2) {
-            addCriterion("report_analysis_id between", value1, value2, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("report_analysis_category between", value1, value2, "reportAnalysisCategory");
             return (Criteria) this;
         }
 
-        public Criteria andReportAnalysisIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("report_analysis_id not between", value1, value2, "reportAnalysisId");
+        public Criteria andReportAnalysisCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("report_analysis_category not between", value1, value2, "reportAnalysisCategory");
             return (Criteria) this;
         }
 

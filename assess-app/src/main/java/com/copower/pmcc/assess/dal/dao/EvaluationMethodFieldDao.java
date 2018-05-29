@@ -52,6 +52,16 @@ public class EvaluationMethodFieldDao {
         return false;
     }
 
+    public void delete(int type,String field,Integer methodID){
+        EvaluationMethodFieldExample example = new EvaluationMethodFieldExample();
+        example.createCriteria().andIdIsNotNull().andTypeEqualTo(type).andNameEqualTo(field).andMethodIdEqualTo(methodID);
+        List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldMapper.selectByExample(example);
+        for (EvaluationMethodField field1:evaluationMethodFields){
+            evaluationMethodFieldMapper.deleteByPrimaryKey(field1.getId());
+        }
+    }
+
+
     public boolean remove(Integer id) {
         return evaluationMethodFieldMapper.deleteByPrimaryKey(id) == 1;
     }

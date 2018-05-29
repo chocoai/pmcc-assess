@@ -39,10 +39,9 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_case_comparison_field" domainObjectName="DataCaseComparisonField">
+        <table tableName="tb_compile_report_details" domainObjectName="CompileReportDetails">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-
     </context>
 
 </generatorConfiguration>

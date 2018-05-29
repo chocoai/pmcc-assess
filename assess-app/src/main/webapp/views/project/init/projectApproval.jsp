@@ -575,8 +575,12 @@
             $("#legal_person").show();
             try {
                 var val = ${projectInfo.consignorVo.csEntrustmentUnit}+"";
+                var id = ${projectInfo.consignorVo.id}+"";
                 if (val!='' && val != null){
-                    loadInitContactsList(val,"tb_ListA");
+                    // loadInitContactsList(val,"tb_ListA");
+                }
+                if (id!=null && id!=''){
+                    loadInitContactsListC(id,"tb_ListA",flags[0]);
                 }
             }catch (e){
                 console.info(e);
@@ -603,7 +607,11 @@
             try {
                 var val = ${projectInfo.possessorVo.pEntrustmentUnit}+"";
                 if (val!='' && val!=null){
-                    loadInitContactsList(val,"tb_ListB");
+                    // loadInitContactsList(val,"tb_ListB");
+                }
+                var id = ${projectInfo.possessorVo.id}+"";
+                if (id!=null && id!=''){
+                    loadInitContactsListC(id,"tb_ListB",flags[1]);
                 }
             }catch (e){
                 console.info(e);
@@ -622,7 +630,8 @@
             }
         }
 
-        loadInitContactsList(${projectInfo.unitInformationVo.uUseUnit},"tb_ListC");
+        <%--loadInitContactsList(${projectInfo.unitInformationVo.uUseUnit},"tb_ListC");--%>
+        loadInitContactsListC(${projectInfo.unitInformationVo.id},"tb_ListC",flags[2]);
     });
 </script>
 

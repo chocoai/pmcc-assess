@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysisExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DataReportAnalysisMapper {
     int countByExample(DataReportAnalysisExample example);

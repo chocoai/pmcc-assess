@@ -27,6 +27,12 @@ public class EvaluationMethodDao {//evaluationMethodDao
         return evaluationMethodMapper.insertSelective(change(evaluationMethodDto)) == 1;
     }
 
+    public int save(EvaluationMethodDto methodDto){
+        EvaluationMethod evaluationMethod = change(methodDto);
+        evaluationMethodMapper.insertSelective(evaluationMethod);
+        return evaluationMethod.getId();
+    }
+
     public boolean removeEvaluationMethod(Integer id) {
         return evaluationMethodMapper.deleteByPrimaryKey(id) == 1;
     }

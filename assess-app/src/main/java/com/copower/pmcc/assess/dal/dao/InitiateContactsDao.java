@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,12 @@ public class InitiateContactsDao {
 
     @Autowired
     private InitiateContactsMapper mapper;
+
+    public int save(InitiateContactsDto dto){
+        InitiateContacts contacts = change(dto);
+        mapper.insertSelective(contacts);
+        return contacts.getId();
+    }
 
     public boolean add(InitiateContactsDto dto){
         return mapper.insertSelective(change(dto))==1;
@@ -36,9 +43,12 @@ public class InitiateContactsDao {
 
     public void update(int pid,int flag){
         List<InitiateContactsDto> dtos = getList(InitiateContactsEnum.Zero.getNum(),flag);
-        for (InitiateContactsDto dto:dtos){
-            dto.setcPid(pid);
-            update(dto);
+        if (!ObjectUtils.isEmpty(dtos)){
+            for (InitiateContactsDto dto:dtos){
+                dto.setcPid(pid);
+                update(dto);
+            }
+
         }
     }
 
