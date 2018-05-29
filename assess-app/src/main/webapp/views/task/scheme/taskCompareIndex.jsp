@@ -223,7 +223,6 @@
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-
                                                     <span id="price${items.id}">${items.price}</span>
                                                     </td>
                                                 </c:forEach>
@@ -241,17 +240,21 @@
                                                 <th scope="row" class="gray">交易时间</th>
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td id="#threeDealTime${items.id}"></td>
+                                                    <td>
+                                                        <span id="#threeDealTime${items.id}"></span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td id="#threePaymentMethod${items.id}"></td>
+                                                    <td>
+                                                        <span id="#threePaymentMethod${items.id}"></span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
-                                            <tr>
+                                            <tr id="trList">
                                                 <th scope="row" class="gray">比准价格</th>
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
@@ -262,7 +265,9 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">加权平均价</th>
-                                                <td></td>
+                                                <td>
+                                                    <span id="threeMiddlePrice"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td id=""></td>
                                                 </c:forEach>
@@ -332,7 +337,9 @@
                                         <th scope="row" class="gray">比准价格</th>
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                            <td></td>
+                                            <td>
+                                                <span id="rightAffirmPrice${items.id}" ></span>
+                                            </td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
@@ -511,47 +518,42 @@
         var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
         var temp = 100 / number;                                            //相应计算
         var threeId = "#threeDealCaondition" + twoId;                     //第三章表循环的id
-        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
-
-
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if(reg.test(number)){
+            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        }
 
         if (number > 100) {
-            console.log("大于");
             $(this).closest("td").find("i").remove();
             $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
         }
         if (number < 100) {
-            console.log("小于");
             $(this).closest("td").find("i").remove();
             $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
         }
         if (number == "" || number == 100) {
-            console.log("等于");
             $(this).closest("td").find("i").remove();
         }
 
         if(temp < 1){
             console.log("temp小于1");
-            console.log(threeId);
             $(threeId).append('<i class="fa fa-arrow-up btn-danger"></i>');
         }
         if(temp > 1){
             console.log("temp大于1");
-            console.log(threeId);
             $(threeId).after('<i class="fa fa-arrow-down btn-info"></i>');
         }
 
         var s1 = document.getElementById(threeId).innerHTML;
         var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
         var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
-        var s4 = $("#price"+twoId).text();
+        var s4 = $("#price"+twoId).html();
         var s0 = s1*s2*s3*s4;
-        var reg = /^[0-9]+.?[0-9]*$/;
-        console.log(s0);
         if(reg.test(s0)){
-            var sId1 = "#threeAffirmPrice"+twoId;
-            document.getElementById(sId1).innerHTML = s0;
+            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
+            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
         }
+
 
     });
 
@@ -561,7 +563,10 @@
         var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
         var temp = 100 / number;                                            //相应计算
         var threeId = "#threeDealTime" + twoId;                     //第三章表循环的id
-        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if(reg.test(number)){
+            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        }
 
         if (number > 100) {
             console.log("大于");
@@ -577,6 +582,27 @@
             console.log("等于");
             $(this).closest("td").find("i").remove();
         }
+
+        var s1 = document.getElementById(threeId).innerHTML;
+        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
+        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
+        var s4 = $("#price"+twoId).html();
+        var s0 = s1*s2*s3*s4;
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if(reg.test(s0)){
+            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
+            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
+        }
+
+        var list = $("#trList").find("span");
+//        console.log(list.size());
+        var total = 0;
+        $.each(list,function(i,span){
+            total += parseInt($(span).html());
+        })
+        var middleRate = total/list.size();
+        $("#threeMiddlePrice").html(middleRate.toFixed(0));
+
     });
 
     $('input[name=paymentMethod]').blur(function () {
@@ -584,7 +610,10 @@
         var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
         var temp = 100 / number;                                            //相应计算
         var threeId = "#threePaymentMethod" + twoId;                     //第三章表循环的id
-        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if(reg.test(number)){
+            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        }
         if (number > 100) {
             console.log("大于");
             $(this).closest("td").find("i").remove();
@@ -598,6 +627,17 @@
         if (number == "" || number == 100) {
             console.log("等于");
             $(this).closest("td").find("i").remove();
+        }
+
+        var s1 = document.getElementById(threeId).innerHTML;
+        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
+        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
+        var s4 = $("#price"+twoId).html();
+        var s0 = s1*s2*s3*s4;
+        var reg = /^[0-9]+.?[0-9]*$/;
+        if(reg.test(s0)){
+            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
+            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
         }
     });
 
