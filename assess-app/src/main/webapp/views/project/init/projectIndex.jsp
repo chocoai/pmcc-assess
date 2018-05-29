@@ -262,7 +262,7 @@
                                 <label class="col-sm-1 control-label">项目说明</label>
                                 <div class="col-sm-11">
                                     <textarea id="remarks" name="remarks"
-                                              class="form-control">${projectInfo.remarks}</textarea>
+                                              class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -528,7 +528,7 @@
                         <h3> 委托人联系人</h3>
                     </div>
                     <div class="x_content">
-                        <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                        <button class="btn btn-success" data-toggle="modal" onclick="addContacts(1)">新增联系人</button>
                         <table class="table table-bordered" id="tb_ListA">
                         </table>
                     </div>
@@ -789,7 +789,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts(2)">新增联系人</button>
                     <table class="table table-bordered" id="tb_ListB">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -956,7 +956,7 @@
                     </div>
                 </div>
                 <div class="x_content">
-                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts()">新增联系人</button>
+                    <%--<button class="btn btn-success" data-toggle="modal" onclick="addContacts(3)">新增联系人</button>--%>
                     <table class="table table-bordered" id="tb_ListC">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -1044,15 +1044,18 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            类型
+                                            联系人类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="cType" id="cType" required="required">
-                                                <option value="">请选择</option>
-                                                <c:forEach items="${InitiateContactsMap}" var="mymap">
-                                                    <option value="${mymap.key}">${mymap.value}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <label class="form-control" id="cTypeShow">
+                                            </label>
+                                            <input type="hidden" name="cType" id="cType">
+                                            <%--<select class="form-control" name="cType" id="cType" required="required">--%>
+                                                <%--<option value="">请选择</option>--%>
+                                                <%--<c:forEach items="${InitiateContactsMap}" var="mymap">--%>
+                                                    <%--<option value="${mymap.key}">${mymap.value}</option>--%>
+                                                <%--</c:forEach>--%>
+                                            <%--</select>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -1463,12 +1466,13 @@
                 return str;
             }
         });
+        $("#tb_ListA").bootstrapTable("destroy");
         TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             crmId: id, flag: flags[0]
         }, {
             showColumns: false,
-            showRefresh: false,
-            search: false
+            showRefresh: true,
+            search: true
         });
     }
 
@@ -1487,6 +1491,7 @@
                 return str;
             }
         });
+        $("#tb_ListB").bootstrapTable("destroy");
         TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             crmId: id, flag: flags[1]
         }, {
@@ -1503,14 +1508,15 @@
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
-//        cols.push({
-//            field: 'id', title: '操作', formatter: function (value, row, index) {
-//                var str = '<div class="btn-margin">';
-//                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
-//                str += '</div>';
-//                return str;
-//            }
-//        });
+       cols.push({
+           field: 'id', title: '操作', formatter: function (value, row, index) {
+               var str = '<div class="btn-margin">';
+               str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
+               str += '</div>';
+               return str;
+           }
+       });
+        $("#tb_ListC").bootstrapTable("destroy");
         TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             crmId: id, flag: flags[2]
         }, {
@@ -1576,8 +1582,16 @@
     });
 
     // 显示 联系人 view
-    function addContacts() {
+    function addContacts(contactsEnum) {
+        var str = "";
+        <c:forEach items="${InitiateContactsMap}" var="mymap">
+        if ('${mymap.key}' == contactsEnum){
+            str = '${mymap.value}' ;
+        }
+        </c:forEach>
         $("#frmContacts").clearAll();
+        $("#cType").val(contactsEnum);
+        $("#cTypeShow").text(str);
         $('#divBoxContacts').modal("show");
     }
 
@@ -1588,8 +1602,9 @@
         data.cName = $("#cName").val();
         data.cPhone = $("#cPhone").val();
         data.cEmail = $("#cEmail").val();
-        data.cType = $("#cType option:selected").val();
-        var cType = $("#cType option:selected").val();
+        // data.cType = $("#cType option:selected").val();
+        // var cType = $("#cType option:selected").val();
+        var cType = $("#cType").val();
         if (cType == 1) {//修改 添加委托联系人
             var consignorid = document.getElementById("consignorid").value;
             if (consignorid != null && consignorid != "") {
@@ -1648,6 +1663,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
+                        //tb_ListA
                         loadInitContactsListA();
                     }
                     else {
