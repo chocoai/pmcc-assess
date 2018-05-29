@@ -1,25 +1,14 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.dao.*;
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
+import com.copower.pmcc.assess.dal.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.service.project.DeclareInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
-import com.copower.pmcc.assess.service.project.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +22,7 @@ import java.util.Map;
 @Component
 public class DeclareRecordEvent extends ProjectTaskEvent {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DeclareInfoService declareInfoService;
     @Autowired
@@ -73,7 +62,7 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
                 if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)) {
                     declareRecord.setOwnership(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)));
                 }
-                declareRecord.setCreator(serviceComponent.getThisUser());
+                declareRecord.setCreator(processControllerComponent.getThisUser());
                 declareRecordDao.addDeclareRecord(declareRecord);
             }
         }

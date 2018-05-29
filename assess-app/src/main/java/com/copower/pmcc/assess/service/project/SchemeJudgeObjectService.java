@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.alibaba.fastjson.JSON;
+
 import com.copower.pmcc.assess.dal.dao.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
@@ -8,8 +8,6 @@ import com.copower.pmcc.assess.dal.dao.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectApplyDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectDto;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeObjectStringDto;
 import com.copower.pmcc.assess.dto.output.project.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -21,10 +19,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * 估价对象

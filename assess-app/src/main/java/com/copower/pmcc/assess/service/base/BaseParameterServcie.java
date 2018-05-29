@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.dal.dao.BaseParameterDao;
+import com.copower.pmcc.assess.dal.entity.BaseParameter;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.entity.BaseParameter;
-import com.copower.pmcc.assess.dal.dao.BaseParameterDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

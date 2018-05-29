@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.VwDbColumnsInfo;
 import com.copower.pmcc.assess.dal.entity.VwDbColumnsInfoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface VwDbColumnsInfoMapper {
     int countByExample(VwDbColumnsInfoExample example);

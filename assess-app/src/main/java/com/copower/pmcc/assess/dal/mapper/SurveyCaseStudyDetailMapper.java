@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetailExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SurveyCaseStudyDetailMapper {
     int countByExample(SurveyCaseStudyDetailExample example);

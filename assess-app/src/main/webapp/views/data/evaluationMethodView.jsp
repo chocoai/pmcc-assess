@@ -128,7 +128,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
@@ -220,6 +220,21 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
+    var field = null;
+    var Nofield = null;
+
+    function fieldExtract(result) {
+        var str = "";
+        for (var i = 0;i<result.length;i++){
+            if (i == result.length-1){
+                str += result[i];
+            }else {
+                str += result[i] +",";
+            }
+        }
+        return str;
+    }
+
     $(function () {
         loadDataDicList();
     })
@@ -229,9 +244,11 @@
         var text=$("#applicableReason").val();
         $('.applicableReason-field').empty();
         var fieldArray = AssessCommon.extractField(text);
+        console.log(fieldArray);
         if(fieldArray&&fieldArray.length>0){
             var html='';
             $.each(fieldArray,function (i,item) {
+                field  = fieldArray;
                 html+='<span class="label label-default">'+item+'</span> ';
             })
             $('.applicableReason-field').append(html);
@@ -246,6 +263,7 @@
         if(fieldArray&&fieldArray.length>0){
             var html='';
             $.each(fieldArray,function (i,item) {
+                Nofield  = fieldArray;
                 html+='<span class="label label-default">'+item+'</span> ';
             })
             $('.not-applicableReason-field').append(html);
@@ -317,6 +335,13 @@
         extractApplicableField();
         extractApplicableField();
     }
+
+    //取消 新增 评估技术方法
+    function removeSubDataDic() {
+        field = null;
+        Nofield = null;
+        $("#divBox").hide();
+    }
     //新增 评估技术方法 数据
     function saveSubDataDic() {
         var flag = false;
@@ -326,6 +351,10 @@
         data.method = $("#method option:selected").val();
         data.applicableReason = $("#applicableReason").val();
         data.notApplicableReason = $("#notApplicableReason").val();
+        console.log(field);
+        console.log(Nofield);
+        data.field = fieldExtract(field);
+        data.Nofield = fieldExtract(Nofield);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationMethod/save",

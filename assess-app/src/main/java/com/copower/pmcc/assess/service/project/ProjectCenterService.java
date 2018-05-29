@@ -12,10 +12,10 @@ import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressVO;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
@@ -55,7 +55,7 @@ public class ProjectCenterService {
     @Autowired
     private ProjectMemberDao projectMemberDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
@@ -67,8 +67,8 @@ public class ProjectCenterService {
         Date date = new Date();
         Date dates = DateUtils.parse(DateUtils.format(date, DateUtils.DATE_PATTERN));
         Date datee = DateUtils.parse(DateUtils.format(date, DateUtils.DATE_PATTERN));
-        String users = serviceComponent.getThisUser();
-        if (serviceComponent.userIsAdmin(users)) {
+        String users = processControllerComponent.getThisUser();
+        if (processControllerComponent.userIsAdmin(users)) {
             users = "";
         }
 
@@ -79,8 +79,8 @@ public class ProjectCenterService {
         Date date = new Date();
         Date dates = DateUtils.parse(DateUtils.format(date, DateUtils.DATE_PATTERN));
         Date datee = DateUtils.parse(DateUtils.format(DateUtils.addDay(date, 7), DateUtils.DATE_PATTERN));
-        String users = serviceComponent.getThisUser();
-        if (serviceComponent.userIsAdmin(users)) {
+        String users = processControllerComponent.getThisUser();
+        if (processControllerComponent.userIsAdmin(users)) {
             users = "";
         }
         return projectPlanDetailsDao.getProjectDetailsCount(users, dates, datee);
@@ -90,8 +90,8 @@ public class ProjectCenterService {
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectInfoList(ProcessStatusEnum.RUN.getValue(), "");
         if (CollectionUtils.isNotEmpty(projectInfoList)) {
             List<Integer> projectIds = LangUtils.transform(projectInfoList, projectInfo -> projectInfo.getId());
-            String users = String.format("%%%s%%", serviceComponent.getThisUser());
-            if (serviceComponent.userIsAdmin(users)) {
+            String users = String.format("%%%s%%", processControllerComponent.getThisUser());
+            if (processControllerComponent.userIsAdmin(users)) {
                 users = String.format("%%%%", "");
             }
             return projectMemberDao.getUserAccountProjectCount(users, projectIds);
@@ -193,7 +193,7 @@ public class ProjectCenterService {
         List<ProjectResponsibilityDto> projectPlanResponsibilityList = bpmRpcProjectTaskService.getProjectTaskList(projectIds);
         List<ProjectInfoVo> projectInfoVos = new ArrayList<>();
         ProjectInfoVo projectInfoVo = null;
-        String currUser = serviceComponent.getThisUser();
+        String currUser = processControllerComponent.getThisUser();
         //TASK(0, "责任人提交工作成果"), PLAN(1, "部门负责人细分计划"), ALLTASK(2, "整体复核工作成果"), NEWPLAN(3, "细分下级计划责任人");
         if (CollectionUtils.isNotEmpty(projectInfoList)) {
             for (ProjectInfo item : projectInfoList) {

@@ -4,8 +4,8 @@ import com.copower.pmcc.assess.dal.dao.DataEarlyWarningDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
 import com.copower.pmcc.assess.dto.output.data.DataEarlyWarningVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -18,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import java.util.List;
 public class DataEarlyWarningService {
 
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataEarlyWarningDao dataEarlyWarningDao;
@@ -42,7 +41,7 @@ public class DataEarlyWarningService {
      */
     public boolean editEarlyWarning(DataEarlyWarning earlyWarning) throws Exception{
         boolean flag = false;
-        earlyWarning.setCreator(serviceComponent.getThisUser());
+        earlyWarning.setCreator(processControllerComponent.getThisUser());
         earlyWarning.setGmtModified(new Date());
         dataEarlyWarningDao.editEarlyWarning(earlyWarning);
         return flag;
@@ -55,7 +54,7 @@ public class DataEarlyWarningService {
      */
     public boolean addEarlyWarning(DataEarlyWarning earlyWarning) throws Exception{
         boolean flag = false;
-        earlyWarning.setCreator(serviceComponent.getThisUser());
+        earlyWarning.setCreator(processControllerComponent.getThisUser());
         earlyWarning.setGmtCreated(new Date());
         flag = dataEarlyWarningDao.addEarlyWarning(earlyWarning);
         return flag;

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarningExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DataEarlyWarningMapper {
     int countByExample(DataEarlyWarningExample example);

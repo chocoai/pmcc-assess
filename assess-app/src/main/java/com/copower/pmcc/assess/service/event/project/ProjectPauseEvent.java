@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.event.project;
 
-
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
@@ -8,7 +7,6 @@ import com.copower.pmcc.assess.dal.dao.ProjectSuspendDao;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectSuspend;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -33,8 +31,6 @@ public class ProjectPauseEvent extends BaseProcessEvent {
     @Autowired
     private ProjectSuspendDao projectSuspendDao;
     @Autowired
-    private ServiceComponent serviceComponent;
-    @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
     private ProjectPlanDao projectPlanDao;
@@ -47,7 +43,7 @@ public class ProjectPauseEvent extends BaseProcessEvent {
         ProjectSuspend projectSuspend = projectSuspendDao.getProjectSuspendProcessInsId(processExecution.getProcessInstanceId());
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectSuspend.getProjectId());
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
-          //  projectSuspend.setSuspendUserAccount(serviceComponent.getThisUser());
+          //  projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
             projectSuspend.setSupendDate(new Date());
             projectSuspendDao.editSuspend(projectSuspend);
             projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getName());

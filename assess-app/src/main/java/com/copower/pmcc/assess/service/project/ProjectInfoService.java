@@ -10,20 +10,20 @@ import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.input.project.*;
 import com.copower.pmcc.assess.dto.output.project.*;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
@@ -95,14 +95,12 @@ public class ProjectInfoService {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
 
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
-    @Autowired
-    private ProjectPlanService projectPlanService;
     @Lazy
     @Autowired
     private InitiateContactsService initiateContactsService;
@@ -140,6 +138,7 @@ public class ProjectInfoService {
         ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
         projectDto.getProjectInfo().setId(projectinfoid);
         projectMember.setId(projectInfoID.getProjectMemberId());
+        projectMember.setProjectId(projectinfoid);
         projectDto.getConsignor().setId(projectInfoID.getConsignorId());
         projectDto.getUnitinformation().setId(projectInfoID.getUnitInformationId());
         projectDto.getPossessor().setId(projectInfoID.getPossessorId());
@@ -262,7 +261,7 @@ public class ProjectInfoService {
             projectPlan.setWorkStageId(item.getId());
             projectPlan.setCategoryId(0);
             projectPlan.setPlanName(item.getWorkStageName());
-            projectPlan.setCreator(serviceComponent.getThisUser());
+            projectPlan.setCreator(processControllerComponent.getThisUser());
             projectPlan.setCreated(new Date());
             projectPlan.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             projectPlan.setProjectStatus(ProjectStatusEnum.WAIT.getName());
@@ -308,7 +307,7 @@ public class ProjectInfoService {
         processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         try {
-            processUserDto = serviceComponent.processStart(processInfo, serviceComponent.getThisUser(), false);
+            processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);
         } catch (BpmException e) {
             logger.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -325,7 +324,7 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
-        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
     /**
@@ -337,7 +336,7 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectEditApproval(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) throws BusinessException, BpmException {
-        serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
+        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
     }
 
     public ProjectInfo getProjectInfoByProcessInsId(String processInsId) {

@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
 import com.copower.pmcc.assess.dal.entity.DataBestUseDescriptionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DataBestUseDescriptionMapper {
     int countByExample(DataBestUseDescriptionExample example);

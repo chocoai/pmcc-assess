@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectClose;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.project.ProjectCloseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +29,13 @@ public class ProjectCloseController {
     @Autowired
     private ProjectCloseService projectCloseService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private ServiceComponent serviceComponentBid;
 
     @RequestMapping(value = "/closeIndex", name = "项目终止申请页")
     public ModelAndView closeIndex(String projectId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/close/closeIndex","0", 0, "0","");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/close/closeIndex","0", 0, "0","");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(Integer.valueOf(projectId));
         ProjectClose projectClose = new ProjectClose();
         projectClose.setProjectId(projectInfo.getId());
@@ -52,14 +49,14 @@ public class ProjectCloseController {
         modelAndView.addObject("boxCnName", projectInfo.getProjectName() + "-项目终止申请");
         modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "终止申请");
-        modelAndView.addObject("currUserName", serviceComponentBid.getThisUserInfo().getUserName());
+        modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
         return modelAndView;
     }
 
 
     @RequestMapping(value = "/closeApproval", name = "项目审批页")
     public ModelAndView closeApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/close/closeApproval",
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/close/closeApproval",
                 processInsId, boxId, taskId, agentUserAccount);
         ProjectClose projectClose = projectCloseService.getProjectClose(processInsId);
         modelAndView.addObject("projectClose", projectClose);
@@ -81,7 +78,7 @@ public class ProjectCloseController {
 
     @RequestMapping(value = "/closeEditIndex", name = "返回修改")
     public ModelAndView closeEditIndex(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView("/project/close/closeIndex",
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/close/closeIndex",
                 processInsId, boxId, taskId, agentUserAccount);
         ProjectClose projectClose = projectCloseService.getProjectClose(processInsId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectClose.getProjectId());

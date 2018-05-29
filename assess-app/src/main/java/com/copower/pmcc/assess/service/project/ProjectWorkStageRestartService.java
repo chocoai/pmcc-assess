@@ -6,10 +6,9 @@ import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStageRestart;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectWorkStageStartEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -17,6 +16,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProjectWorkStageRestartService {
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectWorkStageRestartDao projectWorkStageRestartDao;
     @Autowired
@@ -61,7 +61,7 @@ public class ProjectWorkStageRestartService {
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
         approvalModelDto.setOpinions("返回修改");
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -89,7 +89,7 @@ public class ProjectWorkStageRestartService {
         projectWorkStageRestart.setProjectThisWorkStage(workStage);
         projectWorkStageRestart.setProjectRestartStageId(projectPlan.getWorkStageId());
         projectWorkStageRestart.setProcessInsId("0");
-        projectWorkStageRestart.setCreator(serviceComponent.getThisUser());
+        projectWorkStageRestart.setCreator(processControllerComponent.getThisUser());
         projectWorkStageRestart.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectWorkStageRestart.setProjectRestartStageName(projectWorkStage.getWorkStageName());
         if (!projectWorkStageRestartDao.addProjectWorkStageRestart(projectWorkStageRestart)) {
@@ -119,7 +119,7 @@ public class ProjectWorkStageRestartService {
             //设置其它参数
 
             try {
-                processUserDto = serviceComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processInfo, "", false);
                 projectWorkStageRestart.setProcessInsId(processUserDto.getProcessInsId());
                 projectWorkStageRestart.setStatus(ProcessStatusEnum.RUN.getValue());
                 if (!projectWorkStageRestartDao.editProjectWorkStageRestart(projectWorkStageRestart)) {
@@ -130,7 +130,7 @@ public class ProjectWorkStageRestartService {
             }
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
-                    serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                    processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
                 } catch (BpmException e) {
                     throw new BusinessException("跳过节点自动提交失败");
                 }
@@ -145,7 +145,7 @@ public class ProjectWorkStageRestartService {
 
     public void approvalWorkStageRestart(ApprovalModelDto approvalModelDto) throws BusinessException {
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.dto.input.project;
 
-import com.copower.pmcc.assess.dal.entity.SchemeInfo;
-
 import java.io.Serializable;
 
 /**

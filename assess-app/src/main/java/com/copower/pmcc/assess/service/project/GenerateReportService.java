@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.GenerateReportDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.GenerateReport;
 import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
 import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
 import com.copower.pmcc.erp.common.utils.LangUtils;

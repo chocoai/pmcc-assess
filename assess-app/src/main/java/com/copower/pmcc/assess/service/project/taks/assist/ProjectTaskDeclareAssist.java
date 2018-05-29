@@ -1,8 +1,9 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.controller.ControllerComponent;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.BaseProcess;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.output.BaseProcessFormVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -11,12 +12,11 @@ import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
-import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
 import com.copower.pmcc.assess.service.project.DeclareInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import java.util.Map;
 @WorkFlowAnnotation(desc = "资产申报成果")
 public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
-    private ControllerComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -54,7 +54,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskIndex", "", 0, "0", "");
         //根据申报类型 确定申报表单
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
@@ -72,7 +72,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskApproval", processInsId, boxId, taskId, agentUserAccount);
 
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
@@ -90,7 +90,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskIndex", processInsId, boxId, taskId, agentUserAccount);
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
         BaseProcess baseProcess = baseProcessService.getProcessByName(baseDataDic.getItemKey());
@@ -112,7 +112,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/declare/taskApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

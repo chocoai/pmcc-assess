@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.DeclareInfoExample;
 import com.copower.pmcc.assess.dal.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.entity.DeclareInfoExample;
 import com.copower.pmcc.assess.dal.mapper.DeclareInfoMapper;

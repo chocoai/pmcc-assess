@@ -13,7 +13,7 @@ import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.DynamicFormField;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -60,7 +60,7 @@ public class FormConfigureService {
     @Autowired
     private FormConfigureDao formConfigureDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ServletContext servletContext;
     @Autowired
@@ -357,8 +357,8 @@ public class FormConfigureService {
             Map<String, Object> customMap = Maps.newHashMap();
             customMap.put("curr_tableName", tableName);
             customMap.put("curr_tableId", map.containsKey("id") ? map.get("id").toString() : "0");
-            customMap.put("curr_userAccount", serviceComponent.getThisUser());
-            SysUserDto sysUser = erpRpcUserService.getSysUser(serviceComponent.getThisUser());
+            customMap.put("curr_userAccount", processControllerComponent.getThisUser());
+            SysUserDto sysUser = erpRpcUserService.getSysUser(processControllerComponent.getThisUser());
             sysUser = sysUser == null ? new SysUserDto() : sysUser;
             customMap.put("curr_userAccountName", sysUser.getUserName());
             for (BaseFormModuleField o : hrBaseFormModuleFields) {
@@ -587,7 +587,7 @@ public class FormConfigureService {
         if (map == null || map.size() <= 0)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         Integer tableId = 0;
-        map.put("creator", serviceComponent.getThisUser());
+        map.put("creator", processControllerComponent.getThisUser());
         tableId = formConfigureDao.addObject(tableName, map);
         return tableId;
     }
@@ -915,7 +915,7 @@ public class FormConfigureService {
                 for (FormConfigureDetailDto detailDto : multipleFormModule) {
                     BaseFormModule hrBaseFormModule = hrBaseFormDao.getBaseFormModule(detailDto.getFormModuleId());
                     String sql = String.format("update %s set %s=%s where %s=0 and creator='%s'", detailDto.getTableName(),
-                            hrBaseFormModule.getForeignKeyName(), primaryId, hrBaseFormModule.getForeignKeyName(), serviceComponent.getThisUser());
+                            hrBaseFormModule.getForeignKeyName(), primaryId, hrBaseFormModule.getForeignKeyName(), processControllerComponent.getThisUser());
                     formConfigureDao.updateObject(sql);
                 }
             }
@@ -963,7 +963,7 @@ public class FormConfigureService {
         BaseAttachment hrBaseAttachment = new BaseAttachment();
         hrBaseAttachment.setTableId(0);
         hrBaseAttachment.setTableName(tableName);
-        hrBaseAttachment.setCreater(serviceComponent.getThisUser());
+        hrBaseAttachment.setCreater(processControllerComponent.getThisUser());
 
         BaseAttachment attachment = new BaseAttachment();
         attachment.setTableId(tableId);

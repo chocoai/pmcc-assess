@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ import java.util.List;
 @RequestMapping(value = "/projectCenter")
 public class ProjectCenterController {
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectCenterService projectCenterService;
 
     @RequestMapping(value = "/index", name = "项目中心")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/project/projectCenter");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCenter");
 
         Integer weekTaskCount = projectCenterService.getTheWeekTaskCount();
         Integer todayTaskCount = projectCenterService.getTodayTaskCount();
@@ -45,13 +45,13 @@ public class ProjectCenterController {
 
     @RequestMapping(value = "/projectProgress", name = "项目进度查看")
     public ModelAndView projectProgress() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/project/projectProgress");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectProgress");
         return modelAndView;
     }
 
     @RequestMapping(value = "/projectCalendar", name = "项目日历")
     public ModelAndView projectCalendar() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/project/projectCalendar");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCalendar");
         return modelAndView;
     }
 
@@ -79,7 +79,7 @@ public class ProjectCenterController {
 
     @RequestMapping(value = "/projectList", name = "项目列表")
     public ModelAndView projectList() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/project/projectList");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
         return modelAndView;
     }
 

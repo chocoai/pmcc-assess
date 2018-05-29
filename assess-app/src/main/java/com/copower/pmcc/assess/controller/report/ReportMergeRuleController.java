@@ -2,12 +2,11 @@ package com.copower.pmcc.assess.controller.report;
 
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ReportMergeRule;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.ReportMergeRuleService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -32,15 +31,13 @@ public class ReportMergeRuleController {
     @Autowired
     private ReportMergeRuleService reportMergeRuleService;
     @Autowired
-    private ControllerComponent controllerComponent;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/reportMergeRule");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/reportMergeRule");
         List<BaseDataDic> reportMergeRuleTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportTypeList",reportMergeRuleTypeList);
         return modelAndView;

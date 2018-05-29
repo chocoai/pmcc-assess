@@ -7,7 +7,7 @@ import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class SurveyLocaleExploreDetailService {
     @Autowired
     private SurveyLocaleExploreDetailDao surveyLocaleExploreDetailDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
@@ -69,7 +70,7 @@ public class SurveyLocaleExploreDetailService {
         } else {
             Integer dynamicTableId = surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
             detailDto.setDynamicTableId(dynamicTableId);
-            detailDto.setCreator(serviceComponent.getThisUser());
+            detailDto.setCreator(processControllerComponent.getThisUser());
             boolean flag = surveyLocaleExploreDetailDao.save(detailDto);
             //下载定位图
             surveyCommonService.downLoadLocationImage(AssessTableNameConstant.SURVEY_LOCALE_EXPLORE_DETAIL,detailDto.getId(),detailDto.getSurveyLocaltion());
@@ -78,7 +79,7 @@ public class SurveyLocaleExploreDetailService {
             BaseAttachment queryParam = new BaseAttachment();
             queryParam.setTableId(0);
             queryParam.setTableName(AssessTableNameConstant.SURVEY_LOCALE_EXPLORE_DETAIL);
-            queryParam.setCreater(serviceComponent.getThisUser());
+            queryParam.setCreater(processControllerComponent.getThisUser());
 
             BaseAttachment example = new BaseAttachment();
             example.setTableId(detailDto.getId());

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDao;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class SurveyLocaleExploreService {
     @Autowired
     private SurveyLocaleExploreDao surveyLocaleExploreDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public boolean save(SurveyLocaleExplore surveyLocaleExploreDto) throws BusinessException {
         if(surveyLocaleExploreDto == null)
@@ -26,7 +26,7 @@ public class SurveyLocaleExploreService {
         if(surveyLocaleExploreDto.getId() != null && surveyLocaleExploreDto.getId() > 0){
             return surveyLocaleExploreDao.update(surveyLocaleExploreDto);
         }else{
-            surveyLocaleExploreDto.setCreator(serviceComponent.getThisUser());
+            surveyLocaleExploreDto.setCreator(processControllerComponent.getThisUser());
             return surveyLocaleExploreDao.save(surveyLocaleExploreDto);
         }
     }

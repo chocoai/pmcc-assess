@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -22,14 +22,14 @@ public class DataBestUseDescriptionController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
 
     @RequestMapping(value = "/Index", name = "最佳利用描述查看 ")
     public ModelAndView index() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataBestUseDescription");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataBestUseDescription");
         return modelAndView;
     }
 

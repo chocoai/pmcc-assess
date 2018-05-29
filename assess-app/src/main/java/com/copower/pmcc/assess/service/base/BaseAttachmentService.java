@@ -3,19 +3,20 @@ package com.copower.pmcc.assess.service.base;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentKeepDao;
-import com.copower.pmcc.assess.service.ServiceComponent;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.AttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.AttachmentVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -31,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -55,13 +55,15 @@ public class BaseAttachmentService {
     @Autowired
     private BaseAttachmentKeepDao cmsBaseAttachmentKeepDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     private final static String KEEP_UPLOAD_PATH = "Keep";//归档文件存放目录
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
@@ -127,7 +129,7 @@ public class BaseAttachmentService {
         String extension = strings.get(strings.size() - 1);//取得扩展名
         strings.remove(extension);
         String newFilesName = createNoRepeatFileName(extension);
-        String filePath = createFTPBasePath(FormatUtils.underlineToCamel(attachmentDto.getTableName(), false), DateUtils.formatDate(new Date(), "yyyy-MM"), serviceComponent.getThisUser(),
+        String filePath = createFTPBasePath(FormatUtils.underlineToCamel(attachmentDto.getTableName(), false), DateUtils.formatDate(new Date(), "yyyy-MM"), processControllerComponent.getThisUser(),
         attachmentDto.getReActivityName(), DateUtils.formatNowToYMD());
         try {
             ftpUtilsExtense.uploadFilesToFTP(filePath, multipartFile.getInputStream(), newFilesName);
@@ -135,7 +137,7 @@ public class BaseAttachmentService {
             e.printStackTrace();
         }
         //保存数据信息
-        String currUser = serviceComponent.getThisUser();
+        String currUser = processControllerComponent.getThisUser();
         BaseAttachment sysAttachment = new BaseAttachment();
         BeanUtils.copyProperties(attachmentDto, sysAttachment);
         sysAttachment.setFtpFilesName(newFilesName);
@@ -334,7 +336,7 @@ public class BaseAttachmentService {
         sysAttachmentKeep.setId(sysAttachment.getId());
         sysAttachmentKeep.setCreated(sysAttachment.getCreated());
         if (StringUtils.isNotBlank(sysAttachment.getModifier())) {
-            SysUserDto sysUserDto = serviceComponent.getSysUserDtoByUserAccount(sysAttachment.getModifier());
+            SysUserDto sysUserDto = erpRpcUserService.getSysUser(sysAttachment.getModifier());
             if (sysUserDto != null) {
                 sysAttachmentKeep.setOwner(sysUserDto.getUserName());
             }
@@ -349,7 +351,7 @@ public class BaseAttachmentService {
                 sysAttachmentKeep.setId(item.getId());
                 sysAttachmentKeep.setCreated(item.getCreated());
                 if (StringUtils.isNotBlank(item.getOwner())) {
-                    SysUserDto sysUserDto = serviceComponent.getSysUserDtoByUserAccount(item.getOwner());
+                    SysUserDto sysUserDto = erpRpcUserService.getSysUser(item.getOwner());
                     if (sysUserDto != null) {
                         sysAttachmentKeep.setOwner(sysUserDto.getUserName());
                     }
@@ -382,7 +384,7 @@ public class BaseAttachmentService {
 
         ftpUtilsExtense.uploadFilesToFTP(filePath, stream, newFileName);
         //保存数据信息
-        String currUser = serviceComponent.getThisUser();
+        String currUser = processControllerComponent.getThisUser();
         BaseAttachment sysAttachment = new BaseAttachment();
         sysAttachment.setFileExtension(extension);
         sysAttachment.setFilePath(filePath);
@@ -444,7 +446,7 @@ public class BaseAttachmentService {
         String strYear = String.valueOf(DateUtils.getYear(date));
         String strMonth = String.valueOf(DateUtils.getMonth(date));
         String strDay = String.valueOf(DateUtils.getMonthDay(date));
-        String targetPath = createFTPBasePath(KEEP_UPLOAD_PATH, strYear, strMonth, strDay, serviceComponent.getThisUser());
+        String targetPath = createFTPBasePath(KEEP_UPLOAD_PATH, strYear, strMonth, strDay, processControllerComponent.getThisUser());
         String targetFileName = createNoRepeatFileName(sysAttachment.getFileExtension());
         ftpUtilsExtense.copyFile(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), targetFileName, targetPath);
         BaseAttachmentKeep sysAttachmentKeep = new BaseAttachmentKeep();
@@ -457,7 +459,7 @@ public class BaseAttachmentService {
         sysAttachmentKeep.setFileSize(sysAttachment.getFileSize());
         cmsBaseAttachmentKeepDao.addObject(sysAttachmentKeep);
 
-        sysAttachment.setModifier(serviceComponent.getThisUser());
+        sysAttachment.setModifier(processControllerComponent.getThisUser());
         baseAttachmentDao.updateAttachment(sysAttachment);
     }
 

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
@@ -14,6 +13,7 @@ import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
 import com.copower.pmcc.assess.service.project.SchemeInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ import java.util.List;
 @WorkFlowAnnotation(desc = "收益法成果")
 public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Autowired
-    private ControllerComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private EvaluationHypothesisService hypothesisService;
     @Autowired
@@ -47,7 +47,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
         List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
         List<EvaluationBasisDto> basisDtos = basisService.listN(null);
         List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
@@ -59,7 +59,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", processInsId, boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
@@ -74,7 +74,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
      */
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
         List<EvaluationHypothesisVo> hypothesisDtos = hypothesisService.listNs(null);
         List<EvaluationBasisVo> basisVos = basisService.listNs(null);
         List<EvaluationPrincipleVo> principleVos = principleService.listNs(null);
@@ -92,7 +92,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = serviceComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

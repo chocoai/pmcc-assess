@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanHistory;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanHistoryService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -35,19 +33,15 @@ public class ProjectPlanHistoryController {
     @Autowired
     private ProjectPlanHistoryService projectPlanHistoryService;
     @Autowired
-    private ControllerComponent controllerComponent;
-    @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProjectPlanService projectPlanService;
 
     @RequestMapping(value = "/projectPlanHistoryIndex", name = "申请页面")
     public ModelAndView projectPlanHistoryIndex(String projectId) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView
                 ("/project/planHistory/projectPlanHistoryIndex", "0",0, "0","");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(Integer.valueOf(projectId));
         modelAndView.addObject("projectInfo", projectInfo);
@@ -61,7 +55,7 @@ public class ProjectPlanHistoryController {
         modelAndView.addObject("boxCnName", projectInfo.getProjectName() + "-总计划设置");
         modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "总计划设置");
-        modelAndView.addObject("currUserName", serviceComponent.getThisUserInfo().getUserName());
+        modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
         return modelAndView;
     }
 
@@ -69,7 +63,7 @@ public class ProjectPlanHistoryController {
     @RequestMapping(value = "/projectPlanHistoryApproval", name = "审批页面")
     public ModelAndView projectPlanHistoryApproval(String processInsId, String taskId, Integer boxId, String
             agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView
                 ("/project/planHistory/projectPlanHistoryApproval",
                         processInsId, boxId, taskId, agentUserAccount);
         List<ProjectPlanHistory> projectPlanHistories = projectPlanHistoryService.getProjectPlanHistoryList
@@ -92,7 +86,7 @@ public class ProjectPlanHistoryController {
     @RequestMapping(value = "/projectPlanHistoryEdit", name = "返回修改")
     public ModelAndView projectPlanHistoryEdit(String processInsId, String taskId, Integer boxId, String
             agentUserAccount) {
-        ModelAndView modelAndView = controllerComponent.baseFormModelAndView
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView
                 ("/project/planHistory/projectPlanHistoryEdit",
                         processInsId, boxId, taskId, agentUserAccount);
         List<ProjectPlanHistory> projectPlanHistories = projectPlanHistoryService.getProjectPlanHistoryList

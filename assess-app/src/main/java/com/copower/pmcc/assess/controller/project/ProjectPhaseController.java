@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseAssist;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
-import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
@@ -16,6 +14,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.PublicRole;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -48,7 +47,7 @@ import java.util.List;
 @RequestMapping("/ProjectPhase")
 public class ProjectPhaseController {
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -62,7 +61,7 @@ public class ProjectPhaseController {
 
     @RequestMapping(value = "/view", name = "工程管理页面视图", method = RequestMethod.GET)
     public ModelAndView view() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/stage/ProjectPhase");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/stage/ProjectPhase");
         //取工作内容具体项的关系表单信息
         List<BaseAssist> sysBaseFormListStage = baseAssistService.getBaseAssist(BaseConstant.ASSESS_BASE_ASSIST_STAGE, "");
         modelAndView.addObject("sysBaseFormListStage", sysBaseFormListStage);

@@ -10,12 +10,11 @@ import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectSuspend;
-import com.copower.pmcc.assess.dto.input.ProcessUserDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectSuspendVo;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPauseEvent;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -24,6 +23,7 @@ import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -58,7 +58,7 @@ public class ProjectPauseService {
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
@@ -91,8 +91,8 @@ public class ProjectPauseService {
         projectSuspend = new ProjectSuspend();
         projectSuspend.setProjectId(projectId);
         projectSuspend.setSuspendReason(suspendReason);
-        projectSuspend.setCreator(serviceComponent.getThisUser());
-        projectSuspend.setSuspendUserAccount(serviceComponent.getThisUser());
+        projectSuspend.setCreator(processControllerComponent.getThisUser());
+        projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
         projectSuspendDao.addSuspend(projectSuspend);
         bpmRpcProjectTaskService.updateProjectTaskPause(projectId);
         String boxName = baseParameterServcie.getParameterValues(AssessCacheConstant.DETAILS_PROJECT_SUSPEND);
@@ -101,7 +101,7 @@ public class ProjectPauseService {
             //发起流程
             int boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
             BoxReDto boxReInfoByBoxId = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-            SysUserDto sysUser = serviceComponent.getThisUserInfo();
+            SysUserDto sysUser = processControllerComponent.getThisUserInfo();
             String folio = String.format("%s发起【%s】,%s", sysUser.getUserName(), boxReInfoByBoxId.getCnName(), projectInfo.getProjectName());
             ProcessUserDto processUserDto = new ProcessUserDto();
             ProcessInfo processInfo = new ProcessInfo();
@@ -115,7 +115,7 @@ public class ProjectPauseService {
             processInfo.setProcessEventExecutorName(ProjectPauseEvent.class.getSimpleName());
 
             try {
-                processUserDto = serviceComponent.processStart(processInfo, "", false);
+                processUserDto = processControllerComponent.processStart(processInfo, "", false);
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -128,14 +128,14 @@ public class ProjectPauseService {
 
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
-                    serviceComponent.AutoprocessSubmitLoopTaskNodeArg(processInfo, processUserDto);
+                    processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
                 } catch (BpmException e) {
                     throw new BusinessException("跳过节点自动提交失败");
                 }
             }
         } else {
             //如果不走流程，则直接更新状态
-            projectSuspend.setSuspendUserAccount(serviceComponent.getThisUser());
+            projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
             projectSuspend.setSupendDate(new Date());
             projectSuspendDao.editSuspend(projectSuspend);
             projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getName());
@@ -145,7 +145,7 @@ public class ProjectPauseService {
         //更新附件
         BaseAttachment sysAttachment = new BaseAttachment();
         sysAttachment.setProcessInsId("0");
-        sysAttachment.setCreater(serviceComponent.getThisUser());
+        sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_suspend");
         BaseAttachment sysAttachmentNew = new BaseAttachment();
         sysAttachmentNew.setProcessInsId(processInsId);
@@ -164,7 +164,7 @@ public class ProjectPauseService {
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
         approvalModelDto.setOpinions("返回修改");
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -173,7 +173,7 @@ public class ProjectPauseService {
     @Transactional(rollbackFor = Exception.class)
     public void submitProjectSuspend(ApprovalModelDto approvalModelDto) throws BusinessException {
         try {
-            serviceComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -184,7 +184,7 @@ public class ProjectPauseService {
         ProjectSuspend projectSuspend = projectSuspendDao.getProjectSuspend(projectId, ProcessStatusEnum.FINISH.getValue());
         projectSuspend.setBisEnable(false);
         projectSuspend.setRestartDate(new Date());
-        projectSuspend.setRestartUserAccount(serviceComponent.getThisUser());
+        projectSuspend.setRestartUserAccount(processControllerComponent.getThisUser());
         if (!projectSuspendDao.editSuspend(projectSuspend)) {
             throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
         }

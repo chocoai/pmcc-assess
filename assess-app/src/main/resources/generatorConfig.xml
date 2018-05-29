@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_case_comparison" domainObjectName="DataCaseComparison">
+        <table tableName="tb_data_case_comparison_field" domainObjectName="DataCaseComparisonField">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ReportTemplateMapper {
     int countByExample(ReportTemplateExample example);

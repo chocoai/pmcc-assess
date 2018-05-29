@@ -2,13 +2,12 @@ package com.copower.pmcc.assess.controller.report;
 
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.ReportTemplateService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -33,15 +32,13 @@ public class ReportTemplateController {
     @Autowired
     private ReportTemplateService reportTemplateService;
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
-    @Autowired
-    private ServiceComponent serviceComponent;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/base/reportTemplate");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/reportTemplate");
         List<BaseDataDic> reportTemplateTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TEMPLATE_TYPE);
         modelAndView.addObject("reportTemplateTypeList",reportTemplateTypeList);
         return modelAndView;

@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanDetailsMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +50,13 @@ public class ProjectPlanDetailsDao {
     public List<ProjectPlanDetails> getProjectPlanDetailsByPlanId(Integer planId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andPlanIdEqualTo(planId);
+        example.setOrderByClause("sorting");
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPId(Integer pId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPidEqualTo(pId);
         example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }

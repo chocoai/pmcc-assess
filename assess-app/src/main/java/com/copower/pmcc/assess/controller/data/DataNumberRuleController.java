@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.controller.data;
 
-
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.controller.ControllerComponent;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataNumberRuleService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +24,7 @@ import java.util.List;
 public class DataNumberRuleController {
 
     @Autowired
-    private ControllerComponent controllerComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     @Autowired
     private DataNumberRuleService dataNumberRuleService;
@@ -37,7 +35,7 @@ public class DataNumberRuleController {
     @RequestMapping(value = "/Index", name = "文号规则视图")
     public ModelAndView index() {
 
-        ModelAndView modelAndView = controllerComponent.baseModelAndView("/data/dataNumberRule");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataNumberRule");
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
         List<BaseDataDic> baseDataDicList1 = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("assessClassList", baseDataDicList);

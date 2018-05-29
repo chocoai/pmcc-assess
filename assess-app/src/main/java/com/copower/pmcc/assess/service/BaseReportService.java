@@ -4,14 +4,17 @@ import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.BaseReportDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.BaseReportColumns;
+import com.copower.pmcc.assess.dal.entity.BaseReportTable;
+import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,7 +41,7 @@ public class BaseReportService {
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
 
     public List<BaseReportTable> getBaseReportTableList(Integer typeId) {
         return baseReportDao.getBaseReportTableList(typeId);
@@ -62,7 +65,7 @@ public class BaseReportService {
         BaseAttachment baseAttachment = new BaseAttachment();
         baseAttachment.setTableName("tb_base_report_template");
         baseAttachment.setTableId(0);
-        baseAttachment.setCreater(serviceComponent.getThisUser());
+        baseAttachment.setCreater(processControllerComponent.getThisUser());
 
         BaseAttachment baseAttachmentNew = new BaseAttachment();
         baseAttachmentNew.setTableId(baseReportTemplate.getId());

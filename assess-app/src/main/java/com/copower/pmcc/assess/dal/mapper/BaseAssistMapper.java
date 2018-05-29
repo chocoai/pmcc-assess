@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.BaseAssist;
 import com.copower.pmcc.assess.dal.entity.BaseAssistExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BaseAssistMapper {
     int countByExample(BaseAssistExample example);

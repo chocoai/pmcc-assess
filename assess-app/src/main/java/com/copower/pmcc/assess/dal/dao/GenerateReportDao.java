@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.GenerateReport;
+import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
+import com.copower.pmcc.assess.dal.entity.GenerateReportRecordExample;
 import com.copower.pmcc.assess.dal.mapper.GenerateReportMapper;
 import com.copower.pmcc.assess.dal.mapper.GenerateReportRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;

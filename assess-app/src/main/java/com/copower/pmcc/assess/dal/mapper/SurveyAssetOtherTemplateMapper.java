@@ -2,8 +2,9 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplateExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SurveyAssetOtherTemplateMapper {
     int countByExample(SurveyAssetOtherTemplateExample example);

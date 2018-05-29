@@ -1,4 +1,8 @@
 package com.copower.pmcc.assess.controller.report;
+
+import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcCustomReportService;
@@ -7,7 +11,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/reportPage")
 public class ReportPageController {
-
+    @Autowired
+    private BpmRpcToolsService bpmRpcToolsService;
     @Autowired
     private ErpRpcCustomReportService erpRpcCustomReportService;
     @Autowired
@@ -77,21 +81,21 @@ public class ReportPageController {
     @ResponseBody
     @RequestMapping(value = "/getTableData", name = "取得表数据", method = RequestMethod.GET)
     public BootstrapTableVo getTableData(Integer limit, Integer offset, String tableName, Integer tableId, String pageSearch) {
-        SQLStringVo tableDataSql = erpRpcCustomReportService.getTableDataSql(limit, offset, tableName, tableId, pageSearch);
+        KeyValueDto userAccountDataRole = bpmRpcToolsService.getUserAccountDataRole(commonService.thisUserAccount());
+        String dataRole = JSON.toJSONString(userAccountDataRole);
+        SQLStringVo tableDataSql = erpRpcCustomReportService.getTableDataSql(limit, offset, tableName, tableId, pageSearch, dataRole);
         List<Map> countMap = ddlMySqlAssist.customTableSelect(tableDataSql.getCountSql());
         List<Map> dataMap = ddlMySqlAssist.customTableSelect(tableDataSql.getDataSql());
 
         List<KeyValueDto> selectSourceSql = erpRpcCustomReportService.getSelectSourceSql(dataMap, tableId);
 
-        List<KeyValueDto> keyValueDtos=new ArrayList<>();
+        List<KeyValueDto> keyValueDtos = new ArrayList<>();
 
-        if(CollectionUtils.isNotEmpty(selectSourceSql))
-        {
-            for(KeyValueDto item:selectSourceSql)
-            {
+        if (CollectionUtils.isNotEmpty(selectSourceSql)) {
+            for (KeyValueDto item : selectSourceSql) {
                 List<Map> maps = ddlMySqlAssist.customTableSelect(item.getValue());
                 String string = maps.get(0).get("name").toString();
-                KeyValueDto keyValueDto=new KeyValueDto();
+                KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(item.getKey());
                 keyValueDto.setExplain(item.getExplain());
                 keyValueDto.setValue(string);
@@ -99,7 +103,7 @@ public class ReportPageController {
             }
         }
 
-        return erpRpcCustomReportService.getTableData(countMap, dataMap,keyValueDtos, tableId);
+        return erpRpcCustomReportService.getTableData(countMap, dataMap, keyValueDtos, tableId);
     }
 
     @ResponseBody

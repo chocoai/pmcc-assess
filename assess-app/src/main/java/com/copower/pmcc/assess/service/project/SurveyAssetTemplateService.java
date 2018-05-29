@@ -6,8 +6,8 @@ import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
-import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -31,7 +31,7 @@ public class SurveyAssetTemplateService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ServiceComponent serviceComponent;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
 
@@ -78,7 +78,7 @@ public class SurveyAssetTemplateService {
             }
 
             surveyAssetTemplateDto.setPid(pid);
-            surveyAssetTemplateDto.setCreator(serviceComponent.getThisUser());
+            surveyAssetTemplateDto.setCreator(processControllerComponent.getThisUser());
             surveyAssetTemplateDao.save(surveyAssetTemplateDto);
 
             int tableId = surveyAssetTemplateDto.getId();

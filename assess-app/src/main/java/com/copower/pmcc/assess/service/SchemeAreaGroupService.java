@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.dao.SchemeAreaGroupDao;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample;
 import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;

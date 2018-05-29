@@ -1,8 +1,6 @@
 <%@ page language="java"
-         import="java.util.*,com.zhuozhengsoft.pageoffice.*,com.zhuozhengsoft.pageoffice.wordwriter.*,java.awt.*"
+         import="com.zhuozhengsoft.pageoffice.OpenModeType,com.zhuozhengsoft.pageoffice.PageOfficeCtrl"
          pageEncoding="utf-8" %>
-<%@ page import="com.copower.pmcc.erp.common.utils.SpringContextUtils" %>
-<%@ page import="com.copower.pmcc.erp.common.CommonService" %>
 <%
     PageOfficeCtrl poCtrl = new PageOfficeCtrl(request);
     poCtrl.setServerPage(request.getContextPath() + "/poserver.zz"); //此行必须

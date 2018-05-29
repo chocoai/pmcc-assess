@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingFieldService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
