@@ -24,6 +24,12 @@ public class EvaluationThinkingDao {
         return evaluationThinkingMapper.insertSelective(change(evaluationThinkingDto)) == 1;
     }
 
+    public int save(EvaluationThinkingDto dto){
+        EvaluationThinking thinking = change(dto);
+        evaluationThinkingMapper.insertSelective(thinking);
+        return thinking.getId();
+    }
+
     public boolean remove(Integer id){
         return evaluationThinkingMapper.deleteByPrimaryKey(id)==1;
     }

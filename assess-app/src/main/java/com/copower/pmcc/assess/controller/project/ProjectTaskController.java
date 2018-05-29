@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -47,12 +48,19 @@ public class ProjectTaskController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private PublicService publicService;
 
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
     public ModelAndView projectTaskIndex(Integer responsibilityId) {
         String viewUrl = "projectTaskAssist";
-        ProjectResponsibilityDto projectPlanResponsibility = bpmRpcProjectTaskService.getProjectTaskById(responsibilityId);
+        ProjectResponsibilityDto projectPlanResponsibility = null;
+        try {
+            projectPlanResponsibility = bpmRpcProjectTaskService.getProjectTaskById(responsibilityId);
+        } catch (Exception e) {
+            return publicService.getExplainPage("提示","该任务不存在或已处理");
+        }
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanResponsibility.getPlanDetailsId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {

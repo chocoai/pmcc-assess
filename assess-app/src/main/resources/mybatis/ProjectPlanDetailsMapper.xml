@@ -37,7 +37,7 @@
     <result column="return_details_reason" property="returnDetailsReason" jdbcType="VARCHAR" />
     <result column="declare_form_id" property="declareFormId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
-    <result column="report_analysis_id" property="reportAnalysisId" jdbcType="INTEGER" />
+    <result column="report_analysis_category" property="reportAnalysisCategory" jdbcType="INTEGER" />
     <result column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -104,7 +104,7 @@
     execute_department_id, bis_enable, proportion, sorting, pid, first_pid, bis_start, 
     process_ins_id, task_submit_time, task_remarks, actual_hours, bis_all_submit, bis_again_submit, 
     status, bis_partake, return_details_id, return_process_ins_id, bis_new, sign_filed, 
-    bis_last_layer, return_details_reason, declare_form_id, declare_record_id, report_analysis_id, 
+    bis_last_layer, return_details_reason, declare_form_id, declare_record_id, report_analysis_category, 
     evaluation_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample" >
@@ -152,7 +152,7 @@
       bis_again_submit, status, bis_partake, 
       return_details_id, return_process_ins_id, bis_new, 
       sign_filed, bis_last_layer, return_details_reason, 
-      declare_form_id, declare_record_id, report_analysis_id, 
+      declare_form_id, declare_record_id, report_analysis_category, 
       evaluation_id)
     values (#{projectWorkStageId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
       #{projectPhaseId,jdbcType=INTEGER}, #{projectPhaseDetailsId,jdbcType=INTEGER}, 
@@ -165,7 +165,7 @@
       #{bisAgainSubmit,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{bisPartake,jdbcType=BIT}, 
       #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, 
       #{signFiled,jdbcType=VARCHAR}, #{bisLastLayer,jdbcType=BIT}, #{returnDetailsReason,jdbcType=VARCHAR}, 
-      #{declareFormId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{reportAnalysisId,jdbcType=INTEGER}, 
+      #{declareFormId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{reportAnalysisCategory,jdbcType=INTEGER}, 
       #{evaluationId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanDetails" >
@@ -276,8 +276,8 @@
       <if test="declareRecordId != null" >
         declare_record_id,
       </if>
-      <if test="reportAnalysisId != null" >
-        report_analysis_id,
+      <if test="reportAnalysisCategory != null" >
+        report_analysis_category,
       </if>
       <if test="evaluationId != null" >
         evaluation_id,
@@ -386,8 +386,8 @@
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="reportAnalysisId != null" >
-        #{reportAnalysisId,jdbcType=INTEGER},
+      <if test="reportAnalysisCategory != null" >
+        #{reportAnalysisCategory,jdbcType=INTEGER},
       </if>
       <if test="evaluationId != null" >
         #{evaluationId,jdbcType=INTEGER},
@@ -508,8 +508,8 @@
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="record.reportAnalysisId != null" >
-        report_analysis_id = #{record.reportAnalysisId,jdbcType=INTEGER},
+      <if test="record.reportAnalysisCategory != null" >
+        report_analysis_category = #{record.reportAnalysisCategory,jdbcType=INTEGER},
       </if>
       <if test="record.evaluationId != null" >
         evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
@@ -556,7 +556,7 @@
       return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
       declare_form_id = #{record.declareFormId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-      report_analysis_id = #{record.reportAnalysisId,jdbcType=INTEGER},
+      report_analysis_category = #{record.reportAnalysisCategory,jdbcType=INTEGER},
       evaluation_id = #{record.evaluationId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -667,8 +667,8 @@
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="reportAnalysisId != null" >
-        report_analysis_id = #{reportAnalysisId,jdbcType=INTEGER},
+      <if test="reportAnalysisCategory != null" >
+        report_analysis_category = #{reportAnalysisCategory,jdbcType=INTEGER},
       </if>
       <if test="evaluationId != null" >
         evaluation_id = #{evaluationId,jdbcType=INTEGER},
@@ -712,7 +712,7 @@
       return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
       declare_form_id = #{declareFormId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
-      report_analysis_id = #{reportAnalysisId,jdbcType=INTEGER},
+      report_analysis_category = #{reportAnalysisCategory,jdbcType=INTEGER},
       evaluation_id = #{evaluationId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

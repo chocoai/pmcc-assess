@@ -202,7 +202,10 @@ public class ProjectInfoService {
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
 
             if (consignorDto.getCsType() == 1 && possessorDto.getpType() == 1) {//说明是法人 则不需要更新
-
+                //修改之后法人的联系人被添加进本地数据库  因此也可以修改了
+                initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
+                initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
+                initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
             } else {
                 initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
                 initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
@@ -532,7 +535,7 @@ public class ProjectInfoService {
         return map;
     }
 
-    /*联系人 vo*/
+    /*联系人 vo crm*/
     public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

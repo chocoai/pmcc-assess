@@ -3,12 +3,15 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CompileReportDetailsMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CompileReportDetails" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="text_replace" property="textReplace" jdbcType="VARCHAR" />
-    <result column="evaluation_type" property="evaluationType" jdbcType="VARCHAR" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="report_analysis_id" property="reportAnalysisId" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="category_field" property="categoryField" jdbcType="INTEGER" />
+    <result column="template" property="template" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, text_replace, evaluation_type, creator, gmt_created, gmt_modified, pid
+    id, plan_details_id, content, report_analysis_id, category, category_field, template, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CompileReportDetailsExample" >
     select
@@ -105,11 +109,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_compile_report_details (text_replace, evaluation_type, creator, 
-      gmt_created, gmt_modified, pid
+    insert into tb_compile_report_details (plan_details_id, content, report_analysis_id, 
+      category, category_field, template, 
+      creator, gmt_created, gmt_modified
       )
-    values (#{textReplace,jdbcType=VARCHAR}, #{evaluationType,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{pid,jdbcType=INTEGER}
+    values (#{planDetailsId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{reportAnalysisId,jdbcType=INTEGER}, 
+      #{category,jdbcType=INTEGER}, #{categoryField,jdbcType=INTEGER}, #{template,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CompileReportDetails" >
@@ -118,11 +124,23 @@
     </selectKey>
     insert into tb_compile_report_details
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="textReplace != null" >
-        text_replace,
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
-      <if test="evaluationType != null" >
-        evaluation_type,
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="reportAnalysisId != null" >
+        report_analysis_id,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="categoryField != null" >
+        category_field,
+      </if>
+      <if test="template != null" >
+        template,
       </if>
       <if test="creator != null" >
         creator,
@@ -133,16 +151,25 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="pid != null" >
-        pid,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="textReplace != null" >
-        #{textReplace,jdbcType=VARCHAR},
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="evaluationType != null" >
-        #{evaluationType,jdbcType=VARCHAR},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="reportAnalysisId != null" >
+        #{reportAnalysisId,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="categoryField != null" >
+        #{categoryField,jdbcType=INTEGER},
+      </if>
+      <if test="template != null" >
+        #{template,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -152,9 +179,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -170,11 +194,23 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.textReplace != null" >
-        text_replace = #{record.textReplace,jdbcType=VARCHAR},
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.evaluationType != null" >
-        evaluation_type = #{record.evaluationType,jdbcType=VARCHAR},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportAnalysisId != null" >
+        report_analysis_id = #{record.reportAnalysisId,jdbcType=INTEGER},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
+      <if test="record.categoryField != null" >
+        category_field = #{record.categoryField,jdbcType=INTEGER},
+      </if>
+      <if test="record.template != null" >
+        template = #{record.template,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -185,9 +221,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -196,12 +229,15 @@
   <update id="updateByExample" parameterType="map" >
     update tb_compile_report_details
     set id = #{record.id,jdbcType=INTEGER},
-      text_replace = #{record.textReplace,jdbcType=VARCHAR},
-      evaluation_type = #{record.evaluationType,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      report_analysis_id = #{record.reportAnalysisId,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      category_field = #{record.categoryField,jdbcType=INTEGER},
+      template = #{record.template,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      pid = #{record.pid,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -209,11 +245,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CompileReportDetails" >
     update tb_compile_report_details
     <set >
-      <if test="textReplace != null" >
-        text_replace = #{textReplace,jdbcType=VARCHAR},
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="evaluationType != null" >
-        evaluation_type = #{evaluationType,jdbcType=VARCHAR},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="reportAnalysisId != null" >
+        report_analysis_id = #{reportAnalysisId,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="categoryField != null" >
+        category_field = #{categoryField,jdbcType=INTEGER},
+      </if>
+      <if test="template != null" >
+        template = #{template,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -224,20 +272,20 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CompileReportDetails" >
     update tb_compile_report_details
-    set text_replace = #{textReplace,jdbcType=VARCHAR},
-      evaluation_type = #{evaluationType,jdbcType=VARCHAR},
+    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      report_analysis_id = #{reportAnalysisId,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      category_field = #{categoryField,jdbcType=INTEGER},
+      template = #{template,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      pid = #{pid,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
