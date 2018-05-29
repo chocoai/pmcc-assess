@@ -116,7 +116,7 @@
                                     <div role="tabpanel" class="tab-pane fade" id="tab_content2"
                                          aria-labelledby="profile-tab">
                                         <%--第二页表--%>
-                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                        <table class="table table-bordered leftfloat" id="twoTable" style="width: 40%">
                                             <thead>
                                             <tr>
                                                 <th class="gray">项目</th>
@@ -153,7 +153,10 @@
                                                 <td>100</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="text" name="" required data-rule-digits="true"
+                                                        <input type="hidden" value="${items.id}">
+                                                        <input type="text"  class=""
+                                                               name="dealCaondition" required
+                                                               data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
                                                 </c:forEach>
@@ -163,7 +166,10 @@
                                                 <td>100</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="text" name="" required data-rule-digits="true"
+                                                        <input type="hidden" value="${items.id}">
+                                                        <input type="text" class="" name="dealTime"
+                                                               required
+                                                               data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
                                                 </c:forEach>
@@ -173,7 +179,10 @@
                                                 <td>100</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="text" name="" required data-rule-digits="true"
+                                                        <input type="hidden" value="${items.id}">
+                                                        <input type="text" name="paymentMethod"
+                                                               required
+                                                               data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
                                                 </c:forEach>
@@ -213,30 +222,52 @@
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.price}</td>
+                                                    <td>
+
+                                                    <span id="price${items.id}">${items.price}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td></td>
+                                                    <td>
+                                                        <span id="#threeDealCaondition${items.id}"></span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td></td>
+                                                    <td id="#threeDealTime${items.id}"></td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td></td>
+                                                    <td id="#threePaymentMethod${items.id}"></td>
                                                 </c:forEach>
                                             </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">比准价格</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td>
+                                                        <span id="threeAffirmPrice${items.id}"></span>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="gray">加权平均价</th>
+                                                <td></td>
+                                                <c:forEach items="${surveyCaseStudyDetails}" var="items">
+                                                    <td id=""></td>
+                                                </c:forEach>
+                                            </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -323,7 +354,8 @@
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td>
-                                                <input type="text" name="" min="0.0" max="1" step="0.1" style="width: 80px">
+                                                <input type="text" name="" min="0.0" max="1" step="0.1"
+                                                       style="width: 80px">
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -412,6 +444,7 @@
 <script type="application/javascript">
 
     $(function () {
+
         getGray();
 
         $("#frm_task").validate();
@@ -472,6 +505,102 @@
         $('.leftfloat').css('float', 'left');
         $('.rightfloat').css('float', 'right');
     }
+
+    $('input[name=dealCaondition]').blur(function () {
+        var number = $(this).val();                                         //取input输入的值
+        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
+        var temp = 100 / number;                                            //相应计算
+        var threeId = "#threeDealCaondition" + twoId;                     //第三章表循环的id
+        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+
+
+
+        if (number > 100) {
+            console.log("大于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if (number < 100) {
+            console.log("小于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+        if (number == "" || number == 100) {
+            console.log("等于");
+            $(this).closest("td").find("i").remove();
+        }
+
+        if(temp < 1){
+            console.log("temp小于1");
+            console.log(threeId);
+            $(threeId).append('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if(temp > 1){
+            console.log("temp大于1");
+            console.log(threeId);
+            $(threeId).after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+
+        var s1 = document.getElementById(threeId).innerHTML;
+        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
+        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
+        var s4 = $("#price"+twoId).text();
+        var s0 = s1*s2*s3*s4;
+        var reg = /^[0-9]+.?[0-9]*$/;
+        console.log(s0);
+        if(reg.test(s0)){
+            var sId1 = "#threeAffirmPrice"+twoId;
+            document.getElementById(sId1).innerHTML = s0;
+        }
+
+    });
+
+
+    $('input[name=dealTime]').blur(function () {
+        var number = $(this).val();                                         //取input输入的值
+        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
+        var temp = 100 / number;                                            //相应计算
+        var threeId = "#threeDealTime" + twoId;                     //第三章表循环的id
+        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+
+        if (number > 100) {
+            console.log("大于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if (number < 100) {
+            console.log("小于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+        if (number == "" || number == 100) {
+            console.log("等于");
+            $(this).closest("td").find("i").remove();
+        }
+    });
+
+    $('input[name=paymentMethod]').blur(function () {
+        var number = $(this).val();                                         //取input输入的值
+        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
+        var temp = 100 / number;                                            //相应计算
+        var threeId = "#threePaymentMethod" + twoId;                     //第三章表循环的id
+        document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        if (number > 100) {
+            console.log("大于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if (number < 100) {
+            console.log("小于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+        if (number == "" || number == 100) {
+            console.log("等于");
+            $(this).closest("td").find("i").remove();
+        }
+    });
+
 
 </script>
 
