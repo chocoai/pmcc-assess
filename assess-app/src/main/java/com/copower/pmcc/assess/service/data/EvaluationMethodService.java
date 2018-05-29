@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldVoEnum;
+import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.dao.EvaluationMethodFieldDao;
@@ -29,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -65,10 +67,109 @@ public class EvaluationMethodService {
         return methodDao.addEvaluationMethod(evaluationMethodDto);
     }
 
-    public void save(EvaluationMethodDto evaluationMethodDto,String field,String Nofield){
-        if (!StringUtils.isEmpty(field)  && !StringUtils.isEmpty(Nofield)){
-            String[] fields = field.split(",");
-            String[] noFields = Nofield.split(",");
+    @Transactional
+    public void saveAndUpdate(EvaluationMethodDto evaluationMethodDto, String field, String Nofield) {
+        if (!ObjectUtils.isEmpty(evaluationMethodDto.getId())) {//update
+            evaluationMethodDto.setCreator(methodDao.getEvaluationMethod(evaluationMethodDto.getId()).getCreator());
+            methodDao.updateEvaluationMethod(evaluationMethodDto);
+            if (!StringUtils.isEmpty(field)) {// 适用
+                // 因为是修改所以可能所有的数据数据库中都已经有相关信息了
+                String[] fields = field.split(",");
+                int type = FieldEnum.APPLICABLE.getNum();//有可能增加一些字段,有可能删去一些字段
+                for (String f:fields){
+                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type,f,evaluationMethodDto.getId());
+                }
+                for (String f:fields){
+                    if (!StringUtils.isEmpty(f)){
+                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
+                        fieldDto.setType(type);
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setMethodId(evaluationMethodDto.getId());
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!StringUtils.isEmpty(Nofield)){//不适用
+                String[] noFields = Nofield.split(",");
+                int type = FieldEnum.NO_APPLICABLE.getNum();
+                for (String f:noFields){
+                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type,f,evaluationMethodDto.getId());
+                }
+                for (String f:noFields){
+                    if (!StringUtils.isEmpty(f)){
+                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
+                        fieldDto.setType(type);
+                        fieldDto.setName(f);
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setMethodId(evaluationMethodDto.getId());
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {// add
+            evaluationMethodDto.setCreator(commonService.thisUserAccount());
+            int id = methodDao.save(evaluationMethodDto);
+            if (!StringUtils.isEmpty(field)) {
+                String[] fields = field.split(",");
+                for (String f : fields) {//适用字段
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
+                        fieldDto.setType(FieldEnum.APPLICABLE.getNum());
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setName(f);
+                        fieldDto.setMethodId(id);
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
+                    }
+                }
+
+            }
+            if (!StringUtils.isEmpty(Nofield)) {//不适用字段
+                String[] noFields = Nofield.split(",");
+                for (String f : noFields) {
+                    if (!StringUtils.isEmpty(f)) {
+                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
+                        fieldDto.setType(FieldEnum.NO_APPLICABLE.getNum());
+                        fieldDto.setCreator(commonService.thisUserAccount());
+                        fieldDto.setName(f);
+                        fieldDto.setMethodId(id);
+                        try {
+                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
+                        }catch (Exception e){
+                            try {
+                                logger.error("错误打印!"+e.getMessage());
+                            }catch (Exception e1){
+                                throw  e;
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -160,20 +261,21 @@ public class EvaluationMethodService {
 
     /**
      * 将所有模板以评估方法作为分类
+     *
      * @return
      */
-    public Map<Integer,List<EvaluationMethod>> getEvaluationMethodMap(){
-        Map<Integer,List<EvaluationMethod>> map= Maps.newConcurrentMap();
+    public Map<Integer, List<EvaluationMethod>> getEvaluationMethodMap() {
+        Map<Integer, List<EvaluationMethod>> map = Maps.newConcurrentMap();
         List<EvaluationMethodDto> evaluationMethodDtoList = methodDao.list(null);
         for (EvaluationMethodDto evaluationMethodDto : evaluationMethodDtoList) {
             Integer method = evaluationMethodDto.getMethod();
-            if(map.containsKey(method)){
+            if (map.containsKey(method)) {
                 List<EvaluationMethod> evaluationMethods = map.get(method);
                 evaluationMethods.add(evaluationMethodDto);
-            }else{
-                List<EvaluationMethod> evaluationMethods= Lists.newArrayList();
+            } else {
+                List<EvaluationMethod> evaluationMethods = Lists.newArrayList();
                 evaluationMethods.add(evaluationMethodDto);
-                map.put(method,evaluationMethods);
+                map.put(method, evaluationMethods);
             }
         }
         return map;

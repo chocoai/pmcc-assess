@@ -29,6 +29,12 @@ public class EvaluationBasisDao {
         return mapper.updateByPrimaryKey(change(evaluationBasisDto)) == 1;
     }
 
+    public int save(EvaluationBasisDto dto){
+        EvaluationBasis basis = change(dto);
+        mapper.insertSelective(basis);
+        return basis.getId();
+    }
+
     public boolean remove(Integer id) {
         return mapper.deleteByPrimaryKey(id) == 1;
     }

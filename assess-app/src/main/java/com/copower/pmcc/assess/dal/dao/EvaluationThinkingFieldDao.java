@@ -29,6 +29,15 @@ public class EvaluationThinkingFieldDao {
         return change(mapper.selectByPrimaryKey(id));
     }
 
+    public void delete(int type,String field,Integer thinkID){
+        EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();
+        example.createCriteria().andIdIsNotNull().andThinkingIdEqualTo(thinkID).andTypeEqualTo(type);
+        List<EvaluationThinkingField> fieldList = mapper.selectByExample(example);
+        for (EvaluationThinkingField field1:fieldList){
+            mapper.deleteByPrimaryKey(field1.getId());
+        }
+    }
+
     public List<EvaluationThinkingField> schemeassistservice(Integer id,Integer type){
         EvaluationThinkingDto dto = thinkingDao.get(id);
         EvaluationThinkingFieldExample example = new EvaluationThinkingFieldExample();

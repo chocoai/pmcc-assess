@@ -75,13 +75,9 @@ public class EvaluationPrincipleController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationPrincipleDto evaluationPrincipleDto) {
+    public HttpResult add(EvaluationPrincipleDto evaluationPrincipleDto,String field) {
         try {
-            if (evaluationPrincipleDto.getId() != null && evaluationPrincipleDto.getId() != 0) {//不再使用专门的 update controller
-                service.update(evaluationPrincipleDto);
-            } else {
-                service.add(evaluationPrincipleDto);
-            }
+            service.saveAndUpdate(evaluationPrincipleDto,field);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

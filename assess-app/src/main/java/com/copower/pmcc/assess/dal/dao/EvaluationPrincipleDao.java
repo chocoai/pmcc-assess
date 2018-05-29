@@ -19,18 +19,25 @@ import java.util.List;
 public class EvaluationPrincipleDao {
 
     @Autowired
-    private EvaluationPrincipleMapper evaluationPrincipleMapper;
+    private EvaluationPrincipleMapper mapper;
 
     public boolean add(EvaluationPrincipleDto evaluationPrincipleDto) {
-        return evaluationPrincipleMapper.insertSelective(change(evaluationPrincipleDto)) == 1;
+        return mapper.insertSelective(change(evaluationPrincipleDto)) == 1;
     }
 
+    public int save(EvaluationPrincipleDto evaluationPrincipleDto){
+        EvaluationPrinciple evaluationPrinciple = change(evaluationPrincipleDto);
+        mapper.insertSelective(evaluationPrinciple);
+        return evaluationPrinciple.getId();
+    }
+
+
     public boolean remove(Integer id) {
-        return evaluationPrincipleMapper.deleteByPrimaryKey(id) == 1;
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
     public boolean update(EvaluationPrincipleDto evaluationPrincipleDto) {
-        return evaluationPrincipleMapper.updateByPrimaryKey(change(evaluationPrincipleDto)) == 1;
+        return mapper.updateByPrimaryKey(change(evaluationPrincipleDto)) == 1;
     }
 
     public List<EvaluationPrincipleDto> list(String name) {
@@ -39,17 +46,17 @@ public class EvaluationPrincipleDao {
         EvaluationPrincipleExample evaluationPrincipleExample = new EvaluationPrincipleExample();
         if (name == null || name=="") {
             evaluationPrincipleExample.createCriteria().andIdIsNotNull();
-            evaluationPrinciples = evaluationPrincipleMapper.selectByExample(evaluationPrincipleExample);
+            evaluationPrinciples = mapper.selectByExample(evaluationPrincipleExample);
             return change(evaluationPrinciples);
         } else {
             evaluationPrincipleExample.createCriteria().andNameLike(methodStr);
-            evaluationPrinciples = evaluationPrincipleMapper.selectByExample(evaluationPrincipleExample);
+            evaluationPrinciples = mapper.selectByExample(evaluationPrincipleExample);
             return change(evaluationPrinciples);
         }
     }
 
     public EvaluationPrincipleDto get(Integer id) {
-        return change(evaluationPrincipleMapper.selectByPrimaryKey(id));
+        return change(mapper.selectByPrimaryKey(id));
     }
 
     public EvaluationPrinciple change(EvaluationPrincipleDto evaluationPrincipleDto) {
