@@ -9,7 +9,7 @@ public class DataCaseComparison {
 
     private String uExplain;
 
-    private Integer dynamicFormId;
+    private Integer formTypeId;
 
     private String creator;
 
@@ -41,12 +41,12 @@ public class DataCaseComparison {
         this.uExplain = uExplain == null ? null : uExplain.trim();
     }
 
-    public Integer getDynamicFormId() {
-        return dynamicFormId;
+    public Integer getFormTypeId() {
+        return formTypeId;
     }
 
-    public void setDynamicFormId(Integer dynamicFormId) {
-        this.dynamicFormId = dynamicFormId;
+    public void setFormTypeId(Integer formTypeId) {
+        this.formTypeId = formTypeId;
     }
 
     public String getCreator() {

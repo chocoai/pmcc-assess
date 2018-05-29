@@ -367,4 +367,15 @@ public class ProjectPlanController {
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/copyPlanDetails", name = "拷贝计划详细内容", method = RequestMethod.POST)
+    public HttpResult copyPlanDetails(Integer planDetailsId) {
+        try {
+            projectPlanService.copyPlanDetails(planDetailsId,true);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

@@ -1,41 +1,27 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
-import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.service.ServiceComponent;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 

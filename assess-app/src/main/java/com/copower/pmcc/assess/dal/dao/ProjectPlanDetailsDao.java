@@ -55,6 +55,13 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPId(Integer pId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPidEqualTo(pId);
+        example.setOrderByClause("sorting");
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
+
     public List<ProjectPlanDetails> getProjectPlanDetailsByDeclareId(List<Integer> declareRecordIds, Integer projectPhaseId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
@@ -130,6 +137,12 @@ public class ProjectPlanDetailsDao {
     public List<ProjectPlanDetails> getProjectPlanDetailsByProjectIdAndName(Integer projectId, String name, Integer workStageId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andProjectPhaseNameEqualTo(name).andProjectWorkStageIdEqualTo(workStageId);
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPid(Integer pid) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andPidEqualTo(pid);
         return projectPlanDetailsMapper.selectByExample(example);
     }
 }

@@ -6,13 +6,13 @@ import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
  * Created by 13426 on 2018/5/3.
  */
 public class CaseComparisonVo extends CaseComparisonDto {
-    private String typeStr;
+    private String formTypeName;
 
-    public String getTypeStr() {
-        return typeStr;
+    public String getFormTypeName() {
+        return formTypeName;
     }
 
-    public void setTypeStr(String typeStr) {
-        this.typeStr = typeStr;
+    public void setFormTypeName(String formTypeName) {
+        this.formTypeName = formTypeName;
     }
 }

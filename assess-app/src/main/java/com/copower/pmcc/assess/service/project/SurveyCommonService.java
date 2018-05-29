@@ -1,18 +1,14 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.dao.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
-import com.copower.pmcc.assess.dto.input.project.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.ServiceComponent;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
-import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;

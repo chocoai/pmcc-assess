@@ -63,4 +63,8 @@ public class SchemeEvaluationObjectDao {
         BeanUtils.copyProperties(dto, oo);
         return oo;
     }
+
+    public SchemeEvaluationObject getSchemeEvaluationObjectById(Integer id) {
+        return mapper.selectByPrimaryKey(id);
+    }
 }

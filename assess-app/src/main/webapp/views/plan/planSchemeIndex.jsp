@@ -1033,6 +1033,25 @@
             }
         });
     }
+
+    //拷贝工作内容
+    function copyPlanDetails() {
+        //Loading.progressShow();
+        var node = $("#PlanItemListed").treegrid("getSelected");
+        $.ajax({
+            url: '${pageContext.request.contextPath}/ProjectPlan/copyPlanDetails',
+            data: {planDetailsId:node.id},
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                //Loading.progressHide();
+                getPlanItemList();
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
     //----------------||--------------------------------
 
 

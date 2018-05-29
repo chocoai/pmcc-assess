@@ -2,13 +2,16 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.CaseComparisonEnum;
 import com.copower.pmcc.assess.dal.dao.CaseComparisonDao;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -31,12 +34,14 @@ public class CaseComparisonService {
     private CaseComparisonDao caseComparisonDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     @Transactional
     public boolean add(CaseComparisonDto dto) {
-        if (dto.getCreator()==null || dto.getCreator()=="")dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
+        if (dto.getCreator() == null || dto.getCreator() == "") dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
         return caseComparisonDao.add(dto);
     }
 
@@ -47,8 +52,8 @@ public class CaseComparisonService {
 
     @Transactional
     public boolean update(CaseComparisonDto dto) {
-        if (dto.getCreator()==null || dto.getCreator()=="")dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
+        if (dto.getCreator() == null || dto.getCreator() == "") dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
         return caseComparisonDao.update(dto);
     }
 
@@ -59,7 +64,6 @@ public class CaseComparisonService {
 
     @Transactional(readOnly = true)
     private List<DataCaseComparison> list(String name) {
-        List<CaseComparisonVo> vos = new ArrayList<>();
         List<DataCaseComparison> list = caseComparisonDao.list(name);
         return list;
     }
@@ -68,7 +72,10 @@ public class CaseComparisonService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataCaseComparison> vos = list(name);
+        List<DataCaseComparison> list = list(name);
+        List<CaseComparisonVo> vos = LangUtils.transform(list, p -> {
+            return change(p);
+        });
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CaseComparisonVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -80,16 +87,22 @@ public class CaseComparisonService {
         return dto;
     }
 
-    private CaseComparisonVo change(DataCaseComparison dto) {
+    private CaseComparisonVo change(DataCaseComparison dataCaseComparison) {
         CaseComparisonVo vo = new CaseComparisonVo();
-        BeanUtils.copyProperties(dto, vo);
+        BeanUtils.copyProperties(dataCaseComparison, vo);
+        if (dataCaseComparison.getFormTypeId() != null && dataCaseComparison.getFormTypeId() > 0) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataCaseComparison.getFormTypeId());
+            if (baseDataDic != null) {
+                vo.setFormTypeName(baseDataDic.getName());
+            }
+        }
         return vo;
     }
 
-    public Map<Integer,Object> getTypeMap(){
-        Map<Integer,Object> map = new HashMap<>();
-        map.put(CaseComparisonEnum.CASE_COMPARISON_ONE_ENUM.getNum(),CaseComparisonEnum.Text.getVar());
-        map.put(CaseComparisonEnum.CASE_COMPARISON_TWO_ENUM.getNum(),CaseComparisonEnum.NO_Text.getVar());
+    public Map<Integer, Object> getTypeMap() {
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(CaseComparisonEnum.CASE_COMPARISON_ONE_ENUM.getNum(), CaseComparisonEnum.Text.getVar());
+        map.put(CaseComparisonEnum.CASE_COMPARISON_TWO_ENUM.getNum(), CaseComparisonEnum.NO_Text.getVar());
         return map;
     }
 }
