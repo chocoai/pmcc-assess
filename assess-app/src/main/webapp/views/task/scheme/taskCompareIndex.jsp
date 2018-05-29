@@ -513,13 +513,17 @@
         $('.rightfloat').css('float', 'right');
     }
 
+
+
+
     $('input[name=dealCaondition]').blur(function () {
         var number = $(this).val();                                         //取input输入的值
         var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
         var temp = 100 / number;                                            //相应计算
         var threeId = "#threeDealCaondition" + twoId;                     //第三章表循环的id
-        var reg = /^[0-9]+.?[0-9]*$/;
-        if(reg.test(number)){
+        var re = /^([89]\d|120)$/;
+
+        if(re.test(number)){
             document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
         }
 
@@ -549,10 +553,20 @@
         var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
         var s4 = $("#price"+twoId).html();
         var s0 = s1*s2*s3*s4;
+        var reg = /^[1-9]\d*$/;
         if(reg.test(s0)){
             $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
             $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
         }
+
+        var list = $("#trList").find("span");
+//        console.log(list.size());
+        var total = 0;
+        $.each(list,function(i,span){
+            total += parseInt($(span).html());
+        })
+        var middleRate = total/list.size();
+        $("#threeMiddlePrice").html(middleRate.toFixed(0));
 
 
     });
@@ -563,11 +577,57 @@
         var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
         var temp = 100 / number;                                            //相应计算
         var threeId = "#threeDealTime" + twoId;                     //第三章表循环的id
-        var reg = /^[0-9]+.?[0-9]*$/;
-        if(reg.test(number)){
+        var re = /^([89]\d|120)$/;
+        if(re.test(number)){
             document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
         }
 
+        if (number > 100) {
+            console.log("大于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if (number < 100) {
+            console.log("小于");
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+        if (number == "" || number == 100) {
+            console.log("等于");
+            $(this).closest("td").find("i").remove();
+        }
+
+        var s1 = document.getElementById(threeId).innerHTML;
+        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
+        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
+        var s4 = $("#price"+twoId).html();
+        var s0 = s1*s2*s3*s4;
+        var reg = /^[1-9]\d*$/;
+        if(reg.test(s0)){
+            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
+            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
+        }
+
+        var list = $("#trList").find("span");
+//        console.log(list.size());
+        var total = 0;
+        $.each(list,function(i,span){
+            total += parseInt($(span).html());
+        })
+        var middleRate = total/list.size();
+        $("#threeMiddlePrice").html(middleRate.toFixed(0));
+
+    });
+
+    $('input[name=paymentMethod]').blur(function () {
+        var number = $(this).val();                                         //取input输入的值
+        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
+        var temp = 100 / number;                                            //相应计算
+        var threeId = "#threePaymentMethod" + twoId;                     //第三章表循环的id
+        var re = /^[1-9]\d*$/;
+        if(re.test(number)){
+            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
+        }
         if (number > 100) {
             console.log("大于");
             $(this).closest("td").find("i").remove();
@@ -602,43 +662,6 @@
         })
         var middleRate = total/list.size();
         $("#threeMiddlePrice").html(middleRate.toFixed(0));
-
-    });
-
-    $('input[name=paymentMethod]').blur(function () {
-        var number = $(this).val();                                         //取input输入的值
-        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
-        var temp = 100 / number;                                            //相应计算
-        var threeId = "#threePaymentMethod" + twoId;                     //第三章表循环的id
-        var reg = /^[0-9]+.?[0-9]*$/;
-        if(reg.test(number)){
-            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
-        }
-        if (number > 100) {
-            console.log("大于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
-        }
-        if (number < 100) {
-            console.log("小于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
-        }
-        if (number == "" || number == 100) {
-            console.log("等于");
-            $(this).closest("td").find("i").remove();
-        }
-
-        var s1 = document.getElementById(threeId).innerHTML;
-        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
-        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
-        var s4 = $("#price"+twoId).html();
-        var s0 = s1*s2*s3*s4;
-        var reg = /^[0-9]+.?[0-9]*$/;
-        if(reg.test(s0)){
-            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
-            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
-        }
     });
 
 
