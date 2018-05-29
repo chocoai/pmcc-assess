@@ -76,7 +76,7 @@ public class ProjectPhaseDao {
         if (projectPhase.getProjectCategoryId() != null) {
             criteria.andProjectCategoryIdEqualTo(projectPhase.getProjectCategoryId());
         }
-
+        example.setOrderByClause("work_stage_id,phase_sort");
         return projectPhaseMapper.selectByExample(example);
     }
 

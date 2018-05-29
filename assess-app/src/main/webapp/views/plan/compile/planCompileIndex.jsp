@@ -202,7 +202,7 @@
                                             报告分析
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="reportAnalysisId" id="reportAnalysisId" class="form-control search-select select2">
+                                            <select name="reportAnalysisCategory" id="reportAnalysisCategory" class="form-control search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${reportAnalysisList}">
                                                     <option value="${item.id}">${item.name}</option>

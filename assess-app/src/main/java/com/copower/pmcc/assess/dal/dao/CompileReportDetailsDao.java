@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
 import com.copower.pmcc.assess.dal.entity.CompileReportDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.CompileReportDetailsMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,23 @@ public class CompileReportDetailsDao {
     @Autowired
     private CompileReportDetailsMapper compileReportDetailsMapper;
 
-    public void save(CompileReportDetails compileReportDetails) {
-        compileReportDetailsMapper.insertSelective(compileReportDetails);
+    public boolean add(CompileReportDetails compileReportDetails) {
+        return compileReportDetailsMapper.insertSelective(compileReportDetails) > 0;
     }
 
-    public List<CompileReportDetails> getByPid(Integer pid) {
+    public boolean update(CompileReportDetails compileReportDetails) {
+        return compileReportDetailsMapper.updateByPrimaryKeySelective(compileReportDetails) > 0;
+    }
+
+    public List<CompileReportDetails> getListByPlanDetailsId(Integer planDetailsId) {
         CompileReportDetailsExample example = new CompileReportDetailsExample();
-        example.createCriteria().andPidEqualTo(pid);
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return compileReportDetailsMapper.selectByExample(example);
+    }
+
+    public List<CompileReportDetails> getReportDetailsList(CompileReportDetails compileReportDetails) {
+        CompileReportDetailsExample example = new CompileReportDetailsExample();
+        MybatisUtils.convertObj2Example(compileReportDetails,example);
         return compileReportDetailsMapper.selectByExample(example);
     }
 }

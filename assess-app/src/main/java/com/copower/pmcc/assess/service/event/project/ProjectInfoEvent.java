@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
@@ -33,6 +34,8 @@ public class ProjectInfoEvent extends BaseProcessEvent {
         //将下阶段设置为可编辑计划
         try {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
+            projectInfoService.updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
             projectPlanService.updatePlanStatus(projectPlans.get(0).getId());
         } catch (Exception e) {

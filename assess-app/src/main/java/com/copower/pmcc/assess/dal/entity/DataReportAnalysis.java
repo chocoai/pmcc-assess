@@ -4,18 +4,12 @@ import java.util.Date;
 
 public class DataReportAnalysis {
     private Integer id;
-    /**
-     * 类别
-     */
+
     private Integer category;
-    /**
-     * 类别字段
-     */
-    private Integer categoryField;
-    /**
-     * 模版
-     */
+
     private String template;
+
+    private Integer categoryField;
 
     private String creator;
 
@@ -39,20 +33,20 @@ public class DataReportAnalysis {
         this.category = category;
     }
 
-    public Integer getCategoryField() {
-        return categoryField;
-    }
-
-    public void setCategoryField(Integer categoryField) {
-        this.categoryField = categoryField;
-    }
-
     public String getTemplate() {
         return template;
     }
 
     public void setTemplate(String template) {
         this.template = template == null ? null : template.trim();
+    }
+
+    public Integer getCategoryField() {
+        return categoryField;
+    }
+
+    public void setCategoryField(Integer categoryField) {
+        this.categoryField = categoryField;
     }
 
     public String getCreator() {

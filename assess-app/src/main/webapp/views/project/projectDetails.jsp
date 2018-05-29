@@ -30,8 +30,6 @@
                            onclick="followProject()">关注</a>
                         <a id="btn_cancelFollowProject" style="margin-left: 20px;display: none" class="btn btn-warning"
                            onclick="cancelFollowProject()">取消关注</a>
-                        <%--<a class="btn btn-dark-beige" onclick="addWorkLog()">日志<i style="margin-left: 10px"--%>
-                        <%--class="fa fa-book"></i></a>--%>
                         <c:if test="${projectStatusEnum=='normal'}">
                             <a class="btn btn-primary"
                                href="${pageContext.request.contextPath}/projectClose/closeIndex?projectId=${projectInfo.id}"
@@ -182,7 +180,6 @@
         </button>
     </div>
 </div>
-<%@include file="/views/share/tools/workLogModel.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">

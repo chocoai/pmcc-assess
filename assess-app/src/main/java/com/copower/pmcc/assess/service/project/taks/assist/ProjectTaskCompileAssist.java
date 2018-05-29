@@ -8,14 +8,18 @@ import com.copower.pmcc.assess.dal.entity.CompileReport;
 import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
 import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.input.project.CompileReportApplyDto;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
+import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisFieldService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
+import com.copower.pmcc.assess.service.project.CompileReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,8 +35,6 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private DataReportAnalysisService dataReportAnalysisService;
     @Autowired
-    private DataReportAnalysisFieldService dataReportAnalysisFieldService;
-    @Autowired
     private DataReportAnalysisFieldDao dataReportAnalysisFieldDao;
     @Autowired
     private CompileReportDao compileReportDao;
@@ -40,16 +42,16 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     private CommonService commonService;
     @Autowired
     private CompileReportDetailsDao compileReportDetailsDao;
+    @Autowired
+    private CompileReportService compileReportService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", "", 0, "0", "");
-        Integer category = projectPlanDetails.getReportAnalysisId();
-        List<DataReportAnalysisVo> dataReportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(category);
-        List<DataReportAnalysisField> dataReportAnalysisFields = dataReportAnalysisFieldDao.getAllList();
-
-        modelAndView.addObject("dataReportAnalysisFields",dataReportAnalysisFields);
-        modelAndView.addObject("dataReportAnalysisVos",dataReportAnalysisVos);
+        Integer category = projectPlanDetails.getReportAnalysisCategory();
+        compileReportService.initReportDetails(projectPlanDetails.getId());
+        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
+        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
         return modelAndView;
     }
 
@@ -58,8 +60,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
         List<CompileReport> compileReports = compileReportDao.getByProcessInsId(processInsId);
         CompileReport compileReport = compileReports.get(0);
-        Integer pid = compileReport.getId();
-        List<CompileReportDetails> compileReportDetailss = compileReportDetailsDao.getByPid(pid);
+        List<CompileReportDetails> compileReportDetailss = compileReportDetailsDao.getListByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("compileReportDetailss",compileReportDetailss);
         return modelAndView;
     }
@@ -67,7 +68,7 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
-        Integer category = projectPlanDetails.getReportAnalysisId();
+        Integer category = projectPlanDetails.getReportAnalysisCategory();
         List<DataReportAnalysisVo> dataReportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(category);
         List<DataReportAnalysisField> dataReportAnalysisFields = dataReportAnalysisFieldDao.getAllList();
 
@@ -89,19 +90,20 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        String s = formData;
         CompileReport compileReport = new CompileReport();
         compileReport.setProjectId(projectPlanDetails.getProjectId());
-        compileReport.setPlanDetailsId(projectPlanDetails.getPlanId());
+        compileReport.setPlanDetailsId(projectPlanDetails.getId());
         compileReport.setProcessInsId(processInsId);
         compileReport.setCreator(commonService.thisUserAccount());
         compileReportDao.save(compileReport);   //保存主表
 
-        CompileReportDetails compileReportDetails = JSON.parseObject(formData, CompileReportDetails.class);
-        compileReportDetails.setPid(compileReport.getId());
-        compileReportDetails.setCreator(commonService.thisUserAccount());
-        compileReportDetailsDao.save(compileReportDetails);     //保存从表
-
+        CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
+        List<CompileReportDetails> compileReportDetailsList = compileReportApplyDto.getCompileReportDetailsList();
+        if(CollectionUtils.isNotEmpty(compileReportDetailsList)){
+            for (CompileReportDetails compileReportDetails : compileReportDetailsList) {
+                compileReportService.saveReportDetails(compileReportDetails);
+            }
+        }
     }
 
     @Override
@@ -112,5 +114,12 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         //返回提交走这里
+        CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
+        List<CompileReportDetails> compileReportDetailsList = compileReportApplyDto.getCompileReportDetailsList();
+        if(CollectionUtils.isNotEmpty(compileReportDetailsList)){
+            for (CompileReportDetails compileReportDetails : compileReportDetailsList) {
+                compileReportService.saveReportDetails(compileReportDetails);
+            }
+        }
     }
 }

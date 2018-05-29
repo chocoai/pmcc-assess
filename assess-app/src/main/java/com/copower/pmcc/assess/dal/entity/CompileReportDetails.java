@@ -5,17 +5,23 @@ import java.util.Date;
 public class CompileReportDetails {
     private Integer id;
 
-    private String textReplace;
+    private Integer planDetailsId;
 
-    private String evaluationType;
+    private String content;
+
+    private Integer reportAnalysisId;
+
+    private Integer category;
+
+    private Integer categoryField;
+
+    private String template;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -25,20 +31,52 @@ public class CompileReportDetails {
         this.id = id;
     }
 
-    public String getTextReplace() {
-        return textReplace;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setTextReplace(String textReplace) {
-        this.textReplace = textReplace == null ? null : textReplace.trim();
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
-    public String getEvaluationType() {
-        return evaluationType;
+    public String getContent() {
+        return content;
     }
 
-    public void setEvaluationType(String evaluationType) {
-        this.evaluationType = evaluationType == null ? null : evaluationType.trim();
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public Integer getReportAnalysisId() {
+        return reportAnalysisId;
+    }
+
+    public void setReportAnalysisId(Integer reportAnalysisId) {
+        this.reportAnalysisId = reportAnalysisId;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public Integer getCategoryField() {
+        return categoryField;
+    }
+
+    public void setCategoryField(Integer categoryField) {
+        this.categoryField = categoryField;
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template == null ? null : template.trim();
     }
 
     public String getCreator() {
@@ -63,13 +101,5 @@ public class CompileReportDetails {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 }
