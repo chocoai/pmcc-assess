@@ -7,6 +7,7 @@
     <result column="entrust_id" property="entrustId" jdbcType="INTEGER" />
     <result column="report_type_id" property="reportTypeId" jdbcType="INTEGER" />
     <result column="template_type" property="templateType" jdbcType="INTEGER" />
+    <result column="csType" property="cstype" jdbcType="INTEGER" />
     <result column="bookmark_name" property="bookmarkName" jdbcType="VARCHAR" />
     <result column="data_pool_type" property="dataPoolType" jdbcType="INTEGER" />
     <result column="data_pool_table_id" property="dataPoolTableId" jdbcType="INTEGER" />
@@ -74,8 +75,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, customer_id, entrust_id, report_type_id, template_type, bookmark_name, data_pool_type, 
-    data_pool_table_id, data_pool_columns_id, data_pool_template_id, bis_enable, pid
+    id, customer_id, entrust_id, report_type_id, template_type, csType, bookmark_name, 
+    data_pool_type, data_pool_table_id, data_pool_columns_id, data_pool_template_id, 
+    bis_enable, pid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateExample" >
     select
@@ -112,13 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_base_report_template (customer_id, entrust_id, report_type_id, 
-      template_type, bookmark_name, data_pool_type, 
-      data_pool_table_id, data_pool_columns_id, data_pool_template_id, 
-      bis_enable, pid)
+      template_type, csType, bookmark_name, 
+      data_pool_type, data_pool_table_id, data_pool_columns_id, 
+      data_pool_template_id, bis_enable, pid
+      )
     values (#{customerId,jdbcType=INTEGER}, #{entrustId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, 
-      #{templateType,jdbcType=INTEGER}, #{bookmarkName,jdbcType=VARCHAR}, #{dataPoolType,jdbcType=INTEGER}, 
-      #{dataPoolTableId,jdbcType=INTEGER}, #{dataPoolColumnsId,jdbcType=INTEGER}, #{dataPoolTemplateId,jdbcType=INTEGER}, 
-      #{bisEnable,jdbcType=BIT}, #{pid,jdbcType=INTEGER})
+      #{templateType,jdbcType=INTEGER}, #{cstype,jdbcType=INTEGER}, #{bookmarkName,jdbcType=VARCHAR}, 
+      #{dataPoolType,jdbcType=INTEGER}, #{dataPoolTableId,jdbcType=INTEGER}, #{dataPoolColumnsId,jdbcType=INTEGER}, 
+      #{dataPoolTemplateId,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{pid,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +141,9 @@
       </if>
       <if test="templateType != null" >
         template_type,
+      </if>
+      <if test="cstype != null" >
+        csType,
       </if>
       <if test="bookmarkName != null" >
         bookmark_name,
@@ -172,6 +179,9 @@
       </if>
       <if test="templateType != null" >
         #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="cstype != null" >
+        #{cstype,jdbcType=INTEGER},
       </if>
       <if test="bookmarkName != null" >
         #{bookmarkName,jdbcType=VARCHAR},
@@ -220,6 +230,9 @@
       <if test="record.templateType != null" >
         template_type = #{record.templateType,jdbcType=INTEGER},
       </if>
+      <if test="record.cstype != null" >
+        csType = #{record.cstype,jdbcType=INTEGER},
+      </if>
       <if test="record.bookmarkName != null" >
         bookmark_name = #{record.bookmarkName,jdbcType=VARCHAR},
       </if>
@@ -253,6 +266,7 @@
       entrust_id = #{record.entrustId,jdbcType=INTEGER},
       report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
       template_type = #{record.templateType,jdbcType=INTEGER},
+      csType = #{record.cstype,jdbcType=INTEGER},
       bookmark_name = #{record.bookmarkName,jdbcType=VARCHAR},
       data_pool_type = #{record.dataPoolType,jdbcType=INTEGER},
       data_pool_table_id = #{record.dataPoolTableId,jdbcType=INTEGER},
@@ -278,6 +292,9 @@
       </if>
       <if test="templateType != null" >
         template_type = #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="cstype != null" >
+        csType = #{cstype,jdbcType=INTEGER},
       </if>
       <if test="bookmarkName != null" >
         bookmark_name = #{bookmarkName,jdbcType=VARCHAR},
@@ -309,6 +326,7 @@
       entrust_id = #{entrustId,jdbcType=INTEGER},
       report_type_id = #{reportTypeId,jdbcType=INTEGER},
       template_type = #{templateType,jdbcType=INTEGER},
+      csType = #{cstype,jdbcType=INTEGER},
       bookmark_name = #{bookmarkName,jdbcType=VARCHAR},
       data_pool_type = #{dataPoolType,jdbcType=INTEGER},
       data_pool_table_id = #{dataPoolTableId,jdbcType=INTEGER},

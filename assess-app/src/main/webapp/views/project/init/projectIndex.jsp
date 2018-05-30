@@ -227,33 +227,16 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目经理下级
-                                    <input type="checkbox" id="userAccountMemberCheckBox">下级分派
-                                    <span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">
+
+                                </label>
                                 <div class="col-sm-3">
-                                    <select id="userAccountMember" name="userAccountMember" class="form-control">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.projectMemberId != null}">
-                                                <option selected="selected">${projectInfo.userAccountMemberName}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="0">请选择</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </select>
+                                    <span class="checkbox-inline">
+                                        <input type="checkbox" id="userAccountMemberCheckBox">
+                                    <label for="userAccountMemberCheckBox">下级分派</label>
+                                    </span>
+
                                 </div>
-                                <script>
-                                    document.getElementById("userAccountMember").style.display = "none";
-                                    var userAccountMemberCheckBox = document.getElementById("userAccountMemberCheckBox");
-                                    userAccountMemberCheckBox.onclick = function () {
-                                        if ($("#userAccountMemberCheckBox").get(0).checked) {
-                                            var userAccountManager = document.getElementById("userAccountManager").value;
-                                            if (userAccountManager != null && userAccountManager != '') {
-                                                document.getElementById("userAccountMember").style.display = "";
-                                            }
-                                        }
-                                    }
-                                </script>
                             </div>
 
                         </div>
@@ -889,22 +872,20 @@
                                     单位性质
                                 </label>
                                 <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <select name="uUnitProperties" id="uUnitProperties" class="form-control">
-                                            <option value="" name="uUnitProperties">请选择</option>
-                                            <c:forEach items="${ProjectAFFILIATED}" var="item">
-                                                <c:choose>
-                                                    <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
-                                                        <option value="${item.id}"
-                                                                selected="selected">${item.name}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <option value="${item.id}">${item.name}</option>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <select name="uUnitProperties" id="uUnitProperties" class="form-control">
+                                        <option value="" name="uUnitProperties">请选择</option>
+                                        <c:forEach items="${ProjectAFFILIATED}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
+                                                    <option value="${item.id}"
+                                                            selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
 
                                 </div>
                             </div>
@@ -1051,10 +1032,10 @@
                                             </label>
                                             <input type="hidden" name="cType" id="cType">
                                             <%--<select class="form-control" name="cType" id="cType" required="required">--%>
-                                                <%--<option value="">请选择</option>--%>
-                                                <%--<c:forEach items="${InitiateContactsMap}" var="mymap">--%>
-                                                    <%--<option value="${mymap.key}">${mymap.value}</option>--%>
-                                                <%--</c:forEach>--%>
+                                            <%--<option value="">请选择</option>--%>
+                                            <%--<c:forEach items="${InitiateContactsMap}" var="mymap">--%>
+                                            <%--<option value="${mymap.key}">${mymap.value}</option>--%>
+                                            <%--</c:forEach>--%>
                                             <%--</select>--%>
                                         </div>
                                     </div>
@@ -1317,20 +1298,6 @@
         });
     }
 
-    // 项目经理下级
-    var userAccountMember = document.getElementById("userAccountMember");
-    userAccountMember.onclick = function () {
-        erpEmployee.select({
-            onSelected: function (data) {
-                userAccountMember.removeChild(userAccountMember.firstChild);
-                var fieldElment = document.createElement("option");
-                fieldElment.setAttribute("value", data.account);
-                fieldElment.setAttribute("selected", "selected");
-                fieldElment.appendChild(document.createTextNode(data.name));
-                userAccountMember.appendChild(fieldElment);
-            }
-        });
-    }
     //选项框
     $(document).ready(function () {
         $("#no_legal_person").hide();
@@ -1508,14 +1475,14 @@
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
-       cols.push({
-           field: 'id', title: '操作', formatter: function (value, row, index) {
-               var str = '<div class="btn-margin">';
-               str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
-               str += '</div>';
-               return str;
-           }
-       });
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
         $("#tb_ListC").bootstrapTable("destroy");
         TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             crmId: id, flag: flags[2]
@@ -1585,8 +1552,8 @@
     function addContacts(contactsEnum) {
         var str = "";
         <c:forEach items="${InitiateContactsMap}" var="mymap">
-        if ('${mymap.key}' == contactsEnum){
-            str = '${mymap.value}' ;
+        if ('${mymap.key}' == contactsEnum) {
+            str = '${mymap.value}';
         }
         </c:forEach>
         $("#frmContacts").clearAll();
