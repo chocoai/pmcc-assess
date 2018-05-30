@@ -28,6 +28,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCompareIndex", "", 0, "0", "");
+
         taskCompareService.getTaskCompare(modelAndView, projectPlanDetails);
         return modelAndView;
     }
@@ -58,6 +59,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
 
+        throw new BusinessException("");
     }
 
     @Override

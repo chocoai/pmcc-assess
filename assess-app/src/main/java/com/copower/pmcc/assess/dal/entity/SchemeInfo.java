@@ -11,6 +11,8 @@ public class SchemeInfo {
 
     private String processInsId;
 
+    private Integer evaluationObjectId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class SchemeInfo {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getEvaluationObjectId() {
+        return evaluationObjectId;
+    }
+
+    public void setEvaluationObjectId(Integer evaluationObjectId) {
+        this.evaluationObjectId = evaluationObjectId;
     }
 
     public String getCreator() {

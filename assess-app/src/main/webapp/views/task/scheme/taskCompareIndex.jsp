@@ -145,7 +145,8 @@
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.price}</td>
+                                                    <td><span name="price" data-id="${items.id}">${items.price}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
@@ -153,8 +154,7 @@
                                                 <td>100</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="hidden" value="${items.id}">
-                                                        <input type="text"  class=""
+                                                        <input type="text" class="allMethod" data-id="${items.id}"
                                                                name="dealCaondition" required
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
@@ -166,9 +166,8 @@
                                                 <td>100</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="hidden" value="${items.id}">
-                                                        <input type="text" class="" name="dealTime"
-                                                               required
+                                                        <input type="text" class="allMethod" name="dealTime"
+                                                               required data-id="${items.id}"
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
@@ -180,8 +179,8 @@
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
                                                         <input type="hidden" value="${items.id}">
-                                                        <input type="text" name="paymentMethod"
-                                                               required
+                                                        <input type="text" class="allMethod" data-id="${items.id}"
+                                                               name="paymentMethod" required
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
@@ -193,7 +192,8 @@
                                     <div role="tabpanel" class="tab-pane fade" id="tab_content3"
                                          aria-labelledby="profile-tab">
                                         <%--第三页表--%>
-                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                        <table class="table table-bordered leftfloat" id="threeTable"
+                                               style="width: 40%">
                                             <thead>
                                             <tr>
                                                 <th class="gray">项目</th>
@@ -223,7 +223,7 @@
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                    <span id="price${items.id}">${items.price}</span>
+                                                        <span data-id="${items.id}" name="price">${items.price}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -232,7 +232,7 @@
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span id="#threeDealCaondition${items.id}"></span>
+                                                        <span data-id="${items.id}" name="dealCaondition"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -241,7 +241,7 @@
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span id="#threeDealTime${items.id}"></span>
+                                                        <span data-id="${items.id}" name="dealTime"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -250,7 +250,7 @@
                                                 <td>1</td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span id="#threePaymentMethod${items.id}"></span>
+                                                        <span data-id="${items.id}" name="paymentMethod"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -259,17 +259,17 @@
                                                 <td></td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span id="threeAffirmPrice${items.id}"></span>
+                                                        <span data-id="${items.id}" name="affirmPrice"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">加权平均价</th>
                                                 <td>
-                                                    <span id="threeMiddlePrice"></span>
+                                                    <span name="threeMiddlePrice"></span>
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td id=""></td>
+                                                    <td></td>
                                                 </c:forEach>
                                             </tr>
 
@@ -315,7 +315,7 @@
                                 <label class="col-sm-2 control-label rightfloat"></label>
 
                                 <%--右侧固定表格--%>
-                                <table class="table table-bordered rightfloat" style="width: 30%">
+                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 30%">
                                     <thead>
                                     <tr>
                                         <th class="gray">项目</th>
@@ -338,7 +338,7 @@
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td>
-                                                <span id="rightAffirmPrice${items.id}" ></span>
+                                                <span data-id="${items.id}" name="affirmPrice"></span>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -346,14 +346,18 @@
                                         <th scope="row" class="gray">修正差额</th>
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                            <td></td>
+                                            <td>
+                                                <span data-id="${items.id}" name="correction"></span>
+                                            </td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
                                         <th scope="row" class="gray">案例差异</th>
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                            <td></td>
+                                            <td>
+                                                <span data-id="${items.id}" name="caseDifference"></span>
+                                            </td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
@@ -361,14 +365,16 @@
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td>
-                                                <input type="text" name="" min="0.0" max="1" step="0.1"
+                                                <input type="text" data-id="${items.id}" name="weight" min="0.0" max="1" step="0.1"
                                                        style="width: 80px">
                                             </td>
                                         </c:forEach>
                                     </tr>
                                     <tr>
                                         <th scope="row" class="gray">加权平均价</th>
-                                        <td>6</td>
+                                        <td>
+                                            <span data-id="${items.id}" name="middlePrice"></span>
+                                        </td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td></td>
                                         </c:forEach>
@@ -487,6 +493,7 @@
             },
             deleteFlag: true
         })
+
     }
 
 
@@ -513,156 +520,154 @@
         $('.rightfloat').css('float', 'right');
     }
 
-
-
-
-    $('input[name=dealCaondition]').blur(function () {
-        var number = $(this).val();                                         //取input输入的值
-        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
-        var temp = 100 / number;                                            //相应计算
-        var threeId = "#threeDealCaondition" + twoId;                     //第三章表循环的id
-        var re = /^([89]\d|120)$/;
-
-        if(re.test(number)){
-            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
-        }
-
-        if (number > 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
-        }
-        if (number < 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
-        }
-        if (number == "" || number == 100) {
-            $(this).closest("td").find("i").remove();
-        }
-
-        if(temp < 1){
-            console.log("temp小于1");
-            $(threeId).append('<i class="fa fa-arrow-up btn-danger"></i>');
-        }
-        if(temp > 1){
-            console.log("temp大于1");
-            $(threeId).after('<i class="fa fa-arrow-down btn-info"></i>');
-        }
-
-        var s1 = document.getElementById(threeId).innerHTML;
-        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
-        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
-        var s4 = $("#price"+twoId).html();
-        var s0 = s1*s2*s3*s4;
-        var reg = /^[1-9]\d*$/;
-        if(reg.test(s0)){
-            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
-            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
-        }
-
-        var list = $("#trList").find("span");
-//        console.log(list.size());
-        var total = 0;
-        $.each(list,function(i,span){
-            total += parseInt($(span).html());
-        })
-        var middleRate = total/list.size();
-        $("#threeMiddlePrice").html(middleRate.toFixed(0));
-
-
-    });
-
-
-    $('input[name=dealTime]').blur(function () {
-        var number = $(this).val();                                         //取input输入的值
-        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
-        var temp = 100 / number;                                            //相应计算
-        var threeId = "#threeDealTime" + twoId;                     //第三章表循环的id
-        var re = /^([89]\d|120)$/;
-        if(re.test(number)){
-            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
-        }
-
-        if (number > 100) {
-            console.log("大于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
-        }
-        if (number < 100) {
-            console.log("小于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
-        }
-        if (number == "" || number == 100) {
-            console.log("等于");
-            $(this).closest("td").find("i").remove();
-        }
-
-        var s1 = document.getElementById(threeId).innerHTML;
-        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
-        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
-        var s4 = $("#price"+twoId).html();
-        var s0 = s1*s2*s3*s4;
-        var reg = /^[1-9]\d*$/;
-        if(reg.test(s0)){
-            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
-            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
-        }
-
-        var list = $("#trList").find("span");
-//        console.log(list.size());
-        var total = 0;
-        $.each(list,function(i,span){
-            total += parseInt($(span).html());
-        })
-        var middleRate = total/list.size();
-        $("#threeMiddlePrice").html(middleRate.toFixed(0));
-
-    });
-
-    $('input[name=paymentMethod]').blur(function () {
-        var number = $(this).val();                                         //取input输入的值
-        var twoId = $(this).closest("td").find("input").first().val();     //第二张表循环的id
-        var temp = 100 / number;                                            //相应计算
-        var threeId = "#threePaymentMethod" + twoId;                     //第三章表循环的id
-        var re = /^[1-9]\d*$/;
-        if(re.test(number)){
-            document.getElementById(threeId).innerHTML = temp.toFixed(4);                    //把值赋给第三张表
-        }
-        if (number > 100) {
-            console.log("大于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
-        }
-        if (number < 100) {
-            console.log("小于");
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
-        }
-        if (number == "" || number == 100) {
-            console.log("等于");
-            $(this).closest("td").find("i").remove();
-        }
-
-        var s1 = document.getElementById(threeId).innerHTML;
-        var s2 = document.getElementById("#threeDealTime"+twoId).innerHTML;
-        var s3 = document.getElementById("#threePaymentMethod"+twoId).innerHTML;
-        var s4 = $("#price"+twoId).html();
-        var s0 = s1*s2*s3*s4;
+    //处理第二三四张表业务
+    $("#twoTable").find("input:text").blur(function () {
         var reg = /^[0-9]+.?[0-9]*$/;
-        if(reg.test(s0)){
-            $("#threeAffirmPrice"+twoId).html(s0.toFixed(2));
-            $("#rightAffirmPrice"+twoId).html(s0.toFixed(2));
+        //1.判断大小
+        var number = $(this).val();
+        if ((number < 80 || number > 120) && reg.test(number)) {
+            Alert("请填写80-120范围内的数字", 1, null, function () {
+            });
+        }
+        if (number > 100) {
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+        }
+        if (number < 100) {
+            $(this).closest("td").find("i").remove();
+            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+        }
+        if (number == "" || number == 100) {
+            $(this).closest("td").find("i").remove();
         }
 
-        var list = $("#trList").find("span");
-//        console.log(list.size());
-        var total = 0;
-        $.each(list,function(i,span){
-            total += parseInt($(span).html());
+        //2.判断第二张表是否全部填完
+        var allFill = true;
+        $("#twoTable").find("input:text").each(function () {
+            if (!$(this).val()) {
+                allFill = false;
+                return false;
+            }
         })
-        var middleRate = total/list.size();
-        $("#threeMiddlePrice").html(middleRate.toFixed(0));
-    });
+
+        //计算
+        if (allFill) {
+            $("#twoTable").find("input:text").each(function () {
+                var dataId = $(this).attr('data-id');
+                var name = $(this).attr('name');
+                var result = ($(this).val() / 100).toFixed(4);
+
+                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+            })
+
+            $("#threeTable").find("span").each(function () {
+                var dataId = $(this).attr('data-id');
+                var name = $(this).attr('name');
+                var price = $("#threeTable").find('[name="price"][data-id="' + dataId + '"]').text();   //取单价
+                var dealCaondition = $("#threeTable").find('[name="dealCaondition"][data-id="' + dataId + '"]').text(); //取交易类型
+                var dealTime = $("#threeTable").find('[name="dealTime"][data-id="' + dataId + '"]').text(); //取交易时间
+                var paymentMethod = $("#threeTable").find('[name="paymentMethod"][data-id="' + dataId + '"]').text();   //去付款方式
+                var result = (price * dealCaondition * dealTime * paymentMethod).toFixed(2);
+
+                $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第三张表比准价格
+                $("#rightTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第四张表比准价格
+            })
+
+            var middlePrice = 0;
+            var i = 0;
+            $("#threeTable").find('[name="affirmPrice"]').each(function () {
+                var dataId = $(this).attr('data-id');
+                var name = $(this).attr('name');
+                var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   //获取第三张表比准价格
+                middlePrice += parseInt(affirmPrice);
+                i++;
+            })
+            $("#threeTable").find('[name="threeMiddlePrice"]').text((middlePrice / i).toFixed(0));    //显示第三张表平均加权价
+
+            var min = 1000000;
+            var max = 0;
+            $("#threeTable").find("span").each(function () {
+                var dataId = $(this).attr('data-id');
+                var name = $(this).attr('name');
+                var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   ////获取第三张表比准价格
+                var price = $("#threeTable").find('[name="price"][data-id="' + dataId + '"]').text();
+                var correction = Math.abs((affirmPrice - price) / price);
+                $("#rightTable").find('[name="correction"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
+
+                if (max < affirmPrice) {
+                    max = affirmPrice;
+
+                }
+
+                if (min > affirmPrice && reg.test(affirmPrice)) {
+                    min = affirmPrice;
+
+                }
+            })
+            var temp = (max - min) / min;       //（案例最高比准价-案例最低比准价）/案例最低比准价<=20%，如果大于20%则提示案例或修正指数修改错误
+            console.log(temp);
+//            if (temp > 0.2) {
+//                Alert("案例或修正指数修改错误", 1, null, function () {
+//                });
+//            }
+
+            $("#threeTable").find('[name="affirmPrice"]').each(function () {
+                var dataId = $(this).attr('data-id');
+                var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   //获取第三张表比准价格
+                var temp = ((affirmPrice - min) / min).toFixed(2);
+                $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text(temp);
+            })
+
+            var caseMax = 0;
+            $("#rightTable").find('[name="caseDifference"]').each(function () {
+                var dataId = $(this).attr('data-id');
+                var caseDifference = $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text();
+
+                if(caseMax < caseDifference){
+                    caseMax = caseDifference;
+                }
+            })
+            if(caseMax >= 0.3){
+                Alert("采用加权平均价,请填写权重和相应的权重说明", 1, null, function () {
+                });
+            }
+
+        }
+    })
+
+        //处理第四张表业务
+    $("#rightTable").find("input:text").blur(function () {
+
+        var allFill = true;
+        $("#rightTable").find("input:text").each(function () {
+            if (!$(this).val()) {
+                allFill = false;
+                return false;
+            }
+        })
+
+        if(allFill){
+            var middlePrice = 0;
+            var tempWeight = 0;
+            $("#rightTable").find('[name="affirmPrice"]').each(function () {
+                var dataId = $(this).attr('data-id');
+                var affirmPrice = $("#rightTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   //取第四张表比准价格
+                var weight = $("#rightTable").find('[name="weight"][data-id="' + dataId + '"]').val();              //取第四张表权重
+                tempWeight += parseFloat(weight);
+                middlePrice += weight * affirmPrice;
+            })
+
+            if(tempWeight == 1){
+                $("#rightTable").find('[name="middlePrice"]').text(middlePrice);    //第四张表加权平均价
+            }else{
+                Alert("权重之和不为1", 1, null, function () {
+                });
+            }
+
+        }
+
+    })
+
 
 
 </script>
