@@ -35,6 +35,7 @@
                             模板数据
                         </label>
                         <div class="col-sm-11">
+                            <input type="hidden" id="hypothesisTempleV${data.id}">
                             <textarea required="required" id="hypothesisTemple${data.id}" placeholder="假设模板" class="form-control" name="Content">
 
                             </textarea>
@@ -50,7 +51,7 @@
                                     <label class="col-sm-1 control-label"> ${item.name} </label>
                                     <div class="col-sm-2">
                                         <input class="form-control" type="text" placeholder="替换字段"
-                                               id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
+                                               id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisTempleV${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
                                     </div>
                                 </div>
                             </c:forEach>
@@ -65,7 +66,7 @@
                                             <label class="col-sm-1 control-label">${status.index} ${item.name} </label>
                                             <div class="col-sm-2">
                                                 <input class="form-control" type="text" placeholder="替换字段"
-                                                       id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
+                                                       id="hypothesisFieldID${data.id}${item.id}" onblur="hypothesisFildReplace('hypothesisTemple${data.id}','hypothesisTempleV${data.id}','hypothesisFieldID${data.id}${item.id}','${item.name}')">
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -97,6 +98,7 @@
                 async:true,
                 success: function (result) {
                     $("#hypothesisTemple"+"${data.id}").val(result.template);
+                    $("#hypothesisTempleV"+"${data.id}").val(result.template);
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -107,12 +109,12 @@
     }());
 
     //字段替换
-    function hypothesisFildReplace(id1, id2, name) {
+    function hypothesisFildReplace(id,id1, id2, name) {
         var value = $("#"+id2).val();
         var regex = '/\{' + name + '\}/g';
         if (value != null && value != '') {
             var x1 = $("#"+id1).val().replace(eval(regex), value);
-            $("#"+id1).val(x1);
+            $("#"+id).val(x1);
         }
     }
 </script>

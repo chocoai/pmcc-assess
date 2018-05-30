@@ -27,10 +27,18 @@ public class DataInfrastructureDao {
         return infrastructureMapper.selectByExample(example) ;
     }
 
+    public Infrastructure get(Integer id){
+        return infrastructureMapper.selectByPrimaryKey(id);
+    }
+
+    public boolean update(Infrastructure infrastructure){
+        return infrastructureMapper.updateByPrimaryKey(infrastructure)==1;
+    }
+
     /**添加发文单位*/
-    public Boolean addInfrastructure(Infrastructure infrastructure){
-        int result = infrastructureMapper.insertSelective(infrastructure);
-        return result > 0;
+    public int addInfrastructure(Infrastructure infrastructure){
+        infrastructureMapper.insertSelective(infrastructure);
+        return infrastructure.getId();
     }
 
     /**修改发文单位*/

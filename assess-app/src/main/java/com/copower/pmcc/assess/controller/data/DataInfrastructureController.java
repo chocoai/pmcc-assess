@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
+import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -8,8 +10,11 @@ import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +29,7 @@ import java.util.List;
 @RequestMapping(value = "/infrastructure")
 @Controller
 public class DataInfrastructureController {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -46,6 +52,19 @@ public class DataInfrastructureController {
     public Object getAreaList(String pid){
         List<SysAreaDto> areaList = erpAreaService.getAreaList(pid);
         return areaList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/get",name = "get DataInfrastructure",method = RequestMethod.POST)
+    public Object get(Integer id){
+        try {
+            InfrastructureVo vo = dataInfrastructureService.get(id);
+            if (!ObjectUtils.isEmpty(vo))return vo;
+        }catch (Exception e){
+            logger.error("----------------->报错误啦!");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

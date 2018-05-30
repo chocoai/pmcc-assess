@@ -55,59 +55,88 @@
                                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
                                          aria-labelledby="home-tab">
                                         <%--第一页表--%>
-                                        <table class="table table-bordered leftfloat" style="width: 40%">
+                                        <table class="table table-bordered leftfloat" id="oneTable" style="width: 40%">
                                             <thead>
                                             <tr>
                                                 <th class="gray">项目</th>
                                                 <th class="gray">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray">实例${s.index + 1}</th>
+                                                    <th class="gray data-th" name="project" data-id="${items.id}">实例${s.index + 1}</th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
-                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <td>
+                                                    <span name="houseName">${surveyLocaleExploreDetail.houseName}</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.houseName}</td>
+                                                    <td>
+                                                        <span name="houseName"
+                                                              data-id="${items.id}">${items.houseName}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">案例类型</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="caseType"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.caseType}</td>
+                                                    <td>
+                                                        <span name="caseType"
+                                                              data-id="${items.id}">${items.caseType}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="price"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.price}</td>
+                                                    <td>
+                                                        <span name="price" data-id="${items.id}">${items.price}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="dealCaondition"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.dealCaondition}</td>
+                                                    <td>
+                                                        <span name="dealCaondition"
+                                                              data-id="${items.id}">${items.dealCaondition}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
-                                                <td>评估基准日</td>
+                                                <td>
+                                                    <span name="dealTime"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <fmt:formatDate value="${items.dealTime}" pattern="yyyy-MM-dd"/>
+                                                        <span name="dealTime" data-id="${items.id}">
+                                                            <fmt:formatDate value="${items.dealTime}"
+                                                                            pattern="yyyy-MM-dd"/>
+                                                        </span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="paymentMethod"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.paymentMethod}</td>
+                                                    <td>
+                                                        <span name="paymentMethod"
+                                                              data-id="${items.id}">${items.paymentMethod}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             </tbody>
@@ -122,39 +151,54 @@
                                                 <th class="gray">项目</th>
                                                 <th class="gray">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray">实例${s.index + 1}</th>
+                                                    <th class="gray data-th" name="project" data-id="${items.id}">实例${s.index + 1}</th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
-                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <td>
+                                                    <span name="houseName">${surveyLocaleExploreDetail.houseName}</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.houseName}</td>
+                                                    <td>
+                                                        <span name="houseName"
+                                                              data-id="${items.id}">${items.houseName}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">案例类型</th>
-                                                <td>100</td>
+                                                <td>
+                                                    <span name="caseType">100</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.caseType}</td>
+                                                    <td>
+                                                        <span name="caseType"
+                                                              data-id="${items.id}">${items.caseType}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="price"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td><span name="price" data-id="${items.id}">${items.price}</span>
+                                                    <td>
+                                                        <span name="price" data-id="${items.id}">${items.price}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
-                                                <td>100</td>
+                                                <td>
+                                                    <span name="dealCaondition">100</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="text" class="allMethod" data-id="${items.id}"
+                                                        <input type="text" class="allMethod input" data-id="${items.id}"
                                                                name="dealCaondition" required
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
@@ -163,10 +207,12 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
-                                                <td>100</td>
+                                                <td>
+                                                    <span name="dealTime">100</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <input type="text" class="allMethod" name="dealTime"
+                                                        <input type="text" class="allMethod input" name="dealTime"
                                                                required data-id="${items.id}"
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
@@ -175,11 +221,13 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
-                                                <td>100</td>
+                                                <td>
+                                                    <span name="paymentMethod">100</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
                                                         <input type="hidden" value="${items.id}">
-                                                        <input type="text" class="allMethod" data-id="${items.id}"
+                                                        <input type="text" class="allMethod input" data-id="${items.id}"
                                                                name="paymentMethod" required
                                                                data-rule-digits="true"
                                                                min="80" max="120" step="1" style="width: 80px">
@@ -199,64 +247,89 @@
                                                 <th class="gray">项目</th>
                                                 <th class="gray">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray">实例${s.index + 1}</th>
+                                                    <th class="gray data-th" name="project" data-id="${items.id}">实例${s.index + 1}</th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
-                                                <td>${surveyLocaleExploreDetail.houseName}</td>
+                                                <td>
+                                                    <span name="houseName">${surveyLocaleExploreDetail.houseName}</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.houseName}</td>
+                                                    <td>
+                                                        <span name="houseName"
+                                                              data-id="${items.id}">${items.houseName}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">案例类型</th>
-                                                <td>1</td>
+                                                <td>
+                                                    <span name="caseType">1</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td>${items.caseType}</td>
+                                                    <td>
+                                                        <span name="caseType"
+                                                              data-id="${items.id}">${items.caseType}</span>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="price"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span data-id="${items.id}" name="price">${items.price}</span>
+                                                        <span name="price" data-id="${items.id}">${items.price}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
-                                                <td>1</td>
+                                                <td>
+                                                    <span name="dealCaondition">1</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span data-id="${items.id}" name="dealCaondition"></span>
+                                                        <span name="dealCaondition"
+                                                              data-id="${items.id}">${items.dealCaondition}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
-                                                <td>1</td>
+                                                <td>
+                                                    <span name="dealTime">1</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span data-id="${items.id}" name="dealTime"></span>
+                                                        <span name="dealTime" data-id="${items.id}">
+                                                            <fmt:formatDate value="${items.dealTime}"
+                                                                            pattern="yyyy-MM-dd"/>
+                                                        </span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
-                                                <td>1</td>
+                                                <td>
+                                                    <span name="paymentMethod">1</span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span data-id="${items.id}" name="paymentMethod"></span>
+                                                        <span name="paymentMethod"
+                                                              data-id="${items.id}">${items.paymentMethod}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr id="trList">
                                                 <th scope="row" class="gray">比准价格</th>
-                                                <td></td>
+                                                <td>
+                                                    <span name="affirmPrice"></span>
+                                                </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
                                                         <span data-id="${items.id}" name="affirmPrice"></span>
@@ -365,7 +438,8 @@
                                         <td></td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td>
-                                                <input type="text" data-id="${items.id}" name="weight" min="0.0" max="1" step="0.1"
+                                                <input type="text" data-id="${items.id}" name="weight" min="0.0" max="1"
+                                                       step="0.1"
                                                        style="width: 80px">
                                             </td>
                                         </c:forEach>
@@ -387,6 +461,16 @@
                     </div>
 
 
+                </div>
+            </div>
+
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="col-sm-4 col-sm-offset-5">
+                        <button id="btn_submit1" class="btn btn-success" onclick="getData();">
+                            测试<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -497,19 +581,6 @@
     }
 
 
-    function submit() {
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
-
-        if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
-        else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
-    }
-
     //颜色加灰
     function getGray() {
         $('.gray').css('background', '#C9C9C9');
@@ -558,6 +629,7 @@
                 var result = ($(this).val() / 100).toFixed(4);
 
                 $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+
             })
 
             $("#threeTable").find("span").each(function () {
@@ -571,6 +643,18 @@
 
                 $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第三张表比准价格
                 $("#rightTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第四张表比准价格
+
+//                if(result > 1){
+//                    $(this).closest("td").find("i").remove();
+//                    $(this).closest("td").find('[name="' + name + '"][data-id="' + dataId + '"]').append('<i class="fa fa-arrow-up btn-danger"></i>');
+//                }
+//                if(result > 1){
+//                    $(this).closest("td").find("i").remove();
+//                    $(this).closest("td").find('[name="' + name + '"][data-id="' + dataId + '"]').append('<i class="fa fa-arrow-down btn-info"></i>');
+//                }
+//                if(result == 1){
+//                    $(this).closest("td").find("i").remove();
+//                }
             })
 
             var middlePrice = 0;
@@ -593,23 +677,19 @@
                 var price = $("#threeTable").find('[name="price"][data-id="' + dataId + '"]').text();
                 var correction = Math.abs((affirmPrice - price) / price);
                 $("#rightTable").find('[name="correction"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
-
                 if (max < affirmPrice) {
                     max = affirmPrice;
-
                 }
-
                 if (min > affirmPrice && reg.test(affirmPrice)) {
                     min = affirmPrice;
-
                 }
             })
             var temp = (max - min) / min;       //（案例最高比准价-案例最低比准价）/案例最低比准价<=20%，如果大于20%则提示案例或修正指数修改错误
             console.log(temp);
-//            if (temp > 0.2) {
-//                Alert("案例或修正指数修改错误", 1, null, function () {
-//                });
-//            }
+            if (temp > 0.2) {
+                Alert("案例或修正指数修改错误", 1, null, function () {
+                });
+            }
 
             $("#threeTable").find('[name="affirmPrice"]').each(function () {
                 var dataId = $(this).attr('data-id');
@@ -623,19 +703,18 @@
                 var dataId = $(this).attr('data-id');
                 var caseDifference = $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text();
 
-                if(caseMax < caseDifference){
+                if (caseMax < caseDifference) {
                     caseMax = caseDifference;
                 }
             })
-            if(caseMax >= 0.3){
+            if (caseMax >= 0.3) {
                 Alert("采用加权平均价,请填写权重和相应的权重说明", 1, null, function () {
                 });
             }
-
         }
     })
 
-        //处理第四张表业务
+    //处理第四张表业务
     $("#rightTable").find("input:text").blur(function () {
 
         var allFill = true;
@@ -646,7 +725,7 @@
             }
         })
 
-        if(allFill){
+        if (allFill) {
             var middlePrice = 0;
             var tempWeight = 0;
             $("#rightTable").find('[name="affirmPrice"]').each(function () {
@@ -657,17 +736,86 @@
                 middlePrice += weight * affirmPrice;
             })
 
-            if(tempWeight == 1){
+            if (tempWeight == 1) {
                 $("#rightTable").find('[name="middlePrice"]').text(middlePrice);    //第四张表加权平均价
-            }else{
+            } else {
                 Alert("权重之和不为1", 1, null, function () {
                 });
             }
-
         }
-
     })
 
+    var items = "";
+    function getData() {
+        var i = 0;
+        $("#oneTable").find('thead tr').find('th').each(function () {
+            i++;
+            if ($(this).hasClass('data-th')) {
+                var dataId = $(this).attr('data-id');
+                var keyValueArray = [];
+                $("#oneTable").find('[data-id=' + dataId + ']').each(function () {
+                    var keyValue = {};
+                    keyValue.key = $(this).attr('name');
+                    keyValue.value = $(this).text();
+                    keyValueArray.push(keyValue);
+                })
+//                console.log(keyValueArray);
+            }
+        })
+        console.log(i);
+
+        $("#twoTable").find('thead tr').find('th').each(function () {
+            if ($(this).hasClass('data-th')) {
+                var dataId = $(this).attr('data-id');
+                var keyValueArray = [];
+                $("#twoTable").find('[data-id=' + dataId + ']').each(function () {
+                    var keyValue = {};
+                    keyValue.key = $(this).attr('name');
+                    if ($(this).hasClass('input')) {
+                        keyValue.value = $(this).val();
+                    } else {
+                        keyValue.value = $(this).text();
+                    }
+                    keyValueArray.push(keyValue);
+                })
+//                console.log(keyValueArray);
+            }
+            var i = 0;
+            $("#threeTable").find('thead tr').find('th').each(function () {
+                if ($(this).hasClass('data-th')) {
+                    var dataId = $(this).attr('data-id');
+                    var keyValueArray = [];
+
+                    $("#threeTable").find('[data-id=' + dataId + ']').each(function () {
+                        var keyValue = {};
+                        keyValue.key = $(this).attr('name');
+                        keyValue.value = $(this).text();
+                        keyValueArray.push(keyValue);
+                    })
+//                    console.log(keyValueArray);
+                }
+
+            })
+
+        })
+
+    }
+
+    //        console.log(JSON.stringify(data));
+
+
+    function submit() {
+        if (!$("#frm_task").valid()) {
+            return false;
+        }
+
+        if ("${processInsId}" != "0") {
+            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+        }
+        else {
+            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+        }
+    }
 
 
 </script>

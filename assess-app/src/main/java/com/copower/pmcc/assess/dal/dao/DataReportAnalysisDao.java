@@ -20,6 +20,15 @@ public class DataReportAnalysisDao {
         return flag > 0;
     }
 
+    public int save(DataReportAnalysis obj){
+        dataReportAnalysisMapper.insertSelective(obj);
+        return obj.getId();
+    }
+
+    public boolean update(DataReportAnalysis dataReportAnalysis){
+        return dataReportAnalysisMapper.updateByPrimaryKey(dataReportAnalysis)==1;
+    }
+
     public List<DataReportAnalysis> getList(String keyWord) {
         DataReportAnalysisExample dataReportAnalysisExample = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = dataReportAnalysisExample.createCriteria();

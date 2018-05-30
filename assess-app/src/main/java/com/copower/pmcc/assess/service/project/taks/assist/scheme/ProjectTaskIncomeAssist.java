@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
@@ -60,6 +61,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", processInsId, boxId, taskId, agentUserAccount);
+
         return modelAndView;
     }
 
@@ -106,7 +108,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         if (!StringUtils.isEmpty(formData)){
-            schemeInfoService.saveChange(projectPlanDetails.getId(),processInsId,formData);
+            SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
+            detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
+            detailVDto.setProcessInsId(processInsId);
+            detailVDto.setPlanDetailsId(projectPlanDetails.getId());
         }
     }
 

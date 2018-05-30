@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.dao.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.entity.SchemeInfoDetail;
-import com.copower.pmcc.assess.dto.input.project.SchemeInfoFormDataDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,57 +35,48 @@ public class SchemeInfoService {
     @Autowired
     private SchemeInfoDao dao;
 
-    public void saveChange(SchemeInfoFormDataDto p,SchemeInfoFormDataDto h,SchemeInfoFormDataDto b) {
-        logger.info(p+"");
-
-    }
-
     /**
      * 这里的分隔符必须和页面相对应
      *
-     * @param planDetailsId
-     * @param processInsId
-     * @param formData
+     * @param detailVDto
      */
-    public void saveChange(Integer planDetailsId, String processInsId, String formData) {
-        if (!StringUtils.isEmpty(processInsId) && !StringUtils.isEmpty(formData)) {
-            String[] strings = formData.split(".");
-            for (String s : strings) {
-                String[] ss = s.split(",");
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.HYPOTHESIS.getDataType());
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.PRINCIPLE.getDataType());
-                save(planDetailsId, ss[0], ss[1], processInsId, SchemeInfoDetailEnum.Basis.getDataType());
-            }
+    @Transactional
+    public void saveChange(SchemeInfoDetailVDto detailVDto) {
+        SchemeInfo schemeInfo = new SchemeInfo();
+        if (!StringUtils.isEmpty(detailVDto.getProcessInsId())  && !StringUtils.isEmpty(detailVDto.getProjectID())){
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(detailVDto.getPlanDetailsId());
+            detailVDto.setProcessInsId(projectPlanDetails.getProcessInsId());
+            detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
         }
+        schemeInfo.setCreator(commonService.thisUserAccount());
+        schemeInfo.setProcessInsId(detailVDto.getProcessInsId());
+        schemeInfo.setPlanDetailsId(detailVDto.getPlanDetailsId());
+        schemeInfo.setProjectId(Integer.parseInt(detailVDto.getProjectID()));
+        int id = addReturnID(schemeInfo);
+        save(detailVDto.getBasisContent(), detailVDto.getBasisDataID(), SchemeInfoDetailEnum.Basis.getDataType(), id);
+        save(detailVDto.getHypothesisContent(), detailVDto.getHypothesisDataID(), SchemeInfoDetailEnum.HYPOTHESIS.getDataType(), id);
+        save(detailVDto.getPrinciPleContent(), detailVDto.getPrinciPleDataID(), SchemeInfoDetailEnum.PRINCIPLE.getDataType(), id);
     }
 
     /**
      * dataType 类型 0假设 1原则 2依据 3利用描述 4价值时点 使用枚举传入
      *
-     * @param planDetailsId
      * @param content
      * @param dataID
-     * @param processInsId
      * @param dataType
+     * @param schemeInfoID
      */
     @Transactional
-    private void save(Integer planDetailsId, String content, String dataID, String processInsId, Integer dataType) {
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        SchemeInfo schemeInfo = new SchemeInfo();
-        schemeInfo.setCreator(commonService.thisUserAccount());
-        schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
-        int id = addReturnID(schemeInfo);
-        String[] contentS = content.split(",");
+    public void save(String content, String dataID, Integer dataType, Integer schemeInfoID) {
+        String[] contentS = content.split("<<");//这里最好是页面强制适用一种特定符号结尾如 <<
         String[] dataIDS = dataID.split(",");
-        for (int i = 0; i < contentS.length; i++) {
+        for (int i = 0; i < dataIDS.length; i++) {
             SchemeInfoDetail schemeInfoDetail = new SchemeInfoDetail();
             schemeInfoDetail.setCreator(commonService.thisUserAccount());
             schemeInfoDetail.setContent(contentS[i]);
             if (!StringUtils.isEmpty(dataIDS[i])) schemeInfoDetail.setDataId(Integer.parseInt(dataIDS[i]));
             schemeInfoDetail.setDataType(dataType);
-            schemeInfoDetail.setSchemeInfoId(id);
+            schemeInfoDetail.setSchemeInfoId(schemeInfoID);
             schemeInfoDetailService.addReturnID(schemeInfoDetail);
         }
     }
@@ -104,11 +95,11 @@ public class SchemeInfoService {
         return dao.update(schemeInfo);
     }
 
-    public SchemeInfoFormDataDto formDataDto(String formData) {
-        SchemeInfoFormDataDto schemeInfoFormDataDto = null;
+    public SchemeInfoDetailVDto formDataDto(String formData) {
+        SchemeInfoDetailVDto detailVDto = null;
         if (!StringUtils.isEmpty(formData)) {
-            schemeInfoFormDataDto = JSONObject.parseObject(formData, SchemeInfoFormDataDto.class);
+            detailVDto = JSONObject.parseObject(formData, SchemeInfoDetailVDto.class);
         }
-        return schemeInfoFormDataDto;
+        return detailVDto;
     }
 }
