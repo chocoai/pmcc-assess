@@ -15,10 +15,10 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
 
-            <c:forEach items="${compileReportDetailss}" var="items">
+            <c:forEach items="${compileReportDetailsList}" var="item">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>${items.evaluationType}</h2>
+                            <h2>${item.categoryFieldName}</h2>
                             <div class="clearfix"></div>
                         </div>
 
@@ -26,10 +26,10 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-sm-1 control-label">
-                                        结果预览
+                                        内容
                                     </label>
                                     <div class="col-sm-11">
-                                        <label class="form-control">${items.textReplace}</label>
+                                        <label class="form-control">${item.content}</label>
                                     </div>
                                 </div>
                             </div>

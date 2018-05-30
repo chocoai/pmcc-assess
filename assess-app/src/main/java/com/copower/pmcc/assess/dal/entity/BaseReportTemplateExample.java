@@ -404,6 +404,66 @@ public class BaseReportTemplateExample {
             return (Criteria) this;
         }
 
+        public Criteria andCstypeIsNull() {
+            addCriterion("csType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeIsNotNull() {
+            addCriterion("csType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeEqualTo(Integer value) {
+            addCriterion("csType =", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeNotEqualTo(Integer value) {
+            addCriterion("csType <>", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeGreaterThan(Integer value) {
+            addCriterion("csType >", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("csType >=", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeLessThan(Integer value) {
+            addCriterion("csType <", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeLessThanOrEqualTo(Integer value) {
+            addCriterion("csType <=", value, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeIn(List<Integer> values) {
+            addCriterion("csType in", values, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeNotIn(List<Integer> values) {
+            addCriterion("csType not in", values, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeBetween(Integer value1, Integer value2) {
+            addCriterion("csType between", value1, value2, "cstype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCstypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("csType not between", value1, value2, "cstype");
+            return (Criteria) this;
+        }
+
         public Criteria andBookmarkNameIsNull() {
             addCriterion("bookmark_name is null");
             return (Criteria) this;

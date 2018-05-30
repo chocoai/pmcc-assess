@@ -58,10 +58,9 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
-        List<CompileReport> compileReports = compileReportDao.getByProcessInsId(processInsId);
-        CompileReport compileReport = compileReports.get(0);
-        List<CompileReportDetails> compileReportDetailss = compileReportDetailsDao.getListByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("compileReportDetailss",compileReportDetailss);
+        Integer category = projectPlanDetails.getReportAnalysisCategory();
+        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
+        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
         return modelAndView;
     }
 
@@ -69,11 +68,8 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
         Integer category = projectPlanDetails.getReportAnalysisCategory();
-        List<DataReportAnalysisVo> dataReportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(category);
-        List<DataReportAnalysisField> dataReportAnalysisFields = dataReportAnalysisFieldDao.getAllList();
-
-        modelAndView.addObject("dataReportAnalysisFields",dataReportAnalysisFields);
-        modelAndView.addObject("dataReportAnalysisVos",dataReportAnalysisVos);
+        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
+        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
         return modelAndView;
     }
 
