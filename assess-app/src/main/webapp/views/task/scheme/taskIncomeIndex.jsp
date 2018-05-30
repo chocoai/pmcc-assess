@@ -76,7 +76,7 @@
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
 
-                        <input type="button" onclick="frmTaskSave()" value="save" class="btn btn-succcess">
+                        <input type="button" onclick="submit()" value="save" class="btn btn-succcess">
                     </div>
                 </div>
             </div>
@@ -101,18 +101,51 @@
         if (!$("#frm_task_evaluationBasis").valid()) {
             return false;
         }
-        var json = "";
         //数据收集
         var princiPle = formParams("frm_task_evaluationPrinciPleTemple");
         var hypothesis = formParams("frm_task_evaluationHypothesis");
         var basis = formParams("frm_task_evaluationBasis");
         var data = {};
-        data.princiPle = princiPle.Content+"."+princiPle.DataID;
-        data.hypothesis = hypothesis.Content+"."+hypothesis.DataID;
-        data.basis = basis.Content+"."+basis.DataID;
-        //合并json
-        json = JSON.stringify(data);
-        console.log(data);
+        //由于客户可能填的数据有,等符号 form收集的数据后台无法遍历，因此前端手动收集数据
+        var basisContent = "";
+        var hypothesisContent = "";
+        var principleContent = "";
+        var basisDataID = basis.DataID;
+        var hypothesisDataID = hypothesis.DataID;
+        var princiPleDataID = princiPle.DataID;
+
+        var ids = basisDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                basisContent += $("#basisTemple"+ids[i]).val() +"";
+            }else {
+                basisContent += $("#basisTemple"+ids[i]).val() +"<<";
+            }
+        }
+        ids = princiPleDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                principleContent += $("#principleTemple"+ids[i]).val() +"";
+            }else {
+                principleContent += $("#principleTemple"+ids[i]).val() +"<<";
+            }
+        }
+        ids = hypothesisDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                hypothesisContent += $("#hypothesisTemple"+ids[i]).val() +"";
+            }else {
+                hypothesisContent += $("#hypothesisTemple"+ids[i]).val() +"<<";
+            }
+        }
+
+        data.basisDataID = basisDataID;
+        data.basisContent = basisContent;
+        data.princiPleDataID = princiPleDataID;
+        data.princiPleContent = principleContent;
+        data.hypothesisContent = hypothesisContent;
+        data.hypothesisDataID = hypothesisDataID;
+        data.planDetailsId = '${projectPlanDetails.id}';
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeInfo/save",
             type: "POST",
@@ -175,6 +208,9 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
+
+        var json = "";
+        //合并json
         //js校验
         if (!$("#frm_task_evaluationPrinciPleTemple").valid()) {
             return false;
@@ -185,16 +221,51 @@
         if (!$("#frm_task_evaluationBasis").valid()) {
             return false;
         }
-        var json = "";
         //数据收集
         var princiPle = formParams("frm_task_evaluationPrinciPleTemple");
         var hypothesis = formParams("frm_task_evaluationHypothesis");
         var basis = formParams("frm_task_evaluationBasis");
         var data = {};
-        data.princiPle = princiPle;
-        data.hypothesis = hypothesis;
-        data.basis = basis;
-        //合并json
+        //由于客户可能填的数据有,等符号 form收集的数据后台无法遍历，因此前端手动收集数据
+        var basisContent = "";
+        var hypothesisContent = "";
+        var principleContent = "";
+        var basisDataID = basis.DataID;
+        var hypothesisDataID = hypothesis.DataID;
+        var princiPleDataID = princiPle.DataID;
+
+        var ids = basisDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                basisContent += $("#basisTemple"+ids[i]).val() +"";
+            }else {
+                basisContent += $("#basisTemple"+ids[i]).val() +"<<";
+            }
+        }
+        ids = princiPleDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                principleContent += $("#principleTemple"+ids[i]).val() +"";
+            }else {
+                principleContent += $("#principleTemple"+ids[i]).val() +"<<";
+            }
+        }
+        ids = hypothesisDataID.split(",");
+        for(var i = 0;i < ids.length;i++){
+            if (i == ids.length-1){
+                hypothesisContent += $("#hypothesisTemple"+ids[i]).val() +"";
+            }else {
+                hypothesisContent += $("#hypothesisTemple"+ids[i]).val() +"<<";
+            }
+        }
+
+        data.basisDataID = basisDataID;
+        data.basisContent = basisContent;
+        data.princiPleDataID = princiPleDataID;
+        data.princiPleContent = principleContent;
+        data.hypothesisContent = hypothesisContent;
+        data.hypothesisDataID = hypothesisDataID;
+        data.planDetailsId = '${projectPlanDetails.id}';
         json = JSON.stringify(data);
 
         if ("${processInsId}" != "0") {

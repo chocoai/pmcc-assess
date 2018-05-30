@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
@@ -107,6 +108,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         if (!StringUtils.isEmpty(formData)){
+            SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
+            detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
+            detailVDto.setProcessInsId(processInsId);
+            detailVDto.setPlanDetailsId(projectPlanDetails.getId());
         }
     }
 

@@ -58,7 +58,7 @@
 </div>
 </body>
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
+     aria-hidden="true" data-height="300">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,6 +79,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="province" class="form-control" id="province">
+                                                <option selected="selected" value="">请选择</option>
                                                 <c:forEach items="${provinceList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
@@ -95,7 +96,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="city" class="form-control" id="city" required="required">
-                                                <option>请选择</option>
+                                                <option selected="selected" value="">请选择</option>
                                             </select>
                                         </div>
                                     </div>
@@ -109,7 +110,7 @@
                                         <div class="col-sm-10">
                                             <select name="district" class="form-control" id="district"
                                                     required="required">
-                                                <option>请选择</option>
+                                                <option selected="selected" value="">请选择</option>
                                             </select>
                                         </div>
                                     </div>
@@ -139,18 +140,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            文件名称
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input placeholder="文件名称" class="form-control" id="fileName"
-                                                   name="fileName"/>
-
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -188,6 +177,19 @@
                                             <input type="text" placeholder="执行结束日期" id="endDate" name="endDate"
                                                    data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                                    readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            附件
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="file" name="fileName" id="fileName" placeholder="上传附件"
+                                                   class="form-control" required="required">
+                                            <div id="_fileName"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -378,7 +380,18 @@
         loadDataDicList();
     })
 
-
+   function fileUpload() {
+       FileUtils.uploadFiles({
+           target: "fileName",
+           disabledTarget: "btn_submit",
+           formData: {
+               tableName: "tb_data_infrastructure",
+               tableId: 0,
+               fieldsName: "file_name"
+           },
+           deleteFlag: true
+       });
+   }
     //加载基础设施费用列表
     function loadInfratructureCost() {
         var cols = [];
@@ -600,9 +613,9 @@
     //加载 基础设施及公共配套设施维护 数据列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'province', title: '省'});
-        cols.push({field: 'city', title: '市'});
-        cols.push({field: 'district', title: '县'});
+        cols.push({field: 'provinceName', title: '省'});
+        cols.push({field: 'cityName', title: '市'});
+        cols.push({field: 'districtName', title: '县'});
         cols.push({field: 'dispatchUnit', title: '发文单位'});
         cols.push({field: 'number', title: '文号'});
         cols.push({field: 'fileName', title: '文件名称'});
@@ -623,7 +636,7 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + index + ');" >基础设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + index + ');" >公共配套设施费</i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteBestUseDescription(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -673,6 +686,7 @@
     //对新增 基础设施及公共配套设施维护数据处理
     function addDataDic() {
         $("#frm").clearAll();
+        fileUpload();
     }
 
     function selectProvince() {
@@ -762,7 +776,6 @@
 
     //新增 基础设施及公共配套设施维护数据
     function saveSubDataDic() {
-        var flag = false;
         var data = $("#frm").serialize();
         if ($("#frm").valid()) {
             $.ajax({
@@ -800,9 +813,10 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
+                    alert();
                     $("#id").val(id);
                     $("#name").val(result.data.name);
-                    $("#fieldName").val(result.data.fieldName);
+                    // $("#fieldName").val(result.data.fieldName);
                     $("#bisEnable").prop("checked", result.data.bisEnable);
                     $("#sorting").val(result.data.sorting);
                     $("#remark").val(result.data.remark);
@@ -819,13 +833,50 @@
         })
     }
 
-    function editHrProfessional(index) {
-        var row = $("#tb_List").bootstrapTable('getData')[index];
-        $("#frm").clearAll();
-        $("#frm").initForm(row);
-        $("#startDate").val(formatDate(row.startDate, false));
-        $("#endDate").val(formatDate(row.endDate, false));
-        $('#divBox').modal();
+    function editHrProfessional(id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructure/get",
+            type: "POST",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                console.log(result);
+                $("#frm").clearAll();
+                $("#startDate").val(formatDate(result.startDate, false));
+                $("#endDate").val(formatDate(result.endDate, false));
+                $("#dispatchUnit").val(result.dispatchUnit);
+                $("#projectType").val(result.projectType);
+                $("#number").val(result.number);
+                $("#id").val(result.id);
+                $("#province").append("<option selected='selected'"+ 'value='+result.province +">"+result.provinceName+"</option>");
+                $("#district").append("<option selected='selected'"+ 'value='+result.district +">"+result.districtName+"</option>");
+                $("#city").append("<option selected='selected'"+ 'value='+result.city +">"+result.cityName+"</option>");
+                FileUtils.uploadFiles({
+                    target: "fileName",
+                    disabledTarget: "btn_submit",
+                    formData: {
+                        tableName: "tb_data_infrastructure",
+                        tableId: 0,
+                        fieldsName: "file_name"
+                    },
+                    deleteFlag: true
+                });
+                FileUtils.getFileShows({
+                    target: "fileName",
+                    formData: {
+                        tableName: "tb_data_infrastructure",
+                         tableId: id,
+                        fieldsName: "file_name"
+                    },
+                    deleteFlag: true
+                })
+                $('#divBox').modal();
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 
     function isNot(val) {

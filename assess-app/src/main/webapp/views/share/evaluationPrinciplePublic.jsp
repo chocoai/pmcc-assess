@@ -34,6 +34,7 @@
                             模板数据
                         </label>
                         <div class="col-sm-11">
+                            <input type="hidden" id="principleTempleV${data.id}">
                             <textarea required="required" id="principleTemple${data.id}" placeholder="原则模板" class="form-control" name="Content">
 
                             </textarea>
@@ -49,7 +50,7 @@
                                     <label class="col-sm-1 control-label"> ${item.name} </label>
                                     <div class="col-sm-2">
                                         <input class="form-control" type="text" placeholder="替换字段"
-                                               id="principleFieldID${data.id}${item.id}" onblur="principleFildReplace('principleTemple${data.id}','principleFieldID${data.id}${item.id}','${item.name}')">
+                                               id="principleFieldID${data.id}${item.id}" onblur="principleFildReplace('principleTemple${data.id}','principleTempleV${data.id}','principleFieldID${data.id}${item.id}','${item.name}')">
                                     </div>
                                 </div>
                             </c:forEach>
@@ -64,7 +65,7 @@
                                             <label class="col-sm-1 control-label">${status.index} ${item.name} </label>
                                             <div class="col-sm-2">
                                                 <input class="form-control" type="text" placeholder="替换字段"
-                                                       id="principleFieldID${data.id}${item.id}" onblur="principleFildReplace('principleTemple${data.id}','principleFieldID${data.id}${item.id}','${item.name}')">
+                                                       id="principleFieldID${data.id}${item.id}" onblur="principleFildReplace('principleTemple${data.id}','principleTempleV${data.id}','principleFieldID${data.id}${item.id}','${item.name}')">
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -98,6 +99,7 @@
                     async:true,
                     success: function (result) {
                         $("#principleTemple"+"${data.id}").val(result.template);
+                        $("#principleTempleV"+"${data.id}").val(result.template);
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
@@ -109,13 +111,13 @@
 
 
     //字段替换
-    function principleFildReplace(id1, id2, name) {
+    function principleFildReplace(id,id1, id2, name) {
         var value = $("#"+id2).val();
         var regex = '/\{' + name + '\}/g';
         if (value != null && value != '') {
             var str = $("#"+id1).val()+"";
             var x1 = str.replace(eval(regex), value);
-            $("#"+id1).val(x1);
+            $("#"+id).val(x1);
         }
     }
 </script>

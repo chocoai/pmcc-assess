@@ -1,16 +1,15 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dto.input.project.SchemeInfoFormDataDto;
+import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.SchemeInfoDetailService;
 import com.copower.pmcc.assess.service.project.SchemeInfoService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,21 +21,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SchemeInfoController {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SchemeInfoService schemeInfoService;
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "保存  方案主表")
-    public Object save(String princiPle, String hypothesis, String basis, Integer planDetailsId) {//SchemeInfoFormDataDto
+    public Object save(SchemeInfoDetailVDto detailVDto) {//SchemeInfoFormDataDto
         try {
-            if (!StringUtils.isEmpty(princiPle)) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-                if (!StringUtils.isEmpty(hypothesis) && !StringUtils.isEmpty(basis)) {
-                    schemeInfoService.saveChange(planDetailsId, projectPlanDetails.getProcessInsId(), princiPle, hypothesis, basis);
-                }
+            if (!ObjectUtils.isEmpty(detailVDto)) {
+                schemeInfoService.saveChange(detailVDto);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

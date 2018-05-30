@@ -88,7 +88,10 @@
                                         </label>
                                         <div class="col-sm-10" id="entrustmentPurpose">
                                             <c:forEach items="${useListA}" var="item">
-                                                <input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-group">${item.name}
+                                                <span class="checkbox-inline">
+                                                <input type="checkbox" name="entrustmentPurpose" value="${item.id}" class="form-inline">
+                                                <label>${item.name}</label>
+                                                </span>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -100,7 +103,10 @@
                                         </label>
                                         <div class="col-sm-10" id="method">
                                             <c:forEach items="${useList}" var="item">
-                                                ${item.name}<input type="checkbox" name="method" value="${item.id}" class="form-inline">
+                                                <span class="checkbox-inline">
+                                                <input type="checkbox" name="method" value="${item.id}" class="form-inline">
+                                                <label>${item.name}</label>
+                                                </span>
                                             </c:forEach>
 
                                         </div>

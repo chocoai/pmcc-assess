@@ -29,8 +29,15 @@ public class DataReportAnalysisFieldDao {
     }
 
     public Boolean addField(DataReportAnalysisField field) {
-        int flag = dataReportAnalysisFieldMapper.insert(field);
-        return flag > 0;
+        boolean flag = true;
+        DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
+        example.createCriteria().andIdIsNotNull().andAnalysisIdEqualTo(field.getAnalysisId()).andNameEqualTo(field.getName());
+        List<DataReportAnalysisField> analysisFields = dataReportAnalysisFieldMapper.selectByExample(example);
+        if (analysisFields.size() >0)flag=false;
+        if (flag){
+            dataReportAnalysisFieldMapper.insertSelective(field);
+        }
+        return flag;
     }
 
     public boolean deleteField(Integer id) {
@@ -57,5 +64,14 @@ public class DataReportAnalysisFieldDao {
         DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
         example.createCriteria().andIdIsNotNull();
         return dataReportAnalysisFieldMapper.selectByExample(example);
+    }
+
+    public void delete(String name,Integer id){
+        DataReportAnalysisFieldExample example = new DataReportAnalysisFieldExample();
+        example.createCriteria().andAnalysisIdEqualTo(id).andNameEqualTo(name);
+        List<DataReportAnalysisField> analysisFields = dataReportAnalysisFieldMapper.selectByExample(example);
+        for (DataReportAnalysisField field:analysisFields){
+            dataReportAnalysisFieldMapper.deleteByPrimaryKey(field.getId());
+        }
     }
 }
