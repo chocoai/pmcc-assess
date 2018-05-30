@@ -538,7 +538,7 @@
         $.each(trs, function (i, tr) {
             var item = {};
 
-            item.id = $(tr).find('[name="id"]').val();    //清查内容
+            item.id = $(tr).find('[name="id"]').val();    //id
             item.inventoryContent = $(tr).find('[name="inventoryContent"]').val();    //清查内容
             item.areConsistent = $(tr).find('[name="areConsistent"]').val();    //是否一致
             item.registrationAddress = $(tr).find('[name="registrationAddress"]').val();    //登记面积
