@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.dao.BaseReportDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseReportDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseReportColumns;
 import com.copower.pmcc.assess.dal.entity.BaseReportTable;

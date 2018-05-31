@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;

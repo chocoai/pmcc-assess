@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.dao.BaseReportBatchDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseReportBatchDao;
 import com.copower.pmcc.assess.dal.entity.BaseReportBatchTemplate;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.common.CommonService;

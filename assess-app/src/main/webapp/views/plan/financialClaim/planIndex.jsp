@@ -3,6 +3,9 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 <body class="nav-md footer_fixed">
@@ -18,7 +21,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="treeGrid panel-body x_content" style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered" ></table>
+                    <table id="PlanItemListed" class="table table-bordered"></table>
                 </div>
             </div>
             <div class="x_panel">
@@ -70,25 +73,8 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="hidden" id="planDetailsId" name="id"/>
-                                            <input type="hidden" id="pid" name="pid"/>
-                                            <input type="hidden" id="firstPid" name="firstPid"/>
                                             <input type="text" placeholder="计划名称" required maxlength="50" id="projectPhaseName" name="projectPhaseName"
                                                    class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            工作内容
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="projectPhaseId" id="projectPhaseId" class="form-control search-select select2">
-                                                <option value="">-选择-</option>
-                                                <c:forEach var="item" items="${projectPhases}">
-                                                    <option value="${item.id}">${item.projectPhaseName}</option>
-                                                </c:forEach>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -121,31 +107,12 @@
                                         <input type="text" placeholder="责任人" maxlength="50" id="executeUserName" name="executeUserName" class="form-control" readonly="readonly"
                                                onclick="selEmployee()">
                                     </div>
-                                    <label class="col-sm-2 control-label">
-                                        责任部门
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId" name="executeDepartmentId" class="form-control">
-                                        <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName" name="executeDepartmentName" class="form-control" onclick="selDept()"
-                                               readonly="readonly">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             计划工时
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5" id="planHours" name="planHours"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            权重占比
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5" id="proportion" name="proportion"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -181,134 +148,52 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">快速设置</h4>
+                <h3 class="modal-title">快速设置</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <form id="frm_fastset" class="form-horizontal">
-                                <table class="table table-striped table-bordered table-hover table-bordered" id="sample-table-2">
-                                    <thead>
-                                    <tr>
-                                        <th class="hidden-xs">设置内容</th>
-                                        <th class="hidden-xs">值</th>
-                                        <th class="hidden-xs">范围</th>
-                                        <th class="hidden-xs">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="fast_tr">
-                                        <td class="hidden-xs">开始时间</td>
-                                        <td class="hidden-xs">
-                                            <input type="hidden" class="fast_fileds" title="开始时间" value="planStartDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="fast_tr">
-                                        <td class="hidden-xs">结束时间</td>
-                                        <td class="hidden-xs">
-                                            <input type="hidden" class="fast_fileds" value="planEndDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="fast_tr">
-                                        <td class="hidden-xs">责任人</td>
-                                        <td class="hidden-xs">
-                                            <input type="hidden" class="fast_fileds" value="executeUserAccount">
-                                            <input type="hidden" id="fast_executeUserAccount" class="fast_value">
-                                            <input type="text" id="fast_executeUserName" class="form-control" readonly="readonly"
-                                                   onclick="selFastEmployee()">
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" id="btn_user" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="fast_tr">
-                                        <td class="hidden-xs">责任部门</td>
-                                        <td class="hidden-xs">
-                                            <input type="hidden" class="fast_fileds" value="executeDepartmentId">
-                                            <input type="hidden" id="fast_executeDepartmentId" class="fast_value">
-                                            <input type="text" id="fast_executeDepartmentName" class="form-control" onclick="selFastDept()"
-                                                   readonly="readonly">
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" id="btn_dept" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="fast_tr">
-                                        <td class="hidden-xs">计划工时</td>
-                                        <td class="hidden-xs">
-                                            <div class="x-valid">
-                                                <input type="hidden" class="fast_fileds" value="planHours">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
-                                            </div>
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
+                    <form id="frm_fastset" class="form-horizontal">
+                        <table class="table table-striped table-bordered table-hover table-bordered" id="sample-table-2">
+                            <tbody>
+                            <tr class="fast_tr">
+                                <td class="hidden-xs">客户</td>
+                                <td colspan="3" class="hidden-xs" id="td_customers">
+                                </td>
+                            </tr>
+                            <tr class="fast_tr">
+                                <td class="hidden-xs">工作事项</td>
+                                <td colspan="3" class="hidden-xs">
+                                    <label><input type="checkbox" id="chk_phase_all" value="0" onchange="checkPhase()">全部</label>
+                                    <c:forEach var="item" items="${projectPhases}">
+                                        <label class="chk_phase"><input type="checkbox" class="chk_phase" value="${item.id}">${item.projectPhaseName}</label>
+                                    </c:forEach>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="hidden-xs">开始时间</td>
+                                <td class="hidden-xs">
+                                    <input type="text" name="planStartDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                <td class="hidden-xs">结束时间</td>
+                                <td class="hidden-xs">
+                                    <input type="text" name="planEndDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
 
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    <tr class="fast_tr">
+                            </tr>
+                            <tr>
+                                <td class="hidden-xs">责任人</td>
+                                <td class="hidden-xs">
+                                    <input type="hidden" id="fast_executeUserAccount" name="executeUserAccount" class="fast_value">
+                                    <input type="text" id="fast_executeUserName" name="executeUserName" class="form-control" readonly="readonly"
+                                           onclick="selFastEmployee()">
+                                <td class="hidden-xs">计划工时</td>
+                                <td class="hidden-xs">
+                                    <div class="x-valid">
+                                        <input type="text" data-rule-number='true' name="planHours" maxlength="5" class="form-control fast_value">
+                                    </div>
 
-                                        <td class="hidden-xs">权重占比</td>
-                                        <td class="hidden-xs">
-                                            <div class="x-valid">
-                                                <input type="hidden" class="fast_fileds" value="proportion">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
-                                            </div>
-                                        <td class="hidden-xs">
-                                            <select class="form-control fast_range">
-                                                <c:forEach var="item" items="${fastSet}">
-                                                    <option value="${item.key}">${item.value}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                    </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
 
@@ -330,35 +215,26 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 
 <script type="text/javascript">
-    var treeGridJson = {};
     var treeGridJsonData = {};
     $(function () {
         getPlanItemList();
-        $("#projectPhaseId").select2();
-
-        DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
-        DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
     });
-
-    function nextEmployee() {
-        var thisUser = "";
-        if ($("#nextApproval").val()) {
-            var userName = $("#nextApprovalName").val();
-            var userAccount = $("#nextApproval").val();
-            thisUser = userName + "_" + userAccount;
+    function checkPhase() {
+        var isChecked = $('#chk_phase_all').prop("checked");
+        if (isChecked) {
+            $(".chk_phase").hide();
         }
-        loadSelectEmployee(1, thisUser, true, function (data) {
-            if (data.account) {
-                $("#nextApproval").val(data.account);
-                $("#nextApprovalName").val(data.name);
-            }
-            else {
-                $("#nextApproval").val("");
-                $("#nextApprovalName").val("");
-            }
-        });
+        else {
+            $(".chk_phase").show();
+        }
+        isChecked = $('#chk_customer_all').prop("checked");
+        if (isChecked) {
+            $(".chk_customer").hide();
+        }
+        else {
+            $(".chk_customer").show();
+        }
     }
-
     function selEmployee() {
         var thisUser = "";
         if ($("#executeUserAccount").val()) {
@@ -392,14 +268,6 @@
         });
     }
 
-    //选部门控件
-    function selDept() {
-        loadSelectDept(1, $("#executeDepartmentId").val(), false, function (node) {
-            $("#executeDepartmentId").val(node[0].id);
-            $("#executeDepartmentName").val(node[0].text);
-        });
-    }
-
 
     function selFastEmployee() {
         loadSelectEmployee(1, "", true, function (data) {
@@ -428,47 +296,14 @@
         });
     }
 
-    //选部门控件
-    function selFastDept() {
-        loadSelectDept(1, $("#fast_executeDepartmentId").val(), false, function (node) {
-            $("#fast_executeDepartmentId").val(node[0].id);
-            $("#fast_executeDepartmentName").val(node[0].text);
-        });
-    }
-
-    function clearFastValue(obj) {
-        $(obj).closest("tr").find(".fast_value").val("");
-        var objId = $(obj).attr("id");
-        if (objId == "btn_user") {
-            $("#fast_executeUserName").val("");
-        }
-        if (objId == "btn_dept") {
-            $("#fast_executeDepartmentName").val("");
-        }
-    }
 
     function savePlanDtails() {
         if (!$("#frm_planDetails").valid()) {
             return false;
         }
         var data = formParams("frm_planDetails");
-        data["planId"] =${projectPlan.id};
-        data["workStageId"] =${projectPlan.workStageId};
-        data["projectId"] =${projectPlan.projectId};
-        data["projectWorkStageId"] =${projectPlan.workStageId};
-        //将最新的列表顺序存入表中
-        var detailsSoring = [];
-        $.each(treeGridJsonData.rows, function (i, j) {
-            detailsSoring.push({
-                key: j.id,
-                value: j.sorting,
-                explain: j.pid
-            });
-        });
-        data["detailsSoring"] = JSON.stringify(detailsSoring);
-        Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/ProjectPlan/saveProjectPlanDetails",
+            url: "${pageContext.request.contextPath}/planFinancialClaim/updateProjectPlanDetails",
             data: {
                 ds: JSON.stringify(data),
                 planId:${projectPlan.id}
@@ -481,11 +316,7 @@
                 if (result.ret) {
                     //保存完后其他动作
                     toastr.success("保存成功");
-                    result = result.data;
-                    result.rows = sortObjectArray(result.rows, ["sorting"]);
-                    treeGridJson = result;
-                    treeGridJsonData = $.extend(true, {}, result);
-                    treeGridload();
+                    getPlanItemList();
                     $('#div_plan').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);
@@ -498,29 +329,6 @@
 
     }
 
-    function addfirst() {
-        $("#frm_planDetails").clearAll();
-        $("#frm_planDetails").validate();
-        $("#pid").val(0);
-        $("#firstPid").val(0);
-        $("#projectPhaseId").val(0);
-        $("#planDetailsId").val(0);
-        $("#projectPhaseId").select2();
-        $('#div_plan').modal({backdrop: 'static', keyboard: false});
-    }
-    function addPlan(id) {
-
-        $("#frm_planDetails").clearAll();
-        $("#frm_planDetails").validate();
-        var row = $('#PlanItemListed').treegrid('find', id);
-        $("#pid").val(row["id"]);
-        $("#firstPid").val(row["firstPid"]);
-        $("#projectPhaseId").val(row["projectPhaseId"]);
-        $("#planDetailsId").val(0);
-        $("#projectPhaseId").select2();
-        $('#div_plan').modal({backdrop: 'static', keyboard: false});
-
-    }
 
     function editPlan(id) {
         var row = $('#PlanItemListed').treegrid('find', id);
@@ -530,55 +338,38 @@
         $("#planDetailsId").val(row["id"]);
         $("#planStartDate").val(formatDate(row["planStartDate"]));
         $("#planEndDate").val(formatDate(row["planEndDate"]));
-        $("#projectPhaseId").select2().val(row.projectPhaseId).trigger("change");
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
-    }
-    function deletePlan(id) {
-        Alert("删除后将不可恢复,确认删除？", 2, null, function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/ProjectPlan/deletePlan",
-                data: {
-                    planDetailsId: id,
-                    planId:${projectPlan.id}
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    Loading.progressHide();
-
-                    if (result.ret) {
-                        result.data.rows = sortObjectArray(result.data.rows, ["sorting"]);
-                        treeGridJson = result.data;
-                        treeGridJsonData = $.extend(true, {}, result.data);
-                        treeGridload();
-                    } else {
-                        Alert("删除数据失败:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            });
-        });
     }
 
 
     function getPlanItemList() {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/ProjectPlan/getProjectPlanDetailsByPlanApply",
+            url: "${pageContext.request.contextPath}/planFinancialClaim/getProjectPlanDetailsByPlanApply",
             data: {
-                planId: ${planId}
+                planId: ${planId},
+                projectId: 1
             },
             type: "get",
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();
-                result.rows = sortObjectArray(result.rows, ["sorting"]);
+                // result.rows = sortObjectArray(result.rows, ["sorting"]);
                 treeGridJson = result;
-                treeGridJsonData = $.extend(true, {}, result);
+                treeGridJsonData = result;
                 treeGridload();
+                var html = "<label><input type='checkbox' id='chk_customer_all' value='0'>全部</label>";
+                $.each(result.rows, function (i, j) {
+                    if (j.pid == 0) {
+                        if (j.executeUserName == "" || j.executeUserName == null) {
+                            html += "<label class='chk_customer'><input type='checkbox' class='chk_customer' value='" + j.id + "'>" + j.projectPhaseName + "</label>";
+                        }
+                        else {
+                            html += "<label class='chk_customer' style='color: red'><input type='checkbox' class='chk_customer' value='" + j.id + "'>" + j.projectPhaseName + "</label>";
+                        }
+                    }
+                });
+                $("#td_customers").html(html);
 
             },
             error: function (result) {
@@ -597,50 +388,60 @@
     }
 
     function saveFastset() {
-        if (!$("#frm_fastset").valid()) {
-            return false;
+        var data = formParams("frm_fastset");
+        //取客户
+        var customerAll = $('#chk_customer_all').prop("checked");
+        if (customerAll) {
+            data["customerList"] = "";
+        }
+        else {
+            var customerList = "";
+            $.each($(".chk_customer"), function (p, q) {
+                if ($(q).prop("checked")) {
+                    customerList += $(q).val() + ",";
+                }
+            });
+            if (customerList == "") {
+                Alert("请至少选择一个客户");
+                return false;
+            }
+            data["customerList"] = customerList;
         }
 
-        //将最新的列表顺序存入表中
-        var detailsSoring = [];
-        $.each(treeGridJsonData.rows, function (i, j) {
-            detailsSoring.push({
-                key: j.id,
-                value: j.sorting,
-                explain: j.pid
+        var taskAll = $('#chk_phase_all').prop("checked");
+        if (taskAll) {
+            data["phaseList"] = "";
+        }
+        else {
+            var phaseList = "";
+            $.each($(".chk_phase"), function (p, q) {
+                if ($(q).prop("checked")) {
+                    phaseList += $(q).val() + ",";
+                }
             });
-        });
-        var detailsSoring = JSON.stringify(detailsSoring);
-        var objArray = [];
-        $.each($(".fast_tr"), function (i, j) {
-            objArray.push({
-                fastFileds: $(j).find(".fast_fileds").val(),
-                fastValue: $(j).find(".fast_value").val(),
-                fastRange: $(j).find(".fast_range").val()
-            });
-        });
+            if (phaseList == "") {
+                Alert("请至少选择一个任务");
+                return false;
+            }
+            data["phaseList"] = phaseList;
+        }
 
-        Loading.progressShow();
+        //取任务
+        data["planId"] = "${planId}";
+        data["projectId"] = 1;
+        // Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/ProjectPlan/fastSetPlan",
-            data: {
-                fields: JSON.stringify(objArray),
-                planId:${planId},
-                detailsSoring: detailsSoring
-            },
+            url: "${pageContext.request.contextPath}/planFinancialClaim/fastSetPlan",
+            data: {formData: JSON.stringify(data)},
             type: "post",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
+                // Loading.progressHide();
 
                 if (result.ret) {
                     //保存完后其他动作
                     toastr.success("保存成功");
-                    result = result.data;
-                    result.rows = sortObjectArray(result.rows, ["sorting"]);
-                    treeGridJson = result;
-                    treeGridJsonData = $.extend(true, {}, result);
-                    treeGridload();
+                    getPlanItemList();
                     $('#div_fastSet').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);
@@ -657,170 +458,77 @@
     }
     function treeGridload() {
         $("#PlanItemListed").treegrid({
-                data: treeGridJson,
-                idField: 'id',
-                treeField: 'projectPhaseName',
-                datatype: 'json',
-                lines: true,
-                width: 'auto',
-                toolbar: "#tb",
-                rownumbers: true,
-                onDblClickRow: function (row) {
+            data: treeGridJson,
+            idField: 'id',
+            treeField: 'projectPhaseName',
+            datatype: 'json',
+            lines: true,
+            width: 'auto',
+            toolbar: "#tb",
+            rownumbers: true,
+            onDblClickRow: function (row) {
+                if (row.pid > 0) {
                     editPlan(row.id);
-                },
-                onLoadSuccess: function () {
-                    $(".tooltips").tooltip();
-                },
-
-                columns: [[
-                    {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
-                    {
-                        field: "planStartDate",
-                        title: "开始时间",
-                        width: "10%",
-                        align: "center",
-                        formatter: function (value, row) {
-                            return formatDate(value, false);
-                        }
-                    },
-                    {
-                        field: "planEndDate",
-                        title: "结束时间",
-                        width: "10%",
-                        align: "center",
-                        formatter: function (value, row) {
-                            return formatDate(value, false);
-                        }
-                    },
-                    {
-                        field: "planHours",
-                        title: "计划工时",
-                        width: "5%",
-                        align: "center"
-                    },
-                    {
-                        field: "executeUserName",
-                        title: "责任人",
-                        width: "10%",
-                        align: "center"
-                    },
-                    {
-                        field: "executeDepartmentName",
-                        title: "责任部门",
-                        width: "10%",
-                        align: "center"
-                    },
-                    {
-                        field: "proportion",
-                        title: "权重占比",
-                        width: "5%",
-                        align: "center"
-                    },
-                    {field: "planRemarks", title: "说明", width: "15%", align: "left"},
-                    {field: "firstPid", title: "firstPid", align: "center", hidden: true},
-                    {field: "sorting", title: "sorting", align: "center", hidden: true},
-                    {field: "id", title: "PlanItemId", align: "center", hidden: true},
-                    {field: "projectPhaseId", title: "projectPhaseId", align: "center", hidden: true},
-                    {
-                        field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
-                        if (row.bisEnable) {
-                            var s = "";
-                            if ("${planDetailsIds}") {
-                                //如果不为空则说明是子计划，如果为子计划，则只允许新增项或编辑当前项
-                                var planDetailsId = "${planDetailsIds}";
-                                var aPlanDetailsId = planDetailsId.split(",");
-                                if ($.inArray(row.id + "", aPlanDetailsId) >= 0) {
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
-                                }
-                                else {
-                                    if ($.inArray(row.firstPid + "", aPlanDetailsId) >= 0) {
-                                        s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                                        s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
-                                        if (row.bisLastLayer) {
-                                            s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank' onclick='deletePlan(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
-                                        }
-
-                                    }
-                                }
-                            }
-                            else {
-                                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
-                                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
-                                if (row.bisLastLayer) {
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='deletePlan(" + row.id + ")'><i class='fa fa-minus fa-white'></i></a>";
-                                }
-
-                            }
-
-                            return s;
-                        }
-
-                    }
-                    }
-                ]]
-            });
-    }
-
-    function move(o) {//将此方法加入上下移的按钮事件即可
-        Loading.progressShow();
-        var node = $("#PlanItemListed").treegrid("getSelected");
-        $.each(treeGridJsonData.rows, function (i, j) {
-
-            if (j.id == node.id) {
-                if (o == "up") {
-                    if (i - 1 >= 0) {
-                        if (treeGridJsonData.rows[i - 1].pid == treeGridJsonData.rows[i].pid) {
-                            treeGridJsonData.rows[i - 1].sorting = treeGridJsonData.rows[i - 1].sorting + 1;
-                            treeGridJsonData.rows[i].sorting = treeGridJsonData.rows[i].sorting - 1;
-                        }
-                    }
                 }
-                else {
-                    if (i + 1 < treeGridJsonData.rows.length) {
-                        if (treeGridJsonData.rows[i + 1]._parentId == treeGridJsonData.rows[i]._parentId) {
-                            treeGridJsonData.rows[i].sorting = treeGridJsonData.rows[i].sorting + 1;
-                            treeGridJsonData.rows[i + 1].sorting = treeGridJsonData.rows[i + 1].sorting - 1;
-                        }
-                    }
-                }
+            },
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+                $('#PlanItemListed').treegrid('collapseAll')
+            },
 
-            }
+            columns: [[
+                {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
+                {
+                    field: "planStartDate",
+                    title: "开始时间",
+                    width: "10%",
+                    align: "center",
+                    formatter: function (value, row) {
+                        return formatDate(value, false);
+                    }
+                },
+                {
+                    field: "planEndDate",
+                    title: "结束时间",
+                    width: "10%",
+                    align: "center",
+                    formatter: function (value, row) {
+                        return formatDate(value, false);
+                    }
+                },
+                {
+                    field: "planHours",
+                    title: "计划工时",
+                    width: "5%",
+                    align: "center"
+                },
+                {
+                    field: "executeUserName",
+                    title: "责任人",
+                    width: "10%",
+                    align: "center"
+                },
+                {field: "planRemarks", title: "说明", width: "25%", align: "left"},
+                {field: "id", title: "PlanItemId", align: "center", hidden: true},
+                {
+                    field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
+                    if (row.bisEnable) {
+                        var s = "";
+                        if (row.pid > 0) {
+                            s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+
+                        }
+                        return s;
+                    }
+
+                }
+                }
+            ]]
         });
-
-        treeGridJsonData.rows = sortObjectArray(treeGridJsonData.rows, ["sorting"]);
-        treeGridJson = jQuery.extend(true, {}, treeGridJsonData);
-        $('#PlanItemListed').treegrid('loadData', treeGridJson);
-        Loading.progressHide();
     }
+
 
     function commitApply() {
-        if ($("#chk_isNext").is(':checked')) {
-            $("#nextApprovalName").attr("required", true);
-            $("#detailsPlan").val(1);
-        }
-        else {
-            $("#nextApprovalName").attr("required", false);
-            $("#detailsPlan").val(0);
-        }
-
-        if (!$("#frm_plan").valid()) {
-            return false;
-        }
-        //将最新的列表顺序存入表中
-        var detailsSoring = [];
-        $.each(treeGridJsonData.rows, function (i, j) {
-            detailsSoring.push({
-                key: j.id,
-                value: j.sorting,
-                explain: j.pid
-            });
-        });
-        var data = formParams("frm_plan");
-        data["detailsSoring"] = JSON.stringify(detailsSoring);
-        data["bisChildren"] = "${bisChildren}";
-        data["projectId"] =${projectPlan.projectId};
-        Loading.progressShow();
         var url = "${pageContext.request.contextPath}/ProjectPlan/saveProjectPlan";
         if ("${processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/ProjectPlan/submitPlanEdit";
@@ -831,8 +539,6 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                Loading.progressHide();
-
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();

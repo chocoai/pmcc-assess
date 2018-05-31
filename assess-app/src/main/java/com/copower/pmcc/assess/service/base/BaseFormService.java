@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.base;
 
-import com.copower.pmcc.assess.dal.dao.BaseFormDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import org.springframework.beans.factory.annotation.Autowired;

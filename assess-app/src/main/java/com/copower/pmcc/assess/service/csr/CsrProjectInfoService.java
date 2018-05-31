@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
-import com.copower.pmcc.assess.dal.dao.CsrProjectInfoDao;
+import com.copower.pmcc.assess.dal.dao.Csr.CsrProjectInfoDao;
 import org.springframework.stereotype.Service;
 
 /**

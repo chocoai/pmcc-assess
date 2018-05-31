@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.*;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;

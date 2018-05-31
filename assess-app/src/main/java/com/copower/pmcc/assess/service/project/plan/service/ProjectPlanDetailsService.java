@@ -61,7 +61,9 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, true);
     }
-
+    public List<ProjectPlanDetails> getPlanDetailsByPlanId(Integer planId) {
+        return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+    }
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByPlanApply(Integer planId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, false);

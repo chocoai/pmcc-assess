@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.office;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.BaseDataRegionDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseDataRegionDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataRegion;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;

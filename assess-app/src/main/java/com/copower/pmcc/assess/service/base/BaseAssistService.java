@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.dao.BaseAssistDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAssistDao;
 import com.copower.pmcc.assess.dal.entity.BaseAssist;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotationEntity;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentKeepDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentKeepDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
