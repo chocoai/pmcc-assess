@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.plan;
 
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
@@ -8,6 +8,8 @@ import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -75,6 +77,7 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
+        viewUrl="projectPlanFinancialClaimAssist";//临时处理债权评估用
         ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.applyView(projectPlan);
         modelAndView.addObject("panelTitle", projectWorkStage.getWorkStageName());

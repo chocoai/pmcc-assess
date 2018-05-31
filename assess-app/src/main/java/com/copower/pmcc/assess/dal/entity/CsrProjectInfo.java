@@ -15,6 +15,8 @@ public class CsrProjectInfo {
 
     private Date valuationDate;
 
+    private String distributionUser;
+
     private String remark;
 
     private Integer startRowNumber;
@@ -75,6 +77,14 @@ public class CsrProjectInfo {
 
     public void setValuationDate(Date valuationDate) {
         this.valuationDate = valuationDate;
+    }
+
+    public String getDistributionUser() {
+        return distributionUser;
+    }
+
+    public void setDistributionUser(String distributionUser) {
+        this.distributionUser = distributionUser == null ? null : distributionUser.trim();
     }
 
     public String getRemark() {

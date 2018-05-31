@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.plan;
 
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
