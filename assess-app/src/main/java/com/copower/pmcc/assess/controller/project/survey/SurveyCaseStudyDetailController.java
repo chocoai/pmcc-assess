@@ -12,7 +12,7 @@ import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.SurveyCaseStudyDetailService;
 import com.copower.pmcc.assess.service.project.SurveyCommonService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

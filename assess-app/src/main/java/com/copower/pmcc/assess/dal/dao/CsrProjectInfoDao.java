@@ -1,14 +1,11 @@
 package com.copower.pmcc.assess.dal.dao;
 
 
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dal.mapper.BaseFormMapper;
-import com.copower.pmcc.assess.dal.mapper.BaseFormModuleFieldMapper;
-import com.copower.pmcc.assess.dal.mapper.BaseFormModuleMapper;
+import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
+import com.copower.pmcc.assess.dal.entity.CsrProjectInfoExample;
 import com.copower.pmcc.assess.dal.mapper.CsrProjectInfoMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

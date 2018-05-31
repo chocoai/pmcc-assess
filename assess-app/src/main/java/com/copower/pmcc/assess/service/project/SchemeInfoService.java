@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.entity.SchemeInfoDetail;
 import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

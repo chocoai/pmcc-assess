@@ -512,6 +512,76 @@ public class CsrProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andDistributionUserIsNull() {
+            addCriterion("distribution_user is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserIsNotNull() {
+            addCriterion("distribution_user is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserEqualTo(String value) {
+            addCriterion("distribution_user =", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserNotEqualTo(String value) {
+            addCriterion("distribution_user <>", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserGreaterThan(String value) {
+            addCriterion("distribution_user >", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserGreaterThanOrEqualTo(String value) {
+            addCriterion("distribution_user >=", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserLessThan(String value) {
+            addCriterion("distribution_user <", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserLessThanOrEqualTo(String value) {
+            addCriterion("distribution_user <=", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserLike(String value) {
+            addCriterion("distribution_user like", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserNotLike(String value) {
+            addCriterion("distribution_user not like", value, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserIn(List<String> values) {
+            addCriterion("distribution_user in", values, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserNotIn(List<String> values) {
+            addCriterion("distribution_user not in", values, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserBetween(String value1, String value2) {
+            addCriterion("distribution_user between", value1, value2, "distributionUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistributionUserNotBetween(String value1, String value2) {
+            addCriterion("distribution_user not between", value1, value2, "distributionUser");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarkIsNull() {
             addCriterion("remark is null");
             return (Criteria) this;

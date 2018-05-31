@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.dao.*;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;

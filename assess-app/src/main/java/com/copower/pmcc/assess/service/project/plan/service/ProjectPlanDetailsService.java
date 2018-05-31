@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project;
+package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
