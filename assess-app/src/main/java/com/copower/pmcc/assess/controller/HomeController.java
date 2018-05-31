@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller;
 
 
 
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;

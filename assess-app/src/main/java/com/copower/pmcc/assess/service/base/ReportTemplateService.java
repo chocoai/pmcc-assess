@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.base;
 
-import com.copower.pmcc.assess.dal.dao.BaseAttachmentDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ReportTemplateBookmarkDao;
 import com.copower.pmcc.assess.dal.dao.ReportTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;

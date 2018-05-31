@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.dao.BaseProcessDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseProcessDao;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dal.entity.BaseProcessForm;

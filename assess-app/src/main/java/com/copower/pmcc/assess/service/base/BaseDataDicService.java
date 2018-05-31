@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.BaseDataDicDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseDataDicDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.TreeViewVo;
