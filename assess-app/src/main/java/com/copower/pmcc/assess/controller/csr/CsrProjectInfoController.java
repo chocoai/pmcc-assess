@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.controller.csr;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -30,39 +33,46 @@ public class CsrProjectInfoController {
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view() {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectIndex", "0", 0, "0", "");
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
+
+        CsrProjectInfoVo csrProjectInfo = new CsrProjectInfoVo();
+        csrProjectInfo.setId(0);
+        modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid) {
-        try {
-
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改 页面")
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
-
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectIndex", processInsId, boxId, taskId, agentUserAccount);
+        CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
+        modelAndView.addObject("csrProjectInfo", csrProjectInfo);
+        modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
         return modelAndView;
     }
 
     @RequestMapping(value = "/projectApproval", name = "项目审批页面")
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
-
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectApproval", processInsId, boxId, taskId, agentUserAccount);
+        CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
+        modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         return modelAndView;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
+    public HttpResult projectApplySubmit(String formData) {
+        try {
+            CsrProjectInfo csrProjectInfo = JSON.parseObject(formData, CsrProjectInfo.class);
+            csrProjectInfoService.csrProjectApply(csrProjectInfo);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 
     /**
      * 审批提交
@@ -73,7 +83,7 @@ public class CsrProjectInfoController {
     @RequestMapping(value = "/projectApprovalSubmit", method = RequestMethod.POST)
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
-
+            csrProjectInfoService.crsProjectApproval(approvalModelDto);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -87,9 +97,10 @@ public class CsrProjectInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "/projectEditSubmit", method = RequestMethod.POST)
-    public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) {
+    public HttpResult projectEditSubmit(String formData, ApprovalModelDto approvalModelDto) {
         try {
-
+            CsrProjectInfo csrProjectInfo = JSON.parseObject(formData, CsrProjectInfo.class);
+            csrProjectInfoService.crsProjectEdit(csrProjectInfo, approvalModelDto);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

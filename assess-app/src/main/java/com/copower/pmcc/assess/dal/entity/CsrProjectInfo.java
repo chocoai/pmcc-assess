@@ -5,11 +5,15 @@ import java.util.Date;
 public class CsrProjectInfo {
     private Integer id;
 
+    private String processInsId;
+
     private String name;
 
     private Integer customerType;
 
-    private String entrustmentUnit;
+    private Integer entrustmentUnitId;
+
+    private String entrustmentUnitName;
 
     private Integer entrustPurpose;
 
@@ -39,6 +43,14 @@ public class CsrProjectInfo {
         this.id = id;
     }
 
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -55,12 +67,20 @@ public class CsrProjectInfo {
         this.customerType = customerType;
     }
 
-    public String getEntrustmentUnit() {
-        return entrustmentUnit;
+    public Integer getEntrustmentUnitId() {
+        return entrustmentUnitId;
     }
 
-    public void setEntrustmentUnit(String entrustmentUnit) {
-        this.entrustmentUnit = entrustmentUnit == null ? null : entrustmentUnit.trim();
+    public void setEntrustmentUnitId(Integer entrustmentUnitId) {
+        this.entrustmentUnitId = entrustmentUnitId;
+    }
+
+    public String getEntrustmentUnitName() {
+        return entrustmentUnitName;
+    }
+
+    public void setEntrustmentUnitName(String entrustmentUnitName) {
+        this.entrustmentUnitName = entrustmentUnitName == null ? null : entrustmentUnitName.trim();
     }
 
     public Integer getEntrustPurpose() {

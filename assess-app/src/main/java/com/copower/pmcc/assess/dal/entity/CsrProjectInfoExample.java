@@ -192,6 +192,76 @@ public class CsrProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -322,73 +392,133 @@ public class CsrProjectInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitIsNull() {
-            addCriterion("entrustment_unit is null");
+        public Criteria andEntrustmentUnitIdIsNull() {
+            addCriterion("entrustment_unit_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitIsNotNull() {
-            addCriterion("entrustment_unit is not null");
+        public Criteria andEntrustmentUnitIdIsNotNull() {
+            addCriterion("entrustment_unit_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitEqualTo(String value) {
-            addCriterion("entrustment_unit =", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdEqualTo(Integer value) {
+            addCriterion("entrustment_unit_id =", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitNotEqualTo(String value) {
-            addCriterion("entrustment_unit <>", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdNotEqualTo(Integer value) {
+            addCriterion("entrustment_unit_id <>", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitGreaterThan(String value) {
-            addCriterion("entrustment_unit >", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdGreaterThan(Integer value) {
+            addCriterion("entrustment_unit_id >", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitGreaterThanOrEqualTo(String value) {
-            addCriterion("entrustment_unit >=", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("entrustment_unit_id >=", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitLessThan(String value) {
-            addCriterion("entrustment_unit <", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdLessThan(Integer value) {
+            addCriterion("entrustment_unit_id <", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitLessThanOrEqualTo(String value) {
-            addCriterion("entrustment_unit <=", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("entrustment_unit_id <=", value, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitLike(String value) {
-            addCriterion("entrustment_unit like", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdIn(List<Integer> values) {
+            addCriterion("entrustment_unit_id in", values, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitNotLike(String value) {
-            addCriterion("entrustment_unit not like", value, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdNotIn(List<Integer> values) {
+            addCriterion("entrustment_unit_id not in", values, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitIn(List<String> values) {
-            addCriterion("entrustment_unit in", values, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdBetween(Integer value1, Integer value2) {
+            addCriterion("entrustment_unit_id between", value1, value2, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitNotIn(List<String> values) {
-            addCriterion("entrustment_unit not in", values, "entrustmentUnit");
+        public Criteria andEntrustmentUnitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("entrustment_unit_id not between", value1, value2, "entrustmentUnitId");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitBetween(String value1, String value2) {
-            addCriterion("entrustment_unit between", value1, value2, "entrustmentUnit");
+        public Criteria andEntrustmentUnitNameIsNull() {
+            addCriterion("entrustment_unit_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andEntrustmentUnitNotBetween(String value1, String value2) {
-            addCriterion("entrustment_unit not between", value1, value2, "entrustmentUnit");
+        public Criteria andEntrustmentUnitNameIsNotNull() {
+            addCriterion("entrustment_unit_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameEqualTo(String value) {
+            addCriterion("entrustment_unit_name =", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameNotEqualTo(String value) {
+            addCriterion("entrustment_unit_name <>", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameGreaterThan(String value) {
+            addCriterion("entrustment_unit_name >", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameGreaterThanOrEqualTo(String value) {
+            addCriterion("entrustment_unit_name >=", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameLessThan(String value) {
+            addCriterion("entrustment_unit_name <", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameLessThanOrEqualTo(String value) {
+            addCriterion("entrustment_unit_name <=", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameLike(String value) {
+            addCriterion("entrustment_unit_name like", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameNotLike(String value) {
+            addCriterion("entrustment_unit_name not like", value, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameIn(List<String> values) {
+            addCriterion("entrustment_unit_name in", values, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameNotIn(List<String> values) {
+            addCriterion("entrustment_unit_name not in", values, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameBetween(String value1, String value2) {
+            addCriterion("entrustment_unit_name between", value1, value2, "entrustmentUnitName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustmentUnitNameNotBetween(String value1, String value2) {
+            addCriterion("entrustment_unit_name not between", value1, value2, "entrustmentUnitName");
             return (Criteria) this;
         }
 

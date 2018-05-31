@@ -10,4 +10,5 @@ package com.copower.pmcc.assess.constant;
 public class AssessTableNameConstant {
     public static final String SURVEY_LOCALE_EXPLORE_DETAIL = "tb_survey_locale_explore_detail";  //
     public static final String SURVEY_CASE_STUDY_DETAIL = "tb_survey_case_study_detail";  //
+    public static final String CSR_PROJECT_INFO = "tb_csr_project_info";  //
 }

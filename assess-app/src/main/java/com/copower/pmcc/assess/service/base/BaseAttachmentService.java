@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.api.dto.model.AttachmentVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -64,6 +65,8 @@ public class BaseAttachmentService {
     private ServletContext servletContext;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private CommonService commonService;
 
     private final static String KEEP_UPLOAD_PATH = "Keep";//归档文件存放目录
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
@@ -362,6 +365,27 @@ public class BaseAttachmentService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(list == null ? new ArrayList<BaseAttachmentKeep>() : list);
         return bootstrapTableVo;
+    }
+
+    /**
+     * 附件关联到业务表
+     * @param tableName
+     * @param fieldName
+     * @param relationTableId
+     */
+    public void relationToTable(String tableName,String fieldName,Integer relationTableId){
+        BaseAttachment queryParma=new BaseAttachment();
+        queryParma.setTableName(tableName);
+        if(StringUtils.isNotBlank(fieldName))
+            queryParma.setFieldsName(fieldName);
+        queryParma.setCreater(commonService.thisUserAccount());
+        List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParma);
+        if(CollectionUtils.isNotEmpty(attachmentList)){
+            for (BaseAttachment baseAttachment : attachmentList) {
+                baseAttachment.setTableId(relationTableId);
+                baseAttachmentDao.updateAttachment(baseAttachment);
+            }
+        }
     }
 
     /**

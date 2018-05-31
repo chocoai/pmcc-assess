@@ -59,4 +59,13 @@ public class CsrInvalidRuleDao {
     public boolean updateCsrInvalidRule(CsrInvalidRule csrInvalidRule) {
         return csrInvalidRuleMapper.updateByPrimaryKeySelective(csrInvalidRule) > 0;
     }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    public boolean deleteCsrInvalidRule(Integer id){
+        return csrInvalidRuleMapper.deleteByPrimaryKey(id) > 0;
+    }
 }
