@@ -383,7 +383,7 @@ public class ProjectInfoService {
         //项目经理 与下级
         if (projectMember != null) {//erpRpcUserService
             projectInfoVo.setUserAccountManagerName(erpRpcUserService.getSysUser(projectMember.getUserAccountManager()).getUserName());
-            projectInfoVo.setUserAccountMemberName(erpRpcUserService.getSysUser(projectMember.getUserAccountMember()).getUserName());
+            //projectInfoVo.setUserAccountMemberName(erpRpcUserService.getSysUser(projectMember.getUserAccountMember()).getUserName());
         }
         //价值类型
         projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
