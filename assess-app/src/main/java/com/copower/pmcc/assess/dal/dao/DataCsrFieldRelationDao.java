@@ -44,13 +44,13 @@ public class DataCsrFieldRelationDao {
         return false;
     }
 
-    public List<DataCsrFieldRelation> dataCsrFieldRelationList(String anotherName){
+    public List<DataCsrFieldRelation> dataCsrFieldRelationList(String displayName){
         DataCsrFieldRelationExample example = new DataCsrFieldRelationExample();
-        if (StringUtils.isEmpty(anotherName)){
+        if (StringUtils.isEmpty(displayName)){
             example.createCriteria().andIdIsNotNull();
             return mapper.selectByExample(example);
         }else {
-            example.createCriteria().andIdIsNotNull().andAnotherNameEqualTo(anotherName);
+            example.createCriteria().andIdIsNotNull().andDisplayNameEqualTo(displayName);
             return mapper.selectByExample(example);
         }
     }
