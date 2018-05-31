@@ -44,9 +44,9 @@ public class DataCsrFieldRelationController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method ={ RequestMethod.GET})
-    public BootstrapTableVo list(String anotherName) {
+    public BootstrapTableVo list(String displayName) {
         BootstrapTableVo vo = null;
-        vo = service.listVos(anotherName);//关键字查询
+        vo = service.listVos(displayName);//关键字查询
         return vo;
     }
 

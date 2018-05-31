@@ -195,7 +195,7 @@
         $("#tb_List").bootstrapTable('destroy');
         var queryName = $("#queryName").val();
         TableInit("tb_List", "${pageContext.request.contextPath}/csrFieldRelation/list", cols, {
-            anotherName: queryName
+            displayName: queryName
         }, {
             showColumns: false,
             showRefresh: false,
