@@ -44,7 +44,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_scheme_info_detail" domainObjectName="SchemeInfoDetail">
+        <table tableName="tb_csr_field_relation" domainObjectName="DataCsrFieldRelation">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
