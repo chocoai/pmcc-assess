@@ -23,4 +23,10 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByExample(example);
     }
 
+    public List<CsrBorrower> getCsrBorrowerList(Integer projectId){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
+        return csrBorrowerMapper.selectByExample(example);
+    }
+
 }
