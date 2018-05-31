@@ -272,7 +272,13 @@
             success: function (result) {
                 Loading.progressHide();
                 $("#frm").clearAll();
-                $("#frm").initForm(result);
+                // $("#frm").initForm(result);
+                $("#id").val(result.id);
+                $("#displayName").val(result.displayName);
+                $("#anotherName").val(result.anotherName);
+                $("#remark").val(result.remark);
+                $("#tableName").append("<option selected='selected'"+ 'value='+result.tableName +">"+result.tableName+"</option>");
+                $("#fieldName").append("<option selected='selected'"+ 'value='+result.fieldName +">"+result.fieldName+"</option>");
                 $('#divBox').modal();
             },
             error: function (result) {

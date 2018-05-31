@@ -1,8 +1,8 @@
-package com.copower.pmcc.assess.controller.data;
+package com.copower.pmcc.assess.controller.csr;
 
 import com.copower.pmcc.assess.dal.entity.DataCsrFieldRelation;
 import com.copower.pmcc.assess.dto.output.data.DataCsrFieldRelationVo;
-import com.copower.pmcc.assess.service.data.DataCsrFieldRelationService;
+import com.copower.pmcc.assess.service.csr.DataCsrFieldRelationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

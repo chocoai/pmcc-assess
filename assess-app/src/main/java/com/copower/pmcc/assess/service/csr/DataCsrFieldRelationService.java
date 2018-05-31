@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.data;
+package com.copower.pmcc.assess.service.csr;
 
 import com.copower.pmcc.assess.dal.dao.DataCsrFieldRelationDao;
 import com.copower.pmcc.assess.dal.entity.DataCsrFieldRelation;
