@@ -3,9 +3,11 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrProjectInfoMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="customer_type" property="customerType" jdbcType="INTEGER" />
-    <result column="entrustment_unit" property="entrustmentUnit" jdbcType="VARCHAR" />
+    <result column="entrustment_unit_id" property="entrustmentUnitId" jdbcType="INTEGER" />
+    <result column="entrustment_unit_name" property="entrustmentUnitName" jdbcType="VARCHAR" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
     <result column="valuation_date" property="valuationDate" jdbcType="DATE" />
     <result column="distribution_user" property="distributionUser" jdbcType="VARCHAR" />
@@ -76,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, customer_type, entrustment_unit, entrust_purpose, valuation_date, distribution_user, 
-    remark, start_row_number, status, project_status, creator, gmt_created, gmt_modified
+    id, process_ins_id, name, customer_type, entrustment_unit_id, entrustment_unit_name, 
+    entrust_purpose, valuation_date, distribution_user, remark, start_row_number, status, 
+    project_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfoExample" >
     select
@@ -113,12 +116,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_project_info (name, customer_type, entrustment_unit, 
+    insert into tb_csr_project_info (process_ins_id, name, customer_type, 
+      entrustment_unit_id, entrustment_unit_name, 
       entrust_purpose, valuation_date, distribution_user, 
       remark, start_row_number, status, 
       project_status, creator, gmt_created, 
       gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{customerType,jdbcType=INTEGER}, #{entrustmentUnit,jdbcType=VARCHAR}, 
+    values (#{processInsId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{customerType,jdbcType=INTEGER}, 
+      #{entrustmentUnitId,jdbcType=INTEGER}, #{entrustmentUnitName,jdbcType=VARCHAR}, 
       #{entrustPurpose,jdbcType=INTEGER}, #{valuationDate,jdbcType=DATE}, #{distributionUser,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{startRowNumber,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
       #{projectStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -130,14 +135,20 @@
     </selectKey>
     insert into tb_csr_project_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
       <if test="name != null" >
         name,
       </if>
       <if test="customerType != null" >
         customer_type,
       </if>
-      <if test="entrustmentUnit != null" >
-        entrustment_unit,
+      <if test="entrustmentUnitId != null" >
+        entrustment_unit_id,
+      </if>
+      <if test="entrustmentUnitName != null" >
+        entrustment_unit_name,
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose,
@@ -171,14 +182,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="customerType != null" >
         #{customerType,jdbcType=INTEGER},
       </if>
-      <if test="entrustmentUnit != null" >
-        #{entrustmentUnit,jdbcType=VARCHAR},
+      <if test="entrustmentUnitId != null" >
+        #{entrustmentUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="entrustmentUnitName != null" >
+        #{entrustmentUnitName,jdbcType=VARCHAR},
       </if>
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
@@ -224,14 +241,20 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.customerType != null" >
         customer_type = #{record.customerType,jdbcType=INTEGER},
       </if>
-      <if test="record.entrustmentUnit != null" >
-        entrustment_unit = #{record.entrustmentUnit,jdbcType=VARCHAR},
+      <if test="record.entrustmentUnitId != null" >
+        entrustment_unit_id = #{record.entrustmentUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.entrustmentUnitName != null" >
+        entrustment_unit_name = #{record.entrustmentUnitName,jdbcType=VARCHAR},
       </if>
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
@@ -271,9 +294,11 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_project_info
     set id = #{record.id,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       customer_type = #{record.customerType,jdbcType=INTEGER},
-      entrustment_unit = #{record.entrustmentUnit,jdbcType=VARCHAR},
+      entrustment_unit_id = #{record.entrustmentUnitId,jdbcType=INTEGER},
+      entrustment_unit_name = #{record.entrustmentUnitName,jdbcType=VARCHAR},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       valuation_date = #{record.valuationDate,jdbcType=DATE},
       distribution_user = #{record.distributionUser,jdbcType=VARCHAR},
@@ -291,14 +316,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     update tb_csr_project_info
     <set >
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="customerType != null" >
         customer_type = #{customerType,jdbcType=INTEGER},
       </if>
-      <if test="entrustmentUnit != null" >
-        entrustment_unit = #{entrustmentUnit,jdbcType=VARCHAR},
+      <if test="entrustmentUnitId != null" >
+        entrustment_unit_id = #{entrustmentUnitId,jdbcType=INTEGER},
+      </if>
+      <if test="entrustmentUnitName != null" >
+        entrustment_unit_name = #{entrustmentUnitName,jdbcType=VARCHAR},
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
@@ -335,9 +366,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     update tb_csr_project_info
-    set name = #{name,jdbcType=VARCHAR},
+    set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       customer_type = #{customerType,jdbcType=INTEGER},
-      entrustment_unit = #{entrustmentUnit,jdbcType=VARCHAR},
+      entrustment_unit_id = #{entrustmentUnitId,jdbcType=INTEGER},
+      entrustment_unit_name = #{entrustmentUnitName,jdbcType=VARCHAR},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       valuation_date = #{valuationDate,jdbcType=DATE},
       distribution_user = #{distributionUser,jdbcType=VARCHAR},

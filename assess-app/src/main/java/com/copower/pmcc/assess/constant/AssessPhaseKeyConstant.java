@@ -8,6 +8,6 @@ package com.copower.pmcc.assess.constant;
  * @time: 13:45
  */
 public class AssessPhaseKeyConstant {
-    public static final String LOCALE_EXPLORE = "locale.explore";  //案例类型
-    public static final String CASE_STUDY = "case.study";  //案例来源
+    public static final String LOCALE_EXPLORE = "locale.explore";  //现场查勘
+    public static final String CASE_STUDY = "case.study";  //案例
 }

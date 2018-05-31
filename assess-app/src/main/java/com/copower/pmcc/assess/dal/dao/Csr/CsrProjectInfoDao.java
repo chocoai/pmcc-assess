@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.dal.entity.CsrProjectInfoExample;
 import com.copower.pmcc.assess.dal.mapper.CsrProjectInfoMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +43,16 @@ public class CsrProjectInfoDao {
         CsrProjectInfoExample example = new CsrProjectInfoExample();
         MybatisUtils.convertObj2Example(csrProjectInfo, example);
         return csrProjectInfoMapper.selectByExample(example);
+    }
+
+    public CsrProjectInfo getCsrProjectInfo(String processInsId){
+        if(StringUtils.isBlank(processInsId)) return null;
+        CsrProjectInfoExample example = new CsrProjectInfoExample();
+        example.createCriteria().andProcessInsIdEqualTo(processInsId);
+        List<CsrProjectInfo> csrProjectInfos = csrProjectInfoMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(csrProjectInfos))
+            return csrProjectInfos.get(0);
+        return null;
     }
 
     /**

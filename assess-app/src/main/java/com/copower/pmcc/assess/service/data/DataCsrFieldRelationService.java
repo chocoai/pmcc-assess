@@ -70,8 +70,8 @@ public class DataCsrFieldRelationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DataCsrFieldRelationVo> dataCsrFieldRelationList(String anotherName){
-        List<DataCsrFieldRelation> fieldRelations = csrFieldRelationDao.dataCsrFieldRelationList(anotherName);
+    public List<DataCsrFieldRelationVo> dataCsrFieldRelationList(String displayName){
+        List<DataCsrFieldRelation> fieldRelations = csrFieldRelationDao.dataCsrFieldRelationList(displayName);
         List<DataCsrFieldRelationVo> vos = new ArrayList<>();
         for (DataCsrFieldRelation csrFieldRelation:fieldRelations){
             vos.add(change(csrFieldRelation));
@@ -79,11 +79,11 @@ public class DataCsrFieldRelationService {
         return vos;
     }
 
-    public BootstrapTableVo listVos(String anotherName){
+    public BootstrapTableVo listVos(String displayName){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataCsrFieldRelationVo> vos = dataCsrFieldRelationList(anotherName);
+        List<DataCsrFieldRelationVo> vos = dataCsrFieldRelationList(displayName);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataCsrFieldRelationVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
