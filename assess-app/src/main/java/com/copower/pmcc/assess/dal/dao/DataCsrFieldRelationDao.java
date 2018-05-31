@@ -50,7 +50,7 @@ public class DataCsrFieldRelationDao {
             example.createCriteria().andIdIsNotNull();
             return mapper.selectByExample(example);
         }else {
-            example.createCriteria().andIdIsNotNull().andDisplayNameEqualTo(displayName);
+            example.createCriteria().andIdIsNotNull().andDisplayNameLike("%"+displayName+"%");
             return mapper.selectByExample(example);
         }
     }
