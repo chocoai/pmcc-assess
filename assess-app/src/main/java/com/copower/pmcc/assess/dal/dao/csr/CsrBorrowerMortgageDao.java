@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgageExample;
 import com.copower.pmcc.assess.dal.mapper.CsrBorrowerMortgageMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,6 +40,19 @@ public class CsrBorrowerMortgageDao {
     public List<CsrBorrowerMortgage> getCsrBorrowerMortgageList(CsrBorrowerMortgage csrBorrowerMortgage) {
         CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
         MybatisUtils.convertObj2Example(csrBorrowerMortgage, example);
+        return csrBorrowerMortgageMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取数据列表
+     * @param borrowerIds
+     * @return
+     */
+    public List<CsrBorrowerMortgage> getCsrBorrowerMortgageList(List<Integer> borrowerIds) {
+        if(CollectionUtils.isEmpty(borrowerIds)) return null;
+        CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
+        CsrBorrowerMortgageExample.Criteria criteria = example.createCriteria();
+        criteria.andBorrowerIdIn(borrowerIds);
         return csrBorrowerMortgageMapper.selectByExample(example);
     }
 

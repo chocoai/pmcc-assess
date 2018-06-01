@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
@@ -45,6 +46,8 @@ public class SurveyCommonService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private FormConfigureService formConfigureService;
+    @Autowired
+    private CommonService commonService;
 
 
     /**
@@ -82,7 +85,7 @@ public class SurveyCommonService {
      * @param surveyLocaltion
      */
     public void downLoadLocationImage(String tableName,Integer tableId,String surveyLocaltion){
-        String localDir = baseAttachmentService.createBasePath(baseAttachmentService.getTempUploadPath(), DateUtils.formatNowToYMD(), DateUtils.formatNowToYMDHMS());
+        String localDir = baseAttachmentService.createTempBasePath(commonService.thisUserAccount());
         String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
         String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
                 BaseConstant.MPA_API_URL, surveyLocaltion, surveyLocaltion, BaseConstant.MAP_WEB_SERVICE_KEY);

@@ -18,6 +18,7 @@
     <result column="principal_balance" property="principalBalance" jdbcType="VARCHAR" />
     <result column="mortgage_status" property="mortgageStatus" jdbcType="VARCHAR" />
     <result column="bis_seal_up" property="bisSealUp" jdbcType="VARCHAR" />
+    <result column="excel_row_index" property="excelRowIndex" jdbcType="INTEGER" />
     <result column="bis_import" property="bisImport" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -84,7 +85,8 @@
   <sql id="Base_Column_List" >
     id, borrower_id, contract_number, sign_data, mortgagor, mortgage_company, loan_amount, 
     mortgage_address, land_nature, land_area, house_nature, area, evaluation_value, principal_balance, 
-    mortgage_status, bis_seal_up, bis_import, creator, gmt_created, gmt_modified
+    mortgage_status, bis_seal_up, excel_row_index, bis_import, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgageExample" >
     select
@@ -125,15 +127,15 @@
       mortgage_address, land_nature, land_area, 
       house_nature, area, evaluation_value, 
       principal_balance, mortgage_status, bis_seal_up, 
-      bis_import, creator, gmt_created, 
-      gmt_modified)
+      excel_row_index, bis_import, creator, 
+      gmt_created, gmt_modified)
     values (#{borrowerId,jdbcType=INTEGER}, #{contractNumber,jdbcType=VARCHAR}, #{signData,jdbcType=VARCHAR}, 
       #{mortgagor,jdbcType=VARCHAR}, #{mortgageCompany,jdbcType=VARCHAR}, #{loanAmount,jdbcType=VARCHAR}, 
       #{mortgageAddress,jdbcType=VARCHAR}, #{landNature,jdbcType=VARCHAR}, #{landArea,jdbcType=VARCHAR}, 
       #{houseNature,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{evaluationValue,jdbcType=VARCHAR}, 
       #{principalBalance,jdbcType=VARCHAR}, #{mortgageStatus,jdbcType=VARCHAR}, #{bisSealUp,jdbcType=VARCHAR}, 
-      #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{excelRowIndex,jdbcType=INTEGER}, #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -185,6 +187,9 @@
       </if>
       <if test="bisSealUp != null" >
         bis_seal_up,
+      </if>
+      <if test="excelRowIndex != null" >
+        excel_row_index,
       </if>
       <if test="bisImport != null" >
         bis_import,
@@ -244,6 +249,9 @@
       </if>
       <if test="bisSealUp != null" >
         #{bisSealUp,jdbcType=VARCHAR},
+      </if>
+      <if test="excelRowIndex != null" >
+        #{excelRowIndex,jdbcType=INTEGER},
       </if>
       <if test="bisImport != null" >
         #{bisImport,jdbcType=BIT},
@@ -316,6 +324,9 @@
       <if test="record.bisSealUp != null" >
         bis_seal_up = #{record.bisSealUp,jdbcType=VARCHAR},
       </if>
+      <if test="record.excelRowIndex != null" >
+        excel_row_index = #{record.excelRowIndex,jdbcType=INTEGER},
+      </if>
       <if test="record.bisImport != null" >
         bis_import = #{record.bisImport,jdbcType=BIT},
       </if>
@@ -351,6 +362,7 @@
       principal_balance = #{record.principalBalance,jdbcType=VARCHAR},
       mortgage_status = #{record.mortgageStatus,jdbcType=VARCHAR},
       bis_seal_up = #{record.bisSealUp,jdbcType=VARCHAR},
+      excel_row_index = #{record.excelRowIndex,jdbcType=INTEGER},
       bis_import = #{record.bisImport,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -407,6 +419,9 @@
       <if test="bisSealUp != null" >
         bis_seal_up = #{bisSealUp,jdbcType=VARCHAR},
       </if>
+      <if test="excelRowIndex != null" >
+        excel_row_index = #{excelRowIndex,jdbcType=INTEGER},
+      </if>
       <if test="bisImport != null" >
         bis_import = #{bisImport,jdbcType=BIT},
       </if>
@@ -439,6 +454,7 @@
       principal_balance = #{principalBalance,jdbcType=VARCHAR},
       mortgage_status = #{mortgageStatus,jdbcType=VARCHAR},
       bis_seal_up = #{bisSealUp,jdbcType=VARCHAR},
+      excel_row_index = #{excelRowIndex,jdbcType=INTEGER},
       bis_import = #{bisImport,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

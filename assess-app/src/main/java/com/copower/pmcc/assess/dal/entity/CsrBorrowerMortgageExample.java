@@ -1205,6 +1205,66 @@ public class CsrBorrowerMortgageExample {
             return (Criteria) this;
         }
 
+        public Criteria andExcelRowIndexIsNull() {
+            addCriterion("excel_row_index is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexIsNotNull() {
+            addCriterion("excel_row_index is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexEqualTo(Integer value) {
+            addCriterion("excel_row_index =", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotEqualTo(Integer value) {
+            addCriterion("excel_row_index <>", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexGreaterThan(Integer value) {
+            addCriterion("excel_row_index >", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexGreaterThanOrEqualTo(Integer value) {
+            addCriterion("excel_row_index >=", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexLessThan(Integer value) {
+            addCriterion("excel_row_index <", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexLessThanOrEqualTo(Integer value) {
+            addCriterion("excel_row_index <=", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexIn(List<Integer> values) {
+            addCriterion("excel_row_index in", values, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotIn(List<Integer> values) {
+            addCriterion("excel_row_index not in", values, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexBetween(Integer value1, Integer value2) {
+            addCriterion("excel_row_index between", value1, value2, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotBetween(Integer value1, Integer value2) {
+            addCriterion("excel_row_index not between", value1, value2, "excelRowIndex");
+            return (Criteria) this;
+        }
+
         public Criteria andBisImportIsNull() {
             addCriterion("bis_import is null");
             return (Criteria) this;
