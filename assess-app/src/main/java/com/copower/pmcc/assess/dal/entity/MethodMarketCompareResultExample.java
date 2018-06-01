@@ -875,6 +875,126 @@ public class MethodMarketCompareResultExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andCompareIndexIdIsNull() {
+            addCriterion("compare_index_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdIsNotNull() {
+            addCriterion("compare_index_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdEqualTo(Integer value) {
+            addCriterion("compare_index_id =", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotEqualTo(Integer value) {
+            addCriterion("compare_index_id <>", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdGreaterThan(Integer value) {
+            addCriterion("compare_index_id >", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("compare_index_id >=", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdLessThan(Integer value) {
+            addCriterion("compare_index_id <", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdLessThanOrEqualTo(Integer value) {
+            addCriterion("compare_index_id <=", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdIn(List<Integer> values) {
+            addCriterion("compare_index_id in", values, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotIn(List<Integer> values) {
+            addCriterion("compare_index_id not in", values, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdBetween(Integer value1, Integer value2) {
+            addCriterion("compare_index_id between", value1, value2, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("compare_index_id not between", value1, value2, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdIsNull() {
+            addCriterion("compare_calculation_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdIsNotNull() {
+            addCriterion("compare_calculation_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdEqualTo(Integer value) {
+            addCriterion("compare_calculation_id =", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdNotEqualTo(Integer value) {
+            addCriterion("compare_calculation_id <>", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdGreaterThan(Integer value) {
+            addCriterion("compare_calculation_id >", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("compare_calculation_id >=", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdLessThan(Integer value) {
+            addCriterion("compare_calculation_id <", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdLessThanOrEqualTo(Integer value) {
+            addCriterion("compare_calculation_id <=", value, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdIn(List<Integer> values) {
+            addCriterion("compare_calculation_id in", values, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdNotIn(List<Integer> values) {
+            addCriterion("compare_calculation_id not in", values, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdBetween(Integer value1, Integer value2) {
+            addCriterion("compare_calculation_id between", value1, value2, "compareCalculationId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareCalculationIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("compare_calculation_id not between", value1, value2, "compareCalculationId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

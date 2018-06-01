@@ -69,4 +69,10 @@ public class HousePriceIndexDao {
         housePriceIndices = housePriceIndexMapper.selectByExample(housePriceIndexExample);
         return housePriceIndices;
     }
+
+    public List<HousePriceIndex> getData() {
+        HousePriceIndexExample example = new HousePriceIndexExample();
+        example.createCriteria().andIdIsNotNull();
+        return housePriceIndexMapper.selectByExample(example);
+    }
 }

@@ -4,8 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.dao.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.*;
+import com.copower.pmcc.assess.dto.output.project.SurveyCaseStudyDetailVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.HousePriceIndexService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,6 +54,10 @@ public class TaskCompareService {
     private SchemeInfoService schemeInfoService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private HousePriceIndexService housePriceIndexService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     public ModelAndView getTaskCompare(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
 
@@ -78,10 +88,13 @@ public class TaskCompareService {
         Integer surveyCaseStudyPlanDetailsId = surveyCaseStudy.getPlanDetailsId();
         //最终的案例调查数据
         List<SurveyCaseStudyDetail> surveyCaseStudyDetails = surveyCaseStudyDetailDao.getSurveyCaseStudyDetail(surveyCaseStudyPlanDetailsId);
+        List<SurveyCaseStudyDetailVo> surveyCaseStudyDetailVo = getVoList(surveyCaseStudyDetails);
+        List<HousePriceIndex> housePriceIndexs = housePriceIndexService.getData();
 
         modelAndView.addObject("surveyLocaleExploreDetail",surveyLocaleExploreDetail);  //现场查勘
-        modelAndView.addObject("surveyCaseStudyDetails",surveyCaseStudyDetails);      //案例调查
+        modelAndView.addObject("surveyCaseStudyDetails",surveyCaseStudyDetailVo);      //案例调查
         modelAndView.addObject("schemeEvaluationObject",schemeEvaluationObject);
+        modelAndView.addObject("housePriceIndexs",housePriceIndexs);    //指数
         return modelAndView;
     }
 
@@ -108,6 +121,7 @@ public class TaskCompareService {
         schemeInfoService.addReturnID(schemeInfo);  //主表
     }
 
+    //审批获取数据
     public ModelAndView getApprovalView(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
 
         Integer projectPlanDetailsId = projectPlanDetails.getPid();
@@ -117,10 +131,28 @@ public class TaskCompareService {
         List<MethodMarketCompareIndex> methodMarketCompareIndexs = methodMarketCompareIndexService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
         List<MethodMarketCompareCalculation> methodMarketCompareCalculations = methodMarketCompareCalculationService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
         List<MethodMarketCompareResult> methodMarketCompareResults = methodMarketCompareResultService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+
+        List<HousePriceIndex> housePriceIndexs = housePriceIndexService.getData();
+
         modelAndView.addObject("methodMarketCompareFactors",methodMarketCompareFactors);
         modelAndView.addObject("methodMarketCompareIndexs",methodMarketCompareIndexs);
         modelAndView.addObject("methodMarketCompareCalculations",methodMarketCompareCalculations);
         modelAndView.addObject("methodMarketCompareResults",methodMarketCompareResults);
+        modelAndView.addObject("housePriceIndexs",housePriceIndexs);
         return modelAndView;
+    }
+
+    private List<SurveyCaseStudyDetailVo> getVoList(List<SurveyCaseStudyDetail> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        return LangUtils.transform(list, p -> {
+            SurveyCaseStudyDetailVo surveyCaseStudyDetailVo = new SurveyCaseStudyDetailVo();
+            BeanUtils.copyProperties(p, surveyCaseStudyDetailVo);
+            if (p.getCaseType() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getCaseType());
+                if (baseDataDic != null)
+                    surveyCaseStudyDetailVo.setCaseTypeName(baseDataDic.getName());
+            }
+            return surveyCaseStudyDetailVo;
+        });
     }
 }
