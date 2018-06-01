@@ -66,4 +66,16 @@ public class ProjectPlanFinancialClaimController {
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveProjectPlan", name = "保存项目计划", method = RequestMethod.POST)
+    public HttpResult saveProjectPlan(String formData) {
+        try {
+            projectPlanFinancialClaimService.saveFinancialClaimProjectPlan(formData);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
 }

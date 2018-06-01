@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
@@ -51,7 +52,6 @@ public class ProjectTaskController {
     @Autowired
     private PublicService publicService;
 
-
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
     public ModelAndView projectTaskIndex(Integer responsibilityId) {
         String viewUrl = "projectTaskAssist";
@@ -59,14 +59,14 @@ public class ProjectTaskController {
         try {
             projectPlanResponsibility = bpmRpcProjectTaskService.getProjectTaskById(responsibilityId);
         } catch (Exception e) {
-            return publicService.getExplainPage("提示","该任务不存在或已处理");
+            return publicService.getExplainPage("提示", "该任务不存在或已处理");
         }
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanResponsibility.getPlanDetailsId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.applyView(projectPlanDetails);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
@@ -74,7 +74,13 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", String.format("%s-成果提交", projectPlanDetails.getProjectPhaseName()));
+        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
+        if (StringUtils.isBlank(boxCnName)) {
+            modelAndView.addObject("boxCnName", String.format("%s-成果提交", projectPlanDetails.getProjectPhaseName()));
+        } else {
+            modelAndView.addObject("boxCnName", String.format("%s-成果提交", boxCnName));
+        }
+
         modelAndView.addObject("boxprocess Icon", "fa-flash");
         modelAndView.addObject("currentStepName", "成果提交");
         modelAndView.addObject("currUserName", "管理员");
@@ -106,7 +112,7 @@ public class ProjectTaskController {
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.approvalView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
@@ -114,7 +120,13 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", projectPlanDetails.getProjectPhaseName() + "-成果审批");
+        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
+        if (StringUtils.isBlank(boxCnName)) {
+            modelAndView.addObject("boxCnName", String.format("%s-成果审批", projectPlanDetails.getProjectPhaseName()));
+        } else {
+            modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName));
+        }
+
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -142,7 +154,7 @@ public class ProjectTaskController {
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.returnEditView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
@@ -150,7 +162,13 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", projectPlanDetails.getProjectPhaseName() + "-成果修改");
+        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
+        if (StringUtils.isBlank(boxCnName)) {
+            modelAndView.addObject("boxCnName", String.format("%s-成果修改", projectPlanDetails.getProjectPhaseName()));
+        } else {
+            modelAndView.addObject("boxCnName", String.format("%s-成果修改", boxCnName));
+        }
+
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -167,15 +185,21 @@ public class ProjectTaskController {
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
-        ModelAndView modelAndView = bean.detailsView(projectPlanDetails,boxId);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ModelAndView modelAndView = bean.detailsView(projectPlanDetails, boxId);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", projectPlanDetails.getProjectPhaseName() + "-成果详情");
+        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
+        if (StringUtils.isBlank(boxCnName)) {
+            modelAndView.addObject("boxCnName", String.format("%s-成果详情", projectPlanDetails.getProjectPhaseName()));
+        } else {
+            modelAndView.addObject("boxCnName", String.format("%s-成果详情", boxCnName));
+        }
+
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
@@ -183,7 +207,7 @@ public class ProjectTaskController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情",method = RequestMethod.GET)
+    @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情", method = RequestMethod.GET)
     public ModelAndView projectTaskDetailsById(Integer projectDetailsId) {
         String viewUrl = "projectTaskAssist";
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
@@ -191,15 +215,20 @@ public class ProjectTaskController {
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
-        ModelAndView modelAndView = bean.detailsView(projectPlanDetails,0);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ModelAndView modelAndView = bean.detailsView(projectPlanDetails, 0);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        modelAndView.addObject("boxCnName", projectPlanDetails.getProjectPhaseName() + "-成果详情");
+        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
+        if (StringUtils.isBlank(boxCnName)) {
+            modelAndView.addObject("boxCnName", String.format("%s-成果详情", projectPlanDetails.getProjectPhaseName()));
+        } else {
+            modelAndView.addObject("boxCnName", String.format("%s-成果详情", boxCnName));
+        }
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");

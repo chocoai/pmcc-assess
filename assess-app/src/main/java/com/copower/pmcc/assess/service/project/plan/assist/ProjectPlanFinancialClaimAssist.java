@@ -26,25 +26,25 @@ public class ProjectPlanFinancialClaimAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/financialClaim/planIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/task/planIndex", "", 0, "-1", "");
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/financialClaim/planApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/task/planApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/financialClaim/planIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/task/planIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/financialClaim/planApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/task/planApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 }
