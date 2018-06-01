@@ -1,14 +1,25 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
+import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerMortgageService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述:
@@ -18,13 +29,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @time: 17:08
  */
 @Controller
-@RequestMapping(value = "/csrBorrowerMortgage", name = "测算情况")
+@RequestMapping(value = "/csrBorrowerMortgage", name = "借款人资产抵押情况")
 public class CsrBorrowerMortgageController {
     @Autowired
     private CsrBorrowerMortgageService csrBorrowerMortgageService;
 
     @ResponseBody
-    @RequestMapping(value = "/saveLoanBorrowerMortgage", name = "测算情况", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveLoanBorrowerMortgage", name = "保存借款人资产抵押", method = RequestMethod.POST)
     public HttpResult saveLoanBorrowerMortgage(CsrBorrowerMortgage csrBorrowerMortgage) {
         try {
             csrBorrowerMortgage = csrBorrowerMortgageService.saveCsrBorrowerMortgage(csrBorrowerMortgage);
@@ -33,4 +44,18 @@ public class CsrBorrowerMortgageController {
         }
         return HttpResult.newCorrectResult(csrBorrowerMortgage.getId());
     }
+
+    //取得资产抵押情况列表
+    @ResponseBody
+    @RequestMapping(value = "/getCsrBorrowerMortgage", name = "取得借款人资产抵押情况", method = RequestMethod.GET)
+    public BootstrapTableVo getCsrBorrowerMortgage(Integer borrowerId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CsrBorrowerMortgage> csrBorrowerMortgage = csrBorrowerMortgageService.getCsrBorrowerMortgage(borrowerId);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrBorrowerMortgage) ? new ArrayList<CsrBorrowerMortgage>() : csrBorrowerMortgage);
+        bootstrapTableVo.setTotal(page.getTotal());
+        return bootstrapTableVo;
+    }
+
 }

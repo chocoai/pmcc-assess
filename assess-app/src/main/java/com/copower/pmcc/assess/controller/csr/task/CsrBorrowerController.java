@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @time: 17:08
  */
 @Controller
-@RequestMapping(value = "/csrBorrower", name = "测算情况")
+@RequestMapping(value = "/csrBorrower", name = "借款人")
 public class CsrBorrowerController {
     @Autowired
     private CsrBorrowerService csrBorrowerService;
 
     @ResponseBody
-    @RequestMapping(value = "/saveLoanBorrower", name = "测算情况", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveLoanBorrower", name = "保存借款人", method = RequestMethod.POST)
     public HttpResult saveLoanBorrower(CsrBorrower csrBorrower) {
         try {
             csrBorrower = csrBorrowerService.saveCsrBorrower(csrBorrower);

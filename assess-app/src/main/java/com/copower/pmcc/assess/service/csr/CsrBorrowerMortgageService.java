@@ -4,8 +4,11 @@ import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerMortgageDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrcalculationDao;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -34,5 +37,12 @@ public class CsrBorrowerMortgageService {
             throw new BusinessException(e.getMessage());
         }
         return csrBorrowerMortgage;
+    }
+
+    public List<CsrBorrowerMortgage> getCsrBorrowerMortgage(Integer borrowerId)
+    {
+        List<CsrBorrowerMortgage> csrBorrowerMortgageList = csrBorrowerMortgageDao.getCsrBorrowerMortgageList(Lists.newArrayList(borrowerId));
+        return csrBorrowerMortgageList;
+
     }
 }

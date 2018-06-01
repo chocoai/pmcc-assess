@@ -2,9 +2,12 @@ package com.copower.pmcc.assess.service.csr;
 
 import com.copower.pmcc.assess.dal.dao.csr.CsrcalculationDao;
 import com.copower.pmcc.assess.dal.entity.CsrCalculation;
+import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -33,5 +36,14 @@ public class CsrCalculationService {
             throw new BusinessException(e.getMessage());
         }
         return csrCalculation;
+    }
+
+    public List<CsrCalculation> getCsrCalculation(Integer borrowerId)
+    {
+        CsrCalculation csrCalculation=new CsrCalculation();
+        csrCalculation.setBorrowerId(borrowerId);
+        List<CsrCalculation> csrCalculationList = csrcalculationDao.getCsrCalculationList(csrCalculation);
+        return csrCalculationList;
+
     }
 }
