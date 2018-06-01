@@ -33,7 +33,6 @@ public class CsrTempGroupProjectController {
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/csrTempGroupProject");
-        modelAndView.addObject("groupList",projectInfoGroupService.groupList());
         return modelAndView;
     }
 

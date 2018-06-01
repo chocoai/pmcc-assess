@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.csr.CsrProjectInfoGroupDao;
+import com.copower.pmcc.assess.dal.dao.Csr.CsrProjectInfoGroupDao;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -33,15 +33,15 @@ public class CsrProjectInfoGroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<CsrProjectInfoGroup> groupList(){
-        return projectInfoGroupDao.groupList();
+    public List<CsrProjectInfoGroup> groupList(Integer projectID){
+        return projectInfoGroupDao.groupList(projectID);
     }
 
-    public BootstrapTableVo groupVoList(){
+    public BootstrapTableVo groupVoList(Integer projectID){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrProjectInfoGroup> vos = groupList();
+        List<CsrProjectInfoGroup> vos = groupList(projectID);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CsrProjectInfoGroup>() : vos);
         vo.setTotal(page.getTotal());
         return vo;

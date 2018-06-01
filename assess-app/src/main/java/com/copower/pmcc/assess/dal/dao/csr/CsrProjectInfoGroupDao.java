@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.dao.csr;
+package com.copower.pmcc.assess.dal.dao.Csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroupExample;
@@ -18,9 +18,9 @@ public class CsrProjectInfoGroupDao {
         return projectInfoGroupMapper.insertSelective(csrProjectInfoGroup)==1;
     }
 
-    public List<CsrProjectInfoGroup> groupList(){
+    public List<CsrProjectInfoGroup> groupList(Integer projectID){
         CsrProjectInfoGroupExample example = new CsrProjectInfoGroupExample();
-        example.createCriteria().andIdIsNotNull();
+        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID);
         return projectInfoGroupMapper.selectByExample(example);
     }
 }

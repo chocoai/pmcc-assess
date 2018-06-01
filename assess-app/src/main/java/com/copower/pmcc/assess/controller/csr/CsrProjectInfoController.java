@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
@@ -62,7 +61,6 @@ public class CsrProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
-        modelAndView.addObject("groupList",projectInfoGroupService.groupList());
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
         return modelAndView;
     }
@@ -136,13 +134,13 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/groupVoList", name = "显示列表 项目组信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo groupVoList() {
-        BootstrapTableVo vo = projectInfoGroupService.groupVoList();
+    public BootstrapTableVo groupVoList(Integer projectID) {
+        BootstrapTableVo vo = projectInfoGroupService.groupVoList(projectID);
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateGroupProject", method = {RequestMethod.POST}, name = "增加与修改")
+    @RequestMapping(value = "/saveAndUpdateGroupProject", method = {RequestMethod.POST}, name = "项目组 增加与修改")
     public HttpResult add(CsrProjectInfoGroup csrProjectInfoGroup) {
         try {
             if (!ObjectUtils.isEmpty(csrProjectInfoGroup) && ObjectUtils.isEmpty(csrProjectInfoGroup.getId())){
