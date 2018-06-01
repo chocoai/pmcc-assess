@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.dao.*;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.project.*;
+import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +35,18 @@ public class TaskCompareService {
     private SurveyCaseStudyDao surveyCaseStudyDao;
     @Autowired
     private SurveyCaseStudyDetailDao surveyCaseStudyDetailDao;
+    @Autowired
+    private MethodMarketCompareFactorService methodMarketCompareFactorService;
+    @Autowired
+    private MethodMarketCompareIndexService methodMarketCompareIndexService;
+    @Autowired
+    private MethodMarketCompareCalculationService methodMarketCompareCalculationService;
+    @Autowired
+    private MethodMarketCompareResultService methodMarketCompareResultService;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
+    @Autowired
+    private CommonService commonService;
 
     public ModelAndView getTaskCompare(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
 
@@ -66,6 +81,45 @@ public class TaskCompareService {
         modelAndView.addObject("surveyLocaleExploreDetail",surveyLocaleExploreDetail);  //现场查勘
         modelAndView.addObject("surveyCaseStudyDetails",surveyCaseStudyDetails);      //案例调查
         modelAndView.addObject("schemeEvaluationObject",schemeEvaluationObject);
+        return modelAndView;
+    }
+
+    //提交时保存数据
+    public void saveData(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
+        MethodMarketCompareCommonDto methodMarketCompareCommonDto = JSON.parseObject(formData,MethodMarketCompareCommonDto.class);  //json 转对象
+        //提取各自对象
+        List<MethodMarketCompareFactorDto> methodMarketCompareFactorDtos = methodMarketCompareCommonDto.getMethodMarketCompareFactorDtos();
+        List<MethodMarketCompareIndexDto> methodMarketCompareIndexDtos = methodMarketCompareCommonDto.getMethodMarketCompareIndexDtos();
+        List<MethodMarketCompareCalculationDto> methodMarketCompareCalculationDtos = methodMarketCompareCommonDto.getMethodMarketCompareCalculationDtos();
+        List<MethodMarketCompareResultDto> methodMarketCompareResultDtos = methodMarketCompareCommonDto.getMethodMarketCompareResultDtos();
+
+        methodMarketCompareFactorService.save(methodMarketCompareFactorDtos);   //因素表
+        methodMarketCompareIndexService.save(methodMarketCompareIndexDtos);     //指数表
+        methodMarketCompareCalculationService.save(methodMarketCompareCalculationDtos); //测算表
+        methodMarketCompareResultService.save(methodMarketCompareResultDtos);   //结果表
+
+        SchemeInfo schemeInfo = new SchemeInfo();
+        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+        schemeInfo.setEvaluationObjectId(methodMarketCompareResultDtos.get(0).getEvaluationObjectId());
+        schemeInfo.setPlanDetailsId(projectPlanDetails.getPlanId());
+        schemeInfo.setProcessInsId(processInsId);
+        schemeInfo.setCreator(commonService.thisUserAccount());
+        schemeInfoService.addReturnID(schemeInfo);  //主表
+    }
+
+    public ModelAndView getApprovalView(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
+
+        Integer projectPlanDetailsId = projectPlanDetails.getPid();
+        ProjectPlanDetails projectPlanDetails1= projectPlanDetailsDao.getProjectPlanDetailsItemById(projectPlanDetailsId);
+        Integer schemeEvaluationObjectId = projectPlanDetails1.getEvaluationId();
+        List<MethodMarketCompareFactor> methodMarketCompareFactors = methodMarketCompareFactorService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+        List<MethodMarketCompareIndex> methodMarketCompareIndexs = methodMarketCompareIndexService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+        List<MethodMarketCompareCalculation> methodMarketCompareCalculations = methodMarketCompareCalculationService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+        List<MethodMarketCompareResult> methodMarketCompareResults = methodMarketCompareResultService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+        modelAndView.addObject("methodMarketCompareFactors",methodMarketCompareFactors);
+        modelAndView.addObject("methodMarketCompareIndexs",methodMarketCompareIndexs);
+        modelAndView.addObject("methodMarketCompareCalculations",methodMarketCompareCalculations);
+        modelAndView.addObject("methodMarketCompareResults",methodMarketCompareResults);
         return modelAndView;
     }
 }
