@@ -1205,6 +1205,126 @@ public class CsrBorrowerMortgageExample {
             return (Criteria) this;
         }
 
+        public Criteria andExcelRowIndexIsNull() {
+            addCriterion("excel_row_index is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexIsNotNull() {
+            addCriterion("excel_row_index is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexEqualTo(Integer value) {
+            addCriterion("excel_row_index =", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotEqualTo(Integer value) {
+            addCriterion("excel_row_index <>", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexGreaterThan(Integer value) {
+            addCriterion("excel_row_index >", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexGreaterThanOrEqualTo(Integer value) {
+            addCriterion("excel_row_index >=", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexLessThan(Integer value) {
+            addCriterion("excel_row_index <", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexLessThanOrEqualTo(Integer value) {
+            addCriterion("excel_row_index <=", value, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexIn(List<Integer> values) {
+            addCriterion("excel_row_index in", values, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotIn(List<Integer> values) {
+            addCriterion("excel_row_index not in", values, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexBetween(Integer value1, Integer value2) {
+            addCriterion("excel_row_index between", value1, value2, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcelRowIndexNotBetween(Integer value1, Integer value2) {
+            addCriterion("excel_row_index not between", value1, value2, "excelRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIsNull() {
+            addCriterion("bis_import is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIsNotNull() {
+            addCriterion("bis_import is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportEqualTo(Boolean value) {
+            addCriterion("bis_import =", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotEqualTo(Boolean value) {
+            addCriterion("bis_import <>", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThan(Boolean value) {
+            addCriterion("bis_import >", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import >=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThan(Boolean value) {
+            addCriterion("bis_import <", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import <=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIn(List<Boolean> values) {
+            addCriterion("bis_import in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotIn(List<Boolean> values) {
+            addCriterion("bis_import not in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import not between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -15,4 +15,11 @@ public class AssessFieldNameConstant {
     public static final String PMCC_ASSESS_DECLARE_RECORD_DISTRICT = "district"; //申报记录区县
     public static final String PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA = "floor_area"; //申报记录建筑面积
     public static final String PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP = "ownership"; //所有权人
+
+    //债权借款人
+    public static final String CSR_BORROWER_SECOND_LEVEL_BRANCH = "second_level_branch"; //二级分行
+    public static final String CSR_BORROWER_ID_NUMBER = "id_number"; //证件号
+
+    //债权借款人抵押物
+    public static final String CSR_BORROWER_MORTGAGE_CONTRACT_NUMBER = "contract_number"; //合同编号
 }

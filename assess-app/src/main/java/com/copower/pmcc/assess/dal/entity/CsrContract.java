@@ -19,6 +19,8 @@ public class CsrContract {
 
     private String guaranteeMethod;
 
+    private Boolean bisImport;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +89,14 @@ public class CsrContract {
 
     public void setGuaranteeMethod(String guaranteeMethod) {
         this.guaranteeMethod = guaranteeMethod == null ? null : guaranteeMethod.trim();
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

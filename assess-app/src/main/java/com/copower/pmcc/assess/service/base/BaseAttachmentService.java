@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.helper.DataUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,14 +92,16 @@ public class BaseAttachmentService {
      * @param params
      * @return
      */
-    public String createBasePath(String... params) {
+    public String createTempBasePath(String... params) {
         if (params == null || params.length == 0)
             return "default";
-        String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey();
+        String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + getTempUploadPath();
+        //清除昨天以外的临时文件
+        FileUtils.deleteDir(filePath,Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(),-1),DateUtils.DATE_SHORT_PATTERN),DateUtils.formatNowToYMD()));
+        filePath += File.separator + DateUtils.formatNowToYMD();
         for (String param : params) {
             filePath += File.separator + StringUtils.defaultIfBlank(param, "default");
         }
-        //清除当天以外的临时文件
         FileUtils.folderMake(filePath);
         return filePath;
     }
@@ -133,7 +136,7 @@ public class BaseAttachmentService {
         strings.remove(extension);
         String newFilesName = createNoRepeatFileName(extension);
         String filePath = createFTPBasePath(FormatUtils.underlineToCamel(attachmentDto.getTableName(), false), DateUtils.formatDate(new Date(), "yyyy-MM"), processControllerComponent.getThisUser(),
-        attachmentDto.getReActivityName(), DateUtils.formatNowToYMD());
+                attachmentDto.getReActivityName(), DateUtils.formatNowToYMD());
         try {
             ftpUtilsExtense.uploadFilesToFTP(filePath, multipartFile.getInputStream(), newFilesName);
         } catch (IOException e) {
@@ -369,18 +372,19 @@ public class BaseAttachmentService {
 
     /**
      * 附件关联到业务表
+     *
      * @param tableName
      * @param fieldName
      * @param relationTableId
      */
-    public void relationToTable(String tableName,String fieldName,Integer relationTableId){
-        BaseAttachment queryParma=new BaseAttachment();
+    public void relationToTable(String tableName, String fieldName, Integer relationTableId) {
+        BaseAttachment queryParma = new BaseAttachment();
         queryParma.setTableName(tableName);
-        if(StringUtils.isNotBlank(fieldName))
+        if (StringUtils.isNotBlank(fieldName))
             queryParma.setFieldsName(fieldName);
         queryParma.setCreater(commonService.thisUserAccount());
         List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParma);
-        if(CollectionUtils.isNotEmpty(attachmentList)){
+        if (CollectionUtils.isNotEmpty(attachmentList)) {
             for (BaseAttachment baseAttachment : attachmentList) {
                 baseAttachment.setTableId(relationTableId);
                 baseAttachmentDao.updateAttachment(baseAttachment);

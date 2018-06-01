@@ -11,6 +11,8 @@ public class CsrLitigation {
 
     private String litigationPreservationInfo;
 
+    private Boolean bisImport;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class CsrLitigation {
 
     public void setLitigationPreservationInfo(String litigationPreservationInfo) {
         this.litigationPreservationInfo = litigationPreservationInfo == null ? null : litigationPreservationInfo.trim();
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

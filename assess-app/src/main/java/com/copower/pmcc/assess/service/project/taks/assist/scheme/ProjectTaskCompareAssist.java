@@ -2,13 +2,15 @@ package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.project.TaskCompareService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -25,10 +27,10 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Autowired
     private TaskCompareService taskCompareService;
 
+
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCompareIndex", "", 0, "0", "");
-
         taskCompareService.getTaskCompare(modelAndView, projectPlanDetails);
         return modelAndView;
     }
@@ -36,6 +38,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCompareApproval", processInsId, boxId, taskId, agentUserAccount);
+        taskCompareService.getApprovalView(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
@@ -58,8 +61,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        taskCompareService.saveData(projectPlanDetails,processInsId,formData);
 
-        throw new BusinessException("");
     }
 
     @Override

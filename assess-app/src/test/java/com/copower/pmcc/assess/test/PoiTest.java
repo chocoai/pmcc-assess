@@ -23,15 +23,16 @@ public class PoiTest {
         }
     }
 
-    public void importData(String path, Integer startRowNumber) throws IOException {
+    public void importData(String path, Integer startRowNumber,Integer csrProjectId) throws IOException {
         InputStream is = new FileInputStream(path);
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         HSSFSheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
-        int coloumNum = sheet.getRow(0).getPhysicalNumberOfCells();
+        int coloumNum = sheet.getRow(0).getPhysicalNumberOfCells();//总列数
         HSSFRow row = null;
         HSSFCell cell=null;
         for (int rowNum = 0; rowNum <= sheet.getLastRowNum(); rowNum++) {
             //第一行特殊处理 需要处理数据行才操作 其它行丢弃
+            //没有在基础配置的字段中不做处理
             if (rowNum == 0) {
                 row = sheet.getRow(rowNum);
                 for (int i = 0; i < coloumNum; i++) {

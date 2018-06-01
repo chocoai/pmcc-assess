@@ -35,6 +35,10 @@ public class CsrBorrowerMortgage {
 
     private String bisSealUp;
 
+    private Integer excelRowIndex;
+
+    private Boolean bisImport;
+
     private String creator;
 
     private Date gmtCreated;
@@ -167,6 +171,22 @@ public class CsrBorrowerMortgage {
 
     public void setBisSealUp(String bisSealUp) {
         this.bisSealUp = bisSealUp == null ? null : bisSealUp.trim();
+    }
+
+    public Integer getExcelRowIndex() {
+        return excelRowIndex;
+    }
+
+    public void setExcelRowIndex(Integer excelRowIndex) {
+        this.excelRowIndex = excelRowIndex;
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

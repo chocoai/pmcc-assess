@@ -1,20 +1,37 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.csr.CsrInvalidRuleDao;
-import com.copower.pmcc.assess.dal.entity.CsrInvalidRule;
+import com.copower.pmcc.assess.common.ReflectUtils;
+import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
+import com.copower.pmcc.assess.constant.AssessTableNameConstant;
+import com.copower.pmcc.assess.dal.dao.csr.*;
+import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-5-31.
@@ -25,6 +42,7 @@ public class CsrInvalidRuleService {
     private CsrInvalidRuleDao csrInvalidRuleDao;
     @Autowired
     private CommonService commonService;
+
 
     /**
      * 获取过滤规则数据列表
@@ -47,6 +65,19 @@ public class CsrInvalidRuleService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<CsrInvalidRule>() : list);
         return bootstrapTableVo;
+    }
+
+    /**
+     * 获取过滤规则数据列表
+     *
+     * @param csrProjectId
+     * @return
+     */
+    public List<CsrInvalidRule> getRuleList(Integer csrProjectId) {
+        CsrInvalidRule queryParam = new CsrInvalidRule();
+        queryParam.setCsrProjectId(csrProjectId);
+        List<CsrInvalidRule> list = csrInvalidRuleDao.getCsrInvalidRuleList(queryParam);
+        return list;
     }
 
     /**
@@ -89,4 +120,6 @@ public class CsrInvalidRuleService {
             });
         }
     }
+
+
 }

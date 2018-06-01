@@ -9,6 +9,8 @@ public class CsrGuarantor {
 
     private String name;
 
+    private Boolean bisImport;
+
     private String creator;
 
     private Date gmtCreated;
@@ -37,6 +39,14 @@ public class CsrGuarantor {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

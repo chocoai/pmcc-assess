@@ -60,7 +60,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">案例对比配置</h3>
+                <h3 class="modal-title">字段关联配置</h3>
             </div>
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -95,7 +95,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            表
+                                            表<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select class="form-control search-select select2" name="tableName" id="tableName"
@@ -113,7 +113,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            表字段
+                                            表字段<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select class="form-control search-select select2" name="fieldName" id="fieldName" required="required">
@@ -126,10 +126,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            备注<span class="symbol required"></span>
+                                            备注
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" id="remark" name="remark" required="required" placeholder="备注">
+                                            <textarea class="form-control" id="remark" name="remark"  placeholder="备注">
 
                                             </textarea>
                                         </div>

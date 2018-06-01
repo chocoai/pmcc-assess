@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="bis_import" property="bisImport" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, borrower_id, name, creator, gmt_created, gmt_modified
+    id, borrower_id, name, bis_import, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrGuarantorExample" >
     select
@@ -104,10 +105,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_guarantor (borrower_id, name, creator, 
-      gmt_created, gmt_modified)
-    values (#{borrowerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_csr_guarantor (borrower_id, name, bis_import, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{borrowerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrGuarantor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -120,6 +123,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="bisImport != null" >
+        bis_import,
       </if>
       <if test="creator != null" >
         creator,
@@ -137,6 +143,9 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bisImport != null" >
+        #{bisImport,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -167,6 +176,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisImport != null" >
+        bis_import = #{record.bisImport,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -186,6 +198,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      bis_import = #{record.bisImport,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -201,6 +214,9 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bisImport != null" >
+        bis_import = #{bisImport,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -218,6 +234,7 @@
     update tb_csr_guarantor
     set borrower_id = #{borrowerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
+      bis_import = #{bisImport,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
