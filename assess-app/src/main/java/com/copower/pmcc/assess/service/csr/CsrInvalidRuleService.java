@@ -1,37 +1,22 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.common.ReflectUtils;
-import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrInvalidRuleDao;
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
+import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.CsrInvalidRule;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-31.

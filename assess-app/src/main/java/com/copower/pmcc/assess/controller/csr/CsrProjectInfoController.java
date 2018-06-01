@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -62,7 +64,6 @@ public class CsrProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
-        modelAndView.addObject("groupList",projectInfoGroupService.groupList());
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
         return modelAndView;
     }
@@ -129,24 +130,65 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo list() {
-        BootstrapTableVo vo = service.borrowerLists();
+    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch) {
+        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/groupVoList", name = "显示列表 项目组信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo groupVoList() {
-        BootstrapTableVo vo = projectInfoGroupService.groupVoList();
+    public BootstrapTableVo groupVoList(Integer projectID,String projectName) {
+        BootstrapTableVo vo = projectInfoGroupService.groupVoList(projectID,projectName);
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateGroupProject", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult add(CsrProjectInfoGroup csrProjectInfoGroup) {
+    @RequestMapping(value = "/saveAndUpdateGroupProject", method = {RequestMethod.POST}, name = "项目组 增加与修改")
+    public HttpResult saveAndUpdateGroupProject(CsrProjectInfoGroup csrProjectInfoGroup) {
         try {
-            if (!ObjectUtils.isEmpty(csrProjectInfoGroup) && ObjectUtils.isEmpty(csrProjectInfoGroup.getId())){
-                projectInfoGroupService.add(csrProjectInfoGroup);
+            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)){
+                projectInfoGroupService.saveAndUpdate(csrProjectInfoGroup);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/groupProject/get", name = "项目组 删除",method = RequestMethod.GET)
+    public Object getGroupProjectByID(Integer id){
+        try {
+            CsrProjectInfoGroupVo csrProjectInfoGroup = projectInfoGroupService.getByID(id);
+            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)){
+                return csrProjectInfoGroup;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/groupProject/delete", name = "项目组 删除",method = RequestMethod.POST)
+    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+        try {
+            projectInfoGroupService.delete(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/submitGroupProject", method = {RequestMethod.POST}, name = "项目组 分派")
+    public HttpResult submitGroupProject(CsrProjectInfoGroupSubmitDto submitDto) {
+        try {
+            if (!ObjectUtils.isEmpty(submitDto)){
+                projectInfoGroupService.submitGroup(submitDto);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
