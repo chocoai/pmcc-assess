@@ -28,6 +28,10 @@ public class MethodMarketCompareResult {
 
     private Date gmtModified;
 
+    private Integer compareIndexId;
+
+    private Integer compareCalculationId;
+
     public Integer getId() {
         return id;
     }
@@ -122,5 +126,21 @@ public class MethodMarketCompareResult {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getCompareIndexId() {
+        return compareIndexId;
+    }
+
+    public void setCompareIndexId(Integer compareIndexId) {
+        this.compareIndexId = compareIndexId;
+    }
+
+    public Integer getCompareCalculationId() {
+        return compareCalculationId;
+    }
+
+    public void setCompareCalculationId(Integer compareCalculationId) {
+        this.compareCalculationId = compareCalculationId;
     }
 }

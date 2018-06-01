@@ -44,7 +44,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCompareIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCompareEdit", processInsId, boxId, taskId, agentUserAccount);
+        taskCompareService.getApprovalView(modelAndView,projectPlanDetails);
         return modelAndView;
     }
 
