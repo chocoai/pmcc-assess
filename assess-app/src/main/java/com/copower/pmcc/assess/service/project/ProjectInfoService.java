@@ -626,4 +626,8 @@ public class ProjectInfoService {
         }
         return null;
     }
+
+    public int saveProjectInfo_returnID(ProjectInfo projectInfo){
+        return projectInfoDao.saveProjectInfo_returnID(projectInfo);
+    }
 }

@@ -353,6 +353,7 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+
     }
 
     //项目组 保存
@@ -515,12 +516,14 @@
         });
     }
 </script>
+
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
 
     $(document).ready(function () {
         loadInvalidRuleList();
         loadAttachmentList();
+
     });
 
     //加载附件列表信息
@@ -551,26 +554,47 @@
         });
     }
 
+
     function saveform() {
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
-        Loading.progressShow();
+        //检测是否分派完成!
         $.ajax({
-            url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",
+            url: "${pageContext.request.contextPath}/csrProjectInfo/checkCsrBorrower",
             type: "post",
             dataType: "json",
-            data: data,
             success: function (result) {
-                Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    alert(result.data);
+                    //检测成功!
+                    var data = formParams("frm_approval");
+                    data.csrProjectInfoID = ${csrProjectInfo.id};
+                    Loading.progressShow();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",
+                        type: "post",
+                        dataType: "json",
+                        data: data,
+                        success: function (result) {
+                            Loading.progressHide();
+                            if (result.ret) {
+                                Alert("提交数据成功!", 1, null, function () {
+                                    window.close();
+                                });
+                            }
+                            else {
+                                Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                            }
+                        },
+                        error: function (result) {
+                            Loading.progressHide();
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                        }
+                    })
+                } else {
+                    alert(result.errmsg);
+                    return false;
                 }
             },
             error: function (result) {

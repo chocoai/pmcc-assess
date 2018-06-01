@@ -56,4 +56,11 @@ public class CsrBorrowerDao {
         example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
         return csrBorrowerMapper.selectByExample(example);
     }
+
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(csrProjectID);
+        return csrBorrowerMapper.selectByExample(example);
+    }
+
 }

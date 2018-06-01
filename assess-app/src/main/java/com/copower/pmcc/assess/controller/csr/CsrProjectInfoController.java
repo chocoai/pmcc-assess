@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoGroupService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -34,6 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/csrProjectInfo")
 public class CsrProjectInfoController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private ProjectInfoService projectInfoService;
     @Autowired
     private CsrProjectInfoService csrProjectInfoService;
     @Autowired
@@ -73,12 +76,16 @@ public class CsrProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
+        modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
+        modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
+        modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
+        modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData) {
+    public HttpResult projectApplySubmit(String formData,String string) {
         try {
             CsrProjectInfo csrProjectInfo = JSON.parseObject(formData, CsrProjectInfo.class);
             csrProjectInfoService.csrProjectApply(csrProjectInfo);
@@ -95,7 +102,7 @@ public class CsrProjectInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "/projectApprovalSubmit", method = RequestMethod.POST)
-    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
+    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto,Integer csrProjectInfoID) {
         try {
             csrProjectInfoService.crsProjectApproval(approvalModelDto);
         } catch (Exception e) {
@@ -133,6 +140,17 @@ public class CsrProjectInfoController {
     public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch) {
         BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method ={ RequestMethod.POST})
+    public HttpResult checkCsrBorrower(){
+        int size = service.checkCsrBorrower();
+        if (size > 0){
+            return HttpResult.newErrorResult("没有分派完成!");
+        }else {
+            return HttpResult.newCorrectResult("分派完成!");
+        }
     }
 
     @ResponseBody

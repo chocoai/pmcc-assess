@@ -35,11 +35,22 @@ public class CsrBorrowerService {
         return vo;
     }
 
+    public Integer checkCsrBorrower(){
+        return csrBorrowerDao.borrowerLists(null,null).size();
+    }
+
+     public boolean update(CsrBorrower csrBorrower){
+        return csrBorrowerDao.update(csrBorrower);
+     }
 
     public List<CsrBorrower> getCsrBorrowerByProjectId(Integer projectId) {
         CsrBorrower csrBorrower = new CsrBorrower();
         csrBorrower.setProjectId(projectId);
         return csrBorrowerDao.getCsrBorrowerList(projectId);
+    }
+
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID){
+        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID);
     }
 
 }
