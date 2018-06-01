@@ -333,7 +333,7 @@ public class CsrProjectInfoService {
                     if (!invalidRuleIndexMap.isEmpty()) {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
-                            isFilter = isFilter(ruleList, integerStringEntry.getValue(), row.getCell(integerStringEntry.getKey()).getStringCellValue());
+                            isFilter = isFilter(ruleList, integerStringEntry.getValue(),getCellValue(row.getCell(integerStringEntry.getKey())));
                             if (isFilter) continue;
                         }
                         if (isFilter) continue;
