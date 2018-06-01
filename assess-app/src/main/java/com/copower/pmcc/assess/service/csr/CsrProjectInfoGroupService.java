@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.CsrProjectInfoGroupDao;
+import com.copower.pmcc.assess.dal.dao.csr.CsrProjectInfoGroupDao;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;

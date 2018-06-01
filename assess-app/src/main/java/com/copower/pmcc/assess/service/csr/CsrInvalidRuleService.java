@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.CsrInvalidRuleDao;
+import com.copower.pmcc.assess.dal.dao.csr.CsrInvalidRuleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.CsrInvalidRule;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

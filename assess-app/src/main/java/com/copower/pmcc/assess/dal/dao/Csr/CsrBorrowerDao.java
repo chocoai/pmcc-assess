@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.dao.Csr;
+package com.copower.pmcc.assess.dal.dao.csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerExample;
@@ -24,6 +24,18 @@ public class CsrBorrowerDao {
     public List<CsrBorrower> getCsrBorrowerList(CsrBorrower csrBorrower) {
         CsrBorrowerExample example = new CsrBorrowerExample();
         MybatisUtils.convertObj2Example(csrBorrower, example);
+        return csrBorrowerMapper.selectByExample(example);
+    }
+
+    public List<CsrBorrower> borrowerLists(){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andIdIsNotNull().andGroupIdIsNull();
+        return csrBorrowerMapper.selectByExample(example);
+    }
+
+    public List<CsrBorrower> getCsrBorrowerList(Integer projectId){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
         return csrBorrowerMapper.selectByExample(example);
     }
 }

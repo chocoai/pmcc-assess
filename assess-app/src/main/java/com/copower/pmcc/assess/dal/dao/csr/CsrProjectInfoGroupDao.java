@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.dao;
+package com.copower.pmcc.assess.dal.dao.csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroupExample;

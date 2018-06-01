@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.csr;
 
 
-import com.copower.pmcc.assess.dal.dao.CsrBorrowerDao;
+import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
