@@ -15,6 +15,8 @@ public class CsrPrincipalInterest {
 
     private String principalInterestTotal;
 
+    private Boolean bisImport;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class CsrPrincipalInterest {
 
     public void setPrincipalInterestTotal(String principalInterestTotal) {
         this.principalInterestTotal = principalInterestTotal == null ? null : principalInterestTotal.trim();
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

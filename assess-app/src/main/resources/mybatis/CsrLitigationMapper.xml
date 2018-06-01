@@ -6,6 +6,7 @@
     <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
     <result column="litigation_preservation" property="litigationPreservation" jdbcType="VARCHAR" />
     <result column="litigation_preservation_info" property="litigationPreservationInfo" jdbcType="VARCHAR" />
+    <result column="bis_import" property="bisImport" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,8 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, borrower_id, litigation_preservation, litigation_preservation_info, creator, 
-    gmt_created, gmt_modified
+    id, borrower_id, litigation_preservation, litigation_preservation_info, bis_import, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrLitigationExample" >
     select
@@ -107,11 +108,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_csr_litigation (borrower_id, litigation_preservation, 
-      litigation_preservation_info, creator, gmt_created, 
-      gmt_modified)
+      litigation_preservation_info, bis_import, creator, 
+      gmt_created, gmt_modified)
     values (#{borrowerId,jdbcType=INTEGER}, #{litigationPreservation,jdbcType=VARCHAR}, 
-      #{litigationPreservationInfo,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{litigationPreservationInfo,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrLitigation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -127,6 +128,9 @@
       </if>
       <if test="litigationPreservationInfo != null" >
         litigation_preservation_info,
+      </if>
+      <if test="bisImport != null" >
+        bis_import,
       </if>
       <if test="creator != null" >
         creator,
@@ -147,6 +151,9 @@
       </if>
       <if test="litigationPreservationInfo != null" >
         #{litigationPreservationInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="bisImport != null" >
+        #{bisImport,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -180,6 +187,9 @@
       <if test="record.litigationPreservationInfo != null" >
         litigation_preservation_info = #{record.litigationPreservationInfo,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisImport != null" >
+        bis_import = #{record.bisImport,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -200,6 +210,7 @@
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       litigation_preservation = #{record.litigationPreservation,jdbcType=VARCHAR},
       litigation_preservation_info = #{record.litigationPreservationInfo,jdbcType=VARCHAR},
+      bis_import = #{record.bisImport,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -219,6 +230,9 @@
       <if test="litigationPreservationInfo != null" >
         litigation_preservation_info = #{litigationPreservationInfo,jdbcType=VARCHAR},
       </if>
+      <if test="bisImport != null" >
+        bis_import = #{bisImport,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -236,6 +250,7 @@
     set borrower_id = #{borrowerId,jdbcType=INTEGER},
       litigation_preservation = #{litigationPreservation,jdbcType=VARCHAR},
       litigation_preservation_info = #{litigationPreservationInfo,jdbcType=VARCHAR},
+      bis_import = #{bisImport,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

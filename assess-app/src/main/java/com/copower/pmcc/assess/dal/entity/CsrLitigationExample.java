@@ -365,6 +365,66 @@ public class CsrLitigationExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisImportIsNull() {
+            addCriterion("bis_import is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIsNotNull() {
+            addCriterion("bis_import is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportEqualTo(Boolean value) {
+            addCriterion("bis_import =", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotEqualTo(Boolean value) {
+            addCriterion("bis_import <>", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThan(Boolean value) {
+            addCriterion("bis_import >", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import >=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThan(Boolean value) {
+            addCriterion("bis_import <", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import <=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIn(List<Boolean> values) {
+            addCriterion("bis_import in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotIn(List<Boolean> values) {
+            addCriterion("bis_import not in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import not between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

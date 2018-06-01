@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,5 +131,28 @@ public class DataCsrFieldRelationService {
         DataCsrFieldRelationVo vo = new DataCsrFieldRelationVo();
         BeanUtils.copyProperties(csrFieldRelation,vo);
         return vo;
+    }
+
+    /**
+     * 获取所有数据
+     * @return
+     */
+    public List<DataCsrFieldRelation> getAllList(){
+        return csrFieldRelationDao.dataCsrFieldRelationList(null);
+    }
+
+    /**
+     * 根据别名从列表中获取数据
+     * @param relationList
+     * @param anotherName
+     * @return
+     */
+    public DataCsrFieldRelation getFieldRelationFromList(List<DataCsrFieldRelation> relationList, String anotherName){
+        for (DataCsrFieldRelation dataCsrFieldRelation : relationList) {
+            if(StringUtils.equals(dataCsrFieldRelation.getAnotherName(),anotherName)){
+                return dataCsrFieldRelation;
+            }
+        }
+        return null;
     }
 }

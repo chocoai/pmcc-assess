@@ -21,6 +21,10 @@ public class CsrBorrowerDao {
     @Autowired
     private CsrBorrowerMapper csrBorrowerMapper;
 
+    public boolean addCsrBorrower(CsrBorrower csrBorrower){
+        return csrBorrowerMapper.insertSelective(csrBorrower)>0;
+    }
+
     public List<CsrBorrower> getCsrBorrowerList(CsrBorrower csrBorrower) {
         CsrBorrowerExample example = new CsrBorrowerExample();
         MybatisUtils.convertObj2Example(csrBorrower, example);
