@@ -40,11 +40,8 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_scheme_info" domainObjectName="SchemeInfo">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
 
-        <table tableName="tb_csr_field_relation" domainObjectName="DataCsrFieldRelation">
+        <table tableName="tb_csr_borrower" domainObjectName="CsrBorrower">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

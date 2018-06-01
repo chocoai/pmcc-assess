@@ -25,11 +25,11 @@ public class CsrBorrowerService {
     @Autowired
     private CsrBorrowerDao csrBorrowerDao;
 
-    public BootstrapTableVo borrowerLists() {
+    public BootstrapTableVo borrowerLists(String secondLevelBranch,String firstLevelBranch) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrBorrower> vos = csrBorrowerDao.borrowerLists();
+        List<CsrBorrower> vos = csrBorrowerDao.borrowerLists(secondLevelBranch,firstLevelBranch);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CsrBorrower>() : vos);
         vo.setTotal(page.getTotal());
         return vo;

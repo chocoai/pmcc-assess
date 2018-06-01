@@ -1,10 +1,11 @@
-package com.copower.pmcc.assess.dal.dao.Csr;
+package com.copower.pmcc.assess.dal.dao.csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroupExample;
 import com.copower.pmcc.assess.dal.mapper.CsrProjectInfoGroupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -18,9 +19,26 @@ public class CsrProjectInfoGroupDao {
         return projectInfoGroupMapper.insertSelective(csrProjectInfoGroup)==1;
     }
 
-    public List<CsrProjectInfoGroup> groupList(Integer projectID){
+    public boolean update(CsrProjectInfoGroup csrProjectInfoGroup){
+        return projectInfoGroupMapper.updateByPrimaryKey(csrProjectInfoGroup)==1;
+    }
+
+    public CsrProjectInfoGroup getByID(Integer id){
+        return projectInfoGroupMapper.selectByPrimaryKey(id);
+    }
+
+    public boolean removeByID(Integer id){
+        return projectInfoGroupMapper.deleteByPrimaryKey(id)==1;
+    }
+
+    public List<CsrProjectInfoGroup> groupList(Integer projectID,String projectName){
         CsrProjectInfoGroupExample example = new CsrProjectInfoGroupExample();
-        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID);
-        return projectInfoGroupMapper.selectByExample(example);
+        if (StringUtils.isEmpty(projectName)){
+            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID);
+            return projectInfoGroupMapper.selectByExample(example);
+        }else {
+            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID).andProjectNameLike("%"+projectName+"%");
+            return projectInfoGroupMapper.selectByExample(example);
+        }
     }
 }

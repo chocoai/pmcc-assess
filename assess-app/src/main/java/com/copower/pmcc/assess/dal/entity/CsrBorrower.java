@@ -11,6 +11,10 @@ public class CsrBorrower {
 
     private Integer groupId;
 
+    private String firstLevelBranch;
+
+    private String secondLevelBranch;
+
     private String name;
 
     private String idNumber;
@@ -26,6 +30,8 @@ public class CsrBorrower {
     private String domicilePlace;
 
     private String presentAddress;
+
+    private Boolean bisImport;
 
     private String creator;
 
@@ -63,6 +69,22 @@ public class CsrBorrower {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public String getFirstLevelBranch() {
+        return firstLevelBranch;
+    }
+
+    public void setFirstLevelBranch(String firstLevelBranch) {
+        this.firstLevelBranch = firstLevelBranch == null ? null : firstLevelBranch.trim();
+    }
+
+    public String getSecondLevelBranch() {
+        return secondLevelBranch;
+    }
+
+    public void setSecondLevelBranch(String secondLevelBranch) {
+        this.secondLevelBranch = secondLevelBranch == null ? null : secondLevelBranch.trim();
     }
 
     public String getName() {
@@ -127,6 +149,14 @@ public class CsrBorrower {
 
     public void setPresentAddress(String presentAddress) {
         this.presentAddress = presentAddress == null ? null : presentAddress.trim();
+    }
+
+    public Boolean getBisImport() {
+        return bisImport;
+    }
+
+    public void setBisImport(Boolean bisImport) {
+        this.bisImport = bisImport;
     }
 
     public String getCreator() {

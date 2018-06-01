@@ -345,6 +345,146 @@ public class CsrBorrowerExample {
             return (Criteria) this;
         }
 
+        public Criteria andFirstLevelBranchIsNull() {
+            addCriterion("first_level_branch is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchIsNotNull() {
+            addCriterion("first_level_branch is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchEqualTo(String value) {
+            addCriterion("first_level_branch =", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchNotEqualTo(String value) {
+            addCriterion("first_level_branch <>", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchGreaterThan(String value) {
+            addCriterion("first_level_branch >", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchGreaterThanOrEqualTo(String value) {
+            addCriterion("first_level_branch >=", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchLessThan(String value) {
+            addCriterion("first_level_branch <", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchLessThanOrEqualTo(String value) {
+            addCriterion("first_level_branch <=", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchLike(String value) {
+            addCriterion("first_level_branch like", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchNotLike(String value) {
+            addCriterion("first_level_branch not like", value, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchIn(List<String> values) {
+            addCriterion("first_level_branch in", values, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchNotIn(List<String> values) {
+            addCriterion("first_level_branch not in", values, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchBetween(String value1, String value2) {
+            addCriterion("first_level_branch between", value1, value2, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelBranchNotBetween(String value1, String value2) {
+            addCriterion("first_level_branch not between", value1, value2, "firstLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchIsNull() {
+            addCriterion("second_level_branch is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchIsNotNull() {
+            addCriterion("second_level_branch is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchEqualTo(String value) {
+            addCriterion("second_level_branch =", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchNotEqualTo(String value) {
+            addCriterion("second_level_branch <>", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchGreaterThan(String value) {
+            addCriterion("second_level_branch >", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchGreaterThanOrEqualTo(String value) {
+            addCriterion("second_level_branch >=", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchLessThan(String value) {
+            addCriterion("second_level_branch <", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchLessThanOrEqualTo(String value) {
+            addCriterion("second_level_branch <=", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchLike(String value) {
+            addCriterion("second_level_branch like", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchNotLike(String value) {
+            addCriterion("second_level_branch not like", value, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchIn(List<String> values) {
+            addCriterion("second_level_branch in", values, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchNotIn(List<String> values) {
+            addCriterion("second_level_branch not in", values, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchBetween(String value1, String value2) {
+            addCriterion("second_level_branch between", value1, value2, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelBranchNotBetween(String value1, String value2) {
+            addCriterion("second_level_branch not between", value1, value2, "secondLevelBranch");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -902,6 +1042,66 @@ public class CsrBorrowerExample {
 
         public Criteria andPresentAddressNotBetween(String value1, String value2) {
             addCriterion("present_address not between", value1, value2, "presentAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIsNull() {
+            addCriterion("bis_import is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIsNotNull() {
+            addCriterion("bis_import is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportEqualTo(Boolean value) {
+            addCriterion("bis_import =", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotEqualTo(Boolean value) {
+            addCriterion("bis_import <>", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThan(Boolean value) {
+            addCriterion("bis_import >", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import >=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThan(Boolean value) {
+            addCriterion("bis_import <", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_import <=", value, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportIn(List<Boolean> values) {
+            addCriterion("bis_import in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotIn(List<Boolean> values) {
+            addCriterion("bis_import not in", values, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisImportNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_import not between", value1, value2, "bisImport");
             return (Criteria) this;
         }
 
