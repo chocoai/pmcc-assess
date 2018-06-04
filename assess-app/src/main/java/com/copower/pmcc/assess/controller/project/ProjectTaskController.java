@@ -74,11 +74,11 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
-        if (StringUtils.isBlank(boxCnName)) {
+        Object boxCnName = modelAndView.getModel().get("boxCnName");
+        if (boxCnName == null) {
             modelAndView.addObject("boxCnName", String.format("%s-成果提交", projectPlanDetails.getProjectPhaseName()));
         } else {
-            modelAndView.addObject("boxCnName", String.format("%s-成果提交", boxCnName));
+            modelAndView.addObject("boxCnName", String.format("%s-成果提交", boxCnName.toString()));
         }
 
         modelAndView.addObject("boxprocess Icon", "fa-flash");
@@ -120,11 +120,11 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
-        if (StringUtils.isBlank(boxCnName)) {
+        Object boxCnName = modelAndView.getModel().get("boxCnName");
+        if (boxCnName == null) {
             modelAndView.addObject("boxCnName", String.format("%s-成果审批", projectPlanDetails.getProjectPhaseName()));
         } else {
-            modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName));
+            modelAndView.addObject("boxCnName", String.format("%s-成果审批", boxCnName.toString()));
         }
 
         modelAndView.addObject("viewUrl", viewUrl);
@@ -162,11 +162,11 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
-        if (StringUtils.isBlank(boxCnName)) {
+        Object boxCnName = modelAndView.getModel().get("boxCnName");
+        if (boxCnName == null) {
             modelAndView.addObject("boxCnName", String.format("%s-成果修改", projectPlanDetails.getProjectPhaseName()));
         } else {
-            modelAndView.addObject("boxCnName", String.format("%s-成果修改", boxCnName));
+            modelAndView.addObject("boxCnName", String.format("%s-成果修改", boxCnName.toString()));
         }
 
         modelAndView.addObject("viewUrl", viewUrl);
@@ -193,11 +193,11 @@ public class ProjectTaskController {
         List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
-        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
-        if (StringUtils.isBlank(boxCnName)) {
+        Object boxCnName = modelAndView.getModel().get("boxCnName");
+        if (boxCnName == null) {
             modelAndView.addObject("boxCnName", String.format("%s-成果详情", projectPlanDetails.getProjectPhaseName()));
         } else {
-            modelAndView.addObject("boxCnName", String.format("%s-成果详情", boxCnName));
+            modelAndView.addObject("boxCnName", String.format("%s-成果详情", boxCnName.toString()));
         }
 
         modelAndView.addObject("viewUrl", viewUrl);

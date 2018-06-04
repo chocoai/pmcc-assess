@@ -26,7 +26,7 @@ public enum BaseReportDataPoolTypeEnum {
 
     public static BaseReportDataPoolTypeEnum getEnumByName(Integer id) {
         for (BaseReportDataPoolTypeEnum e : BaseReportDataPoolTypeEnum.values()) {
-            if (e.getKey() == id) {
+            if (e.getKey().equals(id)) {
                 return e;
             }
         }

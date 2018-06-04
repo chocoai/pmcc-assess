@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.project.plan.assist;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.project.GenerateReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -30,7 +32,7 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private GenerateReportService generateReportService;
+    private CsrBorrowerService csrBorrowerService;
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
@@ -38,8 +40,8 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
         //获取报告类型
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportTypeList",reportTypeList);
-        List<GenerateReportRecordVo> reportRecordList = generateReportService.getGenerateReportRecordList(projectPlan.getProjectId(), projectPlan.getId());
-        modelAndView.addObject("reportRecordList",reportRecordList);
+        List<CsrBorrower> borrowerList = csrBorrowerService.getCsrBorrowerByProjectId(projectPlan.getProjectId());
+        modelAndView.addObject("borrowerList",borrowerList);
         return modelAndView;
     }
 

@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -45,6 +46,8 @@ public class TemplateSetController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseReportService baseReportService;
+    @Autowired
+    private CommonService commonService;
 
     @RequestMapping(value = "/templateSetIndex", name = "进入报告配置页面")
     public ModelAndView templateSetIndex() {
@@ -64,7 +67,7 @@ public class TemplateSetController {
         Integer key = BaseReportDataPoolTypeEnum.TEMPLATE.getKey();
         modelAndView.addObject("templateId", key);//模板类型
         modelAndView.addObject("templateTypeId", BaseReportTemplateTypeEnum.TEMPLATE.getKey());
-
+        modelAndView.addObject("currUserAccount",commonService.thisUserAccount());
         return modelAndView;
     }
 
