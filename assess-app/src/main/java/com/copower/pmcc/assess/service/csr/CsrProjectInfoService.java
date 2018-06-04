@@ -280,7 +280,6 @@ public class CsrProjectInfoService {
      * 发起 组项目 项目立项
      * @param csrProjectInfo
      */
-    @Transactional(rollbackFor = Exception.class)
     public void initGroupProject(CsrProjectInfo csrProjectInfo){
         List<CsrProjectInfoGroup> csrProjectInfoGroups = projectInfoGroupService.groupList(csrProjectInfo.getId());
         ProjectInfo projectInfo = null;

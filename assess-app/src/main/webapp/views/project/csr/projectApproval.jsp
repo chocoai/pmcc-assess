@@ -93,36 +93,6 @@
                     </form>
                 </div>
 
-                <div class="x_content">
-                    <form id="frmCsrBorrower" class="form-horizontal">
-                        <div class="form-group">
-                            <div>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50" placeholder="项目 名称" id="projectNameV" name="projectNameV" class="form-control">
-                                </div>
-                                <div class="col-sm-10">
-                                    <button type="button" class="btn btn-primary" onclick="loadGroupProjectTableList();">
-                                        查询
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <table class="table table-bordered" id="groupProjectTableList">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="button" class="btn btn-success" onclick="addGrpupProject()" value="创建项目组">
-                            </div>
-                        </div>
-                    </form>
-                </div>
 
                 <div class="x_title">
                     <h3> 无效数据规则</h3>
@@ -134,6 +104,43 @@
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
+
+                <div class="x_title">
+                    <h3> 项目组分派</h3>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="x_content">
+                    <form id="frmCsrBorrower" class="form-horizontal">
+                        <div class="form-group">
+                            <div>
+                                <div class="col-sm-2">
+                                    <input type="text" data-rule-maxlength="50" placeholder="项目 名称" id="projectNameV" name="projectNameV" class="form-control">
+                                </div>
+                                <div class="col-sm-5">
+                                    <button type="button" class="btn btn-primary" onclick="loadGroupProjectTableList();">
+                                        查询
+                                    </button>
+                                </div>
+                                <div class="col-sm-5">
+                                    <button type="button" class="btn btn-primary" onclick="addGrpupProject();">
+                                        创建项目组
+                                    </button>
+                                    <%--<input type="button" class="btn btn-success" onclick="addGrpupProject()" value="创建项目组">--%>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="groupProjectTableList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -281,7 +288,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
-                                        <input type="button" class="btn btn-primary" value="查询" onclick="loadBorrowerList()">
+                                        <input type="button" class="btn btn-primary" value="查询" onclick="loadBorrowerList('')">
                                     </div>
                                 </div>
 
@@ -317,7 +324,7 @@
         var result = $("#groupProjectTableList").bootstrapTable('getSelections');
         $("#csrProjectInfoGroupID").val(id);
         $("#csrProjectIdV").val('${csrProjectInfo.id}');
-        loadBorrowerList();
+        loadBorrowerList('${csrProjectInfo.id}');
         $('#divBoxCsrBorrowerSelect').modal();
     }
 
@@ -458,7 +465,10 @@
         loadGroupProjectTableList();
     });
     //加载 客户信息 数据列表
-    function loadBorrowerList() {
+    function loadBorrowerList(csrProjectInfoID) {
+        if (csrProjectInfoID==''){
+            csrProjectInfoID = $("#csrProjectIdV").val();
+        }
         var cols = [];
         cols.push({field: 'checkbox', checkbox:true});
         cols.push({field: 'name', title: '名字'});
@@ -472,7 +482,7 @@
         TableInit("csrBorrowerTableList", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
             secondLevelBranch:$("#secondLevelBranch").val(),
             firstLevelBranch:$("#firstLevelBranch").val(),
-            csrProjectInfoID:""
+            csrProjectInfoID:csrProjectInfoID
         }, {
             showColumns: false,
             showRefresh: false,
@@ -487,7 +497,7 @@
     //加载项目组信息
     function loadGroupProjectTableList() {
         var cols = [];
-        cols.push({field: 'radio', radio:true});
+        // cols.push({field: 'radio', radio:true});
         cols.push({field: 'projectName', title: '项目组名字'});
         cols.push({field: 'id', visible:false,title:"id"});
         cols.push({field: 'projectManagerName', title: '项目经理'});
@@ -565,12 +575,12 @@
             url: "${pageContext.request.contextPath}/csrProjectInfo/checkCsrBorrower",
             type: "post",
             dataType: "json",
+            data:{csrProjectInfoID:'${csrProjectInfo.id}'},
             success: function (result) {
                 if (result.ret) {
                     alert(result.data);
                     //检测成功!
                     var data = formParams("frm_approval");
-                    data.csrProjectInfoID = ${csrProjectInfo.id};
                     Loading.progressShow();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",

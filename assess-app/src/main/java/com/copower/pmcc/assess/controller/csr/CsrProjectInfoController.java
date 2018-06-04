@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -144,12 +145,16 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method ={ RequestMethod.POST})
-    public HttpResult checkCsrBorrower(Integer csrProjectInfoID){
-        int size = service.checkCsrBorrower();
-        if (size > 0){
-            return HttpResult.newErrorResult("没有分派完成!");
+    public HttpResult checkCsrBorrower(@RequestParam(value = "csrProjectInfoID") String csrProjectInfoID){
+        if (!StringUtils.isEmpty(csrProjectInfoID)){
+            int size = service.checkCsrBorrower(Integer.parseInt(csrProjectInfoID));
+            if (size > 0){
+                return HttpResult.newErrorResult("没有分派完成!");
+            }else {
+                return HttpResult.newCorrectResult("分派完成!");
+            }
         }else {
-            return HttpResult.newCorrectResult("分派完成!");
+            return HttpResult.newErrorResult("数据异常!!");
         }
     }
 
