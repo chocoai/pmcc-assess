@@ -79,7 +79,21 @@
                                class="form-control" readonly="readonly">
                     </div>
                 </div>
+            </div>
 
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">项目分配人</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${csrProjectInfo.distributionUserName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">项目类别</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${csrProjectInfo.projectCategoryName}</label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -90,6 +104,27 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">客户附件</label>
+                    <div class="col-sm-11">
+                        <div id="_upload_file"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        FileUtils.getFileShows({
+            target: "upload_file",
+            formData: {
+                tableName: "tb_csr_project_info",
+                tableId: '${csrProjectInfo.id}'
+            },
+            deleteFlag: false
+        });
+    });
+</script>

@@ -14,6 +14,7 @@ public class CsrProjectInfoVo extends CsrProjectInfo {
     private String customerTypeName;
     private String entrustPurposeName;
     private String statusName;
+    private String projectCategoryName;
     private List<CsrProjectInfoGroupVo> csrProjectInfoGroupVos = new ArrayList<>();
 
     public String getStatusName() {
@@ -62,5 +63,13 @@ public class CsrProjectInfoVo extends CsrProjectInfo {
 
     public void setProjectTypeName(String projectTypeName) {
         this.projectTypeName = projectTypeName;
+    }
+
+    public String getProjectCategoryName() {
+        return projectCategoryName;
+    }
+
+    public void setProjectCategoryName(String projectCategoryName) {
+        this.projectCategoryName = projectCategoryName;
     }
 }
