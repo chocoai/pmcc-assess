@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -145,6 +146,17 @@ public class CsrProjectInfoService {
                 }
             }
         }
+        List<CsrProjectInfoGroup> csrProjectInfoGroupVos = projectInfoGroupService.groupList(csrProjectInfo.getId());
+        List<CsrProjectInfoGroupVo> vos =  new ArrayList<>();
+        for (CsrProjectInfoGroup csrProjectInfoGroup:csrProjectInfoGroupVos){
+            vos.add(projectInfoGroupService.change(csrProjectInfoGroup));
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo)){
+            csrProjectInfoVo.setProjectTypeName("债券项目");
+        }else {
+            csrProjectInfoVo.setProjectTypeName("默认项目");
+        }
+        csrProjectInfoVo.setCsrProjectInfoGroupVos(vos);
         return csrProjectInfoVo;
     }
 
@@ -346,7 +358,7 @@ public class CsrProjectInfoService {
                     projectMemberDto.setCreator(csrProjectInfo.getCreator());
                     projectMemberDto.setUserAccountManager(infoGroup.getProjectManager());
                     projectMemberDto.setUserAccountMember(infoGroup.getProjectMember());
-                    projectMemberService.saveReturnId(projectMemberDto);
+                    int k = projectMemberService.saveReturnId(projectMemberDto);
 
                     //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
@@ -354,6 +366,8 @@ public class CsrProjectInfoService {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
+                    projectInfo.setProjectMemberId(k);
+                    projectInfoService.updateProjectInfo(projectInfo);
                     //项目立项
                     projectInfoService.initProjectInfo(projectInfo);
                 } catch (Exception e) {
