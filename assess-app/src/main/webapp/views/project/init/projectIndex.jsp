@@ -25,6 +25,35 @@
                         <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
                         <div class="form-group">
                             <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目类型<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="projectTypeId" name="projectTypeId" class="form-control"
+                                            required="required" onchange="loadProjectCategoryList($('#projectTypeId').val())">
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${projectTypeList}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.id==projectInfo.projectTypeId}">
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="projectCategoryId" name="projectCategoryId" class="form-control" required="required">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
                                 <div class="col-sm-11">
                                     <input required placeholder="项目名称" id="projectName" name="projectName"
@@ -1179,6 +1208,10 @@
 
 </script>
 <script type="text/javascript">
+    $(function () {
+        loadProjectCategoryList('${projectInfo.projectTypeId}','${projectInfo.projectCategoryId}');
+    })
+
     /*省 市 县 js*/
     function tableNameA() {
         $("#province").change(function () {//监听 选择的省份
@@ -1709,6 +1742,19 @@
         data.unitinformation = unitinformation;
         //合并json
         json = JSON.stringify(data);
+    }
+
+    //加载项目类别
+    function loadProjectCategoryList(projectTypeId,projectCategoryId) {
+        $("#projectCategoryId").empty();
+        if(projectTypeId){
+            AssessCommon.getProjectCategoryList(projectTypeId,function (html,data) {
+                $("#projectCategoryId").append(html);
+                if(projectCategoryId){
+                    $("#projectCategoryId").val(projectCategoryId);
+                }
+            })
+        }
     }
 
     function projectApply() {

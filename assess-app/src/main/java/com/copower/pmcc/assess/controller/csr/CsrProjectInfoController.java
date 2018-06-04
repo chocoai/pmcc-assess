@@ -2,12 +2,14 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoGroupService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
@@ -22,11 +24,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-5-31.
@@ -47,6 +52,8 @@ public class CsrProjectInfoController {
     private CsrProjectInfoGroupService projectInfoGroupService;
     @Autowired
     private CsrBorrowerService service;
+    @Autowired
+    private BaseProjectCategoryService baseProjectCategoryService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view() {
@@ -59,6 +66,9 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = new CsrProjectInfoVo();
         csrProjectInfo.setId(0);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
+
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
@@ -68,6 +78,8 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
@@ -85,7 +97,7 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData,String string) {
+    public HttpResult projectApplySubmit(String formData) {
         try {
             CsrProjectInfo csrProjectInfo = JSON.parseObject(formData, CsrProjectInfo.class);
             csrProjectInfoService.csrProjectApply(csrProjectInfo);
@@ -137,19 +149,23 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch) {
-        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch);
+    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID) {
+        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch,csrProjectInfoID);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method ={ RequestMethod.POST})
-    public HttpResult checkCsrBorrower(){
-        int size = service.checkCsrBorrower();
-        if (size > 0){
-            return HttpResult.newErrorResult("没有分派完成!");
+    public HttpResult checkCsrBorrower(@RequestParam(value = "csrProjectInfoID") String csrProjectInfoID){
+        if (!StringUtils.isEmpty(csrProjectInfoID)){
+            int size = service.checkCsrBorrower(Integer.parseInt(csrProjectInfoID));
+            if (size > 0){
+                return HttpResult.newErrorResult("没有分派完成!");
+            }else {
+                return HttpResult.newCorrectResult("分派完成!");
+            }
         }else {
-            return HttpResult.newCorrectResult("分派完成!");
+            return HttpResult.newErrorResult("数据异常!!");
         }
     }
 

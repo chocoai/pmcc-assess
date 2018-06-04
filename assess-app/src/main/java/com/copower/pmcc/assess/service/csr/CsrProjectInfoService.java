@@ -252,8 +252,10 @@ public class CsrProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void crsProjectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //组项目 立项
-        CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
-        initGroupProject(csrProjectInfo);
+        if(StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(),TaskHandleStateEnum.AGREE.getValue()) ){
+            CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
+            initGroupProject(csrProjectInfo);
+        }
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
@@ -280,37 +282,40 @@ public class CsrProjectInfoService {
      * 发起 组项目 项目立项
      * @param csrProjectInfo
      */
-    @Transactional(rollbackFor = Exception.class)
     public void initGroupProject(CsrProjectInfo csrProjectInfo){
         List<CsrProjectInfoGroup> csrProjectInfoGroups = projectInfoGroupService.groupList(csrProjectInfo.getId());
         ProjectInfo projectInfo = null;
         for (CsrProjectInfoGroup infoGroup:csrProjectInfoGroups){
             if (!ObjectUtils.isEmpty(infoGroup)){
                 try {
+                    //保存项目信息
                     projectInfo = new ProjectInfo();
+                    projectInfo.setProjectClassId(0);
+                    projectInfo.setEntrustPurpose(csrProjectInfo.getEntrustPurpose());
+                    projectInfo.setProjectTypeId(csrProjectInfo.getProjectTypeId());
+                    projectInfo.setProjectCategoryId(csrProjectInfo.getProjectCategoryId());
                     projectInfo.setCreator(csrProjectInfo.getCreator());
                     projectInfo.setProjectName(infoGroup.getProjectName());
+                    int projectId = projectInfoService.saveProjectInfo_returnID(projectInfo);
+
+                    //保存项目成员
                     ProjectMemberDto projectMemberDto = new ProjectMemberDto();
+                    projectMemberDto.setProjectId(projectId);
                     projectMemberDto.setCreator(csrProjectInfo.getCreator());
                     projectMemberDto.setUserAccountManager(infoGroup.getProjectManager());
                     projectMemberDto.setUserAccountMember(infoGroup.getProjectMember());
-                    int i = projectMemberService.saveReturnId(projectMemberDto);
-                    projectInfo.setProjectMemberId(i);
-                    int k = projectInfoService.saveProjectInfo_returnID(projectInfo);
+                    projectMemberService.saveReturnId(projectMemberDto);
+
+                    //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
                     for (CsrBorrower csrBorrower:csrBorrowers){
-                        csrBorrower.setProjectId(k);
+                        csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
                     //项目立项
                     projectInfoService.initProjectInfo(projectInfo);
                 }catch (Exception e){
-                    try {
-                        logger.error("异常!");
-                        throw  e;
-                    }catch (Exception e1){
-
-                    }
+                    logger.error("初始化项目异常，原因："+e.getMessage());
                 }
             }
         }
@@ -391,7 +396,7 @@ public class CsrProjectInfoService {
                     if (!invalidRuleIndexMap.isEmpty()) {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
-                            isFilter = isFilter(ruleList, integerStringEntry.getValue(), row.getCell(integerStringEntry.getKey()).getStringCellValue());
+                            isFilter = isFilter(ruleList, integerStringEntry.getValue(),getCellValue(row.getCell(integerStringEntry.getKey())));
                             if (isFilter) continue;
                         }
                         if (isFilter) continue;
