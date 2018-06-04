@@ -264,13 +264,13 @@
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_report_template",
-                    creater: "${currUserInfo.userAccount}",
+                    creater: "${currUserAccount}",
                     tableId: $("#id").val()
                 };
                 $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
             },
             onUploadComplete: function () {
-                loadTemplateAttachment($("#id").val(), "${currUserInfo.userAccount}");
+                loadTemplateAttachment($("#id").val(), "${currUserAccount}");
             }
         });
 

@@ -113,24 +113,26 @@ public class BaseReportService {
                 baseReportTemplateVo.setDataPoolTypename("");
             } else {
                 BaseReportDataPoolTypeEnum enumByName = BaseReportDataPoolTypeEnum.getEnumByName(baseReportTemplate.getDataPoolType());
-                baseReportTemplateVo.setTypeName(enumByName.getName());
-                switch (enumByName) {
-                    case FILES:
-                    case COLUMNS: {
-                        BaseReportTable baseReportTableById = baseReportDao.getBaseReportTableById(baseReportTemplate.getDataPoolTableId());
-                        BaseReportColumns baseReportColumnsById = baseReportDao.getBaseReportColumnsById(baseReportTemplate.getDataPoolColumnsId());
-                        if (baseReportTableById != null && baseReportColumnsById != null) {
-                            baseReportTemplateVo.setDataPoolTypename(String.format("%s - %s", baseReportTableById.getCnName(), baseReportColumnsById.getColumnsCnName()));
-                        }
+                if (enumByName != null) {
+                    baseReportTemplateVo.setTypeName(enumByName.getName());
+                    switch (enumByName) {
+                        case FILES:
+                        case COLUMNS: {
+                            BaseReportTable baseReportTableById = baseReportDao.getBaseReportTableById(baseReportTemplate.getDataPoolTableId());
+                            BaseReportColumns baseReportColumnsById = baseReportDao.getBaseReportColumnsById(baseReportTemplate.getDataPoolColumnsId());
+                            if (baseReportTableById != null && baseReportColumnsById != null) {
+                                baseReportTemplateVo.setDataPoolTypename(String.format("%s - %s", baseReportTableById.getCnName(), baseReportColumnsById.getColumnsCnName()));
+                            }
 
-                        break;
-                    }
-                    case TEMPLATE: {
-                        BaseReportTemplate baseReportTemplateById = baseReportDao.getBaseReportTemplateById(baseReportTemplate.getDataPoolTemplateId());
-                        if (baseReportTemplateById != null) {
-                            baseReportTemplateVo.setDataPoolTypename(String.format("模板 - %s", baseReportTemplateById.getBookmarkName()));
+                            break;
                         }
-                        break;
+                        case TEMPLATE: {
+                            BaseReportTemplate baseReportTemplateById = baseReportDao.getBaseReportTemplateById(baseReportTemplate.getDataPoolTemplateId());
+                            if (baseReportTemplateById != null) {
+                                baseReportTemplateVo.setDataPoolTypename(String.format("模板 - %s", baseReportTemplateById.getBookmarkName()));
+                            }
+                            break;
+                        }
                     }
                 }
             }
