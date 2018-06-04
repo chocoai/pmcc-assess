@@ -114,7 +114,7 @@ public class CsrProjectInfoController {
      */
     @ResponseBody
     @RequestMapping(value = "/projectApprovalSubmit", method = RequestMethod.POST)
-    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto,Integer csrProjectInfoID) {
+    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto, Integer csrProjectInfoID) {
         try {
             csrProjectInfoService.crsProjectApproval(approvalModelDto);
         } catch (Exception e) {
@@ -141,38 +141,39 @@ public class CsrProjectInfoController {
     }
 
     @RequestMapping(value = "/projectDetails", name = "项目详情")
-    public ModelAndView projectDetails(Integer projectId) throws BusinessException {
-        ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
-
+    public ModelAndView projectDetails(Integer csrProjectInfoID) throws BusinessException {
+        ModelAndView modelAndView = new ModelAndView("/project/projectCsrDetails");
+        CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
+        modelAndView.addObject("csrProjectInfo",csrProjectInfo);
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID) {
-        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch,csrProjectInfoID);
+    @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method = {RequestMethod.GET})
+    public BootstrapTableVo list(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID) {
+        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch, firstLevelBranch, csrProjectInfoID);
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method ={ RequestMethod.POST})
-    public HttpResult checkCsrBorrower(@RequestParam(value = "csrProjectInfoID") String csrProjectInfoID){
-        if (!StringUtils.isEmpty(csrProjectInfoID)){
+    @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method = {RequestMethod.POST})
+    public HttpResult checkCsrBorrower(@RequestParam(value = "csrProjectInfoID") String csrProjectInfoID) {
+        if (!StringUtils.isEmpty(csrProjectInfoID)) {
             int size = service.checkCsrBorrower(Integer.parseInt(csrProjectInfoID));
-            if (size > 0){
+            if (size > 0) {
                 return HttpResult.newErrorResult("没有分派完成!");
-            }else {
+            } else {
                 return HttpResult.newCorrectResult("分派完成!");
             }
-        }else {
+        } else {
             return HttpResult.newErrorResult("数据异常!!");
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/groupVoList", name = "显示列表 项目组信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo groupVoList(Integer projectID,String projectName) {
-        BootstrapTableVo vo = projectInfoGroupService.groupVoList(projectID,projectName);
+    @RequestMapping(value = "/groupVoList", name = "显示列表 项目组信息", method = {RequestMethod.GET})
+    public BootstrapTableVo groupVoList(Integer projectID, String projectName) {
+        BootstrapTableVo vo = projectInfoGroupService.groupVoList(projectID, projectName);
         return vo;
     }
 
@@ -180,7 +181,7 @@ public class CsrProjectInfoController {
     @RequestMapping(value = "/saveAndUpdateGroupProject", method = {RequestMethod.POST}, name = "项目组 增加与修改")
     public HttpResult saveAndUpdateGroupProject(CsrProjectInfoGroup csrProjectInfoGroup) {
         try {
-            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)){
+            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)) {
                 projectInfoGroupService.saveAndUpdate(csrProjectInfoGroup);
             }
         } catch (Exception e) {
@@ -191,11 +192,11 @@ public class CsrProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/groupProject/get", name = "项目组 删除",method = RequestMethod.GET)
-    public Object getGroupProjectByID(Integer id){
+    @RequestMapping(value = "/groupProject/get", name = "项目组 删除", method = RequestMethod.GET)
+    public Object getGroupProjectByID(Integer id) {
         try {
             CsrProjectInfoGroupVo csrProjectInfoGroup = projectInfoGroupService.getByID(id);
-            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)){
+            if (!ObjectUtils.isEmpty(csrProjectInfoGroup)) {
                 return csrProjectInfoGroup;
             }
         } catch (Exception e) {
@@ -206,7 +207,7 @@ public class CsrProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/groupProject/delete", name = "项目组 删除",method = RequestMethod.POST)
+    @RequestMapping(value = "/groupProject/delete", name = "项目组 删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             projectInfoGroupService.delete(id);
@@ -221,7 +222,7 @@ public class CsrProjectInfoController {
     @RequestMapping(value = "/submitGroupProject", method = {RequestMethod.POST}, name = "项目组 分派")
     public HttpResult submitGroupProject(CsrProjectInfoGroupSubmitDto submitDto) {
         try {
-            if (!ObjectUtils.isEmpty(submitDto)){
+            if (!ObjectUtils.isEmpty(submitDto)) {
                 projectInfoGroupService.submitGroup(submitDto);
             }
         } catch (Exception e) {

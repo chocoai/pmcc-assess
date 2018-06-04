@@ -14,6 +14,9 @@
     <a class="btn btn-danger" href="${pageContext.request.contextPath}/csrProjectInfo/projectIndex" target="_blank">
         新建债权项目
     </a>
+    <a class="btn btn-primary" href="${pageContext.request.contextPath}/projectCenter/projectCsrList?menuid=${menuid}" target="_self">
+        债权项目列表
+    </a>
     <a class="btn btn-primary" href="${pageContext.request.contextPath}/projectCenter/projectList?menuid=${menuid}" target="_self">
         项目列表
     </a>

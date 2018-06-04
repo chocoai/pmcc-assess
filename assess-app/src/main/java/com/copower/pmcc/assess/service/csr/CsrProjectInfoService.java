@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -29,14 +30,20 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,7 +57,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
+import java.util.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,9 +65,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-5-31.
@@ -128,29 +133,46 @@ public class CsrProjectInfoService {
             if (sysUser != null)
                 csrProjectInfoVo.setDistributionUserName(sysUser.getUserName());
         }
-        if(csrProjectInfo.getEntrustPurpose()!=null){
+        if (csrProjectInfo.getEntrustPurpose() != null) {
             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(csrProjectInfo.getEntrustPurpose());
-            if(baseDataDic!=null)
+            if (baseDataDic != null)
                 csrProjectInfoVo.setEntrustPurposeName(baseDataDic.getName());
         }
-        if(csrProjectInfo.getCustomerType()!=null){
+        if (csrProjectInfo.getCustomerType() != null) {
             CustomerTypeEnum[] customerTypeEnums = CustomerTypeEnum.values();
             for (CustomerTypeEnum customerTypeEnum : customerTypeEnums) {
-                if(csrProjectInfo.getCustomerType().equals(customerTypeEnum.getId())){
+                if (csrProjectInfo.getCustomerType().equals(customerTypeEnum.getId())) {
                     csrProjectInfoVo.setCustomerTypeName(customerTypeEnum.getName());
                 }
             }
         }
+        List<CsrProjectInfoGroup> csrProjectInfoGroupVos = projectInfoGroupService.groupList(csrProjectInfo.getId());
+        List<CsrProjectInfoGroupVo> vos =  new ArrayList<>();
+        for (CsrProjectInfoGroup csrProjectInfoGroup:csrProjectInfoGroupVos){
+            vos.add(projectInfoGroupService.change(csrProjectInfoGroup));
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo)){
+            csrProjectInfoVo.setProjectTypeName("债券项目");
+        }else {
+            csrProjectInfoVo.setProjectTypeName("默认项目");
+        }
+        csrProjectInfoVo.setCsrProjectInfoGroupVos(vos);
         return csrProjectInfoVo;
     }
 
     /**
      * 根据流程实例id获取数据
+     *
      * @param processInsId
      * @return
      */
-    public CsrProjectInfoVo getCsrProjectInfoVo(String processInsId){
+    public CsrProjectInfoVo getCsrProjectInfoVo(String processInsId) {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(processInsId);
+        return getCsrProjectInfoVo(csrProjectInfo);
+    }
+
+    public CsrProjectInfoVo getById(Integer id) {
+        CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(id);
         return getCsrProjectInfoVo(csrProjectInfo);
     }
 
@@ -221,12 +243,13 @@ public class CsrProjectInfoService {
 
     /**
      * 清空原导入的数据
+     *
      * @param csrProjectInfo
      */
-    private void cleanImportData(CsrProjectInfo csrProjectInfo){
+    private void cleanImportData(CsrProjectInfo csrProjectInfo) {
         List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
-        if(CollectionUtils.isNotEmpty(csrBorrowers)){
-            csrBorrowers.forEach(p->{
+        if (CollectionUtils.isNotEmpty(csrBorrowers)) {
+            csrBorrowers.forEach(p -> {
                 csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
                 csrcalculationDao.deleteByBorrowerId(p.getId());
                 csrContractDao.deleteByBorrowerId(p.getId());
@@ -241,6 +264,7 @@ public class CsrProjectInfoService {
 
     /**
      * 读取数据
+     *
      * @param csrProjectInfo
      */
     private void readImportData(CsrProjectInfo csrProjectInfo) {
@@ -281,7 +305,7 @@ public class CsrProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void crsProjectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //组项目 立项
-        if(StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(),TaskHandleStateEnum.AGREE.getValue()) ){
+        if (StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(), TaskHandleStateEnum.AGREE.getValue())) {
             CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
             initGroupProject(csrProjectInfo);
         }
@@ -312,13 +336,14 @@ public class CsrProjectInfoService {
 
     /**
      * 发起 组项目 项目立项
+     *
      * @param csrProjectInfo
      */
-    public void initGroupProject(CsrProjectInfo csrProjectInfo){
+    public void initGroupProject(CsrProjectInfo csrProjectInfo) {
         List<CsrProjectInfoGroup> csrProjectInfoGroups = projectInfoGroupService.groupList(csrProjectInfo.getId());
         ProjectInfo projectInfo = null;
-        for (CsrProjectInfoGroup infoGroup:csrProjectInfoGroups){
-            if (!ObjectUtils.isEmpty(infoGroup)){
+        for (CsrProjectInfoGroup infoGroup : csrProjectInfoGroups) {
+            if (!ObjectUtils.isEmpty(infoGroup)) {
                 try {
                     //保存项目信息
                     projectInfo = new ProjectInfo();
@@ -336,18 +361,25 @@ public class CsrProjectInfoService {
                     projectMemberDto.setCreator(csrProjectInfo.getCreator());
                     projectMemberDto.setUserAccountManager(infoGroup.getProjectManager());
                     projectMemberDto.setUserAccountMember(infoGroup.getProjectMember());
-                    projectMemberService.saveReturnId(projectMemberDto);
+                    int k = projectMemberService.saveReturnId(projectMemberDto);
 
                     //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
-                    for (CsrBorrower csrBorrower:csrBorrowers){
+                    for (CsrBorrower csrBorrower : csrBorrowers) {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
+                    projectInfo.setProjectMemberId(k);
+                    projectInfoService.updateProjectInfo(projectInfo);
                     //项目立项
                     projectInfoService.initProjectInfo(projectInfo);
-                }catch (Exception e){
-                    logger.error("初始化项目异常，原因："+e.getMessage());
+                } catch (Exception e) {
+                    try {
+                        logger.error("初始化项目异常，原因：" + e.getMessage());
+                        throw e;
+                    } catch (Exception e1) {
+
+                    }
                 }
             }
         }
@@ -386,7 +418,7 @@ public class CsrProjectInfoService {
         int coloumNum = sheet.getRow(0).getPhysicalNumberOfCells();//总列数
         int startRowNumber = csrProjectInfo.getStartRowNumber();//读取业务数据的起始行序号
         List<DataCsrFieldRelation> fieldRelations = dataCsrFieldRelationService.getAllList();
-        List<CsrInvalidRule> ruleList =csrInvalidRuleService.getRuleList(csrProjectInfo.getId());//过滤规则数据
+        List<CsrInvalidRule> ruleList = csrInvalidRuleService.getRuleList(csrProjectInfo.getId());//过滤规则数据
         HashMap<Integer, String> invalidRuleIndexMap = Maps.newHashMap();//需要参与过滤的列
         HashMap<Integer, CsrImportColumnDto> hashMap = Maps.newHashMap();
         HSSFRow row = null;
@@ -428,7 +460,7 @@ public class CsrProjectInfoService {
                     if (!invalidRuleIndexMap.isEmpty()) {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
-                            isFilter = isFilter(ruleList, integerStringEntry.getValue(),getCellValue(row.getCell(integerStringEntry.getKey())));
+                            isFilter = isFilter(ruleList, integerStringEntry.getValue(), getCellValue(row.getCell(integerStringEntry.getKey())));
                             if (isFilter) continue;
                         }
                         if (isFilter) continue;
@@ -666,5 +698,56 @@ public class CsrProjectInfoService {
             }
         }
         return null;
+    }
+
+    /**
+     * 债权人列表信息
+     *
+     * @return
+     */
+    public BootstrapTableVo csrProjectInfoListA(String name) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CsrProjectInfo> csrProjectInfos = csrProjectInfoDao.getCsrProjectInfoList(name);
+        List<CsrProjectInfoVo> vos = new ArrayList<CsrProjectInfoVo>();
+        for (CsrProjectInfo projectInfo : csrProjectInfos) {
+            vos.add(change(projectInfo));
+        }
+        vo.setRows(vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public CsrProjectInfoVo change(CsrProjectInfo csrProjectInfo) {
+        CsrProjectInfoVo vo = new CsrProjectInfoVo();
+        BeanUtils.copyProperties(csrProjectInfo, vo);
+        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfo.getStatus())) {
+            vo.setStatusName(getProjectStatusEnum(csrProjectInfo.getStatus()));
+        }
+        if (!ObjectUtils.isEmpty(csrProjectInfo.getCustomerType())) {
+            vo.setCustomerTypeName(getCustomerTypeEnum(csrProjectInfo.getCustomerType()));
+        }
+        return vo;
+    }
+
+    public String getProjectStatusEnum(String key) {
+        String name = "";
+        for (ProjectStatusEnum s : ProjectStatusEnum.values()) {
+            if (key.equals(s.getKey())) {
+                name = s.getName();
+            }
+        }
+        return name;
+    }
+
+    public String getCustomerTypeEnum(Integer key) {
+        String name = "";
+        for (CustomerTypeEnum s : CustomerTypeEnum.values()) {
+            if (s.getId().equals(key)) {
+                name = s.getName();
+            }
+        }
+        return name;
     }
 }
