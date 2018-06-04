@@ -111,4 +111,8 @@ public class HousePriceIndexService {
         vo.setTotal(page.getTotal());
         return vo;
     }
+
+    public List<HousePriceIndex> getData() {
+       return housePriceIndexDao.getData();
+    }
 }

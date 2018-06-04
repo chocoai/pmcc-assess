@@ -74,7 +74,7 @@ public class CsrProjectInfoGroupService {
         for (String id:ids){
             if (!StringUtils.isEmpty(id)){
                 CsrBorrower csrBorrower = csrBorrowerDao.getCsrBorrowerByID(Integer.parseInt(id));
-                csrBorrower.setProjectId(submitDto.getCsrProjectId());
+                csrBorrower.setCsrProjectId(submitDto.getCsrProjectId());
                 csrBorrower.setGroupId(submitDto.getCsrProjectInfoGroupID());
                 csrBorrowerDao.update(csrBorrower);
             }
@@ -82,8 +82,13 @@ public class CsrProjectInfoGroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<CsrProjectInfoGroup> groupList(Integer projectID,String projectName) {
-        return projectInfoGroupDao.groupList(projectID,projectName);
+    public List<CsrProjectInfoGroup> groupList(Integer csrProjectId, String projectName) {
+        return projectInfoGroupDao.groupList(csrProjectId,projectName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CsrProjectInfoGroup> groupList(Integer csrProjectId){
+        return projectInfoGroupDao.groupList(csrProjectId);
     }
 
     public BootstrapTableVo groupVoList(Integer projectID,String projectName) {

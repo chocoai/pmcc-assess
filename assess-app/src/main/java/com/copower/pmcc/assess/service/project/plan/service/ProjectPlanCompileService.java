@@ -40,7 +40,10 @@ public class ProjectPlanCompileService {
         Integer planId = projectPlan.getId();
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
-        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(planId, projectId);
+        ProjectPlanDetails projectPlanDetailsWhere=new ProjectPlanDetails();
+        projectPlanDetailsWhere.setProjectId(projectId);
+        projectPlanDetailsWhere.setPlanId(planId);
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
         if (CollectionUtils.isNotEmpty(planDetails)) {
             return modelAndView;//避免重复初始化
         }

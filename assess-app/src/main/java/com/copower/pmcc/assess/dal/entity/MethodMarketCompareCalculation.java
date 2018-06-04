@@ -11,13 +11,15 @@ public class MethodMarketCompareCalculation {
 
     private Integer type;
 
-    private Object jsonContent;
+    private String jsonContent;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer compareIndexId;
 
     public Integer getId() {
         return id;
@@ -51,12 +53,12 @@ public class MethodMarketCompareCalculation {
         this.type = type;
     }
 
-    public Object getJsonContent() {
+    public String getJsonContent() {
         return jsonContent;
     }
 
-    public void setJsonContent(Object jsonContent) {
-        this.jsonContent = jsonContent;
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public String getCreator() {
@@ -81,5 +83,13 @@ public class MethodMarketCompareCalculation {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getCompareIndexId() {
+        return compareIndexId;
+    }
+
+    public void setCompareIndexId(Integer compareIndexId) {
+        this.compareIndexId = compareIndexId;
     }
 }

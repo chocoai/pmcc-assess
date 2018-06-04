@@ -41,16 +41,16 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByPrimaryKey(id);
     }
 
-    public List<CsrBorrower> borrowerLists(String secondLevelBranch,String firstLevelBranch){
+    public List<CsrBorrower> borrowerLists(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID){
         CsrBorrowerExample example = new CsrBorrowerExample();
         if (StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andSecondLevelBranchLike("%"+secondLevelBranch+"%");
+            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
         }else if (!StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%");
+            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
         }else if (!StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andSecondLevelBranchLike("%"+secondLevelBranch+"%");
+            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
         }else if (StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull();
+            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andCsrProjectIdEqualTo(csrProjectInfoID);
         }
         return csrBorrowerMapper.selectByExample(example);
     }
@@ -60,4 +60,11 @@ public class CsrBorrowerDao {
         example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
         return csrBorrowerMapper.selectByExample(example);
     }
+
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(csrProjectID);
+        return csrBorrowerMapper.selectByExample(example);
+    }
+
 }

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanDetailsMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,27 +22,16 @@ public class ProjectPlanDetailsDao {
 
     /**
      * 获取数据列表
-     *
-     * @param planId
-     * @param projectId
      * @return
      */
-    public List<ProjectPlanDetails> getListObject(Integer planId, Integer projectId) {
-        if (planId == null || projectId == null)
-            return null;
+    public List<ProjectPlanDetails> getListObject(ProjectPlanDetails projectPlanDetails) {
+
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andProjectIdEqualTo(projectId).andPlanIdEqualTo(planId);
-        example.setOrderByClause("sorting");
+        MybatisUtils.convertObj2Example(projectPlanDetails,example);
+        example.setOrderByClause("sorting,project_phase_id");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    //项目计划明细
-    public List<ProjectPlanDetails> getProjectPlanDetailsList(ProjectPlanDetails projectPlan) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.setOrderByClause("sorting,project_phase_id");
-        MybatisUtils.convertObj2Example(projectPlan, example);
-        return projectPlanDetailsMapper.selectByExample(example);
-    }
 
     public ProjectPlanDetails getProjectPlanDetailsItemById(Integer id) {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
@@ -87,8 +77,8 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.countByExample(example);
     }
 
-    public Boolean addProjectPlanDetails(ProjectPlanDetails projectPlan) {
-        int i = projectPlanDetailsMapper.insertSelective(projectPlan);
+    public Boolean addProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
+        int i = projectPlanDetailsMapper.insertSelective(projectPlanDetails);
         return i == 1;
     }
 
@@ -98,8 +88,8 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public Boolean updateProjectPlanDetails(ProjectPlanDetails projectPlan) {
-        int i = projectPlanDetailsMapper.updateByPrimaryKeySelective(projectPlan);
+    public Boolean updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
+        int i = projectPlanDetailsMapper.updateByPrimaryKeySelective(projectPlanDetails);
         return i == 1;
     }
 
@@ -133,15 +123,5 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectIdAndName(Integer projectId, String name, Integer workStageId) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andProjectIdEqualTo(projectId).andProjectPhaseNameEqualTo(name).andProjectWorkStageIdEqualTo(workStageId);
-        return projectPlanDetailsMapper.selectByExample(example);
-    }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPid(Integer pid) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPidEqualTo(pid);
-        return projectPlanDetailsMapper.selectByExample(example);
-    }
 }

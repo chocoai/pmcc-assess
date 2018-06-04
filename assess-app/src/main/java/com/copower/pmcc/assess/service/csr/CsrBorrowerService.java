@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.csr;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
@@ -25,16 +26,23 @@ public class CsrBorrowerService {
     @Autowired
     private CsrBorrowerDao csrBorrowerDao;
 
-    public BootstrapTableVo borrowerLists(String secondLevelBranch,String firstLevelBranch) {
+    public BootstrapTableVo borrowerLists(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrBorrower> vos = csrBorrowerDao.borrowerLists(secondLevelBranch,firstLevelBranch);
+        List<CsrBorrower> vos = csrBorrowerDao.borrowerLists(secondLevelBranch,firstLevelBranch,csrProjectInfoID);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CsrBorrower>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
+    public Integer checkCsrBorrower(Integer csrProjectInfoID){
+        return csrBorrowerDao.borrowerLists(null,null,csrProjectInfoID).size();
+    }
+
+     public boolean update(CsrBorrower csrBorrower){
+        return csrBorrowerDao.update(csrBorrower);
+     }
 
     public List<CsrBorrower> getCsrBorrowerByProjectId(Integer projectId) {
         CsrBorrower csrBorrower = new CsrBorrower();
@@ -42,4 +50,24 @@ public class CsrBorrowerService {
         return csrBorrowerDao.getCsrBorrowerList(projectId);
     }
 
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID){
+        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID);
+    }
+
+    public CsrBorrower saveCsrBorrower(CsrBorrower csrBorrower) throws BusinessException
+    {
+        try {
+            if(csrBorrower.getId()==null && csrBorrower.getId()<=0)
+            {
+                csrBorrowerDao.addCsrBorrower(csrBorrower);
+            }
+            else
+            {
+                csrBorrowerDao.update(csrBorrower);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return csrBorrower;
+    }
 }

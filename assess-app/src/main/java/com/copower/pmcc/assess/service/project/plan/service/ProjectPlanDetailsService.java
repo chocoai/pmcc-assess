@@ -3,10 +3,12 @@ package com.copower.pmcc.assess.service.project.plan.service;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataDeclareFormService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -48,6 +50,8 @@ public class ProjectPlanDetailsService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private DataDeclareFormService dataDeclareFormService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -61,9 +65,11 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, true);
     }
+
     public List<ProjectPlanDetails> getPlanDetailsByPlanId(Integer planId) {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
     }
+
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByPlanApply(Integer planId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, false);
@@ -131,7 +137,7 @@ public class ProjectPlanDetailsService {
                 }
                 if (item.getDeclareFormId() != null && item.getDeclareFormId() > 0) {
                     DataDeclareForm declareForm = dataDeclareFormService.getCacheDataDeclareForm(item.getDeclareFormId());
-                    if(declareForm!=null){
+                    if (declareForm != null) {
                         projectPlanDetailsVo.setDeclareFormName(declareForm.getName());
                     }
                 }
@@ -141,5 +147,19 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsVos;
     }
 
+    public List<ProjectPlanDetailsVo> getProjectDetailsTask(ProjectPlanDetails projectPlanDetails) {
+        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
+        projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
+        projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
+        List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
+        List<ProjectPlanDetailsVo> transform = LangUtils.transform(listObject, o -> {
+            ProjectPlanDetailsVo projectPlanDetailsVo = new ProjectPlanDetailsVo();
+            BeanUtils.copyProperties(o, projectPlanDetailsVo);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(o.getProjectPhaseId());
+            projectPlanDetailsVo.setDeclareFormName(projectPhase.getPhaseForm());
+            return projectPlanDetailsVo;
+        });
+        return transform;
+    }
 
 }

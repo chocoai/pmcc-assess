@@ -369,75 +369,90 @@ public class ProjectInfoService {
     public ProjectInfoVo getVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        //大类
-        projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
-        //委托目的
-        projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
-        projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
-        projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
-        projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProjectClassId())) {
+            //大类
+            projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
+            //委托目的
+            projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProvince())) {
+            projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getCity())) {
+            projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getDistrict())) {
+            projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));//县
+        }
         //紧急程度
         projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
         projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
         //项目经理 与下级
-        if (projectMember != null) {//erpRpcUserService
+        if (!ObjectUtils.isEmpty(projectMember)) {//erpRpcUserService
             projectInfoVo.setUserAccountManagerName(erpRpcUserService.getSysUser(projectMember.getUserAccountManager()).getUserName());
             //projectInfoVo.setUserAccountMemberName(erpRpcUserService.getSysUser(projectMember.getUserAccountMember()).getUserName());
         }
-        //价值类型
-        projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
-        InitiatePossessorVo possessorVo = possessorService.get(projectInfo.getPossessorId());
-        InitiateConsignorVo consignorVo = consignorService.get(projectInfo.getConsignorId());
-        InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
-
-        if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsUnitProperties())) {
-            try {
-                String csUnitPropertiesName = getBaseDataDic(consignorVo.getCsUnitProperties()).getName();
-                consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
+            //价值类型
+            projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsEntrustmentUnit())) {
-            try {
-                consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+        if (!ObjectUtils.isEmpty(projectInfo.getConsignorId())) {
+            InitiateConsignorVo consignorVo = consignorService.get(projectInfo.getConsignorId());
+            if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsUnitProperties())) {
+                try {
+                    String csUnitPropertiesName = getBaseDataDic(consignorVo.getCsUnitProperties()).getName();
+                    consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
-        }
-
-        if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpUnitProperties())) {
-            try {
-                String pUnitPropertiesName = getBaseDataDic(possessorVo.getpUnitProperties()).getName();
-                possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+            if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsEntrustmentUnit())) {
+                try {
+                    consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
+            projectInfoVo.setConsignorVo(consignorVo);
         }
-        if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpEntrustmentUnit())) {
-            try {
-                possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+        if (!ObjectUtils.isEmpty(projectInfo.getPossessorId())) {
+            InitiatePossessorVo possessorVo = possessorService.get(projectInfo.getPossessorId());
+            if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpUnitProperties())) {
+                try {
+                    String pUnitPropertiesName = getBaseDataDic(possessorVo.getpUnitProperties()).getName();
+                    possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
-        }
-
-        if (StringUtils.isNotBlank(unitInformationVo.getuUnitProperties())) {
-            String uUnitPropertiesName = getBaseDataDic(unitInformationVo.getuUnitProperties()).getName();
-            unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(unitInformationVo.getuUseUnit())) {
-            try {
-                unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+            if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpEntrustmentUnit())) {
+                try {
+                    possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
             }
+            projectInfoVo.setPossessorVo(possessorVo);
         }
 
-        projectInfoVo.setPossessorVo(possessorVo);
-        projectInfoVo.setConsignorVo(consignorVo);
-        projectInfoVo.setUnitInformationVo(unitInformationVo);
+        if (!ObjectUtils.isEmpty(projectInfo.getUnitInformationId())){
+            InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
+            if (StringUtils.isNotBlank(unitInformationVo.getuUnitProperties())) {
+                String uUnitPropertiesName = getBaseDataDic(unitInformationVo.getuUnitProperties()).getName();
+                unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
+            }
+            if (!org.springframework.util.StringUtils.isEmpty(unitInformationVo.getuUseUnit())) {
+                try {
+                    unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+            }
+            projectInfoVo.setUnitInformationVo(unitInformationVo);
+        }
         return projectInfoVo;
     }
 
@@ -625,5 +640,9 @@ public class ProjectInfoService {
             if (!ObjectUtils.isEmpty(crmBaseDataDicDto)) return crmBaseDataDicDto;
         }
         return null;
+    }
+
+    public int saveProjectInfo_returnID(ProjectInfo projectInfo) {
+        return projectInfoDao.saveProjectInfo_returnID(projectInfo);
     }
 }

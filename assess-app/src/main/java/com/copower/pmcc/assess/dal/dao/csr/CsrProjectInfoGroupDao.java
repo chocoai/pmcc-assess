@@ -31,14 +31,21 @@ public class CsrProjectInfoGroupDao {
         return projectInfoGroupMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<CsrProjectInfoGroup> groupList(Integer projectID,String projectName){
+    public List<CsrProjectInfoGroup> groupList(Integer csrProjectId, String projectName){
         CsrProjectInfoGroupExample example = new CsrProjectInfoGroupExample();
         if (StringUtils.isEmpty(projectName)){
-            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID);
+            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(csrProjectId);
             return projectInfoGroupMapper.selectByExample(example);
         }else {
-            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID).andProjectNameLike("%"+projectName+"%");
+            example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(csrProjectId).andProjectNameLike("%"+projectName+"%");
             return projectInfoGroupMapper.selectByExample(example);
         }
     }
+
+    public List<CsrProjectInfoGroup> groupList(Integer csrProjectId){
+        CsrProjectInfoGroupExample example = new CsrProjectInfoGroupExample();
+        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(csrProjectId);
+        return projectInfoGroupMapper.selectByExample(example);
+    }
+
 }

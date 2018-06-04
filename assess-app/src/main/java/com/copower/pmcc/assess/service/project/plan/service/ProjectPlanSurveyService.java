@@ -36,7 +36,11 @@ public class ProjectPlanSurveyService {
 
         List<ProjectPhase> projectPhases = projectPhaseDao.getProjectPhase(workStageId);
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
-        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(planId, projectId);
+
+        ProjectPlanDetails projectPlanDetails=new ProjectPlanDetails();
+        projectPlanDetails.setProjectId(projectId);
+        projectPlanDetails.setPlanId(planId);
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetails);
 
         if (declareRecords.size() == 0) {
             return modelAndView;

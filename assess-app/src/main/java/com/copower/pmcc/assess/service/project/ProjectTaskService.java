@@ -126,7 +126,7 @@ public class ProjectTaskService {
             projectPlanDetailsWhere.setPlanId(projectPlanDetails.getPlanId());
             projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetailsWhere.setBisLastLayer(true);
-            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(projectPlanDetailsWhere);
+            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
                 //任务都执行则发起相应的整体复核流程
                 projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
