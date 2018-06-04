@@ -103,6 +103,8 @@ public class CsrProjectInfoService {
     @Autowired
     private CsrBorrowerMortgageDao csrBorrowerMortgageDao;
     @Autowired
+    private CsrcalculationDao csrcalculationDao;
+    @Autowired
     private CsrContractDao csrContractDao;
     @Autowired
     private CsrGuarantorDao csrGuarantorDao;
@@ -187,6 +189,9 @@ public class CsrProjectInfoService {
         //更新附件表tableId
         baseAttachmentService.relationToTable(AssessTableNameConstant.CSR_PROJECT_INFO, null, csrProjectInfo.getId());
 
+        //清空原数据
+        cleanImportData(csrProjectInfo);
+
         //读取导入的数据
         readImportData(csrProjectInfo);
 
@@ -220,6 +225,17 @@ public class CsrProjectInfoService {
      */
     private void cleanImportData(CsrProjectInfo csrProjectInfo){
         List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
+        if(CollectionUtils.isNotEmpty(csrBorrowers)){
+            csrBorrowers.forEach(p->{
+                csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
+                csrcalculationDao.deleteByBorrowerId(p.getId());
+                csrContractDao.deleteByBorrowerId(p.getId());
+                csrGuarantorDao.deleteByBorrowerId(p.getId());
+                csrLitigationDao.deleteByBorrowerId(p.getId());
+                csrPrincipalInterestDao.deleteByBorrowerId(p.getId());
+            });
+            csrBorrowerDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        }
 
     }
 
