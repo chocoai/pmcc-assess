@@ -21,6 +21,7 @@ public class MethodMarketCompareIndexService {
     private CommonService commonService;
     public void save(List<MethodMarketCompareIndexDto> methodMarketCompareIndexDtos) {
         for(MethodMarketCompareIndexDto methodMarketCompareIndexDto:methodMarketCompareIndexDtos){
+
             methodMarketCompareIndexDto.setCreator(commonService.thisUserAccount());
             methodMarketCompareIndexDao.save(methodMarketCompareIndexDto);
         }
@@ -28,5 +29,11 @@ public class MethodMarketCompareIndexService {
 
     public List<MethodMarketCompareIndex> getDataByEvaluationObjectId(Integer schemeEvaluationObjectId) {
         return methodMarketCompareIndexDao.getDataByEvaluationObjectId(schemeEvaluationObjectId);
+    }
+
+    public void updata(List<MethodMarketCompareIndexDto> methodMarketCompareIndexDtos) {
+        for(MethodMarketCompareIndexDto methodMarketCompareIndexDto:methodMarketCompareIndexDtos){
+            methodMarketCompareIndexDao.update(methodMarketCompareIndexDto);
+        }
     }
 }

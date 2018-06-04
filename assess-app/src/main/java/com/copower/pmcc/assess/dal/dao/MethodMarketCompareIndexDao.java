@@ -28,4 +28,14 @@ public class MethodMarketCompareIndexDao {
         example.createCriteria().andEvaluationObjectIdEqualTo(schemeEvaluationObjectId);
         return methodMarketCompareIndexMapper.selectByExample(example);
     }
+
+    public void update(MethodMarketCompareIndexDto methodMarketCompareIndexDto) {
+        methodMarketCompareIndexMapper.updateByPrimaryKeySelective(methodMarketCompareIndexDto);
+    }
+
+    public List<MethodMarketCompareIndex> getDataByObject(MethodMarketCompareIndex methodMarketCompareIndex) {
+        MethodMarketCompareIndexExample example = new MethodMarketCompareIndexExample();
+        example.createCriteria().andEvaluationObjectIdEqualTo(methodMarketCompareIndex.getEvaluationObjectId()).andNameEqualTo(methodMarketCompareIndex.getName());
+        return methodMarketCompareIndexMapper.selectByExample(example);
+    }
 }

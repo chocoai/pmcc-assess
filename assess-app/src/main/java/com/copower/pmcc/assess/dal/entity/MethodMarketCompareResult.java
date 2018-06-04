@@ -8,6 +8,8 @@ public class MethodMarketCompareResult {
 
     private Integer evaluationObjectId;
 
+    private String name;
+
     private Integer type;
 
     private String realEstateName;
@@ -46,6 +48,14 @@ public class MethodMarketCompareResult {
 
     public void setEvaluationObjectId(Integer evaluationObjectId) {
         this.evaluationObjectId = evaluationObjectId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getType() {
