@@ -84,7 +84,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="caseType" data-id="${items.id}">${items.caseType}</span>
+                                                        <span name="caseType" data-id="${items.id}">${items.caseTypeName}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -167,7 +167,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="caseType" data-id="${items.id}">${items.caseType}</span>
+                                                        <span name="caseType" data-id="${items.id}">${items.caseTypeName}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -260,7 +260,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="caseType" data-id="${items.id}">${items.caseType}</span>
+                                                        <span name="caseType" data-id="${items.id}">${items.caseTypeName}</span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -335,30 +335,28 @@
                                     <div role="tabpanel" class="tab-pane fade" id="tab_content4"
                                          aria-labelledby="profile-tab">
                                         <%--时间指数表--%>
-                                        <table class="table table-bordered leftfloat" style="width: 40%">
-                                            <thead>
-                                            <tr>
-                                                <th>年份</th>
-                                                <th>指数</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <th>2017年10月</th>
-                                                <td>1</td>
-
-                                            </tr>
-                                            <tr>
-                                                <th>2017年11月</th>
-                                                <td>2</td>
-
-                                            </tr>
-                                            <tr>
-                                                <th>2017年12月</th>
-                                                <td>3</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                            <table class="table table-bordered leftfloat" style="width: 20%">
+                                                <thead>
+                                                <tr >
+                                                    <th class="gray">年份</th>
+                                                    <th class="gray">指数</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach items="${housePriceIndexs}" var="items">
+                                                    <tr>
+                                                        <td>
+                                                        <span>
+                                                            <fmt:formatDate value="${items.yearMonthCalendar}" pattern="yyyy-MM"/>
+                                                        </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>${items.indexCalendar}</span>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                     </div>
                                 </div>
                                 <%--固定表格格式用--%>

@@ -365,52 +365,62 @@ public class MethodMarketCompareCalculationExample {
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentEqualTo(Object value) {
+        public Criteria andJsonContentEqualTo(String value) {
             addCriterion("json_content =", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotEqualTo(Object value) {
+        public Criteria andJsonContentNotEqualTo(String value) {
             addCriterion("json_content <>", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThan(Object value) {
+        public Criteria andJsonContentGreaterThan(String value) {
             addCriterion("json_content >", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThanOrEqualTo(Object value) {
+        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
             addCriterion("json_content >=", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThan(Object value) {
+        public Criteria andJsonContentLessThan(String value) {
             addCriterion("json_content <", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThanOrEqualTo(Object value) {
+        public Criteria andJsonContentLessThanOrEqualTo(String value) {
             addCriterion("json_content <=", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIn(List<Object> values) {
+        public Criteria andJsonContentLike(String value) {
+            addCriterion("json_content like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotLike(String value) {
+            addCriterion("json_content not like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIn(List<String> values) {
             addCriterion("json_content in", values, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotIn(List<Object> values) {
+        public Criteria andJsonContentNotIn(List<String> values) {
             addCriterion("json_content not in", values, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentBetween(Object value1, Object value2) {
+        public Criteria andJsonContentBetween(String value1, String value2) {
             addCriterion("json_content between", value1, value2, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotBetween(Object value1, Object value2) {
+        public Criteria andJsonContentNotBetween(String value1, String value2) {
             addCriterion("json_content not between", value1, value2, "jsonContent");
             return (Criteria) this;
         }
@@ -602,6 +612,66 @@ public class MethodMarketCompareCalculationExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdIsNull() {
+            addCriterion("compare_index_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdIsNotNull() {
+            addCriterion("compare_index_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdEqualTo(Integer value) {
+            addCriterion("compare_index_id =", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotEqualTo(Integer value) {
+            addCriterion("compare_index_id <>", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdGreaterThan(Integer value) {
+            addCriterion("compare_index_id >", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("compare_index_id >=", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdLessThan(Integer value) {
+            addCriterion("compare_index_id <", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdLessThanOrEqualTo(Integer value) {
+            addCriterion("compare_index_id <=", value, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdIn(List<Integer> values) {
+            addCriterion("compare_index_id in", values, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotIn(List<Integer> values) {
+            addCriterion("compare_index_id not in", values, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdBetween(Integer value1, Integer value2) {
+            addCriterion("compare_index_id between", value1, value2, "compareIndexId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompareIndexIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("compare_index_id not between", value1, value2, "compareIndexId");
             return (Criteria) this;
         }
     }

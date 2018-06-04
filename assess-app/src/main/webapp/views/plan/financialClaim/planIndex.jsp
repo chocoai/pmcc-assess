@@ -14,7 +14,97 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>${panelTitle}阶段工作计划</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="frm_plan" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    计划名称
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="hidden" name="id" value="${projectPlan.id}">
+                                    <label class="form-control">${projectPlan.planName}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    开始日期<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" required
+                                           placeholder="开始日期"
+                                           value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
+                                           id="projectPlanStart" name="projectPlanStart"
+                                           data-date-format='yyyy-mm-dd'
+                                           class="form-control dbdate">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    结束日期<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" required
+                                           placeholder="结束日期"
+                                           value="<fmt:formatDate value="${projectPlan.projectPlanEnd}" pattern="yyyy-MM-dd"/>"
+                                           id="projectPlanEnd" name="projectPlanEnd"
+                                           data-date-format='yyyy-mm-dd'
+                                           class="form-control dbdate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    说明
+                                </label>
+                                <div class="col-sm-11">
+                                        <textarea placeholder="说明" name="planRemarks"
+                                                  class="form-control">${projectPlan.planRemarks}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <c:if test="${detailsPlan==1}"> <%--是否允许下级修改计划--%>
+                            <input type="hidden" id="detailsPlan" name="detailsPlan" value="${detailsPlan}">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        细分计划
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="chk_isNext" name="chk_isNext">
+                                            细分计划
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        责任人
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="hidden" id="nextApproval" name="nextApproval">
+                                        <input type="text" required id="nextApprovalName" name="nextApprovalName"
+                                               onclick="nextEmployee()"
+                                               class="form-control" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${processInsId!=0}">
+                            <input type="hidden" id="opinions" name="opinions" value="0">
+                            <input type="hidden" id="bisNext" name="bisNext" value="0">
 
+                            <%@include file="/views/share/ApprovalVariable.jsp" %>
+                        </c:if>
+                    </form>
+                </div>
+            </div>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>${panelTitle}阶段工作计划</h2>
@@ -305,8 +395,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/planFinancialClaim/updateProjectPlanDetails",
             data: {
-                ds: JSON.stringify(data),
-                planId:${projectPlan.id}
+                formData: JSON.stringify(data)
             },
             type: "post",
             dataType: "json",
@@ -473,7 +562,7 @@
             },
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
-                $('#PlanItemListed').treegrid('collapseAll')
+                //$('#PlanItemListed').treegrid('collapseAll')
             },
 
             columns: [[
@@ -529,9 +618,15 @@
 
 
     function commitApply() {
-        var url = "${pageContext.request.contextPath}/ProjectPlan/saveProjectPlan";
+        if (!$("#frm_plan").valid()) {
+            return false;
+        }
+        var data = formParams("frm_plan");
+        data["bisChildren"] = "${bisChildren}";
+        data["projectId"] =${projectPlan.projectId};
+        var url = "${pageContext.request.contextPath}/planFinancialClaim/saveProjectPlan";
         if ("${processInsId}" != "0") {
-            url = "${pageContext.request.contextPath}/ProjectPlan/submitPlanEdit";
+            url = "${pageContext.request.contextPath}/planFinancialClaim/submitPlanEdit";
         }
         $.ajax({
             url: url,

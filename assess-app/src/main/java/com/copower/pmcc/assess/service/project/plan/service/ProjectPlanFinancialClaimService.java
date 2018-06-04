@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -42,6 +43,10 @@ public class ProjectPlanFinancialClaimService {
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private CommonService commonService;
 
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectId(Integer projectId, Integer planId) {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
@@ -81,7 +86,7 @@ public class ProjectPlanFinancialClaimService {
                 if (CollectionUtils.isNotEmpty(filter)) {
                     for (ProjectPhase projectPhase : filter) {
                         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                        projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                        projectPlanDetails.setProjectPhaseName(String.format("%s|%s",item.getName(),projectPhase.getProjectPhaseName()));
                         projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
                         projectPlanDetails.setPlanId(projectPlan.getId());
                         projectPlanDetails.setProjectId(projectPlan.getProjectId());
@@ -135,4 +140,16 @@ public class ProjectPlanFinancialClaimService {
     public void updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails) throws BusinessException {
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }
+
+    public void saveFinancialClaimProjectPlan(String formData) throws BusinessException {
+        projectPlanService.saveFinancialClaimProjectPlan(formData, commonService.thisUserAccount());
+    }
+
+public List<ProjectPlanDetailsVo>  getProjectDetailsTask(ProjectPlanDetails projectPlanDetails) {
+    ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
+    projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
+    projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
+    List<ProjectPlanDetailsVo> projectDetailsTask = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetailsWhere);
+    return projectDetailsTask;
+}
 }

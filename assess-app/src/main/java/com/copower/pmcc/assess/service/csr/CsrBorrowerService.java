@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.csr;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
@@ -53,4 +54,20 @@ public class CsrBorrowerService {
         return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID);
     }
 
+    public CsrBorrower saveCsrBorrower(CsrBorrower csrBorrower) throws BusinessException
+    {
+        try {
+            if(csrBorrower.getId()==null && csrBorrower.getId()<=0)
+            {
+                csrBorrowerDao.addCsrBorrower(csrBorrower);
+            }
+            else
+            {
+                csrBorrowerDao.update(csrBorrower);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return csrBorrower;
+    }
 }

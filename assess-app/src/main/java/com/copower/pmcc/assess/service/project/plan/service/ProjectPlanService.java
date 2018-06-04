@@ -144,7 +144,7 @@ public class ProjectPlanService {
                 projectPlanDetailsPid.setPlanId(item.getPlanId());
                 projectPlanDetailsPid.setProjectPhaseId(item.getPid());
 
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(projectPlanDetailsPid);
+                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsPid);
                 if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                     item.setPid(projectPlanDetailsList.get(0).getId());
                     item.setBisLastLayer(true);
@@ -271,7 +271,7 @@ public class ProjectPlanService {
             //更新相应父级信息
             ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
             projectPlanDetailsWhere.setPid(pid);
-            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(projectPlanDetailsWhere);
+            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
 
             if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
@@ -295,7 +295,7 @@ public class ProjectPlanService {
         if (pid > 0) {
             ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
             projectPlanDetailsWhere.setPid(pid);
-            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(projectPlanDetailsWhere);
+            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
                 projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
                 projectPlanDetails.setBisLastLayer(true);
@@ -303,6 +303,71 @@ public class ProjectPlanService {
             }
         }
 
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void saveFinancialClaimProjectPlan(String formData, String appointUserAccount) throws BusinessException {
+        ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
+        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDto.getId());//取得项目计划
+        //更新计划内容
+        projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
+        projectPlan.setProjectPlanEnd(projectPlanDto.getProjectPlanEnd());
+        projectPlan.setPlanRemarks(projectPlanDto.getPlanRemarks());
+        projectPlanDao.updateProjectPlan(projectPlan);
+
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+
+        /**
+         * 处理过程
+         * 1、判断最后一个层级的责任人或责任部门是否指定
+         * 2、判断根据配置，计划是否需要进行相应的计划审批，如果要审批，则发起计划审批流程
+         *3、如果都已指定，且不需要审批，则责任人的任务发起相应的任务流程，指定部门则发起相应的Pengding流程，部门领导继续安排项目计划
+         * 4、保存项目计划
+         */
+
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId());
+        //数据效性验证
+        StringBuilder sb = new StringBuilder();
+        for (ProjectPlanDetails item : projectPlanDetails) {
+            if (item.getPid() > 0) {
+                if (item.getPlanStartDate() == null) {
+                    sb.append(String.format("%s请设置相应的[开始时间]<br/>", item.getProjectPhaseName()));
+                }
+                if (item.getPlanEndDate() == null) {
+                    sb.append(String.format("%s请设置相应的[结束时间]<br/>", item.getProjectPhaseName()));
+                }
+                if (StringUtils.isBlank(item.getExecuteUserAccount())) {
+                    sb.append(String.format("%s请设置相应的[责任人]<br/>", item.getProjectPhaseName()));
+                }
+            }
+        }
+
+        if (sb.length() > 0) {
+            throw new BusinessException(sb.toString());
+        }
+        //====验证结束
+        if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
+            //发起计划复核流程
+            startProjectPlanApproval(projectPlan, projectInfo.getProjectName(), appointUserAccount);
+        } else {
+            for (ProjectPlanDetails item : projectPlanDetails) {
+
+                if (item.getPid() > 0) {
+                    saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+                    item.setStatus(ProcessStatusEnum.RUN.getValue());
+                    projectPlanDetailsDao.updateProjectPlanDetails(item);
+                }
+            }
+            String sql = String.format("UPDATE tb_project_plan_details SET status='%s' WHERE plan_id=%s and bis_last_layer=1;", ProcessStatusEnum.RUN.getValue(), projectPlan.getId());
+            ddlMySqlAssist.customTableDdl(sql);//更新数据
+
+            //如果项目所有的计划都已完成，则更新当前阶段计划完成
+            projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
+            projectPlanDao.updateProjectPlan(projectPlan);
+
+        }
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -319,7 +384,9 @@ public class ProjectPlanService {
         }
         //更新计划明细的顺序
         String detailsSoring = projectPlanDto.getDetailsSoring();
-        updateDetailsSorting(detailsSoring);
+        if (StringUtils.isNotBlank(detailsSoring)) {
+            updateDetailsSorting(detailsSoring);
+        }
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
 
         bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
@@ -672,7 +739,7 @@ public class ProjectPlanService {
             projectPlanDetailsDao.addProjectPlanDetails(planDetails);
         }
         if (recursion) {//如果是递归拷贝则不断循环获取下级的数据
-            copyPlanDetailsRecursion(planDetailsId,planDetails.getId());
+            copyPlanDetailsRecursion(planDetailsId, planDetails.getId());
         }
     }
 
