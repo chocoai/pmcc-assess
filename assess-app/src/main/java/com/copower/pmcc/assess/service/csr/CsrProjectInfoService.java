@@ -214,6 +214,19 @@ public class CsrProjectInfoService {
         }
     }
 
+    /**
+     * 清空原导入的数据
+     * @param csrProjectInfo
+     */
+    private void cleanImportData(CsrProjectInfo csrProjectInfo){
+        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
+
+    }
+
+    /**
+     * 读取数据
+     * @param csrProjectInfo
+     */
     private void readImportData(CsrProjectInfo csrProjectInfo) {
         try {
             //将ftp的附件下载到本地

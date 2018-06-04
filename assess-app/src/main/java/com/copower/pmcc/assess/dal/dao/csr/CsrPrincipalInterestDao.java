@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
 
+import com.copower.pmcc.assess.dal.entity.CsrLitigationExample;
 import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest;
 import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterestExample;
 import com.copower.pmcc.assess.dal.mapper.CsrPrincipalInterestMapper;
@@ -67,5 +68,17 @@ public class CsrPrincipalInterestDao {
      */
     public boolean deleteCsrPrincipalInterest(Integer id){
         return csrPrincipalInterestMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrPrincipalInterestExample example = new CsrPrincipalInterestExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrPrincipalInterestMapper.deleteByExample(example) > 0;
     }
 }
