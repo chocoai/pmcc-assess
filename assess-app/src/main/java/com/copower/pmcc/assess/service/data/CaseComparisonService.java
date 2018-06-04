@@ -105,4 +105,8 @@ public class CaseComparisonService {
         map.put(CaseComparisonEnum.CASE_COMPARISON_TWO_ENUM.getNum(), CaseComparisonEnum.NO_Text.getVar());
         return map;
     }
+
+    public List<DataCaseComparison> getAll() {
+       return caseComparisonDao.getAll();
+    }
 }

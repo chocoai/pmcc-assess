@@ -71,4 +71,7 @@ public class CaseComparisonFieldService {
         return configureService.getFieldList(tableName);
     }
 
+    public List<DataCaseComparisonField> getData(Integer caseId) {
+        return dao.getData(caseId);
+    }
 }
