@@ -159,7 +159,7 @@ public class CsrProjectInfoService {
         return getCsrProjectInfoVo(csrProjectInfo);
     }
 
-    public CsrProjectInfoVo getById(Integer id){
+    public CsrProjectInfoVo getById(Integer id) {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(id);
         return getCsrProjectInfoVo(csrProjectInfo);
     }
@@ -231,12 +231,13 @@ public class CsrProjectInfoService {
 
     /**
      * 清空原导入的数据
+     *
      * @param csrProjectInfo
      */
-    private void cleanImportData(CsrProjectInfo csrProjectInfo){
+    private void cleanImportData(CsrProjectInfo csrProjectInfo) {
         List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
-        if(CollectionUtils.isNotEmpty(csrBorrowers)){
-            csrBorrowers.forEach(p->{
+        if (CollectionUtils.isNotEmpty(csrBorrowers)) {
+            csrBorrowers.forEach(p -> {
                 csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
                 csrcalculationDao.deleteByBorrowerId(p.getId());
                 csrContractDao.deleteByBorrowerId(p.getId());
@@ -251,6 +252,7 @@ public class CsrProjectInfoService {
 
     /**
      * 读取数据
+     *
      * @param csrProjectInfo
      */
     private void readImportData(CsrProjectInfo csrProjectInfo) {
@@ -291,7 +293,7 @@ public class CsrProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void crsProjectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //组项目 立项
-        if(StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(),TaskHandleStateEnum.AGREE.getValue()) ){
+        if (StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(), TaskHandleStateEnum.AGREE.getValue())) {
             CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
             initGroupProject(csrProjectInfo);
         }
@@ -349,8 +351,6 @@ public class CsrProjectInfoService {
                     //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
                     for (CsrBorrower csrBorrower : csrBorrowers) {
-                        csrBorrower.setProjectId(k);
-                    for (CsrBorrower csrBorrower:csrBorrowers){
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
@@ -358,13 +358,11 @@ public class CsrProjectInfoService {
                     projectInfoService.initProjectInfo(projectInfo);
                 } catch (Exception e) {
                     try {
-                        logger.error("异常!");
+                        logger.error("初始化项目异常，原因：" + e.getMessage());
                         throw e;
                     } catch (Exception e1) {
 
                     }
-                }catch (Exception e){
-                    logger.error("初始化项目异常，原因："+e.getMessage());
                 }
             }
         }
@@ -445,7 +443,7 @@ public class CsrProjectInfoService {
                     if (!invalidRuleIndexMap.isEmpty()) {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
-                            isFilter = isFilter(ruleList, integerStringEntry.getValue(),getCellValue(row.getCell(integerStringEntry.getKey())));
+                            isFilter = isFilter(ruleList, integerStringEntry.getValue(), getCellValue(row.getCell(integerStringEntry.getKey())));
                             if (isFilter) continue;
                         }
                         if (isFilter) continue;
@@ -719,17 +717,17 @@ public class CsrProjectInfoService {
     public String getProjectStatusEnum(String key) {
         String name = "";
         for (ProjectStatusEnum s : ProjectStatusEnum.values()) {
-            if (key.equals(s.getKey())){
+            if (key.equals(s.getKey())) {
                 name = s.getName();
             }
         }
         return name;
     }
 
-    public String getCustomerTypeEnum(Integer key){
+    public String getCustomerTypeEnum(Integer key) {
         String name = "";
         for (CustomerTypeEnum s : CustomerTypeEnum.values()) {
-            if (s.getId().equals(key)){
+            if (s.getId().equals(key)) {
                 name = s.getName();
             }
         }
