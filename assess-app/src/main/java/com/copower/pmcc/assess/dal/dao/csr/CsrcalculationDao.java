@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
+import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgageExample;
 import com.copower.pmcc.assess.dal.entity.CsrCalculation;
 import com.copower.pmcc.assess.dal.entity.CsrCalculationExample;
 import com.copower.pmcc.assess.dal.mapper.CsrCalculationMapper;
@@ -19,7 +20,7 @@ import java.util.List;
 @Repository
 public class CsrcalculationDao{
     @Autowired
-    private CsrCalculationMapper csrContractMapper;
+    private CsrCalculationMapper csrCalculationMapper;
 
     /**
      * 获取数据信息
@@ -27,36 +28,36 @@ public class CsrcalculationDao{
      * @return
      */
     public CsrCalculation getCsrCalculationById(Integer id) {
-        return csrContractMapper.selectByPrimaryKey(id);
+        return csrCalculationMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 获取数据列表
-     * @param csrContract
+     * @param csrCalculation
      * @return
      */
-    public List<CsrCalculation> getCsrCalculationList(CsrCalculation csrContract) {
+    public List<CsrCalculation> getCsrCalculationList(CsrCalculation csrCalculation) {
         CsrCalculationExample example = new CsrCalculationExample();
-        MybatisUtils.convertObj2Example(csrContract, example);
-        return csrContractMapper.selectByExample(example);
+        MybatisUtils.convertObj2Example(csrCalculation, example);
+        return csrCalculationMapper.selectByExample(example);
     }
 
     /**
      * 新增
-     * @param csrContract
+     * @param csrCalculation
      * @return
      */
-    public boolean addCsrCalculation(CsrCalculation csrContract) {
-        return csrContractMapper.insertSelective(csrContract) > 0;
+    public boolean addCsrCalculation(CsrCalculation csrCalculation) {
+        return csrCalculationMapper.insertSelective(csrCalculation) > 0;
     }
 
     /**
      * 编辑
-     * @param csrContract
+     * @param csrCalculation
      * @return
      */
-    public boolean updateCsrCalculation(CsrCalculation csrContract) {
-        return csrContractMapper.updateByPrimaryKeySelective(csrContract) > 0;
+    public boolean updateCsrCalculation(CsrCalculation csrCalculation) {
+        return csrCalculationMapper.updateByPrimaryKeySelective(csrCalculation) > 0;
     }
 
     /**
@@ -65,6 +66,18 @@ public class CsrcalculationDao{
      * @return
      */
     public boolean deleteCsrCalculation(Integer id){
-        return csrContractMapper.deleteByPrimaryKey(id) > 0;
+        return csrCalculationMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrCalculationExample example = new CsrCalculationExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrCalculationMapper.deleteByExample(example) > 0;
     }
 }

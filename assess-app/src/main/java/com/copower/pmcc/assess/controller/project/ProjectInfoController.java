@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
@@ -8,6 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.project.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
@@ -74,10 +76,11 @@ public class ProjectInfoController {
     private ProjectFollowService projectFollowService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-
     @Lazy
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private BaseProjectCategoryService baseProjectCategoryService;
 
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
@@ -95,6 +98,9 @@ public class ProjectInfoController {
         modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
+
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
@@ -128,6 +134,9 @@ public class ProjectInfoController {
         modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
+
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 

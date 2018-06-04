@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.dao.csr;
 
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerExample;
+import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgageExample;
 import com.copower.pmcc.assess.dal.mapper.CsrBorrowerMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,4 +68,15 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByExample(example);
     }
 
+    /**
+     * 批量删除
+     *
+     * @param csrProjectId
+     * @return
+     */
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
+        return csrBorrowerMapper.deleteByExample(example) > 0;
+    }
 }

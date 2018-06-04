@@ -21,7 +21,7 @@
                         <input type="hidden" id="id" name="id" value="${csrProjectInfo.id}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目名称</label>
                                 <div class="col-sm-11">
                                     <label class="form-control">${csrProjectInfo.name}</label>
                                 </div>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">客户类型<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">客户类型</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${csrProjectInfo.customerTypeName}</label>
                                 </div>
@@ -46,7 +46,7 @@
 
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">委托目的</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${csrProjectInfo.entrustPurposeName}</label>
                                 </div>
@@ -55,19 +55,20 @@
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">评估基准日</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control"><fmt:formatDate value='${csrProjectInfo.valuationDate}' pattern='yyyy-MM-dd'/></label>
+                                    <label class="form-control"><fmt:formatDate value='${csrProjectInfo.valuationDate}'
+                                                                                pattern='yyyy-MM-dd'/></label>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目分配人<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目分配人</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${csrProjectInfo.distributionUserName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">取行序号<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">取行序号</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${csrProjectInfo.startRowNumber}</label>
                                 </div>
@@ -115,19 +116,20 @@
                         <div class="form-group">
                             <div>
                                 <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50" placeholder="项目 名称" id="projectNameV" name="projectNameV" class="form-control">
+                                    <input type="text" data-rule-maxlength="50" placeholder="项目 名称" id="projectNameV"
+                                           name="projectNameV" class="form-control">
+
                                 </div>
                                 <div class="col-sm-5">
-                                    <button type="button" class="btn btn-primary" onclick="loadGroupProjectTableList();">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="loadGroupProjectTableList();">
                                         查询
                                     </button>
-                                </div>
-                                <div class="col-sm-5">
                                     <button type="button" class="btn btn-primary" onclick="addGrpupProject();">
                                         创建项目组
                                     </button>
-                                    <%--<input type="button" class="btn btn-success" onclick="addGrpupProject()" value="创建项目组">--%>
                                 </div>
+
                             </div>
                         </div>
 
@@ -148,7 +150,8 @@
     </div>
 </div>
 </body>
-<div id="divBoxGroupProject" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="240">
+<div id="divBoxGroupProject" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true" data-height="240">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -168,7 +171,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="hidden" name="id">
-                                            <input type="hidden" id="csrProjectId"  name="csrProjectId">
+                                            <input type="hidden" id="csrProjectId" name="csrProjectId">
                                             <input type="text" name="projectName" id="projectName" placeholder="项目名称"
                                                    class="form-control" required="required">
                                         </div>
@@ -195,7 +198,8 @@
                                         <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input type="hidden" id="projectManagerID" name="projectManager">
-                                                <input type="text" class="form-control" readonly="readonly" required="required"
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                       required="required"
                                                        id="projectManager" maxlength="200">
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -214,20 +218,22 @@
                                     </div>
                                 </div>
 
-                                <div  class="form-group">
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            项目成员<span class="symbol required"></span>
+                                            项目成员
                                         </label>
                                         <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input type="hidden" id="projectMemberID" name="projectMember">
-                                                <input type="text" class="form-control" readonly="readonly" required="required"
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                       required="required"
                                                        id="projectMember" maxlength="200">
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default docs-tooltip"
                                                             data-toggle="tooltip"
-                                                            data-original-title="选择" onclick="selectUserAccountMember()">
+                                                            data-original-title="选择"
+                                                            onclick="selectUserAccountMember()">
                                                     <i class="fa fa-search"></i>
                                                     </button>
                                                     <button type="button" class="btn btn-default docs-tooltip"
@@ -258,7 +264,8 @@
     </div>
 </div>
 
-<div id="divBoxCsrBorrowerSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="235">
+<div id="divBoxCsrBorrowerSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-hidden="true" data-height="235">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -277,18 +284,21 @@
                                     <input type="hidden" name="csrProjectId" id="csrProjectIdV">
                                     <div>
                                         <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50" placeholder="二级分行" id="secondLevelBranch"
+                                            <input type="text" data-rule-maxlength="50" placeholder="二级分行"
+                                                   id="secondLevelBranch"
                                                    name="secondLevelBranch" class="form-control">
                                         </div>
                                     </div>
                                     <div>
                                         <div class="col-sm-3">
                                             <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                   placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch" class="form-control">
+                                                   placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
-                                        <input type="button" class="btn btn-primary" value="查询" onclick="loadBorrowerList('')">
+                                        <input type="button" class="btn btn-primary" value="查询"
+                                               onclick="loadBorrowerList('')">
                                     </div>
                                 </div>
 
@@ -333,10 +343,10 @@
         var data = formParams("csrBorrowerSelect");
         var result = $("#csrBorrowerTableList").bootstrapTable('getSelections');
         var csrBorrowerIDS = "";
-        for (var i = 0;i < result.length;i++){
-            if (i == result.length -1){
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
                 csrBorrowerIDS += result[i].id;
-            }else {
+            } else {
                 csrBorrowerIDS += result[i].id + ",";
             }
         }
@@ -375,7 +385,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                       loadGroupProjectTableList();
+                        loadGroupProjectTableList();
                         $('#divBoxGroupProject').modal('hide');
                     }
                     else {
@@ -458,7 +468,7 @@
                 $("#projectMember").val(data.name);
                 $("#projectMemberID").val(data.account);
             },
-            multi:true
+            multi: true
         });
     }
     $(function () {
@@ -466,13 +476,13 @@
     });
     //加载 客户信息 数据列表
     function loadBorrowerList(csrProjectInfoID) {
-        if (csrProjectInfoID==''){
+        if (csrProjectInfoID == '') {
             csrProjectInfoID = $("#csrProjectIdV").val();
         }
         var cols = [];
-        cols.push({field: 'checkbox', checkbox:true});
+        cols.push({field: 'checkbox', checkbox: true});
         cols.push({field: 'name', title: '名字'});
-        cols.push({field: 'id', visible:false,title:"id"});
+        cols.push({field: 'id', visible: false, title: "id"});
         cols.push({field: 'maritalStatus', title: '婚否'});
         cols.push({field: 'workUnit', title: '职务'});
         cols.push({field: 'presentAddress', title: '地址'});
@@ -480,9 +490,9 @@
         cols.push({field: 'firstLevelBranch', title: '一级分行'});
         $("#csrBorrowerTableList").bootstrapTable('destroy');
         TableInit("csrBorrowerTableList", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
-            secondLevelBranch:$("#secondLevelBranch").val(),
-            firstLevelBranch:$("#firstLevelBranch").val(),
-            csrProjectInfoID:csrProjectInfoID
+            secondLevelBranch: $("#secondLevelBranch").val(),
+            firstLevelBranch: $("#firstLevelBranch").val(),
+            csrProjectInfoID: csrProjectInfoID
         }, {
             showColumns: false,
             showRefresh: false,
@@ -491,7 +501,12 @@
                 $('.tooltips').tooltip();
             }
         });
-        $("#csrBorrowerTableList").bootstrapTable('mergeCells',{field:secondLevelBranch,field:firstLevelBranch,colspan: 5, rowspan: 6});
+        $("#csrBorrowerTableList").bootstrapTable('mergeCells', {
+            field: secondLevelBranch,
+            field: firstLevelBranch,
+            colspan: 5,
+            rowspan: 6
+        });
     }
 
     //加载项目组信息
@@ -499,7 +514,7 @@
         var cols = [];
         // cols.push({field: 'radio', radio:true});
         cols.push({field: 'projectName', title: '项目组名字'});
-        cols.push({field: 'id', visible:false,title:"id"});
+        cols.push({field: 'id', visible: false, title: "id"});
         cols.push({field: 'projectManagerName', title: '项目经理'});
         cols.push({field: 'projectMemberName', title: '项目成员'});
         cols.push({field: 'number', title: '文号'});
@@ -516,7 +531,7 @@
         $("#groupProjectTableList").bootstrapTable('destroy');
         TableInit("groupProjectTableList", "${pageContext.request.contextPath}/csrProjectInfo/groupVoList", cols, {
             projectID: '${csrProjectInfo.id}',
-            projectName:$("#projectNameV").val()
+            projectName: $("#projectNameV").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -565,47 +580,54 @@
         });
     }
 
-
-    function saveform() {
-        if (!$("#frm_approval").valid()) {
-            return false;
-        }
-        //检测是否分派完成!
+    //检查是否完全分配
+    function checkCsrBorrower() {
+        var isAllDistribution = true;
         $.ajax({
             url: "${pageContext.request.contextPath}/csrProjectInfo/checkCsrBorrower",
             type: "post",
             dataType: "json",
-            data:{csrProjectInfoID:'${csrProjectInfo.id}'},
+            async: false,
+            data: {csrProjectInfoID: '${csrProjectInfo.id}'},
             success: function (result) {
+                isAllDistribution = result.ret;
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        })
+        return isAllDistribution;
+    }
+
+
+    //数据提交
+    function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        var rdoValue = $("input[name='conclusion']:checked").val();
+        //检测是否分派完成!
+        if (rdoValue == "Approval" && !checkCsrBorrower()) {//审批结论为同意才验证
+            Alert("还有未分配的借款人");
+            return false;
+        }
+        var data = formParams("frm_approval");
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
-                    alert(result.data);
-                    //检测成功!
-                    var data = formParams("frm_approval");
-                    Loading.progressShow();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",
-                        type: "post",
-                        dataType: "json",
-                        data: data,
-                        success: function (result) {
-                            Loading.progressHide();
-                            if (result.ret) {
-                                Alert("提交数据成功!", 1, null, function () {
-                                    window.close();
-                                });
-                            }
-                            else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                            }
-                        },
-                        error: function (result) {
-                            Loading.progressHide();
-                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                        }
-                    })
-                } else {
-                    alert(result.errmsg);
-                    return false;
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {

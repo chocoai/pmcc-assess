@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.entity.BaseAssist;
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
+import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
@@ -58,6 +57,8 @@ public class ProjectPhaseController {
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
     @Autowired
     private BaseAssistService baseAssistService;
+    @Autowired
+    private BaseProjectCategoryService baseProjectCategoryService;
 
     @RequestMapping(value = "/view", name = "工程管理页面视图", method = RequestMethod.GET)
     public ModelAndView view() {
@@ -69,6 +70,10 @@ public class ProjectPhaseController {
         modelAndView.addObject("sysBaseFormListMatter", sysBaseFormListMatter);
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
+
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
+
         return modelAndView;
     }
 
@@ -249,5 +254,12 @@ public class ProjectPhaseController {
 
     }
 
+    @RequestMapping(value = "/getBidProjectCategoryListByPid", name = "取得项目类型", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpResult getBidProjectCategoryListByPid(Integer pid) {
 
+        List<BaseProjectCategory> bidProjectCategories = baseProjectCategoryService.getBidProjectCategoryListByPid(pid);
+        return HttpResult.newCorrectResult(bidProjectCategories);
+
+    }
 }

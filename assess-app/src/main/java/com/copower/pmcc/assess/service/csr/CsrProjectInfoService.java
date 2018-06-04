@@ -107,6 +107,8 @@ public class CsrProjectInfoService {
     @Autowired
     private CsrBorrowerMortgageDao csrBorrowerMortgageDao;
     @Autowired
+    private CsrcalculationDao csrcalculationDao;
+    @Autowired
     private CsrContractDao csrContractDao;
     @Autowired
     private CsrGuarantorDao csrGuarantorDao;
@@ -197,6 +199,9 @@ public class CsrProjectInfoService {
         //更新附件表tableId
         baseAttachmentService.relationToTable(AssessTableNameConstant.CSR_PROJECT_INFO, null, csrProjectInfo.getId());
 
+        //清空原数据
+        cleanImportData(csrProjectInfo);
+
         //读取导入的数据
         readImportData(csrProjectInfo);
 
@@ -224,6 +229,30 @@ public class CsrProjectInfoService {
         }
     }
 
+    /**
+     * 清空原导入的数据
+     * @param csrProjectInfo
+     */
+    private void cleanImportData(CsrProjectInfo csrProjectInfo){
+        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
+        if(CollectionUtils.isNotEmpty(csrBorrowers)){
+            csrBorrowers.forEach(p->{
+                csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
+                csrcalculationDao.deleteByBorrowerId(p.getId());
+                csrContractDao.deleteByBorrowerId(p.getId());
+                csrGuarantorDao.deleteByBorrowerId(p.getId());
+                csrLitigationDao.deleteByBorrowerId(p.getId());
+                csrPrincipalInterestDao.deleteByBorrowerId(p.getId());
+            });
+            csrBorrowerDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        }
+
+    }
+
+    /**
+     * 读取数据
+     * @param csrProjectInfo
+     */
     private void readImportData(CsrProjectInfo csrProjectInfo) {
         try {
             //将ftp的附件下载到本地
@@ -262,8 +291,10 @@ public class CsrProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void crsProjectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //组项目 立项
-        CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
-        initGroupProject(csrProjectInfo);
+        if(StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(),TaskHandleStateEnum.AGREE.getValue()) ){
+            CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
+            initGroupProject(csrProjectInfo);
+        }
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
@@ -297,19 +328,30 @@ public class CsrProjectInfoService {
         for (CsrProjectInfoGroup infoGroup : csrProjectInfoGroups) {
             if (!ObjectUtils.isEmpty(infoGroup)) {
                 try {
+                    //保存项目信息
                     projectInfo = new ProjectInfo();
+                    projectInfo.setProjectClassId(0);
+                    projectInfo.setEntrustPurpose(csrProjectInfo.getEntrustPurpose());
+                    projectInfo.setProjectTypeId(csrProjectInfo.getProjectTypeId());
+                    projectInfo.setProjectCategoryId(csrProjectInfo.getProjectCategoryId());
                     projectInfo.setCreator(csrProjectInfo.getCreator());
                     projectInfo.setProjectName(infoGroup.getProjectName());
+                    int projectId = projectInfoService.saveProjectInfo_returnID(projectInfo);
+
+                    //保存项目成员
                     ProjectMemberDto projectMemberDto = new ProjectMemberDto();
+                    projectMemberDto.setProjectId(projectId);
                     projectMemberDto.setCreator(csrProjectInfo.getCreator());
                     projectMemberDto.setUserAccountManager(infoGroup.getProjectManager());
                     projectMemberDto.setUserAccountMember(infoGroup.getProjectMember());
-                    int i = projectMemberService.saveReturnId(projectMemberDto);
-                    projectInfo.setProjectMemberId(i);
-                    int k = projectInfoService.saveProjectInfo_returnID(projectInfo);
+                    projectMemberService.saveReturnId(projectMemberDto);
+
+                    //回写借款人的项目id
                     List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
                     for (CsrBorrower csrBorrower : csrBorrowers) {
                         csrBorrower.setProjectId(k);
+                    for (CsrBorrower csrBorrower:csrBorrowers){
+                        csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
                     //项目立项
@@ -321,6 +363,8 @@ public class CsrProjectInfoService {
                     } catch (Exception e1) {
 
                     }
+                }catch (Exception e){
+                    logger.error("初始化项目异常，原因："+e.getMessage());
                 }
             }
         }
@@ -401,7 +445,7 @@ public class CsrProjectInfoService {
                     if (!invalidRuleIndexMap.isEmpty()) {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
-                            isFilter = isFilter(ruleList, integerStringEntry.getValue(), row.getCell(integerStringEntry.getKey()).getStringCellValue());
+                            isFilter = isFilter(ruleList, integerStringEntry.getValue(),getCellValue(row.getCell(integerStringEntry.getKey())));
                             if (isFilter) continue;
                         }
                         if (isFilter) continue;

@@ -5,6 +5,10 @@ import java.util.Date;
 public class CsrProjectInfo {
     private Integer id;
 
+    private Integer projectTypeId;
+
+    private Integer projectCategoryId;
+
     private String processInsId;
 
     private String name;
@@ -41,6 +45,22 @@ public class CsrProjectInfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProjectTypeId() {
+        return projectTypeId;
+    }
+
+    public void setProjectTypeId(Integer projectTypeId) {
+        this.projectTypeId = projectTypeId;
+    }
+
+    public Integer getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(Integer projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
     }
 
     public String getProcessInsId() {

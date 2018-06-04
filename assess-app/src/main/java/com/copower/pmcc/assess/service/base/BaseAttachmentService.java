@@ -378,12 +378,13 @@ public class BaseAttachmentService {
      * @param relationTableId
      */
     public void relationToTable(String tableName, String fieldName, Integer relationTableId) {
-        BaseAttachment queryParma = new BaseAttachment();
-        queryParma.setTableName(tableName);
+        BaseAttachment queryParam = new BaseAttachment();
+        queryParam.setTableName(tableName);
+        queryParam.setTableId(0);
         if (StringUtils.isNotBlank(fieldName))
-            queryParma.setFieldsName(fieldName);
-        queryParma.setCreater(commonService.thisUserAccount());
-        List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParma);
+            queryParam.setFieldsName(fieldName);
+        queryParam.setCreater(commonService.thisUserAccount());
+        List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParam);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
             for (BaseAttachment baseAttachment : attachmentList) {
                 baseAttachment.setTableId(relationTableId);
