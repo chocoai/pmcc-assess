@@ -17,7 +17,7 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                         ${csrProjectInfo.entrustPurposeName}
+                         ${csrProjectInfo.name}
                         <small><label style="padding: 5px;" class="label label-danger">
                             ${csrProjectInfo.projectStatus}
                         </label></small>
@@ -126,23 +126,42 @@
             <!--招标信息-->
             <%@include file="/views/share/csr/projectInfoCsr.jsp" %>
             <div class="x_panel">
+                <c:forEach items="${csrProjectInfo.csrProjectInfoGroupVos}" var="data">
                 <div class="x_title">
-                    <h2>项目成员</h2>
+                    <h2>${data.projectName}</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                    <div class="form-horizontal">
+                <div class="form-horizontal">
+                    <div class="x_content">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 项目经理
                             </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"
-                                       id="lab_userAccountManagerName">${projectMemberVo.userAccountManagerName}</label>
+                            <div class="col-sm-11">
+                                <label class="form-control" id="lab_userAccountManagerName">${data.projectManagerName}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                项目成员
+                            </label>
+                            <div class="col-sm-11">
+                                <label class="form-control">${data.projectMemberName}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                文号
+                            </label>
+                            <div class="col-sm-11">
+                                <label class="form-control">${data.number}</label>
                             </div>
                         </div>
                     </div>
                 </div>
+                </c:forEach>
             </div>
             <div class="x_panel">
                 <div class="x_title">

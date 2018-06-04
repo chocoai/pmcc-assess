@@ -24,6 +24,72 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        委托单位
+                    </label>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" value="${csrProjectInfo.entrustmentUnitName}"
+                                   class="form-control" required="required" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">项目类型</label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${csrProjectInfo.projectTypeName}"
+                               class="form-control" required="required" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">客户类型</label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${csrProjectInfo.customerTypeName}"
+                               class="form-control" required="required" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的</label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${csrProjectInfo.entrustPurposeName}"
+                               class="form-control" required="required" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">取行序号</label>
+                    <div class="col-sm-3">
+                        <input type="text" value="${csrProjectInfo.startRowNumber}"
+                               class="form-control" required="required" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
+                        <input type="text" value="<fmt:formatDate value='${csrProjectInfo.valuationDate}'/>"
+                               class="form-control" readonly="readonly">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">项目说明</label>
+                    <div class="col-sm-11">
+                        <label class="form-control">${csrProjectInfo.remark}</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
