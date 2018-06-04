@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.ReportTemplateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +36,15 @@ public class ReportTemplateController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/reportTemplate");
         List<BaseDataDic> reportTemplateTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TEMPLATE_TYPE);
         modelAndView.addObject("reportTemplateTypeList",reportTemplateTypeList);
+        modelAndView.addObject("currUserAccount",commonService.thisUserAccount());
         return modelAndView;
     }
 

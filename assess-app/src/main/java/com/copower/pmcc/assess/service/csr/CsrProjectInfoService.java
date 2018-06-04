@@ -300,6 +300,9 @@ public class CsrProjectInfoService {
         if (csrProjectInfo == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         saveCsrProjectInfo(csrProjectInfo);
+        //清空原数据
+        cleanImportData(csrProjectInfo);
+        //读取数据
         readImportData(csrProjectInfo);
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
         approvalModelDto.setNextApproval(Lists.newArrayList(csrProjectInfo.getDistributionUser()));
