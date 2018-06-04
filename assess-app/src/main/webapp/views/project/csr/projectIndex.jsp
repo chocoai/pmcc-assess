@@ -28,7 +28,7 @@
                                         <option value="">请选择</option>
                                         <c:forEach items="${projectTypeList}" var="item">
                                             <c:choose>
-                                                <c:when test="${item.id==projectInfo.projectTypeId}">
+                                                <c:when test="${item.id==csrProjectInfo.projectTypeId}">
                                                     <option value="${item.id}" selected="selected">${item.name}</option>
                                                 </c:when>
                                                 <c:otherwise>

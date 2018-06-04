@@ -252,8 +252,10 @@ public class CsrProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void crsProjectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //组项目 立项
-        CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
-        initGroupProject(csrProjectInfo);
+        if(StringUtils.equalsIgnoreCase(approvalModelDto.getConclusion(),TaskHandleStateEnum.AGREE.getValue()) ){
+            CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfo(approvalModelDto.getProcessInsId());
+            initGroupProject(csrProjectInfo);
+        }
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
