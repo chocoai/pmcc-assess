@@ -8,7 +8,9 @@ package com.copower.pmcc.assess.constant;
  * @time: 15:23
  */
 public class AssessCacheConstant {
-
+    //项目类型
+    public static final String PMCC_ASSESS_BASE_CATEGORY_ID = "pmcc:assess:base:category:id";
+    public static final String PMCC_ASSESS_BASE_CATEGORY_PID = "pmcc:assess:base:category:pid";
 
     //项目阶段
     public static final String PMCC_ASSESS_WORK_STAGE="pmcc:assess:work:stage";

@@ -3,12 +3,14 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.ProjectInfoMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="urgency" property="urgency" jdbcType="INTEGER" />
+    <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
+    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
+    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="urgency" property="urgency" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="INTEGER" />
     <result column="city" property="city" jdbcType="INTEGER" />
     <result column="district" property="district" jdbcType="INTEGER" />
-    <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
     <result column="value_type" property="valueType" jdbcType="INTEGER" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
@@ -88,11 +90,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, urgency, project_name, province, city, district, project_class_id, entrust_purpose, 
-    value_type, department_id, remarks, complete_date_plan, complete_date_actual, complete_date_start, 
-    process_ins_id, status, project_status, public_project_id, creator, gmt_created, 
-    gmt_modified, attachment_project_info_id, consignor_id, unit_information_id, possessor_id, 
-    project_member_id
+    id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
+    province, city, district, entrust_purpose, value_type, department_id, remarks, complete_date_plan, 
+    complete_date_actual, complete_date_start, process_ins_id, status, project_status, 
+    public_project_id, creator, gmt_created, gmt_modified, attachment_project_info_id, 
+    consignor_id, unit_information_id, possessor_id, project_member_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -128,19 +130,21 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_info (urgency, project_name, province, 
-      city, district, project_class_id, 
-      entrust_purpose, value_type, department_id, 
-      remarks, complete_date_plan, complete_date_actual, 
+    insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
+      project_name, urgency, province, 
+      city, district, entrust_purpose, 
+      value_type, department_id, remarks, 
+      complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, status, 
       project_status, public_project_id, creator, 
       gmt_created, gmt_modified, attachment_project_info_id, 
       consignor_id, unit_information_id, possessor_id, 
       project_member_id)
-    values (#{urgency,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
-      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, 
-      #{entrustPurpose,jdbcType=INTEGER}, #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
+    values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
+      #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
+      #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{attachmentProjectInfoId,jdbcType=VARCHAR}, 
@@ -153,11 +157,20 @@
     </selectKey>
     insert into tb_project_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="urgency != null" >
-        urgency,
+      <if test="projectClassId != null" >
+        project_class_id,
+      </if>
+      <if test="projectTypeId != null" >
+        project_type_id,
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id,
       </if>
       <if test="projectName != null" >
         project_name,
+      </if>
+      <if test="urgency != null" >
+        urgency,
       </if>
       <if test="province != null" >
         province,
@@ -167,9 +180,6 @@
       </if>
       <if test="district != null" >
         district,
-      </if>
-      <if test="projectClassId != null" >
-        project_class_id,
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose,
@@ -230,11 +240,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="urgency != null" >
-        #{urgency,jdbcType=INTEGER},
+      <if test="projectClassId != null" >
+        #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null" >
+        #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        #{projectCategoryId,jdbcType=INTEGER},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgency != null" >
+        #{urgency,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         #{province,jdbcType=INTEGER},
@@ -244,9 +263,6 @@
       </if>
       <if test="district != null" >
         #{district,jdbcType=INTEGER},
-      </if>
-      <if test="projectClassId != null" >
-        #{projectClassId,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
@@ -319,11 +335,20 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.urgency != null" >
-        urgency = #{record.urgency,jdbcType=INTEGER},
+      <if test="record.projectClassId != null" >
+        project_class_id = #{record.projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectTypeId != null" >
+        project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectCategoryId != null" >
+        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.urgency != null" >
+        urgency = #{record.urgency,jdbcType=INTEGER},
       </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=INTEGER},
@@ -333,9 +358,6 @@
       </if>
       <if test="record.district != null" >
         district = #{record.district,jdbcType=INTEGER},
-      </if>
-      <if test="record.projectClassId != null" >
-        project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       </if>
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
@@ -402,12 +424,14 @@
   <update id="updateByExample" parameterType="map" >
     update tb_project_info
     set id = #{record.id,jdbcType=INTEGER},
-      urgency = #{record.urgency,jdbcType=INTEGER},
+      project_class_id = #{record.projectClassId,jdbcType=INTEGER},
+      project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      urgency = #{record.urgency,jdbcType=INTEGER},
       province = #{record.province,jdbcType=INTEGER},
       city = #{record.city,jdbcType=INTEGER},
       district = #{record.district,jdbcType=INTEGER},
-      project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       value_type = #{record.valueType,jdbcType=INTEGER},
       department_id = #{record.departmentId,jdbcType=INTEGER},
@@ -434,11 +458,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     update tb_project_info
     <set >
-      <if test="urgency != null" >
-        urgency = #{urgency,jdbcType=INTEGER},
+      <if test="projectClassId != null" >
+        project_class_id = #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null" >
+        project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       </if>
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgency != null" >
+        urgency = #{urgency,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=INTEGER},
@@ -448,9 +481,6 @@
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=INTEGER},
-      </if>
-      <if test="projectClassId != null" >
-        project_class_id = #{projectClassId,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
@@ -514,12 +544,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     update tb_project_info
-    set urgency = #{urgency,jdbcType=INTEGER},
+    set project_class_id = #{projectClassId,jdbcType=INTEGER},
+      project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
+      urgency = #{urgency,jdbcType=INTEGER},
       province = #{province,jdbcType=INTEGER},
       city = #{city,jdbcType=INTEGER},
       district = #{district,jdbcType=INTEGER},
-      project_class_id = #{projectClassId,jdbcType=INTEGER},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       value_type = #{valueType,jdbcType=INTEGER},
       department_id = #{departmentId,jdbcType=INTEGER},

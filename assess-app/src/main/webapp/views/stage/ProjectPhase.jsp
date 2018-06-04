@@ -22,36 +22,34 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <%--<form id="frm" class="form-horizontal">--%>
-                            <%--<div class="form-group ">--%>
-                            <%--<div>--%>
-                            <%--<label class="col-sm-1 control-label">--%>
-                            <%--项目类型:--%>
-                            <%--</label>--%>
-                            <%--<div class="col-sm-2">--%>
-                            <%--<select name="typeId" id="typeId" class="form-control">--%>
-                            <%--<c:forEach var="item" items="${projectTypeId}">--%>
-                            <%--<option value="${item.id}">${item.name}</option>--%>
-                            <%--</c:forEach>--%>
-                            <%--</select>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
+                            <form id="frm" class="form-horizontal">
+                                <div class="form-group ">
+                                    <div>
+                                        <label class="col-sm-1 control-label">
+                                            项目类型:
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select name="typeId" id="typeId" class="form-control">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${projectTypeList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="col-sm-1 control-label">
+                                            项目类别:
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select name="categoryId" id="categoryId" class="form-control">
+                                                <option value="" selected="selected">-请选择-</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <%--<div>--%>
-                            <%--<label class="col-sm-1 control-label">--%>
-                            <%--项目类别:--%>
-                            <%--</label>--%>
-                            <%--<div class="col-sm-2">--%>
-                            <%--<select name="categoryId" id="categoryId" class="form-control">--%>
-                            <%--<option value="" selected="selected">-请选择-</option>--%>
-                            <%--</select>--%>
-                            <%--</div>--%>
-                            <%--</div>--%>
-
-                            <%--</div>--%>
-                            <%--</form>--%>
-                            <input type="hidden" id="typeId" value="0">
-                            <input type="hidden" id="categoryId" value="0">
+                                </div>
+                            </form>
                             <div class="x_panel">
                                 <div id="work_stage_wizard" class="form_wizard wizard_horizontal">
                                 </div>
@@ -172,7 +170,7 @@
     function loadCategoryByPid(pid, fn) {
         if (pid) {
             $.ajax({
-                url: getContextPath()+"/ProjectPhase/getBidProjectCategoryListByPid",
+                url: getContextPath() + "/ProjectPhase/getBidProjectCategoryListByPid",
                 type: "get",
                 dataType: "json",
                 data: {
