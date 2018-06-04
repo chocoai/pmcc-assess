@@ -78,7 +78,14 @@
         var result = $("#tb_csr_projectList").bootstrapTable('getSelections');
     }
 
-
+    // $('#tb_csr_projectList').bootstrapTable({
+    //     onSearch: function () {
+    //         console.log("search");
+    //     }
+    // });
+    function search() {
+        TableReload("tb_csr_projectList", "${pageContext.request.contextPath}/projectCenter/getCsrProjectInfoListA", {name: $("#projectName").val()});
+    }
 
 </script>
 </body>

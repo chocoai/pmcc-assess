@@ -327,7 +327,94 @@
     </div>
 </div>
 
+<div id="divBoxCsrBorrowerSelectEdit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-hidden="true" data-height="235">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">客户分派查询</h3>
+            </div>
+            <form id="csrBorrowerSelectEdit" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <input type="hidden" name="csrProjectInfoGroupID" id="csrProjectInfoGroupIDEdit">
+                                    <div>
+                                        <div class="col-sm-3">
+                                            <input type="text" data-rule-maxlength="50" placeholder="二级分行"
+                                                   id="secondLevelBranchEdit" name="secondLevelBranch" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-3">
+                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                   placeholder="一级分行" id="firstLevelBranchEdit" name="firstLevelBranch" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="button" class="btn btn-primary" value="查询" onclick="submitGroupgEdit('')">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered" id="csrBorrowerTableListEdit">
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <input type="button"  value="分派放弃" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+
+    //分派编辑
+    function submitGroupgEdit(id) {
+        var cols = [];
+        cols.push({field: 'checkbox', checkbox: true});
+        cols.push({field: 'name', title: '名字'});
+        cols.push({field: 'id', visible: false, title: "id"});
+        cols.push({field: 'maritalStatus', title: '婚否'});
+        cols.push({field: 'workUnit', title: '职务'});
+        cols.push({field: 'presentAddress', title: '地址'});
+        cols.push({field: 'secondLevelBranch', title: '二级分行'});
+        cols.push({field: 'firstLevelBranch', title: '一级分行'});
+        $("#csrBorrowerTableListEdit").bootstrapTable('destroy');
+        $("#csrProjectInfoGroupIDEdit").val(id);
+        TableInit("csrBorrowerTableListEdit", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
+            secondLevelBranch: $("#secondLevelBranchEdit").val(),
+            firstLevelBranch: $("#firstLevelBranchEdit").val(),
+            csrProjectInfoID: '${csrProjectInfo.id}'
+        }, {
+            showColumns: false,
+            showRefresh: true,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+        $('#divBoxCsrBorrowerSelectEdit').modal();
+    }
 
     //分派选择
     function submitGroupSelect(id) {
@@ -524,6 +611,7 @@
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editGrpupProject(' + row.id + ',\'groupProjectTableList\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="deleteGrpupProject(' + row.id + ',\'groupProjectTableList\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupSelect(' + row.id + ');" >分派提交</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupgEdit(' + row.id + ');" >分派编辑</i></a>';
                 str += '</div>';
                 return str;
             }
