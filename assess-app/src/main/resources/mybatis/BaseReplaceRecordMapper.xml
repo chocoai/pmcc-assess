@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseDataRegionMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseDataRegion" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseReplaceRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseReplaceRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="content" property="content" jdbcType="OTHER" />
+    <result column="content" property="content" jdbcType="CHAR" />
     <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="bis_replace" property="bisReplace" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, content, attachment_id, status, creator, gmt_created, gmt_modified
+    id, content, attachment_id, bis_replace, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegionExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecordExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_base_data_region
+    from tb_base_replace_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,35 +88,35 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_base_data_region
+    from tb_base_replace_record
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_base_data_region
+    delete from tb_base_replace_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegionExample" >
-    delete from tb_base_data_region
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecordExample" >
+    delete from tb_base_replace_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegion" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_data_region (content, attachment_id, status, 
+    insert into tb_base_replace_record (content, attachment_id, bis_replace, 
       creator, gmt_created, gmt_modified
       )
-    values (#{content,jdbcType=OTHER}, #{attachmentId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+    values (#{content,jdbcType=CHAR}, #{attachmentId,jdbcType=INTEGER}, #{bisReplace,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegion" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_data_region
+    insert into tb_base_replace_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="content != null" >
         content,
@@ -124,8 +124,8 @@
       <if test="attachmentId != null" >
         attachment_id,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="bisReplace != null" >
+        bis_replace,
       </if>
       <if test="creator != null" >
         creator,
@@ -139,13 +139,13 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="content != null" >
-        #{content,jdbcType=OTHER},
+        #{content,jdbcType=CHAR},
       </if>
       <if test="attachmentId != null" >
         #{attachmentId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+      <if test="bisReplace != null" >
+        #{bisReplace,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -158,26 +158,26 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegionExample" resultType="java.lang.Integer" >
-    select count(*) from tb_base_data_region
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecordExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base_replace_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_base_data_region
+    update tb_base_replace_record
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.content != null" >
-        content = #{record.content,jdbcType=OTHER},
+        content = #{record.content,jdbcType=CHAR},
       </if>
       <if test="record.attachmentId != null" >
         attachment_id = #{record.attachmentId,jdbcType=INTEGER},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.bisReplace != null" >
+        bis_replace = #{record.bisReplace,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -194,11 +194,11 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_base_data_region
+    update tb_base_replace_record
     set id = #{record.id,jdbcType=INTEGER},
-      content = #{record.content,jdbcType=OTHER},
+      content = #{record.content,jdbcType=CHAR},
       attachment_id = #{record.attachmentId,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=VARCHAR},
+      bis_replace = #{record.bisReplace,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -206,17 +206,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegion" >
-    update tb_base_data_region
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecord" >
+    update tb_base_replace_record
     <set >
       <if test="content != null" >
-        content = #{content,jdbcType=OTHER},
+        content = #{content,jdbcType=CHAR},
       </if>
       <if test="attachmentId != null" >
         attachment_id = #{attachmentId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+      <if test="bisReplace != null" >
+        bis_replace = #{bisReplace,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -230,11 +230,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseDataRegion" >
-    update tb_base_data_region
-    set content = #{content,jdbcType=OTHER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseReplaceRecord" >
+    update tb_base_replace_record
+    set content = #{content,jdbcType=CHAR},
       attachment_id = #{attachmentId,jdbcType=INTEGER},
-      status = #{status,jdbcType=VARCHAR},
+      bis_replace = #{bisReplace,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

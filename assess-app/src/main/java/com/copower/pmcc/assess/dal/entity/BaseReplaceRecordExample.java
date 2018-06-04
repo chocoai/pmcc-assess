@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BaseDataRegionExample {
+public class BaseReplaceRecordExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BaseDataRegionExample() {
+    public BaseReplaceRecordExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -175,52 +175,62 @@ public class BaseDataRegionExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentEqualTo(Object value) {
+        public Criteria andContentEqualTo(String value) {
             addCriterion("content =", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotEqualTo(Object value) {
+        public Criteria andContentNotEqualTo(String value) {
             addCriterion("content <>", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentGreaterThan(Object value) {
+        public Criteria andContentGreaterThan(String value) {
             addCriterion("content >", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentGreaterThanOrEqualTo(Object value) {
+        public Criteria andContentGreaterThanOrEqualTo(String value) {
             addCriterion("content >=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentLessThan(Object value) {
+        public Criteria andContentLessThan(String value) {
             addCriterion("content <", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentLessThanOrEqualTo(Object value) {
+        public Criteria andContentLessThanOrEqualTo(String value) {
             addCriterion("content <=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentIn(List<Object> values) {
+        public Criteria andContentLike(String value) {
+            addCriterion("content like", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotLike(String value) {
+            addCriterion("content not like", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentIn(List<String> values) {
             addCriterion("content in", values, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotIn(List<Object> values) {
+        public Criteria andContentNotIn(List<String> values) {
             addCriterion("content not in", values, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentBetween(Object value1, Object value2) {
+        public Criteria andContentBetween(String value1, String value2) {
             addCriterion("content between", value1, value2, "content");
             return (Criteria) this;
         }
 
-        public Criteria andContentNotBetween(Object value1, Object value2) {
+        public Criteria andContentNotBetween(String value1, String value2) {
             addCriterion("content not between", value1, value2, "content");
             return (Criteria) this;
         }
@@ -285,73 +295,63 @@ public class BaseDataRegionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
+        public Criteria andBisReplaceIsNull() {
+            addCriterion("bis_replace is null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
+        public Criteria andBisReplaceIsNotNull() {
+            addCriterion("bis_replace is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
-            addCriterion("status =", value, "status");
+        public Criteria andBisReplaceEqualTo(Boolean value) {
+            addCriterion("bis_replace =", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
-            addCriterion("status <>", value, "status");
+        public Criteria andBisReplaceNotEqualTo(Boolean value) {
+            addCriterion("bis_replace <>", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
-            addCriterion("status >", value, "status");
+        public Criteria andBisReplaceGreaterThan(Boolean value) {
+            addCriterion("bis_replace >", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
-            addCriterion("status >=", value, "status");
+        public Criteria andBisReplaceGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_replace >=", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
-            addCriterion("status <", value, "status");
+        public Criteria andBisReplaceLessThan(Boolean value) {
+            addCriterion("bis_replace <", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
-            addCriterion("status <=", value, "status");
+        public Criteria andBisReplaceLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_replace <=", value, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
+        public Criteria andBisReplaceIn(List<Boolean> values) {
+            addCriterion("bis_replace in", values, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
+        public Criteria andBisReplaceNotIn(List<Boolean> values) {
+            addCriterion("bis_replace not in", values, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<String> values) {
-            addCriterion("status in", values, "status");
+        public Criteria andBisReplaceBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_replace between", value1, value2, "bisReplace");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(String value1, String value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(String value1, String value2) {
-            addCriterion("status not between", value1, value2, "status");
+        public Criteria andBisReplaceNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_replace not between", value1, value2, "bisReplace");
             return (Criteria) this;
         }
 

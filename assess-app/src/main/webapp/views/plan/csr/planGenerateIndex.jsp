@@ -134,37 +134,16 @@
     function checkBoxAllClick(_this) {
         $("#frm_content").find("[name=checkboxItem]").each(function () {
             $(this).prop("checked", $(_this).prop("checked"));
-            checkBoxItemClick(this);
         })
-    }
-
-    //checkbox点击
-    function checkBoxItemClick(_this) {
-        var isChecked = $(_this).prop("checked");
-        var tr = $(_this).closest("tr");
-        computeNumber();
-        if (isChecked) {
-            tr.find("[name=reportArea]").attr("required", "true");
-        } else {
-            tr.find("[name=reportArea]").removeAttr("required");
-        }
-    }
-
-    //计算份数
-    function computeNumber() {
-        var reportTypeLength = $("#frm_content").find("[name=reportType]:checked").length;
-        var checkboxItemLength = $("#frm_content").find("[name=checkboxItem]:checked").length;
-        if (reportTypeLength > 0 && checkboxItemLength > 0) {
-            $("#lbl_report_count").find("span").text(reportTypeLength * checkboxItemLength);
-            $("#lbl_report_count").show();
-        } else {
-            $("#lbl_report_count").find("span").text(0);
-            $("#lbl_report_count").hide();
-        }
     }
 
     //生成报告
     function generateReport() {
+        var borrowerIds = '';
+        $("#frm_content").find("[name=checkboxItem]").each(function () {
+            var id = $(this).closest('tr').find('[name="id"]').val();
+            borrowerIds += id + ',';
+        })
 
     }
 

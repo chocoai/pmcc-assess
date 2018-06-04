@@ -2,14 +2,14 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class BaseDataRegion {
+public class BaseReplaceRecord {
     private Integer id;
 
-    private Object content;
+    private String content;
 
     private Integer attachmentId;
 
-    private String status;
+    private Boolean bisReplace;
 
     private String creator;
 
@@ -25,12 +25,12 @@ public class BaseDataRegion {
         this.id = id;
     }
 
-    public Object getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Object content) {
-        this.content = content;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Integer getAttachmentId() {
@@ -41,12 +41,12 @@ public class BaseDataRegion {
         this.attachmentId = attachmentId;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getBisReplace() {
+        return bisReplace;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setBisReplace(Boolean bisReplace) {
+        this.bisReplace = bisReplace;
     }
 
     public String getCreator() {
