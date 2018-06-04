@@ -14,7 +14,16 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
 
             <c:forEach var="item" items="${projectDetailsTask}">
-                <jsp:include page="/views/task/financialClaim/share/${item.declareFormName}.jsp"></jsp:include>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>${item.projectPhaseName}</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <input type="hidden" id="${item.declareFormName}_details_id" value="${item.id}">
+                        <jsp:include page="/views/task/financialClaim/share/${item.declareFormName}.jsp"></jsp:include>
+                    </div>
+                </div>
             </c:forEach>
             <div class="x_panel">
                 <div class="x_content">
@@ -54,8 +63,8 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadUploadFiles();
             }
         });
