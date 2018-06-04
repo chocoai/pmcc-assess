@@ -139,6 +139,7 @@ public class TaskCompareService {
         modelAndView.addObject("methodMarketCompareCalculations",methodMarketCompareCalculations);
         modelAndView.addObject("methodMarketCompareResults",methodMarketCompareResults);
         modelAndView.addObject("housePriceIndexs",housePriceIndexs);
+        modelAndView.addObject("schemeEvaluationObjectId",schemeEvaluationObjectId);
         return modelAndView;
     }
 
@@ -154,5 +155,19 @@ public class TaskCompareService {
             }
             return surveyCaseStudyDetailVo;
         });
+    }
+
+    public void editData(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
+        MethodMarketCompareCommonDto methodMarketCompareCommonDto = JSON.parseObject(formData,MethodMarketCompareCommonDto.class);  //json 转对象
+        //提取各自对象
+        List<MethodMarketCompareFactorDto> methodMarketCompareFactorDtos = methodMarketCompareCommonDto.getMethodMarketCompareFactorDtos();
+        List<MethodMarketCompareIndexDto> methodMarketCompareIndexDtos = methodMarketCompareCommonDto.getMethodMarketCompareIndexDtos();
+        List<MethodMarketCompareCalculationDto> methodMarketCompareCalculationDtos = methodMarketCompareCommonDto.getMethodMarketCompareCalculationDtos();
+        List<MethodMarketCompareResultDto> methodMarketCompareResultDtos = methodMarketCompareCommonDto.getMethodMarketCompareResultDtos();
+
+        methodMarketCompareFactorService.updata(methodMarketCompareFactorDtos);   //因素表
+        methodMarketCompareIndexService.updata(methodMarketCompareIndexDtos);     //指数表
+        methodMarketCompareCalculationService.updata(methodMarketCompareCalculationDtos); //测算表
+        methodMarketCompareResultService.updata(methodMarketCompareResultDtos);   //结果表
     }
 }

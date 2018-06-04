@@ -30,4 +30,11 @@ public class MethodMarketCompareFactorService {
     public List<MethodMarketCompareFactor> getDataByEvaluationObjectId(Integer schemeEvaluationObjectId) {
         return methodMarketCompareFactorDao.getDataByEvaluationObjectId(schemeEvaluationObjectId);
     }
+
+    public void updata(List<MethodMarketCompareFactorDto> methodMarketCompareFactorDtos) {
+        for(MethodMarketCompareFactorDto methodMarketCompareFactorDto:methodMarketCompareFactorDtos){
+            methodMarketCompareFactorDao.update(methodMarketCompareFactorDto);
+        }
+
+    }
 }

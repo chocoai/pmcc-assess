@@ -28,4 +28,8 @@ public class MethodMarketCompareCalculationDao {
         example.createCriteria().andEvaluationObjectIdEqualTo(schemeEvaluationObjectId);
         return methodMarketCompareCalculationMapper.selectByExample(example);
     }
+
+    public void update(MethodMarketCompareCalculationDto methodMarketCompareCalculationDto) {
+        methodMarketCompareCalculationMapper.updateByPrimaryKeySelective(methodMarketCompareCalculationDto);
+    }
 }

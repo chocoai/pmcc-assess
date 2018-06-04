@@ -73,6 +73,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        //返回修改提交走这里
+        taskCompareService.editData(projectPlanDetails,processInsId,formData);
     }
 }
