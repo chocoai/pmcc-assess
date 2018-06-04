@@ -71,6 +71,12 @@ public class ProjectCenterController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getCsrProjectInfoListA", name = "取得 债权人列表", method = RequestMethod.GET)
+    public BootstrapTableVo getCsrProjectInfoListA(String name) {
+        return projectCenterService.csrProjectInfoListA(name);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getProjectListByMonth", name = "得指定月份完成的项目列表", method = RequestMethod.GET)
     public HttpResult getProjectListByMonth(String dates, String datee) {
         List<ProjectInfo> projectListByMonth = projectCenterService.getProjectListByMonth(dates, datee);
@@ -80,6 +86,12 @@ public class ProjectCenterController {
     @RequestMapping(value = "/projectList", name = "项目列表")
     public ModelAndView projectList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectList");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectCsrList", name = "项目 债权列表")
+    public ModelAndView projectCsrList() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCsrList");
         return modelAndView;
     }
 

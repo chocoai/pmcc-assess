@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/2/23
  * @time: 14:23
  */
@@ -27,6 +27,7 @@ public class CsrProjectInfoDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -36,6 +37,7 @@ public class CsrProjectInfoDao {
 
     /**
      * 获取数据列表
+     *
      * @param csrProjectInfo
      * @return
      */
@@ -45,18 +47,34 @@ public class CsrProjectInfoDao {
         return csrProjectInfoMapper.selectByExample(example);
     }
 
-    public CsrProjectInfo getCsrProjectInfo(String processInsId){
-        if(StringUtils.isBlank(processInsId)) return null;
+    /**
+     * 获取所有列表
+     *
+     * @return
+     */
+    public List<CsrProjectInfo> getCsrProjectInfoList(String name) {
+        CsrProjectInfoExample example = new CsrProjectInfoExample();
+        if (org.springframework.util.StringUtils.isEmpty(name)) {
+            example.createCriteria().andIdIsNotNull();
+        } else {
+            example.createCriteria().andIdIsNotNull().andNameLike("%" + name + "%");
+        }
+        return csrProjectInfoMapper.selectByExample(example);
+    }
+
+    public CsrProjectInfo getCsrProjectInfo(String processInsId) {
+        if (StringUtils.isBlank(processInsId)) return null;
         CsrProjectInfoExample example = new CsrProjectInfoExample();
         example.createCriteria().andProcessInsIdEqualTo(processInsId);
         List<CsrProjectInfo> csrProjectInfos = csrProjectInfoMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(csrProjectInfos))
+        if (CollectionUtils.isNotEmpty(csrProjectInfos))
             return csrProjectInfos.get(0);
         return null;
     }
 
     /**
      * 新增
+     *
      * @param csrProjectInfo
      * @return
      */
@@ -66,6 +84,7 @@ public class CsrProjectInfoDao {
 
     /**
      * 编辑
+     *
      * @param csrProjectInfo
      * @return
      */

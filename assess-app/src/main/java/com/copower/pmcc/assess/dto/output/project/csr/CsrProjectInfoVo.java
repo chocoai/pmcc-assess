@@ -9,6 +9,15 @@ public class CsrProjectInfoVo extends CsrProjectInfo {
     private String distributionUserName;
     private String customerTypeName;
     private String entrustPurposeName;
+    private String statusName;
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 
     public String getDistributionUserName() {
         return distributionUserName;
