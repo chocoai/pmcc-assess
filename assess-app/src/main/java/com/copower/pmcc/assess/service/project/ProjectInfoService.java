@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -114,6 +115,8 @@ public class ProjectInfoService {
 
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
 
     /**
      * 项目立项申请
@@ -255,14 +258,14 @@ public class ProjectInfoService {
      */
     @Transactional
     public void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(0, true);
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
             projectPlan.setProjectId(projectInfo.getId());
             projectPlan.setProcessInsId("-1");
             projectPlan.setWorkStageId(item.getId());
-            projectPlan.setCategoryId(0);
+            projectPlan.setCategoryId(projectInfo.getProjectCategoryId());
             projectPlan.setPlanName(item.getWorkStageName());
             projectPlan.setCreator(processControllerComponent.getThisUser());
             projectPlan.setCreated(new Date());
@@ -281,6 +284,11 @@ public class ProjectInfoService {
             //发起流程后更新项目的项目id
             projectInfo.setProcessInsId(processUserDto.getProcessInsId());
             projectInfoDao.updateProjectInfo(projectInfo);
+        }else{//直接进入下一阶段
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
+            updateProjectInfo(projectInfo);
+            List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
+            projectPlanService.updatePlanStatus(projectPlans.get(0).getId());
         }
     }
 

@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrProjectInfoMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
+    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="customer_type" property="customerType" jdbcType="INTEGER" />
@@ -78,9 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, name, customer_type, entrustment_unit_id, entrustment_unit_name, 
-    entrust_purpose, valuation_date, distribution_user, remark, start_row_number, status, 
-    project_status, creator, gmt_created, gmt_modified
+    id, project_type_id, project_category_id, process_ins_id, name, customer_type, entrustment_unit_id, 
+    entrustment_unit_name, entrust_purpose, valuation_date, distribution_user, remark, 
+    start_row_number, status, project_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfoExample" >
     select
@@ -116,13 +118,15 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_project_info (process_ins_id, name, customer_type, 
+    insert into tb_csr_project_info (project_type_id, project_category_id, 
+      process_ins_id, name, customer_type, 
       entrustment_unit_id, entrustment_unit_name, 
       entrust_purpose, valuation_date, distribution_user, 
       remark, start_row_number, status, 
       project_status, creator, gmt_created, 
       gmt_modified)
-    values (#{processInsId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{customerType,jdbcType=INTEGER}, 
+    values (#{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
+      #{processInsId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{customerType,jdbcType=INTEGER}, 
       #{entrustmentUnitId,jdbcType=INTEGER}, #{entrustmentUnitName,jdbcType=VARCHAR}, 
       #{entrustPurpose,jdbcType=INTEGER}, #{valuationDate,jdbcType=DATE}, #{distributionUser,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{startRowNumber,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
@@ -135,6 +139,12 @@
     </selectKey>
     insert into tb_csr_project_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectTypeId != null" >
+        project_type_id,
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id,
+      </if>
       <if test="processInsId != null" >
         process_ins_id,
       </if>
@@ -182,6 +192,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectTypeId != null" >
+        #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        #{projectCategoryId,jdbcType=INTEGER},
+      </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
@@ -241,6 +257,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.projectTypeId != null" >
+        project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectCategoryId != null" >
+        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
@@ -294,6 +316,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_project_info
     set id = #{record.id,jdbcType=INTEGER},
+      project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       customer_type = #{record.customerType,jdbcType=INTEGER},
@@ -316,6 +340,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     update tb_csr_project_info
     <set >
+      <if test="projectTypeId != null" >
+        project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null" >
+        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
@@ -366,7 +396,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrProjectInfo" >
     update tb_csr_project_info
-    set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+    set project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       customer_type = #{customerType,jdbcType=INTEGER},
       entrustment_unit_id = #{entrustmentUnitId,jdbcType=INTEGER},

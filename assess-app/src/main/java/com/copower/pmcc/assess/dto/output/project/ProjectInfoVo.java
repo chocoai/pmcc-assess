@@ -13,7 +13,8 @@ import java.util.List;
  * @time: 15:46
  */
 public class ProjectInfoVo extends ProjectInfo {
-
+    private String projectTypeName;
+    private String projectCategoryName;
     private String entrustPurposeName;
     private String provinceName;
     private String cityName;
@@ -24,28 +25,11 @@ public class ProjectInfoVo extends ProjectInfo {
     private InitiatePossessorVo possessorVo;
     private InitiateConsignorVo consignorVo;
     private InitiateUnitInformationVo unitInformationVo;
-
     private String projectClassName;
-
-    private String projectTypeName;
-
-    private String projectCategoryName;
-
     private String departmentName;
-
     private List<ProjectResponsibilityDto> planWorkStages;
-
     private List<ProjectResponsibilityDto> taskWorkStages;
-
     private List<ProjectResponsibilityDto> taskAllWorkStages;
-
-    public String getProjectClassName() {
-        return projectClassName;
-    }
-
-    public void setProjectClassName(String projectClassName) {
-        this.projectClassName = projectClassName;
-    }
 
     public String getProjectTypeName() {
         return projectTypeName;
@@ -173,5 +157,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setUnitInformationVo(InitiateUnitInformationVo unitInformationVo) {
         this.unitInformationVo = unitInformationVo;
+    }
+
+    public String getProjectClassName() {
+        return projectClassName;
+    }
+
+    public void setProjectClassName(String projectClassName) {
+        this.projectClassName = projectClassName;
     }
 }

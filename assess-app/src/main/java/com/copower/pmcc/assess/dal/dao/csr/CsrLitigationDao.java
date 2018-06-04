@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
 
+import com.copower.pmcc.assess.dal.entity.CsrGuarantorExample;
 import com.copower.pmcc.assess.dal.entity.CsrLitigation;
 import com.copower.pmcc.assess.dal.entity.CsrLitigationExample;
 import com.copower.pmcc.assess.dal.mapper.CsrLitigationMapper;
@@ -67,5 +68,17 @@ public class CsrLitigationDao {
      */
     public boolean deleteCsrLitigation(Integer id){
         return csrLitigationMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrLitigationExample example = new CsrLitigationExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrLitigationMapper.deleteByExample(example) > 0;
     }
 }

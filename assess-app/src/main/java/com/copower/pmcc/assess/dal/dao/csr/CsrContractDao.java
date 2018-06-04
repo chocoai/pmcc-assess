@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
 
+import com.copower.pmcc.assess.dal.entity.CsrCalculationExample;
 import com.copower.pmcc.assess.dal.entity.CsrContract;
 import com.copower.pmcc.assess.dal.entity.CsrContractExample;
 import com.copower.pmcc.assess.dal.mapper.CsrContractMapper;
@@ -67,5 +68,17 @@ public class CsrContractDao {
      */
     public boolean deleteCsrContract(Integer id){
         return csrContractMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrContractExample example = new CsrContractExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrContractMapper.deleteByExample(example) > 0;
     }
 }

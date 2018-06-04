@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
 
+import com.copower.pmcc.assess.dal.entity.CsrContractExample;
 import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
 import com.copower.pmcc.assess.dal.entity.CsrGuarantorExample;
 import com.copower.pmcc.assess.dal.mapper.CsrGuarantorMapper;
@@ -67,5 +68,17 @@ public class CsrGuarantorDao {
      */
     public boolean deleteCsrGuarantor(Integer id){
         return csrGuarantorMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrGuarantorExample example = new CsrGuarantorExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrGuarantorMapper.deleteByExample(example) > 0;
     }
 }

@@ -5,17 +5,21 @@ import java.util.Date;
 public class ProjectInfo {
     private Integer id;
 
-    private Integer urgency;
+    private Integer projectClassId;
+
+    private Integer projectTypeId;
+
+    private Integer projectCategoryId;
 
     private String projectName;
+
+    private Integer urgency;
 
     private Integer province;
 
     private Integer city;
 
     private Integer district;
-
-    private Integer projectClassId;
 
     private Integer entrustPurpose;
 
@@ -63,12 +67,28 @@ public class ProjectInfo {
         this.id = id;
     }
 
-    public Integer getUrgency() {
-        return urgency;
+    public Integer getProjectClassId() {
+        return projectClassId;
     }
 
-    public void setUrgency(Integer urgency) {
-        this.urgency = urgency;
+    public void setProjectClassId(Integer projectClassId) {
+        this.projectClassId = projectClassId;
+    }
+
+    public Integer getProjectTypeId() {
+        return projectTypeId;
+    }
+
+    public void setProjectTypeId(Integer projectTypeId) {
+        this.projectTypeId = projectTypeId;
+    }
+
+    public Integer getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(Integer projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
     }
 
     public String getProjectName() {
@@ -77,6 +97,14 @@ public class ProjectInfo {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public Integer getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(Integer urgency) {
+        this.urgency = urgency;
     }
 
     public Integer getProvince() {
@@ -101,14 +129,6 @@ public class ProjectInfo {
 
     public void setDistrict(Integer district) {
         this.district = district;
-    }
-
-    public Integer getProjectClassId() {
-        return projectClassId;
-    }
-
-    public void setProjectClassId(Integer projectClassId) {
-        this.projectClassId = projectClassId;
     }
 
     public Integer getEntrustPurpose() {

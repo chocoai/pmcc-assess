@@ -2,12 +2,14 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoGroupService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 /**
  * Created by kings on 2018-5-31.
  */
@@ -48,6 +52,8 @@ public class CsrProjectInfoController {
     private CsrProjectInfoGroupService projectInfoGroupService;
     @Autowired
     private CsrBorrowerService service;
+    @Autowired
+    private BaseProjectCategoryService baseProjectCategoryService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view() {
@@ -60,6 +66,9 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = new CsrProjectInfoVo();
         csrProjectInfo.setId(0);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
+
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
@@ -69,6 +78,8 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
