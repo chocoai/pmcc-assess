@@ -85,7 +85,7 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData,String string) {
+    public HttpResult projectApplySubmit(String formData) {
         try {
             CsrProjectInfo csrProjectInfo = JSON.parseObject(formData, CsrProjectInfo.class);
             csrProjectInfoService.csrProjectApply(csrProjectInfo);
@@ -137,14 +137,14 @@ public class CsrProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method ={ RequestMethod.GET})
-    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch) {
-        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch);
+    public BootstrapTableVo list(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID) {
+        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch,firstLevelBranch,csrProjectInfoID);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/checkCsrBorrower", name = "客户信息 分派检测", method ={ RequestMethod.POST})
-    public HttpResult checkCsrBorrower(){
+    public HttpResult checkCsrBorrower(Integer csrProjectInfoID){
         int size = service.checkCsrBorrower();
         if (size > 0){
             return HttpResult.newErrorResult("没有分派完成!");

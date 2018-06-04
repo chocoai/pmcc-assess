@@ -471,7 +471,8 @@
         $("#csrBorrowerTableList").bootstrapTable('destroy');
         TableInit("csrBorrowerTableList", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
             secondLevelBranch:$("#secondLevelBranch").val(),
-            firstLevelBranch:$("#firstLevelBranch").val()
+            firstLevelBranch:$("#firstLevelBranch").val(),
+            csrProjectInfoID:""
         }, {
             showColumns: false,
             showRefresh: false,
