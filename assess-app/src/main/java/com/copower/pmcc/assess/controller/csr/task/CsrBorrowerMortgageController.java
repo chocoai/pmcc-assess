@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.csr.task;
 
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerMortgageVo;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerMortgageService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -36,9 +37,9 @@ public class CsrBorrowerMortgageController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanBorrowerMortgage", name = "保存借款人资产抵押", method = RequestMethod.POST)
-    public HttpResult saveLoanBorrowerMortgage(CsrBorrowerMortgage csrBorrowerMortgage) {
+    public HttpResult saveLoanBorrowerMortgage(CsrBorrowerMortgage csrBorrowerMortgage, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrBorrowerMortgage = csrBorrowerMortgageService.saveCsrBorrowerMortgage(csrBorrowerMortgage);
+            csrBorrowerMortgage = csrBorrowerMortgageService.saveCsrBorrowerMortgage(csrBorrowerMortgage,detailsId,taskRemarks,actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -48,12 +49,12 @@ public class CsrBorrowerMortgageController {
     //取得资产抵押情况列表
     @ResponseBody
     @RequestMapping(value = "/getCsrBorrowerMortgage", name = "取得借款人资产抵押情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrBorrowerMortgage(Integer borrowerId) {
+    public BootstrapTableVo getCsrBorrowerMortgage(Integer borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrBorrowerMortgage> csrBorrowerMortgage = csrBorrowerMortgageService.getCsrBorrowerMortgage(borrowerId);
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrBorrowerMortgage) ? new ArrayList<CsrBorrowerMortgage>() : csrBorrowerMortgage);
+        List<CsrBorrowerMortgageVo> csrBorrowerMortgage = csrBorrowerMortgageService.getCsrBorrowerMortgage(borrowerId, detailsId);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrBorrowerMortgage) ? new ArrayList<CsrBorrowerMortgageVo>() : csrBorrowerMortgage);
         bootstrapTableVo.setTotal(page.getTotal());
         return bootstrapTableVo;
     }

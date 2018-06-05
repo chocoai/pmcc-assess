@@ -671,6 +671,21 @@ public class CsrProjectInfoService {
         return value;
     }
 
+    /**
+     * 生成报告
+     */
+    public void generateReport(String borrowerIds){
+        //1.找到替换模板，复制模板
+        //2.针对模板配置的书签，找到书签所对应的值
+        //3.将替换数据写入到替换记录表中
+
+        //债权目前所有的数据都源于 固定的7张表
+
+        //提供寻找模板的方法 与 客户 客户类型 委托目的相关
+
+
+    }
+
 
     /**
      * 确定是否使用已有的借款人信息

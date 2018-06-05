@@ -40,7 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_csr_project_info" domainObjectName="CsrProjectInfo">
+        <table tableName="tb_base_replace_record" domainObjectName="BaseReplaceRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

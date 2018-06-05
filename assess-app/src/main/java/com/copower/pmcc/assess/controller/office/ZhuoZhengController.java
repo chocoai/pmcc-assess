@@ -1,11 +1,12 @@
 package com.copower.pmcc.assess.controller.office;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.base.BaseDataRegionDao;
+import com.copower.pmcc.assess.dal.dao.base.BaseReplaceRecordDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.BaseDataRegion;
+import com.copower.pmcc.assess.dal.entity.BaseReplaceRecord;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseReplaceRecordService;
 import com.copower.pmcc.assess.service.base.ReportTemplateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -57,7 +58,7 @@ public class ZhuoZhengController {
     @Autowired
     private ReportTemplateService reportTemplateService;
     @Autowired
-    private BaseDataRegionDao baseDataRegionDao;
+    private BaseReplaceRecordService baseReplaceRecordService;
     @Autowired
     private ApplicationConstant applicationConstant;
 
@@ -307,13 +308,13 @@ public class ZhuoZhengController {
      */
     @RequestMapping(value = "/replaceBookmark", method = RequestMethod.GET)
     public ModelAndView replaceBookmark(Integer dataId) {
-        BaseDataRegion cmsBaseDataRegion = baseDataRegionDao.getBaseDataRegionById(dataId);
-        if (cmsBaseDataRegion == null)
+        BaseReplaceRecord baseReplaceRecord = baseReplaceRecordService.getRecordById(dataId);
+        if (baseReplaceRecord == null)
             return new ModelAndView(MessageFormat.format("redirect:/zhuozheng/showMessage?message={0}", encode("附件不存在或已删除")));
         String viewName = "/office/zhuozheng/replaceBookmark";
         ModelAndView modelAndView = new ModelAndView(viewName);
-        modelAndView.addObject("attachmentId", cmsBaseDataRegion.getAttachmentId());
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(cmsBaseDataRegion.getContent().toString(), KeyValueDto.class);
+        modelAndView.addObject("attachmentId", baseReplaceRecord.getAttachmentId());
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(baseReplaceRecord.getContent().toString(), KeyValueDto.class);
         PageOfficeCtrl poCtrl = new PageOfficeCtrl(request);
         poCtrl.setServerPage(request.getContextPath() + "/poserver.zz"); //此行必须
         poCtrl.setCaption("书签替换");
@@ -330,7 +331,7 @@ public class ZhuoZhengController {
         }
         poCtrl.setWriter(doc);
         poCtrl.setSaveFilePage(String.format("/%s/zhuozheng/saveFile", applicationConstant.getAppKey()));
-        String url = String.format("/%s/attachment/downloadFileFromServer?id=%s", applicationConstant.getAppKey(), cmsBaseDataRegion.getAttachmentId());
+        String url = String.format("/%s/attachment/downloadFileFromServer?id=%s", applicationConstant.getAppKey(), baseReplaceRecord.getAttachmentId());
         poCtrl.webOpen(url, OpenModeType.docNormalEdit, "admin");
         modelAndView.addObject("poCtrl", poCtrl);
         return modelAndView;
