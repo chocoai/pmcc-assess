@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * 描述:
@@ -94,5 +96,15 @@ public class PoiUtils {
 
 
     //处理Excel
+
+    /**
+     * 回写excel数据
+     * @param stream  excel文件流
+     * @param map list中的map对应的是列号与值
+     */
+    public static void WritebackExcel(Stream stream, Map<Integer,List<Map<Integer,String>>> map){
+
+    }
+
 
 }

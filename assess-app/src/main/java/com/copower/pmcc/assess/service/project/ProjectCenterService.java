@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressVO;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
+import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -62,6 +63,8 @@ public class ProjectCenterService {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private CsrProjectInfoService csrProjectInfoService;
 
     public Integer getTodayTaskCount() {
         Date date = new Date();
@@ -74,6 +77,8 @@ public class ProjectCenterService {
 
         return projectPlanDetailsDao.getProjectDetailsCount(users, dates, datee);
     }
+
+
 
     public Integer getTheWeekTaskCount() {
         Date date = new Date();
@@ -250,6 +255,10 @@ public class ProjectCenterService {
     public List<ProjectInfo> getProjectListByMonth(String dates, String datee) {
         List<ProjectInfo> projectInfos = projectInfoDao.getProjectInfoListByCompleteDatePlan(DateUtils.parse(dates), DateUtils.parse(datee), "");
         return projectInfos;
+    }
+
+    public BootstrapTableVo csrProjectInfoListA(String name){
+        return csrProjectInfoService.csrProjectInfoListA(name);
     }
 
 }

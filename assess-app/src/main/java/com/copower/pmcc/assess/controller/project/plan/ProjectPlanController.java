@@ -77,7 +77,6 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        viewUrl="projectPlanFinancialClaimAssist";//临时处理债权评估用
         ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.applyView(projectPlan);
         modelAndView.addObject("panelTitle", projectWorkStage.getWorkStageName());

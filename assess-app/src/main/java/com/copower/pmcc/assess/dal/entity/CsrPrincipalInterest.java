@@ -7,7 +7,7 @@ public class CsrPrincipalInterest {
 
     private Integer borrowerId;
 
-    private Date analysisDatumDate;
+    private String analysisDatumDate;
 
     private String principal;
 
@@ -39,12 +39,12 @@ public class CsrPrincipalInterest {
         this.borrowerId = borrowerId;
     }
 
-    public Date getAnalysisDatumDate() {
+    public String getAnalysisDatumDate() {
         return analysisDatumDate;
     }
 
-    public void setAnalysisDatumDate(Date analysisDatumDate) {
-        this.analysisDatumDate = analysisDatumDate;
+    public void setAnalysisDatumDate(String analysisDatumDate) {
+        this.analysisDatumDate = analysisDatumDate == null ? null : analysisDatumDate.trim();
     }
 
     public String getPrincipal() {

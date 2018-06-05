@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.net.PortUnreachableException;
 import java.util.List;
 
 /**
@@ -75,7 +77,7 @@ public class ProjectPlanFinancialClaimService {
                 projectPlanDetailsPid.setProjectPhaseName(item.getName());
                 projectPlanDetailsPid.setPlanId(projectPlan.getId());
                 projectPlanDetailsPid.setProjectId(projectPlan.getProjectId());
-                projectPlanDetailsPid.setProjectPhaseId(0);
+                projectPlanDetailsPid.setProjectPhaseId(item.getId());//存客户编号
                 projectPlanDetailsPid.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                 projectPlanDetailsPid.setSorting(0);
                 projectPlanDetailsPid.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -86,7 +88,7 @@ public class ProjectPlanFinancialClaimService {
                 if (CollectionUtils.isNotEmpty(filter)) {
                     for (ProjectPhase projectPhase : filter) {
                         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                        projectPlanDetails.setProjectPhaseName(String.format("%s|%s",item.getName(),projectPhase.getProjectPhaseName()));
+                        projectPlanDetails.setProjectPhaseName(String.format("%s|%s", item.getName(), projectPhase.getProjectPhaseName()));
                         projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
                         projectPlanDetails.setPlanId(projectPlan.getId());
                         projectPlanDetails.setProjectId(projectPlan.getProjectId());
@@ -145,11 +147,24 @@ public class ProjectPlanFinancialClaimService {
         projectPlanService.saveFinancialClaimProjectPlan(formData, commonService.thisUserAccount());
     }
 
-public List<ProjectPlanDetailsVo>  getProjectDetailsTask(ProjectPlanDetails projectPlanDetails) {
-    ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-    projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
-    projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
-    List<ProjectPlanDetailsVo> projectDetailsTask = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetailsWhere);
-    return projectDetailsTask;
-}
+    public List<ProjectPlanDetailsVo> getProjectDetailsTask(ProjectPlanDetails projectPlanDetails) {
+        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
+        projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
+        projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
+        List<ProjectPlanDetailsVo> projectDetailsTask = projectPlanDetailsService.getProjectDetailsTask(projectPlanDetailsWhere);
+        return projectDetailsTask;
+    }
+
+    public void updatePlanTaskActualHours(Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(detailsId);
+        try {
+            if (projectPlanDetails != null) {
+                projectPlanDetails.setTaskRemarks(taskRemarks);
+                projectPlanDetails.setActualHours(new BigDecimal(actualHours));
+                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
 }

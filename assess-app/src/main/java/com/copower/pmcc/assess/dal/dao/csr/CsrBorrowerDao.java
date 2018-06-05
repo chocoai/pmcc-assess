@@ -4,9 +4,9 @@ import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerExample;
 import com.copower.pmcc.assess.dal.mapper.CsrBorrowerMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -41,18 +41,45 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByPrimaryKey(id);
     }
 
-    public List<CsrBorrower> borrowerLists(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID){
+    public List<CsrBorrower> borrowerListsA(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID,Integer csrProjectInfoGroupID){
+        List<CsrBorrower> csrBorrowers = null;
         CsrBorrowerExample example = new CsrBorrowerExample();
-        if (StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (!StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (!StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andCsrProjectIdEqualTo(csrProjectInfoID);
+        CsrBorrowerExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if(csrProjectInfoID!=null){
+            criteria.andCsrProjectIdEqualTo(csrProjectInfoID);
         }
-        return csrBorrowerMapper.selectByExample(example);
+        if (csrProjectInfoGroupID!=null){
+            criteria.andGroupIdEqualTo(csrProjectInfoGroupID);
+        }else {
+            criteria.andGroupIdIsNull();
+        }
+        if(StringUtils.isNotBlank(firstLevelBranch)){
+            criteria.andFirstLevelBranchLike("%"+firstLevelBranch+"%");
+        }
+        if(StringUtils.isNotBlank(secondLevelBranch)){
+            criteria.andSecondLevelBranchLike("%"+secondLevelBranch+"%");
+        }
+        csrBorrowers = csrBorrowerMapper.selectByExample(example);
+        return csrBorrowers;
+    }
+
+    /**
+     * 取消分派
+     * @param csrProjectInfoID
+     * @param ids
+     */
+    public void cancel(Integer csrProjectInfoID,List<Integer> ids,Integer csrProjectInfoGroupID){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        CsrBorrowerExample.Criteria criteria = example.createCriteria();
+        criteria.andCsrProjectIdEqualTo(csrProjectInfoID);
+        criteria.andIdIn(ids);
+        criteria.andGroupIdEqualTo(csrProjectInfoGroupID);
+        List<CsrBorrower> csrBorrowers = csrBorrowerMapper.selectByExample(example);
+        for (CsrBorrower csrBorrower:csrBorrowers){
+            csrBorrower.setGroupId(null);
+            csrBorrowerMapper.updateByPrimaryKey(csrBorrower);
+        }
     }
 
     public List<CsrBorrower> getCsrBorrowerList(Integer projectId){
@@ -67,4 +94,15 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByExample(example);
     }
 
+    /**
+     * 批量删除
+     *
+     * @param csrProjectId
+     * @return
+     */
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
+        return csrBorrowerMapper.deleteByExample(example) > 0;
+    }
 }

@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
 import com.copower.pmcc.assess.dal.entity.CsrLitigation;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrLitigationVo;
 import com.copower.pmcc.assess.service.csr.CsrLitigationService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -25,12 +27,23 @@ public class CsrLitigationController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanLitigation", name = "保存诉讼保全数据", method = RequestMethod.POST)
-    public HttpResult saveLoanLitigation(CsrLitigation csrLitigation) {
+    public HttpResult saveLoanLitigation(CsrLitigation csrLitigation,Integer detailsId,String taskRemarks, String actualHours) {
         try {
-            csrLitigation = csrLitigationService.saveCsrLitigation(csrLitigation);
+            csrLitigation = csrLitigationService.saveCsrLitigation(csrLitigation,detailsId,taskRemarks,actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult(csrLitigation.getId());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/loadLoanLitigation", name = "根据借款人信息取得诉讼保全数据", method = RequestMethod.GET)
+    public HttpResult loadLoanLitigation(Integer borrowerId,Integer detailsId) {
+        try {
+            CsrLitigationVo csrLitigationVo = csrLitigationService.loadLoanLitigation(borrowerId, detailsId);
+            return HttpResult.newCorrectResult(csrLitigationVo);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.csr.task;
 
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrGuarantorVo;
 import com.copower.pmcc.assess.service.csr.CsrGuarantorService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -36,9 +37,9 @@ public class CsrGuarantorController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanGuarantor", name = "保存保证人数据", method = RequestMethod.POST)
-    public HttpResult saveLoanGuarantor(CsrGuarantor csrGuarantor) {
+    public HttpResult saveLoanGuarantor(CsrGuarantor csrGuarantor, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrGuarantor = csrGuarantorService.saveCsrGuarantor(csrGuarantor);
+            csrGuarantor = csrGuarantorService.saveCsrGuarantor(csrGuarantor,detailsId,taskRemarks,actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -48,12 +49,12 @@ public class CsrGuarantorController {
     //取得保证人情况
     @ResponseBody
     @RequestMapping(value = "/getCsrGuarantor", name = "取得保证人情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrGuarantor(Integer borrowerId) {
+    public BootstrapTableVo getCsrGuarantor(Integer borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrGuarantor> csrGuarantors = csrGuarantorService.getCsrGuarantor(borrowerId);
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrGuarantors) ? new ArrayList<CsrBorrowerMortgage>() : csrGuarantors);
+        List<CsrGuarantorVo> csrGuarantors = csrGuarantorService.getCsrGuarantor(borrowerId,detailsId);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrGuarantors) ? new ArrayList<CsrGuarantorVo>() : csrGuarantors);
         bootstrapTableVo.setTotal(page.getTotal());
         return bootstrapTableVo;
     }

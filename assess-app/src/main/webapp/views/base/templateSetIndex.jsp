@@ -231,7 +231,7 @@
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_base_report_template",
-                    creater: "${currUserInfo.userAccount}",
+                    creater: "${currUserAccount}",
                     tableId: $("#id").val()
                 };
                 $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
@@ -247,7 +247,7 @@
             target: "uploadFile",
             formData: {
                 tableName: "tb_base_report_template",
-                creater: "${currUserInfo.userAccount}",
+                creater: "${currUserAccount}",
                 tableId: tableId
             },
             deleteFlag: true

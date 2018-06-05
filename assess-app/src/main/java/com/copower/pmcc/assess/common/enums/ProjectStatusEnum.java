@@ -10,7 +10,7 @@ package com.copower.pmcc.assess.common.enums;
 public enum ProjectStatusEnum {
     PAUSEAPPLY("pauseapply", "暂停申请"), PAUSE("pause", "暂停"), WAIT("wait", "待启用"), STARTAPPLY("startapply", "启动申请"),
     NORMAL("normal", "进行中"), CLOSE("close", "关闭"), FINISH("finish", "完成"), PLAN
-            ("plan", "安排计划"), TASK("task", "提交成果");
+            ("plan", "安排计划"), TASK("task", "提交成果"),RUNING("runing","正在进行中");
 
     private String key;
 

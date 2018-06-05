@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
-    <result column="analysis_datum_date" property="analysisDatumDate" jdbcType="DATE" />
+    <result column="analysis_datum_date" property="analysisDatumDate" jdbcType="VARCHAR" />
     <result column="principal" property="principal" jdbcType="VARCHAR" />
     <result column="interest" property="interest" jdbcType="VARCHAR" />
     <result column="principal_interest_total" property="principalInterestTotal" jdbcType="VARCHAR" />
@@ -113,7 +113,7 @@
       interest, principal_interest_total, bis_import, 
       creator, gmt_created, gmt_modified
       )
-    values (#{borrowerId,jdbcType=INTEGER}, #{analysisDatumDate,jdbcType=DATE}, #{principal,jdbcType=VARCHAR}, 
+    values (#{borrowerId,jdbcType=INTEGER}, #{analysisDatumDate,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, 
       #{interest,jdbcType=VARCHAR}, #{principalInterestTotal,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -157,7 +157,7 @@
         #{borrowerId,jdbcType=INTEGER},
       </if>
       <if test="analysisDatumDate != null" >
-        #{analysisDatumDate,jdbcType=DATE},
+        #{analysisDatumDate,jdbcType=VARCHAR},
       </if>
       <if test="principal != null" >
         #{principal,jdbcType=VARCHAR},
@@ -198,7 +198,7 @@
         borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       </if>
       <if test="record.analysisDatumDate != null" >
-        analysis_datum_date = #{record.analysisDatumDate,jdbcType=DATE},
+        analysis_datum_date = #{record.analysisDatumDate,jdbcType=VARCHAR},
       </if>
       <if test="record.principal != null" >
         principal = #{record.principal,jdbcType=VARCHAR},
@@ -230,7 +230,7 @@
     update tb_csr_principal_interest
     set id = #{record.id,jdbcType=INTEGER},
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
-      analysis_datum_date = #{record.analysisDatumDate,jdbcType=DATE},
+      analysis_datum_date = #{record.analysisDatumDate,jdbcType=VARCHAR},
       principal = #{record.principal,jdbcType=VARCHAR},
       interest = #{record.interest,jdbcType=VARCHAR},
       principal_interest_total = #{record.principalInterestTotal,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
         borrower_id = #{borrowerId,jdbcType=INTEGER},
       </if>
       <if test="analysisDatumDate != null" >
-        analysis_datum_date = #{analysisDatumDate,jdbcType=DATE},
+        analysis_datum_date = #{analysisDatumDate,jdbcType=VARCHAR},
       </if>
       <if test="principal != null" >
         principal = #{principal,jdbcType=VARCHAR},
@@ -278,7 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     update tb_csr_principal_interest
     set borrower_id = #{borrowerId,jdbcType=INTEGER},
-      analysis_datum_date = #{analysisDatumDate,jdbcType=DATE},
+      analysis_datum_date = #{analysisDatumDate,jdbcType=VARCHAR},
       principal = #{principal,jdbcType=VARCHAR},
       interest = #{interest,jdbcType=VARCHAR},
       principal_interest_total = #{principalInterestTotal,jdbcType=VARCHAR},
