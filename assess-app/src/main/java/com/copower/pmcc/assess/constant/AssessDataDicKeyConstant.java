@@ -18,7 +18,9 @@ public class AssessDataDicKeyConstant {
 
     //报告相关
     public static final String REPORT_TYPE = "report.type"; //报告类型
-    public static final String REPORT_TEMPLATE_TYPE = "report.template.type"; //报告类型
+    public static final String REPORT_TYPE_PREAUDIT = "report.type.preaudit"; //预评报告
+    public static final String REPORT_TYPE_TECHNOLOGY = "report.type.technology"; //技术报告
+    public static final String REPORT_TYPE_RESULT = "report.type.result"; //结果报告
     public static final String REPORT_ANALYSIS_CATEGORY = "report.analysis.category";  //报告分析类别
 
     public static final String ENTRUSTMENT_PURPOSE = "entrustment.purpose";//委托目的

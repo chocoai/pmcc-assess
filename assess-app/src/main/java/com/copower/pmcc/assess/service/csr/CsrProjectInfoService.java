@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.ReflectUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
@@ -16,6 +17,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
+import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
@@ -50,6 +52,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -123,6 +126,8 @@ public class CsrProjectInfoService {
     private CsrPrincipalInterestDao csrPrincipalInterestDao;
     @Autowired
     private BaseReplaceRecordService baseReplaceRecordService;
+    @Autowired
+    private BaseReportService baseReportService;
 
     /**
      * 获取vo
@@ -680,7 +685,7 @@ public class CsrProjectInfoService {
     /**
      * 生成报告
      */
-    public void generateReport(String borrowerIds) {
+    public void generateReport(Integer csrProjectId, String borrowerIds) throws BusinessException {
         //1.找到替换模板，复制模板
         //2.针对模板配置的书签，找到书签所对应的值
         //3.将替换数据写入到替换记录表中
@@ -688,24 +693,61 @@ public class CsrProjectInfoService {
         //债权目前所有的数据都源于 固定的7张表
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
+        CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
 
-        BaseAttachment baseAttachment = new BaseAttachment();//模板附件
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        ReportTemplate newsReportTemplate = baseReportService.getNewsReportTemplate(csrProjectInfo.getEntrustmentUnitId(),
+                csrProjectInfo.getEntrustPurpose(), baseDataDic.getId(), csrProjectInfo.getCustomerType());
+        if (newsReportTemplate == null)
+            throw new BusinessException("未找到对应的报告模板");
+        BaseAttachment queryParam = new BaseAttachment();
+        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ReportTemplate.class));
+        queryParam.setTableId(newsReportTemplate.getId());
+        List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
+        if (CollectionUtils.isEmpty(attachmentList))
+            throw new BusinessException("未找到对应的报告模板附件");
+        BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
         String templateFilePath = "";//模板文件路径
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
         for (Integer integer : list) {
             try {
                 //拷贝表数据及FTP附件
-
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), baseAttachment);
                 //获取数据
+                List<ReportTemplateBookmark> bookmarks = baseReportService.getBookMarkListByTemplateId(newsReportTemplate.getId());
+                if (CollectionUtils.isNotEmpty(bookmarks)) {
+                    //1.检查配置的书签有几张表
+                    //2.先找到主表信息,再找从表数据
+                    //3.循环书签
+                    HashSet<Integer> tableSet = Sets.newHashSet();
+                    for (ReportTemplateBookmark bookmark : bookmarks) {
+                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(bookmark.getDataPoolType());
+                        switch (dataPoolTypeEnum) {
+                            case COLUMNS:
+                                tableSet.add(bookmark.getDataPoolTableId());
+                                break;
+                        }
+                    }
+                    Map<String, Map<String, String>> map = Maps.newHashMap();
+                    List<String> tableNameList = baseReportService.getReportTableNameList(Lists.newArrayList(tableSet));
+                    for (String s : tableNameList) {
+                        switch (s){
+
+                        }
+                    }
+
+                }
                 List<KeyValueDto> keyValueDtoList = Lists.newArrayList();//书签对应值数据
-                KeyValueDto keyValueDto=new KeyValueDto();
+                KeyValueDto keyValueDto = new KeyValueDto();
+
+
                 //对应类型不同处理方式有区别
                 keyValueDto.setExplain(String.valueOf(BaseReportDataPoolTypeEnum.COLUMNS.getKey()));
                 keyValueDto.setKey("");
                 keyValueDto.setValue("成都");
                 //写入到替换数据表
                 BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
-                baseReplaceRecord.setAttachmentId(baseAttachment.getId());
+                baseReplaceRecord.setAttachmentId(ftpAttachment.getId());
                 baseReplaceRecord.setBisReplace(false);
                 baseReplaceRecord.setCreator(commonService.thisUserAccount());
                 baseReplaceRecord.setContent(JSON.toJSONString(keyValueDtoList));

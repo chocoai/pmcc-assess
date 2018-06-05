@@ -88,7 +88,7 @@ public class TemplateSetController {
     public HttpResult getBaseReportColumnsList(int tableId) {
 
         try {
-            List<ReportColumns> baseReportColumnsList = baseReportService.getBaseReportColumnsList(tableId);
+            List<ReportColumns> baseReportColumnsList = baseReportService.getReportColumnsList(tableId);
             return HttpResult.newCorrectResult(baseReportColumnsList);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -100,7 +100,7 @@ public class TemplateSetController {
     public HttpResult getBaseReportTemplateById(int id) {
 
         try {
-            ReportTemplate baseReportTemplate = baseReportService.getBaseReportTemplateById(id);
+            ReportTemplate baseReportTemplate = baseReportService.getReportTemplateById(id);
             return HttpResult.newCorrectResult(baseReportTemplate);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -117,7 +117,7 @@ public class TemplateSetController {
             switch (enumByName) {
                 case FILES:
                 case COLUMNS: {
-                    List<ReportTable> baseReportTableList = baseReportService.getBaseReportTableList(typeId);
+                    List<ReportTable> baseReportTableList = baseReportService.getReportTableList(typeId);
                     if (CollectionUtils.isNotEmpty(baseReportTableList)) {
                         keyValueDtos = LangUtils.transform(baseReportTableList, o -> {
                             KeyValueDto keyValueDto = new KeyValueDto();
@@ -129,7 +129,7 @@ public class TemplateSetController {
                     break;
                 }
                 case TEMPLATE: {
-                    List<ReportTemplate> baseReportTemplateByTemplate = baseReportService.getBaseReportTemplateByTemplate(customerId);
+                    List<ReportTemplate> baseReportTemplateByTemplate = baseReportService.getReportTemplateByTemplate(customerId);
                     if (CollectionUtils.isNotEmpty(baseReportTemplateByTemplate)) {
                         keyValueDtos = LangUtils.transform(baseReportTemplateByTemplate, o -> {
                             KeyValueDto keyValueDto = new KeyValueDto();
@@ -153,9 +153,9 @@ public class TemplateSetController {
     public HttpResult saveTemplateData(ReportTemplate baseReportTemplate) {
         try {
             if (baseReportTemplate.getId() != null && baseReportTemplate.getId() > 0) {
-                baseReportService.updateBaseReportTemplate(baseReportTemplate);
+                baseReportService.updateReportTemplate(baseReportTemplate);
             } else {
-                baseReportService.addBaseReportTemplate(baseReportTemplate);
+                baseReportService.addReportTemplate(baseReportTemplate);
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -186,7 +186,7 @@ public class TemplateSetController {
         baseReportTemplate.setReportTypeId(reportId);
         baseReportTemplate.setCsType(csType);
         //baseReportTemplate.setPid(0);
-        BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
+        BootstrapTableVo baseReportTemplateByExample = baseReportService.getReportTemplateByExample(baseReportTemplate);
         return baseReportTemplateByExample;
     }
 
@@ -199,7 +199,7 @@ public class TemplateSetController {
         baseReportTemplate.setEntrustId(entrustId);
         baseReportTemplate.setReportTypeId(reportId);
         //baseReportTemplate.setPid(pid);
-        BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
+        BootstrapTableVo baseReportTemplateByExample = baseReportService.getReportTemplateByExample(baseReportTemplate);
         return baseReportTemplateByExample;
     }
 }

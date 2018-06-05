@@ -13,7 +13,7 @@ import java.util.List;
  * @time: 15:46
  */
 public enum BaseReportTemplateTypeEnum {
-    BOOKMARK(1, "书签字段"), TEMPLATE(2, "子模板");
+    BOOKMARK(1, "主模板"), TEMPLATE(2, "子模板");
 
     private Integer key;
 
