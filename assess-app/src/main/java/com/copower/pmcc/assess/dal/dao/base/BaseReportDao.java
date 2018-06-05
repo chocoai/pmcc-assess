@@ -54,6 +54,7 @@ public class BaseReportDao {
         return baseReportTableMapper.selectByPrimaryKey(id);
     }
 
+
     public List<ReportColumns> getReportColumnsList(Integer tableId) {
         ReportColumnsExample example = new ReportColumnsExample();
         example.createCriteria().andBisEnableEqualTo(true).andTableIdEqualTo(tableId);

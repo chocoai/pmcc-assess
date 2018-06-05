@@ -67,6 +67,12 @@ public class BaseReportService {
         return baseReportDao.getReportColumnsList(tableId);
     }
 
+    public ReportColumns getReportColumns(Integer id){
+        return baseReportDao.getReportColumnsById(id);
+    }
+
+
+
     /**
      * 获取字段名
      * @param ids

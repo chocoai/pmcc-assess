@@ -18,4 +18,5 @@ public class AssessTableNameConstant {
     public static final String CSR_GUARANTOR = "tb_csr_guarantor";  //
     public static final String CSR_LITIGATION = "tb_csr_litigation";  //
     public static final String CSR_PRINCIPAL_INTEREST = "tb_csr_principal_interest";  //
+    public static final String CSR_CALCULATION = "tb_csr_calculation";  //
 }
