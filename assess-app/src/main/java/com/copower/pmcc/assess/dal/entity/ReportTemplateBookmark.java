@@ -1,21 +1,25 @@
 package com.copower.pmcc.assess.dal.entity;
 
-import java.util.Date;
-
 public class ReportTemplateBookmark {
     private Integer id;
 
     private Integer templateId;
 
-    private String name;
+    private Integer templateType;
 
-    private String displayName;
+    private String bookmarkName;
 
-    private String valueSql;
+    private Integer dataPoolType;
 
-    private Date gmtCreated;
+    private Integer dataPoolTableId;
 
-    private Date gmtModified;
+    private Integer dataPoolColumnsId;
+
+    private Integer dataPoolTemplateId;
+
+    private Boolean bisEnable;
+
+    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -33,43 +37,67 @@ public class ReportTemplateBookmark {
         this.templateId = templateId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getTemplateType() {
+        return templateType;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getBookmarkName() {
+        return bookmarkName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName == null ? null : displayName.trim();
+    public void setBookmarkName(String bookmarkName) {
+        this.bookmarkName = bookmarkName == null ? null : bookmarkName.trim();
     }
 
-    public String getValueSql() {
-        return valueSql;
+    public Integer getDataPoolType() {
+        return dataPoolType;
     }
 
-    public void setValueSql(String valueSql) {
-        this.valueSql = valueSql == null ? null : valueSql.trim();
+    public void setDataPoolType(Integer dataPoolType) {
+        this.dataPoolType = dataPoolType;
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
+    public Integer getDataPoolTableId() {
+        return dataPoolTableId;
     }
 
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
+    public void setDataPoolTableId(Integer dataPoolTableId) {
+        this.dataPoolTableId = dataPoolTableId;
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
+    public Integer getDataPoolColumnsId() {
+        return dataPoolColumnsId;
     }
 
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    public void setDataPoolColumnsId(Integer dataPoolColumnsId) {
+        this.dataPoolColumnsId = dataPoolColumnsId;
+    }
+
+    public Integer getDataPoolTemplateId() {
+        return dataPoolTemplateId;
+    }
+
+    public void setDataPoolTemplateId(Integer dataPoolTemplateId) {
+        this.dataPoolTemplateId = dataPoolTemplateId;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

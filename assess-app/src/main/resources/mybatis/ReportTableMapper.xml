@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseReportColumnsMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseReportColumns" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.ReportTableMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ReportTable" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="table_id" property="tableId" jdbcType="INTEGER" />
-    <result column="columns_name" property="columnsName" jdbcType="VARCHAR" />
-    <result column="columns_cn_name" property="columnsCnName" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="cn_name" property="cnName" jdbcType="VARCHAR" />
+    <result column="table_type" property="tableType" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="foreign_key" property="foreignKey" jdbcType="VARCHAR" />
+    <result column="foreign_key_type" property="foreignKeyType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, table_id, columns_name, columns_cn_name, bis_enable
+    id, table_name, cn_name, table_type, bis_enable, foreign_key, foreign_key_type
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumnsExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ReportTableExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_base_report_columns
+    from tb_report_table
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +88,105 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_base_report_columns
+    from tb_report_table
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_base_report_columns
+    delete from tb_report_table
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumnsExample" >
-    delete from tb_base_report_columns
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTableExample" >
+    delete from tb_report_table
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumns" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ReportTable" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_report_columns (table_id, columns_name, columns_cn_name, 
-      bis_enable)
-    values (#{tableId,jdbcType=INTEGER}, #{columnsName,jdbcType=VARCHAR}, #{columnsCnName,jdbcType=VARCHAR}, 
-      #{bisEnable,jdbcType=BIT})
+    insert into tb_report_table (table_name, cn_name, table_type, 
+      bis_enable, foreign_key, foreign_key_type
+      )
+    values (#{tableName,jdbcType=VARCHAR}, #{cnName,jdbcType=VARCHAR}, #{tableType,jdbcType=INTEGER}, 
+      #{bisEnable,jdbcType=BIT}, #{foreignKey,jdbcType=VARCHAR}, #{foreignKeyType,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumns" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTable" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_report_columns
+    insert into tb_report_table
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="tableId != null" >
-        table_id,
+      <if test="tableName != null" >
+        table_name,
       </if>
-      <if test="columnsName != null" >
-        columns_name,
+      <if test="cnName != null" >
+        cn_name,
       </if>
-      <if test="columnsCnName != null" >
-        columns_cn_name,
+      <if test="tableType != null" >
+        table_type,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
       </if>
+      <if test="foreignKey != null" >
+        foreign_key,
+      </if>
+      <if test="foreignKeyType != null" >
+        foreign_key_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="tableId != null" >
-        #{tableId,jdbcType=INTEGER},
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
       </if>
-      <if test="columnsName != null" >
-        #{columnsName,jdbcType=VARCHAR},
+      <if test="cnName != null" >
+        #{cnName,jdbcType=VARCHAR},
       </if>
-      <if test="columnsCnName != null" >
-        #{columnsCnName,jdbcType=VARCHAR},
+      <if test="tableType != null" >
+        #{tableType,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
       </if>
+      <if test="foreignKey != null" >
+        #{foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignKeyType != null" >
+        #{foreignKeyType,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumnsExample" resultType="java.lang.Integer" >
-    select count(*) from tb_base_report_columns
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTableExample" resultType="java.lang.Integer" >
+    select count(*) from tb_report_table
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_base_report_columns
+    update tb_report_table
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.tableId != null" >
-        table_id = #{record.tableId,jdbcType=INTEGER},
+      <if test="record.tableName != null" >
+        table_name = #{record.tableName,jdbcType=VARCHAR},
       </if>
-      <if test="record.columnsName != null" >
-        columns_name = #{record.columnsName,jdbcType=VARCHAR},
+      <if test="record.cnName != null" >
+        cn_name = #{record.cnName,jdbcType=VARCHAR},
       </if>
-      <if test="record.columnsCnName != null" >
-        columns_cn_name = #{record.columnsCnName,jdbcType=VARCHAR},
+      <if test="record.tableType != null" >
+        table_type = #{record.tableType,jdbcType=INTEGER},
       </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.foreignKey != null" >
+        foreign_key = #{record.foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.foreignKeyType != null" >
+        foreign_key_type = #{record.foreignKeyType,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -172,40 +194,50 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_base_report_columns
+    update tb_report_table
     set id = #{record.id,jdbcType=INTEGER},
-      table_id = #{record.tableId,jdbcType=INTEGER},
-      columns_name = #{record.columnsName,jdbcType=VARCHAR},
-      columns_cn_name = #{record.columnsCnName,jdbcType=VARCHAR},
-      bis_enable = #{record.bisEnable,jdbcType=BIT}
+      table_name = #{record.tableName,jdbcType=VARCHAR},
+      cn_name = #{record.cnName,jdbcType=VARCHAR},
+      table_type = #{record.tableType,jdbcType=INTEGER},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      foreign_key = #{record.foreignKey,jdbcType=VARCHAR},
+      foreign_key_type = #{record.foreignKeyType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumns" >
-    update tb_base_report_columns
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTable" >
+    update tb_report_table
     <set >
-      <if test="tableId != null" >
-        table_id = #{tableId,jdbcType=INTEGER},
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
       </if>
-      <if test="columnsName != null" >
-        columns_name = #{columnsName,jdbcType=VARCHAR},
+      <if test="cnName != null" >
+        cn_name = #{cnName,jdbcType=VARCHAR},
       </if>
-      <if test="columnsCnName != null" >
-        columns_cn_name = #{columnsCnName,jdbcType=VARCHAR},
+      <if test="tableType != null" >
+        table_type = #{tableType,jdbcType=INTEGER},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
+      <if test="foreignKey != null" >
+        foreign_key = #{foreignKey,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignKeyType != null" >
+        foreign_key_type = #{foreignKeyType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportColumns" >
-    update tb_base_report_columns
-    set table_id = #{tableId,jdbcType=INTEGER},
-      columns_name = #{columnsName,jdbcType=VARCHAR},
-      columns_cn_name = #{columnsCnName,jdbcType=VARCHAR},
-      bis_enable = #{bisEnable,jdbcType=BIT}
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ReportTable" >
+    update tb_report_table
+    set table_name = #{tableName,jdbcType=VARCHAR},
+      cn_name = #{cnName,jdbcType=VARCHAR},
+      table_type = #{tableType,jdbcType=INTEGER},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      foreign_key = #{foreignKey,jdbcType=VARCHAR},
+      foreign_key_type = #{foreignKeyType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

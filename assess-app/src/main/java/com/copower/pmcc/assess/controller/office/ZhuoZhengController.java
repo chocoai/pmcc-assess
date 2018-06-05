@@ -1,13 +1,11 @@
 package com.copower.pmcc.assess.controller.office;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.base.BaseReplaceRecordDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseReplaceRecord;
 import com.copower.pmcc.assess.dal.entity.ReportTemplateBookmark;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseReplaceRecordService;
-import com.copower.pmcc.assess.service.base.ReportTemplateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -55,8 +53,6 @@ public class ZhuoZhengController {
     private HttpServletRequest request;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
-    @Autowired
-    private ReportTemplateService reportTemplateService;
     @Autowired
     private BaseReplaceRecordService baseReplaceRecordService;
     @Autowired
@@ -252,19 +248,19 @@ public class ZhuoZhengController {
         String strTemplateId = wordDocument.getFormField("templateId");
         Integer templateId = Integer.valueOf(strTemplateId);
         //先清空数据
-        reportTemplateService.deleteBookmarkByTemplateId(templateId);
-        if (CollectionUtils.isNotEmpty(dataRegions)) {
-            for (DataRegion dataRegion : dataRegions) {
-                ReportTemplateBookmark cmsTemplateBookmark = new ReportTemplateBookmark();
-                cmsTemplateBookmark.setTemplateId(templateId);
-                cmsTemplateBookmark.setName("PO_" + dataRegion.getName());
-                try {
-                    reportTemplateService.saveTemplateBookmark(cmsTemplateBookmark);
-                } catch (BusinessException e) {
-                    LOGGER.error(e.getMessage());
-                }
-            }
-        }
+//        reportTemplateService.deleteBookmarkByTemplateId(templateId);
+//        if (CollectionUtils.isNotEmpty(dataRegions)) {
+//            for (DataRegion dataRegion : dataRegions) {
+//                ReportTemplateBookmark cmsTemplateBookmark = new ReportTemplateBookmark();
+//                cmsTemplateBookmark.setTemplateId(templateId);
+//                cmsTemplateBookmark.setName("PO_" + dataRegion.getName());
+//                try {
+//                    reportTemplateService.saveTemplateBookmark(cmsTemplateBookmark);
+//                } catch (BusinessException e) {
+//                    LOGGER.error(e.getMessage());
+//                }
+//            }
+//        }
         wordDocument.close();
     }
 

@@ -3,11 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.ReportTemplateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="prefix" property="prefix" jdbcType="VARCHAR" />
-    <result column="value_sql" property="valueSql" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="entrust_id" property="entrustId" jdbcType="INTEGER" />
+    <result column="report_type_id" property="reportTypeId" jdbcType="INTEGER" />
+    <result column="template_type" property="templateType" jdbcType="INTEGER" />
+    <result column="cs_type" property="csType" jdbcType="INTEGER" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, type, category, prefix, value_sql, gmt_created, gmt_modified
+    id, customer_id, entrust_id, report_type_id, template_type, cs_type, bis_enable, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateExample" >
     select
@@ -106,12 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_report_template (name, type, category, 
-      prefix, value_sql, gmt_created, 
-      gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{prefix,jdbcType=VARCHAR}, #{valueSql,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_report_template (customer_id, entrust_id, report_type_id, 
+      template_type, cs_type, bis_enable, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{customerId,jdbcType=INTEGER}, #{entrustId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, 
+      #{templateType,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -119,20 +124,26 @@
     </selectKey>
     insert into tb_report_template
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        name,
+      <if test="customerId != null" >
+        customer_id,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="entrustId != null" >
+        entrust_id,
       </if>
-      <if test="category != null" >
-        category,
+      <if test="reportTypeId != null" >
+        report_type_id,
       </if>
-      <if test="prefix != null" >
-        prefix,
+      <if test="templateType != null" >
+        template_type,
       </if>
-      <if test="valueSql != null" >
-        value_sql,
+      <if test="csType != null" >
+        cs_type,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -142,20 +153,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="customerId != null" >
+        #{customerId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="entrustId != null" >
+        #{entrustId,jdbcType=INTEGER},
       </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
+      <if test="reportTypeId != null" >
+        #{reportTypeId,jdbcType=INTEGER},
       </if>
-      <if test="prefix != null" >
-        #{prefix,jdbcType=VARCHAR},
+      <if test="templateType != null" >
+        #{templateType,jdbcType=INTEGER},
       </if>
-      <if test="valueSql != null" >
-        #{valueSql,jdbcType=VARCHAR},
+      <if test="csType != null" >
+        #{csType,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -177,20 +194,26 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.customerId != null" >
+        customer_id = #{record.customerId,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+      <if test="record.entrustId != null" >
+        entrust_id = #{record.entrustId,jdbcType=INTEGER},
       </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
+      <if test="record.reportTypeId != null" >
+        report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
       </if>
-      <if test="record.prefix != null" >
-        prefix = #{record.prefix,jdbcType=VARCHAR},
+      <if test="record.templateType != null" >
+        template_type = #{record.templateType,jdbcType=INTEGER},
       </if>
-      <if test="record.valueSql != null" >
-        value_sql = #{record.valueSql,jdbcType=VARCHAR},
+      <if test="record.csType != null" >
+        cs_type = #{record.csType,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -206,11 +229,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_report_template
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
-      category = #{record.category,jdbcType=INTEGER},
-      prefix = #{record.prefix,jdbcType=VARCHAR},
-      value_sql = #{record.valueSql,jdbcType=VARCHAR},
+      customer_id = #{record.customerId,jdbcType=INTEGER},
+      entrust_id = #{record.entrustId,jdbcType=INTEGER},
+      report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
+      template_type = #{record.templateType,jdbcType=INTEGER},
+      cs_type = #{record.csType,jdbcType=INTEGER},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -220,20 +245,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
     update tb_report_template
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="entrustId != null" >
+        entrust_id = #{entrustId,jdbcType=INTEGER},
       </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
+      <if test="reportTypeId != null" >
+        report_type_id = #{reportTypeId,jdbcType=INTEGER},
       </if>
-      <if test="prefix != null" >
-        prefix = #{prefix,jdbcType=VARCHAR},
+      <if test="templateType != null" >
+        template_type = #{templateType,jdbcType=INTEGER},
       </if>
-      <if test="valueSql != null" >
-        value_sql = #{valueSql,jdbcType=VARCHAR},
+      <if test="csType != null" >
+        cs_type = #{csType,jdbcType=INTEGER},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -246,11 +277,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
     update tb_report_template
-    set name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      category = #{category,jdbcType=INTEGER},
-      prefix = #{prefix,jdbcType=VARCHAR},
-      value_sql = #{valueSql,jdbcType=VARCHAR},
+    set customer_id = #{customerId,jdbcType=INTEGER},
+      entrust_id = #{entrustId,jdbcType=INTEGER},
+      report_type_id = #{reportTypeId,jdbcType=INTEGER},
+      template_type = #{templateType,jdbcType=INTEGER},
+      cs_type = #{csType,jdbcType=INTEGER},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

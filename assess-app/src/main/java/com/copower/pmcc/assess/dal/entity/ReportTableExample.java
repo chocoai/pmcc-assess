@@ -3,14 +3,14 @@ package com.copower.pmcc.assess.dal.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseReportTableExample {
+public class ReportTableExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BaseReportTableExample() {
+    public ReportTableExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
