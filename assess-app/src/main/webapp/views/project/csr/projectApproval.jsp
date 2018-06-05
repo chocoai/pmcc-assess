@@ -264,14 +264,13 @@
     </div>
 </div>
 
-<div id="divBoxCsrBorrowerSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog" aria-hidden="true" data-height="235">
+<div id="divBoxCsrBorrowerSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-height="335">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">客户选择</h3>
+                <h3 class="modal-title">客户分派</h3>
             </div>
             <form id="csrBorrowerSelect" class="form-horizontal">
                 <div class="modal-body">
@@ -279,92 +278,68 @@
                         <div class="col-md-12">
                             <div class="panel-body">
 
+
                                 <div class="form-group">
                                     <input type="hidden" name="csrProjectInfoGroupID" id="csrProjectInfoGroupID">
                                     <input type="hidden" name="csrProjectId" id="csrProjectIdV">
-                                    <div>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50" placeholder="二级分行"
-                                                   id="secondLevelBranch"
-                                                   name="secondLevelBranch" class="form-control">
+                                    <div class="x-valid">
+                                        <div>
+                                            <div class="col-sm-1">
+                                                <h5>未分派</h5>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-maxlength="50" placeholder="二级分行"
+                                                       id="secondLevelBranch" name="secondLevelBranch" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                       placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <input type="button" class="btn btn-primary" value="查询" onclick="loadBorrowerList('','csrBorrowerTableList')">
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                   placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch"
-                                                   class="form-control">
+
+                                    <div class="x-valid">
+                                        <div>
+                                            <div class="col-sm-1">
+                                                <h5>已经分派</h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="button" class="btn btn-primary" value="查询"
-                                               onclick="loadBorrowerList('')">
+                                        <div>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-maxlength="50" placeholder="二级分行"
+                                                       id="secondLevelBranchEdit" name="secondLevelBranch" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                       placeholder="一级分行" id="firstLevelBranchEdit" name="firstLevelBranch" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <input type="button" class="btn btn-primary" value="查询" onclick="loadBorrowerList('','csrBorrowerTableListEdit')">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-6">
                                             <table class="table table-bordered" id="csrBorrowerTableList">
 
                                             </table>
                                         </div>
                                     </div>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <input type="button" onclick="submitGroupProject()" value="分派" class="btn btn-primary">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div id="divBoxCsrBorrowerSelectEdit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog" aria-hidden="true" data-height="235">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">客户分派查询</h3>
-            </div>
-            <form id="csrBorrowerSelectEdit" class="form-horizontal">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-
-                                <div class="form-group">
-                                    <input type="hidden" name="csrProjectInfoGroupID" id="csrProjectInfoGroupIDEdit">
-                                    <input type="hidden" name="csrProjectInfoID" id="csrProjectInfoIDEdit">
-                                    <div>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50" placeholder="二级分行"
-                                                   id="secondLevelBranchEdit" name="secondLevelBranch" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                   placeholder="一级分行" id="firstLevelBranchEdit" name="firstLevelBranch" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <input type="button" class="btn btn-primary" value="查询" onclick="submitGroupgEdit('')">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-6">
                                             <table class="table table-bordered" id="csrBorrowerTableListEdit">
 
                                             </table>
@@ -380,17 +355,22 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <input type="button"  value="分派放弃" class="btn btn-primary">
+                    <input type="button" onclick="submitGroupProject()" value="分派" class="btn btn-primary">
+                    <input type="button"  value="取消分派" class="btn btn-primary" onclick="cancelCsrBorrower()">
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<script>
 
-    //分派编辑
-    function submitGroupgEdit(id) {
+<script>
+    $(function () {
+        loadGroupProjectTableList();
+    });
+
+    //加载 客户信息 数据列表
+    function loadBorrowerList(id,tableID) {
         var cols = [];
         cols.push({field: 'checkbox', checkbox: true});
         cols.push({field: 'name', title: '名字'});
@@ -400,24 +380,60 @@
         cols.push({field: 'presentAddress', title: '地址'});
         cols.push({field: 'secondLevelBranch', title: '二级分行'});
         cols.push({field: 'firstLevelBranch', title: '一级分行'});
-        $("#csrBorrowerTableListEdit").bootstrapTable('destroy');
-        $("#csrProjectInfoGroupIDEdit").val(id);
-        $("#csrProjectInfoIDEdit").val('${csrProjectInfo.id}');
-        $("#csrBorrowerTableListEdit").bootstrapTable('destroy');
-        TableInit("csrBorrowerTableListEdit", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
-            secondLevelBranch: $("#secondLevelBranchEdit").val(),
-            firstLevelBranch: $("#firstLevelBranchEdit").val(),
-            csrProjectInfoID: '${csrProjectInfo.id}',
-            csrProjectInfoGroupID:id
-        }, {
-            showColumns: false,
-            showRefresh: true,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
+        $("#"+tableID).bootstrapTable('destroy');
+        if (tableID=='csrBorrowerTableList'){//未分派的列表
+            TableInit(""+tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
+                secondLevelBranch: $("#secondLevelBranch").val(),
+                firstLevelBranch: $("#firstLevelBranch").val(),
+                csrProjectInfoID: '${csrProjectInfo.id}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }else {// 编辑客户列表
+            if (id==''){
+                id = $("#csrProjectInfoGroupID").val();
             }
-        });
-        $('#divBoxCsrBorrowerSelectEdit').modal();
+            TableInit(""+tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
+                secondLevelBranch: $("#secondLevelBranchEdit").val(),
+                firstLevelBranch: $("#firstLevelBranchEdit").val(),
+                csrProjectInfoID: '${csrProjectInfo.id}',
+                csrProjectInfoGroupID:id
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }
+    }
+
+    //刷新客户列表
+    function loadRefreshBorrower(tableID) {
+        if (tableID=='csrBorrowerTableList'){
+            var opt = {
+                url: "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists",
+                query: {
+                    csrProjectInfoID: '${csrProjectInfo.id}'
+                }
+            };
+            $("#"+tableID).bootstrapTable("refresh", opt);
+        }else {
+            var opt = {
+                url: "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists",
+                query: {
+                    csrProjectInfoID: '${csrProjectInfo.id}',
+                    csrProjectInfoGroupID:$("#csrProjectInfoGroupID").val()
+                }
+            };
+            $("#"+tableID).bootstrapTable("refresh", opt);
+        }
     }
 
     //分派选择
@@ -425,11 +441,47 @@
         var result = $("#groupProjectTableList").bootstrapTable('getSelections');
         $("#csrProjectInfoGroupID").val(id);
         $("#csrProjectIdV").val('${csrProjectInfo.id}');
-        loadBorrowerList('${csrProjectInfo.id}');
+        loadBorrowerList(id,'csrBorrowerTableListEdit');
+        loadBorrowerList('','csrBorrowerTableList');
         $('#divBoxCsrBorrowerSelect').modal();
     }
 
-    //项目组分派
+    //项目组 客户信息 分派 取消
+    function cancelCsrBorrower() {
+        var data = formParams("csrBorrowerSelect");
+        var result = $("#csrBorrowerTableListEdit").bootstrapTable('getSelections');
+        var csrBorrowerIDS = "";
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
+                csrBorrowerIDS += result[i].id;
+            } else {
+                csrBorrowerIDS += result[i].id + ",";
+            }
+        }
+        data.csrBorrowerID = csrBorrowerIDS;
+        console.log(data);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/csrProjectInfo/cancelCsrBorrower",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success(' 项目组分派取消成功');
+                    loadRefreshBorrower('csrBorrowerTableList');
+                    loadRefreshBorrower('csrBorrowerTableListEdit');
+                }
+                else {
+                    Alert("项目组分派取消失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //项目组 客户信息 分派
     function submitGroupProject() {
         var data = formParams("csrBorrowerSelect");
         var result = $("#csrBorrowerTableList").bootstrapTable('getSelections');
@@ -450,8 +502,8 @@
             success: function (result) {
                 if (result.ret) {
                     toastr.success(' 项目组分派成功');
-                    $('#divBoxCsrBorrowerSelect').modal('hide');
-                    loadGroupProjectTableList();
+                    loadRefreshBorrower('csrBorrowerTableList');
+                    loadRefreshBorrower('csrBorrowerTableListEdit');
                 }
                 else {
                     Alert("项目组分派失败，失败原因:" + result.errmsg);
@@ -562,45 +614,8 @@
             multi: true
         });
     }
-    $(function () {
-        loadGroupProjectTableList();
-    });
-    //加载 客户信息 数据列表
-    function loadBorrowerList(csrProjectInfoID) {
-        if (csrProjectInfoID == '') {
-            csrProjectInfoID = $("#csrProjectIdV").val();
-        }
-        var cols = [];
-        cols.push({field: 'checkbox', checkbox: true});
-        cols.push({field: 'name', title: '名字'});
-        cols.push({field: 'id', visible: false, title: "id"});
-        cols.push({field: 'maritalStatus', title: '婚否'});
-        cols.push({field: 'workUnit', title: '职务'});
-        cols.push({field: 'presentAddress', title: '地址'});
-        cols.push({field: 'secondLevelBranch', title: '二级分行'});
-        cols.push({field: 'firstLevelBranch', title: '一级分行'});
-        $("#csrBorrowerTableList").bootstrapTable('destroy');
-        TableInit("csrBorrowerTableList", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
-            secondLevelBranch: $("#secondLevelBranch").val(),
-            firstLevelBranch: $("#firstLevelBranch").val(),
-            csrProjectInfoID: csrProjectInfoID
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-        $("#csrBorrowerTableList").bootstrapTable('mergeCells', {
-            field: secondLevelBranch,
-            field: firstLevelBranch,
-            colspan: 5,
-            rowspan: 6
-        });
-    }
 
-    //加载项目组信息
+    //加载项目组列表信息
     function loadGroupProjectTableList() {
         var cols = [];
         // cols.push({field: 'radio', radio:true});
@@ -614,8 +629,8 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editGrpupProject(' + row.id + ',\'groupProjectTableList\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="deleteGrpupProject(' + row.id + ',\'groupProjectTableList\')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupSelect(' + row.id + ');" >分派提交</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupgEdit(' + row.id + ');" >分派编辑</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupSelect(' + row.id + ');" >分派</i></a>';
+                // str += '<a class="btn btn-xs btn-success" href="javascript:submitGroupgEdit(' + row.id + ');" >分派编辑</i></a>';
                 str += '</div>';
                 return str;
             }

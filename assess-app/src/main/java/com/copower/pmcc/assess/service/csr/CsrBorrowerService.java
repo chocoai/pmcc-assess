@@ -20,6 +20,7 @@ import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,29 @@ public class CsrBorrowerService {
         return vo;
     }
 
+    /**
+     * 查询分派是否完成
+     * @param csrProjectInfoID
+     * @return
+     */
     public Integer checkCsrBorrower(Integer csrProjectInfoID){
         return csrBorrowerDao.borrowerListsA(null,null,csrProjectInfoID,null).size();
+    }
+
+    /**
+     * 取消分派
+     * @param csrProjectInfoID
+     * @param id
+     */
+    public void cancel(Integer csrProjectInfoID,String id,Integer csrProjectInfoGroupID){
+        String[] ids = id.split(",");
+        List<Integer> integerList = new ArrayList<>();
+        for (String s:ids){
+            if (!StringUtils.isEmpty(s)){
+                integerList.add(Integer.valueOf(s));
+            }
+        }
+        csrBorrowerDao.cancel(csrProjectInfoID,integerList,csrProjectInfoGroupID);
     }
 
     public boolean update(CsrBorrower csrBorrower) {

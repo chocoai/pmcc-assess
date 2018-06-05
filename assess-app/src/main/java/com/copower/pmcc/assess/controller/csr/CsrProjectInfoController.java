@@ -231,4 +231,16 @@ public class CsrProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/cancelCsrBorrower", method = {RequestMethod.POST}, name = "项目组 分派取消 借款人")
+    public HttpResult cancelCsrBorrower(Integer csrProjectId,String csrBorrowerID,Integer csrProjectInfoGroupID) {
+        try {
+            service.cancel(csrProjectId,csrBorrowerID,csrProjectInfoGroupID);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }
