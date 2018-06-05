@@ -344,6 +344,7 @@
 
                                 <div class="form-group">
                                     <input type="hidden" name="csrProjectInfoGroupID" id="csrProjectInfoGroupIDEdit">
+                                    <input type="hidden" name="csrProjectInfoID" id="csrProjectInfoIDEdit">
                                     <div>
                                         <div class="col-sm-3">
                                             <input type="text" data-rule-maxlength="50" placeholder="二级分行"
@@ -401,10 +402,13 @@
         cols.push({field: 'firstLevelBranch', title: '一级分行'});
         $("#csrBorrowerTableListEdit").bootstrapTable('destroy');
         $("#csrProjectInfoGroupIDEdit").val(id);
+        $("#csrProjectInfoIDEdit").val('${csrProjectInfo.id}');
+        $("#csrBorrowerTableListEdit").bootstrapTable('destroy');
         TableInit("csrBorrowerTableListEdit", "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
             secondLevelBranch: $("#secondLevelBranchEdit").val(),
             firstLevelBranch: $("#firstLevelBranchEdit").val(),
-            csrProjectInfoID: '${csrProjectInfo.id}'
+            csrProjectInfoID: '${csrProjectInfo.id}',
+            csrProjectInfoGroupID:id
         }, {
             showColumns: false,
             showRefresh: true,

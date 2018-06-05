@@ -151,7 +151,7 @@ public class CsrProjectInfoController {
     @ResponseBody
     @RequestMapping(value = "/borrowerLists", name = "显示列表 客户信息", method = {RequestMethod.GET})
     public BootstrapTableVo list(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID,Integer csrProjectInfoGroupID) {
-        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch, firstLevelBranch, csrProjectInfoID);
+        BootstrapTableVo vo = service.borrowerLists(secondLevelBranch, firstLevelBranch, csrProjectInfoID,csrProjectInfoGroupID);
         return vo;
     }
 

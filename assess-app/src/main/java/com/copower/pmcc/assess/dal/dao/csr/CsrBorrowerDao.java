@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.mapper.CsrBorrowerMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -42,16 +43,17 @@ public class CsrBorrowerDao {
         return csrBorrowerMapper.selectByPrimaryKey(id);
     }
 
-    public List<CsrBorrower> borrowerLists(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID){
+    public List<CsrBorrower> borrowerListsA(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID,Integer csrProjectInfoGroupID){
         CsrBorrowerExample example = new CsrBorrowerExample();
-        if (StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (!StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (!StringUtils.isEmpty(firstLevelBranch) && !StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andFirstLevelBranchLike("%"+firstLevelBranch+"%").andSecondLevelBranchLike("%"+secondLevelBranch+"%").andCsrProjectIdEqualTo(csrProjectInfoID);
-        }else if (StringUtils.isEmpty(firstLevelBranch) && StringUtils.isEmpty(secondLevelBranch)){
-            example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andCsrProjectIdEqualTo(csrProjectInfoID);
+        example.createCriteria().andIdIsNotNull().andGroupIdIsNull().andCsrProjectIdEqualTo(csrProjectInfoID);
+        if (!ObjectUtils.isEmpty(csrProjectInfoGroupID)){
+            example.createCriteria().andGroupIdEqualTo(csrProjectInfoGroupID);
+        }
+        if (!StringUtils.isEmpty(secondLevelBranch)){
+            example.createCriteria().andSecondLevelBranchLike("%"+secondLevelBranch+"%");
+        }
+        if (!StringUtils.isEmpty(firstLevelBranch)){
+            example.createCriteria().andFirstLevelBranchLike("%"+firstLevelBranch+"%");
         }
         return csrBorrowerMapper.selectByExample(example);
     }
