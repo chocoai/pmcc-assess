@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.csr;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.ReflectUtils;
+import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
@@ -17,6 +19,7 @@ import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseReplaceRecordService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
@@ -29,6 +32,7 @@ import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -117,6 +121,8 @@ public class CsrProjectInfoService {
     private CsrLitigationDao csrLitigationDao;
     @Autowired
     private CsrPrincipalInterestDao csrPrincipalInterestDao;
+    @Autowired
+    private BaseReplaceRecordService baseReplaceRecordService;
 
     /**
      * 获取vo
@@ -147,18 +153,18 @@ public class CsrProjectInfoService {
             }
         }
         List<CsrProjectInfoGroup> csrProjectInfoGroupVos = projectInfoGroupService.groupList(csrProjectInfo.getId());
-        List<CsrProjectInfoGroupVo> vos =  new ArrayList<>();
-        for (CsrProjectInfoGroup csrProjectInfoGroup:csrProjectInfoGroupVos){
+        List<CsrProjectInfoGroupVo> vos = new ArrayList<>();
+        for (CsrProjectInfoGroup csrProjectInfoGroup : csrProjectInfoGroupVos) {
             vos.add(projectInfoGroupService.change(csrProjectInfoGroup));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectTypeName())){
+        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectTypeName())) {
             csrProjectInfoVo.setProjectTypeName("债券项目");
-        }else {
+        } else {
             csrProjectInfoVo.setProjectTypeName("默认项目");
         }
-        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectCategoryId())){
+        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectCategoryId())) {
             csrProjectInfoVo.setProjectCategoryName("债券项目");
-        }else {
+        } else {
             csrProjectInfoVo.setProjectCategoryName("默认项目");
         }
         csrProjectInfoVo.setCsrProjectInfoGroupVos(vos);
@@ -674,7 +680,7 @@ public class CsrProjectInfoService {
     /**
      * 生成报告
      */
-    public void generateReport(String borrowerIds){
+    public void generateReport(String borrowerIds) {
         //1.找到替换模板，复制模板
         //2.针对模板配置的书签，找到书签所对应的值
         //3.将替换数据写入到替换记录表中
@@ -683,6 +689,32 @@ public class CsrProjectInfoService {
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
 
+        BaseAttachment baseAttachment = new BaseAttachment();//模板附件
+        String templateFilePath = "";//模板文件路径
+        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
+        for (Integer integer : list) {
+            try {
+                //拷贝表数据及FTP附件
+
+                //获取数据
+                List<KeyValueDto> keyValueDtoList = Lists.newArrayList();//书签对应值数据
+                KeyValueDto keyValueDto=new KeyValueDto();
+                //对应类型不同处理方式有区别
+                keyValueDto.setExplain(String.valueOf(BaseReportDataPoolTypeEnum.COLUMNS.getKey()));
+                keyValueDto.setKey("");
+                keyValueDto.setValue("成都");
+                //写入到替换数据表
+                BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
+                baseReplaceRecord.setAttachmentId(baseAttachment.getId());
+                baseReplaceRecord.setBisReplace(false);
+                baseReplaceRecord.setCreator(commonService.thisUserAccount());
+                baseReplaceRecord.setContent(JSON.toJSONString(keyValueDtoList));
+                baseReplaceRecordService.saveBaseReplaceRecord(baseReplaceRecord);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
