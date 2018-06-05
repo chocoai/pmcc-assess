@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.common.ReflectUtils;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentKeepDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
+import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.AttachmentDto;
@@ -71,6 +73,7 @@ public class BaseAttachmentService {
 
     private final static String KEEP_UPLOAD_PATH = "Keep";//归档文件存放目录
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
+    private final static String COPY_UPLOAD_PATH = "Copy";//拷贝文件存放目录
 
     public static String getTempUploadPath() {
         return TEMP_UPLOAD_PATH;
@@ -97,7 +100,7 @@ public class BaseAttachmentService {
             return "default";
         String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + getTempUploadPath();
         //清除昨天以外的临时文件
-        FileUtils.deleteDir(filePath,Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(),-1),DateUtils.DATE_SHORT_PATTERN),DateUtils.formatNowToYMD()));
+        FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
         filePath += File.separator + DateUtils.formatNowToYMD();
         for (String param : params) {
             filePath += File.separator + StringUtils.defaultIfBlank(param, "default");
@@ -546,5 +549,26 @@ public class BaseAttachmentService {
         } catch (Exception e) {
             return getBaseAttachments(id, "processTemp");
         }
+    }
+
+    /**
+     * 拷贝附件
+     *
+     * @param attachmentId
+     * @param baseAttachment
+     * @return
+     */
+    public BaseAttachment copyFtpAttachment(Integer attachmentId, BaseAttachment baseAttachment) throws Exception {
+        BaseAttachment attachment = baseAttachmentDao.getAttachmentById(attachmentId);
+        if (attachment == null)
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        String filePath = createFTPBasePath(COPY_UPLOAD_PATH + File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount());
+        String fileName = createNoRepeatFileName(attachment.getFileExtension());
+        ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), fileName, filePath);
+        BeanUtils.copyProperties(baseAttachment,attachment, ReflectUtils.getNullPropertyNames(baseAttachment));
+        attachment.setFtpFilesName(fileName);
+        attachment.setFilePath(filePath);
+        baseAttachmentDao.addAttachment(attachment);
+        return attachment;
     }
 }

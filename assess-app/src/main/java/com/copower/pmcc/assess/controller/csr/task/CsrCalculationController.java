@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.csr.task;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.dal.entity.CsrCalculation;
 import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrCalculationVo;
 import com.copower.pmcc.assess.service.csr.CsrCalculationService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -37,9 +38,9 @@ public class CsrCalculationController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanCalculation", name = "测算情况", method = RequestMethod.POST)
-    public HttpResult saveLoanCalculation(CsrCalculation csrCalculation) {
+    public HttpResult saveLoanCalculation(CsrCalculation csrCalculation, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrCalculation = csrCalculationService.saveCsrCalculation(csrCalculation);
+            csrCalculation = csrCalculationService.saveCsrCalculation(csrCalculation,detailsId,taskRemarks,actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -49,12 +50,12 @@ public class CsrCalculationController {
     //取得保证人情况
     @ResponseBody
     @RequestMapping(value = "/getCsrCalculation", name = "取得测算情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrCalculation(Integer borrowerId) {
+    public BootstrapTableVo getCsrCalculation(Integer borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrCalculation> csrCalculation = csrCalculationService.getCsrCalculation(borrowerId);
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrCalculation) ? new ArrayList<CsrCalculation>() : csrCalculation);
+        List<CsrCalculationVo> csrCalculation = csrCalculationService.getCsrCalculation(borrowerId,detailsId);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrCalculation) ? new ArrayList<CsrCalculationVo>() : csrCalculation);
         bootstrapTableVo.setTotal(page.getTotal());
         return bootstrapTableVo;
     }

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
 import com.copower.pmcc.assess.dal.entity.CsrContract;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
 import com.copower.pmcc.assess.service.csr.CsrContractService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -25,12 +26,25 @@ public class CsrContractController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanContract", name = "保存借款合同基础数据", method = RequestMethod.POST)
-    public HttpResult saveLoanContract(CsrContract csrContract) {
+    public HttpResult saveLoanContract(CsrContract csrContract,Integer detailsId,String taskRemarks, String actualHours) {
         try {
-            csrContract = csrContractService.saveCsrContract(csrContract);
+            csrContract = csrContractService.saveCsrContract(csrContract,detailsId,taskRemarks,actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult(csrContract.getId());
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/loadLoanContractAssist", name = "根据借款人信息取得相应的合同信息", method = RequestMethod.GET)
+    public HttpResult loadLoanContractAssist(Integer borrowerId,Integer detailsId) {
+        try {
+            CsrContractVo csrContractVo = csrContractService.loadCsrContract(borrowerId, detailsId);
+            return HttpResult.newCorrectResult(csrContractVo);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+
 }

@@ -7,6 +7,40 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="appraisal_method" property="appraisalMethod" jdbcType="VARCHAR" />
+    <result column="pawn_area" property="pawnArea" jdbcType="VARCHAR" />
+    <result column="pawn_price" property="pawnPrice" jdbcType="VARCHAR" />
+    <result column="pawn_amount" property="pawnAmount" jdbcType="VARCHAR" />
+    <result column="pawn_realization_coefficient" property="pawnRealizationCoefficient" jdbcType="VARCHAR" />
+    <result column="pawn_realization" property="pawnRealization" jdbcType="VARCHAR" />
+    <result column="pawn_realization_amount" property="pawnRealizationAmount" jdbcType="VARCHAR" />
+    <result column="dispose_auction_coefficient" property="disposeAuctionCoefficient" jdbcType="VARCHAR" />
+    <result column="dispose_auction" property="disposeAuction" jdbcType="VARCHAR" />
+    <result column="dispose_lawsuit_coefficient" property="disposeLawsuitCoefficient" jdbcType="VARCHAR" />
+    <result column="dispose_lawsuit" property="disposeLawsuit" jdbcType="VARCHAR" />
+    <result column="dispose_execute_coefficient" property="disposeExecuteCoefficient" jdbcType="VARCHAR" />
+    <result column="dispose_execute" property="disposeExecute" jdbcType="VARCHAR" />
+    <result column="dispose_authenticate_cofficient" property="disposeAuthenticateCofficient" jdbcType="VARCHAR" />
+    <result column="dispose_authenticate" property="disposeAuthenticate" jdbcType="VARCHAR" />
+    <result column="dispoet_other_cofficient" property="dispoetOtherCofficient" jdbcType="VARCHAR" />
+    <result column="dispoet_other" property="dispoetOther" jdbcType="VARCHAR" />
+    <result column="dispoet_amount" property="dispoetAmount" jdbcType="VARCHAR" />
+    <result column="tax_stamp_cofficient" property="taxStampCofficient" jdbcType="VARCHAR" />
+    <result column="tax_stamp" property="taxStamp" jdbcType="VARCHAR" />
+    <result column="tax_addedvalue_cofficient" property="taxAddedvalueCofficient" jdbcType="VARCHAR" />
+    <result column="tax_addedvalue" property="taxAddedvalue" jdbcType="VARCHAR" />
+    <result column="tax_land_cofficient" property="taxLandCofficient" jdbcType="VARCHAR" />
+    <result column="tax_land" property="taxLand" jdbcType="VARCHAR" />
+    <result column="tax_other" property="taxOther" jdbcType="VARCHAR" />
+    <result column="tax_amount" property="taxAmount" jdbcType="VARCHAR" />
+    <result column="cost_amount" property="costAmount" jdbcType="VARCHAR" />
+    <result column="pawn_realization_value_amount" property="pawnRealizationValueAmount" jdbcType="VARCHAR" />
+    <result column="recovery_income_ordinary" property="recoveryIncomeOrdinary" jdbcType="VARCHAR" />
+    <result column="recovery_income_all" property="recoveryIncomeAll" jdbcType="VARCHAR" />
+    <result column="recovery_income_third_party" property="recoveryIncomeThirdParty" jdbcType="VARCHAR" />
+    <result column="recovery_incom_amount" property="recoveryIncomAmount" jdbcType="VARCHAR" />
+    <result column="recovery_bad_loans" property="recoveryBadLoans" jdbcType="VARCHAR" />
+    <result column="recovery_limit" property="recoveryLimit" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +101,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, borrower_id, creator, gmt_created, gmt_modified
+    id, borrower_id, creator, gmt_created, gmt_modified, appraisal_method, pawn_area, 
+    pawn_price, pawn_amount, pawn_realization_coefficient, pawn_realization, pawn_realization_amount, 
+    dispose_auction_coefficient, dispose_auction, dispose_lawsuit_coefficient, dispose_lawsuit, 
+    dispose_execute_coefficient, dispose_execute, dispose_authenticate_cofficient, dispose_authenticate, 
+    dispoet_other_cofficient, dispoet_other, dispoet_amount, tax_stamp_cofficient, tax_stamp, 
+    tax_addedvalue_cofficient, tax_addedvalue, tax_land_cofficient, tax_land, tax_other, 
+    tax_amount, cost_amount, pawn_realization_value_amount, recovery_income_ordinary, 
+    recovery_income_all, recovery_income_third_party, recovery_incom_amount, recovery_bad_loans, 
+    recovery_limit
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrCalculationExample" >
     select
@@ -104,9 +146,37 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_csr_calculation (borrower_id, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, appraisal_method, pawn_area, 
+      pawn_price, pawn_amount, pawn_realization_coefficient, 
+      pawn_realization, pawn_realization_amount, 
+      dispose_auction_coefficient, dispose_auction, 
+      dispose_lawsuit_coefficient, dispose_lawsuit, 
+      dispose_execute_coefficient, dispose_execute, 
+      dispose_authenticate_cofficient, dispose_authenticate, 
+      dispoet_other_cofficient, dispoet_other, dispoet_amount, 
+      tax_stamp_cofficient, tax_stamp, tax_addedvalue_cofficient, 
+      tax_addedvalue, tax_land_cofficient, tax_land, 
+      tax_other, tax_amount, cost_amount, 
+      pawn_realization_value_amount, recovery_income_ordinary, 
+      recovery_income_all, recovery_income_third_party, 
+      recovery_incom_amount, recovery_bad_loans, 
+      recovery_limit)
     values (#{borrowerId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{appraisalMethod,jdbcType=VARCHAR}, #{pawnArea,jdbcType=VARCHAR}, 
+      #{pawnPrice,jdbcType=VARCHAR}, #{pawnAmount,jdbcType=VARCHAR}, #{pawnRealizationCoefficient,jdbcType=VARCHAR}, 
+      #{pawnRealization,jdbcType=VARCHAR}, #{pawnRealizationAmount,jdbcType=VARCHAR}, 
+      #{disposeAuctionCoefficient,jdbcType=VARCHAR}, #{disposeAuction,jdbcType=VARCHAR}, 
+      #{disposeLawsuitCoefficient,jdbcType=VARCHAR}, #{disposeLawsuit,jdbcType=VARCHAR}, 
+      #{disposeExecuteCoefficient,jdbcType=VARCHAR}, #{disposeExecute,jdbcType=VARCHAR}, 
+      #{disposeAuthenticateCofficient,jdbcType=VARCHAR}, #{disposeAuthenticate,jdbcType=VARCHAR}, 
+      #{dispoetOtherCofficient,jdbcType=VARCHAR}, #{dispoetOther,jdbcType=VARCHAR}, #{dispoetAmount,jdbcType=VARCHAR}, 
+      #{taxStampCofficient,jdbcType=VARCHAR}, #{taxStamp,jdbcType=VARCHAR}, #{taxAddedvalueCofficient,jdbcType=VARCHAR}, 
+      #{taxAddedvalue,jdbcType=VARCHAR}, #{taxLandCofficient,jdbcType=VARCHAR}, #{taxLand,jdbcType=VARCHAR}, 
+      #{taxOther,jdbcType=VARCHAR}, #{taxAmount,jdbcType=VARCHAR}, #{costAmount,jdbcType=VARCHAR}, 
+      #{pawnRealizationValueAmount,jdbcType=VARCHAR}, #{recoveryIncomeOrdinary,jdbcType=VARCHAR}, 
+      #{recoveryIncomeAll,jdbcType=VARCHAR}, #{recoveryIncomeThirdParty,jdbcType=VARCHAR}, 
+      #{recoveryIncomAmount,jdbcType=VARCHAR}, #{recoveryBadLoans,jdbcType=VARCHAR}, 
+      #{recoveryLimit,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrCalculation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +196,108 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="appraisalMethod != null" >
+        appraisal_method,
+      </if>
+      <if test="pawnArea != null" >
+        pawn_area,
+      </if>
+      <if test="pawnPrice != null" >
+        pawn_price,
+      </if>
+      <if test="pawnAmount != null" >
+        pawn_amount,
+      </if>
+      <if test="pawnRealizationCoefficient != null" >
+        pawn_realization_coefficient,
+      </if>
+      <if test="pawnRealization != null" >
+        pawn_realization,
+      </if>
+      <if test="pawnRealizationAmount != null" >
+        pawn_realization_amount,
+      </if>
+      <if test="disposeAuctionCoefficient != null" >
+        dispose_auction_coefficient,
+      </if>
+      <if test="disposeAuction != null" >
+        dispose_auction,
+      </if>
+      <if test="disposeLawsuitCoefficient != null" >
+        dispose_lawsuit_coefficient,
+      </if>
+      <if test="disposeLawsuit != null" >
+        dispose_lawsuit,
+      </if>
+      <if test="disposeExecuteCoefficient != null" >
+        dispose_execute_coefficient,
+      </if>
+      <if test="disposeExecute != null" >
+        dispose_execute,
+      </if>
+      <if test="disposeAuthenticateCofficient != null" >
+        dispose_authenticate_cofficient,
+      </if>
+      <if test="disposeAuthenticate != null" >
+        dispose_authenticate,
+      </if>
+      <if test="dispoetOtherCofficient != null" >
+        dispoet_other_cofficient,
+      </if>
+      <if test="dispoetOther != null" >
+        dispoet_other,
+      </if>
+      <if test="dispoetAmount != null" >
+        dispoet_amount,
+      </if>
+      <if test="taxStampCofficient != null" >
+        tax_stamp_cofficient,
+      </if>
+      <if test="taxStamp != null" >
+        tax_stamp,
+      </if>
+      <if test="taxAddedvalueCofficient != null" >
+        tax_addedvalue_cofficient,
+      </if>
+      <if test="taxAddedvalue != null" >
+        tax_addedvalue,
+      </if>
+      <if test="taxLandCofficient != null" >
+        tax_land_cofficient,
+      </if>
+      <if test="taxLand != null" >
+        tax_land,
+      </if>
+      <if test="taxOther != null" >
+        tax_other,
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount,
+      </if>
+      <if test="costAmount != null" >
+        cost_amount,
+      </if>
+      <if test="pawnRealizationValueAmount != null" >
+        pawn_realization_value_amount,
+      </if>
+      <if test="recoveryIncomeOrdinary != null" >
+        recovery_income_ordinary,
+      </if>
+      <if test="recoveryIncomeAll != null" >
+        recovery_income_all,
+      </if>
+      <if test="recoveryIncomeThirdParty != null" >
+        recovery_income_third_party,
+      </if>
+      <if test="recoveryIncomAmount != null" >
+        recovery_incom_amount,
+      </if>
+      <if test="recoveryBadLoans != null" >
+        recovery_bad_loans,
+      </if>
+      <if test="recoveryLimit != null" >
+        recovery_limit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="borrowerId != null" >
@@ -139,6 +311,108 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appraisalMethod != null" >
+        #{appraisalMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnArea != null" >
+        #{pawnArea,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnPrice != null" >
+        #{pawnPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnAmount != null" >
+        #{pawnAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationCoefficient != null" >
+        #{pawnRealizationCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealization != null" >
+        #{pawnRealization,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationAmount != null" >
+        #{pawnRealizationAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuctionCoefficient != null" >
+        #{disposeAuctionCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuction != null" >
+        #{disposeAuction,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeLawsuitCoefficient != null" >
+        #{disposeLawsuitCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeLawsuit != null" >
+        #{disposeLawsuit,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeExecuteCoefficient != null" >
+        #{disposeExecuteCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeExecute != null" >
+        #{disposeExecute,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuthenticateCofficient != null" >
+        #{disposeAuthenticateCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuthenticate != null" >
+        #{disposeAuthenticate,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetOtherCofficient != null" >
+        #{dispoetOtherCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetOther != null" >
+        #{dispoetOther,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetAmount != null" >
+        #{dispoetAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="taxStampCofficient != null" >
+        #{taxStampCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxStamp != null" >
+        #{taxStamp,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAddedvalueCofficient != null" >
+        #{taxAddedvalueCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAddedvalue != null" >
+        #{taxAddedvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="taxLandCofficient != null" >
+        #{taxLandCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxLand != null" >
+        #{taxLand,jdbcType=VARCHAR},
+      </if>
+      <if test="taxOther != null" >
+        #{taxOther,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAmount != null" >
+        #{taxAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="costAmount != null" >
+        #{costAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationValueAmount != null" >
+        #{pawnRealizationValueAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeOrdinary != null" >
+        #{recoveryIncomeOrdinary,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeAll != null" >
+        #{recoveryIncomeAll,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeThirdParty != null" >
+        #{recoveryIncomeThirdParty,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomAmount != null" >
+        #{recoveryIncomAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryBadLoans != null" >
+        #{recoveryBadLoans,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryLimit != null" >
+        #{recoveryLimit,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +440,108 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.appraisalMethod != null" >
+        appraisal_method = #{record.appraisalMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnArea != null" >
+        pawn_area = #{record.pawnArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnPrice != null" >
+        pawn_price = #{record.pawnPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnAmount != null" >
+        pawn_amount = #{record.pawnAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnRealizationCoefficient != null" >
+        pawn_realization_coefficient = #{record.pawnRealizationCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnRealization != null" >
+        pawn_realization = #{record.pawnRealization,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnRealizationAmount != null" >
+        pawn_realization_amount = #{record.pawnRealizationAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeAuctionCoefficient != null" >
+        dispose_auction_coefficient = #{record.disposeAuctionCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeAuction != null" >
+        dispose_auction = #{record.disposeAuction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeLawsuitCoefficient != null" >
+        dispose_lawsuit_coefficient = #{record.disposeLawsuitCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeLawsuit != null" >
+        dispose_lawsuit = #{record.disposeLawsuit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeExecuteCoefficient != null" >
+        dispose_execute_coefficient = #{record.disposeExecuteCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeExecute != null" >
+        dispose_execute = #{record.disposeExecute,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeAuthenticateCofficient != null" >
+        dispose_authenticate_cofficient = #{record.disposeAuthenticateCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disposeAuthenticate != null" >
+        dispose_authenticate = #{record.disposeAuthenticate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispoetOtherCofficient != null" >
+        dispoet_other_cofficient = #{record.dispoetOtherCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispoetOther != null" >
+        dispoet_other = #{record.dispoetOther,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispoetAmount != null" >
+        dispoet_amount = #{record.dispoetAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxStampCofficient != null" >
+        tax_stamp_cofficient = #{record.taxStampCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxStamp != null" >
+        tax_stamp = #{record.taxStamp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxAddedvalueCofficient != null" >
+        tax_addedvalue_cofficient = #{record.taxAddedvalueCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxAddedvalue != null" >
+        tax_addedvalue = #{record.taxAddedvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxLandCofficient != null" >
+        tax_land_cofficient = #{record.taxLandCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxLand != null" >
+        tax_land = #{record.taxLand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxOther != null" >
+        tax_other = #{record.taxOther,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxAmount != null" >
+        tax_amount = #{record.taxAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costAmount != null" >
+        cost_amount = #{record.costAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pawnRealizationValueAmount != null" >
+        pawn_realization_value_amount = #{record.pawnRealizationValueAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryIncomeOrdinary != null" >
+        recovery_income_ordinary = #{record.recoveryIncomeOrdinary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryIncomeAll != null" >
+        recovery_income_all = #{record.recoveryIncomeAll,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryIncomeThirdParty != null" >
+        recovery_income_third_party = #{record.recoveryIncomeThirdParty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryIncomAmount != null" >
+        recovery_incom_amount = #{record.recoveryIncomAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryBadLoans != null" >
+        recovery_bad_loans = #{record.recoveryBadLoans,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoveryLimit != null" >
+        recovery_limit = #{record.recoveryLimit,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +553,41 @@
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      appraisal_method = #{record.appraisalMethod,jdbcType=VARCHAR},
+      pawn_area = #{record.pawnArea,jdbcType=VARCHAR},
+      pawn_price = #{record.pawnPrice,jdbcType=VARCHAR},
+      pawn_amount = #{record.pawnAmount,jdbcType=VARCHAR},
+      pawn_realization_coefficient = #{record.pawnRealizationCoefficient,jdbcType=VARCHAR},
+      pawn_realization = #{record.pawnRealization,jdbcType=VARCHAR},
+      pawn_realization_amount = #{record.pawnRealizationAmount,jdbcType=VARCHAR},
+      dispose_auction_coefficient = #{record.disposeAuctionCoefficient,jdbcType=VARCHAR},
+      dispose_auction = #{record.disposeAuction,jdbcType=VARCHAR},
+      dispose_lawsuit_coefficient = #{record.disposeLawsuitCoefficient,jdbcType=VARCHAR},
+      dispose_lawsuit = #{record.disposeLawsuit,jdbcType=VARCHAR},
+      dispose_execute_coefficient = #{record.disposeExecuteCoefficient,jdbcType=VARCHAR},
+      dispose_execute = #{record.disposeExecute,jdbcType=VARCHAR},
+      dispose_authenticate_cofficient = #{record.disposeAuthenticateCofficient,jdbcType=VARCHAR},
+      dispose_authenticate = #{record.disposeAuthenticate,jdbcType=VARCHAR},
+      dispoet_other_cofficient = #{record.dispoetOtherCofficient,jdbcType=VARCHAR},
+      dispoet_other = #{record.dispoetOther,jdbcType=VARCHAR},
+      dispoet_amount = #{record.dispoetAmount,jdbcType=VARCHAR},
+      tax_stamp_cofficient = #{record.taxStampCofficient,jdbcType=VARCHAR},
+      tax_stamp = #{record.taxStamp,jdbcType=VARCHAR},
+      tax_addedvalue_cofficient = #{record.taxAddedvalueCofficient,jdbcType=VARCHAR},
+      tax_addedvalue = #{record.taxAddedvalue,jdbcType=VARCHAR},
+      tax_land_cofficient = #{record.taxLandCofficient,jdbcType=VARCHAR},
+      tax_land = #{record.taxLand,jdbcType=VARCHAR},
+      tax_other = #{record.taxOther,jdbcType=VARCHAR},
+      tax_amount = #{record.taxAmount,jdbcType=VARCHAR},
+      cost_amount = #{record.costAmount,jdbcType=VARCHAR},
+      pawn_realization_value_amount = #{record.pawnRealizationValueAmount,jdbcType=VARCHAR},
+      recovery_income_ordinary = #{record.recoveryIncomeOrdinary,jdbcType=VARCHAR},
+      recovery_income_all = #{record.recoveryIncomeAll,jdbcType=VARCHAR},
+      recovery_income_third_party = #{record.recoveryIncomeThirdParty,jdbcType=VARCHAR},
+      recovery_incom_amount = #{record.recoveryIncomAmount,jdbcType=VARCHAR},
+      recovery_bad_loans = #{record.recoveryBadLoans,jdbcType=VARCHAR},
+      recovery_limit = #{record.recoveryLimit,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +607,108 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="appraisalMethod != null" >
+        appraisal_method = #{appraisalMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnArea != null" >
+        pawn_area = #{pawnArea,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnPrice != null" >
+        pawn_price = #{pawnPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnAmount != null" >
+        pawn_amount = #{pawnAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationCoefficient != null" >
+        pawn_realization_coefficient = #{pawnRealizationCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealization != null" >
+        pawn_realization = #{pawnRealization,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationAmount != null" >
+        pawn_realization_amount = #{pawnRealizationAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuctionCoefficient != null" >
+        dispose_auction_coefficient = #{disposeAuctionCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuction != null" >
+        dispose_auction = #{disposeAuction,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeLawsuitCoefficient != null" >
+        dispose_lawsuit_coefficient = #{disposeLawsuitCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeLawsuit != null" >
+        dispose_lawsuit = #{disposeLawsuit,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeExecuteCoefficient != null" >
+        dispose_execute_coefficient = #{disposeExecuteCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeExecute != null" >
+        dispose_execute = #{disposeExecute,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuthenticateCofficient != null" >
+        dispose_authenticate_cofficient = #{disposeAuthenticateCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeAuthenticate != null" >
+        dispose_authenticate = #{disposeAuthenticate,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetOtherCofficient != null" >
+        dispoet_other_cofficient = #{dispoetOtherCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetOther != null" >
+        dispoet_other = #{dispoetOther,jdbcType=VARCHAR},
+      </if>
+      <if test="dispoetAmount != null" >
+        dispoet_amount = #{dispoetAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="taxStampCofficient != null" >
+        tax_stamp_cofficient = #{taxStampCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxStamp != null" >
+        tax_stamp = #{taxStamp,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAddedvalueCofficient != null" >
+        tax_addedvalue_cofficient = #{taxAddedvalueCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAddedvalue != null" >
+        tax_addedvalue = #{taxAddedvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="taxLandCofficient != null" >
+        tax_land_cofficient = #{taxLandCofficient,jdbcType=VARCHAR},
+      </if>
+      <if test="taxLand != null" >
+        tax_land = #{taxLand,jdbcType=VARCHAR},
+      </if>
+      <if test="taxOther != null" >
+        tax_other = #{taxOther,jdbcType=VARCHAR},
+      </if>
+      <if test="taxAmount != null" >
+        tax_amount = #{taxAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="costAmount != null" >
+        cost_amount = #{costAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnRealizationValueAmount != null" >
+        pawn_realization_value_amount = #{pawnRealizationValueAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeOrdinary != null" >
+        recovery_income_ordinary = #{recoveryIncomeOrdinary,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeAll != null" >
+        recovery_income_all = #{recoveryIncomeAll,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomeThirdParty != null" >
+        recovery_income_third_party = #{recoveryIncomeThirdParty,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryIncomAmount != null" >
+        recovery_incom_amount = #{recoveryIncomAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryBadLoans != null" >
+        recovery_bad_loans = #{recoveryBadLoans,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryLimit != null" >
+        recovery_limit = #{recoveryLimit,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -205,7 +717,41 @@
     set borrower_id = #{borrowerId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      appraisal_method = #{appraisalMethod,jdbcType=VARCHAR},
+      pawn_area = #{pawnArea,jdbcType=VARCHAR},
+      pawn_price = #{pawnPrice,jdbcType=VARCHAR},
+      pawn_amount = #{pawnAmount,jdbcType=VARCHAR},
+      pawn_realization_coefficient = #{pawnRealizationCoefficient,jdbcType=VARCHAR},
+      pawn_realization = #{pawnRealization,jdbcType=VARCHAR},
+      pawn_realization_amount = #{pawnRealizationAmount,jdbcType=VARCHAR},
+      dispose_auction_coefficient = #{disposeAuctionCoefficient,jdbcType=VARCHAR},
+      dispose_auction = #{disposeAuction,jdbcType=VARCHAR},
+      dispose_lawsuit_coefficient = #{disposeLawsuitCoefficient,jdbcType=VARCHAR},
+      dispose_lawsuit = #{disposeLawsuit,jdbcType=VARCHAR},
+      dispose_execute_coefficient = #{disposeExecuteCoefficient,jdbcType=VARCHAR},
+      dispose_execute = #{disposeExecute,jdbcType=VARCHAR},
+      dispose_authenticate_cofficient = #{disposeAuthenticateCofficient,jdbcType=VARCHAR},
+      dispose_authenticate = #{disposeAuthenticate,jdbcType=VARCHAR},
+      dispoet_other_cofficient = #{dispoetOtherCofficient,jdbcType=VARCHAR},
+      dispoet_other = #{dispoetOther,jdbcType=VARCHAR},
+      dispoet_amount = #{dispoetAmount,jdbcType=VARCHAR},
+      tax_stamp_cofficient = #{taxStampCofficient,jdbcType=VARCHAR},
+      tax_stamp = #{taxStamp,jdbcType=VARCHAR},
+      tax_addedvalue_cofficient = #{taxAddedvalueCofficient,jdbcType=VARCHAR},
+      tax_addedvalue = #{taxAddedvalue,jdbcType=VARCHAR},
+      tax_land_cofficient = #{taxLandCofficient,jdbcType=VARCHAR},
+      tax_land = #{taxLand,jdbcType=VARCHAR},
+      tax_other = #{taxOther,jdbcType=VARCHAR},
+      tax_amount = #{taxAmount,jdbcType=VARCHAR},
+      cost_amount = #{costAmount,jdbcType=VARCHAR},
+      pawn_realization_value_amount = #{pawnRealizationValueAmount,jdbcType=VARCHAR},
+      recovery_income_ordinary = #{recoveryIncomeOrdinary,jdbcType=VARCHAR},
+      recovery_income_all = #{recoveryIncomeAll,jdbcType=VARCHAR},
+      recovery_income_third_party = #{recoveryIncomeThirdParty,jdbcType=VARCHAR},
+      recovery_incom_amount = #{recoveryIncomAmount,jdbcType=VARCHAR},
+      recovery_bad_loans = #{recoveryBadLoans,jdbcType=VARCHAR},
+      recovery_limit = #{recoveryLimit,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

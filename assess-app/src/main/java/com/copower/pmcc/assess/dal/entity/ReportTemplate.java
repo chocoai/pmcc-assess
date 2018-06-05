@@ -5,15 +5,19 @@ import java.util.Date;
 public class ReportTemplate {
     private Integer id;
 
-    private String name;
+    private Integer customerId;
 
-    private Integer type;
+    private Integer entrustId;
 
-    private Integer category;
+    private Integer reportTypeId;
 
-    private String prefix;
+    private Integer templateType;
 
-    private String valueSql;
+    private Integer csType;
+
+    private Boolean bisEnable;
+
+    private String creator;
 
     private Date gmtCreated;
 
@@ -27,44 +31,60 @@ public class ReportTemplate {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getEntrustId() {
+        return entrustId;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setEntrustId(Integer entrustId) {
+        this.entrustId = entrustId;
     }
 
-    public Integer getCategory() {
-        return category;
+    public Integer getReportTypeId() {
+        return reportTypeId;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setReportTypeId(Integer reportTypeId) {
+        this.reportTypeId = reportTypeId;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public Integer getTemplateType() {
+        return templateType;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix == null ? null : prefix.trim();
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
     }
 
-    public String getValueSql() {
-        return valueSql;
+    public Integer getCsType() {
+        return csType;
     }
 
-    public void setValueSql(String valueSql) {
-        this.valueSql = valueSql == null ? null : valueSql.trim();
+    public void setCsType(Integer csType) {
+        this.csType = csType;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
 import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrLitigationVo;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrPrincipalInterestVo;
 import com.copower.pmcc.assess.service.csr.CsrPrincipalInterestService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -25,12 +27,23 @@ public class CsrPrincipalInterestController {
 
     @ResponseBody
     @RequestMapping(value = "/saveLoanPrincipalInterest", name = "本金利息数据", method = RequestMethod.POST)
-    public HttpResult saveLoanPrincipalInterest(CsrPrincipalInterest csrPrincipalInterest) {
+    public HttpResult saveLoanPrincipalInterest(CsrPrincipalInterest csrPrincipalInterest, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrPrincipalInterest = csrPrincipalInterestService.saveCsrPrincipalInterest(csrPrincipalInterest);
+            csrPrincipalInterest = csrPrincipalInterestService.saveCsrPrincipalInterest(csrPrincipalInterest, detailsId, taskRemarks, actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult(csrPrincipalInterest.getId());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/loadLoanPrincipalInterest", name = "根据借款人信息取得诉讼保全数据", method = RequestMethod.GET)
+    public HttpResult loadLoanPrincipalInterest(Integer borrowerId, Integer detailsId) {
+        try {
+            CsrPrincipalInterestVo csrPrincipalInterestVo = csrPrincipalInterestService.loadLoanPrincipalInterest(borrowerId, detailsId);
+            return HttpResult.newCorrectResult(csrPrincipalInterestVo);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

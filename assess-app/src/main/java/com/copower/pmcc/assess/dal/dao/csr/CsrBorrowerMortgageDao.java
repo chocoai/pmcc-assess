@@ -25,6 +25,7 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -34,6 +35,7 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 获取数据列表
+     *
      * @param csrBorrowerMortgage
      * @return
      */
@@ -45,11 +47,12 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 获取数据列表
+     *
      * @param borrowerIds
      * @return
      */
     public List<CsrBorrowerMortgage> getCsrBorrowerMortgageList(List<Integer> borrowerIds) {
-        if(CollectionUtils.isEmpty(borrowerIds)) return null;
+        if (CollectionUtils.isEmpty(borrowerIds)) return null;
         CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
         CsrBorrowerMortgageExample.Criteria criteria = example.createCriteria();
         criteria.andBorrowerIdIn(borrowerIds);
@@ -58,6 +61,7 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 新增
+     *
      * @param csrBorrowerMortgage
      * @return
      */
@@ -67,6 +71,7 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 编辑
+     *
      * @param csrBorrowerMortgage
      * @return
      */
@@ -76,10 +81,23 @@ public class CsrBorrowerMortgageDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteCsrBorrowerMortgage(Integer id){
+    public boolean deleteCsrBorrowerMortgage(Integer id) {
         return csrBorrowerMortgageMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param borrowerId
+     * @return
+     */
+    public boolean deleteByBorrowerId(Integer borrowerId) {
+        CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
+        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        return csrBorrowerMortgageMapper.deleteByExample(example) > 0;
     }
 }

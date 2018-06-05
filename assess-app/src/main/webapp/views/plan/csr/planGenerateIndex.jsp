@@ -57,7 +57,7 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <h2>
-                                    <small>权证信息</small>
+                                    <small>借款人信息</small>
                                 </h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -69,39 +69,29 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <td><input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
+                                        <td>
+                                            <input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
                                         </td>
                                         <th>序号</th>
-                                        <th>名称</th>
-                                        <th>证载面积</th>
-                                        <th>评估面积</th>
-                                        <th>评估单价</th>
-                                        <th>已出面积</th>
-                                        <th>报告面积</th>
-                                        <th>评估总价</th>
-                                        <th>报告总价</th>
+                                        <th>一级分行</th>
+                                        <th>二级分行</th>
+                                        <th>姓名</th>
+                                        <th>身份证号</th>
+                                        <th>婚姻状态</th>
                                         <th>报告附件</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${reportRecordList}" var="item" varStatus="i">
+                                    <c:forEach items="${borrowerList}" var="item" varStatus="i">
                                         <tr>
                                             <td><input type="checkbox" name="checkboxItem"
                                                        onclick="checkBoxItemClick(this);"></td>
                                             <th>${i.index+1}</th>
+                                            <td>${item.firstLevelBranch}</td>
+                                            <td>${item.secondLevelBranch}</td>
                                             <td>${item.name}</td>
-                                            <td>${item.floorArea}</td>
-                                            <td>${item.assessArea}</td>
-                                            <td>${item.assessUnitPrice}</td>
-                                            <td>${item.alreadyOutArea}</td>
-                                            <td>
-                                                <div class="x-valid">
-                                                    <input type="text" class="form-control" name="reportArea"
-                                                           data-rule-digits="true"
-                                                           style="width: 120px;height: 30px;"></div>
-                                            </td>
-                                            <%--<td>${item.assessTotalPrince}</td>--%>
-                                            <%--<td>${item.reportTotalPrice}</td>--%>
+                                            <td>${item.idNumber}</td>
+                                            <td>${item.maritalStatus}</td>
                                             <td></td>
                                         </tr>
                                     </c:forEach>
@@ -121,11 +111,8 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_generate" class="btn btn-success" onclick="generateReport();">
+                        <button id="btn_generate" class="btn btn-primary" onclick="generateReport();">
                             生成报告<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                        <button id="commit_btn" class="btn btn-success" onclick="commitApply();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </div>
@@ -147,37 +134,16 @@
     function checkBoxAllClick(_this) {
         $("#frm_content").find("[name=checkboxItem]").each(function () {
             $(this).prop("checked", $(_this).prop("checked"));
-            checkBoxItemClick(this);
         })
-    }
-
-    //checkbox点击
-    function checkBoxItemClick(_this) {
-        var isChecked = $(_this).prop("checked");
-        var tr = $(_this).closest("tr");
-        computeNumber();
-        if (isChecked) {
-            tr.find("[name=reportArea]").attr("required", "true");
-        } else {
-            tr.find("[name=reportArea]").removeAttr("required");
-        }
-    }
-
-    //计算份数
-    function computeNumber() {
-        var reportTypeLength = $("#frm_content").find("[name=reportType]:checked").length;
-        var checkboxItemLength = $("#frm_content").find("[name=checkboxItem]:checked").length;
-        if (reportTypeLength > 0 && checkboxItemLength > 0) {
-            $("#lbl_report_count").find("span").text(reportTypeLength*checkboxItemLength);
-            $("#lbl_report_count").show();
-        }else{
-            $("#lbl_report_count").find("span").text(0);
-            $("#lbl_report_count").hide();
-        }
     }
 
     //生成报告
     function generateReport() {
+        var borrowerIds = '';
+        $("#frm_content").find("[name=checkboxItem]").each(function () {
+            var id = $(this).closest('tr').find('[name="id"]').val();
+            borrowerIds += id + ',';
+        })
 
     }
 

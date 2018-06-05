@@ -4,9 +4,9 @@ import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.BaseReportColumns;
-import com.copower.pmcc.assess.dal.entity.BaseReportTable;
-import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
+import com.copower.pmcc.assess.dal.entity.ReportColumns;
+import com.copower.pmcc.assess.dal.entity.ReportTable;
+import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dto.output.CrmTreeDto;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -45,6 +46,8 @@ public class TemplateSetController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseReportService baseReportService;
+    @Autowired
+    private CommonService commonService;
 
     @RequestMapping(value = "/templateSetIndex", name = "进入报告配置页面")
     public ModelAndView templateSetIndex() {
@@ -64,7 +67,7 @@ public class TemplateSetController {
         Integer key = BaseReportDataPoolTypeEnum.TEMPLATE.getKey();
         modelAndView.addObject("templateId", key);//模板类型
         modelAndView.addObject("templateTypeId", BaseReportTemplateTypeEnum.TEMPLATE.getKey());
-
+        modelAndView.addObject("currUserAccount",commonService.thisUserAccount());
         return modelAndView;
     }
 
@@ -85,7 +88,7 @@ public class TemplateSetController {
     public HttpResult getBaseReportColumnsList(int tableId) {
 
         try {
-            List<BaseReportColumns> baseReportColumnsList = baseReportService.getBaseReportColumnsList(tableId);
+            List<ReportColumns> baseReportColumnsList = baseReportService.getBaseReportColumnsList(tableId);
             return HttpResult.newCorrectResult(baseReportColumnsList);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -97,7 +100,7 @@ public class TemplateSetController {
     public HttpResult getBaseReportTemplateById(int id) {
 
         try {
-            BaseReportTemplate baseReportTemplate = baseReportService.getBaseReportTemplateById(id);
+            ReportTemplate baseReportTemplate = baseReportService.getBaseReportTemplateById(id);
             return HttpResult.newCorrectResult(baseReportTemplate);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -114,7 +117,7 @@ public class TemplateSetController {
             switch (enumByName) {
                 case FILES:
                 case COLUMNS: {
-                    List<BaseReportTable> baseReportTableList = baseReportService.getBaseReportTableList(typeId);
+                    List<ReportTable> baseReportTableList = baseReportService.getBaseReportTableList(typeId);
                     if (CollectionUtils.isNotEmpty(baseReportTableList)) {
                         keyValueDtos = LangUtils.transform(baseReportTableList, o -> {
                             KeyValueDto keyValueDto = new KeyValueDto();
@@ -126,12 +129,12 @@ public class TemplateSetController {
                     break;
                 }
                 case TEMPLATE: {
-                    List<BaseReportTemplate> baseReportTemplateByTemplate = baseReportService.getBaseReportTemplateByTemplate(customerId);
+                    List<ReportTemplate> baseReportTemplateByTemplate = baseReportService.getBaseReportTemplateByTemplate(customerId);
                     if (CollectionUtils.isNotEmpty(baseReportTemplateByTemplate)) {
                         keyValueDtos = LangUtils.transform(baseReportTemplateByTemplate, o -> {
                             KeyValueDto keyValueDto = new KeyValueDto();
                             keyValueDto.setKey(String.valueOf(o.getId()));
-                            keyValueDto.setValue(o.getBookmarkName());
+                            //keyValueDto.setValue(o.getBookmarkName());
                             return keyValueDto;
                         });
                     }
@@ -147,7 +150,7 @@ public class TemplateSetController {
 
     @ResponseBody
     @RequestMapping(value = "/saveTemplateData", name = "保存模板设置的字段内容 ", method = RequestMethod.POST)
-    public HttpResult saveTemplateData(BaseReportTemplate baseReportTemplate) {
+    public HttpResult saveTemplateData(ReportTemplate baseReportTemplate) {
         try {
             if (baseReportTemplate.getId() != null && baseReportTemplate.getId() > 0) {
                 baseReportService.updateBaseReportTemplate(baseReportTemplate);
@@ -165,7 +168,7 @@ public class TemplateSetController {
     @RequestMapping(value = "/deleteBaseReportTemplate", name = "删除一个书签定义 ", method = RequestMethod.POST)
     public HttpResult deleteBaseReportTemplate(Integer id) {
         try {
-            baseReportService.deleteBaseReportTemplate(id);
+            baseReportService.deleteReportTemplate(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -177,12 +180,12 @@ public class TemplateSetController {
     @RequestMapping(value = "/getBaseReportTemplateList", name = "取得模板列表 ", method = RequestMethod.GET)
     public BootstrapTableVo getBaseReportTemplateList(Integer customId, Integer entrustId, Integer reportId,Integer csType) {
 
-        BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
+        ReportTemplate baseReportTemplate = new ReportTemplate();
         baseReportTemplate.setCustomerId(customId);
         baseReportTemplate.setEntrustId(entrustId);
         baseReportTemplate.setReportTypeId(reportId);
-        baseReportTemplate.setCstype(csType);
-        baseReportTemplate.setPid(0);
+        baseReportTemplate.setCsType(csType);
+        //baseReportTemplate.setPid(0);
         BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
         return baseReportTemplateByExample;
     }
@@ -191,11 +194,11 @@ public class TemplateSetController {
     @RequestMapping(value = "/getBaseReportSubTemplateList", name = "取得子模板列表 ", method = RequestMethod.GET)
     public BootstrapTableVo getBaseReportSubTemplateList(Integer customId, Integer entrustId, Integer reportId, Integer pid) {
 
-        BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
+        ReportTemplate baseReportTemplate = new ReportTemplate();
         baseReportTemplate.setCustomerId(customId);
         baseReportTemplate.setEntrustId(entrustId);
         baseReportTemplate.setReportTypeId(reportId);
-        baseReportTemplate.setPid(pid);
+        //baseReportTemplate.setPid(pid);
         BootstrapTableVo baseReportTemplateByExample = baseReportService.getBaseReportTemplateByExample(baseReportTemplate);
         return baseReportTemplateByExample;
     }
