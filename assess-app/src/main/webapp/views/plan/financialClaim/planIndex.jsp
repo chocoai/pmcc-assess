@@ -110,9 +110,115 @@
                     <h2>${panelTitle}阶段工作计划</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="treeGrid panel-body x_content" style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered"></table>
+                <div class="panel-body x_content">
+
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
+                    <div class=" col-sm-4">
+                        <article class="media event ">
+                            <a class="pull-left date" style="background-color: #3DA0DB">
+                                <p class="month">王鹏程</p>
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">涂桂芝</a>
+                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
+                            </div>
+                        </article>
+                    </div>
                 </div>
+                <%--<div class="treeGrid panel-body x_content " style="padding: 0px;">--%>
+
+                    <%----%>
+
+
+                    <%--<table id="PlanItemListed" class="table table-bordered"></table>--%>
+                <%--</div>--%>
             </div>
             <div class="x_panel">
                 <div class="x_title">
@@ -307,7 +413,7 @@
 <script type="text/javascript">
     var treeGridJsonData = {};
     $(function () {
-        getPlanItemList();
+        //getPlanItemList();
     });
     function checkPhase() {
         var isChecked = $('#chk_phase_all').prop("checked");
@@ -437,7 +543,7 @@
             url: "${pageContext.request.contextPath}/planFinancialClaim/getProjectPlanDetailsByPlanApply",
             data: {
                 planId: ${planId},
-                projectId: 1
+                projectId: ${projectId}
             },
             type: "get",
             dataType: "json",

@@ -94,6 +94,33 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsVos;
     }
 
+    public ProjectPlanDetailsVo getProjectPlanDetailsVo(ProjectPlanDetails projectPlanDetails)
+    {
+        ProjectPlanDetailsVo projectPlanDetailsVo = new ProjectPlanDetailsVo();
+        BeanUtils.copyProperties(projectPlanDetails, projectPlanDetailsVo);
+        if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
+            SysUserDto sysUser = erpRpcUserService.getSysUser(projectPlanDetails.getExecuteUserAccount());
+            projectPlanDetailsVo.setExecuteUserName(sysUser == null ? "" : sysUser.getUserName());
+        }
+        if (projectPlanDetails.getExecuteDepartmentId() != null) {
+            SysDepartmentDto departmentById = erpRpcDepartmentService.getDepartmentById(projectPlanDetails.getExecuteDepartmentId());
+            projectPlanDetailsVo.setExecuteDepartmentName(departmentById == null ? "" : departmentById.getName());
+        }
+        if (projectPlanDetails.getPid() > 0) {
+            projectPlanDetailsVo.setSorting(projectPlanDetails.getPid() * 100 + projectPlanDetails.getSorting());
+            projectPlanDetailsVo.set_parentId(projectPlanDetails.getPid().toString());
+        } else {
+            projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
+        }
+        if(projectPlanDetails.getProjectPhaseId()!=null) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+            if(projectPhase!=null) {
+                projectPlanDetailsVo.setDeclareFormName(projectPhase.getPhaseForm());
+            }
+        }
+        return projectPlanDetailsVo;
+    }
+
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsVos(List<ProjectPlanDetails> projectPlanDetails, Boolean bisAttachment) {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
@@ -103,22 +130,7 @@ public class ProjectPlanDetailsService {
                 bidBaseAttachments = bidBaseAttachmentService.getAttachmentListByTableName("tb_project_plan_details", detailsIds);
             }
             for (ProjectPlanDetails item : projectPlanDetails) {
-                ProjectPlanDetailsVo projectPlanDetailsVo = new ProjectPlanDetailsVo();
-                BeanUtils.copyProperties(item, projectPlanDetailsVo);
-                if (StringUtils.isNotBlank(item.getExecuteUserAccount())) {
-                    SysUserDto sysUser = erpRpcUserService.getSysUser(item.getExecuteUserAccount());
-                    projectPlanDetailsVo.setExecuteUserName(sysUser == null ? "" : sysUser.getUserName());
-                }
-                if (item.getExecuteDepartmentId() != null) {
-                    SysDepartmentDto departmentById = erpRpcDepartmentService.getDepartmentById(item.getExecuteDepartmentId());
-                    projectPlanDetailsVo.setExecuteDepartmentName(departmentById == null ? "" : departmentById.getName());
-                }
-                if (item.getPid() > 0) {
-                    projectPlanDetailsVo.setSorting(item.getPid() * 100 + item.getSorting());
-                    projectPlanDetailsVo.set_parentId(item.getPid().toString());
-                } else {
-                    projectPlanDetailsVo.setSorting(1000 + item.getSorting());
-                }
+                ProjectPlanDetailsVo projectPlanDetailsVo = getProjectPlanDetailsVo(item);
                 if (bidBaseAttachments != null && bidBaseAttachments.size() > 0) {
                     List<BaseAttachment> filter = LangUtils.filter(bidBaseAttachments, o -> {
                         return o.getTableId().intValue() == item.getId().intValue();
@@ -152,14 +164,12 @@ public class ProjectPlanDetailsService {
         projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
         projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
         List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-        List<ProjectPlanDetailsVo> transform = LangUtils.transform(listObject, o -> {
-            ProjectPlanDetailsVo projectPlanDetailsVo = new ProjectPlanDetailsVo();
-            BeanUtils.copyProperties(o, projectPlanDetailsVo);
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(o.getProjectPhaseId());
-            projectPlanDetailsVo.setDeclareFormName(projectPhase.getPhaseForm());
-            return projectPlanDetailsVo;
-        });
+        List<ProjectPlanDetailsVo> transform = LangUtils.transform(listObject, o -> getProjectPlanDetailsVo(o));
         return transform;
     }
+    public List<ProjectPlanDetails> getProjectDetails(ProjectPlanDetails projectPlanDetails) {
+        List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetails);
 
+        return listObject;
+    }
 }

@@ -1,14 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form id="frm_task" class="form-horizontal">
+<table id="tb_warrantorAssist" class="table table-bordered">
+</table>
+<div id="frm_warrantorAssist" class="form-horizontal">
+    <input type="hidden" value="0" name="id">
     <div class="form-group">
         <label class="col-sm-1 control-label">
-            实际工时
+            保证人姓名<span class="symbol required"></span>
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" required
-                       placeholder="实际工时" data-rule-number='true'
-                       id="actualHours" name="actualHours" class="form-control" maxlength="3">
+                <label class="form-control" name="name"></label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            实际工时<span class="symbol required"></span>
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <label class="form-control" name="actualHours"></label>
             </div>
         </div>
     </div>
@@ -18,19 +31,32 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
+                <label class="form-control" name="taskRemarks"></label>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            成果文件
-        </label>
-        <div class="col-sm-11">
-            <input id="apply_file" name="apply_file" type="file" multiple="false">
-            <div id="_apply_file">
-            </div>
-        </div>
-    </div>
-</form>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        warrantorAssist();
+    });
+    function warrantorAssist() {
+        var cols = [];
+        cols.push({field: 'id', title: 'id', visible: false});
+        cols.push({field: 'name', title: '保证人姓名'});
+        TableInit("tb_warrantorAssist", "${pageContext.request.contextPath}/csrGuarantor/getCsrGuarantor", cols,
+            {
+                borrowerId: "${planDetailsParent.projectPhaseId}",
+                detailsId: $("#warrantorAssist_details_id").val()
+            }, {
+                search: false,
+                showRefresh: false,
+                onClickRow: function (row) {
+                    $("#frm_warrantorAssist").initForm(row);
+                }
+            });
+    }
+</script>
