@@ -60,14 +60,17 @@
                                             <tr>
                                                 <th class="gray">项目</th>
                                                 <c:forEach items="${methodMarketCompareFactors}" var="items">
-                                                    <input type="hidden" data-id="${items.id}" data-json='${items.jsonContent}'>
-                                                    <th class="gray data-th" data-id="${items.id}" data-type="${items.type}">
+                                                    <input type="hidden" data-id="${items.id}"
+                                                           data-json='${items.jsonContent}'>
+                                                    <th class="gray data-th" data-id="${items.id}"
+                                                        data-type="${items.type}">
                                                         <span name="project" data-id="${items.id}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <input type="hidden" data-json='${str}'>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <c:forEach items="${methodMarketCompareFactors}" var="items">
@@ -127,8 +130,10 @@
                                             <tr>
                                                 <th class="gray">项目</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <input type="hidden" data-id="${items.id}" data-json='${items.jsonContent}'>
-                                                    <th class="gray data-th" data-id="${items.id}" data-type="${items.type}">
+                                                    <input type="hidden" data-id="${items.id}"
+                                                           data-json='${items.jsonContent}'>
+                                                    <th class="gray data-th" data-id="${items.id}"
+                                                        data-type="${items.type}">
                                                         <span name="project" data-id="${items.id}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
@@ -161,16 +166,19 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
-                                                <c:forEach items="${methodMarketCompareIndexs}" var="items" varStatus="s">
+                                                <c:forEach items="${methodMarketCompareIndexs}" var="items"
+                                                           varStatus="s">
                                                     <c:choose>
                                                         <c:when test="${s.index==0}">
                                                             <td>
-                                                                <span name="dealCaondition" data-id="${items.id}"></span>
+                                                                <span name="dealCaondition"
+                                                                      data-id="${items.id}"></span>
                                                             </td>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <td>
-                                                                <input type="text" class="allMethod input" data-id="${items.id}"
+                                                                <input type="text" class="allMethod input"
+                                                                       data-id="${items.id}"
                                                                        name="dealCaondition" required
                                                                        data-rule-digits="true"
                                                                        min="80" max="120" step="1" style="width: 80px">
@@ -181,7 +189,8 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
-                                                <c:forEach items="${methodMarketCompareIndexs}" var="items" varStatus="s">
+                                                <c:forEach items="${methodMarketCompareIndexs}" var="items"
+                                                           varStatus="s">
                                                     <c:choose>
                                                         <c:when test="${s.index==0}">
                                                             <td>
@@ -190,7 +199,8 @@
                                                         </c:when>
                                                         <c:otherwise>
                                                             <td>
-                                                                <input type="text" class="allMethod input" data-id="${items.id}"
+                                                                <input type="text" class="allMethod input"
+                                                                       data-id="${items.id}"
                                                                        name="dealTime" required
                                                                        data-rule-digits="true"
                                                                        min="80" max="120" step="1" style="width: 80px">
@@ -201,7 +211,8 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
-                                                <c:forEach items="${methodMarketCompareIndexs}" var="items" varStatus="s">
+                                                <c:forEach items="${methodMarketCompareIndexs}" var="items"
+                                                           varStatus="s">
                                                     <c:choose>
                                                         <c:when test="${s.index==0}">
                                                             <td>
@@ -210,7 +221,8 @@
                                                         </c:when>
                                                         <c:otherwise>
                                                             <td>
-                                                                <input type="text" class="allMethod showData" data-id="${items.id}"
+                                                                <input type="text" class="allMethod showData"
+                                                                       data-id="${items.id}"
                                                                        name="paymentMethod" required
                                                                        data-rule-digits="true"
                                                                        min="80" max="120" step="1" style="width: 80px">
@@ -231,9 +243,12 @@
                                             <tr>
                                                 <th class="gray">项目</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <input type="hidden" class="data" data-id="${items.compareIndexId}" data-json='${items.jsonContent}'>
-                                                    <th class="gray data-th" data-id="${items.id}" data-index="${items.compareIndexId}" data-type="${items.type}">
-                                                        <span name="project" data-id="${items.id}" data-index="${items.compareIndexId}">${items.name}</span>
+                                                    <input type="hidden" class="data" data-id="${items.compareIndexId}"
+                                                           data-json='${items.jsonContent}'>
+                                                    <th class="gray data-th" data-id="${items.id}"
+                                                        data-index="${items.compareIndexId}" data-type="${items.type}">
+                                                        <span name="project" data-id="${items.id}"
+                                                              data-index="${items.compareIndexId}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
                                             </tr>
@@ -243,7 +258,8 @@
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="houseName" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="houseName" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -251,7 +267,8 @@
                                                 <th scope="row" class="gray">案例类型</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="caseType" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="caseType" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -259,7 +276,8 @@
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="price" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="price" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -267,7 +285,8 @@
                                                 <th scope="row" class="gray">交易情况</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="dealCaondition" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="dealCaondition" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -275,7 +294,8 @@
                                                 <th scope="row" class="gray">交易时间</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="dealTime" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="dealTime" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -283,13 +303,15 @@
                                                 <th scope="row" class="gray">付款方式</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <td>
-                                                        <span name="paymentMethod" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                        <span name="paymentMethod" data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr id="trList">
                                                 <th scope="row" class="gray">比准价格</th>
-                                                <c:forEach items="${methodMarketCompareCalculations}" var="items" varStatus="s">
+                                                <c:forEach items="${methodMarketCompareCalculations}" var="items"
+                                                           varStatus="s">
                                                     <c:choose>
                                                         <c:when test="${s.index==0}">
                                                             <td>
@@ -298,7 +320,9 @@
                                                         </c:when>
                                                         <c:otherwise>
                                                             <td>
-                                                                <span name="affirmPrice" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                                <span name="affirmPrice"
+                                                                      data-index="${items.compareIndexId}"
+                                                                      data-id="${items.compareIndexId}"></span>
                                                             </td>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -306,11 +330,14 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">加权平均价</th>
-                                                <c:forEach items="${methodMarketCompareCalculations}" var="items" varStatus="s">
+                                                <c:forEach items="${methodMarketCompareCalculations}" var="items"
+                                                           varStatus="s">
                                                     <c:choose>
                                                         <c:when test="${s.index==0}">
                                                             <td>
-                                                                <span name="threeMiddlePrice" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"></span>
+                                                                <span name="threeMiddlePrice"
+                                                                      data-index="${items.compareIndexId}"
+                                                                      data-id="${items.compareIndexId}"></span>
                                                             </td>
                                                         </c:when>
                                                         <c:otherwise>
@@ -329,7 +356,7 @@
                                         <%--时间指数表--%>
                                         <table class="table table-bordered leftfloat" style="width: 20%">
                                             <thead>
-                                            <tr >
+                                            <tr>
                                                 <th class="gray">年份</th>
                                                 <th class="gray">指数</th>
                                             </tr>
@@ -339,7 +366,8 @@
                                                 <tr>
                                                     <td>
                                                         <span>
-                                                            <fmt:formatDate value="${items.yearMonthCalendar}" pattern="yyyy-MM"/>
+                                                            <fmt:formatDate value="${items.yearMonthCalendar}"
+                                                                            pattern="yyyy-MM"/>
                                                         </span>
                                                     </td>
                                                     <td>
@@ -360,8 +388,9 @@
                                     <tr>
                                         <th class="gray">项目</th>
                                         <c:forEach items="${methodMarketCompareResults}" var="items">
-                                            <th class="gray data-th" name="project" data-id="${items.id}" data-index="${items.compareIndexId}" data-type="${items.type}">
-                                                ${items.name}
+                                            <th class="gray data-th" name="project" data-id="${items.id}"
+                                                data-index="${items.compareIndexId}" data-type="${items.type}">
+                                                    ${items.name}
                                             </th>
                                         </c:forEach>
                                     </tr>
@@ -371,7 +400,8 @@
                                         <th scope="row" class="gray">楼盘名称</th>
                                         <c:forEach items="${methodMarketCompareResults}" var="items">
                                             <td>
-                                                <span name="realEstateName" data-index="${items.compareIndexId}" data-id="${items.id}">${items.realEstateName}</span>
+                                                <span name="realEstateName" data-index="${items.compareIndexId}"
+                                                      data-id="${items.id}">${items.realEstateName}</span>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -386,7 +416,9 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <span data-id="${items.compareIndexId}" data-index="${items.compareIndexId}" name="specificPrice">${items.specificPrice}</span>
+                                                        <span data-id="${items.compareIndexId}"
+                                                              data-index="${items.compareIndexId}"
+                                                              name="specificPrice">${items.specificPrice}</span>
                                                     </td>
                                                 </c:otherwise>
                                             </c:choose>
@@ -403,7 +435,9 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <span data-id="${items.compareIndexId}" data-index="${items.compareIndexId}" name="correctionDifference">${items.correctionDifference}</span>
+                                                        <span data-id="${items.compareIndexId}"
+                                                              data-index="${items.compareIndexId}"
+                                                              name="correctionDifference">${items.correctionDifference}</span>
                                                     </td>
                                                 </c:otherwise>
                                             </c:choose>
@@ -420,7 +454,9 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <span data-id="${items.compareIndexId}" data-index="${items.compareIndexId}" name="caseDifference">${items.caseDifference}</span>
+                                                        <span data-id="${items.compareIndexId}"
+                                                              data-index="${items.compareIndexId}"
+                                                              name="caseDifference">${items.caseDifference}</span>
                                                     </td>
                                                 </c:otherwise>
                                             </c:choose>
@@ -437,8 +473,11 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <td>
-                                                        <input type="text" class="allMethod input" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}"
-                                                               name="weight" required data-rule-digits="true" value="${items.weight}"
+                                                        <input type="text" class="allMethod input"
+                                                               data-index="${items.compareIndexId}"
+                                                               data-id="${items.compareIndexId}"
+                                                               name="weight" required data-rule-digits="true"
+                                                               value="${items.weight}"
                                                                min="80" max="120" step="1" style="width: 80px">
                                                     </td>
                                                 </c:otherwise>
@@ -451,7 +490,9 @@
                                             <c:choose>
                                                 <c:when test="${s.index==0}">
                                                     <td>
-                                                        <span name="weightedAveragePrice" data-index="${items.compareIndexId}" data-id="${items.compareIndexId}">${items.weightedAveragePrice}</span>
+                                                        <span name="weightedAveragePrice"
+                                                              data-index="${items.compareIndexId}"
+                                                              data-id="${items.compareIndexId}">${items.weightedAveragePrice}</span>
                                                     </td>
                                                 </c:when>
                                                 <c:otherwise>
@@ -470,6 +511,7 @@
                 </div>
             </div>
 
+
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -487,7 +529,7 @@
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
                                            id="actualHours" name="actualHours" class="form-control" maxlength="3"
-                                    value="${projectPlanDetails.actualHours}">
+                                           value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -686,7 +728,7 @@
                 var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   ////获取第三张表比准价格
                 var price = $("#threeTable").find('[name="price"][data-id="' + dataId + '"]').text();
                 var tempCorrection = Math.abs((affirmPrice - price) / price);
-                var correction = (Math.round(tempCorrection * 10000)/100).toFixed(2) + '%';
+                var correction = (Math.round(tempCorrection * 10000) / 100).toFixed(2) + '%';
                 $("#rightTable").find('[name="correctionDifference"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
                 if (max < affirmPrice) {
                     max = affirmPrice;
@@ -704,7 +746,7 @@
             $("#threeTable").find('[name="affirmPrice"]').each(function () {
                 var dataId = $(this).attr('data-id');
                 var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   //获取第三张表比准价格
-                var temp = (((affirmPrice - min) / min)*10000/100).toFixed(2) + "%";
+                var temp = (((affirmPrice - min) / min) * 10000 / 100).toFixed(2) + "%";
                 $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text(temp);      //显示案例差异
             })
 
@@ -712,7 +754,7 @@
             $("#rightTable").find('[name="caseDifference"]').each(function () {
                 var dataId = $(this).attr('data-id');
                 var caseDifference = $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text();
-                caseDifference = (caseDifference.replace("%",""))/100;
+                caseDifference = (caseDifference.replace("%", "")) / 100;
 //                console.log(caseDifference);
                 if (caseMax < caseDifference) {
                     caseMax = caseDifference;
@@ -770,11 +812,11 @@
             if ($(this).hasClass('data-th')) {
                 var dataId = $(this).attr('data-id');
                 var type = $(this).attr('data-type');
-                var keyValueArray=[];
-                var compareFactor={};
-                compareFactor.name=$("#oneTable").find('[name="project"][data-id="' + dataId + '"]').text();
-                compareFactor.type=type;
-                compareFactor.id=dataId;
+                var keyValueArray = [];
+                var compareFactor = {};
+                compareFactor.name = $("#oneTable").find('[name="project"][data-id="' + dataId + '"]').text();
+                compareFactor.type = type;
+                compareFactor.id = dataId;
                 compareFactor.evaluationObjectId = ${schemeEvaluationObjectId};
                 $("#oneTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
@@ -782,7 +824,7 @@
                     keyValue.value = $(this).text();
                     keyValueArray.push(keyValue);
                 })
-                compareFactor.jsonContent=JSON.stringify(keyValueArray);
+                compareFactor.jsonContent = JSON.stringify(keyValueArray);
                 items1.push(compareFactor);
             }
         })
@@ -794,9 +836,9 @@
                 var type = $(this).attr('data-type');
                 var keyValueArray = [];
                 var compareIndex = {};
-                compareIndex.name=$("#twoTable").find('[name="project"][data-id="' + dataId + '"]').text();
-                compareIndex.type=type;
-                compareIndex.id=dataId;
+                compareIndex.name = $("#twoTable").find('[name="project"][data-id="' + dataId + '"]').text();
+                compareIndex.type = type;
+                compareIndex.id = dataId;
                 compareIndex.evaluationObjectId = ${schemeEvaluationObjectId};
                 $("#twoTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
@@ -808,7 +850,7 @@
                     }
                     keyValueArray.push(keyValue);
                 })
-                compareIndex.jsonContent=JSON.stringify(keyValueArray);
+                compareIndex.jsonContent = JSON.stringify(keyValueArray);
                 items2.push(compareIndex);
             }
         })
@@ -821,9 +863,9 @@
                 var type = $(this).attr('data-type');
                 var keyValueArray = [];
                 var compareCalculation = {};
-                compareCalculation.name=$("#threeTable").find('[name="project"][data-id="' + id + '"]').text();
-                compareCalculation.type=type;
-                compareCalculation.id=id;
+                compareCalculation.name = $("#threeTable").find('[name="project"][data-id="' + id + '"]').text();
+                compareCalculation.type = type;
+                compareCalculation.id = id;
                 compareCalculation.evaluationObjectId = ${schemeEvaluationObjectId};
                 $("#threeTable").find('[data-index=' + dataIndexId + ']').each(function () {
                     var keyValue = {};
@@ -847,12 +889,12 @@
                 compareresult.id = id;
                 compareresult.type = type;
                 compareresult.name = $("#rightTable").find('[name="project"][data-index="' + dataIndex + '"]').text();
-                compareresult.realEstateName =$("#rightTable").find('[name="realEstateName"][data-index="' + dataIndex + '"]').text();
-                compareresult.specificPrice =$("#rightTable").find('[name="specificPrice"][data-index="' + dataIndex + '"]').text();
-                compareresult.correctionDifference =$("#rightTable").find('[name="correctionDifference"][data-index="' + dataIndex + '"]').text();
-                compareresult.caseDifference =$("#rightTable").find('[name="caseDifference"][data-index="' + dataIndex + '"]').text();
-                compareresult.weight =$("#rightTable").find('[name="weight"][data-index="' + dataIndex + '"]').val();
-                compareresult.weightedAveragePrice =$("#rightTable").find('[name="weightedAveragePrice"][data-index="' + dataIndex + '"]').text();
+                compareresult.realEstateName = $("#rightTable").find('[name="realEstateName"][data-index="' + dataIndex + '"]').text();
+                compareresult.specificPrice = $("#rightTable").find('[name="specificPrice"][data-index="' + dataIndex + '"]').text();
+                compareresult.correctionDifference = $("#rightTable").find('[name="correctionDifference"][data-index="' + dataIndex + '"]').text();
+                compareresult.caseDifference = $("#rightTable").find('[name="caseDifference"][data-index="' + dataIndex + '"]').text();
+                compareresult.weight = $("#rightTable").find('[name="weight"][data-index="' + dataIndex + '"]').val();
+                compareresult.weightedAveragePrice = $("#rightTable").find('[name="weightedAveragePrice"][data-index="' + dataIndex + '"]').text();
                 items4.push(compareresult);
             }
         })
@@ -883,16 +925,16 @@
 
     //显示数据
 
-    function showData(){
+    function showData() {
         //因素表
         $("#oneTable").find('thead tr').find('input:hidden').each(function () {
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#oneTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#oneTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
 
@@ -902,11 +944,11 @@
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#twoTable").find('[name='+name+'][data-id='+dataId+']').val(value);
-                $("#twoTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#twoTable").find('[name=' + name + '][data-id=' + dataId + ']').val(value);
+                $("#twoTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
 
@@ -915,12 +957,38 @@
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#threeTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#threeTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
+    }
+    getDynamic();
+    function getDynamic() {
+
+        var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
+        var jsonArr = JSON.parse(dataJson);
+        $.each(jsonArr, function (i, array) {
+            if (i == 0) {
+                //第一个字段 第二个查勘的值
+                $.each(array, function (j, item) {
+                    var tr = $("#oneTable").find('tbody').find('tr:last');
+                    $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#oneTable").find('tbody').find('tr:last');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').text(item.value).find('span').attr('name', item.key);    //查勘的值
+                })
+            } else {
+                $.each(array, function (j, item) {
+                        var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j+1) + ')');
+                        td.find('td:eq(' + i + ')').text(item.value).find('span').attr('name', item.key);
+
+                })
+            }
+
+        })
+
     }
 </script>
 

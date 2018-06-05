@@ -10,9 +10,11 @@ import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.CaseComparisonFieldService;
 import com.copower.pmcc.assess.service.data.CaseComparisonService;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
@@ -143,7 +145,7 @@ public class TaskCompareService {
         List<MethodMarketCompareResult> methodMarketCompareResults = methodMarketCompareResultService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
         List<HousePriceIndex> housePriceIndexs = housePriceIndexService.getData();
 
-        getDynamic(modelAndView, schemeEvaluationObjectId);
+        getDynamic(modelAndView, schemeEvaluationObjectId);     //动态表单
 
         modelAndView.addObject("methodMarketCompareFactors", methodMarketCompareFactors);
         modelAndView.addObject("methodMarketCompareIndexs", methodMarketCompareIndexs);
@@ -155,7 +157,7 @@ public class TaskCompareService {
         return modelAndView;
     }
 
-    private void getDynamic(ModelAndView modelAndView, Integer schemeEvaluationObjectId) {
+    private ModelAndView getDynamic(ModelAndView modelAndView, Integer schemeEvaluationObjectId) {
         SchemeEvaluationObject schemeEvaluationObject = schemeEvaluationObjectDao.getSchemeEvaluationObjectById(schemeEvaluationObjectId);  //查出委估对象
         //取出委估对象数据
         Integer schemeEvaluationObjectProjectId = schemeEvaluationObject.getProjectId();
@@ -181,7 +183,7 @@ public class TaskCompareService {
         SurveyCaseStudy surveyCaseStudy = surveyCaseStudies.get(0);
         Integer surveyCaseStudyPlanDetailsId = surveyCaseStudy.getPlanDetailsId();
 
-        List<Map> list = new ArrayList<Map>();
+        List<Map<String, Object>> list = Lists.newArrayList();
         list.add(map);
         //最终的案例调查数据
         List<SurveyCaseStudyDetail> surveyCaseStudyDetails = surveyCaseStudyDetailDao.getSurveyCaseStudyDetail(surveyCaseStudyPlanDetailsId);
@@ -192,24 +194,77 @@ public class TaskCompareService {
             map1 = formConfigureService.getObjectSingle(tableName1, tableId1);
             list.add(map1);
         }
-        List<DataCaseComparison> dataCaseComparisons = caseComparisonService.getAll();      //原始的动态表单
-        List<DataCaseComparison> dataCaseComparisonss = new ArrayList<>();      //替换后的动态表单
-        for (DataCaseComparison dataCaseComparison : dataCaseComparisons) {
-            Integer caseId = dataCaseComparison.getId();
-            List<DataCaseComparisonField> caseComparisonFields = caseComparisonFieldService.getData(caseId);
-            for (DataCaseComparisonField dataCaseComparisonField : caseComparisonFields) {
-                for (Map map2 : list) {
-                    Iterator<Map.Entry<String, Object>> it = map2.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<String, Object> entry = it.next();
-                        if (entry.getKey().equals(dataCaseComparisonField.getFieldName())) {
-                            dataCaseComparison.setuExplain(dataCaseComparison.getuExplain().replaceAll(dataCaseComparisonField.getuName(), String.valueOf(entry.getValue())));  //替换
+        List<List<KeyValueDto>> keyValueDtoList= Lists.newArrayList();
+
+        for (Map<String, Object> stringObjectMap : list) {
+            List<DataCaseComparison> dataCaseComparisons = caseComparisonService.getAll();      //原始的动态表单
+            List<KeyValueDto> dtoList=Lists.newArrayList();
+            for (DataCaseComparison dataCaseComparison : dataCaseComparisons) {
+                KeyValueDto keyValueDto=new KeyValueDto();
+                keyValueDto.setExplain(dataCaseComparison.getName());
+                keyValueDto.setKey("dynamic"+dataCaseComparison.getId());
+                //取值
+                List<DataCaseComparisonField> caseComparisonFields = caseComparisonFieldService.getData(dataCaseComparison.getId());
+                for (Map.Entry<String, Object> stringObjectEntry : stringObjectMap.entrySet()) {
+                    for (DataCaseComparisonField caseComparisonField : caseComparisonFields) {
+                        if(stringObjectEntry.getKey().equals(caseComparisonField.getFieldName())){
+                            dataCaseComparison.setuExplain(dataCaseComparison.getuExplain().replaceAll(caseComparisonField.getuName(), String.valueOf(stringObjectEntry.getValue())));  //替换
                         }
                     }
                 }
+                keyValueDto.setValue(dataCaseComparison.getuExplain().replaceAll("\\{","").replaceAll("}",""));
+                dtoList.add(keyValueDto);
             }
-            dataCaseComparisonss.add(dataCaseComparison);
+            keyValueDtoList.add(dtoList);
         }
+        modelAndView.addObject("keyValueDtoList",keyValueDtoList);
+        String str = JSON.toJSON(keyValueDtoList).toString();
+        modelAndView.addObject("str",str);
+        return modelAndView;
+
+//        for (Map<String,Objects> stringObjectsMap : list) {
+//            List<KeyValueDto> dtoList=Lists.newArrayList();
+//            for (DataCaseComparison dataCaseComparison : dataCaseComparisons) {
+//                KeyValueDto keyValueDto=new KeyValueDto();
+//                keyValueDto.setExplain(dataCaseComparison.getName());
+//                keyValueDto.setKey("dynamic"+dataCaseComparison.getId());
+//                //取值
+//                for (Object o : map2.entrySet()) {
+//
+//                }
+//
+//                dtoList.add(keyValueDto);
+//            }
+//
+//            keyValueDtoList.add(dtoList);
+//            Iterator<Map.Entry<String, Object>> it = map2.entrySet().iterator();
+//            while (it.hasNext()) {
+//                Map.Entry<String, Object> entry = it.next();
+//                if (entry.getKey().equals(dataCaseComparisonField.getFieldName())) {
+//                    dataCaseComparison.setuExplain(dataCaseComparison.getuExplain().replaceAll(dataCaseComparisonField.getuName(), String.valueOf(entry.getValue())));  //替换
+//                }
+//            }
+//        }
+//
+//
+//        List<DataCaseComparison> dataCaseComparisons = caseComparisonService.getAll();      //原始的动态表单
+//        List<DataCaseComparison> dataCaseComparisonss = new ArrayList<>();      //替换后的动态表单
+//        for (DataCaseComparison dataCaseComparison : dataCaseComparisons) { //案例对比配置
+//            Integer caseId = dataCaseComparison.getId();
+//            List<DataCaseComparisonField> caseComparisonFields = caseComparisonFieldService.getData(caseId);
+//            for (DataCaseComparisonField dataCaseComparisonField : caseComparisonFields) {  //案例对比配置从表
+//                for (Map map2 : list) {
+//                    Iterator<Map.Entry<String, Object>> it = map2.entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry<String, Object> entry = it.next();
+//                        if (entry.getKey().equals(dataCaseComparisonField.getFieldName())) {
+//                            dataCaseComparison.setuExplain(dataCaseComparison.getuExplain().replaceAll(dataCaseComparisonField.getuName(), String.valueOf(entry.getValue())));  //替换
+//                        }
+//                    }
+//                }
+//            }
+//            dataCaseComparisonss.add(dataCaseComparison);
+//        }
     }
 
 
