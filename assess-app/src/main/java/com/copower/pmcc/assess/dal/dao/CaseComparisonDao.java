@@ -59,4 +59,10 @@ public class CaseComparisonDao {
         BeanUtils.copyProperties(caseC, dto);
         return dto;
     }
+
+    public List<DataCaseComparison> getAll() {
+        DataCaseComparisonExample example = new DataCaseComparisonExample();
+        example.createCriteria().andIdIsNotNull();
+        return caseComparisonMapper.selectByExample(example);
+    }
 }

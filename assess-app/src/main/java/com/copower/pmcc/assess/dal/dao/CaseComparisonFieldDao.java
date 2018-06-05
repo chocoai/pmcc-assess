@@ -70,4 +70,10 @@ public class CaseComparisonFieldDao {
         BeanUtils.copyProperties(field, fieldDto);
         return fieldDto;
     }
+
+    public List<DataCaseComparisonField> getData(Integer caseId) {
+        DataCaseComparisonFieldExample example = new DataCaseComparisonFieldExample();
+        example.createCriteria().andCaseIdEqualTo(caseId);
+        return mapper.selectByExample(example);
+    }
 }

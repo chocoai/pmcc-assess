@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.MethodMarketCompareResult" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="evaluation_object_id" property="evaluationObjectId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="real_estate_name" property="realEstateName" jdbcType="VARCHAR" />
     <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
@@ -76,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, evaluation_object_id, type, real_estate_name, specific_price, correction_difference, 
+    id, evaluation_object_id, name, type, real_estate_name, specific_price, correction_difference, 
     case_difference, weight, weighted_average_price, creator, gmt_created, gmt_modified, 
     compare_index_id, compare_calculation_id
   </sql>
@@ -114,16 +115,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_method_market_compare_result (evaluation_object_id, type, real_estate_name, 
-      specific_price, correction_difference, case_difference, 
-      weight, weighted_average_price, creator, 
-      gmt_created, gmt_modified, compare_index_id, 
-      compare_calculation_id)
-    values (#{evaluationObjectId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{realEstateName,jdbcType=VARCHAR}, 
-      #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=DECIMAL}, #{weightedAveragePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{compareIndexId,jdbcType=INTEGER}, 
-      #{compareCalculationId,jdbcType=INTEGER})
+    insert into tb_method_market_compare_result (evaluation_object_id, name, type, 
+      real_estate_name, specific_price, correction_difference, 
+      case_difference, weight, weighted_average_price, 
+      creator, gmt_created, gmt_modified, 
+      compare_index_id, compare_calculation_id)
+    values (#{evaluationObjectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{realEstateName,jdbcType=VARCHAR}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
+      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{weightedAveragePrice,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{compareIndexId,jdbcType=INTEGER}, #{compareCalculationId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.MethodMarketCompareResult" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -133,6 +134,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="evaluationObjectId != null" >
         evaluation_object_id,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="type != null" >
         type,
@@ -174,6 +178,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="evaluationObjectId != null" >
         #{evaluationObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
@@ -228,6 +235,9 @@
       <if test="record.evaluationObjectId != null" >
         evaluation_object_id = #{record.evaluationObjectId,jdbcType=INTEGER},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -273,6 +283,7 @@
     update tb_method_market_compare_result
     set id = #{record.id,jdbcType=INTEGER},
       evaluation_object_id = #{record.evaluationObjectId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       real_estate_name = #{record.realEstateName,jdbcType=VARCHAR},
       specific_price = #{record.specificPrice,jdbcType=VARCHAR},
@@ -294,6 +305,9 @@
     <set >
       <if test="evaluationObjectId != null" >
         evaluation_object_id = #{evaluationObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
@@ -337,6 +351,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.MethodMarketCompareResult" >
     update tb_method_market_compare_result
     set evaluation_object_id = #{evaluationObjectId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       real_estate_name = #{realEstateName,jdbcType=VARCHAR},
       specific_price = #{specificPrice,jdbcType=VARCHAR},
