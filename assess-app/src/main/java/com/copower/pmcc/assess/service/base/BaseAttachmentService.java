@@ -96,8 +96,6 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempBasePath(String... params) {
-        if (params == null || params.length == 0)
-            return "default";
         String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + getTempUploadPath();
         //清除昨天以外的临时文件
         FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
@@ -222,6 +220,10 @@ public class BaseAttachmentService {
             attachmentVo.setFileExtension(sysAttachment1.getFileExtension());
             list.add(attachmentVo);
         }
+    }
+
+    public List<BaseAttachment> getAttachmentList(List<Integer> tableIds, BaseAttachment sysAttachment) {
+        return baseAttachmentDao.getAttachmentList(tableIds,sysAttachment);
     }
 
     public List<BaseAttachment> getAttachmentList(BaseAttachment sysAttachment) {
@@ -446,9 +448,7 @@ public class BaseAttachmentService {
         BaseAttachment sysAttachment = baseAttachmentDao.getAttachmentById(id);
         String strDayTempDirName = DateUtils.formatDate(new Date(), "yyyyMMdd");
         String basePath = "/temporary";
-        String baseRealPath = RequestContext.getRequestBaseParam().getRequest().getSession().getServletContext().getRealPath(basePath);
-        String newDirPath = baseRealPath + File.separator + strDayTempDirName;
-        FileUtils.deleteDir(baseRealPath, Lists.newArrayList(strDayTempDirName));
+        String newDirPath = createTempBasePath();
         FileUtils.folderMake(newDirPath);
         String newFileName = sysAttachment.getId() + "." + sysAttachment.getFileExtension();
         String viewUrl = basePath + "/" + strDayTempDirName + "/" + newFileName;
@@ -562,9 +562,9 @@ public class BaseAttachmentService {
         BaseAttachment attachment = baseAttachmentDao.getAttachmentById(attachmentId);
         if (attachment == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        String filePath = createFTPBasePath(COPY_UPLOAD_PATH + File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount());
+        String filePath = createFTPBasePath(COPY_UPLOAD_PATH + "/" + DateUtils.formatNowToYMD() + "/" + commonService.thisUserAccount());
         String fileName = createNoRepeatFileName(attachment.getFileExtension());
-        ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), fileName, filePath);
+        ftpUtilsExtense.copyFile(attachment.getFtpFilesName(), attachment.getFilePath(), fileName, filePath);
         BeanUtils.copyProperties(baseAttachment, attachment, ReflectUtils.getNullPropertyNames(baseAttachment));
         attachment.setFtpFilesName(fileName);
         attachment.setFilePath(filePath);
@@ -580,7 +580,7 @@ public class BaseAttachmentService {
      */
     public String getViewHtml(BaseAttachment baseAttachment) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("<a><i class=\"fa fa-download\" onclick=\"FileUtils.downAttachments(%s)\" style=\"margin-left: 15px;font-size: 15px;\"></i></a>", baseAttachment.getId()));
+        stringBuilder.append(String.format("<a><i class=\"fa fa-download\" onclick=\"FileUtils.downAttachments(%s)\" style=\"margin-left: 15px;font-size: 15px;\"></i></a> ", baseAttachment.getId()));
         stringBuilder.append(String.format("<a onclick=\"FileUtils.showAttachment(%s,'%s')\" class=\"fileupload-preview\">%s(%s)</a><br>",
                 baseAttachment.getId(), baseAttachment.getFileExtension(), baseAttachment.getFileName(), baseAttachment.getFileSize()));
         return stringBuilder.toString();

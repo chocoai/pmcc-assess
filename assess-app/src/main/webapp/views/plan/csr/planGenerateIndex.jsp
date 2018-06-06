@@ -30,78 +30,44 @@
             <form id="frm_content" class="form-horizontal">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>报告选择</h2>
+                        <h2>客户信息</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        报告类型<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <c:forEach items="${reportTypeList}" var="item">
-                                        <span class="checkbox-inline">
-                                            <input type="checkbox" required id="reportType_${item.id}" name="reportType"
-                                                   onclick="computeNumber();" value="${item.id}">
-                                        <label for="reportType_${item.id}">${item.name}</label></span>
-                                        </c:forEach>
-                                    </div>
-                                    <label id="lbl_report_count" class="col-sm-1 control-label" style="display: none;">
-                                        报告份数：<span style="color: red;font-size: large;">0</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>
-                                    <small>借款人信息</small>
-                                </h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
-                                        </td>
-                                        <th>序号</th>
-                                        <th>一级分行</th>
-                                        <th>二级分行</th>
-                                        <th>姓名</th>
-                                        <th>身份证号</th>
-                                        <th>婚姻状态</th>
-                                        <th>报告附件</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${borrowerList}" var="item" varStatus="i">
-                                        <tr>
-                                            <td>
-                                                <input type="hidden" name="id" value="${item.id}">
-                                                <input type="hidden" name="csrProjectId" value="${item.csrProjectId}">
-                                                <input type="checkbox" name="checkboxItem"
-                                                       onclick="checkBoxItemClick(this);"></td>
-                                            <th>${i.index+1}</th>
-                                            <td>${item.firstLevelBranch}</td>
-                                            <td>${item.secondLevelBranch}</td>
-                                            <td>${item.name}</td>
-                                            <td>${item.idNumber}</td>
-                                            <td>${item.maritalStatus}</td>
-                                            <td></td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="checkboxAll" onclick="checkBoxAllClick(this);">
+                                </td>
+                                <th>序号</th>
+                                <th>一级分行</th>
+                                <th>二级分行</th>
+                                <th>姓名</th>
+                                <th>身份证号</th>
+                                <th>婚姻状态</th>
+                                <th>报告附件</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${borrowerList}" var="item" varStatus="i">
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="id" value="${item.id}">
+                                        <input type="hidden" name="csrProjectId" value="${item.csrProjectId}">
+                                        <input type="checkbox" name="checkboxItem"
+                                               onclick="checkBoxItemClick(this);"></td>
+                                    <th>${i.index+1}</th>
+                                    <td>${item.firstLevelBranch}</td>
+                                    <td>${item.secondLevelBranch}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.idNumber}</td>
+                                    <td>${item.maritalStatus}</td>
+                                    <td>${item.attachmentHtml}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </form>
@@ -157,8 +123,10 @@
                 borrowerIds: borrowerIds.replace(/,$/, '')
             },
             success: function (result) {
-                if(result.ret){
-                    alert('生成成功');
+                if (result.ret) {
+                    Alert('生成成功', 1, null, function () {
+                        window.location.href = window.location.href;
+                    });
                 }
             }
         })

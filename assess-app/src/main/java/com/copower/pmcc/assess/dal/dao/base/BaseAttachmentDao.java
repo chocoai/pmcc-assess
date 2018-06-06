@@ -49,6 +49,15 @@ public class BaseAttachmentDao {
         return false;
     }
 
+    public List<BaseAttachment> getAttachmentList(List<Integer> tableIds, BaseAttachment sysAttachment) {
+        BaseAttachmentExample example = new BaseAttachmentExample();
+        BaseAttachmentExample.Criteria criteria = example.createCriteria();
+        MybatisUtils.convertObj2Criteria(sysAttachment,criteria);
+        criteria.andTableIdIn(tableIds);
+        List<BaseAttachment> sysAttachments = sysAttachmentMapper.selectByExample(example);
+        return sysAttachments;
+    }
+
     /**
      * 根据条件查询相应的附件列表
      *

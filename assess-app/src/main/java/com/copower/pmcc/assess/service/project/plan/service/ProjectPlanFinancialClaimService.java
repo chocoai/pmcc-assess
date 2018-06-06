@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanDetailsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
@@ -106,7 +107,7 @@ public class ProjectPlanFinancialClaimService {
 
     private void InitProjectPlanDetails(Integer projectId, Integer planId) {
         //取得当前项目的所有客户信息
-        List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerByProjectId(projectId);
+        List<CsrBorrowerVo> csrBorrowers = csrBorrowerService.getCsrBorrowerByProjectId(projectId);
         //对每一个客户添加相应的默认工作任务事项
 
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);

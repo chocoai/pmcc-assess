@@ -719,7 +719,7 @@ public class CsrProjectInfoService {
             try {
                 //拷贝表数据及FTP附件
                 attachment.setTableId(integer);
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), baseAttachment);
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), attachment);
                 //获取数据
                 if (CollectionUtils.isNotEmpty(bookmarks)) {
                     //1.检查配置的书签有几张表

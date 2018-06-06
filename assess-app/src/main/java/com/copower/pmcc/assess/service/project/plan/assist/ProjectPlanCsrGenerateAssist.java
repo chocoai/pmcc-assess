@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
@@ -38,7 +39,7 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateIndex", "", 0, "-1", "");
 
-        List<CsrBorrower> borrowerList = csrBorrowerService.getCsrBorrowerByProjectId(projectPlan.getProjectId());
+        List<CsrBorrowerVo> borrowerList = csrBorrowerService.getCsrBorrowerByProjectId(projectPlan.getProjectId());
         modelAndView.addObject("borrowerList",borrowerList);
         return modelAndView;
     }
