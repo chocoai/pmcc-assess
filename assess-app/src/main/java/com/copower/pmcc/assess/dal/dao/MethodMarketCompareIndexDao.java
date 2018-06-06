@@ -18,9 +18,9 @@ public class MethodMarketCompareIndexDao {
     @Autowired
     MethodMarketCompareIndexMapper methodMarketCompareIndexMapper;
 
-    public boolean save(MethodMarketCompareIndexDto methodMarketCompareIndexDto){
-    int i = methodMarketCompareIndexMapper.insertSelective(methodMarketCompareIndexDto);
-        return i>0;
+    public boolean save(MethodMarketCompareIndexDto methodMarketCompareIndexDto) {
+        int i = methodMarketCompareIndexMapper.insertSelective(methodMarketCompareIndexDto);
+        return i > 0;
     }
 
     public List<MethodMarketCompareIndex> getDataByEvaluationObjectId(Integer schemeEvaluationObjectId) {
