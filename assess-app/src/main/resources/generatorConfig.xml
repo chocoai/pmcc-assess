@@ -40,15 +40,6 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_report_columns" domainObjectName="ReportColumns">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_report_table" domainObjectName="ReportTable">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_report_template" domainObjectName="ReportTemplate">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
         <table tableName="tb_report_template_bookmark" domainObjectName="ReportTemplateBookmark">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

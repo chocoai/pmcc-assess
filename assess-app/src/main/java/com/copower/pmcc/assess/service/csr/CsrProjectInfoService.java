@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.csr;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.ReflectUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
@@ -52,6 +54,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -685,7 +688,7 @@ public class CsrProjectInfoService {
     /**
      * 生成报告
      */
-    public List<BaseReplaceRecord> generateReport(Integer csrProjectId, String borrowerIds) throws BusinessException {
+    public void generateReport(Integer csrProjectId, String borrowerIds) throws BusinessException {
         //1.找到替换模板，复制模板
         //2.针对模板配置的书签，找到书签所对应的值
         //3.将替换数据写入到替换记录表中
@@ -693,7 +696,6 @@ public class CsrProjectInfoService {
         //债权目前所有的数据都源于 固定的7张表
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
-        List<BaseReplaceRecord> baseReplaceRecords=Lists.newArrayList();
 
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
@@ -708,13 +710,17 @@ public class CsrProjectInfoService {
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
         BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
+        BaseAttachment attachment = new BaseAttachment();
+        attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
+        attachment.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
+        List<ReportTemplateBookmark> bookmarks = baseReportService.getBookMarkListByTemplateId(newsReportTemplate.getId());
         for (Integer integer : list) {
             try {
                 //拷贝表数据及FTP附件
+                attachment.setTableId(integer);
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), baseAttachment);
                 //获取数据
-                List<ReportTemplateBookmark> bookmarks = baseReportService.getBookMarkListByTemplateId(newsReportTemplate.getId());
                 if (CollectionUtils.isNotEmpty(bookmarks)) {
                     //1.检查配置的书签有几张表
                     //2.先找到主表信息,再找从表数据
@@ -780,14 +786,17 @@ public class CsrProjectInfoService {
                     baseReplaceRecord.setContent(JSON.toJSONString(keyValueDtoList));
                     baseReplaceRecordService.saveBaseReplaceRecord(baseReplaceRecord);
 
-                    baseReplaceRecords.add(baseReplaceRecord);
+                    //将书签的替换成相应内容
+                    baseReplaceRecordService.replaceRecordContent(baseReplaceRecord);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return baseReplaceRecords;
     }
+
+
 
 
     /**

@@ -1,17 +1,37 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.dao.base.BaseReplaceRecordDao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseReplaceRecord;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-6-4.
  */
 @Service
 public class BaseReplaceRecordService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseReplaceRecordDao baseReplaceRecordDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
 
     /**
      * 根据附件id获取替换数据
@@ -47,5 +67,41 @@ public class BaseReplaceRecordService {
                 }
             }
         }
+    }
+
+    /**
+     * 替换记录数据
+     *
+     * @param baseReplaceRecord
+     */
+    public void replaceRecordContent(BaseReplaceRecord baseReplaceRecord) throws Exception {
+        Integer attachmentId = baseReplaceRecord.getAttachmentId();
+        BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(attachmentId);
+        //将附件下载到本地处理
+        String loaclFileName = baseAttachmentService.createNoRepeatFileName(baseAttachment.getFileExtension());
+        String localFileDir = baseAttachmentService.createTempBasePath();
+        String localFullPath = localFileDir + File.separator + loaclFileName;
+        ftpUtilsExtense.downloadFileToLocal(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), loaclFileName, localFileDir);
+        String content = baseReplaceRecord.getContent();
+        if (StringUtils.isNotBlank(content)) {
+            List<KeyValueDto> keyValueDtoList = JSON.parseArray(content, KeyValueDto.class);
+            if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
+                Map<String, String> map = Maps.newHashMap();
+                keyValueDtoList.forEach(p -> {
+                    map.put(p.getKey(), p.getValue());
+                });
+                AsposeUtils.replaceBookmark(localFullPath,map);
+            }
+        }
+        //再将附件上传到相同位置
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(baseAttachment.getFilePath(), new FileInputStream(localFullPath), baseAttachment.getFtpFilesName());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        //更新已替换状态
+        baseReplaceRecord.setBisReplace(true);
+        baseReplaceRecordDao.updateBaseReplaceRecord(baseReplaceRecord);
     }
 }

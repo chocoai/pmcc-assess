@@ -84,7 +84,10 @@
                                     <tbody>
                                     <c:forEach items="${borrowerList}" var="item" varStatus="i">
                                         <tr>
-                                            <td><input type="checkbox" name="checkboxItem"
+                                            <td>
+                                                <input type="hidden" name="id" value="${item.id}">
+                                                <input type="hidden" name="csrProjectId" value="${item.csrProjectId}">
+                                                <input type="checkbox" name="checkboxItem"
                                                        onclick="checkBoxItemClick(this);"></td>
                                             <th>${i.index+1}</th>
                                             <td>${item.firstLevelBranch}</td>
@@ -140,11 +143,25 @@
     //生成报告
     function generateReport() {
         var borrowerIds = '';
+        var csrProjectId = $("#frm_content").find("[name=csrProjectId]:eq(0)").val();
         $("#frm_content").find("[name=checkboxItem]").each(function () {
             var id = $(this).closest('tr').find('[name="id"]').val();
             borrowerIds += id + ',';
         })
-
+        $.ajax({
+            url: '${pageContext.request.contextPath}/csrProjectInfo/generateReport',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                csrProjectId: csrProjectId,
+                borrowerIds: borrowerIds.replace(/,$/, '')
+            },
+            success: function (result) {
+                if(result.ret){
+                    alert('生成成功');
+                }
+            }
+        })
     }
 
     //提交

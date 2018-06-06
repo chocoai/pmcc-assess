@@ -101,7 +101,7 @@ public class BaseAttachmentService {
         String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + getTempUploadPath();
         //清除昨天以外的临时文件
         FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
-        filePath += File.separator + DateUtils.formatNowToYMD();
+        filePath += File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount();
         for (String param : params) {
             filePath += File.separator + StringUtils.defaultIfBlank(param, "default");
         }
@@ -552,7 +552,7 @@ public class BaseAttachmentService {
     }
 
     /**
-     * 拷贝附件
+     * 拷贝FTP附件
      *
      * @param attachmentId
      * @param baseAttachment
@@ -565,10 +565,24 @@ public class BaseAttachmentService {
         String filePath = createFTPBasePath(COPY_UPLOAD_PATH + File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount());
         String fileName = createNoRepeatFileName(attachment.getFileExtension());
         ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), fileName, filePath);
-        BeanUtils.copyProperties(baseAttachment,attachment, ReflectUtils.getNullPropertyNames(baseAttachment));
+        BeanUtils.copyProperties(baseAttachment, attachment, ReflectUtils.getNullPropertyNames(baseAttachment));
         attachment.setFtpFilesName(fileName);
         attachment.setFilePath(filePath);
         baseAttachmentDao.addAttachment(attachment);
         return attachment;
+    }
+
+    /**
+     * 获取附件显示html
+     *
+     * @param baseAttachment
+     * @return
+     */
+    public String getViewHtml(BaseAttachment baseAttachment) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format("<a><i class=\"fa fa-download\" onclick=\"FileUtils.downAttachments(%s)\" style=\"margin-left: 15px;font-size: 15px;\"></i></a>", baseAttachment.getId()));
+        stringBuilder.append(String.format("<a onclick=\"FileUtils.showAttachment(%s,'%s')\" class=\"fileupload-preview\">%s(%s)</a><br>",
+                baseAttachment.getId(), baseAttachment.getFileExtension(), baseAttachment.getFileName(), baseAttachment.getFileSize()));
+        return stringBuilder.toString();
     }
 }

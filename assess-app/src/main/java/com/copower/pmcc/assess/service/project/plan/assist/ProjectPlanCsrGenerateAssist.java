@@ -37,9 +37,7 @@ public class ProjectPlanCsrGenerateAssist implements ProjectPlanInterface {
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/csr/planGenerateIndex", "", 0, "-1", "");
-        //获取报告类型
-        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("reportTypeList",reportTypeList);
+
         List<CsrBorrower> borrowerList = csrBorrowerService.getCsrBorrowerByProjectId(projectPlan.getProjectId());
         modelAndView.addObject("borrowerList",borrowerList);
         return modelAndView;

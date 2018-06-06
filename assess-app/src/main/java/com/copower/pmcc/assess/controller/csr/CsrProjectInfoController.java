@@ -248,7 +248,8 @@ public class CsrProjectInfoController {
     @RequestMapping(value = "/generateReport", method = {RequestMethod.POST}, name = "生成报告")
     public HttpResult generateReport(Integer csrProjectId,String borrowerIds) {
         try {
-            return HttpResult.newCorrectResult(csrProjectInfoService.generateReport(csrProjectId,borrowerIds));
+            csrProjectInfoService.generateReport(csrProjectId,borrowerIds);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

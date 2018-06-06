@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.dal.entity;
 
+import java.util.Date;
+
 public class ReportTemplateBookmark {
     private Integer id;
 
     private Integer templateId;
-
-    private Integer templateType;
 
     private String bookmarkName;
 
@@ -17,9 +17,15 @@ public class ReportTemplateBookmark {
 
     private Integer dataPoolTemplateId;
 
+    private Integer pid;
+
     private Boolean bisEnable;
 
-    private Integer pid;
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -35,14 +41,6 @@ public class ReportTemplateBookmark {
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
-    }
-
-    public Integer getTemplateType() {
-        return templateType;
-    }
-
-    public void setTemplateType(Integer templateType) {
-        this.templateType = templateType;
     }
 
     public String getBookmarkName() {
@@ -85,6 +83,14 @@ public class ReportTemplateBookmark {
         this.dataPoolTemplateId = dataPoolTemplateId;
     }
 
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     public Boolean getBisEnable() {
         return bisEnable;
     }
@@ -93,11 +99,27 @@ public class ReportTemplateBookmark {
         this.bisEnable = bisEnable;
     }
 
-    public Integer getPid() {
-        return pid;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }
