@@ -11,10 +11,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -101,45 +98,40 @@ public class PoiUtils {
     }
 
 
-    //处理Excel
 
     /**
-     * 回写excel数据
-     * @param stream  excel文件流
+     * 回写excel数据 xls格式的excel
+     * @param path  excel路径
      * @param map list中的map对应的是列号与值
      */
-    public static void WritebackExcel(InputStream stream, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
+    public static void WritebackExcel(String path, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
         //行号  列数据
-        HSSFWorkbook workbook = new HSSFWorkbook(stream);
+        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(path));
         Set<Map.Entry<Integer,List<Map<Integer,String>>>> keySet = map.entrySet();
         Iterator<Map.Entry<Integer,List<Map<Integer,String>>>> iterator = keySet.iterator();
-        HSSFSheet sheet = workbook.createSheet("o"+System.currentTimeMillis());
+        HSSFSheet sheet = workbook.getSheetAt(0);//只写一个文件薄
         HSSFRow row = null;
         HSSFCell cell = null;
         while (iterator.hasNext()){
             Map.Entry<Integer,List<Map<Integer,String>>> entry = iterator.next();
             int lineNumber = entry.getKey();
-            row = sheet.createRow(lineNumber);//创建行
-            List<Map<Integer,String>> mapList = entry.getValue();
-            for (Map<Integer,String> integerStringMap:mapList){
-                for (Map.Entry<Integer,String> entryA :integerStringMap.entrySet()){
-                    int columnNumber = entryA.getKey();
-                    if (columnNumber==0 || columnNumber==5 || columnNumber==6){//对一些特殊列进行处理格式
-                        sheet.autoSizeColumn((short)columnNumber); //调整列宽度
+                row = sheet.getRow(lineNumber);//获取行
+            if (row!=null){
+                List<Map<Integer,String>> mapList = entry.getValue();
+                for (Map<Integer,String> integerStringMap:mapList){
+                    for (Map.Entry<Integer,String> entryA :integerStringMap.entrySet()){
+                        int columnNumber = entryA.getKey();
+                        String value = entryA.getValue();
+                        cell = row.getCell(columnNumber);//获取列
+                        if (cell!=null) cell.setCellValue(value);
                     }
-                    String value = entryA.getValue();
-                    cell = row.createCell(columnNumber);//创建列
-                    cell.setCellValue(value);
-                    HSSFCellStyle cellStyle = HSSFStyleUtil.getHssfStyleUtil().getStyle(workbook);
-                    if (columnNumber==7 || columnNumber==5){//单元格背景色
-                        cellStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
-                        cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                    }
-                    cell.setCellStyle(cellStyle);
                 }
             }
         }
-
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(path)));
+        workbook.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
 
