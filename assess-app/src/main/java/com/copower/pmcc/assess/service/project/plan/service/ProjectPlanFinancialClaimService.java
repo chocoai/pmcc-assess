@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
@@ -10,6 +11,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDt
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -24,6 +26,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -85,8 +88,10 @@ public class ProjectPlanFinancialClaimService {
     private ProjectTaskAllService projectTaskAllService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
-    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectId(Integer projectId, Integer planId) {
+    public BootstrapTableVo getProjectPlanDetailsByProjectId(Integer projectId, Integer planId) {
 
         /**
          * 变更处理方法：人为构造JSOn
@@ -96,58 +101,159 @@ public class ProjectPlanFinancialClaimService {
          * 4、将一次大循环的JSON添加到JSON数组，JSON数组通过StringBuilder进行构建
          * 5、将字段串转化为JSONObject类进行返回
          */
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
-        if (CollectionUtils.isEmpty(projectPlanDetailsVos)) {
-            InitProjectPlanDetails(projectId, planId);
-            projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
-        }
+        //        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
+        //        if (CollectionUtils.isEmpty(projectPlanDetailsVos)) {
+        //            InitProjectPlanDetails(projectId, planId);
+        //            projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByPlanApply(planId);
+        //        }
 
-        return projectPlanDetailsVos;
+        //return projectPlanDetailsVos;
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        List<ProjectPlanDetails> projectPlanDetailsList = getProjectPlanDetailsByPage(planId, bootstrapTableVo);
+        if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
+            insertProjectPlanDetailsByBorrowers(projectId, planId);
+            //添加客户到明细表中
+            projectPlanDetailsList = getProjectPlanDetailsByPage(planId, bootstrapTableVo);
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
+            stringBuilder.append("[");
+            for (ProjectPlanDetails item : projectPlanDetailsList) {
+                String string = JSON.toJSONString(item);
+                string = string.replaceAll("}", ",");
+                stringBuilder.append(string);
+                List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, item.getId(), "");
+                if (CollectionUtils.isEmpty(detailsList)) {
+                    //添加数据
+                    insertProjectPlanDetailsByPid(item);
+                    detailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, item.getId(), "");
+                }
+                String details = "";
+                for (ProjectPlanDetails detailsItem : detailsList) {
+
+                    ProjectPlanDetailsVo projectPlanDetailsVo = projectPlanDetailsService.getProjectPlanDetailsVo(detailsItem);
+                    details = getString(details, projectPlanDetailsVo);
+                }
+                details = details.substring(0, details.length() - 1);
+                stringBuilder.append(details);
+                stringBuilder.append("},");
+            }
+        }
+        String string = stringBuilder.toString();
+        if (StringUtils.isNotBlank(string)) {
+            string = string.substring(0, string.length() - 1);
+        }
+        stringBuilder.append("]");
+        JSONArray objects = JSON.parseArray(String.format("%s]", string));
+        bootstrapTableVo.setRows(objects);
+        return bootstrapTableVo;
+
     }
 
-    private void InitProjectPlanDetails(Integer projectId, Integer planId) {
+    private String getString(String details, ProjectPlanDetailsVo projectPlanDetailsVo) {
+        if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserName())) {
+            details += (String.format("\"%sexecuteUserName\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getExecuteUserName()));
+        } else {
+            details += (String.format("\"%sexecuteUserName\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+        if (projectPlanDetailsVo.getPlanStartDate() != null) {
+            details += (String.format("\"%splanStartDate\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), DateUtils.format(projectPlanDetailsVo.getPlanStartDate(), DateUtils.DATE_PATTERN)));
+        } else {
+            details += (String.format("\"%splanStartDate\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+        if (projectPlanDetailsVo.getPlanEndDate() != null) {
+            details += (String.format("\"%splanEndDate\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), DateUtils.format(projectPlanDetailsVo.getPlanEndDate(), DateUtils.DATE_PATTERN)));
+        } else {
+            details += (String.format("\"%splanEndDate\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+
+        if (projectPlanDetailsVo.getId() != null) {
+            details += (String.format("\"%sid\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getId()));
+        } else {
+            details += (String.format("\"%sid\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), "0"));
+        }
+        if (projectPlanDetailsVo.getExecuteUserAccount() != null) {
+            details += (String.format("\"%sexecuteUserAccount\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getExecuteUserAccount()));
+        } else {
+            details += (String.format("\"%sexecuteUserAccount\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+        if (projectPlanDetailsVo.getPlanHours() != null) {
+            details += (String.format("\"%splanHours\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getPlanHours()));
+        } else {
+            details += (String.format("\"%splanHours\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), "0"));
+        }
+        if (projectPlanDetailsVo.getPlanRemarks() != null) {
+            details += (String.format("\"%splanRemarks\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getPlanRemarks()));
+        } else {
+            details += (String.format("\"%splanRemarks\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+        if (projectPlanDetailsVo.getProjectPhaseName() != null) {
+            details += (String.format("\"%sprojectPhaseName\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getProjectPhaseName()));
+        } else {
+            details += (String.format("\"%sprojectPhaseName\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
+        return details;
+    }
+
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPage(Integer planId, BootstrapTableVo bootstrapTableVo) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        String search = requestBaseParam.getSearch();
+        if (StringUtils.isNotBlank(search)) {
+            search = String.format("%%%s%%", search);
+        }
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, 0, search);
+        bootstrapTableVo.setTotal(page.getTotal());
+        return projectPlanDetailsList;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void insertProjectPlanDetailsByBorrowers(Integer projectId, Integer planId) {
         //取得当前项目的所有客户信息
         List<CsrBorrowerVo> csrBorrowers = csrBorrowerService.getCsrBorrowerByProjectId(projectId);
         //对每一个客户添加相应的默认工作任务事项
+        StringBuilder stringBuilder = new StringBuilder();
+        String sqlTemp = "insert into tb_project_plan_details (project_phase_name, plan_id, project_id,project_phase_id, status, " + "sorting,project_work_stage_id, first_pid, pid, bis_last_layer) " +
+                "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
 
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
+        if (CollectionUtils.isNotEmpty(csrBorrowers)) {
+            for (CsrBorrowerVo item : csrBorrowers) {
 
+                String string = String.format(sqlTemp, item.getName(), planId, projectId, item.getId(), ProcessStatusEnum.NOPROCESS.getValue(), projectPlan.getWorkStageId());
+                stringBuilder.append(string);
+            }
+        }
+        String string = stringBuilder.toString();
+        if (StringUtils.isNotBlank(string)) {
+            ddlMySqlAssist.customTableDdl(string);//更新数据
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void insertProjectPlanDetailsByPid(ProjectPlanDetails projectPlanDetails) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String sqlTemp = "insert into tb_project_plan_details (project_phase_name,plan_hours, plan_id, project_id,project_phase_id, status, sorting,project_work_stage_id, first_pid, pid, " +
+                "bis_last_layer) values ('%s',%s,%s,%s,%s,'%s',%s,%s,%s,%s,%s);";
+        ProjectPlan projectPlan = projectPlanDao.getProjectplanById(projectPlanDetails.getPlanId());
         List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId());
         List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> {
             return o.getWorkStageId().equals(projectPlan.getWorkStageId());
         });
-        if (CollectionUtils.isNotEmpty(csrBorrowers)) {
-            for (CsrBorrower item : csrBorrowers) {
-                ProjectPlanDetails projectPlanDetailsPid = new ProjectPlanDetails();
-                projectPlanDetailsPid.setProjectPhaseName(item.getName());
-                projectPlanDetailsPid.setPlanId(projectPlan.getId());
-                projectPlanDetailsPid.setProjectId(projectPlan.getProjectId());
-                projectPlanDetailsPid.setProjectPhaseId(item.getId());//存客户编号
-                projectPlanDetailsPid.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetailsPid.setSorting(0);
-                projectPlanDetailsPid.setProjectWorkStageId(projectPlan.getWorkStageId());
-                projectPlanDetailsPid.setFirstPid(1);
-                projectPlanDetailsPid.setPid(0);
-                projectPlanDetailsPid.setBisLastLayer(false);
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetailsPid);
 
-                if (CollectionUtils.isNotEmpty(filter)) {
-                    for (ProjectPhase projectPhase : filter) {
-                        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                        projectPlanDetails.setProjectPhaseName(String.format("%s|%s", item.getName(), projectPhase.getProjectPhaseName()));
-                        projectPlanDetails.setPlanHours(projectPhase.getPhaseTime());
-                        projectPlanDetails.setPlanId(projectPlan.getId());
-                        projectPlanDetails.setProjectId(projectPlan.getProjectId());
-                        projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-                        projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                        projectPlanDetails.setSorting(projectPhase.getPhaseSort());
-                        projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-                        projectPlanDetails.setFirstPid(0);
-                        projectPlanDetails.setPid(projectPlanDetailsPid.getId());
-                        projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-                    }
-                }
+        if (CollectionUtils.isNotEmpty(filter)) {
+            for (ProjectPhase item : filter) {
+
+                String string = String.format(sqlTemp, String.format("%s|%s", projectPlanDetails.getProjectPhaseName(), item.getProjectPhaseName()), item.getPhaseTime(), projectPlanDetails
+                        .getPlanId(), projectPlanDetails.getProjectId(), item.getId(), ProcessStatusEnum.NOPROCESS.getValue(), item.getPhaseSort(), projectPlan.getWorkStageId(), 0,
+                        projectPlanDetails.getId(), true);
+                stringBuilder.append(string);
             }
+        }
+        String string = stringBuilder.toString();
+        if (StringUtils.isNotBlank(string)) {
+            ddlMySqlAssist.customTableDdl(string);//更新数据
         }
     }
 

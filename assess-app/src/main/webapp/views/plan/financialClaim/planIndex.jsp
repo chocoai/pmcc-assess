@@ -112,113 +112,13 @@
                 </div>
                 <div class="panel-body x_content">
 
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
-                    <div class=" col-sm-4">
-                        <article class="media event ">
-                            <a class="pull-left date" style="background-color: #3DA0DB">
-                                <p class="month">王鹏程</p>
-                            </a>
-                            <div class="media-body">
-                                <a class="title" href="#">涂桂芝</a>
-                                <p>借款合同基本情况|借款人主体资格|保证人情况|诉讼保全情况|借款人资产抵押情况|本金利息情况|测算表单</p>
-                            </div>
-                        </article>
-                    </div>
+                    <span id="toolbarSub">
+            <button type="button" class="btn btn-success" onclick="keySet()"
+                    data-toggle="modal" href="#divSubDataDicManage"> 快速设置
+            </button>
+        </span>
+                    <table id="PlanItemListed" class="table table-bordered"></table>
                 </div>
-                <%--<div class="treeGrid panel-body x_content " style="padding: 0px;">--%>
-
-                    <%----%>
-
-
-                    <%--<table id="PlanItemListed" class="table table-bordered"></table>--%>
-                <%--</div>--%>
             </div>
             <div class="x_panel">
                 <div class="x_title">
@@ -242,14 +142,6 @@
 </div>
 </body>
 
-
-<div id="tb" style="padding:5px;height:auto;display: none;">
-    <div style=" margin-bottom:5px">
-        <button type="button" onclick="keySet()" class="btn btn-warning btn-xs">
-            <i class='fa fa-fire fa-white'></i> 快速设置
-        </button>
-    </div>
-</div>
 
 <div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -411,10 +303,50 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 
 <script type="text/javascript">
-    var treeGridJsonData = {};
     $(function () {
-        //getPlanItemList();
+        getPlanItemList();
+        loadProjectPlanDetails();
     });
+    function ReloadLoadProjectPlanDetails() {
+        TableReload("PlanItemListed");
+    }
+    function loadProjectPlanDetails() {
+        var cols = [];
+        cols.push({field: 'id', title: 'id', visible: false});
+        cols.push({field: 'projectPhaseName', title: '客户名称'});
+        <c:forEach var="item" items="${projectPhases}">
+        cols.push({
+            field: '${item.phaseForm}', title: '${item.projectPhaseName}', formatter: function (value, row, index) {
+                var s = row["${item.phaseForm}executeUserName"];
+
+                return s;
+            }
+        });
+        </c:forEach>
+
+
+        TableInit("PlanItemListed", "${pageContext.request.contextPath}/planFinancialClaim/getProjectPlanDetailsByPlanApply", cols,
+            {
+                planId: ${planId},
+                projectId: ${projectId}
+            }, {
+                toolbar: "#toolbarSub",
+                onClickRow: function (row, value, field) {
+                    $("#frm_planDetails").clearAll();
+                    $("#frm_planDetails").validate();
+                    $("#planDetailsId").val(row[field + "id"]);
+                    $("#projectPhaseName").val(row[field + "projectPhaseName"]);
+                    $("#planStartDate").val(formatDate(row[field + "planStartDate"]));
+                    $("#planEndDate").val(formatDate(row[field + "planEndDate"]));
+                    $("#executeUserAccount").val(row[field + "executeUserAccount"]);
+                    $("#executeUserName").val(row[field + "executeUserName"]);
+                    $("#planHours").val(row[field + "planHours"]);
+                    $("#planRemarks").val(row[field + "planRemarks"]);
+                    $('#div_plan').modal({backdrop: 'static', keyboard: false});
+                }
+            });
+    }
+
     function checkPhase() {
         var isChecked = $('#chk_phase_all').prop("checked");
         if (isChecked) {
@@ -511,7 +443,7 @@
                 if (result.ret) {
                     //保存完后其他动作
                     toastr.success("保存成功");
-                    getPlanItemList();
+                    ReloadLoadProjectPlanDetails();
                     $('#div_plan').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);
@@ -522,18 +454,6 @@
             }
         });
 
-    }
-
-
-    function editPlan(id) {
-        var row = $('#PlanItemListed').treegrid('find', id);
-        $("#frm_planDetails").clearAll();
-        $("#frm_planDetails").validate();
-        $("#frm_planDetails").initForm(row);
-        $("#planDetailsId").val(row["id"]);
-        $("#planStartDate").val(formatDate(row["planStartDate"]));
-        $("#planEndDate").val(formatDate(row["planEndDate"]));
-        $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
 
 
@@ -549,10 +469,7 @@
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();
-                // result.rows = sortObjectArray(result.rows, ["sorting"]);
-                treeGridJson = result;
-                treeGridJsonData = result;
-                treeGridload();
+                ReloadLoadProjectPlanDetails();
                 var html = "<label><input type='checkbox' id='chk_customer_all' value='0'>全部</label>";
                 $.each(result.rows, function (i, j) {
                     if (j.pid == 0) {
@@ -576,7 +493,6 @@
     }
 
     function keySet() {
-//        $("#frm_fastset").clearAll();
         $("#frm_fastset").validate();
         $('#div_fastSet').modal({backdrop: 'static', keyboard: false});
 
@@ -651,82 +567,13 @@
 
 
     }
-    function treeGridload() {
-        $("#PlanItemListed").treegrid({
-            data: treeGridJson,
-            idField: 'id',
-            treeField: 'projectPhaseName',
-            datatype: 'json',
-            lines: true,
-            width: 'auto',
-            toolbar: "#tb",
-            rownumbers: true,
-            onDblClickRow: function (row) {
-                if (row.pid > 0) {
-                    editPlan(row.id);
-                }
-            },
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-                //$('#PlanItemListed').treegrid('collapseAll')
-            },
-
-            columns: [[
-                {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
-                {
-                    field: "planStartDate",
-                    title: "开始时间",
-                    width: "10%",
-                    align: "center",
-                    formatter: function (value, row) {
-                        return formatDate(value, false);
-                    }
-                },
-                {
-                    field: "planEndDate",
-                    title: "结束时间",
-                    width: "10%",
-                    align: "center",
-                    formatter: function (value, row) {
-                        return formatDate(value, false);
-                    }
-                },
-                {
-                    field: "planHours",
-                    title: "计划工时",
-                    width: "5%",
-                    align: "center"
-                },
-                {
-                    field: "executeUserName",
-                    title: "责任人",
-                    width: "10%",
-                    align: "center"
-                },
-                {field: "planRemarks", title: "说明", width: "25%", align: "left"},
-                {field: "id", title: "PlanItemId", align: "center", hidden: true},
-                {
-                    field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
-                    if (row.bisEnable) {
-                        var s = "";
-                        if (row.pid > 0) {
-                            s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
-
-                        }
-                        return s;
-                    }
-
-                }
-                }
-            ]]
-        });
-    }
 
 
     function commitApply() {
         if (!$("#frm_plan").valid()) {
             return false;
         }
+        Loading.progressShow();
         var data = formParams("frm_plan");
         data["bisChildren"] = "${bisChildren}";
         data["projectId"] =${projectPlan.projectId};
@@ -740,6 +587,7 @@
             type: "post",
             dataType: "json",
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();

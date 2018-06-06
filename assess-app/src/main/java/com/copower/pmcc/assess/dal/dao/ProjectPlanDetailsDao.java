@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectPlanDetailsMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,16 +23,30 @@ public class ProjectPlanDetailsDao {
 
     /**
      * 获取数据列表
+     *
      * @return
      */
     public List<ProjectPlanDetails> getListObject(ProjectPlanDetails projectPlanDetails) {
 
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        MybatisUtils.convertObj2Example(projectPlanDetails,example);
+        MybatisUtils.convertObj2Example(projectPlanDetails, example);
         example.setOrderByClause("sorting,project_phase_id");
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsList(Integer planId, Integer pid, String search) {
+
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria().andPlanIdEqualTo(planId);
+        if (pid != null) {
+            criteria.andPidEqualTo(pid);
+        }
+        if (StringUtils.isNotBlank(search)) {
+            criteria.andProjectPhaseNameLike(search);
+        }
+        return projectPlanDetailsMapper.selectByExample(example);
+    }
 
     public ProjectPlanDetails getProjectPlanDetailsItemById(Integer id) {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
@@ -122,6 +137,5 @@ public class ProjectPlanDetailsDao {
     public Boolean deleteProjectPlanDetails(Integer id) {
         return projectPlanDetailsMapper.deleteByPrimaryKey(id) == 1;
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.plan;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
@@ -36,10 +37,7 @@ public class ProjectPlanFinancialClaimController {
     @RequestMapping(value = "/getProjectPlanDetailsByPlanApply", name = "取得项目详情计划", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPlanDetailsByPlanApply(Integer projectId, Integer planId) {
 
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanFinancialClaimService.getProjectPlanDetailsByProjectId(projectId, planId);
-        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
-        bootstrapTableVo.setRows(projectPlanDetailsVos == null ? new ArrayList<ProjectPlanDetailsVo>() : projectPlanDetailsVos);
+        BootstrapTableVo bootstrapTableVo = projectPlanFinancialClaimService.getProjectPlanDetailsByProjectId(projectId, planId);
         return bootstrapTableVo;
 
     }
@@ -81,9 +79,9 @@ public class ProjectPlanFinancialClaimController {
 
     @ResponseBody
     @RequestMapping(value = "/submitTask", name = "提交工作成果", method = RequestMethod.POST)
-    public HttpResult submitTask(String projectDetailsIds,Integer projectDetailsId) {
+    public HttpResult submitTask(String projectDetailsIds, Integer projectDetailsId) {
         try {
-            projectPlanFinancialClaimService.submitTask(projectDetailsIds,projectDetailsId);
+            projectPlanFinancialClaimService.submitTask(projectDetailsIds, projectDetailsId);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
