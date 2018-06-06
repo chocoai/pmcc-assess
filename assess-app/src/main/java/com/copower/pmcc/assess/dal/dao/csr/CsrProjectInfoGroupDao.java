@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.dao.csr;
 
+import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroupExample;
 import com.copower.pmcc.assess.dal.mapper.CsrProjectInfoGroupMapper;
@@ -15,12 +16,28 @@ public class CsrProjectInfoGroupDao {
     @Autowired
     private CsrProjectInfoGroupMapper projectInfoGroupMapper;
 
+    @Autowired
+    private CsrBorrowerDao csrBorrowerDao;
+
     public boolean add(CsrProjectInfoGroup csrProjectInfoGroup){
         return projectInfoGroupMapper.insertSelective(csrProjectInfoGroup)==1;
     }
 
     public boolean update(CsrProjectInfoGroup csrProjectInfoGroup){
         return projectInfoGroupMapper.updateByPrimaryKey(csrProjectInfoGroup)==1;
+    }
+
+    public boolean checkGroup(Integer csrProjectId){
+        boolean flag = true;
+        List<CsrProjectInfoGroup> groups = groupList(csrProjectId);
+        for (CsrProjectInfoGroup csrProjectInfoGroup:groups){
+            List<CsrBorrower> csrBorrowers = csrBorrowerDao.borrowerListsA(null,null,null,csrProjectInfoGroup.getId());
+            if (csrBorrowers.size()==0){//每一个项目组都必须有客户 并且至少有一个人
+                flag = false;
+            }
+        }
+        return flag;
+
     }
 
     public CsrProjectInfoGroup getByID(Integer id){

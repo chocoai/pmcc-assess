@@ -44,7 +44,6 @@ public class CsrProjectInfoGroupService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
 
-
     @Autowired
     private CommonService commonService;
 
@@ -81,6 +80,15 @@ public class CsrProjectInfoGroupService {
         }
     }
 
+    /**
+     * 项目组验证
+     * @param csrProjectId
+     * @return
+     */
+    public boolean checkGroup(Integer csrProjectId){
+        return projectInfoGroupDao.checkGroup(csrProjectId);
+    }
+
     @Transactional(readOnly = true)
     public List<CsrProjectInfoGroup> groupList(Integer csrProjectId, String projectName) {
         return projectInfoGroupDao.groupList(csrProjectId,projectName);
@@ -109,16 +117,18 @@ public class CsrProjectInfoGroupService {
         CsrProjectInfoGroupVo vo = new CsrProjectInfoGroupVo();
         BeanUtils.copyProperties(csrProjectInfoGroup,vo);
         vo.setProjectManagerName(erpRpcUserService.getSysUser(csrProjectInfoGroup.getProjectManager()).getUserName());
-        String[] members = csrProjectInfoGroup.getProjectMember().split(",");
-        StringBuilder builder = new StringBuilder(1024);
-        for (int i = 0; i < members.length; i++) {
-            if (i==members.length-1){
-                builder.append(erpRpcUserService.getSysUser(members[i]).getUserName());
-            }else {
-                builder.append(erpRpcUserService.getSysUser(members[i]).getUserName()+",");
+        if (!StringUtils.isEmpty(csrProjectInfoGroup.getProjectMember())){
+            String[] members = csrProjectInfoGroup.getProjectMember().split(",");
+            StringBuilder builder = new StringBuilder(1024);
+            for (int i = 0; i < members.length; i++) {
+                if (i==members.length-1){
+                    builder.append(erpRpcUserService.getSysUser(members[i]).getUserName());
+                }else {
+                    builder.append(erpRpcUserService.getSysUser(members[i]).getUserName()+",");
+                }
             }
+            vo.setProjectMemberName(builder.toString());
         }
-        vo.setProjectMemberName(builder.toString());
         return vo;
     }
 }

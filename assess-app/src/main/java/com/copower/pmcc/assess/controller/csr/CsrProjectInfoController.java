@@ -160,10 +160,15 @@ public class CsrProjectInfoController {
     public HttpResult checkCsrBorrower(@RequestParam(value = "csrProjectInfoID") String csrProjectInfoID) {
         if (!StringUtils.isEmpty(csrProjectInfoID)) {
             int size = service.checkCsrBorrower(Integer.parseInt(csrProjectInfoID));
-            if (size > 0) {
-                return HttpResult.newErrorResult("没有分派完成!");
-            } else {
-                return HttpResult.newCorrectResult("分派完成!");
+            boolean flag = projectInfoGroupService.checkGroup(Integer.parseInt(csrProjectInfoID));
+            if (flag){
+                if (size > 0) {
+                    return HttpResult.newErrorResult("没有分派完成!");
+                } else {
+                    return HttpResult.newCorrectResult("分派完成!");
+                }
+            }else {
+                return HttpResult.newErrorResult("项目组中有项目没有分派客户!");
             }
         } else {
             return HttpResult.newErrorResult("数据异常!!");

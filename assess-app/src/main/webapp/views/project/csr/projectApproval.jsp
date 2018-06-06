@@ -392,6 +392,9 @@
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                },
+                onDblClickRow: function (row) {
+                    oneSubmitGroupProject(row);
                 }
             });
         }else {// 编辑客户列表
@@ -409,6 +412,9 @@
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                },
+                onDblClickRow: function (row) {
+                    oneCancelCsrBorrower(row);
                 }
             });
         }
@@ -458,8 +464,40 @@
                 csrBorrowerIDS += result[i].id + ",";
             }
         }
+        var flag = (result.length>0);
         data.csrBorrowerID = csrBorrowerIDS;
-        console.log(data);
+        if (flag){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/csrProjectInfo/cancelCsrBorrower",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success(' 项目组分派取消成功');
+                        loadRefreshBorrower('csrBorrowerTableList');
+                        loadRefreshBorrower('csrBorrowerTableListEdit');
+                    }
+                    else {
+                        Alert("项目组分派取消失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else {
+            Alert("没有要取消分派的客户!");
+        }
+    }
+
+    //项目组 客户信息 单个分派 取消
+    function oneCancelCsrBorrower(row) {
+        var data = {
+            csrProjectId:row.csrProjectId,
+            csrBorrowerID:row.id,
+            csrProjectInfoGroupID:row.groupId
+        };
         $.ajax({
             url: "${pageContext.request.contextPath}/csrProjectInfo/cancelCsrBorrower",
             type: "post",
@@ -481,19 +519,10 @@
         })
     }
 
-    //项目组 客户信息 分派
-    function submitGroupProject() {
+    //项目组 客户信息 单个分派
+    function oneSubmitGroupProject(row) {
         var data = formParams("csrBorrowerSelect");
-        var result = $("#csrBorrowerTableList").bootstrapTable('getSelections');
-        var csrBorrowerIDS = "";
-        for (var i = 0; i < result.length; i++) {
-            if (i == result.length - 1) {
-                csrBorrowerIDS += result[i].id;
-            } else {
-                csrBorrowerIDS += result[i].id + ",";
-            }
-        }
-        data.csrBorrowerIDS = csrBorrowerIDS;
+        data.csrBorrowerIDS = row.id;
         $.ajax({
             url: "${pageContext.request.contextPath}/csrProjectInfo/submitGroupProject",
             type: "post",
@@ -513,6 +542,45 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
+
+    //项目组 客户信息 多个分派
+    function submitGroupProject() {
+        var data = formParams("csrBorrowerSelect");
+        var result = $("#csrBorrowerTableList").bootstrapTable('getSelections');
+        var csrBorrowerIDS = "";
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
+                csrBorrowerIDS += result[i].id;
+            } else {
+                csrBorrowerIDS += result[i].id + ",";
+            }
+        }
+        data.csrBorrowerIDS = csrBorrowerIDS;
+        var flag = (result.length>0);
+        if (flag){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/csrProjectInfo/submitGroupProject",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success(' 项目组分派成功');
+                        loadRefreshBorrower('csrBorrowerTableList');
+                        loadRefreshBorrower('csrBorrowerTableListEdit');
+                    }
+                    else {
+                        Alert("项目组分派失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else {
+            Alert("没有要分派的数据!");
+        }
 
     }
 
@@ -643,6 +711,8 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            // undefinedText:"没有",
+            undefinedText:"",
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
@@ -697,6 +767,7 @@
             async: false,
             data: {csrProjectInfoID: '${csrProjectInfo.id}'},
             success: function (result) {
+                console.log(result);
                 isAllDistribution = result.ret;
             },
             error: function (result) {
@@ -716,7 +787,7 @@
         var rdoValue = $("input[name='conclusion']:checked").val();
         //检测是否分派完成!
         if (rdoValue == "Approval" && !checkCsrBorrower()) {//审批结论为同意才验证
-            Alert("还有未分配的借款人");
+            Alert("还有未分配的借款人或者项目组中有项目没有分派客户!");
             return false;
         }
         var data = formParams("frm_approval");
