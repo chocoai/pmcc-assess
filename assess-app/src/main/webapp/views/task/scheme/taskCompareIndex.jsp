@@ -66,6 +66,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <input type="hidden" data-json='${str}'>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <td>
@@ -282,7 +283,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="dealCaondition" data-id="${items.id}">${items.dealCaondition}</span>
+                                                        <span name="dealCaondition" data-id="${items.id}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -293,7 +294,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="dealTime" data-id="${items.id}"><fmt:formatDate value="${items.dealTime}" pattern="yyyy-MM-dd"/></span>
+                                                        <span name="dealTime" data-id="${items.id}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -304,7 +305,7 @@
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
-                                                        <span name="paymentMethod" data-id="${items.id}">${items.paymentMethod}</span>
+                                                        <span name="paymentMethod" data-id="${items.id}"></span>
                                                     </td>
                                                 </c:forEach>
                                             </tr>
@@ -445,14 +446,24 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
-
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="col-sm-4 col-sm-offset-5">
+                        <button id="btn_submit1" class="btn btn-success" onclick="getData();">
+                            测试<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
 
             <!--填写表单-->
             <div class="x_panel">
@@ -522,6 +533,7 @@
     $(function () {
 
         getGray();
+        getDynamic();
 
         $("#frm_task").validate();
 
@@ -570,25 +582,80 @@
         $('.rightfloat').css('float', 'right');
     }
 
-    //处理第二三四张表业务
-    $("#twoTable").find("input:text").blur(function () {
+
+    //加载动态表单
+    function getDynamic() {
+
+        var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
+        var jsonArr = JSON.parse(dataJson);
+        $.each(jsonArr, function (i, array) {
+            if (i == 0) {
+                //第一个字段 第二个查勘的值
+                $.each(array, function (j, item) {
+                    var tr = $("#oneTable").find('tbody').find('tr:last');
+                    $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#oneTable").find('tbody').find('tr:last');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').text(item.value).attr('name', item.key);    //第一张表
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#twoTable").find('tbody').find('tr:last');
+                    $("#twoTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#twoTable").find('tbody').find('tr:last');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').text("100").attr('name', item.key);    //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    $("#threeTable").find('tbody').find('tr:eq(-3)').after('<tr>' + tr.html() + '</tr>');
+                    tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').text("1").attr('name', item.key);    //第三张表
+                })
+
+            } else {
+                $.each(array, function (j, item) {
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j+1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').text(item.value).attr('name', item.key);   //第一张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j+1) + ')');
+                    td.find('td:eq(' + i + ')').find('input').attr('name', item.key);   //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j-1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                })
+            }
+        })
+        $("#twoTable").find("input:text").on('blur',function () {
+            twoTableBlur(this);
+        })
+    }
+
+    function twoTableBlur(_this) {
         var reg = /^[0-9]+.?[0-9]*$/;
         //1.判断大小
-        var number = $(this).val();
+        var number = $(_this).val();
+//        console.log(number);
         if ((number < 80 || number > 120) && reg.test(number)) {
             Alert("请填写80-120范围内的数字", 1, null, function () {
             });
         }
         if (number > 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+            $(_this).closest("td").find("i").remove();
+            $(_this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
         }
         if (number < 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+            $(_this).closest("td").find("i").remove();
+            $(_this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
         }
         if (number == "" || number == 100) {
-            $(this).closest("td").find("i").remove();
+            $(_this).closest("td").find("i").remove();
         }
 
         //2.判断第二张表是否全部填完
@@ -606,8 +673,7 @@
                 var dataId = $(this).attr('data-id');
                 var name = $(this).attr('name');
                 var result = ($(this).val() / 100).toFixed(4);
-
-                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);  //显示第三张表数据
 
             })
 
@@ -618,7 +684,12 @@
                 var dealCaondition = $("#threeTable").find('[name="dealCaondition"][data-id="' + dataId + '"]').text(); //取交易类型
                 var dealTime = $("#threeTable").find('[name="dealTime"][data-id="' + dataId + '"]').text(); //取交易时间
                 var paymentMethod = $("#threeTable").find('[name="paymentMethod"][data-id="' + dataId + '"]').text();   //去付款方式
+//                var temp1 = $("#threeTable").find('[name="dynamic36"][data-id="' + dataId + '"]').text();
+//                var temp2 = $("#threeTable").find('[name="dynamic37"][data-id="' + dataId + '"]').text();
+//                var temp3 = $("#threeTable").find('[name="dynamic38"][data-id="' + dataId + '"]').text();
+
                 var result = (price * dealCaondition * dealTime * paymentMethod).toFixed(2);
+                console.log(result);
 
                 $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第三张表比准价格
                 $("#rightTable").find('[name="specificPrice"][data-id="' + dataId + '"]').text(result);   //显示第四张表比准价格
@@ -649,7 +720,7 @@
             })
             $("#threeTable").find('[name="threeMiddlePrice"]').text((middlePrice / i).toFixed(0));    //显示第三张表平均加权价
 
-            var min = 1000000;
+            var min = 10000000;
             var max = 0;
             $("#threeTable").find("span").each(function () {
                 var dataId = $(this).attr('data-id');
@@ -684,7 +755,7 @@
                 var dataId = $(this).attr('data-id');
                 var caseDifference = $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text();
                 caseDifference = (caseDifference.replace("%",""))/100;
-                console.log(caseDifference);
+//                console.log(caseDifference);
                 if (caseMax < caseDifference) {
                     caseMax = caseDifference;
                 }
@@ -694,6 +765,11 @@
                 });
             }
         }
+    }
+
+    //处理第二三四张表业务
+    $("#twoTable").find("input:text").blur(function () {
+        twoTableBlur(this);
     })
 
     //处理第四张表业务
@@ -703,6 +779,7 @@
         $("#rightTable").find("input:text").each(function () {
             if (!$(this).val()) {
                 allFill = false;
+                $("#rightTable").find('[name="weightedAveragePrice"]').text("");
                 return false;
             }
         })
@@ -895,7 +972,7 @@
         data.methodMarketCompareResultDtos = items4;
 
         var json = JSON.stringify(data);
-//        console.log(json);
+        console.log(json);
         return json;
     }
 
