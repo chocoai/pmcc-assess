@@ -181,6 +181,8 @@ public class ProjectTaskAllService {
 
             //加入新任务
             for (ProjectPlanDetails item : projectPlanDetails) {
+                item.setStatus(ProcessStatusEnum.RUN.getValue());
+                item.setProcessInsId("0");
                 item.setReturnDetailsId(item.getId());
                 List<ProjectTaskAllBackDto> filter = LangUtils.filter(taskAllBackDtos, o -> {
                     return o.getDetailsId().intValue() == item.getId().intValue();
@@ -189,6 +191,7 @@ public class ProjectTaskAllService {
                 {
                     item.setReturnDetailsReason(filter.get(0).getBackText());
                 }
+
                 projectPlanDetailsDao.addProjectPlanDetails(item);
                 projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }

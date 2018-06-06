@@ -346,6 +346,7 @@ public class ProjectPlanService {
         if (sb.length() > 0) {
             throw new BusinessException(sb.toString());
         }
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
         //====验证结束
         if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
             //发起计划复核流程
@@ -367,7 +368,7 @@ public class ProjectPlanService {
             projectPlanDao.updateProjectPlan(projectPlan);
 
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
+
     }
 
     @Transactional(rollbackFor = Exception.class)

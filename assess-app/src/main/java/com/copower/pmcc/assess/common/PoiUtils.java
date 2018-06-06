@@ -3,7 +3,10 @@ package com.copower.pmcc.assess.common;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.POIXMLDocument;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -11,8 +14,11 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -102,7 +108,37 @@ public class PoiUtils {
      * @param stream  excel文件流
      * @param map list中的map对应的是列号与值
      */
-    public static void WritebackExcel(Stream stream, Map<Integer,List<Map<Integer,String>>> map){
+    public static void WritebackExcel(InputStream stream, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
+        //行号  列数据
+        HSSFWorkbook workbook = new HSSFWorkbook(stream);
+        Set<Map.Entry<Integer,List<Map<Integer,String>>>> keySet = map.entrySet();
+        Iterator<Map.Entry<Integer,List<Map<Integer,String>>>> iterator = keySet.iterator();
+        HSSFSheet sheet = workbook.createSheet("o"+System.currentTimeMillis());
+        HSSFRow row = null;
+        HSSFCell cell = null;
+        while (iterator.hasNext()){
+            Map.Entry<Integer,List<Map<Integer,String>>> entry = iterator.next();
+            int lineNumber = entry.getKey();
+            row = sheet.createRow(lineNumber);//创建行
+            List<Map<Integer,String>> mapList = entry.getValue();
+            for (Map<Integer,String> integerStringMap:mapList){
+                for (Map.Entry<Integer,String> entryA :integerStringMap.entrySet()){
+                    int columnNumber = entryA.getKey();
+                    if (columnNumber==0 || columnNumber==5 || columnNumber==6){//对一些特殊列进行处理格式
+                        sheet.autoSizeColumn((short)columnNumber); //调整列宽度
+                    }
+                    String value = entryA.getValue();
+                    cell = row.createCell(columnNumber);//创建列
+                    cell.setCellValue(value);
+                    HSSFCellStyle cellStyle = HSSFStyleUtil.getHssfStyleUtil().getStyle(workbook);
+                    if (columnNumber==7 || columnNumber==5){//单元格背景色
+                        cellStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+                        cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+                    }
+                    cell.setCellStyle(cellStyle);
+                }
+            }
+        }
 
     }
 

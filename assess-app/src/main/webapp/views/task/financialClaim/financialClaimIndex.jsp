@@ -14,14 +14,28 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
 
             <c:forEach var="item" items="${projectDetailsTask}">
+                <c:if test="${item.returnDetailsId>0}">
+                    <c:if test="${projectPlanDetailsVo.declareFormName!='loanCustomInfoAssist'}">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>客户信息</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <jsp:include page="/views/task/financialClaim/share/loanCustomInfoAssistDisplay.jsp"></jsp:include>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:if>
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>${item.projectPhaseName}</h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <input type="hidden" id="${item.declareFormName}_details_id" value="${item.id}">
+                        <input type="hidden" class="css_detailsId" id="${item.declareFormName}_details_id" value="${item.id}">
                         <jsp:include page="/views/task/financialClaim/share/${item.declareFormName}.jsp"></jsp:include>
+
                     </div>
                 </div>
             </c:forEach>
@@ -85,16 +99,40 @@
 
 
     function submit() {
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
+        Loading.progressShow();
 
-        if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+        var objs = $(".css_detailsId");
+        var projectDetailsId = "";
+        $.each(objs, function (i, j) {
+            projectDetailsId += $(j).val() + ",";
+        });
+        if (projectDetailsId != "") {
+            projectDetailsId = projectDetailsId.substring(0, projectDetailsId.length - 1);
         }
-        else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/planFinancialClaim/submitTask",
+            data: {
+                projectDetailsIds: projectDetailsId,
+                projectDetailsId: "${projectPlanDetails.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
     }
 
 </script>

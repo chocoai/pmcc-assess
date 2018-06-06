@@ -138,7 +138,7 @@ public class ProjectTaskService {
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();
         }
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         try {
             bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), formData);
         } catch (Exception e) {
@@ -171,14 +171,14 @@ public class ProjectTaskService {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(approvalModelDto.getProcessInsId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
 
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
         bean.approvalCommit(projectPlanDetails, approvalModelDto.getProcessInsId(), formData);
 
         approvalModelDto.setWorkStageId(projectWorkStage.getId());
         approvalModelDto.setWorkPhaseId(projectPlanDetails.getProjectPhaseId());
         approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         try {
-            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -195,14 +195,16 @@ public class ProjectTaskService {
         approvalModelDto.setActivityKey(ProcessActivityEnum.EDIT.getValue());
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
         approvalModelDto.setCurrentStep(-1);
-        ProjectTaskInterface bean=(ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
+        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
         bean.returnEditCommit(projectPlanDetails, approvalModelDto.getProcessInsId(), formData);
+        if (StringUtils.isNotBlank(actualHours)) {
+            projectPlanDetails.setActualHours(new BigDecimal(actualHours));
+            projectPlanDetails.setTaskRemarks(taskRemarks);
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+        }
 
-        projectPlanDetails.setActualHours(new BigDecimal(actualHours));
-        projectPlanDetails.setTaskRemarks(taskRemarks);
-        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         try {
-            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto,false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

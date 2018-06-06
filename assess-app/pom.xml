@@ -160,6 +160,13 @@
             <artifactId>fastjson</artifactId>
         </dependency>
 
+        <!-- aspose-words -->
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>16.4.0</version>
+        </dependency>
+
         <!--==================================== -->
         <!-- 常用工具 依赖包 -->
         <!--==================================== -->

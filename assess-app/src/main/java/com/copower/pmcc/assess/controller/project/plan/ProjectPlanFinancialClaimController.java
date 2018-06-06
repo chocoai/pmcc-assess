@@ -9,6 +9,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,4 +79,14 @@ public class ProjectPlanFinancialClaimController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/submitTask", name = "提交工作成果", method = RequestMethod.POST)
+    public HttpResult submitTask(String projectDetailsIds,Integer projectDetailsId) {
+        try {
+            projectPlanFinancialClaimService.submitTask(projectDetailsIds,projectDetailsId);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }
