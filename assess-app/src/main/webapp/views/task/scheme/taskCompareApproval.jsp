@@ -69,6 +69,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <input type="hidden" data-json='${str}'>
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <c:forEach items="${methodMarketCompareFactors}" var="items">
@@ -139,49 +140,49 @@
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="houseName" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">案例类型</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="caseType" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="price" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="dealCaondition" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="dealTime" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
                                                 <c:forEach items="${methodMarketCompareIndexs}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="paymentMethod" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             </tbody>
@@ -207,65 +208,65 @@
                                             <tr>
                                                 <th class="gray">楼盘名称</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="houseName" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">案例类型</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="caseType" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">单价（元/㎡）</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="price" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易情况</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="dealCaondition" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">交易时间</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="dealTime" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">付款方式</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="paymentMethod" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr id="trList">
                                                 <th scope="row" class="gray">比准价格</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="affirmPrice" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
                                             <tr>
                                                 <th scope="row" class="gray">加权平均价</th>
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
-                                                    <th>
+                                                    <td>
                                                         <span name="threeMiddlePrice" data-id="${items.id}"></span>
-                                                    </th>
+                                                    </td>
                                                 </c:forEach>
                                             </tr>
 
@@ -476,6 +477,60 @@
                 $("#threeTable").find('[name='+name+'][data-id='+dataId+']').text(value);
             }
         })
+    }
+
+
+    getDynamic();
+    function getDynamic() {
+
+        var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
+        var jsonArr = JSON.parse(dataJson);
+        $.each(jsonArr, function (i, array) {
+            if (i == 0) {
+                //第一个字段 第二个查勘的值
+                $.each(array, function (j, item) {
+                    var tr = $("#oneTable").find('tbody').find('tr:last');
+                    $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#oneTable").find('tbody').find('tr:last');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //查勘的值
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#twoTable").find('tbody').find('tr:last');
+                    $("#twoTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#twoTable").find('tbody').find('tr:last');
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    $("#threeTable").find('tbody').find('tr:eq(-3)').after('<tr>' + tr.html() + '</tr>');
+                    tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                })
+
+            } else {
+                $.each(array, function (j, item) {
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                })
+            }
+
+        })
+
     }
 
 </script>

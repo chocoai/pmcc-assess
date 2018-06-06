@@ -582,6 +582,8 @@
 
         getGray();
 
+        getDynamic();
+
         showData();
 
         $("#frm_task").validate();
@@ -631,38 +633,90 @@
         $('.rightfloat').css('float', 'right');
     }
 
+    //动态表单
+    function getDynamic() {
+
+        var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
+        var jsonArr = JSON.parse(dataJson);
+        $.each(jsonArr, function (i, array) {
+            if (i == 0) {
+                //第一个字段 第二个查勘的值
+                $.each(array, function (j, item) {
+                    var tr = $("#oneTable").find('tbody').find('tr:last');
+                    $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#oneTable").find('tbody').find('tr:last');
+                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //查勘的值
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#twoTable").find('tbody').find('tr:last');
+                    $("#twoTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
+                    tr = $("#twoTable").find('tbody').find('tr:last');
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    $("#threeTable").find('tbody').find('tr:eq(-3)').after('<tr>' + tr.html() + '</tr>');
+                    tr = $("#threeTable").find('tbody').find('tr:eq(-3)');
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                })
+
+            } else {
+                $.each(array, function (j, item) {
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    td.find('td:eq(' + i + ')').find('input').val("").attr('name', item.key);   //第二张表
+                })
+
+                $.each(array, function (j, item) {
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                })
+            }
+
+        })
+
+        $("#twoTable").find("input:text").on('blur', function () {
+            twoTableBlur(this);
+        })
+    }
+
     //处理第二三四张表业务
-    $("#twoTable").find("input:text").blur(function () {
-        var reg = /^[0-9]+.?[0-9]*$/;   //小数整数
+    function twoTableBlur(_this) {
+        var reg = /^[0-9]+.?[0-9]*$/;
         var re = /^[1-9]\d*$/;  //正整数
         //1.判断大小
-        var number = $(this).val();
+        var number = $(_this).val();
 //        console.log(number);
         if ((number < 80 || number > 120) || !re.test(number)) {
             Alert("请填写80-120范围内的数字", 1, null, function () {
             });
         }
-
         if (number > 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
+            $(_this).closest("td").find("i").remove();
+            $(_this).closest("td").find("input").last().after('<i class="fa fa-arrow-up btn-danger"></i>');
         }
         if (number < 100) {
-            $(this).closest("td").find("i").remove();
-            $(this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
+            $(_this).closest("td").find("i").remove();
+            $(_this).closest("td").find("input").last().after('<i class="fa fa-arrow-down btn-info"></i>');
         }
         if (number == "" || number == 100) {
-            $(this).closest("td").find("i").remove();
+            $(_this).closest("td").find("i").remove();
         }
 
         //2.判断第二张表是否全部填完
         var allFill = true;
         $("#twoTable").find("input:text").each(function () {
-            var dataId = $(this).attr('data-id');
-            var name = $(this).attr('name');
             if (!$(this).val()) {
                 allFill = false;
-                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text("");
                 return false;
             }
         })
@@ -673,10 +727,7 @@
                 var dataId = $(this).attr('data-id');
                 var name = $(this).attr('name');
                 var result = ($(this).val() / 100).toFixed(4);
-//                console.log(dataId);
-//                console.log(name);
-//                console.log($(this).val());
-                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+                $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);  //显示第三张表数据
 
             })
 
@@ -687,23 +738,15 @@
                 var dealCaondition = $("#threeTable").find('[name="dealCaondition"][data-id="' + dataId + '"]').text(); //取交易类型
                 var dealTime = $("#threeTable").find('[name="dealTime"][data-id="' + dataId + '"]').text(); //取交易时间
                 var paymentMethod = $("#threeTable").find('[name="paymentMethod"][data-id="' + dataId + '"]').text();   //去付款方式
-                var result = (price * dealCaondition * dealTime * paymentMethod).toFixed(2);
+                var result = (price * dealCaondition * dealTime * paymentMethod);
+                $("#threeTable").find('[name^="dynamic"][data-id="' + dataId + '"]').each(function () {
+                    result = result * $(this).text();
+                })
+                result = result.toFixed(2);
 
                 $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text(result);   //显示第三张表比准价格
-
                 $("#rightTable").find('[name="specificPrice"][data-id="' + dataId + '"]').text(result);   //显示第四张表比准价格
 
-//                if(result > 1){
-//                    $(this).closest("td").find("i").remove();
-//                    $(this).closest("td").find('[name="' + name + '"][data-id="' + dataId + '"]').append('<i class="fa fa-arrow-up btn-danger"></i>');
-//                }
-//                if(result > 1){
-//                    $(this).closest("td").find("i").remove();
-//                    $(this).closest("td").find('[name="' + name + '"][data-id="' + dataId + '"]').append('<i class="fa fa-arrow-down btn-info"></i>');
-//                }
-//                if(result == 1){
-//                    $(this).closest("td").find("i").remove();
-//                }
             })
 
             var middlePrice = 0;
@@ -717,11 +760,11 @@
                 }
                 i++;
             })
-//            console.log(i);
             $("#threeTable").find('[name="threeMiddlePrice"]').text((middlePrice / i).toFixed(0));    //显示第三张表平均加权价
 
-            var min = 1000000;
+            var min = 10000000;
             var max = 0;
+            var correctionMax = 0;
             $("#threeTable").find("span").each(function () {
                 var dataId = $(this).attr('data-id');
                 var name = $(this).attr('name');
@@ -730,6 +773,10 @@
                 var tempCorrection = Math.abs((affirmPrice - price) / price);
                 var correction = (Math.round(tempCorrection * 10000) / 100).toFixed(2) + '%';
                 $("#rightTable").find('[name="correctionDifference"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
+
+                if(correctionMax < tempCorrection){
+                    correctionMax = tempCorrection;
+                }
                 if (max < affirmPrice) {
                     max = affirmPrice;
                 }
@@ -737,16 +784,22 @@
                     min = affirmPrice;
                 }
             })
-            var temp = (max - min) / min;       //（案例最高比准价-案例最低比准价）/案例最低比准价<=20%，如果大于20%则提示案例或修正指数修改错误
-            if (temp > 0.2) {
-                Alert("案例或修正指数修改错误", 1, null, function () {
+
+            if (correctionMax > 0.3) {
+                Alert("修正差额>30%,请修改案例.", 1, null, function () {
                 });
             }
 
-            $("#threeTable").find('[name="affirmPrice"]').each(function () {
+            var temp = (max - min) / min;       //（案例最高比准价-案例最低比准价）/案例最低比准价<=20%，如果大于20%则提示案例或修正指数修改错误
+            if (temp > 0.2) {
+                Alert("最高单价不应超过最低单价的20％,请修改案例", 1, null, function () {
+                });
+            }
+
+            $("#rightTable").find('[name="specificPrice"]').each(function () {
                 var dataId = $(this).attr('data-id');
-                var affirmPrice = $("#threeTable").find('[name="affirmPrice"][data-id="' + dataId + '"]').text();   //获取第三张表比准价格
-                var temp = (((affirmPrice - min) / min) * 10000 / 100).toFixed(2) + "%";
+                var specificPrice = $("#rightTable").find('[name="specificPrice"][data-id="' + dataId + '"]').text();   //获取第三张表比准价格
+                var temp = (((specificPrice - min) / min) * 10000 / 100).toFixed(2) + "%";
                 $("#rightTable").find('[name="caseDifference"][data-id="' + dataId + '"]').text(temp);      //显示案例差异
             })
 
@@ -765,6 +818,10 @@
                 });
             }
         }
+    }
+
+    $("#twoTable").find("input:text").blur(function () {
+        twoTableBlur(this);
     })
 
     //处理第四张表业务
@@ -843,11 +900,7 @@
                 $("#twoTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
                     keyValue.key = $(this).attr('name');
-                    if ($(this).hasClass('input')) {
-                        keyValue.value = $(this).val();
-                    } else {
-                        keyValue.value = $(this).text();
-                    }
+                    keyValue.value=$(this).val()?$(this).val():$(this).text();
                     keyValueArray.push(keyValue);
                 })
                 compareIndex.jsonContent = JSON.stringify(keyValueArray);
@@ -911,7 +964,6 @@
     }
 
     function submit() {
-
         if (!$("#frm_task").valid()) {
             return false;
         }
@@ -964,32 +1016,8 @@
             }
         })
     }
-    getDynamic();
-    function getDynamic() {
 
-        var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
-        var jsonArr = JSON.parse(dataJson);
-        $.each(jsonArr, function (i, array) {
-            if (i == 0) {
-                //第一个字段 第二个查勘的值
-                $.each(array, function (j, item) {
-                    var tr = $("#oneTable").find('tbody').find('tr:last');
-                    $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
-                    tr = $("#oneTable").find('tbody').find('tr:last');
-                    tr.find('th:eq('+i+')').text(item.explain); //字段
-                    tr.find('td:eq(' + i + ')').text(item.value).find('span').attr('name', item.key);    //查勘的值
-                })
-            } else {
-                $.each(array, function (j, item) {
-                        var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j+1) + ')');
-                        td.find('td:eq(' + i + ')').text(item.value).find('span').attr('name', item.key);
 
-                })
-            }
-
-        })
-
-    }
 </script>
 
 </html>
