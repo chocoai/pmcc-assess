@@ -49,11 +49,11 @@ public class CsrBorrowerService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 
-    public BootstrapTableVo borrowerLists(String secondLevelBranch,String firstLevelBranch,Integer csrProjectInfoID,Integer csrProjectInfoGroupID) {
+    public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrBorrower> vos = csrBorrowerDao.borrowerListsA(secondLevelBranch,firstLevelBranch,csrProjectInfoID,csrProjectInfoGroupID);
+        List<CsrBorrower> vos = csrBorrowerDao.borrowerListsA(secondLevelBranch, firstLevelBranch, csrProjectInfoID, csrProjectInfoGroupID);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CsrBorrower>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -61,27 +61,29 @@ public class CsrBorrowerService {
 
     /**
      * 查询分派是否完成
+     *
      * @param csrProjectInfoID
      * @return
      */
-    public Integer checkCsrBorrower(Integer csrProjectInfoID){
-        return csrBorrowerDao.borrowerListsA(null,null,csrProjectInfoID,null).size();
+    public Integer checkCsrBorrower(Integer csrProjectInfoID) {
+        return csrBorrowerDao.borrowerListsA(null, null, csrProjectInfoID, null).size();
     }
 
     /**
      * 取消分派
+     *
      * @param csrProjectInfoID
      * @param id
      */
-    public void cancel(Integer csrProjectInfoID,String id,Integer csrProjectInfoGroupID){
+    public void cancel(Integer csrProjectInfoID, String id, Integer csrProjectInfoGroupID) {
         String[] ids = id.split(",");
         List<Integer> integerList = new ArrayList<>();
-        for (String s:ids){
-            if (!StringUtils.isEmpty(s)){
+        for (String s : ids) {
+            if (!StringUtils.isEmpty(s)) {
                 integerList.add(Integer.valueOf(s));
             }
         }
-        csrBorrowerDao.cancel(csrProjectInfoID,integerList,csrProjectInfoGroupID);
+        csrBorrowerDao.cancel(csrProjectInfoID, integerList, csrProjectInfoGroupID);
     }
 
     public boolean update(CsrBorrower csrBorrower) {
@@ -95,22 +97,24 @@ public class CsrBorrowerService {
         return getCsrBorrowerVos(csrBorrowerList);
     }
 
-    public List<CsrBorrowerVo> getCsrBorrowerVos(List<CsrBorrower> csrBorrowerList){
-        if(CollectionUtils.isEmpty(csrBorrowerList)) return null;
+    public List<CsrBorrowerVo> getCsrBorrowerVos(List<CsrBorrower> csrBorrowerList) {
+        if (CollectionUtils.isEmpty(csrBorrowerList)) return null;
         List<Integer> tableIds = LangUtils.transform(csrBorrowerList, p -> p.getId());
-        BaseAttachment queryParam=new BaseAttachment();
+        BaseAttachment queryParam = new BaseAttachment();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
         queryParam.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
         List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(tableIds, queryParam);
         return LangUtils.transform(csrBorrowerList, p -> {
-            CsrBorrowerVo csrBorrowerVo=new CsrBorrowerVo();
-            BeanUtils.copyProperties(p,csrBorrowerVo);
-            if(CollectionUtils.isNotEmpty(attachmentList)){
+            CsrBorrowerVo csrBorrowerVo = new CsrBorrowerVo();
+            BeanUtils.copyProperties(p, csrBorrowerVo);
+            if (CollectionUtils.isNotEmpty(attachmentList)) {
+                StringBuilder html = new StringBuilder();
                 for (BaseAttachment baseAttachment : attachmentList) {
-                    if(baseAttachment.getTableId().equals(p.getId())){
-                        csrBorrowerVo.setAttachmentHtml(baseAttachmentService.getViewHtml(baseAttachment));
+                    if (baseAttachment.getTableId().equals(p.getId())) {
+                        html.append(baseAttachmentService.getViewHtml(baseAttachment));
                     }
                 }
+                csrBorrowerVo.setAttachmentHtml(html.toString());
             }
             return csrBorrowerVo;
         });
