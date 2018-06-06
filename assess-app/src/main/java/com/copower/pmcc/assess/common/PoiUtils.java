@@ -14,6 +14,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -107,9 +108,9 @@ public class PoiUtils {
      * @param stream  excel文件流
      * @param map list中的map对应的是列号与值
      */
-    public static void WritebackExcel(Stream stream, Map<Integer,List<Map<Integer,String>>> map){
+    public static void WritebackExcel(InputStream stream, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
         //行号  列数据
-        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFWorkbook workbook = new HSSFWorkbook(stream);
         Set<Map.Entry<Integer,List<Map<Integer,String>>>> keySet = map.entrySet();
         Iterator<Map.Entry<Integer,List<Map<Integer,String>>>> iterator = keySet.iterator();
         HSSFSheet sheet = workbook.createSheet("o"+System.currentTimeMillis());
