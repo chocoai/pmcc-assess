@@ -184,7 +184,7 @@
                                             文号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="number" id="number" placeholder="文号"
+                                            <input type="text" name="number" id="number" placeholder="文号" onkeyup="value=value.replace(/[^\d]/g,'')"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
@@ -284,11 +284,6 @@
                                     <input type="hidden" name="csrProjectId" id="csrProjectIdV">
                                     <div class="x-valid">
                                         <div>
-                                            <div class="col-sm-1">
-                                                <h5>未分派</h5>
-                                            </div>
-                                        </div>
-                                        <div>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-maxlength="50" placeholder="二级分行"
                                                        id="secondLevelBranch" name="secondLevelBranch" class="form-control">
@@ -306,11 +301,11 @@
                                     </div>
 
                                     <div class="x-valid">
-                                        <div>
-                                            <div class="col-sm-1">
-                                                <h5>已经分派</h5>
-                                            </div>
+                                        <div class="col-sm-2">
                                         </div>
+                                    </div>
+
+                                    <div class="x-valid">
                                         <div>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-maxlength="50" placeholder="二级分行"
@@ -331,17 +326,24 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-5">
                                             <table class="table table-bordered" id="csrBorrowerTableList">
-
+                                                <caption>未分派</caption>
                                             </table>
                                         </div>
                                     </div>
 
                                     <div class="x-valid">
-                                        <div class="col-sm-6">
-                                            <table class="table table-bordered" id="csrBorrowerTableListEdit">
+                                        <div class="col-sm-2 bs-glyphicons">
+                                            <span aria-hidden="true" class="glyphicon glyphicon-resize-horizontal" style="position:fixed; top:48%; right:50%;font-size:24px;"></span>
+                                           <%--<i class="fa fa-arrows-h" style="position:fixed; top:48%; right:50%;"></i>--%>
+                                        </div>
+                                    </div>
 
+                                    <div class="x-valid">
+                                        <div class="col-sm-5">
+                                            <table class="table table-bordered" id="csrBorrowerTableListEdit">
+                                                <caption>已经分派</caption>
                                             </table>
                                         </div>
                                     </div>
@@ -373,13 +375,13 @@
     function loadBorrowerList(id,tableID) {
         var cols = [];
         cols.push({field: 'checkbox', checkbox: true});
-        cols.push({field: 'name', title: '名字'});
-        cols.push({field: 'id', visible: false, title: "id"});
-        cols.push({field: 'maritalStatus', title: '婚否'});
-        cols.push({field: 'workUnit', title: '职务'});
-        cols.push({field: 'presentAddress', title: '地址'});
         cols.push({field: 'secondLevelBranch', title: '二级分行'});
         cols.push({field: 'firstLevelBranch', title: '一级分行'});
+        cols.push({field: 'name', title: '名字'});
+        cols.push({field: 'id', visible: false, title: "id"});
+        // cols.push({field: 'maritalStatus', title: '婚否'});
+        // cols.push({field: 'workUnit', title: '职务'});
+        // cols.push({field: 'presentAddress', title: '地址'});
         $("#"+tableID).bootstrapTable('destroy');
         if (tableID=='csrBorrowerTableList'){//未分派的列表
             TableInit(""+tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
