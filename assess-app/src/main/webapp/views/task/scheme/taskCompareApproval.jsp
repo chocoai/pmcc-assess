@@ -416,6 +416,7 @@
 <script type="application/javascript">
     $(function () {
         getGray();
+        getDynamic();
         showData();
 
         GetFileShows("file_upload_task",
@@ -480,7 +481,7 @@
     }
 
 
-    getDynamic();
+
     function getDynamic() {
 
         var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');

@@ -62,9 +62,15 @@
                                                 <th class="gray evaluation" name="project"
                                                     evaluation-id="${schemeEvaluationObject.id}">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray data-th" name="project" data-id="${items.id}">
-                                                        实例${s.index + 1}</th>
+                                                    <th class="gray">
+                                                        <span class="gray data-th" name="project" data-id="${items.id}">
+                                                            实例${s.index + 1}
+                                                        </span>
+                                                    </th>
                                                 </c:forEach>
+                                                <th class="gray">
+                                                    <a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>
+                                                </th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -72,8 +78,9 @@
                                             <tr>
                                                 <th scope="row" class="gray">楼盘名称</th>
                                                 <td>
-                                                    <span name="houseName"
-                                                          evaluation-id="${schemeEvaluationObject.id}">${surveyLocaleExploreDetail.houseName}</span>
+                                                    <span name="houseName" evaluation-id="${schemeEvaluationObject.id}">
+                                                    ${surveyLocaleExploreDetail.houseName}
+                                                    </span>
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                                     <td>
@@ -159,8 +166,11 @@
                                                 <th class="gray evaluation"
                                                     evaluation-id="${schemeEvaluationObject.id}">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray data-th" name="project" data-id="${items.id}">
-                                                        实例${s.index + 1}</th>
+                                                    <th class="gray">
+                                                        <span class="data-th" name="project" data-id="${items.id}">
+                                                            实例${s.index + 1}
+                                                        </span>
+                                                    </th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
@@ -260,8 +270,11 @@
                                                 <th class="gray evaluation"
                                                     evaluation-id="${schemeEvaluationObject.id}">${schemeEvaluationObject.name}</th>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                                    <th class="gray data-th" name="project" data-id="${items.id}">
-                                                        实例${s.index + 1}</th>
+                                                    <th class="gray">
+                                                        <span class="data-th" name="project" data-id="${items.id}">
+                                                            实例${s.index + 1}
+                                                        </span>
+                                                    </th>
                                                 </c:forEach>
                                             </tr>
                                             </thead>
@@ -359,7 +372,7 @@
                                                           evaluation-id="${schemeEvaluationObject.id}"></span>
                                                 </td>
                                                 <c:forEach items="${surveyCaseStudyDetails}" var="items">
-                                                    <td></td>
+                                                    <td><span data-id ="${items.id}"></span></td>
                                                 </c:forEach>
                                             </tr>
 
@@ -395,18 +408,21 @@
                                     </div>
                                 </div>
                                 <%--固定表格格式用--%>
-                                <label class="col-sm-2 control-label rightfloat"></label>
+                                <label class="col-sm-1 control-label rightfloat"></label>
 
                                 <%--右侧固定表格 第四张表--%>
-                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 30%">
+                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 40%">
                                     <thead>
                                     <tr>
                                         <th class="gray">项目</th>
                                         <th class="gray evaluation"
                                             evaluation-id="${schemeEvaluationObject.id}">${schemeEvaluationObject.name}</th>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items" varStatus="s">
-                                            <th class="gray data-th case" name="project" data-id="${items.id}">
-                                                实例${s.index + 1}</th>
+                                            <th class="gray">
+                                                <span class="data-th case" name="project" data-id="${items.id}">
+                                                    实例${s.index + 1}
+                                                </span>
+                                            </th>
                                         </c:forEach>
                                     </tr>
                                     </thead>
@@ -484,7 +500,7 @@
                                         </td>
                                         <c:forEach items="${surveyCaseStudyDetails}" var="items">
                                             <td>
-                                                <span class="case"></span>
+                                                <span class="case" data-id="${items.id}"></span>
                                             </td>
                                         </c:forEach>
                                     </tr>
@@ -752,7 +768,7 @@
                 var correction = (Math.round(tempCorrection * 10000) / 100).toFixed(2) + '%';
                 $("#rightTable").find('[name="correctionDifference"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
 
-                if(correctionMax < tempCorrection){
+                if (correctionMax < tempCorrection) {
                     correctionMax = tempCorrection;
                 }
                 if (max < affirmPrice) {
@@ -863,8 +879,8 @@
             }
         })
         //因素表 实例对象
-        $("#oneTable").find('thead tr').find('th').each(function () {
-            if ($(this).hasClass('data-th')) {
+        $("#oneTable").find('thead tr').find('span').each(function () {
+//            if ($(this).hasClass('data-th')) {
                 var dataId = $(this).attr('data-id');
                 var keyValueArray = [];
                 var compareFactor = {};
@@ -874,12 +890,12 @@
                 $("#oneTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
                     keyValue.key = $(this).attr('name');
-                    keyValue.value = $(this).text();
+                    keyValue.value = $(this).text()?$(this).text():$(this).val();
                     keyValueArray.push(keyValue);
                 })
                 compareFactor.jsonContent = JSON.stringify(keyValueArray);
                 items1.push(compareFactor);
-            }
+//            }
         })
         //指数表   委估对象
         $("#twoTable").find('thead tr').find('th').each(function () {
@@ -901,8 +917,8 @@
             }
         })
         //指数表   实例对象
-        $("#twoTable").find('thead tr').find('th').each(function () {
-            if ($(this).hasClass('data-th')) {
+        $("#twoTable").find('thead tr').find('span').each(function () {
+//            if ($(this).hasClass('data-th')) {
                 var dataId = $(this).attr('data-id');
                 var keyValueArray = [];
                 var compareIndex = {};
@@ -912,12 +928,12 @@
                 $("#twoTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
                     keyValue.key = $(this).attr('name');
-                    keyValue.value = $(this).val()?$(this).val():$(this).text();
+                    keyValue.value = $(this).val() ? $(this).val() : $(this).text();
                     keyValueArray.push(keyValue);
                 })
                 compareIndex.jsonContent = JSON.stringify(keyValueArray);
                 items2.push(compareIndex);
-            }
+//            }
         })
         //测算表   委估对象
         $("#threeTable").find('thead tr').find('th').each(function () {
@@ -939,8 +955,8 @@
             }
         })
         //测算表   实例对象
-        $("#threeTable").find('thead tr').find('th').each(function () {
-            if ($(this).hasClass('data-th')) {
+        $("#threeTable").find('thead tr').find('span').each(function () {
+//            if ($(this).hasClass('data-th')) {
                 var dataId = $(this).attr('data-id');
                 var keyValueArray = [];
                 var compareCalculation = {};
@@ -955,7 +971,7 @@
                 })
                 compareCalculation.jsonContent = JSON.stringify(keyValueArray);
                 items3.push(compareCalculation);
-            }
+//            }
         })
         //结果表   委估对象
         $("#rightTable").find('thead tr').find('th').each(function () {
@@ -978,7 +994,7 @@
         //结果表   案例对象
         $("#rightTable").find('thead tr').find('th').each(function () {
 
-            if ($(this).hasClass('data-th')) {
+//            if ($(this).hasClass('data-th')) {
                 var dataId = $(this).attr('data-id');
                 var compareresult = {};
                 compareresult.name = $("#rightTable").find('[name="project"][data-id="' + dataId + '"]').text();
@@ -991,7 +1007,7 @@
                 compareresult.weight = $("#rightTable").find('[name="weight"][data-id="' + dataId + '"]').val();
                 compareresult.weightedAveragePrice = $("#rightTable").find('[name="weightedAveragePrice"][data-id="' + dataId + '"]').text();
                 items4.push(compareresult);
-            }
+//            }
         })
 
         var data = {};
@@ -1005,7 +1021,8 @@
     }
 
     function submit() {
-
+        getData();
+        return false;
         if (!$("#frm_task").valid()) {
             return false;
         }
@@ -1015,6 +1032,102 @@
         else {
             submitToServer(getData(), $("#taskRemarks").val(), $("#actualHours").val());
         }
+    }
+
+    //添加案例
+    function addCase() {
+        var thNum = $("#oneTable").find('thead').find('th').length;     //th个数
+        var thTemp = $("#oneTable").find('thead').find('th:eq(-2)').find('span').attr('data-id');    //th 的dataId
+        var thDataId = parseInt(thTemp) + 1;
+
+        //添加th
+        var th = $("#oneTable").find('thead').find('th:eq(-2)');
+        $("#oneTable").find('thead').find('th:eq(-2)').after('<th class="gray">' + th.html() + '</th>');
+        $("#oneTable").find('thead').find('th:eq(-2)').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId).append('</br>' +
+            '<a class="btn btn-xs btn-danger"data-original-title="删除" onclick="deleteCase('+thDataId+')"><i class="fa fa-minus fa-white"></i></a>');
+        $("#twoTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#twoTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+        $("#threeTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#threeTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+        $("#rightTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#rightTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+
+        var tdInput = $("#twoTable").find('tbody').find('tr:last').find('td:last');     //获取input
+        var tdSpan = $("#threeTable").find('tbody').find('tr:eq(-2)').find('td:last');  //获取span
+
+        //遍历第一张表进行添加
+        var arrOne = $("#oneTable").find('tbody').find('tr');
+        $.each(arrOne, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name') ? $(tr).find('td:last').find('span').attr('name') : $(tr).find('td:last').find('input').attr('name');
+            var temp = $(tr).find('td:last').find('span').attr('data-id') ? $(tr).find('td:last').find('span').attr('data-id') : $(tr).find('td:last').find('input').attr('data-id');
+            var dataId = parseInt(temp) + 1;
+//            var name = $("#oneTable").find('tbody').find('tr:eq('+i+')').find('td:last').find('span').attr('name');
+//            console.log(trName);
+//            console.log(dataId);
+            $("#oneTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+            $("#oneTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', dataId);
+
+        })
+
+        //遍历第二张表进行添加
+        var arrTwo = $("#twoTable").find('tbody').find('tr');
+        $.each(arrTwo, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name') ? $(tr).find('td:last').find('span').attr('name') : $(tr).find('td:last').find('input').attr('name');
+            var temp = $(tr).find('td:last').find('span').attr('data-id') ? $(tr).find('td:last').find('span').attr('data-id') : $(tr).find('td:last').find('input').attr('data-id');
+            var dataId = parseInt(temp) + 1;
+            $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+            $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', dataId);
+
+        })
+
+        //遍历第三张表进行添加
+        var arrThree = $("#threeTable").find('tbody').find('tr');
+        $.each(arrThree, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name');
+            var temp = $(tr).find('td:last').find('span').attr('data-id');
+            var dataId = parseInt(temp) + 1;
+            $("#threeTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdSpan.html() + '</td>');
+            $("#threeTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('span').attr('name', trName).attr('data-id', dataId);
+
+        })
+        $("#threeTable").find('tbody').find('tr:last').find('td:last').find('span').attr('name', "");   //每次添加时清空这格name,为了不显示
+
+        //遍历右侧表进行添加
+        var arrRight = $("#rightTable").find('tbody').find('tr');
+        $.each(arrRight, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name')?$(tr).find('td:last').find('span').attr('name'):$(tr).find('td:last').find('input').attr('name');
+            var temp = $(tr).find('td:last').find('span').attr('data-id')?$(tr).find('td:last').find('span').attr('data-id'):$(tr).find('td:last').find('input').attr('data-id');
+            var dataId = parseInt(temp) + 1;
+            if(i == (arrRight.length-2)){
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', dataId);
+            }else{
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdSpan.html() + '</td>');
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('span').attr('name', trName).attr('data-id', dataId);
+            }
+        })
+
+        getGray();
+
+        $("#twoTable").find("input:text").on('blur', function () {
+            twoTableBlur(this);
+        })
+    }
+
+    function deleteCase(dataId) {
+        $("#oneTable").each(function () {
+                $("#oneTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#twoTable").each(function () {
+                $("#twoTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#threeTable").each(function () {
+                $("#threeTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#rightTable").each(function () {
+                $("#rightTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+
     }
 
 
