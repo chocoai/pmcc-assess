@@ -39,7 +39,7 @@ public class CsrBorrowerMortgageController {
     @RequestMapping(value = "/saveLoanBorrowerMortgage", name = "保存借款人资产抵押", method = RequestMethod.POST)
     public HttpResult saveLoanBorrowerMortgage(CsrBorrowerMortgage csrBorrowerMortgage, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrBorrowerMortgage = csrBorrowerMortgageService.saveCsrBorrowerMortgage(csrBorrowerMortgage,detailsId,taskRemarks,actualHours);
+            csrBorrowerMortgage = csrBorrowerMortgageService.saveCsrBorrowerMortgage(csrBorrowerMortgage, detailsId, taskRemarks, actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -59,4 +59,14 @@ public class CsrBorrowerMortgageController {
         return bootstrapTableVo;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/deleteCsrBorrowerMortgage", name = "删除记录", method = RequestMethod.POST)
+    public HttpResult deleteCsrBorrowerMortgage(Integer id) {
+        try {
+            csrBorrowerMortgageService.deleteCsrBorrowerMortgage(id);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

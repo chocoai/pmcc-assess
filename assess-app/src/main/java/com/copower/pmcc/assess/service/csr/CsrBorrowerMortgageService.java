@@ -46,6 +46,15 @@ public class CsrBorrowerMortgageService {
         return csrBorrowerMortgage;
     }
 
+    public void deleteCsrBorrowerMortgage(Integer id) throws BusinessException
+    {
+        try {
+            csrBorrowerMortgageDao.deleteCsrBorrowerMortgage(id);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     public List<CsrBorrowerMortgageVo> getCsrBorrowerMortgage(Integer borrowerId, Integer detailsId) {
         CsrBorrowerMortgage csrBorrowerMortgage = new CsrBorrowerMortgage();
         csrBorrowerMortgage.setBisImport(false);

@@ -69,4 +69,13 @@ public class CsrCalculationService {
         return csrCalculationVos;
 
     }
+
+    public void deleteCsrCalculation(Integer id) throws BusinessException
+    {
+        try {
+            csrcalculationDao.deleteCsrCalculation(id);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
 }

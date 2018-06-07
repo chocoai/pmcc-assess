@@ -58,4 +58,16 @@ public class CsrGuarantorController {
         bootstrapTableVo.setTotal(page.getTotal());
         return bootstrapTableVo;
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteCsrGuarantor", name = "删除记录", method = RequestMethod.POST)
+    public HttpResult deleteCsrGuarantor(Integer id) {
+        try {
+            csrGuarantorService.deleteCsrGuarantor(id);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

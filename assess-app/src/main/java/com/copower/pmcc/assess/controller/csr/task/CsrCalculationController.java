@@ -40,7 +40,7 @@ public class CsrCalculationController {
     @RequestMapping(value = "/saveLoanCalculation", name = "测算情况", method = RequestMethod.POST)
     public HttpResult saveLoanCalculation(CsrCalculation csrCalculation, Integer detailsId, String taskRemarks, String actualHours) {
         try {
-            csrCalculation = csrCalculationService.saveCsrCalculation(csrCalculation,detailsId,taskRemarks,actualHours);
+            csrCalculation = csrCalculationService.saveCsrCalculation(csrCalculation, detailsId, taskRemarks, actualHours);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -54,9 +54,20 @@ public class CsrCalculationController {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CsrCalculationVo> csrCalculation = csrCalculationService.getCsrCalculation(borrowerId,detailsId);
+        List<CsrCalculationVo> csrCalculation = csrCalculationService.getCsrCalculation(borrowerId, detailsId);
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(csrCalculation) ? new ArrayList<CsrCalculationVo>() : csrCalculation);
         bootstrapTableVo.setTotal(page.getTotal());
         return bootstrapTableVo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteCsrCalculation", name = "删除记录", method = RequestMethod.POST)
+    public HttpResult deleteCsrCalculation(Integer id) {
+        try {
+            csrCalculationService.deleteCsrCalculation(id);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }

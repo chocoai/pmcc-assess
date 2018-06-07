@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
+import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -32,6 +34,8 @@ import java.util.List;
 public class ProjectPlanFinancialClaimController {
     @Autowired
     private ProjectPlanFinancialClaimService projectPlanFinancialClaimService;
+    @Autowired
+    private CsrBorrowerService csrBorrowerService;
 
     @ResponseBody
     @RequestMapping(value = "/getProjectPlanDetailsByPlanApply", name = "取得项目详情计划", method = RequestMethod.GET)
@@ -39,6 +43,18 @@ public class ProjectPlanFinancialClaimController {
 
         BootstrapTableVo bootstrapTableVo = projectPlanFinancialClaimService.getProjectPlanDetailsByProjectId(projectId, planId);
         return bootstrapTableVo;
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectPlanCustomer", name = "取得项目的客户", method = RequestMethod.GET)
+    public HttpResult getProjectPlanCustomer(Integer projectId) {
+        try {
+            List<CsrBorrowerVo> csrBorrowerVos = csrBorrowerService.getCsrBorrowerByProjectId(projectId);
+            return HttpResult.newCorrectResult(csrBorrowerVos);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
 
     }
 

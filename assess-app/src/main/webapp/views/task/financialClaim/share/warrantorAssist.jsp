@@ -55,6 +55,14 @@
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
         cols.push({field: 'name', title: '保证人姓名'});
+        cols.push({
+            field: 'opation', title: '操作',
+            formatter: function (value, row, index) {
+
+                var str = "<a onclick='warrantorAssistDeleteItems(" + row.id + ")' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                return str;
+            }
+        });
         TableInit("tb_warrantorAssist", "${pageContext.request.contextPath}/csrGuarantor/getCsrGuarantor", cols,
             {
                 borrowerId: "${planDetailsParent.projectPhaseId}",
@@ -66,6 +74,32 @@
                     $("#frm_warrantorAssist").initForm(row);
                 }
             });
+    }
+
+    function warrantorAssistDeleteItems(id) {
+        Alert("确认要删除么,删除后数据将不可恢复？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/csrGuarantor/deleteCsrGuarantor",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        warrantorAssistReload();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
     function warrantorAssistReload() {
         TableReload("tb_warrantorAssist");
