@@ -55,7 +55,10 @@ public class FileUtils {
     public static byte[] getZipFile(List<File> fileList, String zipPathAndName)throws IOException{
         File zipFile = new File(zipPathAndName);
         // 文件输出流
-        FileOutputStream outputStream = new FileOutputStream(zipFile);
+        if (!zipFile.exists()){
+//            zipFile.mkdirs();
+        }
+        FileOutputStream outputStream = new FileOutputStream(zipPathAndName);
         // 压缩流
         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
 

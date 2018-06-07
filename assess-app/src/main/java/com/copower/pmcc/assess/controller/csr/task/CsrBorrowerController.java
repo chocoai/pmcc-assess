@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 描述:
@@ -63,15 +64,19 @@ public class CsrBorrowerController {
         return vo;
     }
 
-    @RequestMapping(value = "/downloadBorrowers",name = "多 报表 下载",method = {RequestMethod.POST})
-    public ResponseEntity<byte[]> downloadBorrowers(String borrowerIds,HttpServletRequest request){
+    @RequestMapping(value = "/downloadBorrowers",name = "多 报表 下载",method = {RequestMethod.POST,RequestMethod.GET})
+    public ResponseEntity<byte[]> downloadBorrowers(String borrowerIds, HttpServletRequest request, HttpServletResponse response){
         try {
-            ResponseEntity<byte[]> responseEntity = csrBorrowerService.downloadBorrower(borrowerIds,request);
-            return responseEntity;
+            ResponseEntity<byte[]> responseEntity = csrBorrowerService.downloadBorrower(borrowerIds,request,response);
+            responseEntity.getBody();
+            if (responseEntity!=null) {
+                return responseEntity;
+            }
         }catch (Exception e){
+            System.out.println(e.getMessage());
             logger.error("下载异常");
-            return null;
         }
+        return null;
     }
 
 }
