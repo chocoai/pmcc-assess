@@ -38,7 +38,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -77,7 +81,7 @@ public class CsrBorrowerService {
         return vo;
     }
 
-    public BootstrapTableVo borrowerListVos(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID){
+    public BootstrapTableVo borrowerListVos(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -100,21 +104,22 @@ public class CsrBorrowerService {
 
     /**
      * 多个附件下载
+     *
      * @param borrowerIds
      * @return
      */
     @Transactional
-    public ResponseEntity<byte[]> downloadBorrower(String borrowerIds, HttpServletRequest request){
+    public ResponseEntity<byte[]> downloadBorrower(String borrowerIds, HttpServletRequest request, HttpServletResponse response) {
         ResponseEntity<byte[]> responseEntity = null;
         try {
-            List<String> filePaths = changeBaseAttachment(borrowerIds,request);
-            String zipName = CsrBorrowerEnum.ZIP_NAME.getFilePath();
-            responseEntity = appleDownloadBaseAttachment(filePaths,zipName,request);
-        }catch (Exception e){
+            List<String> filePaths = changeBaseAttachment(borrowerIds, request);
+            String zipName = UUID.randomUUID().toString().substring(0, 5) + ".zip";
+            responseEntity = appleDownloadBaseAttachment(filePaths, zipName, request);
+        } catch (Exception e) {
             try {
-                logger.error("异常!");
+                logger.error("异常!" + e.getMessage());
                 throw e;
-            }catch (Exception e1){
+            } catch (Exception e1) {
 
             }
         }
@@ -122,65 +127,66 @@ public class CsrBorrowerService {
     }
 
 
+
     /**
      * 返回 下载的数据流
+     *
      * @param filePaths 多个临时附件的路径
-     * @param zipName 压缩文件名
+     * @param zipName   压缩文件名
      * @param request
      * @return
      */
-    private ResponseEntity<byte[]> appleDownloadBaseAttachment(List<String> filePaths,String zipName,HttpServletRequest request)throws Exception{
+    private ResponseEntity<byte[]> appleDownloadBaseAttachment(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
         ResponseEntity<byte[]> responseEntity = null;
-        String zipPathAndName = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath() +zipName;
+        String zipPathAndName = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath() + commonService.thisUserAccount() + zipName;
         List<File> fileList = new ArrayList<>();
         for (int i = 0; i < filePaths.size(); i++) {
             fileList.add(new File(filePaths.get(i)));
         }
-        byte[] bytes = FileUtils.getZipFile(fileList,zipPathAndName);
-        responseEntity = FileUtils.getFileUtils().createResponse(zipName,bytes);
+        byte[] bytes = FileUtils.getZipFile(fileList, zipPathAndName);
+        responseEntity = FileUtils.getFileUtils().createResponse(zipName, bytes);
         return responseEntity;
     }
 
     /**
      * 查找附件 并且把附件下载到临时的目录下
+     *
      * @param borrowerIds
      * @param request
      * @return
      * @throws Exception
      */
-    private List<String> changeBaseAttachment(String borrowerIds,HttpServletRequest request)throws Exception{
+    private List<String> changeBaseAttachment(String borrowerIds, HttpServletRequest request) throws Exception {
         String report = AssessFieldNameConstant.CSR_BORROWER_REPORT;
         List<String> filePaths = new ArrayList<>();
         String[] ids = borrowerIds.split(",");
         List<BaseAttachment> baseAttachments = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
-            if (!org.springframework.util.StringUtils.isEmpty(ids[i])){
-                List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(Integer.parseInt(ids[i]),report);
+            if (!org.springframework.util.StringUtils.isEmpty(ids[i])) {
+                List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(Integer.parseInt(ids[i]), report);
                 baseAttachments.addAll(baseAttachmentList);
             }
         }
-        for (BaseAttachment baseAttachment:baseAttachments){
+        for (BaseAttachment baseAttachment : baseAttachments) {
             String localDirPath = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath();
-            String localFileName = UUID.randomUUID().toString().substring(0,7) +CsrBorrowerEnum.ZIP_NAME.getFilePath()+"."+baseAttachment.getFileExtension();
+            String localFileName = UUID.randomUUID().toString().substring(0, 7) + CsrBorrowerEnum.ZIP_NAME.getFilePath() + "." + baseAttachment.getFileExtension();
             //临时下载
-            readImportData(localDirPath,localFileName,baseAttachment);
+            readImportData(localDirPath, localFileName, baseAttachment);
             //收集 临时目录地址
-            filePaths.add(localDirPath+localFileName);
+            filePaths.add(localDirPath + localFileName);
         }
         return filePaths;
     }
 
     /**
      * 将ftp的附件下载到本地
+     *
      * @param localDirPath
      * @param localFileName
      * @param baseAttachment
      */
-    private void readImportData(String localDirPath,String localFileName,BaseAttachment baseAttachment){
-        BaseAttachment queryParam = new BaseAttachment();
-        queryParam.setTableName(AssessTableNameConstant.CSR_PROJECT_INFO);
-        queryParam.setTableId(baseAttachment.getTableId());
-        List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
+    private void readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment) {
+        List<BaseAttachment> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), AssessFieldNameConstant.CSR_BORROWER_REPORT);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
             BaseAttachment sysAttachment = attachmentList.get(0);
             String fullPath = localDirPath + File.separator + localFileName;
@@ -246,8 +252,8 @@ public class CsrBorrowerService {
         });
     }
 
-    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID,Integer groupID) {
-        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID,groupID);
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID, Integer groupID) {
+        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID, groupID);
     }
 
     public CsrBorrowerEntering saveCsrBorrower(CsrBorrowerEntering csrBorrowerEntering, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {

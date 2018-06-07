@@ -196,7 +196,7 @@
                             </div>
                             <div>
                                 <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary" onclick="downloadsBorrower()">
+                                    <button type="button" class="btn btn-primary" onclick="downloadsBorrower('')">
                                         下载
                                     </button>
                                 </div>
@@ -278,41 +278,34 @@
                 $('.tooltips').tooltip();
             },
             onDblClickRow: function (row) {
-
+                console.log(row);
+                downloadsBorrower(row.id);
             }
         });
     }
 
     //文件 多个下载
-    function downloadsBorrower() {
-        var result = $("#listBorrowersTable").bootstrapTable('getSelections');
-        var csrBorrowerIDS = "";
-        for (var i = 0; i < result.length; i++) {
-            if (i == result.length - 1) {
-                csrBorrowerIDS += result[i].id;
-            } else {
-                csrBorrowerIDS += result[i].id + ",";
-            }
-        }
-        var flag = (result.length>0);
-        var data = {};
-        data.borrowerIds = csrBorrowerIDS;
-        if (flag){
-            $.ajax({
-                url: "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    //浏览器响应即可!
-                },
-                error: function (result) {
-                    console.log(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
+    function downloadsBorrower(id) {
+        if (id==''){
+            var result = $("#listBorrowersTable").bootstrapTable('getSelections');
+            var csrBorrowerIDS = "";
+            for (var i = 0; i < result.length; i++) {
+                if (i == result.length - 1) {
+                    csrBorrowerIDS += result[i].id;
+                } else {
+                    csrBorrowerIDS += result[i].id + ",";
                 }
-            })
+            }
+            var flag = (result.length>0);
+            var data = {};
+            data.borrowerIds = csrBorrowerIDS;
+            if (flag){
+                window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds="+csrBorrowerIDS;
+            }else {
+                Alert("没有要下载的客户数据!");
+            }
         }else {
-            Alert("没有要下载的客户数据!");
+            window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds="+id;
         }
     }
 </script>
