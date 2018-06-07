@@ -1094,12 +1094,9 @@
 
         //遍历右侧表进行添加
         var arrRight = $("#rightTable").find('tbody').find('tr');
-        console.log(arrRight);
         $.each(arrRight, function (i, tr) {
             var trName = $(tr).find('td:last').find('span').attr('name')?$(tr).find('td:last').find('span').attr('name'):$(tr).find('td:last').find('input').attr('name');
             var temp = $(tr).find('td:last').find('span').attr('data-id')?$(tr).find('td:last').find('span').attr('data-id'):$(tr).find('td:last').find('input').attr('data-id');
-            console.log(trName);
-            console.log(temp);
             var dataId = parseInt(temp) + 1;
             if(i == (arrRight.length-2)){
                 $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
@@ -1118,7 +1115,6 @@
     }
 
     function deleteCase(dataId) {
-        console.log(dataId);
         $("#oneTable").each(function () {
                 $("#oneTable").find('[data-id=' + dataId + ']').parent().remove();
         })
