@@ -48,25 +48,22 @@ public class FileUtils {
 
     /**
      *
-     * @param mapList 传入excel的字节流和名称组成的map列表
-     * @param zipFileName 压缩成的文件名称
-     * @param session 用来获取
+     * @param zipPathAndName 压缩成的文件路径
      * @return 返回一个压缩后的字节流
      * @throws IOException
      */
-    public static byte[] getZipFile(List<Map<byte[],String>> mapList, String zipFileName,HttpSession session)throws IOException{
-        String pathC = session.getServletContext().getRealPath("/") + "/template/temp/";
-        File zipFile = new File(pathC+zipFileName);
+    public static byte[] getZipFile(List<File> fileList, String zipPathAndName)throws IOException{
+        File zipFile = new File(zipPathAndName);
         // 文件输出流
         FileOutputStream outputStream = new FileOutputStream(zipFile);
         // 压缩流
         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-        int size = mapList.size();
+
+        int size = fileList.size();
         // 压缩列表中的文件
         for (int i = 0; i < size; i++) {
-            //字节流 文件名
-            Map<byte[],String> stringMap = mapList.get(i);
-            zipFile(zipOutputStream,stringMap,session);
+            File file = fileList.get(i);
+            zipFile(file, zipOutputStream);
         }
         // 关闭压缩流、文件流
         zipOutputStream.close();
@@ -74,58 +71,51 @@ public class FileUtils {
         return org.apache.commons.io.FileUtils.readFileToByteArray(zipFile);
     }
 
-    private static void zipFile(ZipOutputStream zipOutputStream,Map<byte[],String> map,HttpSession session)throws IOException{
-        for (Map.Entry<byte[],String> entryFile:map.entrySet()){
-            byte[] bytes = entryFile.getKey();
-            String fileName = entryFile.getValue();
-            FileInputStream fis = new FileInputStream(isFileWrite(bytes,fileName,session));
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            ZipEntry entry = new ZipEntry(fileName);
-            zipOutputStream.putNextEntry(entry);
+    /**
+     * 将文件数据写入文件压缩流
+     *
+     * @param file            带压缩文件
+     * @param zipOutputStream 压缩文件流
+     * @throws IOException
+     */
+    private static void zipFile(File file, ZipOutputStream zipOutputStream)throws IOException{
+        if (file.exists()) {
+            if (file.isFile()) {
+                FileInputStream fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                ZipEntry entry = new ZipEntry(file.getName());
+                zipOutputStream.putNextEntry(entry);
 
-            final int MAX_BYTE = 30 * 1024 * 1024; // 最大流为30MB
-            long streamTotal = 0; // 接收流的容量
-            int streamNum = 0; // 需要分开的流数目
-            int leaveByte = 0; // 文件剩下的字符数
-            byte[] buffer; // byte数据接受文件的数据
+                final int MAX_BYTE = 10 * 1024 * 1024; // 最大流为10MB
+                long streamTotal = 0; // 接收流的容量
+                int streamNum = 0; // 需要分开的流数目
+                int leaveByte = 0; // 文件剩下的字符数
+                byte[] buffer; // byte数据接受文件的数据
 
-            streamTotal = bis.available(); // 获取流的最大字符数
-            streamNum = (int) Math.floor(streamTotal / MAX_BYTE);
-            leaveByte = (int) (streamTotal % MAX_BYTE);
+                streamTotal = bis.available(); // 获取流的最大字符数
+                streamNum = (int) Math.floor(streamTotal / MAX_BYTE);
+                leaveByte = (int) (streamTotal % MAX_BYTE);
 
-            if (streamNum > 0) {
-                for (int i = 0; i < streamNum; i++) {
-                    buffer = new byte[MAX_BYTE];
-                    bis.read(buffer, 0, MAX_BYTE);
-                    zipOutputStream.write(buffer, 0, MAX_BYTE);
+                if (streamNum > 0) {
+                    for (int i = 0; i < streamNum; i++) {
+                        buffer = new byte[MAX_BYTE];
+                        bis.read(buffer, 0, MAX_BYTE);
+                        zipOutputStream.write(buffer, 0, MAX_BYTE);
+                    }
                 }
+
+                // 写入剩下的流数据
+                buffer = new byte[leaveByte];
+                bis.read(buffer, 0, leaveByte); // 读入流
+                zipOutputStream.write(buffer, 0, leaveByte); // 写入流
+                zipOutputStream.closeEntry(); // 关闭当前的zip entry
+
+                // 关闭输入流
+                bis.close();
+                fis.close();
             }
-
-            // 写入剩下的流数据
-            buffer = new byte[leaveByte];
-            bis.read(buffer, 0, leaveByte); // 读入流
-            zipOutputStream.write(buffer, 0, leaveByte); // 写入流
-            zipOutputStream.closeEntry(); // 关闭当前的zip entry
-
-            // 关闭输入流
-            bis.close();
-            fis.close();
-
         }
     }
-
-    private static String isFileWrite(byte[] bytes,String fileName,HttpSession session)throws IOException{
-        ServletContext servletContext = session.getServletContext();
-        String pathC = session.getServletContext().getRealPath("/") + "/template/temp/";
-        String path = pathC+""+fileName;
-        FileOutputStream outputStream = new FileOutputStream(path);
-        outputStream.write(bytes);
-        outputStream.flush();
-        outputStream.close();
-        return path;
-    }
-
-
 
 
 

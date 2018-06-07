@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentKeepDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.BaseAttachmentExample;
 import com.copower.pmcc.assess.dal.entity.BaseAttachmentKeep;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -36,10 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,6 +222,16 @@ public class BaseAttachmentService {
         }
     }
 
+    /**
+     *  @time zch 2018-05-09
+     * @param table_id
+     * @param fields_name
+     * @return
+     */
+    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name){
+        return baseAttachmentDao.getByField_tableId(table_id,fields_name);
+    }
+
     public List<BaseAttachment> getAttachmentList(List<Integer> tableIds, BaseAttachment sysAttachment) {
         return baseAttachmentDao.getAttachmentList(tableIds,sysAttachment);
     }
@@ -310,6 +320,21 @@ public class BaseAttachmentService {
             ftpUtilsExtense.downloadFilesFromFTP(fileName, attachment.getFtpFilesName(), attachment.getFilePath(), response);
         } catch (BusinessException e) {
 
+        }
+    }
+
+    /**
+     *
+     * @param id
+     * @param fileNameAndPath 传入临时地址和文件名的组合path
+     * @throws Exception
+     */
+    public void downloadFileFromServerV(Integer id, String fileNameAndPath) throws Exception{
+        BaseAttachment attachment = baseAttachmentDao.getAttachmentById(id);
+        String serverNameAndPath = attachment.getFilePath()+attachment.getFtpFilesName();
+        org.apache.commons.io.FileUtils.copyFile(new File(fileNameAndPath),new FileOutputStream(new File(serverNameAndPath)));
+        if (attachment == null) {
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         }
     }
 

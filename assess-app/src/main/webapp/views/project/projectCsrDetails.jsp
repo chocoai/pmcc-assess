@@ -166,6 +166,54 @@
                 </div>
                 </c:forEach>
             </div>
+
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>客户列表</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="20" placeholder="二级分行"
+                                           id="secondLevelBranch" name="secondLevelBranch" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-number="true" data-rule-maxlength="20"
+                                           placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="loadBorrowerList('listBorrowersTable');">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="downloadsBorrower()">
+                                        下载
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <div class="col-sm-12 treeGrid">
+                                    <table class="table table-bordered" id="listBorrowersTable">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="x_panel">
                 <div class="x_title">
                     <h2>工作成果</h2>
@@ -204,7 +252,73 @@
 </div>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript">
+    $(function () {
+        loadBorrowerList("listBorrowersTable");
+    });
+
+    function loadBorrowerList(tableID) {
+        var cols = [];
+        cols.push({field: 'checkbox', checkbox: true,title:"报表列表"});
+        cols.push({field: 'secondLevelBranch', title: '二级分行'});
+        cols.push({field: 'firstLevelBranch', title: '一级分行'});
+        cols.push({field: 'name', title: '名字'});
+        cols.push({field: 'attachmentHtml', title: '报表'});
+        cols.push({field: 'id', visible: false, title: "id"});
+        $("#"+tableID).bootstrapTable('destroy');
+        TableInit(""+tableID, "${pageContext.request.contextPath}/csrBorrower/listBorrowers", cols, {
+            csrProjectInfoID: '${csrProjectInfo.id}',
+            secondLevelBranch: $("#secondLevelBranch").val(),
+            firstLevelBranch: $("#firstLevelBranch").val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            },
+            onDblClickRow: function (row) {
+
+            }
+        });
+    }
+
+    //文件 多个下载
+    function downloadsBorrower() {
+        var result = $("#listBorrowersTable").bootstrapTable('getSelections');
+        var csrBorrowerIDS = "";
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
+                csrBorrowerIDS += result[i].id;
+            } else {
+                csrBorrowerIDS += result[i].id + ",";
+            }
+        }
+        var flag = (result.length>0);
+        var data = {};
+        data.borrowerIds = csrBorrowerIDS;
+        if (flag){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    //浏览器响应即可!
+                },
+                error: function (result) {
+                    console.log(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else {
+            Alert("没有要下载的客户数据!");
+        }
+    }
+</script>
 <script type="application/javascript">
+
+
     $(function () {
         if ("${projectFollowFlog}" == "0") {
             $("#btn_followProject").show();

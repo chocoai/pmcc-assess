@@ -65,6 +65,31 @@ public class CsrBorrowerDao {
     }
 
     /**
+     * 请不要和上面的合并 不能加 GroupId 查询
+     * @param secondLevelBranch
+     * @param firstLevelBranch
+     * @param csrProjectInfoID
+     * @return
+     */
+    public List<CsrBorrower> borrowerListsB(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID){
+        List<CsrBorrower> csrBorrowers = null;
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        CsrBorrowerExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if(csrProjectInfoID!=null){
+            criteria.andCsrProjectIdEqualTo(csrProjectInfoID);
+        }
+        if(StringUtils.isNotBlank(firstLevelBranch)){
+            criteria.andFirstLevelBranchLike("%"+firstLevelBranch+"%");
+        }
+        if(StringUtils.isNotBlank(secondLevelBranch)){
+            criteria.andSecondLevelBranchLike("%"+secondLevelBranch+"%");
+        }
+        csrBorrowers = csrBorrowerMapper.selectByExample(example);
+        return csrBorrowers;
+    }
+
+    /**
      * 取消分派
      * @param csrProjectInfoID
      * @param ids

@@ -184,7 +184,7 @@
                                             文号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="number" id="number" placeholder="文号" onkeyup="value=value.replace(/[^\d]/g,'')"
+                                            <input type="text" data-rule-number='true' name="number" placeholder="文号（请输入数字）"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>

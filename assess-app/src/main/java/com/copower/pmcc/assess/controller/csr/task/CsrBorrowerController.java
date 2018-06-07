@@ -5,13 +5,19 @@ import com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 描述:
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/csrBorrower", name = "借款人")
 public class CsrBorrowerController {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CsrBorrowerService csrBorrowerService;
 
@@ -36,6 +43,7 @@ public class CsrBorrowerController {
         }
         return HttpResult.newCorrectResult(csrBorrower.getId());
     }
+
     @ResponseBody
     @RequestMapping(value = "/loadLoanBorrower", name = "读取录入借款人", method = RequestMethod.GET)
     public HttpResult loadLoanBorrower(Integer borrowerId,Integer detailsId) {
@@ -46,4 +54,24 @@ public class CsrBorrowerController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/listBorrowers", name = "显示借款人列表", method = RequestMethod.GET)
+    public BootstrapTableVo list(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID) {
+        BootstrapTableVo vo = null;
+        vo = csrBorrowerService.borrowerListVos(secondLevelBranch,firstLevelBranch,csrProjectInfoID);
+        return vo;
+    }
+
+    @RequestMapping(value = "/downloadBorrowers",name = "多 报表 下载",method = {RequestMethod.POST})
+    public ResponseEntity<byte[]> downloadBorrowers(String borrowerIds,HttpServletRequest request){
+        try {
+            ResponseEntity<byte[]> responseEntity = csrBorrowerService.downloadBorrower(borrowerIds,request);
+            return responseEntity;
+        }catch (Exception e){
+            logger.error("下载异常");
+            return null;
+        }
+    }
+
 }
