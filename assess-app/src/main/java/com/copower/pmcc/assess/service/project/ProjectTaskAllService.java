@@ -119,7 +119,7 @@ public class ProjectTaskAllService {
 
             bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
 
-            List<Integer> integers = LangUtils.transform(taskAllBackDtos, o->o.getDetailsId());
+            List<Integer> integers = LangUtils.transform(taskAllBackDtos, o -> o.getDetailsId());
 
             List<ProjectPlanDetails> projectPlanDetailsByPlanId = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
             List<ProjectPlanDetails> projectPlanDetails = LangUtils.filter(projectPlanDetailsByPlanId, o -> {
@@ -128,14 +128,17 @@ public class ProjectTaskAllService {
 
             //加入新任务
             for (ProjectPlanDetails item : projectPlanDetails) {
-                item.setReturnDetailsId(item.getId());
+
                 List<ProjectTaskAllBackDto> filter = LangUtils.filter(taskAllBackDtos, o -> {
                     return o.getDetailsId().intValue() == item.getId().intValue();
                 });
-                if(CollectionUtils.isNotEmpty(filter))
-                {
+
+                if (CollectionUtils.isNotEmpty(filter)) {
                     item.setReturnDetailsReason(filter.get(0).getBackText());
+                    projectPlanDetailsDao.updateProjectPlanDetails(item);
                 }
+                item.setReturnDetailsId(item.getId());
+                item.setStatus(ProcessStatusEnum.RUN.getValue());
                 projectPlanDetailsDao.addProjectPlanDetails(item);
                 projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
             }
@@ -172,7 +175,7 @@ public class ProjectTaskAllService {
             //更新任务标识
             bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
 
-            List<Integer> integers = LangUtils.transform(taskAllBackDtos, o->o.getDetailsId());
+            List<Integer> integers = LangUtils.transform(taskAllBackDtos, o -> o.getDetailsId());
 
             List<ProjectPlanDetails> projectPlanDetailsByPlanId = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
             List<ProjectPlanDetails> projectPlanDetails = LangUtils.filter(projectPlanDetailsByPlanId, o -> {
@@ -187,8 +190,7 @@ public class ProjectTaskAllService {
                 List<ProjectTaskAllBackDto> filter = LangUtils.filter(taskAllBackDtos, o -> {
                     return o.getDetailsId().intValue() == item.getId().intValue();
                 });
-                if(CollectionUtils.isNotEmpty(filter))
-                {
+                if (CollectionUtils.isNotEmpty(filter)) {
                     item.setReturnDetailsReason(filter.get(0).getBackText());
                 }
 

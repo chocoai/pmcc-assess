@@ -137,7 +137,7 @@
             width: 'auto',
             method: "get",
             rownumbers: true,
-            onLoadSuccess:function () {
+            onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             },
             onDblClickRow: function (row) {
@@ -159,7 +159,7 @@
                     formatter: function (value, row) {
                         var s = value;
                         if (row.bisNew) {
-                            s += "<i class='clip-new' style='font-size: 15px;color: red'></i>";
+                            s += "<i class='fa fa-star-o' style='font-size: 15px;color: red'></i>";
                         }
                         return s;
                     }

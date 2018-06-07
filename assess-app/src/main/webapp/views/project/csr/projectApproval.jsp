@@ -94,18 +94,6 @@
                     </form>
                 </div>
 
-
-                <div class="x_title">
-                    <h3> 无效数据规则</h3>
-                    <div class="clearfix">
-                    </div>
-                </div>
-                <div class="x_content">
-                    <table class="table table-bordered" id="tb_invalid_rule_list">
-                        <!-- cerare document add ajax data-->
-                    </table>
-                </div>
-
                 <div class="x_title">
                     <h3> 项目组分派</h3>
                     <div class="clearfix">
@@ -199,7 +187,7 @@
                                             <div class="input-group">
                                                 <input type="hidden" id="projectManagerID" name="projectManager">
                                                 <input type="text" class="form-control" readonly="readonly"
-                                                       required="required"
+                                                       required="required" onclick="selectUserAccountManager()"
                                                        id="projectManager" maxlength="200">
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -227,7 +215,7 @@
                                             <div class="input-group">
                                                 <input type="hidden" id="projectMemberID" name="projectMember">
                                                 <input type="text" class="form-control" readonly="readonly"
-                                                       required="required"
+                                                       required="required" onclick="selectUserAccountMember()"
                                                        id="projectMember" maxlength="200">
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default docs-tooltip"
@@ -726,9 +714,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        loadInvalidRuleList();
         loadAttachmentList();
-
     });
 
     //加载附件列表信息
@@ -743,21 +729,6 @@
         })
     }
 
-
-    //加载无效规则列表
-    function loadInvalidRuleList() {
-        var cols = [];
-        cols.push({field: 'columnName', title: '列名称'});
-        cols.push({field: 'columnValue', title: '过滤值'});
-        $("#tb_invalid_rule_list").bootstrapTable('destroy');
-        TableInit("tb_invalid_rule_list", "${pageContext.request.contextPath}/crsInvalidRule/getInvalidRuleList", cols, {
-            csrProjectId: '${csrProjectInfo.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
-    }
 
     //检查是否完全分配
     function checkCsrBorrower() {

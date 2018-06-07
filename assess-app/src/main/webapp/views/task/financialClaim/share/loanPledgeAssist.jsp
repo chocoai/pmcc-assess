@@ -8,7 +8,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="合同签订日期" data-date-format='yyyy-mm-dd'  name="signData" class="form-control dbdate" >
+                       placeholder="合同签订日期" data-date-format='yyyy-mm-dd' name="signData" class="form-control dbdate">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -26,7 +26,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="抵押人"  name="mortgagor" class="form-control">
+                       placeholder="抵押人" name="mortgagor" class="form-control">
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="贷款金额" name="loanAmount" class="form-control" >
+                       placeholder="贷款金额" name="loanAmount" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -56,7 +56,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="抵押物地址" name="mortgageAddress" class="form-control" >
+                       placeholder="抵押物地址" name="mortgageAddress" class="form-control">
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="土地面积" name="landArea" class="form-control" >
+                       placeholder="土地面积" name="landArea" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -87,7 +87,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="房产性质"  name="houseNature" class="form-control" >
+                       placeholder="房产性质" name="houseNature" class="form-control">
             </div>
         </div>
     </div>
@@ -108,7 +108,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="外评价值" name="evaluationValue" class="form-control" >
+                       placeholder="外评价值" name="evaluationValue" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -117,7 +117,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="现本金余额"  name="principalBalance" class="form-control" >
+                       placeholder="现本金余额" name="principalBalance" class="form-control">
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="是否起诉查封" name="bisSealUp" class="form-control" >
+                       placeholder="是否起诉查封" name="bisSealUp" class="form-control">
             </div>
         </div>
     </div>
@@ -184,6 +184,14 @@
         cols.push({field: 'mortgagor', title: '抵押人'});
         cols.push({field: 'mortgageCompany', title: '抵押行'});
         cols.push({field: 'loanAmount', title: '贷款金额'});
+        cols.push({
+            field: 'opation', title: '操作',
+            formatter: function (value, row, index) {
+
+                var str = "<a onclick='loanPledgeAssistDeleteItems(" + row.id + ")' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                return str;
+            }
+        });
         TableInit("tb_loanPledgeAssist", "${pageContext.request.contextPath}/csrBorrowerMortgage/getCsrBorrowerMortgage", cols,
             {
                 borrowerId: "${planDetailsParent.projectPhaseId}",
@@ -193,8 +201,36 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_loanPledgeAssist").initForm(row);
+                },
+                onLoadSuccess: function () {
+                    $(".tooltips").tooltip();
                 }
             });
+    }
+    function loanPledgeAssistDeleteItems(id) {
+        Alert("确认要删除么,删除后数据将不可恢复？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/csrBorrowerMortgage/deleteCsrBorrowerMortgage",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loanPledgeAssistReload();
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
     function loanPledgeAssistReload() {
         TableReload("tb_loanPledgeAssist");
@@ -207,7 +243,7 @@
         var data = formParams("frm_loanPledgeAssist");
         data["bisImport"] = false;
         data["borrowerId"] = "${planDetailsParent.projectPhaseId}";//该项业务特殊，存储的内容为客户编号
-        data["detailsId"]=$("#loanPledgeAssist_details_id").val();
+        data["detailsId"] = $("#loanPledgeAssist_details_id").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/csrBorrowerMortgage/saveLoanBorrowerMortgage",
             data: data,
@@ -218,8 +254,8 @@
                 if (result.ret) {
                     toastr.success('保存成功');
                     loanPledgeAssistReload();
-                    var actualHours=$("#frm_loanPledgeAssist [name$='actualHours']").val();
-                    var taskRemarks=$("#frm_loanPledgeAssist [name$='taskRemarks']").val();
+                    var actualHours = $("#frm_loanPledgeAssist [name$='actualHours']").val();
+                    var taskRemarks = $("#frm_loanPledgeAssist [name$='taskRemarks']").val();
                     $("#frm_loanPledgeAssist").clearAll();
                     $("#frm_loanPledgeAssist").validate();
                     $("#frm_loanPledgeAssist [name$='actualHours']").val(actualHours);

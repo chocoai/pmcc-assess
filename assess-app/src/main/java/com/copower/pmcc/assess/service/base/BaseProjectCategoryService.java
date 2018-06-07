@@ -22,21 +22,30 @@ public class BaseProjectCategoryService {
     @Autowired
     private BaseProjectCategoryDao baseProjectCategoryDao;
 
-    public BaseProjectCategory getBidProjectCategoryById(Integer id) {
+    public BaseProjectCategory getProjectCategoryById(Integer id) {
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASE_CATEGORY_ID, String.valueOf(id));
         try {
-            return LangUtils.singleCache(cacheKey, id, BaseProjectCategory.class, input -> baseProjectCategoryDao.getBidProjectCategoryById(input));
+            return LangUtils.singleCache(cacheKey, id, BaseProjectCategory.class, input -> baseProjectCategoryDao.getProjectCategoryById(input));
         } catch (Exception e) {
-            return baseProjectCategoryDao.getBidProjectCategoryById(id);
+            return baseProjectCategoryDao.getProjectCategoryById(id);
         }
     }
 
-    public List<BaseProjectCategory> getBidProjectCategoryListByPid(Integer pid) {
+    public BaseProjectCategory getProjectCategoryByKey(String key) {
+        String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASE_CATEGORY_KEY, key);
+        try {
+            return LangUtils.singleCache(cacheKey, key, BaseProjectCategory.class, input -> baseProjectCategoryDao.getProjectCategoryByKey(input));
+        } catch (Exception e) {
+            return baseProjectCategoryDao.getProjectCategoryByKey(key);
+        }
+    }
+
+    public List<BaseProjectCategory> getProjectCategoryListByPid(Integer pid) {
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASE_CATEGORY_PID, String.valueOf(pid));
         try {
-            return LangUtils.listCache(cacheKey, pid, BaseProjectCategory.class, input -> baseProjectCategoryDao.getBidProjectCategoryListByPid(input));
+            return LangUtils.listCache(cacheKey, pid, BaseProjectCategory.class, input -> baseProjectCategoryDao.getProjectCategoryListByPid(input));
         } catch (Exception e) {
-            return baseProjectCategoryDao.getBidProjectCategoryListByPid(pid);
+            return baseProjectCategoryDao.getProjectCategoryListByPid(pid);
         }
     }
 }

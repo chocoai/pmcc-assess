@@ -99,6 +99,17 @@
 
 
     function submit() {
+
+        var tf;
+        <c:forEach var="item" items="${projectDetailsTask}">
+        tf = ${item.declareFormName}Submit();
+        if (tf == false) {
+
+            return false;
+        }
+
+        </c:forEach>
+
         Loading.progressShow();
 
         var objs = $(".css_detailsId");

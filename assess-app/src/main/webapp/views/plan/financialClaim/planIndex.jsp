@@ -251,7 +251,7 @@
                             <tr class="fast_tr">
                                 <td class="hidden-xs">工作事项</td>
                                 <td colspan="3" class="hidden-xs">
-                                    <label><input type="checkbox" id="chk_phase_all" value="0" onchange="checkPhase()">全部</label>
+                                    <label><input type="checkbox" onchange="checkPhase(this)">全部</label>
                                     <c:forEach var="item" items="${projectPhases}">
                                         <label class="chk_phase"><input type="checkbox" class="chk_phase" value="${item.id}">${item.projectPhaseName}</label>
                                     </c:forEach>
@@ -260,17 +260,17 @@
                             <tr>
                                 <td class="hidden-xs">开始时间</td>
                                 <td class="hidden-xs">
-                                    <input type="text" name="planStartDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                    <input type="text" required name="planStartDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
                                 <td class="hidden-xs">结束时间</td>
                                 <td class="hidden-xs">
-                                    <input type="text" name="planEndDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                    <input type="text" required name="planEndDate" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
 
                             </tr>
                             <tr>
                                 <td class="hidden-xs">责任人</td>
                                 <td class="hidden-xs">
                                     <input type="hidden" id="fast_executeUserAccount" name="executeUserAccount" class="fast_value">
-                                    <input type="text" id="fast_executeUserName" name="executeUserName" class="form-control" readonly="readonly"
+                                    <input type="text" required id="fast_executeUserName" name="executeUserName" class="form-control" readonly="readonly"
                                            onclick="selFastEmployee()">
                                 <td class="hidden-xs">计划工时</td>
                                 <td class="hidden-xs">
@@ -306,6 +306,7 @@
     $(function () {
         getPlanItemList();
         loadProjectPlanDetails();
+        $("#frm_fastset").validate();
     });
     function ReloadLoadProjectPlanDetails() {
         TableReload("PlanItemListed");
@@ -347,20 +348,13 @@
             });
     }
 
-    function checkPhase() {
-        var isChecked = $('#chk_phase_all').prop("checked");
+    function checkPhase(obj) {
+        var isChecked = $(obj).prop("checked");
         if (isChecked) {
-            $(".chk_phase").hide();
+            $(".chk_phase").prop("checked", true);
         }
         else {
-            $(".chk_phase").show();
-        }
-        isChecked = $('#chk_customer_all').prop("checked");
-        if (isChecked) {
-            $(".chk_customer").hide();
-        }
-        else {
-            $(".chk_customer").show();
+            $(".chk_phase").prop("checked", false);
         }
     }
     function selEmployee() {
@@ -460,99 +454,113 @@
     function getPlanItemList() {
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/planFinancialClaim/getProjectPlanDetailsByPlanApply",
+            url: "${pageContext.request.contextPath}/planFinancialClaim/getProjectPlanCustomer",
             data: {
-                planId: ${planId},
                 projectId: ${projectId}
             },
             type: "get",
             dataType: "json",
             success: function (result) {
                 Loading.progressHide();
-                ReloadLoadProjectPlanDetails();
-                var html = "<label><input type='checkbox' id='chk_customer_all' value='0'>全部</label>";
-                $.each(result.rows, function (i, j) {
-                    if (j.pid == 0) {
-                        if (j.executeUserName == "" || j.executeUserName == null) {
-                            html += "<label class='chk_customer'><input type='checkbox' class='chk_customer' value='" + j.id + "'>" + j.projectPhaseName + "</label>";
+
+                if (result.ret) {
+                    var html = "<label><input type='checkbox'  onchange='selectCheckBox(this)' value='-1'>全部</label>";
+                    $.each(result.data, function (i, j) {
+                        var index = parseInt((i / 10) + 1);
+                        if (i % 10 == 0) {
+                            html += "<br/><label><input type='checkbox' class='check_group' onchange='selectCheckBox(this)' value='" + index + "'>" + index + "组</label>";
                         }
-                        else {
-                            html += "<label class='chk_customer' style='color: red'><input type='checkbox' class='chk_customer' value='" + j.id + "'>" + j.projectPhaseName + "</label>";
-                        }
-                    }
-                });
-                $("#td_customers").html(html);
+
+                        html += "<label class='chk_customer'><input type='checkbox' class='chk_customer group_" + index + "' value='" + j.id + "'>" + j.name + "</label>";
+                    });
+                    $("#td_customers").html(html);
+                } else {
+                    Alert("读取客户信息数据失败:" + result.errmsg);
+                }
+
 
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+    }
 
+    function selectCheckBox(obj) {
+        var objVal = $(obj).val();
+        if ($(obj).prop("checked")) {
+            if (objVal == -1) {
+                $(".chk_customer").prop("checked", true);
+                $(".check_group").prop("checked", true);
+            }
+            else {
+                $(".group_" + objVal).prop("checked", true);
+            }
+        }
+        else {
+            if (objVal == -1) {
+                $(".chk_customer").prop("checked", false);
+                $(".check_group").prop("checked", false);
+            }
+            else {
+                $(".group_" + objVal).prop("checked", false);
+            }
+        }
 
     }
 
     function keySet() {
-        $("#frm_fastset").validate();
+        $("#frm_fastset").clearAll();
         $('#div_fastSet').modal({backdrop: 'static', keyboard: false});
-
     }
 
     function saveFastset() {
+        if (!$("#frm_fastset").valid()) {
+            return false;
+        }
         var data = formParams("frm_fastset");
         //取客户
-        var customerAll = $('#chk_customer_all').prop("checked");
-        if (customerAll) {
-            data["customerList"] = "";
-        }
-        else {
-            var customerList = "";
-            $.each($(".chk_customer"), function (p, q) {
-                if ($(q).prop("checked")) {
-                    customerList += $(q).val() + ",";
-                }
-            });
-            if (customerList == "") {
-                Alert("请至少选择一个客户");
-                return false;
+        var customerList = "";
+        $.each($(".chk_customer"), function (p, q) {
+            if ($(q).prop("checked")) {
+                customerList += $(q).val() + ",";
             }
-            data["customerList"] = customerList;
+        });
+        if (customerList == "") {
+            Alert("请至少选择一个客户");
+            return false;
         }
+        data["customerList"] = customerList;
 
-        var taskAll = $('#chk_phase_all').prop("checked");
-        if (taskAll) {
-            data["phaseList"] = "";
-        }
-        else {
-            var phaseList = "";
-            $.each($(".chk_phase"), function (p, q) {
-                if ($(q).prop("checked")) {
-                    phaseList += $(q).val() + ",";
-                }
-            });
-            if (phaseList == "") {
-                Alert("请至少选择一个任务");
-                return false;
+
+        var phaseList = "";
+        $.each($(".chk_phase"), function (p, q) {
+            if ($(q).prop("checked")) {
+                phaseList += $(q).val() + ",";
             }
-            data["phaseList"] = phaseList;
+        });
+        if (phaseList == "") {
+            Alert("请至少选择一个任务");
+            return false;
         }
+        data["phaseList"] = phaseList;
 
         //取任务
         data["planId"] = "${planId}";
         data["projectId"] = 1;
-        // Loading.progressShow();
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/planFinancialClaim/fastSetPlan",
             data: {formData: JSON.stringify(data)},
             type: "post",
             dataType: "json",
             success: function (result) {
-                // Loading.progressHide();
+                Loading.progressHide();
 
                 if (result.ret) {
                     //保存完后其他动作
+                    ReloadLoadProjectPlanDetails();
                     toastr.success("保存成功");
-                    getPlanItemList();
                     $('#div_fastSet').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);

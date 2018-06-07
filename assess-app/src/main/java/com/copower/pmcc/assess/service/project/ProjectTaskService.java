@@ -120,6 +120,7 @@ public class ProjectTaskService {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
             projectPlanDetails.setTaskRemarks(taskRemarks);
+            projectPlanDetails.setReturnDetailsReason("");
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
 
             ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();

@@ -11,6 +11,7 @@ public class AssessCacheConstant {
     //项目类型
     public static final String PMCC_ASSESS_BASE_CATEGORY_ID = "pmcc:assess:base:category:id";
     public static final String PMCC_ASSESS_BASE_CATEGORY_PID = "pmcc:assess:base:category:pid";
+    public static final String PMCC_ASSESS_BASE_CATEGORY_KEY = "pmcc:assess:base:category:key";
 
     //项目阶段
     public static final String PMCC_ASSESS_WORK_STAGE="pmcc:assess:work:stage";

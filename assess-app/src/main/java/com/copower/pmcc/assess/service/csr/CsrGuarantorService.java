@@ -67,4 +67,13 @@ public class CsrGuarantorService {
         return csrGuarantorVos;
 
     }
+
+    public void deleteCsrGuarantor(Integer id) throws BusinessException
+    {
+        try {
+            csrGuarantorDao.deleteCsrGuarantor(id);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
 }

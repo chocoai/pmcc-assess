@@ -111,6 +111,9 @@
                 }
                 },
                 {
+                    field: 'returnDetailsReason', align: 'center', title: '退回原因', width: '20%'
+                },
+                {
                     field: 'processInsId', align: 'center', title: '查看详情', width: '10%', formatter: function (value, row) {
                     var str = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
                     return str;

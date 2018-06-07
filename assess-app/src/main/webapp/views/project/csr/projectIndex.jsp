@@ -21,12 +21,13 @@
                         <input type="hidden" id="id" name="id" value="${csrProjectInfo.id}">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目类型<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="projectTypeId" name="projectTypeId" class="form-control"
-                                            required="required" onchange="loadProjectCategoryList($('#projectTypeId').val())">
+                                    <input type="hidden" name="projectTypeId" value="${csrProjectInfo.projectTypeId}">
+                                    <select id="projectCategoryId" name="projectCategoryId" class="form-control"
+                                            required="required">
                                         <option value="">请选择</option>
-                                        <c:forEach items="${projectTypeList}" var="item">
+                                        <c:forEach items="${projectCategoryList}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id==csrProjectInfo.projectTypeId}">
                                                     <option value="${item.id}" selected="selected">${item.name}</option>
@@ -36,14 +37,6 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <select id="projectCategoryId" name="projectCategoryId" class="form-control" required="required">
                                     </select>
                                 </div>
                             </div>
@@ -83,7 +76,7 @@
                                                value="${csrProjectInfo.entrustmentUnitId}">
                                         <input type="text" id="entrustmentUnitName" name="entrustmentUnitName"
                                                value="${csrProjectInfo.entrustmentUnitName}"
-                                               placeholder="委托单位"
+                                               placeholder="委托单位" onclick="selectEntrustmentUnit();"
                                                class="form-control" required="required" readonly="readonly">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -138,8 +131,10 @@
                                 <label class="col-sm-1 control-label">项目分配人<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="hidden" id="distributionUser" name="distributionUser" value="${csrProjectInfo.distributionUser}">
+                                        <input type="hidden" id="distributionUser" name="distributionUser"
+                                               value="${csrProjectInfo.distributionUser}">
                                         <input type="text" class="form-control" readonly="readonly"
+                                               onclick="selectDistributionUser();"
                                                value="${csrProjectInfo.distributionUserName}" required="required"
                                                id="distributionUserName" maxlength="200">
                                         <span class="input-group-btn">
@@ -291,7 +286,7 @@
     $(document).ready(function () {
         loadInvalidRuleList();
         loadAttachmentList();
-        loadProjectCategoryList('${csrProjectInfo.projectTypeId}','${csrProjectInfo.projectCategoryId}');
+        loadProjectCategoryList('${csrProjectInfo.projectTypeId}', '${csrProjectInfo.projectCategoryId}');
         FileUtils.uploadFiles({
             showFileList: false,
             target: "upload_file",
@@ -310,12 +305,12 @@
     });
 
     //加载项目类别
-    function loadProjectCategoryList(projectTypeId,projectCategoryId) {
+    function loadProjectCategoryList(projectTypeId, projectCategoryId) {
         $("#projectCategoryId").empty();
-        if(projectTypeId){
-            AssessCommon.getProjectCategoryList(projectTypeId,function (html,data) {
+        if (projectTypeId) {
+            AssessCommon.getProjectCategoryList(projectTypeId, function (html, data) {
                 $("#projectCategoryId").append(html);
-                if(projectCategoryId){
+                if (projectCategoryId) {
                     $("#projectCategoryId").val(projectCategoryId);
                 }
             })
@@ -446,6 +441,11 @@
     //保存项目
     function saveCsrProjectInfo() {
         if ($("#frm_csr_project_info").valid()) {
+            if ($("#_upload_file").html().length <= 0) {
+                Alert("请上传客户信息附件！");
+                return;
+            }
+
             var data = {};
             data.formData = JSON.stringify(formParams("frm_csr_project_info"));
             var url = "";

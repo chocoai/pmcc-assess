@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao.base;
 import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.BaseProjectCategoryExample;
 import com.copower.pmcc.assess.dal.mapper.BaseProjectCategoryMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +21,22 @@ public class BaseProjectCategoryDao {
     @Autowired
     private BaseProjectCategoryMapper baseProjectCategoryMapper;
 
-    public BaseProjectCategory getBidProjectCategoryById(Integer id) {
+    public BaseProjectCategory getProjectCategoryById(Integer id) {
         return baseProjectCategoryMapper.selectByPrimaryKey(id);
     }
 
-    public List<BaseProjectCategory> getBidProjectCategoryListByPid(Integer pid) {
+    public List<BaseProjectCategory> getProjectCategoryListByPid(Integer pid) {
         BaseProjectCategoryExample example = new BaseProjectCategoryExample();
         example.createCriteria().andBisEnableEqualTo(true).andPidEqualTo(pid);
         return baseProjectCategoryMapper.selectByExample(example);
+    }
+
+    public BaseProjectCategory getProjectCategoryByKey(String key) {
+        BaseProjectCategoryExample example = new BaseProjectCategoryExample();
+        example.createCriteria().andBisEnableEqualTo(true).andUKeyEqualTo(key);
+        List<BaseProjectCategory> projectCategoryList = baseProjectCategoryMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(projectCategoryList))
+            return projectCategoryList.get(0);
+        return null;
     }
 }

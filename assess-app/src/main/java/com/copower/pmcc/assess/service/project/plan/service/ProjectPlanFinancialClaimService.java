@@ -124,11 +124,6 @@ public class ProjectPlanFinancialClaimService {
                 string = string.replaceAll("}", ",");
                 stringBuilder.append(string);
                 List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, item.getId(), "");
-                if (CollectionUtils.isEmpty(detailsList)) {
-                    //添加数据
-                    insertProjectPlanDetailsByPid(item);
-                    detailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, item.getId(), "");
-                }
                 String details = "";
                 for (ProjectPlanDetails detailsItem : detailsList) {
 
@@ -215,7 +210,7 @@ public class ProjectPlanFinancialClaimService {
         //对每一个客户添加相应的默认工作任务事项
         StringBuilder stringBuilder = new StringBuilder();
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name, plan_id, project_id,project_phase_id, status, " + "sorting,project_work_stage_id, first_pid, pid, bis_last_layer) " +
-                "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
+                "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
 
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
@@ -229,9 +224,14 @@ public class ProjectPlanFinancialClaimService {
         if (StringUtils.isNotBlank(string)) {
             ddlMySqlAssist.customTableDdl(string);//更新数据
         }
+        //客户添加完成后，添加相应的工作事项
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsList(planId, 0, "");
+        for (ProjectPlanDetails item : projectPlanDetailsList) {
+            insertProjectPlanDetailsByPid(item);
+        }
+
     }
 
-    @Transactional(rollbackFor = Exception.class)
     private void insertProjectPlanDetailsByPid(ProjectPlanDetails projectPlanDetails) {
         StringBuilder stringBuilder = new StringBuilder();
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name,plan_hours, plan_id, project_id,project_phase_id, status, sorting,project_work_stage_id, first_pid, pid, " +
@@ -246,7 +246,7 @@ public class ProjectPlanFinancialClaimService {
             for (ProjectPhase item : filter) {
 
                 String string = String.format(sqlTemp, String.format("%s|%s", projectPlanDetails.getProjectPhaseName(), item.getProjectPhaseName()), item.getPhaseTime(), projectPlanDetails
-                        .getPlanId(), projectPlanDetails.getProjectId(), item.getId(), ProcessStatusEnum.NOPROCESS.getValue(), item.getPhaseSort(), projectPlan.getWorkStageId(), 0,
+                        .getPlanId(), projectPlanDetails.getProjectId(), item.getId(), ProcessStatusEnum.RUN.getValue(), item.getPhaseSort(), projectPlan.getWorkStageId(), 0,
                         projectPlanDetails.getId(), true);
                 stringBuilder.append(string);
             }
@@ -265,8 +265,12 @@ public class ProjectPlanFinancialClaimService {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsService.getPlanDetailsByPlanId(projectPlanFinancialClaimFastDto.getPlanId());
         if (StringUtils.isNotBlank(projectPlanFinancialClaimFastDto.getCustomerList())) {
             List<String> strings = FormatUtils.transformString2List(projectPlanFinancialClaimFastDto.getCustomerList());
+            List<ProjectPlanDetails> projectPlanDetailsPid = LangUtils.filter(projectPlanDetails, o -> {
+                return strings.contains(String.valueOf(o.getProjectPhaseId())) && o.getPid() == 0;
+            });
+            List<Integer> transform = LangUtils.transform(projectPlanDetailsPid, o -> o.getId());
             projectPlanDetails = LangUtils.filter(projectPlanDetails, o -> {
-                return strings.contains(String.valueOf(o.getPid()));
+                return transform.contains(o.getPid());
             });
         }
         if (StringUtils.isNotBlank(projectPlanFinancialClaimFastDto.getPhaseList())) {
@@ -394,6 +398,7 @@ public class ProjectPlanFinancialClaimService {
 
             } else {
                 item.setStatus(ProcessStatusEnum.FINISH.getValue());
+                item.setReturnDetailsReason("");
                 projectPlanDetailsDao.updateProjectPlanDetails(item);
 
             }
