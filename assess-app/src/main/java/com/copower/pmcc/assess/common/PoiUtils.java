@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -12,6 +13,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,85 +29,79 @@ import java.util.stream.Stream;
  * @time: 18:47
  */
 public class PoiUtils {
-    public static void generateWord(List<KeyValueDto> param, String fileSrc, String fileDest) {
-        XWPFDocument doc = null;
-        OPCPackage pack = null;
+
+    /**
+     * 根据类型获取cell的值
+     *
+     * @param cell
+     * @return
+     */
+    public static String getCellValue(Cell cell) {
+        String value = "";
         try {
-            pack = POIXMLDocument.openPackage(fileSrc);
-            doc = new XWPFDocument(pack);
-            if (param != null && param.size() > 0) {
-                // 处理段落
-                List<XWPFParagraph> paragraphList = doc.getParagraphs();
-                processParagraphs(paragraphList, param, doc);
+            switch (cell.getCellType()) {
+                case HSSFCell.CELL_TYPE_NUMERIC: // 数字
+                    //如果为时间格式的内容
+                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                        //注：format格式 yyyy-MM-dd hh:mm:ss 中小时为12小时制，若要24小时制，则把小h变为H即可，yyyy-MM-dd HH:mm:ss
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        value = sdf.format(HSSFDateUtil.getJavaDate(cell.
+                                getNumericCellValue())).toString();
+                        break;
+                    } else {
+                        value = new DecimalFormat("0").format(cell.getNumericCellValue());
+                    }
+                    break;
+                case HSSFCell.CELL_TYPE_STRING: // 字符串
+                    value = cell.getStringCellValue();
+                    break;
+                case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
+                    value = cell.getBooleanCellValue() + "";
+                    break;
+                case HSSFCell.CELL_TYPE_FORMULA: // 公式
+                    value = cell.getCellFormula() + "";
+                    break;
+                case HSSFCell.CELL_TYPE_BLANK: // 空值
+                    value = "";
+                    break;
+                case HSSFCell.CELL_TYPE_ERROR: // 故障
+                    value = "error";
+                    break;
+                default:
+                    value = "unknown";//未知
+                    break;
             }
         } catch (Exception e) {
+            value = "";
             e.printStackTrace();
         }
-        FileOutputStream fopts = null;
-        try {
-            fopts = new FileOutputStream(fileDest);
-            doc.write(fopts);
-            pack.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            closeStream(fopts);
-        }
-    }
-
-    public static void closeStream(FileOutputStream fopts) {
-        try {
-            fopts.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return value;
     }
 
     /**
-     * 处理段落,替换关键字
-     *
-     * @param paragraphList
-     * @throws FileNotFoundException
-     * @throws InvalidFormatException
+     * 2003的excel
+     * @param filePath
+     * @return
      */
-    public static void processParagraphs(List<XWPFParagraph> paragraphList, List<KeyValueDto> param, XWPFDocument doc) throws InvalidFormatException, FileNotFoundException {
-        if (paragraphList != null && paragraphList.size() > 0) {
-            // 遍历所有段落
-            for (XWPFParagraph paragraph : paragraphList) {
-                List<XWPFRun> runs = paragraph.getRuns();
-                for (XWPFRun run : runs) {
-                    String text = run.getText(0);
-                    if (text != null) {
-                        boolean isSetText = false;
-                        for (KeyValueDto item : param) {
-                            if (text.indexOf(item.getKey()) != -1) {// 在配置文件中有这个关键字对应的键
-                                isSetText = true;
-                                Object value = item.getValue();
-                                if (value instanceof String) {// 文本替换
-                                    // System.out.println("key==" + key);
-                                    if (text.contains(item.getKey())) {
-                                        text = text.replace(item.getKey(), value.toString());
-                                    }
-                                }
-                            }
-                        }
-                        if (isSetText) {
-                            run.setText(text, 0);
-                        }
-                    }
-                }
-            }
-        }
+    public static boolean isExcel2003(String filePath) {
+        return filePath.matches("^.+\\.(?i)(xls)$");
     }
 
-
+    /**
+     * 2007的excel
+     * @param filePath
+     * @return
+     */
+    public static boolean isExcel2007(String filePath) {
+        return filePath.matches("^.+\\.(?i)(xlsx)$");
+    }
 
     /**
      * 回写excel数据 xls格式的excel
      * @param path  excel路径
      * @param map list中的map对应的是列号与值
      */
-    public static void WritebackExcel(String path, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
+    public static void writebackExcel(String path, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
         //行号  列数据
         HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(path));
         Set<Map.Entry<Integer,List<Map<Integer,String>>>> keySet = map.entrySet();
