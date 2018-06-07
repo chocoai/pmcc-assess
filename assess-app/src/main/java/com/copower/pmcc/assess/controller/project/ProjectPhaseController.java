@@ -71,7 +71,7 @@ public class ProjectPhaseController {
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
 
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
+        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
         modelAndView.addObject("projectTypeList", projectTypeList);
 
         return modelAndView;
@@ -258,7 +258,7 @@ public class ProjectPhaseController {
     @ResponseBody
     public HttpResult getBidProjectCategoryListByPid(Integer pid) {
 
-        List<BaseProjectCategory> bidProjectCategories = baseProjectCategoryService.getBidProjectCategoryListByPid(pid);
+        List<BaseProjectCategory> bidProjectCategories = baseProjectCategoryService.getProjectCategoryListByPid(pid);
         return HttpResult.newCorrectResult(bidProjectCategories);
 
     }

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
@@ -63,12 +64,15 @@ public class CsrProjectInfoController {
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
 
+        BaseProjectCategory projectType = baseProjectCategoryService.getProjectCategoryByKey(BaseConstant.PMCC_ASSESS_STAGE_TYPE_CSR);
         CsrProjectInfoVo csrProjectInfo = new CsrProjectInfoVo();
         csrProjectInfo.setId(0);
+        csrProjectInfo.setProjectTypeId(projectType.getId());
+        csrProjectInfo.setProjectTypeName(projectType.getName());
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
 
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
-        modelAndView.addObject("projectTypeList", projectTypeList);
+        List<BaseProjectCategory> projectCategoryList = baseProjectCategoryService.getProjectCategoryListByPid(projectType.getId());
+        modelAndView.addObject("projectCategoryList", projectCategoryList);
         return modelAndView;
     }
 
@@ -78,8 +82,8 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getBidProjectCategoryListByPid(0);
-        modelAndView.addObject("projectTypeList", projectTypeList);
+        List<BaseProjectCategory> projectCategoryList = baseProjectCategoryService.getProjectCategoryListByPid(csrProjectInfo.getProjectTypeId());
+        modelAndView.addObject("projectCategoryList", projectCategoryList);
         return modelAndView;
     }
 

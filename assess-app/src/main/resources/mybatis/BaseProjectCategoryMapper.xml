@@ -5,7 +5,11 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="u_key" property="uKey" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, bis_enable
+    id, pid, name, u_key, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseProjectCategoryExample" >
     select
@@ -102,10 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_base_project_category (pid, name, bis_enable
-      )
-    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}
-      )
+    insert into tb_base_project_category (pid, name, u_key, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{uKey,jdbcType=VARCHAR}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseProjectCategory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -119,8 +125,20 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="uKey != null" >
+        u_key,
+      </if>
       <if test="bisEnable != null" >
         bis_enable,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -130,8 +148,20 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="uKey != null" >
+        #{uKey,jdbcType=VARCHAR},
+      </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -153,8 +183,20 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.uKey != null" >
+        u_key = #{record.uKey,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -166,7 +208,11 @@
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      bis_enable = #{record.bisEnable,jdbcType=BIT}
+      u_key = #{record.uKey,jdbcType=VARCHAR},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -180,8 +226,20 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="uKey != null" >
+        u_key = #{uKey,jdbcType=VARCHAR},
+      </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -190,7 +248,11 @@
     update tb_base_project_category
     set pid = #{pid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      bis_enable = #{bisEnable,jdbcType=BIT}
+      u_key = #{uKey,jdbcType=VARCHAR},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
