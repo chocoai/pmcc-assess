@@ -22,6 +22,9 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <span id="toolbarSub">
+                       <button type="button" class="btn btn-success" onclick="bulidReport()"> 生成报告</button>
+                    </span>
                     <table class="table table-bordered" id="tb_List">
                     </table>
                 </div>
@@ -41,18 +44,73 @@
     //加载代理数据列表
     function loadList() {
         var cols = [];
-        cols.push({field: 'poJkr', title: '借款人'});
         cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >生成报告</i></a>';
-                str += '</div>';
-                return str;
+            field: 'chk', align: 'center', title: '', width: '3%', formatter: function (value, row) {
+                return "<input type='checkbox' class='backTask' id='chk_" + row.id + "'/>";
             }
         });
+        cols.push({field: 'poJkr', title: '借款人'});
+        cols.push({field: 'poSfzhm', title: '身份证'});
+        cols.push({field: 'poDywdz', title: '抵押物地址'});
+        cols.push({field: 'poFcxz', title: '抵押物类型'});
+        cols.push({field: 'poFcmj', title: '数量'});
+        cols.push({field: 'poDywscdj', title: '市场单价'});
+        cols.push({field: 'poDywsczj', title: '市场价值判断'});
+        cols.push({field: 'poDywbxl', title: '变现系数'});
+        cols.push({field: 'poDywbxjz', title: '变现价值'});
+        cols.push({field: 'poDyh', title: '分行'});
+        cols.push({field: 'attachmentHtml', title: '报告'});
         TableInit("tb_List", "${pageContext.request.contextPath}/sheet1/getSheet1List", cols, {}, {});
     }
 
+    function bulidReport() {
+        var ids = "";
+        var objs = $('input:checkbox[class=backTask]:checked');
+        if (objs.length == 0) {
+            Alert("请至少选择一个客户");
+            return false;
+        }
+        else {
+            $.each(objs, function (i, item) {
+                var id = $(item).attr("id").split('_')[1];
+                ids += id + ",";
+            });
+        }
+        alert(ids);
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+        }
+        else {
+            Alert("请至少选择一个客户");
+            return false;
+        }
+
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/sheet1/generateTemp",
+            data: {
+                ids: ids
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("报告生成成功!", 1, null, function () {
+                        TableReload("tb_List");
+                    });
+                }
+                else {
+                    Alert("生成报告失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+
+    }
 </script>
 
 

@@ -949,7 +949,7 @@ public class CsrProjectInfoService {
             attachment.setTableName("sheet1");
             attachment.setFieldsName("report");
             try {
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(116, attachment);
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;

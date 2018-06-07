@@ -4,22 +4,28 @@ import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.csr.Sheet1Dao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ReportTemplate;
 import com.copower.pmcc.assess.dal.entity.Sheet1;
 import com.copower.pmcc.assess.dto.output.report.ReportTemplateVo;
+import com.copower.pmcc.assess.dto.output.report.Sheet1Vo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +51,10 @@ public class Sheet1Controller {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private Sheet1Dao sheet1Dao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private CsrProjectInfoService csrProjectInfoService;
 
     @RequestMapping(value = "/index", name = "进入客户页面")
     public ModelAndView index() {
@@ -63,10 +73,32 @@ public class Sheet1Controller {
         }
 
         List<Sheet1> sheet1List = sheet1Dao.getSheet1List(search);
+
+        List<Sheet1Vo> transform = LangUtils.transform(sheet1List, o -> {
+            Sheet1Vo sheet1Vo = new Sheet1Vo();
+            BeanUtils.copyProperties(o, sheet1Vo);
+            if (o.getAttachmentId() != null && o.getAttachmentId() > 0) {
+                BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(o.getAttachmentId());
+                sheet1Vo.setAttachmentHtml(baseAttachmentService.getViewHtml(baseAttachment));
+            }
+            return sheet1Vo;
+        });
+
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(sheet1List != null ? sheet1List : new ArrayList<Sheet1>());
+        bootstrapTableVo.setRows(transform != null ? transform : new ArrayList<Sheet1Vo>());
         return bootstrapTableVo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/generateTemp", name = "生成报告 ", method = RequestMethod.POST)
+    public HttpResult generateTemp(String ids) {
+        try {
+            csrProjectInfoService.generateTemp(ids);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
 }

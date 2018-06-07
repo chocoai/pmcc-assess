@@ -25,6 +25,7 @@ public class Sheet1Dao {
         Sheet1Example example = new Sheet1Example();
         if (StringUtils.isNotBlank(search)) {
             example.or().andPoJkrLike(search);
+            example.or().andPoDyhLike(search);
         }
         return sheet1Mapper.selectByExample(example);
     }
