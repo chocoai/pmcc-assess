@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrGuarantor {
     private Integer id;
 
+    private Integer csrProjectId;
+
     private Integer borrowerId;
 
     private String name;
@@ -23,6 +25,14 @@ public class CsrGuarantor {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCsrProjectId() {
+        return csrProjectId;
+    }
+
+    public void setCsrProjectId(Integer csrProjectId) {
+        this.csrProjectId = csrProjectId;
     }
 
     public Integer getBorrowerId() {

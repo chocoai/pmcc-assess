@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrBorrowerMortgage {
     private Integer id;
 
+    private Integer csrProjectId;
+
     private Integer borrowerId;
 
     private String contractNumber;
@@ -51,6 +53,14 @@ public class CsrBorrowerMortgage {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCsrProjectId() {
+        return csrProjectId;
+    }
+
+    public void setCsrProjectId(Integer csrProjectId) {
+        this.csrProjectId = csrProjectId;
     }
 
     public Integer getBorrowerId() {

@@ -92,12 +92,12 @@ public class CsrBorrowerMortgageDao {
     /**
      * 批量删除
      *
-     * @param borrowerId
+     * @param csrProjectId
      * @return
      */
-    public boolean deleteByBorrowerId(Integer borrowerId) {
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
         CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
-        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
         return csrBorrowerMortgageMapper.deleteByExample(example) > 0;
     }
 }

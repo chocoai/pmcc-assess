@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrLitigation {
     private Integer id;
 
+    private Integer csrProjectId;
+
     private Integer borrowerId;
 
     private String litigationPreservation;
@@ -25,6 +27,14 @@ public class CsrLitigation {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCsrProjectId() {
+        return csrProjectId;
+    }
+
+    public void setCsrProjectId(Integer csrProjectId) {
+        this.csrProjectId = csrProjectId;
     }
 
     public Integer getBorrowerId() {

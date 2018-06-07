@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrCalculationMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrCalculation" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="csr_project_id" property="csrProjectId" jdbcType="INTEGER" />
     <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -101,13 +102,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, borrower_id, creator, gmt_created, gmt_modified, appraisal_method, pawn_area, 
-    pawn_price, pawn_amount, pawn_realization_coefficient, pawn_realization, pawn_realization_amount, 
-    dispose_auction_coefficient, dispose_auction, dispose_lawsuit_coefficient, dispose_lawsuit, 
-    dispose_execute_coefficient, dispose_execute, dispose_authenticate_cofficient, dispose_authenticate, 
-    dispoet_other_cofficient, dispoet_other, dispoet_amount, tax_stamp_cofficient, tax_stamp, 
-    tax_addedvalue_cofficient, tax_addedvalue, tax_land_cofficient, tax_land, tax_other, 
-    tax_amount, cost_amount, pawn_realization_value_amount, recovery_income_ordinary, 
+    id, csr_project_id, borrower_id, creator, gmt_created, gmt_modified, appraisal_method, 
+    pawn_area, pawn_price, pawn_amount, pawn_realization_coefficient, pawn_realization, 
+    pawn_realization_amount, dispose_auction_coefficient, dispose_auction, dispose_lawsuit_coefficient, 
+    dispose_lawsuit, dispose_execute_coefficient, dispose_execute, dispose_authenticate_cofficient, 
+    dispose_authenticate, dispoet_other_cofficient, dispoet_other, dispoet_amount, tax_stamp_cofficient, 
+    tax_stamp, tax_addedvalue_cofficient, tax_addedvalue, tax_land_cofficient, tax_land, 
+    tax_other, tax_amount, cost_amount, pawn_realization_value_amount, recovery_income_ordinary, 
     recovery_income_all, recovery_income_third_party, recovery_incom_amount, recovery_bad_loans, 
     recovery_limit
   </sql>
@@ -145,38 +146,38 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_calculation (borrower_id, creator, gmt_created, 
-      gmt_modified, appraisal_method, pawn_area, 
-      pawn_price, pawn_amount, pawn_realization_coefficient, 
-      pawn_realization, pawn_realization_amount, 
-      dispose_auction_coefficient, dispose_auction, 
-      dispose_lawsuit_coefficient, dispose_lawsuit, 
-      dispose_execute_coefficient, dispose_execute, 
-      dispose_authenticate_cofficient, dispose_authenticate, 
-      dispoet_other_cofficient, dispoet_other, dispoet_amount, 
-      tax_stamp_cofficient, tax_stamp, tax_addedvalue_cofficient, 
-      tax_addedvalue, tax_land_cofficient, tax_land, 
-      tax_other, tax_amount, cost_amount, 
-      pawn_realization_value_amount, recovery_income_ordinary, 
-      recovery_income_all, recovery_income_third_party, 
-      recovery_incom_amount, recovery_bad_loans, 
-      recovery_limit)
-    values (#{borrowerId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{appraisalMethod,jdbcType=VARCHAR}, #{pawnArea,jdbcType=VARCHAR}, 
-      #{pawnPrice,jdbcType=VARCHAR}, #{pawnAmount,jdbcType=VARCHAR}, #{pawnRealizationCoefficient,jdbcType=VARCHAR}, 
-      #{pawnRealization,jdbcType=VARCHAR}, #{pawnRealizationAmount,jdbcType=VARCHAR}, 
-      #{disposeAuctionCoefficient,jdbcType=VARCHAR}, #{disposeAuction,jdbcType=VARCHAR}, 
-      #{disposeLawsuitCoefficient,jdbcType=VARCHAR}, #{disposeLawsuit,jdbcType=VARCHAR}, 
-      #{disposeExecuteCoefficient,jdbcType=VARCHAR}, #{disposeExecute,jdbcType=VARCHAR}, 
-      #{disposeAuthenticateCofficient,jdbcType=VARCHAR}, #{disposeAuthenticate,jdbcType=VARCHAR}, 
-      #{dispoetOtherCofficient,jdbcType=VARCHAR}, #{dispoetOther,jdbcType=VARCHAR}, #{dispoetAmount,jdbcType=VARCHAR}, 
-      #{taxStampCofficient,jdbcType=VARCHAR}, #{taxStamp,jdbcType=VARCHAR}, #{taxAddedvalueCofficient,jdbcType=VARCHAR}, 
-      #{taxAddedvalue,jdbcType=VARCHAR}, #{taxLandCofficient,jdbcType=VARCHAR}, #{taxLand,jdbcType=VARCHAR}, 
-      #{taxOther,jdbcType=VARCHAR}, #{taxAmount,jdbcType=VARCHAR}, #{costAmount,jdbcType=VARCHAR}, 
-      #{pawnRealizationValueAmount,jdbcType=VARCHAR}, #{recoveryIncomeOrdinary,jdbcType=VARCHAR}, 
-      #{recoveryIncomeAll,jdbcType=VARCHAR}, #{recoveryIncomeThirdParty,jdbcType=VARCHAR}, 
-      #{recoveryIncomAmount,jdbcType=VARCHAR}, #{recoveryBadLoans,jdbcType=VARCHAR}, 
-      #{recoveryLimit,jdbcType=VARCHAR})
+    insert into tb_csr_calculation (csr_project_id, borrower_id, creator, 
+      gmt_created, gmt_modified, appraisal_method, 
+      pawn_area, pawn_price, pawn_amount, 
+      pawn_realization_coefficient, pawn_realization, 
+      pawn_realization_amount, dispose_auction_coefficient, 
+      dispose_auction, dispose_lawsuit_coefficient, 
+      dispose_lawsuit, dispose_execute_coefficient, 
+      dispose_execute, dispose_authenticate_cofficient, 
+      dispose_authenticate, dispoet_other_cofficient, 
+      dispoet_other, dispoet_amount, tax_stamp_cofficient, 
+      tax_stamp, tax_addedvalue_cofficient, tax_addedvalue, 
+      tax_land_cofficient, tax_land, tax_other, 
+      tax_amount, cost_amount, pawn_realization_value_amount, 
+      recovery_income_ordinary, recovery_income_all, 
+      recovery_income_third_party, recovery_incom_amount, 
+      recovery_bad_loans, recovery_limit)
+    values (#{csrProjectId,jdbcType=INTEGER}, #{borrowerId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{appraisalMethod,jdbcType=VARCHAR}, 
+      #{pawnArea,jdbcType=VARCHAR}, #{pawnPrice,jdbcType=VARCHAR}, #{pawnAmount,jdbcType=VARCHAR}, 
+      #{pawnRealizationCoefficient,jdbcType=VARCHAR}, #{pawnRealization,jdbcType=VARCHAR}, 
+      #{pawnRealizationAmount,jdbcType=VARCHAR}, #{disposeAuctionCoefficient,jdbcType=VARCHAR}, 
+      #{disposeAuction,jdbcType=VARCHAR}, #{disposeLawsuitCoefficient,jdbcType=VARCHAR}, 
+      #{disposeLawsuit,jdbcType=VARCHAR}, #{disposeExecuteCoefficient,jdbcType=VARCHAR}, 
+      #{disposeExecute,jdbcType=VARCHAR}, #{disposeAuthenticateCofficient,jdbcType=VARCHAR}, 
+      #{disposeAuthenticate,jdbcType=VARCHAR}, #{dispoetOtherCofficient,jdbcType=VARCHAR}, 
+      #{dispoetOther,jdbcType=VARCHAR}, #{dispoetAmount,jdbcType=VARCHAR}, #{taxStampCofficient,jdbcType=VARCHAR}, 
+      #{taxStamp,jdbcType=VARCHAR}, #{taxAddedvalueCofficient,jdbcType=VARCHAR}, #{taxAddedvalue,jdbcType=VARCHAR}, 
+      #{taxLandCofficient,jdbcType=VARCHAR}, #{taxLand,jdbcType=VARCHAR}, #{taxOther,jdbcType=VARCHAR}, 
+      #{taxAmount,jdbcType=VARCHAR}, #{costAmount,jdbcType=VARCHAR}, #{pawnRealizationValueAmount,jdbcType=VARCHAR}, 
+      #{recoveryIncomeOrdinary,jdbcType=VARCHAR}, #{recoveryIncomeAll,jdbcType=VARCHAR}, 
+      #{recoveryIncomeThirdParty,jdbcType=VARCHAR}, #{recoveryIncomAmount,jdbcType=VARCHAR}, 
+      #{recoveryBadLoans,jdbcType=VARCHAR}, #{recoveryLimit,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrCalculation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -184,6 +185,9 @@
     </selectKey>
     insert into tb_csr_calculation
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        csr_project_id,
+      </if>
       <if test="borrowerId != null" >
         borrower_id,
       </if>
@@ -300,6 +304,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        #{csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="borrowerId != null" >
         #{borrowerId,jdbcType=INTEGER},
       </if>
@@ -428,6 +435,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.csrProjectId != null" >
+        csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="record.borrowerId != null" >
         borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       </if>
@@ -550,6 +560,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_calculation
     set id = #{record.id,jdbcType=INTEGER},
+      csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -595,6 +606,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrCalculation" >
     update tb_csr_calculation
     <set >
+      <if test="csrProjectId != null" >
+        csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="borrowerId != null" >
         borrower_id = #{borrowerId,jdbcType=INTEGER},
       </if>
@@ -714,7 +728,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrCalculation" >
     update tb_csr_calculation
-    set borrower_id = #{borrowerId,jdbcType=INTEGER},
+    set csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      borrower_id = #{borrowerId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},

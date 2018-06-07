@@ -165,6 +165,66 @@ public class CsrLitigationExample {
             return (Criteria) this;
         }
 
+        public Criteria andCsrProjectIdIsNull() {
+            addCriterion("csr_project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdIsNotNull() {
+            addCriterion("csr_project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdEqualTo(Integer value) {
+            addCriterion("csr_project_id =", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdNotEqualTo(Integer value) {
+            addCriterion("csr_project_id <>", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdGreaterThan(Integer value) {
+            addCriterion("csr_project_id >", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("csr_project_id >=", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdLessThan(Integer value) {
+            addCriterion("csr_project_id <", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("csr_project_id <=", value, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdIn(List<Integer> values) {
+            addCriterion("csr_project_id in", values, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdNotIn(List<Integer> values) {
+            addCriterion("csr_project_id not in", values, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("csr_project_id between", value1, value2, "csrProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsrProjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("csr_project_id not between", value1, value2, "csrProjectId");
+            return (Criteria) this;
+        }
+
         public Criteria andBorrowerIdIsNull() {
             addCriterion("borrower_id is null");
             return (Criteria) this;

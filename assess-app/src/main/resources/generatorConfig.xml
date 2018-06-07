@@ -40,7 +40,22 @@
 
         <!-- 具体表 -->
 
-        <table tableName="sheet1" domainObjectName="Sheet1">
+        <table tableName="tb_csr_borrower_mortgage" domainObjectName="CsrBorrowerMortgage">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_csr_calculation" domainObjectName="CsrCalculation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_csr_contract" domainObjectName="CsrContract">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_csr_guarantor" domainObjectName="CsrGuarantor">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_csr_litigation" domainObjectName="CsrLitigation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_csr_principal_interest" domainObjectName="CsrPrincipalInterest">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

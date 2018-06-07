@@ -72,12 +72,12 @@ public class CsrcalculationDao{
     /**
      * 批量删除
      *
-     * @param borrowerId
+     * @param csrProjectId
      * @return
      */
-    public boolean deleteByBorrowerId(Integer borrowerId) {
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
         CsrCalculationExample example = new CsrCalculationExample();
-        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
         return csrCalculationMapper.deleteByExample(example) > 0;
     }
 }

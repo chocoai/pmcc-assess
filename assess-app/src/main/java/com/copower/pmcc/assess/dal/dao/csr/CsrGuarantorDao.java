@@ -73,12 +73,12 @@ public class CsrGuarantorDao {
     /**
      * 批量删除
      *
-     * @param borrowerId
+     * @param csrProjectId
      * @return
      */
-    public boolean deleteByBorrowerId(Integer borrowerId) {
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
         CsrGuarantorExample example = new CsrGuarantorExample();
-        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
         return csrGuarantorMapper.deleteByExample(example) > 0;
     }
 }

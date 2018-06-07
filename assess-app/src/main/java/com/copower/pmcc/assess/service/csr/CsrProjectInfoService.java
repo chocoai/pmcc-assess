@@ -276,18 +276,13 @@ public class CsrProjectInfoService {
      * @param csrProjectInfo
      */
     private void cleanImportData(CsrProjectInfo csrProjectInfo) {
-        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(), null);
-        if (CollectionUtils.isNotEmpty(csrBorrowers)) {
-            csrBorrowers.forEach(p -> {
-                csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
-                csrcalculationDao.deleteByBorrowerId(p.getId());
-                csrContractDao.deleteByBorrowerId(p.getId());
-                csrGuarantorDao.deleteByBorrowerId(p.getId());
-                csrLitigationDao.deleteByBorrowerId(p.getId());
-                csrPrincipalInterestDao.deleteByBorrowerId(p.getId());
-            });
-            csrBorrowerDao.deleteByCsrProjectId(csrProjectInfo.getId());
-        }
+        csrPrincipalInterestDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrLitigationDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrGuarantorDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrContractDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrcalculationDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrBorrowerMortgageDao.deleteByCsrProjectId(csrProjectInfo.getId());
+        csrBorrowerDao.deleteByCsrProjectId(csrProjectInfo.getId());
 
     }
 
@@ -348,7 +343,6 @@ public class CsrProjectInfoService {
      * @throws BusinessException
      * @throws BpmException
      */
-    @Transactional(rollbackFor = Exception.class)
     public void crsProjectEdit(CsrProjectInfo csrProjectInfo, ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         if (csrProjectInfo == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
@@ -829,6 +823,7 @@ public class CsrProjectInfoService {
                 List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
                 if (CollectionUtils.isNotEmpty(csrBorrowerMortgageList)) {
                     for (CsrBorrowerMortgage csrBorrowerMortgage : csrBorrowerMortgageList) {
+                        csrBorrowerMortgage.setCsrProjectId(csrProjectId);
                         csrBorrowerMortgage.setBorrowerId(csrBorrower.getId());
                         csrBorrowerMortgage.setBisImport(true);
                         csrBorrowerMortgage.setCreator(commonService.thisUserAccount());
@@ -838,6 +833,7 @@ public class CsrProjectInfoService {
                 List<CsrContract> csrContractList = borrowerDto.getCsrContractList();
                 if (CollectionUtils.isNotEmpty(csrContractList)) {
                     for (CsrContract csrContract : csrContractList) {
+                        csrContract.setCsrProjectId(csrProjectId);
                         csrContract.setBorrowerId(csrBorrower.getId());
                         csrContract.setBisImport(true);
                         csrContract.setCreator(commonService.thisUserAccount());
@@ -847,6 +843,7 @@ public class CsrProjectInfoService {
                 List<CsrGuarantor> csrGuarantorList = borrowerDto.getCsrGuarantorList();
                 if (CollectionUtils.isNotEmpty(csrGuarantorList)) {
                     for (CsrGuarantor csrGuarantor : csrGuarantorList) {
+                        csrGuarantor.setCsrProjectId(csrProjectId);
                         csrGuarantor.setBorrowerId(csrBorrower.getId());
                         csrGuarantor.setBisImport(true);
                         csrGuarantor.setCreator(commonService.thisUserAccount());
@@ -856,6 +853,7 @@ public class CsrProjectInfoService {
                 List<CsrLitigation> csrLitigationList = borrowerDto.getCsrLitigationList();
                 if (CollectionUtils.isNotEmpty(csrLitigationList)) {
                     for (CsrLitigation csrLitigation : csrLitigationList) {
+                        csrLitigation.setCsrProjectId(csrProjectId);
                         csrLitigation.setBorrowerId(csrBorrower.getId());
                         csrLitigation.setBisImport(true);
                         csrLitigation.setCreator(commonService.thisUserAccount());
@@ -865,6 +863,7 @@ public class CsrProjectInfoService {
                 List<CsrPrincipalInterest> csrPrincipalInterestList = borrowerDto.getCsrPrincipalInterestList();
                 if (CollectionUtils.isNotEmpty(csrPrincipalInterestList)) {
                     for (CsrPrincipalInterest csrPrincipalInterest : csrPrincipalInterestList) {
+                        csrPrincipalInterest.setCsrProjectId(csrProjectId);
                         csrPrincipalInterest.setBorrowerId(csrBorrower.getId());
                         csrPrincipalInterest.setBisImport(true);
                         csrPrincipalInterest.setCreator(commonService.thisUserAccount());

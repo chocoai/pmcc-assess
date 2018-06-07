@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrPrincipalInterest {
     private Integer id;
 
+    private Integer csrProjectId;
+
     private Integer borrowerId;
 
     private String analysisDatumDate;
@@ -29,6 +31,14 @@ public class CsrPrincipalInterest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCsrProjectId() {
+        return csrProjectId;
+    }
+
+    public void setCsrProjectId(Integer csrProjectId) {
+        this.csrProjectId = csrProjectId;
     }
 
     public Integer getBorrowerId() {

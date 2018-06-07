@@ -73,12 +73,12 @@ public class CsrContractDao {
     /**
      * 批量删除
      *
-     * @param borrowerId
+     * @param csrProjectId
      * @return
      */
-    public boolean deleteByBorrowerId(Integer borrowerId) {
+    public boolean deleteByCsrProjectId(Integer csrProjectId) {
         CsrContractExample example = new CsrContractExample();
-        example.createCriteria().andBorrowerIdEqualTo(borrowerId);
+        example.createCriteria().andCsrProjectIdEqualTo(csrProjectId);
         return csrContractMapper.deleteByExample(example) > 0;
     }
 }

@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrPrincipalInterestMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="csr_project_id" property="csrProjectId" jdbcType="INTEGER" />
     <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
     <result column="analysis_datum_date" property="analysisDatumDate" jdbcType="VARCHAR" />
     <result column="principal" property="principal" jdbcType="VARCHAR" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, borrower_id, analysis_datum_date, principal, interest, principal_interest_total, 
+    id, csr_project_id, borrower_id, analysis_datum_date, principal, interest, principal_interest_total, 
     bis_import, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterestExample" >
@@ -109,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_principal_interest (borrower_id, analysis_datum_date, principal, 
-      interest, principal_interest_total, bis_import, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{borrowerId,jdbcType=INTEGER}, #{analysisDatumDate,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, 
-      #{interest,jdbcType=VARCHAR}, #{principalInterestTotal,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_csr_principal_interest (csr_project_id, borrower_id, analysis_datum_date, 
+      principal, interest, principal_interest_total, 
+      bis_import, creator, gmt_created, 
+      gmt_modified)
+    values (#{csrProjectId,jdbcType=INTEGER}, #{borrowerId,jdbcType=INTEGER}, #{analysisDatumDate,jdbcType=VARCHAR}, 
+      #{principal,jdbcType=VARCHAR}, #{interest,jdbcType=VARCHAR}, #{principalInterestTotal,jdbcType=VARCHAR}, 
+      #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -124,6 +125,9 @@
     </selectKey>
     insert into tb_csr_principal_interest
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        csr_project_id,
+      </if>
       <if test="borrowerId != null" >
         borrower_id,
       </if>
@@ -153,6 +157,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        #{csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="borrowerId != null" >
         #{borrowerId,jdbcType=INTEGER},
       </if>
@@ -194,6 +201,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.csrProjectId != null" >
+        csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="record.borrowerId != null" >
         borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       </if>
@@ -229,6 +239,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_principal_interest
     set id = #{record.id,jdbcType=INTEGER},
+      csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
       borrower_id = #{record.borrowerId,jdbcType=INTEGER},
       analysis_datum_date = #{record.analysisDatumDate,jdbcType=VARCHAR},
       principal = #{record.principal,jdbcType=VARCHAR},
@@ -245,6 +256,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     update tb_csr_principal_interest
     <set >
+      <if test="csrProjectId != null" >
+        csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      </if>
       <if test="borrowerId != null" >
         borrower_id = #{borrowerId,jdbcType=INTEGER},
       </if>
@@ -277,7 +291,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest" >
     update tb_csr_principal_interest
-    set borrower_id = #{borrowerId,jdbcType=INTEGER},
+    set csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      borrower_id = #{borrowerId,jdbcType=INTEGER},
       analysis_datum_date = #{analysisDatumDate,jdbcType=VARCHAR},
       principal = #{principal,jdbcType=VARCHAR},
       interest = #{interest,jdbcType=VARCHAR},
