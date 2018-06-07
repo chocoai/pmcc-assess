@@ -9,6 +9,8 @@ public class ReportTemplateBookmark {
 
     private String bookmarkName;
 
+    private String bookmarkNameCn;
+
     private Integer dataPoolType;
 
     private Integer dataPoolTableId;
@@ -49,6 +51,14 @@ public class ReportTemplateBookmark {
 
     public void setBookmarkName(String bookmarkName) {
         this.bookmarkName = bookmarkName == null ? null : bookmarkName.trim();
+    }
+
+    public String getBookmarkNameCn() {
+        return bookmarkNameCn;
+    }
+
+    public void setBookmarkNameCn(String bookmarkNameCn) {
+        this.bookmarkNameCn = bookmarkNameCn == null ? null : bookmarkNameCn.trim();
     }
 
     public Integer getDataPoolType() {

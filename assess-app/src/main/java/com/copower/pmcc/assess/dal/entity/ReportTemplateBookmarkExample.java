@@ -295,6 +295,76 @@ public class ReportTemplateBookmarkExample {
             return (Criteria) this;
         }
 
+        public Criteria andBookmarkNameCnIsNull() {
+            addCriterion("bookmark_name_cn is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnIsNotNull() {
+            addCriterion("bookmark_name_cn is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnEqualTo(String value) {
+            addCriterion("bookmark_name_cn =", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnNotEqualTo(String value) {
+            addCriterion("bookmark_name_cn <>", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnGreaterThan(String value) {
+            addCriterion("bookmark_name_cn >", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnGreaterThanOrEqualTo(String value) {
+            addCriterion("bookmark_name_cn >=", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnLessThan(String value) {
+            addCriterion("bookmark_name_cn <", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnLessThanOrEqualTo(String value) {
+            addCriterion("bookmark_name_cn <=", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnLike(String value) {
+            addCriterion("bookmark_name_cn like", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnNotLike(String value) {
+            addCriterion("bookmark_name_cn not like", value, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnIn(List<String> values) {
+            addCriterion("bookmark_name_cn in", values, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnNotIn(List<String> values) {
+            addCriterion("bookmark_name_cn not in", values, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnBetween(String value1, String value2) {
+            addCriterion("bookmark_name_cn between", value1, value2, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookmarkNameCnNotBetween(String value1, String value2) {
+            addCriterion("bookmark_name_cn not between", value1, value2, "bookmarkNameCn");
+            return (Criteria) this;
+        }
+
         public Criteria andDataPoolTypeIsNull() {
             addCriterion("data_pool_type is null");
             return (Criteria) this;

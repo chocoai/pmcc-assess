@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="D:\lib\mysql-connector-java-5.1.23.jar"/>
+            location="D:\Java\tools\lib\mysql\mysql-connector-java\5.1.23\mysql-connector-java-5.1.23.jar"/>
 
     <context id="ticket-pms">
 
@@ -40,7 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_base_project_category" domainObjectName="BaseProjectCategory">
+        <table tableName="sheet1" domainObjectName="Sheet1">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

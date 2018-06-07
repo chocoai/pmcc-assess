@@ -1,0 +1,1096 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.Sheet1Mapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.Sheet1" >
+    <result column="F1" property="f1" jdbcType="VARCHAR" />
+    <result column="F2" property="f2" jdbcType="VARCHAR" />
+    <result column="F3" property="f3" jdbcType="VARCHAR" />
+    <result column="PO_dyh" property="poDyh" jdbcType="VARCHAR" />
+    <result column="PO_jkr" property="poJkr" jdbcType="VARCHAR" />
+    <result column="F6" property="f6" jdbcType="VARCHAR" />
+    <result column="PO_sfzhm" property="poSfzhm" jdbcType="VARCHAR" />
+    <result column="F8" property="f8" jdbcType="VARCHAR" />
+    <result column="PO_hyzk" property="poHyzk" jdbcType="VARCHAR" />
+    <result column="PO_sjhth" property="poSjhth" jdbcType="VARCHAR" />
+    <result column="F11" property="f11" jdbcType="VARCHAR" />
+    <result column="PO_dkpz" property="poDkpz" jdbcType="VARCHAR" />
+    <result column="F13" property="f13" jdbcType="VARCHAR" />
+    <result column="PO_dkje" property="poDkje" jdbcType="VARCHAR" />
+    <result column="PO_lx" property="poLx" jdbcType="VARCHAR" />
+    <result column="F16" property="f16" jdbcType="VARCHAR" />
+    <result column="F17" property="f17" jdbcType="VARCHAR" />
+    <result column="PO_dbfs" property="poDbfs" jdbcType="VARCHAR" />
+    <result column="F19" property="f19" jdbcType="VARCHAR" />
+    <result column="F20" property="f20" jdbcType="VARCHAR" />
+    <result column="PO_dywdz" property="poDywdz" jdbcType="VARCHAR" />
+    <result column="F22" property="f22" jdbcType="VARCHAR" />
+    <result column="PO_fcxz" property="poFcxz" jdbcType="VARCHAR" />
+    <result column="F24" property="f24" jdbcType="VARCHAR" />
+    <result column="F25" property="f25" jdbcType="VARCHAR" />
+    <result column="F26" property="f26" jdbcType="VARCHAR" />
+    <result column="PO_fcmj" property="poFcmj" jdbcType="VARCHAR" />
+    <result column="PO_dywscdj" property="poDywscdj" jdbcType="VARCHAR" />
+    <result column="PO_dywsczj" property="poDywsczj" jdbcType="VARCHAR" />
+    <result column="PO_dywbxl" property="poDywbxl" jdbcType="VARCHAR" />
+    <result column="PO_dywbxjz" property="poDywbxjz" jdbcType="VARCHAR" />
+    <result column="F32" property="f32" jdbcType="VARCHAR" />
+    <result column="PO_pmfbl" property="poPmfbl" jdbcType="VARCHAR" />
+    <result column="PO_pmfje" property="poPmfje" jdbcType="VARCHAR" />
+    <result column="PO_ssfbl" property="poSsfbl" jdbcType="VARCHAR" />
+    <result column="PO_ssfje" property="poSsfje" jdbcType="VARCHAR" />
+    <result column="PO_zxfbl" property="poZxfbl" jdbcType="VARCHAR" />
+    <result column="PO_zxfje" property="poZxfje" jdbcType="VARCHAR" />
+    <result column="PO_sfjdfbl" property="poSfjdfbl" jdbcType="VARCHAR" />
+    <result column="PO_sfjdfje" property="poSfjdfje" jdbcType="VARCHAR" />
+    <result column="F41" property="f41" jdbcType="VARCHAR" />
+    <result column="F42" property="f42" jdbcType="VARCHAR" />
+    <result column="PO_xgsfhj" property="poXgsfhj" jdbcType="VARCHAR" />
+    <result column="F44" property="f44" jdbcType="VARCHAR" />
+    <result column="F45" property="f45" jdbcType="VARCHAR" />
+    <result column="F46" property="f46" jdbcType="VARCHAR" />
+    <result column="F47" property="f47" jdbcType="VARCHAR" />
+    <result column="F48" property="f48" jdbcType="VARCHAR" />
+    <result column="F49" property="f49" jdbcType="VARCHAR" />
+    <result column="F50" property="f50" jdbcType="VARCHAR" />
+    <result column="F51" property="f51" jdbcType="VARCHAR" />
+    <result column="F52" property="f52" jdbcType="VARCHAR" />
+    <result column="F53" property="f53" jdbcType="VARCHAR" />
+    <result column="F54" property="f54" jdbcType="VARCHAR" />
+    <result column="F55" property="f55" jdbcType="VARCHAR" />
+    <result column="F56" property="f56" jdbcType="VARCHAR" />
+    <result column="PO_bxjsr" property="poBxjsr" jdbcType="VARCHAR" />
+    <result column="F58" property="f58" jdbcType="VARCHAR" />
+    <result column="F59" property="f59" jdbcType="VARCHAR" />
+    <result column="PO_bjscbl" property="poBjscbl" jdbcType="VARCHAR" />
+    <result column="PO_bxscbl" property="poBxscbl" jdbcType="VARCHAR" />
+    <result column="F62" property="f62" jdbcType="VARCHAR" />
+    <result column="F63" property="f63" jdbcType="VARCHAR" />
+    <result column="F64" property="f64" jdbcType="VARCHAR" />
+    <result column="F65" property="f65" jdbcType="VARCHAR" />
+    <result column="F66" property="f66" jdbcType="VARCHAR" />
+    <result column="F67" property="f67" jdbcType="VARCHAR" />
+    <result column="F68" property="f68" jdbcType="VARCHAR" />
+    <result column="F69" property="f69" jdbcType="VARCHAR" />
+    <result column="F70" property="f70" jdbcType="VARCHAR" />
+    <result column="F71" property="f71" jdbcType="VARCHAR" />
+    <result column="F72" property="f72" jdbcType="VARCHAR" />
+    <result column="F73" property="f73" jdbcType="VARCHAR" />
+    <result column="F74" property="f74" jdbcType="VARCHAR" />
+    <result column="F75" property="f75" jdbcType="VARCHAR" />
+    <result column="F76" property="f76" jdbcType="VARCHAR" />
+    <result column="F77" property="f77" jdbcType="VARCHAR" />
+    <result column="F78" property="f78" jdbcType="VARCHAR" />
+    <result column="F79" property="f79" jdbcType="VARCHAR" />
+    <result column="F80" property="f80" jdbcType="VARCHAR" />
+    <result column="F81" property="f81" jdbcType="VARCHAR" />
+    <result column="F82" property="f82" jdbcType="VARCHAR" />
+    <result column="F83" property="f83" jdbcType="VARCHAR" />
+    <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    F1, F2, F3, PO_dyh, PO_jkr, F6, PO_sfzhm, F8, PO_hyzk, PO_sjhth, F11, PO_dkpz, F13, 
+    PO_dkje, PO_lx, F16, F17, PO_dbfs, F19, F20, PO_dywdz, F22, PO_fcxz, F24, F25, F26, 
+    PO_fcmj, PO_dywscdj, PO_dywsczj, PO_dywbxl, PO_dywbxjz, F32, PO_pmfbl, PO_pmfje, 
+    PO_ssfbl, PO_ssfje, PO_zxfbl, PO_zxfje, PO_sfjdfbl, PO_sfjdfje, F41, F42, PO_xgsfhj, 
+    F44, F45, F46, F47, F48, F49, F50, F51, F52, F53, F54, F55, F56, PO_bxjsr, F58, F59, 
+    PO_bjscbl, PO_bxscbl, F62, F63, F64, F65, F66, F67, F68, F69, F70, F71, F72, F73, 
+    F74, F75, F76, F77, F78, F79, F80, F81, F82, F83, attachment_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1Example" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sheet1
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1Example" >
+    delete from sheet1
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1" >
+    insert into sheet1 (F1, F2, F3, PO_dyh, 
+      PO_jkr, F6, PO_sfzhm, 
+      F8, PO_hyzk, PO_sjhth, 
+      F11, PO_dkpz, F13, PO_dkje, 
+      PO_lx, F16, F17, PO_dbfs, 
+      F19, F20, PO_dywdz, 
+      F22, PO_fcxz, F24, F25, 
+      F26, PO_fcmj, PO_dywscdj, 
+      PO_dywsczj, PO_dywbxl, PO_dywbxjz, 
+      F32, PO_pmfbl, PO_pmfje, 
+      PO_ssfbl, PO_ssfje, PO_zxfbl, 
+      PO_zxfje, PO_sfjdfbl, PO_sfjdfje, 
+      F41, F42, PO_xgsfhj, 
+      F44, F45, F46, F47, 
+      F48, F49, F50, F51, 
+      F52, F53, F54, F55, 
+      F56, PO_bxjsr, F58, 
+      F59, PO_bjscbl, PO_bxscbl, 
+      F62, F63, F64, F65, 
+      F66, F67, F68, F69, 
+      F70, F71, F72, F73, 
+      F74, F75, F76, F77, 
+      F78, F79, F80, F81, 
+      F82, F83, attachment_id
+      )
+    values (#{f1,jdbcType=VARCHAR}, #{f2,jdbcType=VARCHAR}, #{f3,jdbcType=VARCHAR}, #{poDyh,jdbcType=VARCHAR}, 
+      #{poJkr,jdbcType=VARCHAR}, #{f6,jdbcType=VARCHAR}, #{poSfzhm,jdbcType=VARCHAR}, 
+      #{f8,jdbcType=VARCHAR}, #{poHyzk,jdbcType=VARCHAR}, #{poSjhth,jdbcType=VARCHAR}, 
+      #{f11,jdbcType=VARCHAR}, #{poDkpz,jdbcType=VARCHAR}, #{f13,jdbcType=VARCHAR}, #{poDkje,jdbcType=VARCHAR}, 
+      #{poLx,jdbcType=VARCHAR}, #{f16,jdbcType=VARCHAR}, #{f17,jdbcType=VARCHAR}, #{poDbfs,jdbcType=VARCHAR}, 
+      #{f19,jdbcType=VARCHAR}, #{f20,jdbcType=VARCHAR}, #{poDywdz,jdbcType=VARCHAR}, 
+      #{f22,jdbcType=VARCHAR}, #{poFcxz,jdbcType=VARCHAR}, #{f24,jdbcType=VARCHAR}, #{f25,jdbcType=VARCHAR}, 
+      #{f26,jdbcType=VARCHAR}, #{poFcmj,jdbcType=VARCHAR}, #{poDywscdj,jdbcType=VARCHAR}, 
+      #{poDywsczj,jdbcType=VARCHAR}, #{poDywbxl,jdbcType=VARCHAR}, #{poDywbxjz,jdbcType=VARCHAR}, 
+      #{f32,jdbcType=VARCHAR}, #{poPmfbl,jdbcType=VARCHAR}, #{poPmfje,jdbcType=VARCHAR}, 
+      #{poSsfbl,jdbcType=VARCHAR}, #{poSsfje,jdbcType=VARCHAR}, #{poZxfbl,jdbcType=VARCHAR}, 
+      #{poZxfje,jdbcType=VARCHAR}, #{poSfjdfbl,jdbcType=VARCHAR}, #{poSfjdfje,jdbcType=VARCHAR}, 
+      #{f41,jdbcType=VARCHAR}, #{f42,jdbcType=VARCHAR}, #{poXgsfhj,jdbcType=VARCHAR}, 
+      #{f44,jdbcType=VARCHAR}, #{f45,jdbcType=VARCHAR}, #{f46,jdbcType=VARCHAR}, #{f47,jdbcType=VARCHAR}, 
+      #{f48,jdbcType=VARCHAR}, #{f49,jdbcType=VARCHAR}, #{f50,jdbcType=VARCHAR}, #{f51,jdbcType=VARCHAR}, 
+      #{f52,jdbcType=VARCHAR}, #{f53,jdbcType=VARCHAR}, #{f54,jdbcType=VARCHAR}, #{f55,jdbcType=VARCHAR}, 
+      #{f56,jdbcType=VARCHAR}, #{poBxjsr,jdbcType=VARCHAR}, #{f58,jdbcType=VARCHAR}, 
+      #{f59,jdbcType=VARCHAR}, #{poBjscbl,jdbcType=VARCHAR}, #{poBxscbl,jdbcType=VARCHAR}, 
+      #{f62,jdbcType=VARCHAR}, #{f63,jdbcType=VARCHAR}, #{f64,jdbcType=VARCHAR}, #{f65,jdbcType=VARCHAR}, 
+      #{f66,jdbcType=VARCHAR}, #{f67,jdbcType=VARCHAR}, #{f68,jdbcType=VARCHAR}, #{f69,jdbcType=VARCHAR}, 
+      #{f70,jdbcType=VARCHAR}, #{f71,jdbcType=VARCHAR}, #{f72,jdbcType=VARCHAR}, #{f73,jdbcType=VARCHAR}, 
+      #{f74,jdbcType=VARCHAR}, #{f75,jdbcType=VARCHAR}, #{f76,jdbcType=VARCHAR}, #{f77,jdbcType=VARCHAR}, 
+      #{f78,jdbcType=VARCHAR}, #{f79,jdbcType=VARCHAR}, #{f80,jdbcType=VARCHAR}, #{f81,jdbcType=VARCHAR}, 
+      #{f82,jdbcType=VARCHAR}, #{f83,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1" >
+    insert into sheet1
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="f1 != null" >
+        F1,
+      </if>
+      <if test="f2 != null" >
+        F2,
+      </if>
+      <if test="f3 != null" >
+        F3,
+      </if>
+      <if test="poDyh != null" >
+        PO_dyh,
+      </if>
+      <if test="poJkr != null" >
+        PO_jkr,
+      </if>
+      <if test="f6 != null" >
+        F6,
+      </if>
+      <if test="poSfzhm != null" >
+        PO_sfzhm,
+      </if>
+      <if test="f8 != null" >
+        F8,
+      </if>
+      <if test="poHyzk != null" >
+        PO_hyzk,
+      </if>
+      <if test="poSjhth != null" >
+        PO_sjhth,
+      </if>
+      <if test="f11 != null" >
+        F11,
+      </if>
+      <if test="poDkpz != null" >
+        PO_dkpz,
+      </if>
+      <if test="f13 != null" >
+        F13,
+      </if>
+      <if test="poDkje != null" >
+        PO_dkje,
+      </if>
+      <if test="poLx != null" >
+        PO_lx,
+      </if>
+      <if test="f16 != null" >
+        F16,
+      </if>
+      <if test="f17 != null" >
+        F17,
+      </if>
+      <if test="poDbfs != null" >
+        PO_dbfs,
+      </if>
+      <if test="f19 != null" >
+        F19,
+      </if>
+      <if test="f20 != null" >
+        F20,
+      </if>
+      <if test="poDywdz != null" >
+        PO_dywdz,
+      </if>
+      <if test="f22 != null" >
+        F22,
+      </if>
+      <if test="poFcxz != null" >
+        PO_fcxz,
+      </if>
+      <if test="f24 != null" >
+        F24,
+      </if>
+      <if test="f25 != null" >
+        F25,
+      </if>
+      <if test="f26 != null" >
+        F26,
+      </if>
+      <if test="poFcmj != null" >
+        PO_fcmj,
+      </if>
+      <if test="poDywscdj != null" >
+        PO_dywscdj,
+      </if>
+      <if test="poDywsczj != null" >
+        PO_dywsczj,
+      </if>
+      <if test="poDywbxl != null" >
+        PO_dywbxl,
+      </if>
+      <if test="poDywbxjz != null" >
+        PO_dywbxjz,
+      </if>
+      <if test="f32 != null" >
+        F32,
+      </if>
+      <if test="poPmfbl != null" >
+        PO_pmfbl,
+      </if>
+      <if test="poPmfje != null" >
+        PO_pmfje,
+      </if>
+      <if test="poSsfbl != null" >
+        PO_ssfbl,
+      </if>
+      <if test="poSsfje != null" >
+        PO_ssfje,
+      </if>
+      <if test="poZxfbl != null" >
+        PO_zxfbl,
+      </if>
+      <if test="poZxfje != null" >
+        PO_zxfje,
+      </if>
+      <if test="poSfjdfbl != null" >
+        PO_sfjdfbl,
+      </if>
+      <if test="poSfjdfje != null" >
+        PO_sfjdfje,
+      </if>
+      <if test="f41 != null" >
+        F41,
+      </if>
+      <if test="f42 != null" >
+        F42,
+      </if>
+      <if test="poXgsfhj != null" >
+        PO_xgsfhj,
+      </if>
+      <if test="f44 != null" >
+        F44,
+      </if>
+      <if test="f45 != null" >
+        F45,
+      </if>
+      <if test="f46 != null" >
+        F46,
+      </if>
+      <if test="f47 != null" >
+        F47,
+      </if>
+      <if test="f48 != null" >
+        F48,
+      </if>
+      <if test="f49 != null" >
+        F49,
+      </if>
+      <if test="f50 != null" >
+        F50,
+      </if>
+      <if test="f51 != null" >
+        F51,
+      </if>
+      <if test="f52 != null" >
+        F52,
+      </if>
+      <if test="f53 != null" >
+        F53,
+      </if>
+      <if test="f54 != null" >
+        F54,
+      </if>
+      <if test="f55 != null" >
+        F55,
+      </if>
+      <if test="f56 != null" >
+        F56,
+      </if>
+      <if test="poBxjsr != null" >
+        PO_bxjsr,
+      </if>
+      <if test="f58 != null" >
+        F58,
+      </if>
+      <if test="f59 != null" >
+        F59,
+      </if>
+      <if test="poBjscbl != null" >
+        PO_bjscbl,
+      </if>
+      <if test="poBxscbl != null" >
+        PO_bxscbl,
+      </if>
+      <if test="f62 != null" >
+        F62,
+      </if>
+      <if test="f63 != null" >
+        F63,
+      </if>
+      <if test="f64 != null" >
+        F64,
+      </if>
+      <if test="f65 != null" >
+        F65,
+      </if>
+      <if test="f66 != null" >
+        F66,
+      </if>
+      <if test="f67 != null" >
+        F67,
+      </if>
+      <if test="f68 != null" >
+        F68,
+      </if>
+      <if test="f69 != null" >
+        F69,
+      </if>
+      <if test="f70 != null" >
+        F70,
+      </if>
+      <if test="f71 != null" >
+        F71,
+      </if>
+      <if test="f72 != null" >
+        F72,
+      </if>
+      <if test="f73 != null" >
+        F73,
+      </if>
+      <if test="f74 != null" >
+        F74,
+      </if>
+      <if test="f75 != null" >
+        F75,
+      </if>
+      <if test="f76 != null" >
+        F76,
+      </if>
+      <if test="f77 != null" >
+        F77,
+      </if>
+      <if test="f78 != null" >
+        F78,
+      </if>
+      <if test="f79 != null" >
+        F79,
+      </if>
+      <if test="f80 != null" >
+        F80,
+      </if>
+      <if test="f81 != null" >
+        F81,
+      </if>
+      <if test="f82 != null" >
+        F82,
+      </if>
+      <if test="f83 != null" >
+        F83,
+      </if>
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="f1 != null" >
+        #{f1,jdbcType=VARCHAR},
+      </if>
+      <if test="f2 != null" >
+        #{f2,jdbcType=VARCHAR},
+      </if>
+      <if test="f3 != null" >
+        #{f3,jdbcType=VARCHAR},
+      </if>
+      <if test="poDyh != null" >
+        #{poDyh,jdbcType=VARCHAR},
+      </if>
+      <if test="poJkr != null" >
+        #{poJkr,jdbcType=VARCHAR},
+      </if>
+      <if test="f6 != null" >
+        #{f6,jdbcType=VARCHAR},
+      </if>
+      <if test="poSfzhm != null" >
+        #{poSfzhm,jdbcType=VARCHAR},
+      </if>
+      <if test="f8 != null" >
+        #{f8,jdbcType=VARCHAR},
+      </if>
+      <if test="poHyzk != null" >
+        #{poHyzk,jdbcType=VARCHAR},
+      </if>
+      <if test="poSjhth != null" >
+        #{poSjhth,jdbcType=VARCHAR},
+      </if>
+      <if test="f11 != null" >
+        #{f11,jdbcType=VARCHAR},
+      </if>
+      <if test="poDkpz != null" >
+        #{poDkpz,jdbcType=VARCHAR},
+      </if>
+      <if test="f13 != null" >
+        #{f13,jdbcType=VARCHAR},
+      </if>
+      <if test="poDkje != null" >
+        #{poDkje,jdbcType=VARCHAR},
+      </if>
+      <if test="poLx != null" >
+        #{poLx,jdbcType=VARCHAR},
+      </if>
+      <if test="f16 != null" >
+        #{f16,jdbcType=VARCHAR},
+      </if>
+      <if test="f17 != null" >
+        #{f17,jdbcType=VARCHAR},
+      </if>
+      <if test="poDbfs != null" >
+        #{poDbfs,jdbcType=VARCHAR},
+      </if>
+      <if test="f19 != null" >
+        #{f19,jdbcType=VARCHAR},
+      </if>
+      <if test="f20 != null" >
+        #{f20,jdbcType=VARCHAR},
+      </if>
+      <if test="poDywdz != null" >
+        #{poDywdz,jdbcType=VARCHAR},
+      </if>
+      <if test="f22 != null" >
+        #{f22,jdbcType=VARCHAR},
+      </if>
+      <if test="poFcxz != null" >
+        #{poFcxz,jdbcType=VARCHAR},
+      </if>
+      <if test="f24 != null" >
+        #{f24,jdbcType=VARCHAR},
+      </if>
+      <if test="f25 != null" >
+        #{f25,jdbcType=VARCHAR},
+      </if>
+      <if test="f26 != null" >
+        #{f26,jdbcType=VARCHAR},
+      </if>
+      <if test="poFcmj != null" >
+        #{poFcmj,jdbcType=VARCHAR},
+      </if>
+      <if test="poDywscdj != null" >
+        #{poDywscdj,jdbcType=VARCHAR},
+      </if>
+      <if test="poDywsczj != null" >
+        #{poDywsczj,jdbcType=VARCHAR},
+      </if>
+      <if test="poDywbxl != null" >
+        #{poDywbxl,jdbcType=VARCHAR},
+      </if>
+      <if test="poDywbxjz != null" >
+        #{poDywbxjz,jdbcType=VARCHAR},
+      </if>
+      <if test="f32 != null" >
+        #{f32,jdbcType=VARCHAR},
+      </if>
+      <if test="poPmfbl != null" >
+        #{poPmfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="poPmfje != null" >
+        #{poPmfje,jdbcType=VARCHAR},
+      </if>
+      <if test="poSsfbl != null" >
+        #{poSsfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="poSsfje != null" >
+        #{poSsfje,jdbcType=VARCHAR},
+      </if>
+      <if test="poZxfbl != null" >
+        #{poZxfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="poZxfje != null" >
+        #{poZxfje,jdbcType=VARCHAR},
+      </if>
+      <if test="poSfjdfbl != null" >
+        #{poSfjdfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="poSfjdfje != null" >
+        #{poSfjdfje,jdbcType=VARCHAR},
+      </if>
+      <if test="f41 != null" >
+        #{f41,jdbcType=VARCHAR},
+      </if>
+      <if test="f42 != null" >
+        #{f42,jdbcType=VARCHAR},
+      </if>
+      <if test="poXgsfhj != null" >
+        #{poXgsfhj,jdbcType=VARCHAR},
+      </if>
+      <if test="f44 != null" >
+        #{f44,jdbcType=VARCHAR},
+      </if>
+      <if test="f45 != null" >
+        #{f45,jdbcType=VARCHAR},
+      </if>
+      <if test="f46 != null" >
+        #{f46,jdbcType=VARCHAR},
+      </if>
+      <if test="f47 != null" >
+        #{f47,jdbcType=VARCHAR},
+      </if>
+      <if test="f48 != null" >
+        #{f48,jdbcType=VARCHAR},
+      </if>
+      <if test="f49 != null" >
+        #{f49,jdbcType=VARCHAR},
+      </if>
+      <if test="f50 != null" >
+        #{f50,jdbcType=VARCHAR},
+      </if>
+      <if test="f51 != null" >
+        #{f51,jdbcType=VARCHAR},
+      </if>
+      <if test="f52 != null" >
+        #{f52,jdbcType=VARCHAR},
+      </if>
+      <if test="f53 != null" >
+        #{f53,jdbcType=VARCHAR},
+      </if>
+      <if test="f54 != null" >
+        #{f54,jdbcType=VARCHAR},
+      </if>
+      <if test="f55 != null" >
+        #{f55,jdbcType=VARCHAR},
+      </if>
+      <if test="f56 != null" >
+        #{f56,jdbcType=VARCHAR},
+      </if>
+      <if test="poBxjsr != null" >
+        #{poBxjsr,jdbcType=VARCHAR},
+      </if>
+      <if test="f58 != null" >
+        #{f58,jdbcType=VARCHAR},
+      </if>
+      <if test="f59 != null" >
+        #{f59,jdbcType=VARCHAR},
+      </if>
+      <if test="poBjscbl != null" >
+        #{poBjscbl,jdbcType=VARCHAR},
+      </if>
+      <if test="poBxscbl != null" >
+        #{poBxscbl,jdbcType=VARCHAR},
+      </if>
+      <if test="f62 != null" >
+        #{f62,jdbcType=VARCHAR},
+      </if>
+      <if test="f63 != null" >
+        #{f63,jdbcType=VARCHAR},
+      </if>
+      <if test="f64 != null" >
+        #{f64,jdbcType=VARCHAR},
+      </if>
+      <if test="f65 != null" >
+        #{f65,jdbcType=VARCHAR},
+      </if>
+      <if test="f66 != null" >
+        #{f66,jdbcType=VARCHAR},
+      </if>
+      <if test="f67 != null" >
+        #{f67,jdbcType=VARCHAR},
+      </if>
+      <if test="f68 != null" >
+        #{f68,jdbcType=VARCHAR},
+      </if>
+      <if test="f69 != null" >
+        #{f69,jdbcType=VARCHAR},
+      </if>
+      <if test="f70 != null" >
+        #{f70,jdbcType=VARCHAR},
+      </if>
+      <if test="f71 != null" >
+        #{f71,jdbcType=VARCHAR},
+      </if>
+      <if test="f72 != null" >
+        #{f72,jdbcType=VARCHAR},
+      </if>
+      <if test="f73 != null" >
+        #{f73,jdbcType=VARCHAR},
+      </if>
+      <if test="f74 != null" >
+        #{f74,jdbcType=VARCHAR},
+      </if>
+      <if test="f75 != null" >
+        #{f75,jdbcType=VARCHAR},
+      </if>
+      <if test="f76 != null" >
+        #{f76,jdbcType=VARCHAR},
+      </if>
+      <if test="f77 != null" >
+        #{f77,jdbcType=VARCHAR},
+      </if>
+      <if test="f78 != null" >
+        #{f78,jdbcType=VARCHAR},
+      </if>
+      <if test="f79 != null" >
+        #{f79,jdbcType=VARCHAR},
+      </if>
+      <if test="f80 != null" >
+        #{f80,jdbcType=VARCHAR},
+      </if>
+      <if test="f81 != null" >
+        #{f81,jdbcType=VARCHAR},
+      </if>
+      <if test="f82 != null" >
+        #{f82,jdbcType=VARCHAR},
+      </if>
+      <if test="f83 != null" >
+        #{f83,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1Example" resultType="java.lang.Integer" >
+    select count(*) from sheet1
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sheet1
+    <set >
+      <if test="record.f1 != null" >
+        F1 = #{record.f1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f2 != null" >
+        F2 = #{record.f2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f3 != null" >
+        F3 = #{record.f3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDyh != null" >
+        PO_dyh = #{record.poDyh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poJkr != null" >
+        PO_jkr = #{record.poJkr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f6 != null" >
+        F6 = #{record.f6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSfzhm != null" >
+        PO_sfzhm = #{record.poSfzhm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f8 != null" >
+        F8 = #{record.f8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poHyzk != null" >
+        PO_hyzk = #{record.poHyzk,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSjhth != null" >
+        PO_sjhth = #{record.poSjhth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f11 != null" >
+        F11 = #{record.f11,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDkpz != null" >
+        PO_dkpz = #{record.poDkpz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f13 != null" >
+        F13 = #{record.f13,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDkje != null" >
+        PO_dkje = #{record.poDkje,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poLx != null" >
+        PO_lx = #{record.poLx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f16 != null" >
+        F16 = #{record.f16,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f17 != null" >
+        F17 = #{record.f17,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDbfs != null" >
+        PO_dbfs = #{record.poDbfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f19 != null" >
+        F19 = #{record.f19,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f20 != null" >
+        F20 = #{record.f20,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDywdz != null" >
+        PO_dywdz = #{record.poDywdz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f22 != null" >
+        F22 = #{record.f22,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poFcxz != null" >
+        PO_fcxz = #{record.poFcxz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f24 != null" >
+        F24 = #{record.f24,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f25 != null" >
+        F25 = #{record.f25,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f26 != null" >
+        F26 = #{record.f26,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poFcmj != null" >
+        PO_fcmj = #{record.poFcmj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDywscdj != null" >
+        PO_dywscdj = #{record.poDywscdj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDywsczj != null" >
+        PO_dywsczj = #{record.poDywsczj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDywbxl != null" >
+        PO_dywbxl = #{record.poDywbxl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poDywbxjz != null" >
+        PO_dywbxjz = #{record.poDywbxjz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f32 != null" >
+        F32 = #{record.f32,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poPmfbl != null" >
+        PO_pmfbl = #{record.poPmfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poPmfje != null" >
+        PO_pmfje = #{record.poPmfje,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSsfbl != null" >
+        PO_ssfbl = #{record.poSsfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSsfje != null" >
+        PO_ssfje = #{record.poSsfje,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poZxfbl != null" >
+        PO_zxfbl = #{record.poZxfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poZxfje != null" >
+        PO_zxfje = #{record.poZxfje,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSfjdfbl != null" >
+        PO_sfjdfbl = #{record.poSfjdfbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poSfjdfje != null" >
+        PO_sfjdfje = #{record.poSfjdfje,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f41 != null" >
+        F41 = #{record.f41,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f42 != null" >
+        F42 = #{record.f42,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poXgsfhj != null" >
+        PO_xgsfhj = #{record.poXgsfhj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f44 != null" >
+        F44 = #{record.f44,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f45 != null" >
+        F45 = #{record.f45,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f46 != null" >
+        F46 = #{record.f46,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f47 != null" >
+        F47 = #{record.f47,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f48 != null" >
+        F48 = #{record.f48,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f49 != null" >
+        F49 = #{record.f49,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f50 != null" >
+        F50 = #{record.f50,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f51 != null" >
+        F51 = #{record.f51,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f52 != null" >
+        F52 = #{record.f52,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f53 != null" >
+        F53 = #{record.f53,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f54 != null" >
+        F54 = #{record.f54,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f55 != null" >
+        F55 = #{record.f55,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f56 != null" >
+        F56 = #{record.f56,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poBxjsr != null" >
+        PO_bxjsr = #{record.poBxjsr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f58 != null" >
+        F58 = #{record.f58,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f59 != null" >
+        F59 = #{record.f59,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poBjscbl != null" >
+        PO_bjscbl = #{record.poBjscbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poBxscbl != null" >
+        PO_bxscbl = #{record.poBxscbl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f62 != null" >
+        F62 = #{record.f62,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f63 != null" >
+        F63 = #{record.f63,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f64 != null" >
+        F64 = #{record.f64,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f65 != null" >
+        F65 = #{record.f65,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f66 != null" >
+        F66 = #{record.f66,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f67 != null" >
+        F67 = #{record.f67,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f68 != null" >
+        F68 = #{record.f68,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f69 != null" >
+        F69 = #{record.f69,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f70 != null" >
+        F70 = #{record.f70,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f71 != null" >
+        F71 = #{record.f71,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f72 != null" >
+        F72 = #{record.f72,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f73 != null" >
+        F73 = #{record.f73,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f74 != null" >
+        F74 = #{record.f74,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f75 != null" >
+        F75 = #{record.f75,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f76 != null" >
+        F76 = #{record.f76,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f77 != null" >
+        F77 = #{record.f77,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f78 != null" >
+        F78 = #{record.f78,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f79 != null" >
+        F79 = #{record.f79,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f80 != null" >
+        F80 = #{record.f80,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f81 != null" >
+        F81 = #{record.f81,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f82 != null" >
+        F82 = #{record.f82,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f83 != null" >
+        F83 = #{record.f83,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sheet1
+    set F1 = #{record.f1,jdbcType=VARCHAR},
+      F2 = #{record.f2,jdbcType=VARCHAR},
+      F3 = #{record.f3,jdbcType=VARCHAR},
+      PO_dyh = #{record.poDyh,jdbcType=VARCHAR},
+      PO_jkr = #{record.poJkr,jdbcType=VARCHAR},
+      F6 = #{record.f6,jdbcType=VARCHAR},
+      PO_sfzhm = #{record.poSfzhm,jdbcType=VARCHAR},
+      F8 = #{record.f8,jdbcType=VARCHAR},
+      PO_hyzk = #{record.poHyzk,jdbcType=VARCHAR},
+      PO_sjhth = #{record.poSjhth,jdbcType=VARCHAR},
+      F11 = #{record.f11,jdbcType=VARCHAR},
+      PO_dkpz = #{record.poDkpz,jdbcType=VARCHAR},
+      F13 = #{record.f13,jdbcType=VARCHAR},
+      PO_dkje = #{record.poDkje,jdbcType=VARCHAR},
+      PO_lx = #{record.poLx,jdbcType=VARCHAR},
+      F16 = #{record.f16,jdbcType=VARCHAR},
+      F17 = #{record.f17,jdbcType=VARCHAR},
+      PO_dbfs = #{record.poDbfs,jdbcType=VARCHAR},
+      F19 = #{record.f19,jdbcType=VARCHAR},
+      F20 = #{record.f20,jdbcType=VARCHAR},
+      PO_dywdz = #{record.poDywdz,jdbcType=VARCHAR},
+      F22 = #{record.f22,jdbcType=VARCHAR},
+      PO_fcxz = #{record.poFcxz,jdbcType=VARCHAR},
+      F24 = #{record.f24,jdbcType=VARCHAR},
+      F25 = #{record.f25,jdbcType=VARCHAR},
+      F26 = #{record.f26,jdbcType=VARCHAR},
+      PO_fcmj = #{record.poFcmj,jdbcType=VARCHAR},
+      PO_dywscdj = #{record.poDywscdj,jdbcType=VARCHAR},
+      PO_dywsczj = #{record.poDywsczj,jdbcType=VARCHAR},
+      PO_dywbxl = #{record.poDywbxl,jdbcType=VARCHAR},
+      PO_dywbxjz = #{record.poDywbxjz,jdbcType=VARCHAR},
+      F32 = #{record.f32,jdbcType=VARCHAR},
+      PO_pmfbl = #{record.poPmfbl,jdbcType=VARCHAR},
+      PO_pmfje = #{record.poPmfje,jdbcType=VARCHAR},
+      PO_ssfbl = #{record.poSsfbl,jdbcType=VARCHAR},
+      PO_ssfje = #{record.poSsfje,jdbcType=VARCHAR},
+      PO_zxfbl = #{record.poZxfbl,jdbcType=VARCHAR},
+      PO_zxfje = #{record.poZxfje,jdbcType=VARCHAR},
+      PO_sfjdfbl = #{record.poSfjdfbl,jdbcType=VARCHAR},
+      PO_sfjdfje = #{record.poSfjdfje,jdbcType=VARCHAR},
+      F41 = #{record.f41,jdbcType=VARCHAR},
+      F42 = #{record.f42,jdbcType=VARCHAR},
+      PO_xgsfhj = #{record.poXgsfhj,jdbcType=VARCHAR},
+      F44 = #{record.f44,jdbcType=VARCHAR},
+      F45 = #{record.f45,jdbcType=VARCHAR},
+      F46 = #{record.f46,jdbcType=VARCHAR},
+      F47 = #{record.f47,jdbcType=VARCHAR},
+      F48 = #{record.f48,jdbcType=VARCHAR},
+      F49 = #{record.f49,jdbcType=VARCHAR},
+      F50 = #{record.f50,jdbcType=VARCHAR},
+      F51 = #{record.f51,jdbcType=VARCHAR},
+      F52 = #{record.f52,jdbcType=VARCHAR},
+      F53 = #{record.f53,jdbcType=VARCHAR},
+      F54 = #{record.f54,jdbcType=VARCHAR},
+      F55 = #{record.f55,jdbcType=VARCHAR},
+      F56 = #{record.f56,jdbcType=VARCHAR},
+      PO_bxjsr = #{record.poBxjsr,jdbcType=VARCHAR},
+      F58 = #{record.f58,jdbcType=VARCHAR},
+      F59 = #{record.f59,jdbcType=VARCHAR},
+      PO_bjscbl = #{record.poBjscbl,jdbcType=VARCHAR},
+      PO_bxscbl = #{record.poBxscbl,jdbcType=VARCHAR},
+      F62 = #{record.f62,jdbcType=VARCHAR},
+      F63 = #{record.f63,jdbcType=VARCHAR},
+      F64 = #{record.f64,jdbcType=VARCHAR},
+      F65 = #{record.f65,jdbcType=VARCHAR},
+      F66 = #{record.f66,jdbcType=VARCHAR},
+      F67 = #{record.f67,jdbcType=VARCHAR},
+      F68 = #{record.f68,jdbcType=VARCHAR},
+      F69 = #{record.f69,jdbcType=VARCHAR},
+      F70 = #{record.f70,jdbcType=VARCHAR},
+      F71 = #{record.f71,jdbcType=VARCHAR},
+      F72 = #{record.f72,jdbcType=VARCHAR},
+      F73 = #{record.f73,jdbcType=VARCHAR},
+      F74 = #{record.f74,jdbcType=VARCHAR},
+      F75 = #{record.f75,jdbcType=VARCHAR},
+      F76 = #{record.f76,jdbcType=VARCHAR},
+      F77 = #{record.f77,jdbcType=VARCHAR},
+      F78 = #{record.f78,jdbcType=VARCHAR},
+      F79 = #{record.f79,jdbcType=VARCHAR},
+      F80 = #{record.f80,jdbcType=VARCHAR},
+      F81 = #{record.f81,jdbcType=VARCHAR},
+      F82 = #{record.f82,jdbcType=VARCHAR},
+      F83 = #{record.f83,jdbcType=VARCHAR},
+      attachment_id = #{record.attachmentId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
