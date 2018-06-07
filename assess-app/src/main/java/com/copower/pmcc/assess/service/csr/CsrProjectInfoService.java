@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
@@ -60,6 +61,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -130,6 +132,8 @@ public class CsrProjectInfoService {
     private BaseReportService baseReportService;
     @Autowired
     private FormConfigureService formConfigureService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 获取vo
@@ -265,7 +269,7 @@ public class CsrProjectInfoService {
      * @param csrProjectInfo
      */
     private void cleanImportData(CsrProjectInfo csrProjectInfo) {
-        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(),null);
+        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(), null);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
             csrBorrowers.forEach(p -> {
                 csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
@@ -382,7 +386,7 @@ public class CsrProjectInfoService {
                     int k = projectMemberService.saveReturnId(projectMemberDto);
 
                     //回写借款人的项目id
-                    List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(),infoGroup.getId());
+                    List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(), infoGroup.getId());
                     for (CsrBorrower csrBorrower : csrBorrowers) {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
@@ -441,6 +445,7 @@ public class CsrProjectInfoService {
         HashMap<Integer, CsrImportColumnDto> hashMap = Maps.newHashMap();
         HSSFRow row = null;
         HSSFCell cell = null;
+        List<CsrImportBorrowerDto> importBorrowerDtoList = Lists.newArrayList();
         for (int rowNum = 0; rowNum <= sheet.getLastRowNum(); rowNum++) {
             //第一行特殊处理 需要处理数据行才操作 其它行丢弃
             //没有在基础配置的字段中不做处理
@@ -797,8 +802,6 @@ public class CsrProjectInfoService {
     }
 
 
-
-
     /**
      * 确定是否使用已有的借款人信息
      *
@@ -831,6 +834,57 @@ public class CsrProjectInfoService {
         }
         return null;
     }
+
+    /**
+     * 使用已存在的借款人
+     *
+     * @param borrowerDtos
+     * @param secondLevelBranch
+     * @param idNumber
+     * @param contractNumber
+     * @return
+     */
+    private CsrImportBorrowerDto useExistBorrower(List<CsrImportBorrowerDto> borrowerDtos, String secondLevelBranch, String idNumber, String contractNumber) {
+        CsrImportBorrowerDto csrImportBorrowerDto = null;
+        if (CollectionUtils.isNotEmpty(borrowerDtos)) {
+            for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
+                CsrBorrower csrBorrower = borrowerDto.getCsrBorrower();
+                List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
+                if (StringUtils.equals(csrBorrower.getSecondLevelBranch(), secondLevelBranch) && StringUtils.equals(csrBorrower.getIdNumber(), idNumber)) {
+                    if (CollectionUtils.isNotEmpty(csrBorrowerMortgageList)) {
+                        for (CsrBorrowerMortgage csrBorrowerMortgage : csrBorrowerMortgageList) {
+                            if (StringUtils.equals(csrBorrowerMortgage.getContractNumber(), contractNumber)) {
+                                return borrowerDto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        csrImportBorrowerDto = new CsrImportBorrowerDto();
+        csrImportBorrowerDto.setCsrBorrowerMortgageList(Lists.newArrayList());
+        csrImportBorrowerDto.setCsrContractList(Lists.newArrayList());
+        csrImportBorrowerDto.setCsrGuarantorList(Lists.newArrayList());
+        csrImportBorrowerDto.setCsrLitigationList(Lists.newArrayList());
+        csrImportBorrowerDto.setCsrPrincipalInterestList(Lists.newArrayList());
+        return csrImportBorrowerDto;
+    }
+
+    /**
+     * 数据导入到数据库中
+     *
+     * @param borrowerDtos
+     */
+    private void importToDataBase(List<CsrImportBorrowerDto> borrowerDtos) {
+        if (CollectionUtils.isNotEmpty(borrowerDtos)) {
+            for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
+                if (borrowerDto.getCsrBorrower() != null) {
+
+                }
+            }
+        }
+    }
+
 
     /**
      * 债权人列表信息
@@ -883,5 +937,56 @@ public class CsrProjectInfoService {
         return name;
     }
 
+    /**
+     *
+     * @param ids
+     */
+    public void generateTemp(String ids){
 
+        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        for (Integer integer : integerList) {
+            BaseAttachment attachment = new BaseAttachment();
+            attachment.setTableName("sheet1");
+            attachment.setFieldsName("report");
+            try {
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(116, attachment);
+                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
+                String localFileDir = baseAttachmentService.createTempBasePath();
+                String localFullPath = localFileDir + File.separator + loaclFileName;
+                ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
+                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id="+integer);
+                if (CollectionUtils.isNotEmpty(mapList)) {
+                    int i = 1;
+                    for (Map<String, Object> map : mapList) {
+                        try {
+                            Map<String, String> stringMap = toMapString(map);
+                            stringMap.put("{PO_number}",String.valueOf(i));
+                            AsposeUtils.replaceText(localFullPath, stringMap);
+                            i++;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                //再将附件上传到相同位置
+                try {
+                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+
+                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s",ftpAttachment.getId(),integer));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Map<String, String> toMapString(Map<String, Object> map) {
+        Map<String, String> stringMap = Maps.newHashMap();
+        for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
+            stringMap.put("{"+stringObjectEntry.getKey()+"}", String.valueOf(stringObjectEntry.getValue()));
+        }
+        return stringMap;
+    }
 }
