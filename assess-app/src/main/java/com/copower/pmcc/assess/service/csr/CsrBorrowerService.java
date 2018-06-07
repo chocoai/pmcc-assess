@@ -45,6 +45,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -301,4 +302,13 @@ public class CsrBorrowerService {
         return csrBorrowerEnteringVo;
     }
 
+    /**
+     * 导出报告excle
+     * @param filePath 附件路径
+     * @param dataIndex 数据开始行
+     * @param mapList 数据  list行 Map<String,Object> Map<PO_jkr,涂桂芝></>
+     */
+    public void exportReportExcel(String filePath, Integer dataIndex, List<Map<String,Object>> mapList){
+
+    }
 }

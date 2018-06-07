@@ -875,12 +875,53 @@ public class CsrProjectInfoService {
      *
      * @param borrowerDtos
      */
-    private void importToDataBase(List<CsrImportBorrowerDto> borrowerDtos) {
+    private void importToDataBase(Integer csrProjectId,List<CsrImportBorrowerDto> borrowerDtos) {
         if (CollectionUtils.isNotEmpty(borrowerDtos)) {
             for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
-                if (borrowerDto.getCsrBorrower() != null) {
-
+                CsrBorrower csrBorrower = borrowerDto.getCsrBorrower();
+                if (csrBorrower != null) {
+                    csrBorrower.setCsrProjectId(csrProjectId);
+                    csrBorrower.setBisImport(true);
+                    csrBorrower.setCreator(commonService.thisUserAccount());
+                    csrBorrowerDao.addCsrBorrower(csrBorrower);
                 }
+                List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
+                if(CollectionUtils.isNotEmpty(csrBorrowerMortgageList)){
+                    for (CsrBorrowerMortgage csrBorrowerMortgage : csrBorrowerMortgageList) {
+
+                    }
+                }
+//                if (csrBorrowerMortgage != null) {
+//                    csrBorrowerMortgage.setBorrowerId(csrBorrower.getId());
+//                    csrBorrowerMortgage.setExcelRowIndex(rowNum + 1);
+//                    csrBorrowerMortgage.setBisImport(true);
+//                    csrBorrowerMortgage.setCreator(commonService.thisUserAccount());
+//                    csrBorrowerMortgageDao.addCsrBorrowerMortgage(csrBorrowerMortgage);
+//                }
+//                if (csrContract != null) {
+//                    csrContract.setBorrowerId(csrBorrower.getId());
+//                    csrContract.setBisImport(true);
+//                    csrContract.setCreator(commonService.thisUserAccount());
+//                    csrContractDao.addCsrContract(csrContract);
+//                }
+//                if (csrGuarantor != null) {
+//                    csrGuarantor.setBorrowerId(csrBorrower.getId());
+//                    csrGuarantor.setBisImport(true);
+//                    csrGuarantor.setCreator(commonService.thisUserAccount());
+//                    csrGuarantorDao.addCsrGuarantor(csrGuarantor);
+//                }
+//                if (csrLitigation != null) {
+//                    csrLitigation.setBorrowerId(csrBorrower.getId());
+//                    csrLitigation.setBisImport(true);
+//                    csrLitigation.setCreator(commonService.thisUserAccount());
+//                    csrLitigationDao.addCsrLitigation(csrLitigation);
+//                }
+//                if (csrPrincipalInterest != null) {
+//                    csrPrincipalInterest.setBorrowerId(csrBorrower.getId());
+//                    csrPrincipalInterest.setBisImport(true);
+//                    csrPrincipalInterest.setCreator(commonService.thisUserAccount());
+//                    csrPrincipalInterestDao.addCsrPrincipalInterest(csrPrincipalInterest);
+//                }
             }
         }
     }
@@ -949,7 +990,7 @@ public class CsrProjectInfoService {
             attachment.setFieldsName("report");
             try {
                 List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
-                attachment.setFileName(String.valueOf(mapList.get(0).get("PO_jkr")+"报告"));
+                attachment.setFileName(String.valueOf(mapList.get(0).get("PO_jkr") + "报告"));
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
@@ -989,4 +1030,6 @@ public class CsrProjectInfoService {
         }
         return stringMap;
     }
+
+
 }
