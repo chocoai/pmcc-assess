@@ -942,6 +942,7 @@ public class CsrProjectInfoService {
      */
     public void generateTemp(String ids) {
         List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        int i = 1;
         for (Integer integer : integerList) {
             BaseAttachment attachment = new BaseAttachment();
             attachment.setTableName("sheet1");
@@ -955,13 +956,12 @@ public class CsrProjectInfoService {
                 String localFullPath = localFileDir + File.separator + loaclFileName;
                 ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
                 if (CollectionUtils.isNotEmpty(mapList)) {
-                    int i = 1;
+
                     for (Map<String, Object> map : mapList) {
                         try {
                             Map<String, String> stringMap = toMapString(map);
                             stringMap.put("{PO_number}", String.valueOf(i));
                             AsposeUtils.replaceText(localFullPath, stringMap);
-                            i++;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -975,6 +975,7 @@ public class CsrProjectInfoService {
                 }
 
                 jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s", ftpAttachment.getId(), integer));
+                i++;
             } catch (Exception e) {
                 e.printStackTrace();
             }
