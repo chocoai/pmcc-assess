@@ -246,8 +246,8 @@ public class CsrBorrowerService {
         });
     }
 
-    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID) {
-        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID);
+    public List<CsrBorrower> getCsrBorrowerListByCsrProjectID(Integer csrProjectID,Integer groupID) {
+        return csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectID,groupID);
     }
 
     public CsrBorrowerEntering saveCsrBorrower(CsrBorrowerEntering csrBorrowerEntering, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {

@@ -265,7 +265,7 @@ public class CsrProjectInfoService {
      * @param csrProjectInfo
      */
     private void cleanImportData(CsrProjectInfo csrProjectInfo) {
-        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
+        List<CsrBorrower> csrBorrowers = csrBorrowerDao.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(),null);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
             csrBorrowers.forEach(p -> {
                 csrBorrowerMortgageDao.deleteByBorrowerId(p.getId());
@@ -382,7 +382,7 @@ public class CsrProjectInfoService {
                     int k = projectMemberService.saveReturnId(projectMemberDto);
 
                     //回写借款人的项目id
-                    List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId());
+                    List<CsrBorrower> csrBorrowers = csrBorrowerService.getCsrBorrowerListByCsrProjectID(csrProjectInfo.getId(),infoGroup.getId());
                     for (CsrBorrower csrBorrower : csrBorrowers) {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
