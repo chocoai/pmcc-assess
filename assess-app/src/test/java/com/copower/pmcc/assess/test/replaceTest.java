@@ -1,16 +1,23 @@
 package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.common.utils.FileUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +29,10 @@ import java.util.Map;
 public class replaceTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
 
     @org.junit.Test
     public void replaceWord() {
@@ -50,6 +61,52 @@ public class replaceTest {
             stringMap.put("{"+stringObjectEntry.getKey()+"}", String.valueOf(stringObjectEntry.getValue()));
         }
         return stringMap;
+    }
+
+    @Test
+    public void gener(){
+        generateTemp("1,2");
+    }
+
+    public void generateTemp(String ids){
+
+        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        for (Integer integer : integerList) {
+            BaseAttachment attachment = new BaseAttachment();
+            attachment.setTableName("sheet1");
+            attachment.setFieldsName("report");
+            try {
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
+                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
+                String localFileDir = baseAttachmentService.createTempBasePath();
+                String localFullPath = localFileDir + File.separator + loaclFileName;
+                ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
+                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id="+integer);
+                if (CollectionUtils.isNotEmpty(mapList)) {
+                    int i = 1;
+                    for (Map<String, Object> map : mapList) {
+                        try {
+                            Map<String, String> stringMap = toMapString(map);
+                            stringMap.put("{PO_number}",String.valueOf(i));
+                            AsposeUtils.replaceText(localFullPath, stringMap);
+                            i++;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                //再将附件上传到相同位置
+                try {
+                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
+                } catch (Exception e) {
+
+                }
+
+                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s",ftpAttachment.getId(),integer));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

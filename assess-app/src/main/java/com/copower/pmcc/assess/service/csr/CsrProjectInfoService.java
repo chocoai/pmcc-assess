@@ -938,29 +938,28 @@ public class CsrProjectInfoService {
     }
 
     /**
-     *
      * @param ids
      */
-    public void generateTemp(String ids){
-
+    public void generateTemp(String ids) {
         List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         for (Integer integer : integerList) {
             BaseAttachment attachment = new BaseAttachment();
             attachment.setTableName("sheet1");
             attachment.setFieldsName("report");
             try {
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(116, attachment);
+                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
+                attachment.setFileName(String.valueOf(mapList.get(0).get("PO_jkr")+"报告"));
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;
                 ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
-                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id="+integer);
                 if (CollectionUtils.isNotEmpty(mapList)) {
                     int i = 1;
                     for (Map<String, Object> map : mapList) {
                         try {
                             Map<String, String> stringMap = toMapString(map);
-                            stringMap.put("{PO_number}",String.valueOf(i));
+                            stringMap.put("{PO_number}", String.valueOf(i));
                             AsposeUtils.replaceText(localFullPath, stringMap);
                             i++;
                         } catch (Exception e) {
@@ -975,7 +974,7 @@ public class CsrProjectInfoService {
                     logger.error(e.getMessage());
                 }
 
-                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s",ftpAttachment.getId(),integer));
+                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s", ftpAttachment.getId(), integer));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -985,7 +984,7 @@ public class CsrProjectInfoService {
     private Map<String, String> toMapString(Map<String, Object> map) {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
-            stringMap.put("{"+stringObjectEntry.getKey()+"}", String.valueOf(stringObjectEntry.getValue()));
+            stringMap.put("{" + stringObjectEntry.getKey() + "}", String.valueOf(stringObjectEntry.getValue()));
         }
         return stringMap;
     }
