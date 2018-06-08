@@ -14,7 +14,7 @@
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
-                    <h2>查勘明细</h2>
+                    <h2>${parentProject.projectPhaseName}-查勘明细</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -46,11 +46,26 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" data-rule-maxlength="50" placeholder="查勘人"
-                                           id="surveyPeople" name="surveyPeople" required
-                                           value="${surveyLocaleExploreDetail.surveyPeople}"
-                                           class="form-control">
+                                    <div class="input-group">
+                                        <input type="hidden" id="surveyPeopleID">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               value="${surveyLocaleExploreDetail.surveyPeople}" required="required"
+                                               id="surveyPeople" name="surveyPeople" maxlength="200">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择" onclick="selectSurveyPeople()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
@@ -334,6 +349,16 @@
             },
             deleteFlag: true
         })
+    }
+
+    // 查勘人
+    function selectSurveyPeople() {
+        erpEmployee.select({
+            onSelected: function (data) {
+                $("#surveyPeople").val(data.name);
+                $("#userAccountManagerID").val(data.account);
+            }
+        });
     }
 
 </script>

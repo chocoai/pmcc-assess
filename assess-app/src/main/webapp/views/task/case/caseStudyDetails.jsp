@@ -17,7 +17,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>案例调查详情</h2>
+                    <h2>${parentProject.projectPhaseName}-案例调查详情</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

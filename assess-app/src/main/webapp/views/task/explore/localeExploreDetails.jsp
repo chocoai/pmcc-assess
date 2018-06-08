@@ -15,7 +15,7 @@
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
-                    <h2>查勘明细</h2>
+                    <h2>${parentProject.projectPhaseName}-查勘明细</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -27,7 +27,7 @@
 
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>查勘信息详情</h2>
+                    <h2>${parentProject.projectPhaseName}-查勘信息详情</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

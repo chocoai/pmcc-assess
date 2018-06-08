@@ -17,7 +17,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}记录表</h2>
+                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}记录表</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -39,7 +39,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
+                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

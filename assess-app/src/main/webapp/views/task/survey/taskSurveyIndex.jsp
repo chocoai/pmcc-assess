@@ -19,7 +19,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -30,10 +30,24 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估人员<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <select id="evaluator" name="evaluator" class="form-control" required="required">
-                                        <option selected="selected"
-                                                value="${thisUserInfo.id}">${thisUserInfo.userName}</option>
-                                    </select>
+                                    <div class="input-group">
+                                        <input type="hidden" id="evaluatorID">
+                                        <input type="text" class="form-control" readonly="readonly"
+                                               value="${thisUserInfo.userName}" required="required"
+                                               id="evaluator" name="evaluator" maxlength="200">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择" onclick="selectEvaluator()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -321,7 +335,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
+                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -383,7 +397,7 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
-<%--<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>--%>
+<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 <script type="application/javascript">
 
     $(function () {
@@ -625,20 +639,29 @@
      });*/
 
     // 评估人员
-    var evaluator = document.getElementById("evaluator");
-    evaluator.onclick = function () {
+//    var evaluator = document.getElementById("evaluator");
+//    evaluator.onclick = function () {
+//        erpEmployee.select({
+//            onSelected: function (data) {
+//                evaluator.removeChild(evaluator.firstChild);
+//                var fieldElment = document.createElement("option");
+//                fieldElment.setAttribute("value", data.account);
+//                fieldElment.setAttribute("selected", "selected");
+//                fieldElment.appendChild(document.createTextNode(data.name));
+//                evaluator.appendChild(fieldElment);
+//            }
+//        });
+//    }
+        //评估人员
+    // 项目经理
+    function selectEvaluator() {
         erpEmployee.select({
             onSelected: function (data) {
-                evaluator.removeChild(evaluator.firstChild);
-                var fieldElment = document.createElement("option");
-                fieldElment.setAttribute("value", data.account);
-                fieldElment.setAttribute("selected", "selected");
-                fieldElment.appendChild(document.createTextNode(data.name));
-                evaluator.appendChild(fieldElment);
+                $("#evaluator").val(data.name);
+                $("#evaluatorID").val(data.account);
             }
         });
     }
-
 
 </script>
 
