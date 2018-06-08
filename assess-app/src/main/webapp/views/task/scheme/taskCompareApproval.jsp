@@ -301,10 +301,10 @@
                                     </div>
                                 </div>
                                 <%--固定表格格式用--%>
-                                <label class="col-sm-2 control-label rightfloat"></label>
+                                <label class="col-sm-1 control-label rightfloat"></label>
 
                                 <%--右侧固定表格 第四张表--%>
-                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 30%">
+                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 40%">
                                     <thead>
                                     <tr>
                                         <th class="gray">项目</th>
@@ -483,9 +483,11 @@
 
 
     function getDynamic() {
-
+        var num = $("#oneTable").find('thead').find('input:hidden');
         var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
         var jsonArr = JSON.parse(dataJson);
+
+        var caseNum = num.length - jsonArr.length;
         $.each(jsonArr, function (i, array) {
             if (i == 0) {
                 //第一个字段 第二个查勘的值
@@ -494,7 +496,7 @@
                     $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
                     tr = $("#oneTable").find('tbody').find('tr:last');
                     tr.find('th:eq('+i+')').text(item.explain); //字段
-                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //查勘的值
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第一张表
                 })
 
                 $.each(array, function (j, item) {
@@ -517,17 +519,27 @@
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
+                    }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    }
                 })
+
             }
 
         })
