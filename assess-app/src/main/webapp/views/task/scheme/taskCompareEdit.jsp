@@ -67,9 +67,9 @@
                                                         <span name="project" data-id="${items.id}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
-                                                <th class="gray">
-                                                    <a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>
-                                                </th>
+                                                <%--<th class="gray">--%>
+                                                    <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
+                                                <%--</th>--%>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -672,7 +672,7 @@
 
             } else {
                 $.each(array, function (j, item) {
-                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
                     for(var m = 1;m<=caseNum;m++){
                         td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
@@ -680,7 +680,7 @@
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
                     for(var m = 1;m<=caseNum;m++){
                         td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
@@ -688,7 +688,7 @@
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-array.length + j - 2) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
                     for(var m = 1;m<=caseNum;m++){
                         td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);

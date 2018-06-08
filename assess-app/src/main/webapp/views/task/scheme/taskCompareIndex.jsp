@@ -68,9 +68,9 @@
                                                         </span>
                                                     </th>
                                                 </c:forEach>
-                                                <th class="gray">
-                                                    <a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>
-                                                </th>
+                                                <%--<th class="gray">--%>
+                                                    <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
+                                                <%--</th>--%>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -635,6 +635,7 @@
 
         var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
         var jsonArr = JSON.parse(dataJson);
+//        console.log(jsonArr);
         $.each(jsonArr, function (i, array) {
             if (i == 0) {
                 //第一个字段 第二个查勘的值
@@ -664,17 +665,18 @@
 
             } else {
                 $.each(array, function (j, item) {
-                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
+//                    console.log(array.length);
                     td.find('td:eq(' + i + ')').find('span').text(item.value).attr('name', item.key);   //第一张表
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('input').attr('name', item.key);   //第二张表
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-array.length + j - 2) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
                 })
             }
@@ -1172,7 +1174,7 @@
         data.methodMarketCompareCalculationDtos = items3;
         data.methodMarketCompareResultDtos = items4;
         var json = JSON.stringify(data);
-        console.log(json);
+//        console.log(json);
         return json;
     }
 
