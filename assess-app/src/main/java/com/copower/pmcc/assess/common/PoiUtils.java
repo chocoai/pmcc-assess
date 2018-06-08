@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -103,12 +102,14 @@ public class PoiUtils {
      */
     public static void writebackExcel(String path, Map<Integer,List<Map<Integer,String>>> map) throws IOException {
         //行号  列数据
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(path));
+        FileInputStream inputStream = new FileInputStream(path);
+        Workbook workbook = PoiUtils.isExcel2003(path) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+//        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(path));
         Set<Map.Entry<Integer,List<Map<Integer,String>>>> keySet = map.entrySet();
         Iterator<Map.Entry<Integer,List<Map<Integer,String>>>> iterator = keySet.iterator();
-        HSSFSheet sheet = workbook.getSheetAt(0);//只写一个文件薄
-        HSSFRow row = null;
-        HSSFCell cell = null;
+        Sheet sheet = workbook.getSheetAt(0);//只写一个文件薄
+        Row row = null;
+        Cell cell = null;
         while (iterator.hasNext()){
             Map.Entry<Integer,List<Map<Integer,String>>> entry = iterator.next();
             int lineNumber = entry.getKey();
