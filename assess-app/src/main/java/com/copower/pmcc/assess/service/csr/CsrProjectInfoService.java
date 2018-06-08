@@ -874,7 +874,6 @@ public class CsrProjectInfoService {
         }
     }
 
-
     /**
      * 债权人列表信息
      *
