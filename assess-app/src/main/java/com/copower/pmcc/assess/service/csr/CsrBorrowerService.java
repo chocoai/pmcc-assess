@@ -354,7 +354,7 @@ public class CsrBorrowerService {
         }
     }
 
-    private static Integer getReportExcelColumn(Map<String, Integer> report,String key)throws Exception{
+    private  Integer getReportExcelColumn(Map<String, Integer> report,String key)throws Exception{
         Integer temp = null;
         for (Map.Entry<String, Integer> entry:report.entrySet()){
             Map.Entry<String, Integer> integerEntry = entry;
@@ -366,7 +366,13 @@ public class CsrBorrowerService {
         return temp;
     }
 
-    private static Map<String, Integer> getReportExcelOneKey(String filePath)throws Exception{
+    /**
+     * 获取第一行的key
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+    private  Map<String, Integer> getReportExcelOneKey(String filePath)throws Exception{
         //列数以2003版为基准 最大是16384
         final Integer MAX_COLUMN = 16384;
         Map<String, Integer> integerMap = new HashMap<>();
