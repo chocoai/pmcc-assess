@@ -664,10 +664,15 @@
                 })
 
             } else {
+
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
-//                    console.log(array.length);
-                    td.find('td:eq(' + i + ')').find('span').text(item.value).attr('name', item.key);   //第一张表
+                    var value = item.value;
+                    if(value != "null"){
+                        td.find('td:eq(' + i + ')').find('span').text(value).attr('name', item.key);   //第一张表
+                    }else{
+                        td.find('td:eq(' + i + ')').find('span').text("").attr('name', item.key);
+                    }
                 })
 
                 $.each(array, function (j, item) {
@@ -1179,6 +1184,8 @@
     }
 
     function submit() {
+//        getData();
+//        return false;
         if (!$("#frm_task").valid()) {
             return false;
         }
