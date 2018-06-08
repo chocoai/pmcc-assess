@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
+import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -33,22 +34,33 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", "", 0, "0", "");
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", processInsId, boxId, taskId, agentUserAccount);
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
@@ -60,6 +72,9 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
