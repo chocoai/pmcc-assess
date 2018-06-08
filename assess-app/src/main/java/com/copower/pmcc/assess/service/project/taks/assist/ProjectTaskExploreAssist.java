@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
+import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -33,11 +34,15 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreIndex", "", 0, "0", "");
-
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
@@ -45,12 +50,18 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
         //审批走这里
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
@@ -62,6 +73,9 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 

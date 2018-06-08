@@ -58,7 +58,7 @@ public class SurveyCommonService {
      * @return
      */
     public List<SurveyCorrelationCardVo> getSurveyCorrelationCardVos(String correlationCard, ProjectPlanDetails projectPlanDetails, List<DeclareRecord> declareRecords) {
-        if(StringUtils.isBlank(correlationCard)) return null;
+//        if(StringUtils.isBlank(correlationCard)) return null;
         List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
         List<Integer> correlationCardIds = Lists.newArrayList();
         if (StringUtils.isNotBlank(correlationCard)) {

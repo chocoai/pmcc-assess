@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
@@ -33,6 +34,8 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -49,10 +52,15 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 //            surveyAssetTemplate.setInventoryContent(inventoryContent);
 //            surveyAssetTemplateDao.save(surveyAssetTemplate);
 //        }
+        Integer id = projectPlanDetails.getPid();
+        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+
+
         List<SurveyAssetTemplate> surveyAssetTemplate = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("checkContentList", baseDataDicList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
+        modelAndView.addObject("parentProject",parentProject);
         return modelAndView;
     }
 
