@@ -2,16 +2,16 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class ReportTemplate {
+public class BaseReportTemplateFiles {
     private Integer id;
+
+    private String filesRemarks;
 
     private Integer customerId;
 
     private Integer entrustId;
 
     private Integer reportTypeId;
-
-    private Integer templateType;
 
     private Integer csType;
 
@@ -29,6 +29,14 @@ public class ReportTemplate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFilesRemarks() {
+        return filesRemarks;
+    }
+
+    public void setFilesRemarks(String filesRemarks) {
+        this.filesRemarks = filesRemarks == null ? null : filesRemarks.trim();
     }
 
     public Integer getCustomerId() {
@@ -53,14 +61,6 @@ public class ReportTemplate {
 
     public void setReportTypeId(Integer reportTypeId) {
         this.reportTypeId = reportTypeId;
-    }
-
-    public Integer getTemplateType() {
-        return templateType;
-    }
-
-    public void setTemplateType(Integer templateType) {
-        this.templateType = templateType;
     }
 
     public Integer getCsType() {

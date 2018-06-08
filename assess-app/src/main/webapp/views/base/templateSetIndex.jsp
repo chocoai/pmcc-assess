@@ -50,17 +50,38 @@
                                                     <label class="radio-inline"><input type="radio" value="${reportItem.id}" name="reportType" checked="checked"
                                                                                        onclick="reloadTableList()"> ${reportItem.name}</label>
                                                 </c:forEach>
-                                                <p id="toolbar">
-                                                    <a class="btn btn-success" onclick="addBookmark(0)">
-                                                        新增
-                                                    </a>
-                                                    <label class="radio-inline"><input type="radio" value="0" name="csType" checked="checked"
-                                                                                       onclick="reloadTableList()"> 自然人</label>
-                                                    <label class="radio-inline"><input type="radio" value="1" name="csType"
-                                                                                       onclick="reloadTableList()"> 法人</label>
+                                                <label class="radio-inline"><input type="radio" value="0" name="csType" checked="checked"
+                                                                                   onclick="reloadTableList()"> 自然人</label>
+                                                <label class="radio-inline"><input type="radio" value="1" name="csType"
+                                                                                   onclick="reloadTableList()"> 法人</label>
 
-                                                </p>
-                                                <table id="tb_fileds_list" class="table table-bordered"></table>
+                                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                                        <li role="presentation" class="active"><a href="#tab_bookmark" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">书签</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#tab_template" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">模板</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div id="myTabContent" class="tab-content">
+                                                        <div  class="tab-pane fade active in" id="tab_bookmark" aria-labelledby="home-tab">
+                                                            <p id="toolbar">
+                                                                <a class="btn btn-success" onclick="addBookmark(0)">
+                                                                    新增书签
+                                                                </a>
+                                                            </p>
+                                                            <table id="tb_bookmark_list" class="table table-bordered"></table>
+                                                        </div>
+                                                        <div  class="tab-pane fade" id="tab_template" aria-labelledby="profile-tab">
+                                                            <p id="toolbar_files">
+                                                                <a class="btn btn-success" onclick="addBookmark(0)">
+                                                                    新增模板
+                                                                </a>
+                                                            </p>
+                                                            <table id="tb_files_list" class="table table-bordered"></table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -86,15 +107,14 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
-</html>
+
 <div id="modalSubTemplate" class="modal fade bs-example-modal-lg"
      data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class='modal-header'>
-                <h3 class='modal-title'>报告模板</h3>
+                <h3 class='modal-title'>书签设置</h3>
             </div>
             <p id="sublevel_toolbar">
                 <a class="btn btn-success" onclick="addBookmark(1)">
@@ -109,14 +129,12 @@
 
     </div>
 </div>
-
-
 <div id="modalTemplate" class="modal fade bs-example-modal-lg"
      data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class='modal-header'>
-                <h3 class='modal-title'>报告模板</h3></div>
+                <h3 class='modal-title'>书签设置</h3></div>
             <form id='frm' class='form-horizontal'>
                 <input type='hidden' id='id' name='id' value="0">
                 <input type='hidden' id='pid' name='pid' value="0">
@@ -141,6 +159,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            显示名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input name='bookmarkNameCn' class='form-control' required
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             书签/子模板名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -153,7 +182,7 @@
                                     <div class='x-valid'><label
                                             class='col-sm-2 control-label'>数据来源</label>
                                         <div class='col-sm-10'>
-                                            <select id='dataPoolType' name='dataPoolType'  class='form-control' onclick="changePool()">
+                                            <select id='dataPoolType' name='dataPoolType' class='form-control' onclick="changePool()">
                                                 <c:forEach var="item" items="${baseReportDataPoolTypeEnumList}">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -207,10 +236,11 @@
         </div>
     </div>
 </div>
-
+<%@include file="/views/share/main_footer.jsp" %>
+</html>
 
 <script type="text/javascript">
-    var tableList = $("#tb_fileds_list");
+    var tableList = $("#tb_bookmark_list");
     var tableSubList = $("#tb_fileds_sublevel_list");
     $(function () {
         loadTree();
@@ -291,8 +321,9 @@
 
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
+        cols.push({field: 'bookmarkNameCn', width: '20%', title: '显示名称'});
         cols.push({
-            field: 'bookmarkName', title: '书签名称', width: '40%', formatter: function (value, row, index) {
+            field: 'bookmarkName', title: '书签名称', width: '20%', formatter: function (value, row, index) {
                 var s = value;
                 if (row.templateType == "${templateTypeId}") {
                     s = "<a href='javascript:;' class='btn btn-xs btn-danger tooltips'  data-toggle='tooltip' data-original-title='模板' style='margin-left: 5px'><i  class='fa fa-tag' title='模板'></i></a>" + value;
@@ -351,8 +382,9 @@
 
         var cols = [];
         cols.push({field: 'id', title: '编号', visible: false});
+        cols.push({field: 'bookmarkNameCn', title: '显示名称', width: '20%'});
         cols.push({
-            field: 'bookmarkName', title: '书签名称', width: '40%', formatter: function (value, row, index) {
+            field: 'bookmarkName', title: '书签名称', width: '20%', formatter: function (value, row, index) {
                 var s = value;
                 if (row.templateType == "${templateTypeId}") {
                     s = "<a href='javascript:;' onclick='showSubTemplate(" + row.id + ")' class='btn btn-xs btn-danger tooltips'  data-toggle='tooltip' data-original-title='模板' style='margin-left: 5px'><i  class='fa fa-tag' title='模板'></i></a>" + value;
@@ -576,7 +608,7 @@
         data["customerId"] = $("#tree_value").val();
         data["entrustId"] = $("#tabs_index_value").val();
         data["reportTypeId"] = $("input[name='reportType']:checked").val();
-        data["cstype"] = $("input[name='csType']:checked").val();
+        data["csType"] = $("input[name='csType']:checked").val();
 
         $.ajax({
             url: "${pageContext.request.contextPath}/templateSet/saveTemplateData",

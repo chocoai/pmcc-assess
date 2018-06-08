@@ -12,21 +12,21 @@ import java.util.List;
  * @data: 2017/11/2
  * @time: 15:46
  */
-public enum BaseReportTemplateTypeEnum {
-    REPORT("report", "报告模板"), EXPORT("export", "导出汇总模板");
+public enum BaseReportMarkbookTypeEnum {
+    BOOKMARK(1, "书签"), TEMPLATE(2, "子模板");
 
-    private String key;
+    private Integer key;
 
     private String name;
 
-    private BaseReportTemplateTypeEnum(String key, String name) {
+    private BaseReportMarkbookTypeEnum(Integer key, String name) {
         this.name = name;
         this.key = key;
     }
 
-    public static BaseReportTemplateTypeEnum getEnumByName(String id) {
-        for (BaseReportTemplateTypeEnum e : BaseReportTemplateTypeEnum.values()) {
-            if (e.getKey() .equals(id)) {
+    public static BaseReportMarkbookTypeEnum getEnumByName(Integer id) {
+        for (BaseReportMarkbookTypeEnum e : BaseReportMarkbookTypeEnum.values()) {
+            if (e.getKey() == id) {
                 return e;
             }
         }
@@ -35,7 +35,7 @@ public enum BaseReportTemplateTypeEnum {
 
     public static List<KeyValueDto> getBaseReportTemplateTypeEnumList() {
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportTemplateTypeEnum e : BaseReportTemplateTypeEnum.values()) {
+        for (BaseReportMarkbookTypeEnum e : BaseReportMarkbookTypeEnum.values()) {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(e.getKey()));
             keyValueDto.setValue(e.getName());
@@ -44,11 +44,11 @@ public enum BaseReportTemplateTypeEnum {
         return keyValueDtos;
     }
 
-    public String getKey() {
+    public Integer getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(Integer key) {
         this.key = key;
     }
 

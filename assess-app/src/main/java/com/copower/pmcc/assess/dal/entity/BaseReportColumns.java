@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dal.entity;
 
-public class ReportColumns {
+public class BaseReportColumns {
     private Integer id;
 
     private Integer tableId;

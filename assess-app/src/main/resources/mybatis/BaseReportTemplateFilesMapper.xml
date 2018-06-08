@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.ReportTemplateMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.BaseReportTemplateFilesMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="files_remarks" property="filesRemarks" jdbcType="VARCHAR" />
     <result column="customer_id" property="customerId" jdbcType="INTEGER" />
     <result column="entrust_id" property="entrustId" jdbcType="INTEGER" />
     <result column="report_type_id" property="reportTypeId" jdbcType="INTEGER" />
-    <result column="template_type" property="templateType" jdbcType="INTEGER" />
     <result column="cs_type" property="csType" jdbcType="INTEGER" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, customer_id, entrust_id, report_type_id, template_type, cs_type, bis_enable, 
+    id, files_remarks, customer_id, entrust_id, report_type_id, cs_type, bis_enable, 
     creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFilesExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_report_template
+    from tb_base_report_template_files
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,38 +92,41 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_report_template
+    from tb_base_report_template_files
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_report_template
+    delete from tb_base_report_template_files
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateExample" >
-    delete from tb_report_template
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFilesExample" >
+    delete from tb_base_report_template_files
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_report_template (customer_id, entrust_id, report_type_id, 
-      template_type, cs_type, bis_enable, 
+    insert into tb_base_report_template_files (files_remarks, customer_id, entrust_id, 
+      report_type_id, cs_type, bis_enable, 
       creator, gmt_created, gmt_modified
       )
-    values (#{customerId,jdbcType=INTEGER}, #{entrustId,jdbcType=INTEGER}, #{reportTypeId,jdbcType=INTEGER}, 
-      #{templateType,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
+    values (#{filesRemarks,jdbcType=VARCHAR}, #{customerId,jdbcType=INTEGER}, #{entrustId,jdbcType=INTEGER}, 
+      #{reportTypeId,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_report_template
+    insert into tb_base_report_template_files
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="filesRemarks != null" >
+        files_remarks,
+      </if>
       <if test="customerId != null" >
         customer_id,
       </if>
@@ -132,9 +135,6 @@
       </if>
       <if test="reportTypeId != null" >
         report_type_id,
-      </if>
-      <if test="templateType != null" >
-        template_type,
       </if>
       <if test="csType != null" >
         cs_type,
@@ -153,6 +153,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="filesRemarks != null" >
+        #{filesRemarks,jdbcType=VARCHAR},
+      </if>
       <if test="customerId != null" >
         #{customerId,jdbcType=INTEGER},
       </if>
@@ -161,9 +164,6 @@
       </if>
       <if test="reportTypeId != null" >
         #{reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="templateType != null" >
-        #{templateType,jdbcType=INTEGER},
       </if>
       <if test="csType != null" >
         #{csType,jdbcType=INTEGER},
@@ -182,17 +182,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplateExample" resultType="java.lang.Integer" >
-    select count(*) from tb_report_template
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFilesExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base_report_template_files
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_report_template
+    update tb_base_report_template_files
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.filesRemarks != null" >
+        files_remarks = #{record.filesRemarks,jdbcType=VARCHAR},
       </if>
       <if test="record.customerId != null" >
         customer_id = #{record.customerId,jdbcType=INTEGER},
@@ -202,9 +205,6 @@
       </if>
       <if test="record.reportTypeId != null" >
         report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="record.templateType != null" >
-        template_type = #{record.templateType,jdbcType=INTEGER},
       </if>
       <if test="record.csType != null" >
         cs_type = #{record.csType,jdbcType=INTEGER},
@@ -227,12 +227,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_report_template
+    update tb_base_report_template_files
     set id = #{record.id,jdbcType=INTEGER},
+      files_remarks = #{record.filesRemarks,jdbcType=VARCHAR},
       customer_id = #{record.customerId,jdbcType=INTEGER},
       entrust_id = #{record.entrustId,jdbcType=INTEGER},
       report_type_id = #{record.reportTypeId,jdbcType=INTEGER},
-      template_type = #{record.templateType,jdbcType=INTEGER},
       cs_type = #{record.csType,jdbcType=INTEGER},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -242,9 +242,12 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
-    update tb_report_template
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles" >
+    update tb_base_report_template_files
     <set >
+      <if test="filesRemarks != null" >
+        files_remarks = #{filesRemarks,jdbcType=VARCHAR},
+      </if>
       <if test="customerId != null" >
         customer_id = #{customerId,jdbcType=INTEGER},
       </if>
@@ -253,9 +256,6 @@
       </if>
       <if test="reportTypeId != null" >
         report_type_id = #{reportTypeId,jdbcType=INTEGER},
-      </if>
-      <if test="templateType != null" >
-        template_type = #{templateType,jdbcType=INTEGER},
       </if>
       <if test="csType != null" >
         cs_type = #{csType,jdbcType=INTEGER},
@@ -275,12 +275,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.ReportTemplate" >
-    update tb_report_template
-    set customer_id = #{customerId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles" >
+    update tb_base_report_template_files
+    set files_remarks = #{filesRemarks,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=INTEGER},
       entrust_id = #{entrustId,jdbcType=INTEGER},
       report_type_id = #{reportTypeId,jdbcType=INTEGER},
-      template_type = #{templateType,jdbcType=INTEGER},
       cs_type = #{csType,jdbcType=INTEGER},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

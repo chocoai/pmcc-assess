@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ReportTemplateExample {
+public class BaseReportTemplateFilesExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ReportTemplateExample() {
+    public BaseReportTemplateFilesExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -162,6 +162,76 @@ public class ReportTemplateExample {
 
         public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksIsNull() {
+            addCriterion("files_remarks is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksIsNotNull() {
+            addCriterion("files_remarks is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksEqualTo(String value) {
+            addCriterion("files_remarks =", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksNotEqualTo(String value) {
+            addCriterion("files_remarks <>", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksGreaterThan(String value) {
+            addCriterion("files_remarks >", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksGreaterThanOrEqualTo(String value) {
+            addCriterion("files_remarks >=", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksLessThan(String value) {
+            addCriterion("files_remarks <", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksLessThanOrEqualTo(String value) {
+            addCriterion("files_remarks <=", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksLike(String value) {
+            addCriterion("files_remarks like", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksNotLike(String value) {
+            addCriterion("files_remarks not like", value, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksIn(List<String> values) {
+            addCriterion("files_remarks in", values, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksNotIn(List<String> values) {
+            addCriterion("files_remarks not in", values, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksBetween(String value1, String value2) {
+            addCriterion("files_remarks between", value1, value2, "filesRemarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilesRemarksNotBetween(String value1, String value2) {
+            addCriterion("files_remarks not between", value1, value2, "filesRemarks");
             return (Criteria) this;
         }
 
@@ -342,66 +412,6 @@ public class ReportTemplateExample {
 
         public Criteria andReportTypeIdNotBetween(Integer value1, Integer value2) {
             addCriterion("report_type_id not between", value1, value2, "reportTypeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeIsNull() {
-            addCriterion("template_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeIsNotNull() {
-            addCriterion("template_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeEqualTo(Integer value) {
-            addCriterion("template_type =", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeNotEqualTo(Integer value) {
-            addCriterion("template_type <>", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeGreaterThan(Integer value) {
-            addCriterion("template_type >", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("template_type >=", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeLessThan(Integer value) {
-            addCriterion("template_type <", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("template_type <=", value, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeIn(List<Integer> values) {
-            addCriterion("template_type in", values, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeNotIn(List<Integer> values) {
-            addCriterion("template_type not in", values, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeBetween(Integer value1, Integer value2) {
-            addCriterion("template_type between", value1, value2, "templateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("template_type not between", value1, value2, "templateType");
             return (Criteria) this;
         }
 

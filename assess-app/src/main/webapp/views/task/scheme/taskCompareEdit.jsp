@@ -67,9 +67,9 @@
                                                         <span name="project" data-id="${items.id}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
-                                                <th class="gray">
-                                                    <a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>
-                                                </th>
+                                                <%--<th class="gray">--%>
+                                                    <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
+                                                <%--</th>--%>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -248,10 +248,11 @@
                                                 <c:forEach items="${methodMarketCompareCalculations}" var="items">
                                                     <input type="hidden" class="data" data-id="${items.compareIndexId}"
                                                            data-json='${items.jsonContent}'>
-                                                    <th class="gray data-th" data-id="${items.id}"
+                                                    <th class="gray data-th" name="project" data-id="${items.id}"
                                                         data-index="${items.compareIndexId}" data-type="${items.type}">
-                                                        <span name="project" data-id="${items.id}"
-                                                              data-index="${items.compareIndexId}">${items.name}</span>
+                                                        ${items.name}
+                                                        <%--<span name="project" data-id="${items.id}"--%>
+                                                              <%--data-index="${items.compareIndexId}"></span>--%>
                                                     </th>
                                                 </c:forEach>
                                             </tr>
@@ -672,7 +673,7 @@
 
             } else {
                 $.each(array, function (j, item) {
-                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
+                    var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
                     for(var m = 1;m<=caseNum;m++){
                         td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
@@ -680,15 +681,17 @@
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
-                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
+//                    console.log(-array.length + j);
+//                    console.log("i="+i);
+                    var td = $("#twoTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
+                    td.find('td:eq(' + i + ')').find('input').attr('name', item.key);   //第二张表
                     for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                        td.find('td:eq(' + (i+m) + ')').find('input').attr('name', item.key);
                     }
                 })
 
                 $.each(array, function (j, item) {
-                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
+                    var td = $("#threeTable").find('tbody').find('tr:eq(' + (-array.length + j - 2) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
                     for(var m = 1;m<=caseNum;m++){
                         td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
@@ -1087,7 +1090,7 @@
                 var type = $(this).attr('data-type');
                 var keyValueArray = [];
                 var compareCalculation = {};
-                compareCalculation.name = $("#threeTable").find('[name="project"][data-id="' + id + '"]').text();
+                compareCalculation.name = $("#threeTable").find('[name="project"][data-id="' + dataIndexId + '"]').text();
                 compareCalculation.type = type;
                 compareCalculation.id = id;
                 compareCalculation.evaluationObjectId = ${schemeEvaluationObjectId};
@@ -1130,7 +1133,7 @@
         data.methodMarketCompareResultDtos = items4;
 
         var json = JSON.stringify(data);
-        console.log(json);
+//        console.log(json);
         return json;
     }
 

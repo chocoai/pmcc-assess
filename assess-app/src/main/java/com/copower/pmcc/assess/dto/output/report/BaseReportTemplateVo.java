@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.report;
 
-import com.copower.pmcc.assess.dal.entity.ReportTemplate;
+import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @data: 2018/5/22
  * @time: 9:53
  */
-public class ReportTemplateVo extends ReportTemplate {
+public class BaseReportTemplateVo extends BaseReportTemplate {
     private String typeName;//数据类型名称
 
     private String dataPoolTypename;//数据来源

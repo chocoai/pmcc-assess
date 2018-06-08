@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.ReflectUtils;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
+import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -149,7 +150,8 @@ public class CsrProjectInfoService {
      * @return
      */
     public CsrProjectInfoVo getCsrProjectInfoVo(CsrProjectInfo csrProjectInfo) {
-        if (csrProjectInfo == null) return null;
+        if (csrProjectInfo == null)
+            return null;
         CsrProjectInfoVo csrProjectInfoVo = new CsrProjectInfoVo();
         BeanUtils.copyProperties(csrProjectInfo, csrProjectInfoVo);
         if (StringUtils.isNotBlank(csrProjectInfo.getDistributionUser())) {
@@ -219,7 +221,6 @@ public class CsrProjectInfoService {
             csrProjectInfoDao.addCsrProjectInfo(csrProjectInfo);
         }
     }
-
 
     /**
      * 发起项目
@@ -318,7 +319,6 @@ public class CsrProjectInfoService {
         }
     }
 
-
     /**
      * 立项审批
      *
@@ -408,7 +408,6 @@ public class CsrProjectInfoService {
         }
     }
 
-
     /**
      * 是否过滤
      *
@@ -425,7 +424,6 @@ public class CsrProjectInfoService {
         }
         return false;
     }
-
 
     /**
      * 数据导入
@@ -451,14 +449,17 @@ public class CsrProjectInfoService {
             //第一行特殊处理 需要处理数据行才操作 其它行丢弃
             //没有在基础配置的字段中不做处理
             row = sheet.getRow(rowNum);
-            if (row == null) return;
+            if (row == null)
+                return;
             if (rowNum == 0) {
                 //确定单元格对应的字段 将每一列与配置的字段对应
                 for (int i = 0; i < coloumNum; i++) {
                     cell = row.getCell(i);
-                    if (cell == null) continue;
+                    if (cell == null)
+                        continue;
                     String value = PoiUtils.getCellValue(cell);
-                    if (StringUtils.isBlank(value)) continue;
+                    if (StringUtils.isBlank(value))
+                        continue;
                     //关联到配置
                     CsrImportColumnDto csrImportColumnDto = new CsrImportColumnDto();
                     csrImportColumnDto.setColumnIndex(i);
@@ -485,9 +486,11 @@ public class CsrProjectInfoService {
                         boolean isFilter = false;
                         for (Map.Entry<Integer, String> integerStringEntry : invalidRuleIndexMap.entrySet()) {
                             isFilter = isFilter(ruleList, integerStringEntry.getValue(), PoiUtils.getCellValue(row.getCell(integerStringEntry.getKey())));
-                            if (isFilter) continue;
+                            if (isFilter)
+                                continue;
                         }
-                        if (isFilter) continue;
+                        if (isFilter)
+                            continue;
                     }
 
                     //取到核心字段验证 确定数据的保存条数
@@ -509,7 +512,8 @@ public class CsrProjectInfoService {
                             if (StringUtils.isNotBlank(columnDto.getTableName()) && StringUtils.isNotBlank(columnDto.getFieldName())) {
                                 //找出 二级分行 客户证件号 合同编号 并将数据包含到对应的实体对象中
                                 cell = row.getCell(entry.getKey());
-                                if (cell == null) continue;
+                                if (cell == null)
+                                    continue;
                                 if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_BORROWER)) {
                                     if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_SECOND_LEVEL_BRANCH)) {
                                         secondLevelBranch = PoiUtils.getCellValue(cell);
@@ -621,7 +625,6 @@ public class CsrProjectInfoService {
         return FormatUtils.toLowerCaseFirstChar(FormatUtils.underlineToCamel(dbFieldName, false));
     }
 
-
     /**
      * 生成报告
      */
@@ -636,13 +639,20 @@ public class CsrProjectInfoService {
 
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        ReportTemplate newsReportTemplate = baseReportService.getNewsReportTemplate(csrProjectInfo.getEntrustmentUnitId(),
-                csrProjectInfo.getEntrustPurpose(), baseDataDic.getId(), csrProjectInfo.getCustomerType());
-        if (newsReportTemplate == null)
+
+        BaseReportTemplateFiles baseReportTemplateFilesWhere = new BaseReportTemplateFiles();
+        baseReportTemplateFilesWhere.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
+        baseReportTemplateFilesWhere.setReportTypeId(baseDataDic.getId());//取预评报告
+        baseReportTemplateFilesWhere.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
+        baseReportTemplateFilesWhere.setEntrustId(csrProjectInfo.getEntrustPurpose());
+        baseReportTemplateFilesWhere.setBisEnable(true);
+        BaseReportTemplateFiles baseReportTemplateFiles = baseReportService.getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
+        if (baseReportTemplateFiles == null)
             throw new BusinessException("未找到对应的报告模板");
         BaseAttachment queryParam = new BaseAttachment();
-        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ReportTemplate.class));
-        queryParam.setTableId(newsReportTemplate.getId());
+        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
+        queryParam.setTableId(baseReportTemplateFiles.getId());
+        queryParam.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
         List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
@@ -651,19 +661,26 @@ public class CsrProjectInfoService {
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
         attachment.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
-        List<ReportTemplateBookmark> bookmarks = baseReportService.getBookMarkListByTemplateId(newsReportTemplate.getId());
+
+        BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
+        baseReportTemplate.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
+        baseReportTemplate.setReportTypeId(baseDataDic.getId());//取预评报告
+        baseReportTemplate.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
+        baseReportTemplate.setEntrustId(csrProjectInfo.getEntrustPurpose());
+        baseReportTemplate.setBisEnable(true);
+        List<BaseReportTemplate> baseReportTemplateList = baseReportService.getBaseReportTemplateList(baseReportTemplate);
         for (Integer integer : list) {
             try {
                 //拷贝表数据及FTP附件
                 attachment.setTableId(integer);
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), attachment);
                 //获取数据
-                if (CollectionUtils.isNotEmpty(bookmarks)) {
+                if (CollectionUtils.isNotEmpty(baseReportTemplateList)) {
                     //1.检查配置的书签有几张表
                     //2.先找到主表信息,再找从表数据
                     //3.循环书签
                     HashSet<Integer> tableSet = Sets.newHashSet();
-                    for (ReportTemplateBookmark bookmark : bookmarks) {
+                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
                         BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(bookmark.getDataPoolType());
                         switch (dataPoolTypeEnum) {
                             case COLUMNS:
@@ -673,9 +690,10 @@ public class CsrProjectInfoService {
                     }
                     Map<Integer, Map<String, Object>> map = Maps.newHashMap();
                     Map<String, Object> objectMap = null;
-                    List<ReportTable> reportTableList = baseReportService.getReportTableList(Lists.newArrayList(tableSet));
+                    List<BaseReportTable> baseReportTableList = baseReportService.getBaseReportTableList(Lists.newArrayList(tableSet));
+
                     String sql = "";
-                    for (ReportTable reportTable : reportTableList) {
+                    for (BaseReportTable reportTable : baseReportTableList) {
                         switch (reportTable.getTableName()) {
                             case AssessTableNameConstant.CSR_BORROWER:
                                 objectMap = formConfigureService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
@@ -704,14 +722,15 @@ public class CsrProjectInfoService {
 
                     List<KeyValueDto> keyValueDtoList = Lists.newArrayList();//书签对应值数据
 
-                    for (ReportTemplateBookmark bookmark : bookmarks) {
+                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
                         KeyValueDto keyValueDto = new KeyValueDto();
                         //对应类型不同处理方式有区别
                         keyValueDto.setExplain(String.valueOf(BaseReportDataPoolTypeEnum.COLUMNS.getKey()));
                         keyValueDto.setKey(bookmark.getBookmarkName());
                         Map<String, Object> stringObjectMap = map.get(bookmark.getDataPoolTableId());
-                        ReportColumns reportColumns = baseReportService.getReportColumns(bookmark.getDataPoolColumnsId());
-                        keyValueDto.setValue(String.valueOf(stringObjectMap.get(reportColumns.getColumnsName())));
+
+                        BaseReportColumns baseReportColumns = baseReportService.getBaseReportColumnsById(bookmark.getDataPoolColumnsId());
+                        keyValueDto.setValue(String.valueOf(stringObjectMap.get(baseReportColumns.getColumnsName())));
                         keyValueDtoList.add(keyValueDto);
                     }
 
@@ -732,7 +751,6 @@ public class CsrProjectInfoService {
             }
         }
     }
-
 
     /**
      * 确定是否使用已有的借款人信息
@@ -977,6 +995,5 @@ public class CsrProjectInfoService {
         }
         return stringMap;
     }
-
 
 }

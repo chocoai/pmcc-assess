@@ -230,6 +230,9 @@ public class ProjectInfoService {
 
                 int id = 0;
                 id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+                projectMemberDto.setProjectId(id);
+                //2018-06-08标记
+                projectMemberService.updateProjectMember(projectMemberDto);
                 update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
                 initProjectInfo(projectInfo);//初始化项目信息
             } catch (Exception e) {
