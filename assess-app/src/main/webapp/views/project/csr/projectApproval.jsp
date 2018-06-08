@@ -293,6 +293,7 @@
                                         </div>
                                     </div>
 
+
                                     <div class="x-valid">
                                         <div>
                                             <div class="col-sm-2">
@@ -322,9 +323,9 @@
                                     </div>
 
                                     <div class="x-valid">
-                                        <div class="col-sm-2 bs-glyphicons">
-                                            <span aria-hidden="true" class="glyphicon glyphicon-resize-horizontal" style="position:fixed; top:48%; right:50%;font-size:24px;"></span>
-                                           <%--<i class="fa fa-arrows-h" style="position:fixed; top:48%; right:50%;"></i>--%>
+                                        <div class="col-sm-2 bs-glyphicons" style="padding-top:140px;padding-left:30px;">
+                                            <a href="#/chevron-left" class="btn btn-primary" onclick="submitGroupProject()"><i class="fa fa-chevron-right"></i></a>
+                                            <a href="#/chevron-left" class="btn btn-primary" onclick="cancelCsrBorrower()"><i class="fa fa-chevron-left"></i></a>
                                         </div>
                                     </div>
 
@@ -345,8 +346,6 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <input type="button" onclick="submitGroupProject()" value="分派" class="btn btn-primary">
-                    <input type="button"  value="取消分派" class="btn btn-primary" onclick="cancelCsrBorrower()">
                 </div>
             </form>
         </div>
@@ -651,6 +650,7 @@
         var id = '${csrProjectInfo.id}';
         $("#frmGroupProject").clearAll();
         $("#csrProjectId").val(id);
+        $("#projectName").val('${csrProjectInfo.name}');
         $('#divBoxGroupProject').modal();
     }
     // 项目经理
