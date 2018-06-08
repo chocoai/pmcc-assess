@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.csr;
 
 import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.TempPoiZCH;
 import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
@@ -29,6 +31,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -39,14 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.*;
+import java.util.*;
 
 /**
  * 借款人
@@ -309,6 +317,85 @@ public class CsrBorrowerService {
      * @param mapList 数据  list行 Map<String,Object> Map<PO_jkr,涂桂芝></>
      */
     public void exportReportExcel(String filePath, Integer dataIndex, List<Map<String,Object>> mapList){
+        try {
+            Map<String, Integer> report = getReportExcelOneKey(filePath);
+            FileInputStream inputStream = new FileInputStream(filePath);
+            int size = mapList.size();
+            if (dataIndex <= 0) throw new Exception("数据输入非法");
+            if (!(size >= dataIndex)) throw new Exception("数据列表非法");
+            Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+            //暂时只取第一个工作表
+            Sheet sheet = workbook.getSheetAt(0);
+            Row row = null;
+            Cell cell = null;
+            for (int i = dataIndex; i < size; i++) {
+                row = sheet.getRow(i);//行
+                Map<String, Object>  objectMap = mapList.get(i);
+                for (Map.Entry<String, Object> objectEntry:objectMap.entrySet()){
+                    String key = objectEntry.getKey();
+                    Object value = objectEntry.getValue();
+                    Integer cellIndex = getReportExcelColumn(report,key);
+                    cell = row.getCell(cellIndex);//列
+                    if (cell!=null){
+                        cell.setCellValue(value.toString());
+                    }
+                }
+            }
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+            workbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception e1) {
 
+            }
+        }
+    }
+
+    private  Integer getReportExcelColumn(Map<String, Integer> report,String key)throws Exception{
+        Integer temp = null;
+        for (Map.Entry<String, Integer> entry:report.entrySet()){
+            Map.Entry<String, Integer> integerEntry = entry;
+            String k = integerEntry.getKey();
+            if (k.equals(key)){//匹配成功!
+                temp = integerEntry.getValue();
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * 获取第一行的key
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+    private  Map<String, Integer> getReportExcelOneKey(String filePath)throws Exception{
+        //列数以2003版为基准 最大是16384
+        final Integer MAX_COLUMN = 16384;
+        Map<String, Integer> integerMap = new HashMap<>();
+        FileInputStream inputStream = new FileInputStream(filePath);
+        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        //暂时只取第一个工作表
+        Sheet sheet = workbook.getSheetAt(0);
+        //因为是第一行作为key所以只取第一行
+        Row row = sheet.getRow(0);
+        Cell cell = null;
+        if (row!=null){
+            for (int i = 0; i < MAX_COLUMN; i++) {
+                cell = row.getCell(i);
+                if (cell!=null){
+                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    String cellValue = cell.getStringCellValue();
+                    if (!org.springframework.util.StringUtils.isEmpty(cellValue)){
+                        //取key
+                        integerMap.put(cellValue,i);
+                    }
+                }
+            }
+        }
+        return integerMap;
     }
 }
