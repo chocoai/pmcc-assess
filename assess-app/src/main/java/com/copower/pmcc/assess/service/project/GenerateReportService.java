@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.GenerateReportDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
+import com.copower.pmcc.assess.dto.input.project.GenerateReportApplyDto;
 import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -67,8 +68,9 @@ public class GenerateReportService {
     /**
      * 生成报告
      */
-    public void generate(){
+    public void generate(GenerateReportApplyDto generateReportApplyDto){
         //1.确认需要报告的数据，将数据按区域分组
-
+        String reportType = generateReportApplyDto.getReportType();
+        //根据报告类型 委托目的 
     }
 }

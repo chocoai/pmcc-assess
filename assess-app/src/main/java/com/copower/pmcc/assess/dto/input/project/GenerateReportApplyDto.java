@@ -11,4 +11,20 @@ public class GenerateReportApplyDto {
     private String reportType;
 
     private List<GenerateReportRecord> generateReportRecords;
+
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public List<GenerateReportRecord> getGenerateReportRecords() {
+        return generateReportRecords;
+    }
+
+    public void setGenerateReportRecords(List<GenerateReportRecord> generateReportRecords) {
+        this.generateReportRecords = generateReportRecords;
+    }
 }

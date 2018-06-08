@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = "generateReport",name = "出具报告")
-public class GenerateReportController {
+public class ProjectReportController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private GenerateReportService generateReportService;
