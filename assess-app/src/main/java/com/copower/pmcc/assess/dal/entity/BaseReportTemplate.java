@@ -2,10 +2,8 @@ package com.copower.pmcc.assess.dal.entity;
 
 import java.util.Date;
 
-public class ReportTemplateBookmark {
+public class BaseReportTemplate {
     private Integer id;
-
-    private Integer templateId;
 
     private String bookmarkName;
 
@@ -29,20 +27,22 @@ public class ReportTemplateBookmark {
 
     private Date gmtModified;
 
+    private Integer customerId;
+
+    private Integer entrustId;
+
+    private Integer reportTypeId;
+
+    private Integer csType;
+
+    private Integer templateType;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(Integer templateId) {
-        this.templateId = templateId;
     }
 
     public String getBookmarkName() {
@@ -131,5 +131,45 @@ public class ReportTemplateBookmark {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
+    public Integer getEntrustId() {
+        return entrustId;
+    }
+
+    public void setEntrustId(Integer entrustId) {
+        this.entrustId = entrustId;
+    }
+
+    public Integer getReportTypeId() {
+        return reportTypeId;
+    }
+
+    public void setReportTypeId(Integer reportTypeId) {
+        this.reportTypeId = reportTypeId;
+    }
+
+    public Integer getCsType() {
+        return csType;
+    }
+
+    public void setCsType(Integer csType) {
+        this.csType = csType;
+    }
+
+    public Integer getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
     }
 }

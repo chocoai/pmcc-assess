@@ -76,7 +76,6 @@
                 ids += id + ",";
             });
         }
-        alert(ids);
         if (ids != "") {
             ids = ids.substring(0, ids.length - 1);
         }

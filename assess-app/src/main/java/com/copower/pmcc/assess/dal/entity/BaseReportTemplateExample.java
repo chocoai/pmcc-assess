@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ReportTemplateBookmarkExample {
+public class BaseReportTemplateExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ReportTemplateBookmarkExample() {
+    public BaseReportTemplateExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -162,66 +162,6 @@ public class ReportTemplateBookmarkExample {
 
         public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdIsNull() {
-            addCriterion("template_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdIsNotNull() {
-            addCriterion("template_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdEqualTo(Integer value) {
-            addCriterion("template_id =", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdNotEqualTo(Integer value) {
-            addCriterion("template_id <>", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdGreaterThan(Integer value) {
-            addCriterion("template_id >", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("template_id >=", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdLessThan(Integer value) {
-            addCriterion("template_id <", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdLessThanOrEqualTo(Integer value) {
-            addCriterion("template_id <=", value, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdIn(List<Integer> values) {
-            addCriterion("template_id in", values, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdNotIn(List<Integer> values) {
-            addCriterion("template_id not in", values, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdBetween(Integer value1, Integer value2) {
-            addCriterion("template_id between", value1, value2, "templateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("template_id not between", value1, value2, "templateId");
             return (Criteria) this;
         }
 
@@ -912,6 +852,306 @@ public class ReportTemplateBookmarkExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdIsNull() {
+            addCriterion("customer_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdIsNotNull() {
+            addCriterion("customer_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdEqualTo(Integer value) {
+            addCriterion("customer_id =", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdNotEqualTo(Integer value) {
+            addCriterion("customer_id <>", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdGreaterThan(Integer value) {
+            addCriterion("customer_id >", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("customer_id >=", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdLessThan(Integer value) {
+            addCriterion("customer_id <", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdLessThanOrEqualTo(Integer value) {
+            addCriterion("customer_id <=", value, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdIn(List<Integer> values) {
+            addCriterion("customer_id in", values, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdNotIn(List<Integer> values) {
+            addCriterion("customer_id not in", values, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdBetween(Integer value1, Integer value2) {
+            addCriterion("customer_id between", value1, value2, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("customer_id not between", value1, value2, "customerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdIsNull() {
+            addCriterion("entrust_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdIsNotNull() {
+            addCriterion("entrust_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdEqualTo(Integer value) {
+            addCriterion("entrust_id =", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdNotEqualTo(Integer value) {
+            addCriterion("entrust_id <>", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdGreaterThan(Integer value) {
+            addCriterion("entrust_id >", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("entrust_id >=", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdLessThan(Integer value) {
+            addCriterion("entrust_id <", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdLessThanOrEqualTo(Integer value) {
+            addCriterion("entrust_id <=", value, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdIn(List<Integer> values) {
+            addCriterion("entrust_id in", values, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdNotIn(List<Integer> values) {
+            addCriterion("entrust_id not in", values, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_id between", value1, value2, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("entrust_id not between", value1, value2, "entrustId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdIsNull() {
+            addCriterion("report_type_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdIsNotNull() {
+            addCriterion("report_type_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdEqualTo(Integer value) {
+            addCriterion("report_type_id =", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdNotEqualTo(Integer value) {
+            addCriterion("report_type_id <>", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdGreaterThan(Integer value) {
+            addCriterion("report_type_id >", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("report_type_id >=", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdLessThan(Integer value) {
+            addCriterion("report_type_id <", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("report_type_id <=", value, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdIn(List<Integer> values) {
+            addCriterion("report_type_id in", values, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdNotIn(List<Integer> values) {
+            addCriterion("report_type_id not in", values, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("report_type_id between", value1, value2, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("report_type_id not between", value1, value2, "reportTypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeIsNull() {
+            addCriterion("cs_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeIsNotNull() {
+            addCriterion("cs_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeEqualTo(Integer value) {
+            addCriterion("cs_type =", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeNotEqualTo(Integer value) {
+            addCriterion("cs_type <>", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeGreaterThan(Integer value) {
+            addCriterion("cs_type >", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cs_type >=", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeLessThan(Integer value) {
+            addCriterion("cs_type <", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("cs_type <=", value, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeIn(List<Integer> values) {
+            addCriterion("cs_type in", values, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeNotIn(List<Integer> values) {
+            addCriterion("cs_type not in", values, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeBetween(Integer value1, Integer value2) {
+            addCriterion("cs_type between", value1, value2, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCsTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("cs_type not between", value1, value2, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeIsNull() {
+            addCriterion("template_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeIsNotNull() {
+            addCriterion("template_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeEqualTo(Integer value) {
+            addCriterion("template_type =", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeNotEqualTo(Integer value) {
+            addCriterion("template_type <>", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeGreaterThan(Integer value) {
+            addCriterion("template_type >", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("template_type >=", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeLessThan(Integer value) {
+            addCriterion("template_type <", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("template_type <=", value, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeIn(List<Integer> values) {
+            addCriterion("template_type in", values, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeNotIn(List<Integer> values) {
+            addCriterion("template_type not in", values, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeBetween(Integer value1, Integer value2) {
+            addCriterion("template_type between", value1, value2, "templateType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTemplateTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("template_type not between", value1, value2, "templateType");
             return (Criteria) this;
         }
     }

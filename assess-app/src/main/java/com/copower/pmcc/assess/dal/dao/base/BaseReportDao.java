@@ -1,11 +1,10 @@
 package com.copower.pmcc.assess.dal.dao.base;
 
-import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dal.mapper.ReportColumnsMapper;
-import com.copower.pmcc.assess.dal.mapper.ReportTableMapper;
-import com.copower.pmcc.assess.dal.mapper.ReportTemplateBookmarkMapper;
-import com.copower.pmcc.assess.dal.mapper.ReportTemplateMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseReportColumnsMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseReportTableMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseReportTemplateFilesMapper;
+import com.copower.pmcc.assess.dal.mapper.BaseReportTemplateMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,109 +23,119 @@ import java.util.List;
 @Repository
 public class BaseReportDao {
     @Autowired
-    private ReportTableMapper baseReportTableMapper;
+    private BaseReportTableMapper baseReportTableMapper;
     @Autowired
-    private ReportColumnsMapper baseReportColumnsMapper;
+    private BaseReportColumnsMapper baseReportColumnsMapper;
     @Autowired
-    private ReportTemplateMapper baseReportTemplateMapper;
+    private BaseReportTemplateMapper baseReportTemplateMapper;
     @Autowired
-    private ReportTemplateBookmarkMapper reportTemplateBookmarkMapper;
+    private BaseReportTemplateFilesMapper baseReportTemplateFilesMapper;
 
-    public List<ReportTable> getReportTableList(Integer typeId) {
-        ReportTableExample example = new ReportTableExample();
-        ReportTableExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+    public List<BaseReportTable> getBaseReportTableList(List<Integer> tableIdId) {
+        BaseReportTableExample example = new BaseReportTableExample();
+        BaseReportTableExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if (CollectionUtils.isNotEmpty(tableIdId)) {
+            criteria.andIdIn(tableIdId);
+        }
+        List<BaseReportTable> baseReportTables = baseReportTableMapper.selectByExample(example);
+        return baseReportTables;
+    }
+
+    public List<BaseReportTable> getBaseReportTableList(Integer typeId) {
+        BaseReportTableExample example = new BaseReportTableExample();
+        BaseReportTableExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
         if (typeId != null) {
             criteria.andTableTypeEqualTo(typeId);
         }
-        List<ReportTable> baseReportTables = baseReportTableMapper.selectByExample(example);
+        List<BaseReportTable> baseReportTables = baseReportTableMapper.selectByExample(example);
         return baseReportTables;
     }
 
-    public List<ReportTable> getReportTableList(List<Integer> ids){
-        ReportTableExample example = new ReportTableExample();
-        ReportTableExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
-        criteria.andIdIn(ids);
-        List<ReportTable> baseReportTables = baseReportTableMapper.selectByExample(example);
-        return baseReportTables;
-    }
-
-    public ReportTable getReportTableById(Integer id) {
+    public BaseReportTable getBaseReportTableById(Integer id) {
         return baseReportTableMapper.selectByPrimaryKey(id);
     }
 
-
-    public List<ReportColumns> getReportColumnsList(Integer tableId) {
-        ReportColumnsExample example = new ReportColumnsExample();
+    public List<BaseReportColumns> getBaseReportColumnsList(Integer tableId) {
+        BaseReportColumnsExample example = new BaseReportColumnsExample();
         example.createCriteria().andBisEnableEqualTo(true).andTableIdEqualTo(tableId);
-        List<ReportColumns> baseReportColumns = baseReportColumnsMapper.selectByExample(example);
+        List<BaseReportColumns> baseReportColumns = baseReportColumnsMapper.selectByExample(example);
         return baseReportColumns;
     }
 
-    public List<ReportColumns> getReportColumnsList(List<Integer> ids){
-        ReportColumnsExample example = new ReportColumnsExample();
-        ReportColumnsExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
-        criteria.andIdIn(ids);
-        List<ReportColumns> reportColumns = baseReportColumnsMapper.selectByExample(example);
-        return reportColumns;
-    }
-
-    public ReportColumns getReportColumnsById(Integer id) {
+    public BaseReportColumns getBaseReportColumnsById(Integer id) {
         return baseReportColumnsMapper.selectByPrimaryKey(id);
     }
+    
+    
 
-    public List<ReportTemplate> getReportTemplateByExample(ReportTemplate baseReportTemplate) {
-        ReportTemplateExample example = new ReportTemplateExample();
-        MybatisUtils.convertObj2Criteria(baseReportTemplate, example);
-        List<ReportTemplate> baseReportTemplates = baseReportTemplateMapper.selectByExample(example);
+    public List<BaseReportTemplate> getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, String bookMarkName) {
+        BaseReportTemplateExample example = new BaseReportTemplateExample();
+        BaseReportTemplateExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if (StringUtils.isNotBlank(bookMarkName)) {
+            criteria.andBookmarkNameLike(bookMarkName);
+        }
+        MybatisUtils.convertObj2Criteria(baseReportTemplate, criteria);
+        List<BaseReportTemplate> baseReportTemplates = baseReportTemplateMapper.selectByExample(example);
         return baseReportTemplates;
 
     }
 
-    public ReportTemplate getReportTemplateById(Integer id) {
+    public BaseReportTemplate getBaseReportTemplateById(Integer id) {
         return baseReportTemplateMapper.selectByPrimaryKey(id);
     }
 
-    /**
-     * 获取最新可用的主模板
-     * @param customerId
-     * @param entrustId
-     * @param reportTypeId
-     * @param csType
-     * @return
-     */
-    public ReportTemplate getNewsReportTemplate(Integer customerId,Integer entrustId,Integer reportTypeId,Integer csType) {
-        ReportTemplateExample example = new ReportTemplateExample();
-        ReportTemplateExample.Criteria criteria = example.createCriteria();
-        criteria.andCustomerIdEqualTo(customerId).andEntrustIdEqualTo(entrustId).andReportTypeIdEqualTo(reportTypeId).andCsTypeEqualTo(csType);
-        criteria.andBisEnableEqualTo(true).andTemplateTypeEqualTo(BaseReportTemplateTypeEnum.BOOKMARK.getKey());
-        example.setOrderByClause("version_number desc");
-        List<ReportTemplate> reportTemplates = baseReportTemplateMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(reportTemplates))
-            return reportTemplates.get(0);
-        return null;
-    }
-
-
-
-    public Boolean deleteReportTemplate(Integer id) {
-        ReportTemplate baseReportTemplate = baseReportTemplateMapper.selectByPrimaryKey(id);
+    public Boolean deleteBaseReportTemplate(Integer id) {
+        BaseReportTemplate baseReportTemplate = baseReportTemplateMapper.selectByPrimaryKey(id);
         baseReportTemplate.setBisEnable(false);
         return baseReportTemplateMapper.updateByPrimaryKeySelective(baseReportTemplate) >= 0;
     }
 
-    public Boolean addReportTemplate(ReportTemplate baseReportTemplate) {
+    public Boolean addBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
         return baseReportTemplateMapper.insertSelective(baseReportTemplate) == 1;
     }
 
-    public Boolean updateReportTemplate(ReportTemplate baseReportTemplate) {
+    public Boolean updateBaseReportTemplate(BaseReportTemplate baseReportTemplate) {
         return baseReportTemplateMapper.updateByPrimaryKeySelective(baseReportTemplate) >= 0;
     }
 
-    public List<ReportTemplateBookmark> getBookMarkListByTemplateId(Integer templateId){
-        ReportTemplateBookmarkExample example = new ReportTemplateBookmarkExample();
-        ReportTemplateBookmarkExample.Criteria criteria = example.createCriteria().andTemplateIdEqualTo(templateId);
-        List<ReportTemplateBookmark> bookmarkList = reportTemplateBookmarkMapper.selectByExample(example);
-        return bookmarkList;
+
+
+    public List<BaseReportTemplateFiles> getBaseReportTemplateFilesByExample(BaseReportTemplateFiles baseReportTemplateFiles, String search) {
+        BaseReportTemplateFilesExample example = new BaseReportTemplateFilesExample();
+        BaseReportTemplateFilesExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(search)) {
+            criteria.andFilesRemarksLike(search);
+        }
+        MybatisUtils.convertObj2Criteria(baseReportTemplateFiles, criteria);
+        List<BaseReportTemplateFiles> baseReportTemplateFiless = baseReportTemplateFilesMapper.selectByExample(example);
+        return baseReportTemplateFiless;
+
+    }
+
+    public BaseReportTemplateFiles getBaseReportTemplateFilesById(Integer id) {
+        return baseReportTemplateFilesMapper.selectByPrimaryKey(id);
+    }
+
+    public Boolean deleteBaseReportTemplateFiles(Integer id) {
+        BaseReportTemplateFiles baseReportTemplateFiles = baseReportTemplateFilesMapper.selectByPrimaryKey(id);
+        baseReportTemplateFiles.setBisEnable(false);
+        return baseReportTemplateFilesMapper.updateByPrimaryKeySelective(baseReportTemplateFiles) >= 0;
+    }
+
+    public Boolean deleteAllBaseReportTemplateFiles() {
+
+        BaseReportTemplateFilesExample example=new BaseReportTemplateFilesExample();
+        BaseReportTemplateFiles baseReportTemplateFiles=new BaseReportTemplateFiles();
+        baseReportTemplateFiles.setBisEnable(false);
+      return   baseReportTemplateFilesMapper.updateByExample(baseReportTemplateFiles,example)>0;
+    }
+
+    public Boolean addBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {
+        return baseReportTemplateFilesMapper.insertSelective(baseReportTemplateFiles) == 1;
+    }
+
+    public Boolean updateBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {
+        return baseReportTemplateFilesMapper.updateByPrimaryKeySelective(baseReportTemplateFiles) >= 0;
     }
 
 }
