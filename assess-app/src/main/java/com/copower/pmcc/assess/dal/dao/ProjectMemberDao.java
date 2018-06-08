@@ -25,6 +25,7 @@ public class ProjectMemberDao {
     @Autowired
     private ProjectMemberHistoryMapper projectMemberHistoryMapper;
 
+
     public List<ProjectMember> getProjectMemberList(Integer projectId) {
         ProjectMemberExample example = new ProjectMemberExample();
         ProjectMemberExample.Criteria criteria = example.createCriteria().andProjectIdEqualTo(projectId)
