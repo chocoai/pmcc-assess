@@ -67,6 +67,9 @@
                                                         <span name="project" data-id="${items.id}">${items.name}</span>
                                                     </th>
                                                 </c:forEach>
+                                                <th class="gray">
+                                                    <a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>
+                                                </th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -380,10 +383,10 @@
                                     </div>
                                 </div>
                                 <%--固定表格格式用--%>
-                                <label class="col-sm-2 control-label rightfloat"></label>
+                                <label class="col-sm-1 control-label rightfloat"></label>
 
                                 <%--右侧固定表格 第四张表--%>
-                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 30%">
+                                <table class="table table-bordered rightfloat" id="rightTable" style="width: 40%">
                                     <thead>
                                     <tr>
                                         <th class="gray">项目</th>
@@ -635,9 +638,11 @@
 
     //动态表单
     function getDynamic() {
-
+        var num = $("#oneTable").find('thead').find('input:hidden');
         var dataJson = $("#oneTable").find('tbody').find('input:hidden').attr('data-json');
         var jsonArr = JSON.parse(dataJson);
+
+        var caseNum = num.length - jsonArr.length;
         $.each(jsonArr, function (i, array) {
             if (i == 0) {
                 //第一个字段 第二个查勘的值
@@ -646,7 +651,7 @@
                     $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
                     tr = $("#oneTable").find('tbody').find('tr:last');
                     tr.find('th:eq('+i+')').text(item.explain); //字段
-                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //查勘的值
+                    tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第一张表
                 })
 
                 $.each(array, function (j, item) {
@@ -669,25 +674,181 @@
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
+                    }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
-                    td.find('td:eq(' + i + ')').find('input').val("").attr('name', item.key);   //第二张表
+                    td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
+                    for(var m = 1;m<=caseNum;m++){
+                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    }
                 })
+
             }
 
+        })
+        $("#oneTable").find("input:text").on('blur', function () {
+            oneTableBlur();
         })
 
         $("#twoTable").find("input:text").on('blur', function () {
             twoTableBlur(this);
         })
+        $("#rightTable").find("input:text").on('blur', function () {
+            rightTableBlur();
+        })
     }
+
+    //添加案例
+    function addCase() {
+        var thNum = $("#oneTable").find('thead').find('th').length;     //th个数
+        var thTemp = $("#oneTable").find('thead').find('th:eq(-2)').find('span').attr('data-id');    //th 的dataId
+        var thDataId = parseInt(thTemp) + 1;
+
+        //添加th
+        var th = $("#oneTable").find('thead').find('th:eq(-2)');
+        $("#oneTable").find('thead').find('th:eq(-2)').after('<th class="gray">' + th.html() + '</th>');
+        $("#oneTable").find('thead').find('th:eq(-2)').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId).append('</br>' +
+            '<a class="btn btn-xs btn-danger"data-original-title="删除" onclick="deleteCase(' + thDataId + ')"><i class="fa fa-minus fa-white"></i></a>');
+        $("#twoTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#twoTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+        $("#threeTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#threeTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+        $("#rightTable").find('thead').find('th:last').after('<th class="gray">' + th.html() + '</th>');
+        $("#rightTable").find('thead').find('th:last').find('span').text('实例' + (thNum - 2)).attr('data-id', thDataId);
+
+        var tdInput = $("#twoTable").find('tbody').find('tr:last').find('td:last');     //获取input
+        var tdSpan = $("#threeTable").find('tbody').find('tr:eq(-2)').find('td:last');  //获取span
+
+        //遍历第一张表进行添加
+        var arrOne = $("#oneTable").find('tbody').find('tr');
+        $.each(arrOne, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name') ? $(tr).find('td:last').find('span').attr('name') : $(tr).find('td:last').find('input').attr('name');
+//            var temp = $(tr).find('td:last').find('span').attr('data-id') ? $(tr).find('td:last').find('span').attr('data-id') : $(tr).find('td:last').find('input').attr('data-id');
+//            var dataId = parseInt(temp) + 1;
+            $("#oneTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+            $("#oneTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', thDataId);
+
+        })
+
+        //遍历第二张表进行添加
+        var arrTwo = $("#twoTable").find('tbody').find('tr');
+        $.each(arrTwo, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name') ? $(tr).find('td:last').find('span').attr('name') : $(tr).find('td:last').find('input').attr('name');
+//            var temp = $(tr).find('td:last').find('span').attr('data-id') ? $(tr).find('td:last').find('span').attr('data-id') : $(tr).find('td:last').find('input').attr('data-id');
+//            var dataId = parseInt(temp) + 1;
+            if (i <= 2) {
+                $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdSpan.html() + '</td>');
+                $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('span').attr('name', trName).attr('data-id', thDataId).text("");
+            } else {
+                $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+                $("#twoTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', thDataId);
+            }
+
+        })
+
+        //遍历第三张表进行添加
+        var arrThree = $("#threeTable").find('tbody').find('tr');
+        $.each(arrThree, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name');
+//            var temp = $(tr).find('td:last').find('span').attr('data-id');
+//            var dataId = parseInt(temp) + 1;
+            $("#threeTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdSpan.html() + '</td>');
+            $("#threeTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('span').attr('name', trName).attr('data-id', thDataId).text("");
+
+        })
+        $("#threeTable").find('tbody').find('tr:last').find('td:last').find('span').attr('name', "");   //每次添加时清空这格name,为了不显示
+
+        //遍历右侧表进行添加
+        var arrRight = $("#rightTable").find('tbody').find('tr');
+        $.each(arrRight, function (i, tr) {
+            var trName = $(tr).find('td:last').find('span').attr('name') ? $(tr).find('td:last').find('span').attr('name') : $(tr).find('td:last').find('input').attr('name');
+//            var temp = $(tr).find('td:last').find('span').attr('data-id') ? $(tr).find('td:last').find('span').attr('data-id') : $(tr).find('td:last').find('input').attr('data-id');
+//            var dataId = parseInt(temp) + 1;
+            if (i == (arrRight.length - 2)) {
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdInput.html() + '</td>');
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('input').attr('name', trName).attr('data-id', thDataId);
+            } else {
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').after('<td>' + tdSpan.html() + '</td>');
+                $("#rightTable").find('tbody').find('tr:eq(' + i + ')').find('td:last').find('span').attr('name', trName).attr('data-id', thDataId).text("");
+            }
+        })
+
+        getGray();
+
+        $("#oneTable").find("input:text").on('blur', function () {
+            oneTableBlur();
+        })
+
+        $("#twoTable").find("input:text").on('blur', function () {
+            twoTableBlur(this);
+        })
+        $("#rightTable").find("input:text").on('blur', function () {
+            rightTableBlur();
+        })
+    }
+
+    //删除案例
+    function deleteCase(dataId) {
+        $("#oneTable").each(function () {
+            $("#oneTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#twoTable").each(function () {
+            $("#twoTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#threeTable").each(function () {
+            $("#threeTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+        $("#rightTable").each(function () {
+            $("#rightTable").find('[data-id=' + dataId + ']').parent().remove();
+        })
+
+    }
+
+    function oneTableBlur() {
+        var allFill = true;
+        $("#oneTable").find("input:text").each(function () {
+            if (!$(this).val()) {
+                allFill = false;
+                return false;
+            }
+        })
+
+        if (allFill) {
+            var arrInput = $("#oneTable").find("input:text")
+            $.each(arrInput, function (i, tr) {
+                var dataId = $(this).attr('data-id');
+                var name = $(this).attr('name');
+                var result = $(this).val();
+                if(i==0){
+                    $("#rightTable").find('[name="realEstateName"][data-id="' + dataId + '"]').text(result);  //显示右侧表数据
+                }
+                if (i <= 2) {
+//                    console.log("dataId=" + dataId + "," + "name=" + name + "," + "result=" + result);
+                    $("#twoTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);  //显示第二张表数据
+                    $("#twoTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+                    $("#twoTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+
+                    $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);  //显示第三张表数据
+                    $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+                    $("#threeTable").find('[name="' + name + '"][data-id="' + dataId + '"]').text(result);
+                }
+            })
+        }
+    }
+
+
 
     //处理第二三四张表业务
     function twoTableBlur(_this) {
@@ -820,12 +981,7 @@
         }
     }
 
-    $("#twoTable").find("input:text").blur(function () {
-        twoTableBlur(this);
-    })
-
-    //处理第四张表业务
-    $("#rightTable").find("input:text").blur(function () {
+    function rightTableBlur(){
         var reg = /^[0-9]+.?[0-9]*$/;
         var allFill = true;
         $("#rightTable").find("input:text").each(function () {
@@ -856,6 +1012,21 @@
                 });
             }
         }
+    }
+
+    //处理第一张表业务
+    $("#oneTable").find("input:text").blur(function () {
+        oneTableBlur();
+    })
+
+    //处理第二三四张表业务
+    $("#twoTable").find("input:text").blur(function () {
+        twoTableBlur(this);
+    })
+
+    //处理第四张表业务
+    $("#rightTable").find("input:text").blur(function () {
+        rightTableBlur();
     })
 
 
@@ -991,7 +1162,6 @@
         })
 
         //指数表
-
         $("#twoTable").find('thead tr').find('input:hidden').each(function () {
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
