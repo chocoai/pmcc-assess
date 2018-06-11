@@ -71,7 +71,7 @@
                         </h2>
                         <div class="clearfix"></div>
                     </div>
-                    <table class="table" id="#tb_survey_List">
+                    <table class="table" id="tb_surveyList">
                         <thead>
                         <tr>
                             <th>序号</th>
@@ -88,12 +88,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:choose>
-                            <c:when test="${surveyAssetTemplates == null}">
-                                <c:forEach items="${checkContentList}" var="items" varStatus="s">
+                                <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
                                     <tr>
+                                        <input type="hidden" id="id" name="id" value="${items.id}">
                                         <td>${s.index + 1}</td>
-                                        <td name="inventoryContent">${items.name}</td>
+                                        <td name="inventoryContent">${items.inventoryContentName}</td>
                                         <td>
                                             <input id="areConsistent${items.id}" name="areConsistent" type="checkbox"
                                                    value="一致" style="vertical-align:middle;"
@@ -103,21 +102,22 @@
                                         <td>
                                             <input type="text" data-rule-maxlength="50" placeholder="登记面积"
                                                    id="registrationAddress${items.id}" name="registrationAddress"
-                                                   class="form-control showHidden"></td>
+                                                   class="form-control showHidden" value="${items.registrationAddress}">
+                                        </td>
                                         <td>
                                             <input type="text" data-rule-maxlength="50" placeholder="实际面积"
                                                    id="actualAddress${items.id}" name="actualAddress"
-                                                   class="form-control showHidden">
+                                                   class="form-control showHidden" value="${items.actualAddress}">
                                         </td>
                                         <td>
                                             <input type="text" data-rule-maxlength="50" placeholder="差异原因"
                                                    id="differenceReason${items.id}" name="differenceReason"
-                                                   class="form-control showHidden">
+                                                   class="form-control showHidden" value="${items.differenceReason}">
                                         </td>
                                         <td>
                                             <input type="text" data-rule-maxlength="50" placeholder="证明文件"
                                                    id="credential${items.id}" name="credential"
-                                                   class="form-control showHidden">
+                                                   class="form-control showHidden" value="${items.credential}">
                                         </td>
                                         <td>
                                             <input id="credentialAccessory${items.id}" name="credentialAccessory"
@@ -127,79 +127,19 @@
                                         <td>
                                             <input type="text" data-rule-maxlength="50" placeholder="证明人"
                                                    id="voucher${items.id}" name="voucher"
-                                                   class="form-control showHidden">
+                                                   class="form-control showHidden" value="${items.voucher}">
                                         </td>
                                         <td>
                                             <input placeholder="调查时间" id="surveyTime${items.id}" name="surveyTime"
                                                    data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate showHidden"
-                                                   readonly="readonly">
+                                                   readonly="readonly" value='<fmt:formatDate value="${items.surveyTime}" pattern="yyyy-MM-dd"/>'>
                                         </td>
                                         <td>
                                             <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空重填</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach items="${surveyAssetTemplates}" var="survey" varStatus="s">
-                                    <input type="hidden" name="id" value="${survey.id}">
-                                    <tr>
-                                        <td>${s.index + 1}</td>
-                                        <td name="inventoryContent">${survey.inventoryContent}</td>
-                                        <td>
-                                            <input id="areConsistent${survey.id}" name="areConsistent" type="checkbox"
-                                                   value="" style="vertical-align:middle;"
-                                                   onclick="showHiddenCheck(this,${items.id})"/>
-                                            <span style="vertical-align:middle;">一致</span>
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="登记面积"
-                                                   id="registrationAddress${survey.id}" name="registrationAddress"
-                                                   class="form-control showHidden"
-                                                   value="${survey.registrationAddress}"></td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="实际面积"
-                                                   id="actualAddress${survey.id}" name="actualAddress"
-                                                   class="form-control showHidden"
-                                                   value="${survey.actualAddress}">
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="差异原因"
-                                                   id="differenceReason${survey.id}" name="differenceReason"
-                                                   class="form-control showHidden" value="${survey.differenceReason}">
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明文件"
-                                                   id="credential${survey.id}" name="credential"
-                                                   class="form-control showHidden"
-                                                   value="${survey.credential}">
-                                        </td>
-                                        <td>
-                                            <input id="credentialAccessory${survey.id}" name="credentialAccessory"
-                                                   type="file" multiple="false" class="showHidden">
-                                            <div id="_credentialAccessory${survey.id}" class="showHidden"></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明人"
-                                                   id="voucher${survey.id}" name="voucher"
-                                                   class="form-control showHidden"
-                                                   value="${survey.voucher}">
-                                        </td>
-                                        <td>
-                                            <input placeholder="调查时间" id="surveyTime${survey.id}" name="surveyTime"
-                                                   data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate showHidden"
-                                                   readonly="readonly"
-                                                   value='<fmt:formatDate value="${surveyAssetOtherTemplate.exerciseDate}" pattern="yyyy-MM-dd"/>'>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空重填</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
                         </tbody>
                     </table>
 
@@ -430,7 +370,7 @@
                 <h3 class="modal-title">他项权利</h3>
             </div>
             <form id="frm" class="form-horizontal">
-                <input type="hidden" id="id" name="id" value="0">
+                <%--<input type="hidden" id="id" name="id" value="0">--%>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -517,9 +457,9 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                    <label class="col-sm-3 control-label">
-                                        实际用途
-                                    </label>
+                                        <label class="col-sm-3 control-label">
+                                            实际用途
+                                        </label>
                                         <div class="col-sm-9">
                                             <input type="text" placeholder="实际用途"
                                                    id="actualPurpose" name="actualPurpose" class="form-control"
@@ -600,7 +540,8 @@
                             保存
                         </button>
                     </div>
-                </div></form>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -648,11 +589,11 @@
 
 
         FileUtils.uploadFiles({
-            target: "credentialAccessory${checkContentList.get(0).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(0).id}",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: 0,
+                tableId: ${surveyAssetTemplateVos.get(0).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -660,10 +601,10 @@
         });
 
         FileUtils.getFileShows({
-            target: "credentialAccessory${checkContentList.get(0).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(0).id}",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: ${empty surveyAssetTemplateVo?0:surveyAssetTemplateVo.credentialAccessory},
+                tableId: ${surveyAssetTemplateVos.get(0).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -671,11 +612,11 @@
         })
 
         FileUtils.uploadFiles({
-            target: "credentialAccessory${checkContentList.get(1).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(1).id}",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: 0,
+                tableId: ${surveyAssetTemplateVos.get(1).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -683,10 +624,10 @@
         });
 
         FileUtils.getFileShows({
-            target: "credentialAccessory${checkContentList.get(1).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(1).id}",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: ${empty surveyAssetTemplateVo?0:surveyAssetTemplateVo.credentialAccessory},
+                tableId: ${surveyAssetTemplateVos.get(1).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -694,11 +635,11 @@
         })
 
         FileUtils.uploadFiles({
-            target: "credentialAccessory${checkContentList.get(2).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(2).id}",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: 0,
+                tableId: ${surveyAssetTemplateVos.get(2).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -706,10 +647,10 @@
         });
 
         FileUtils.getFileShows({
-            target: "credentialAccessory${checkContentList.get(2).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(2).id}",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: ${empty surveyAssetTemplateVo?0:surveyAssetTemplateVo.credentialAccessory},
+                tableId: ${surveyAssetTemplateVos.get(2).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -717,11 +658,11 @@
         })
 
         FileUtils.uploadFiles({
-            target: "credentialAccessory${checkContentList.get(3).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(3).id}",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: 0,
+                tableId: ${surveyAssetTemplateVos.get(3).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -729,10 +670,10 @@
         });
 
         FileUtils.getFileShows({
-            target: "credentialAccessory${checkContentList.get(3).id}",
+            target: "credentialAccessory${surveyAssetTemplateVos.get(3).id}",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: ${empty surveyAssetTemplateVo?0:surveyAssetTemplateVo.credentialAccessory},
+                tableId: ${surveyAssetTemplateVos.get(3).id},
                 fieldsName: "credentialAccessory",
                 projectId: "${projectPlanDetails.projectId}"
             },
@@ -784,7 +725,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetOtherTemplate/list", cols, {
-            pid: ${empty surveyAssetOtherTemplate?0:surveyAssetOtherTemplate.pid}
+            pid: ${empty surveyAssetInventory?0:surveyAssetInventory.id}
         }, {
             showColumns: false,
             showRefresh: false,
@@ -794,8 +735,6 @@
             }
         });
     }
-
-
 
 
     //    function getRowsData() {
@@ -816,20 +755,28 @@
     //    }
     var items = "";
     function getRowsData() {
-        var trs = $("#tb_survey_List").find('tbody tr');
+        var trs = $("#tb_surveyList").find('tbody tr');
+        console.log(trs);
         var data = [];
         $.each(trs, function (i, tr) {
             var item = {};
 
-            item.id = $(tr).find('[name="id"]').val();    //id
-            item.inventoryContent = $(tr).find('[name="inventoryContent"]').val();    //清查内容
-            item.areConsistent = $(tr).find('[name="areConsistent"]').val();    //是否一致
+            var temp = $(tr).find('[name="areConsistent"]:checked').prop("checked");    //是否一致
+            if(temp){
+                item.areConsistent = "一致";    //是否一致
+            }else{
+                item.areConsistent = "不一致";
+            }
+            item.inventoryContent = $(tr).find('[name="inventoryContent"]').text();    //清查内容
             item.registrationAddress = $(tr).find('[name="registrationAddress"]').val();    //登记面积
             item.actualAddress = $(tr).find('[name="actualAddress"]').val();                //实际面积
             item.differenceReason = $(tr).find('[name="differenceReason"]').val();          //差异原因
             item.credential = $(tr).find('[name="credential"]').val();                      //证明文件
             item.voucher = $(tr).find('[name="voucher"]').val();                            //证明人
             item.surveyTime = $(tr).find('[name="surveyTime"]').val();                      //查勘时间
+            item.projectId = ${projectPlanDetails.projectId};
+            item.planDetailId = ${projectPlanDetails.planId};
+            item.id = $(tr).find('[name="id"]').val();    //id
             data.push(item);
         });
         items = data;
@@ -853,6 +800,8 @@
     }
 
     function submit() {
+//        params();
+//        return false;
         if (!$("#frm_task").valid()) {
             return false;
         }
@@ -882,7 +831,7 @@
     function showHiddenCheck(_this, id) {
         if ($('#areConsistent' + id).prop("checked")) {
             $(_this).closest("tr").find(".showHidden,div").css('display', 'none');
-            $(_this).closest("tr").find("input").val("");
+            $(_this).closest("tr").find("input:text").val("");
         } else {
             $(_this).closest("tr").find(".showHidden,div").css('display', 'block');
         }
@@ -939,6 +888,9 @@
     function saveData() {
         var flag = false;
         var data = formParams("frm");
+        data.projectId = ${projectPlanDetails.projectId};
+        data.planDetailId = ${projectPlanDetails.planId};
+        data.pid = ${empty surveyAssetInventory?0:surveyAssetInventory.id};
         console.log(data);
 //        var data = $("#frm").serialize();
         if ($("#frm").valid()) {

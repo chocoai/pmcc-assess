@@ -22,14 +22,14 @@ public class SurveyAssetTemplateDao {
             example.createCriteria().andPidEqualTo(pid);
         }
 
-        example.setOrderByClause(" id desc");
+        example.setOrderByClause("id");
         List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateMapper.selectByExample(example);
 
         return surveyAssetTemplates;
     }
 
-    public boolean update(SurveyAssetTemplateDto surveyAssetTemplateDto) {
-        int i = surveyAssetTemplateMapper.updateByPrimaryKeySelective(surveyAssetTemplateDto);
+    public boolean update(SurveyAssetTemplate surveyAssetTemplate) {
+        int i = surveyAssetTemplateMapper.updateByPrimaryKeySelective(surveyAssetTemplate);
         return i > 0;
     }
 

@@ -6,10 +6,12 @@ import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
+import com.copower.pmcc.assess.dto.output.project.SurveyAssetTemplateVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectCheckContentService;
 import com.copower.pmcc.assess.service.project.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.SurveyAssetTemplateService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -36,31 +38,37 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private SurveyAssetTemplateService surveyAssetTemplateService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
-        List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
 
-//        for (BaseDataDic baseDataDic : baseDataDicList) {
-//            Integer inventoryContent = baseDataDic.getId();
-//            Integer projectId = projectPlanDetails.getProjectId();
-//            Integer planDetailId = projectPlanDetails.getPlanId();
-//            SurveyAssetTemplate surveyAssetTemplate = new SurveyAssetTemplate();
-//            surveyAssetTemplate.setProjectId(projectId);
-//            surveyAssetTemplate.setPlanDetailId(planDetailId);
-//            surveyAssetTemplate.setInventoryContent(inventoryContent);
-//            surveyAssetTemplateDao.save(surveyAssetTemplate);
-//        }
+        List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
+        List<SurveyAssetTemplate> list = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
+        if(list.size() == 0){
+            for (BaseDataDic baseDataDic : baseDataDicList) {
+                Integer inventoryContent = baseDataDic.getId();
+                Integer projectId = projectPlanDetails.getProjectId();
+                Integer planDetailId = projectPlanDetails.getPlanId();
+                SurveyAssetTemplate surveyAssetTemplate = new SurveyAssetTemplate();
+                surveyAssetTemplate.setProjectId(projectId);
+                surveyAssetTemplate.setPlanDetailId(planDetailId);
+                surveyAssetTemplate.setInventoryContent(String.valueOf(inventoryContent));
+                surveyAssetTemplateDao.save(surveyAssetTemplate);
+            }
+        }
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
 
-
-        List<SurveyAssetTemplate> surveyAssetTemplate = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
+        List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
+        List<SurveyAssetTemplateVo> surveyAssetTemplateVos = surveyAssetTemplateService.getVoList(surveyAssetTemplates);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("checkContentList", baseDataDicList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         modelAndView.addObject("parentProject",parentProject);
+        modelAndView.addObject("surveyAssetTemplateVos",surveyAssetTemplateVos);
         return modelAndView;
     }
 

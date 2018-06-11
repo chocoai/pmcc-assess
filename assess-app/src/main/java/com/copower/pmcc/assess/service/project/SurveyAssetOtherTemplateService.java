@@ -33,9 +33,9 @@ public class SurveyAssetOtherTemplateService {
     private ProcessControllerComponent processControllerComponent;
 
     public ModelAndView getSurveyAssetOtherTemplateByPid(ModelAndView modelAndView, Integer pid){
-        SurveyAssetOtherTemplate surveyAssetOtherTemplate = surveyAssetOtherTemplateDao.getSurveyAssetOtherTemplateByPid(pid);
-        if (surveyAssetOtherTemplate != null){
-            modelAndView.addObject("surveyAssetOtherTemplate",surveyAssetOtherTemplate);
+        List<SurveyAssetOtherTemplate> surveyAssetOtherTemplates = surveyAssetOtherTemplateDao.getSurveyAssetOtherTemplateByPid(pid);
+        if (surveyAssetOtherTemplates != null){
+            modelAndView.addObject("surveyAssetOtherTemplates",surveyAssetOtherTemplates);
             return modelAndView;
         }
         return modelAndView;
