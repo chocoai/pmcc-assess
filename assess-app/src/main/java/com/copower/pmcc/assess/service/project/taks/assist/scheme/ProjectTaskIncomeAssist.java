@@ -49,12 +49,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
-        List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
-        List<EvaluationBasisDto> basisDtos = basisService.listN(null);
-        List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
-        modelAndView.addObject("hypothesisList",hypothesisDtos);
-        modelAndView.addObject("principleList",principleDtos);
-        modelAndView.addObject("basisList",basisDtos);
         return modelAndView;
     }
 
@@ -77,12 +71,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
-        List<EvaluationHypothesisVo> hypothesisDtos = hypothesisService.listNs(null);
-        List<EvaluationBasisVo> basisVos = basisService.listNs(null);
-        List<EvaluationPrincipleVo> principleVos = principleService.listNs(null);
-        modelAndView.addObject("hypothesisList",hypothesisDtos);
-        modelAndView.addObject("principleList",principleVos);
-        modelAndView.addObject("basisList",basisVos);
+
         return modelAndView;
     }
 

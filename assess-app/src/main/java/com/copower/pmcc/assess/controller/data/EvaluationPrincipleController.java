@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
+import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -58,6 +59,13 @@ public class EvaluationPrincipleController {
             vo = service.list(methodStr);//关键字查询
         }
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/lists", name = "get列表", method = RequestMethod.GET)
+    public Object lists() {
+        List<EvaluationPrincipleVo> vos = service.listNs(null);
+        return vos;
     }
 
     @ResponseBody

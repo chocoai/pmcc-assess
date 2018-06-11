@@ -91,7 +91,7 @@
                 <label class="col-sm-1 control-label">
                     {name}
                 </label>
-                <div class="x-valid">
+                <div class="x-valid">t
                     <div class="col-sm-3">
                         <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
                     </div>
