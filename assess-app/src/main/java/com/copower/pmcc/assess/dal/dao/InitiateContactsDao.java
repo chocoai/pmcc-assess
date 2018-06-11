@@ -41,8 +41,8 @@ public class InitiateContactsDao {
         return mapper.updateByPrimaryKey(change(dto))==1;
     }
 
-    public void update(int pid,int flag){
-        List<InitiateContactsDto> dtos = getList(InitiateContactsEnum.Zero.getNum(),flag);
+    public void update(int pid, int cType, String createPeople){
+        List<InitiateContactsDto> dtos = getList(InitiateContactsEnum.Zero.getNum(), cType,createPeople);
         if (!ObjectUtils.isEmpty(dtos)){
             for (InitiateContactsDto dto:dtos){
                 dto.setcPid(pid);
@@ -64,10 +64,10 @@ public class InitiateContactsDao {
         return dtos;
     }
 
-    public List<InitiateContactsDto> getList(Integer cPid,Integer flag){
+    public List<InitiateContactsDto> getList(Integer cPid,Integer cType,String createPeople){
         List<InitiateContactsDto> dtos = new ArrayList<>();
         InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(flag).andIdIsNotNull();
+        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(cType).andIdIsNotNull().andCreatorEqualTo(createPeople);
         mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
         return dtos;
     }

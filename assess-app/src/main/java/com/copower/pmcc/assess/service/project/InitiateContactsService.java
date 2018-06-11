@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -43,6 +44,7 @@ public class InitiateContactsService {
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
             InitiateContactsVo vo = null;
             try {
+                List<InitiateContactsDto> dtos = new ArrayList<>();
                 for (CrmCustomerLinkmanDto dto:linkmanDtos){
                     InitiateContactsDto contactsDto = new InitiateContactsDto();
                     contactsDto.setcDept(dto.getDepartment());
@@ -51,10 +53,25 @@ public class InitiateContactsService {
                     contactsDto.setcPhone(dto.getPhoneNumber());
                     contactsDto.setcPid(InitiateContactsDto.CPID);
                     contactsDto.setcType(flag);
-                    int id = dao.save(contactsDto);
-                    contactsDto.setId(id);
-                    vo = change(contactsDto);
-                    vos.add(vo);
+                    dtos.add(contactsDto);
+//                    int id = dao.save(contactsDto);
+//                    contactsDto.setId(id);
+//                    vo = change(contactsDto);
+//                    vos.add(vo);
+                }
+
+//                Collections.sort(dtos);//暂时不处理
+                int temp = 5;
+                for (int i = 0; i < temp; i++) {
+                    InitiateContactsDto contactsDto = dtos.get(i);
+                    if (contactsDto != null){
+                        contactsDto.setCreator(commonService.thisUserAccount());
+                        int id = dao.save(contactsDto);
+                        contactsDto.setId(id);
+                        vo = change(contactsDto);
+                        vos.add(vo);
+                    }
+
                 }
             }catch (Exception e){
                 logger.error(e.getMessage());
@@ -77,7 +94,7 @@ public class InitiateContactsService {
 
     /*更新主表的id值*/
     public void update(int pid, int flag){
-        dao.update(pid,flag);
+        dao.update(pid,flag,commonService.thisUserAccount());
     }
 
     public InitiateContactsVo get(Integer id) {
@@ -102,7 +119,7 @@ public class InitiateContactsService {
         if (cPid==null && flag!=null){
             dao.getList(flag).parallelStream().forEach(oo -> vos.add(change(oo)));
         }else if (cPid!=null && flag!=null){
-            dao.getList(cPid,flag).parallelStream().forEach(oo -> vos.add(change(oo)));
+            dao.getList(cPid,flag,commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
         }
         return vos;
     }
@@ -117,6 +134,20 @@ public class InitiateContactsService {
         InitiateContactsVo vo = new InitiateContactsVo();
         BeanUtils.copyProperties(dto, vo);
         return vo;
+    }
+
+    /**
+     * 联系人 检查数量是否达到要求
+     * @param initiateContactsEnum
+     * @return
+     */
+    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum){
+        boolean flag = false;
+        List<InitiateContactsDto> contactsDtos = dao.getList(InitiateContactsEnum.Zero.getNum(),initiateContactsEnum.getNum(),commonService.thisUserAccount());
+        if (contactsDtos.size()>=1){
+            flag = true;
+        }
+        return flag;
     }
 
     public Map<String,String> getTypeMap(){

@@ -656,4 +656,20 @@ public class ProjectInfoService {
     public int saveProjectInfo_returnID(ProjectInfo projectInfo) {
         return projectInfoDao.saveProjectInfo_returnID(projectInfo);
     }
+
+    /**
+     * 联系人 检查数量是否达到要求
+     * @return
+     */
+    public boolean checkContacts(){
+        boolean flag = false;
+        if (initiateContactsService.checkContacts(InitiateContactsEnum.ONE)){
+            if (initiateContactsService.checkContacts(InitiateContactsEnum.TWO)){
+                if (initiateContactsService.checkContacts(InitiateContactsEnum.THREE)){
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
 }

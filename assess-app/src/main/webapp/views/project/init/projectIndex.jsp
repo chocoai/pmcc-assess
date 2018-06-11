@@ -271,9 +271,9 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目说明</label>
+                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
                                 <div class="col-sm-11">
-                                    <textarea id="remarks" name="remarks"
+                                    <textarea required="required" id="remarks" name="remarks"
                                               class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
                                 </div>
                             </div>
@@ -465,7 +465,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托姓名
+                                        姓名
                                     </label>
                                     <div class="col-sm-3">
                                         <c:choose>
@@ -474,7 +474,7 @@
                                                        value="${projectInfo.consignorVo.csName}" class="form-control">
                                             </c:when>
                                             <c:otherwise>
-                                                <input type="text" name="csName" id="csName" placeholder="委托姓名"
+                                                <input type="text" name="csName" id="csName" placeholder="姓名"
                                                        class="form-control" required="required">
                                             </c:otherwise>
                                         </c:choose>
@@ -504,7 +504,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托住址
+                                        住址
                                     </label>
                                     <div class="col-sm-3">
                                         <c:choose>
@@ -514,7 +514,7 @@
                                                        required="required">
                                             </c:when>
                                             <c:otherwise>
-                                                <input type="text" name="csAddress" id="csAddress2" placeholder="委托住址"
+                                                <input type="text" name="csAddress" id="csAddress2" placeholder="住址"
                                                        class="form-control" required="required">
                                             </c:otherwise>
                                         </c:choose>
@@ -537,7 +537,7 @@
                         </div>
                     </form>
                     <div class="x_title">
-                        <h3> 委托人联系人</h3>
+                        <h3> 联系人</h3>
                     </div>
                     <div class="x_content">
                         <button class="btn btn-success" data-toggle="modal" onclick="addContacts(1)">新增联系人</button>
@@ -577,7 +577,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    占有单位
+                                    单位
                                 </label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
@@ -585,7 +585,7 @@
                                                class="form-control" required="required">
                                         <input type="text" id="pEntrustmentUnitX"
                                                value="${projectInfo.possessorVo.pEntrustmentUnitName}"
-                                               placeholder="占有单位"
+                                               placeholder="单位" onclick="automaticFillIn()"
                                                class="form-control" required="required" readonly="readonly">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -605,7 +605,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    占有单位法定代表
+                                    法定代表
                                 </label>
                                 <div class="col-sm-3">
                                     <c:choose>
@@ -616,7 +616,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <input type="text" name="pLegalRepresentative" id="pLegalRepresentative"
-                                                   placeholder="占有单位法定代表" class="form-control" required="required">
+                                                   placeholder="法定代表" class="form-control" required="required">
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -664,7 +664,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    占有单位地址
+                                    单位地址
                                 </label>
                                 <div class="col-sm-3">
                                     <c:choose>
@@ -674,7 +674,7 @@
                                                    required="required">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="text" name="pAddress" id="pAddress" placeholder="占有单位地址"
+                                            <input type="text" name="pAddress" id="pAddress" placeholder="单位地址"
                                                    class="form-control" required="required">
                                         </c:otherwise>
                                     </c:choose>
@@ -723,7 +723,7 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    占有人姓名
+                                    姓名
                                 </label>
                                 <div class="col-sm-3">
                                     <c:choose>
@@ -733,7 +733,7 @@
                                                    required="required">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="text" name="pName" id="pName" placeholder="占有人姓名"
+                                            <input type="text" name="pName" id="pName" placeholder="姓名"
                                                    class="form-control" required="required">
                                         </c:otherwise>
                                     </c:choose>
@@ -763,7 +763,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    占有人住址
+                                    住址
                                 </label>
                                 <div class="col-sm-3">
                                     <c:choose>
@@ -773,7 +773,7 @@
                                                    required="required">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="text" name="pAddress" id="pAddress2" placeholder="占有人住址"
+                                            <input type="text" name="pAddress" id="pAddress2" placeholder="住址"
                                                    class="form-control" required="required">
                                         </c:otherwise>
                                     </c:choose>
@@ -797,7 +797,7 @@
                 </form>
 
                 <div class="x_title">
-                    <h3> 占有人联系人</h3>
+                    <h3> 联系人</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -961,12 +961,12 @@
                 </form>
 
                 <div class="x_title">
-                    <h3> 报告使用单位联系人</h3>
+                    <h3> 联系人</h3>
                     <div class="clearfix">
                     </div>
                 </div>
                 <div class="x_content">
-                    <%--<button class="btn btn-success" data-toggle="modal" onclick="addContacts(3)">新增联系人</button>--%>
+                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts(3)">新增联系人</button>
                     <table class="table table-bordered" id="tb_ListC">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -1060,12 +1060,6 @@
                                             <label class="form-control" id="cTypeShow">
                                             </label>
                                             <input type="hidden" name="cType" id="cType">
-                                            <%--<select class="form-control" name="cType" id="cType" required="required">--%>
-                                            <%--<option value="">请选择</option>--%>
-                                            <%--<c:forEach items="${InitiateContactsMap}" var="mymap">--%>
-                                            <%--<option value="${mymap.key}">${mymap.value}</option>--%>
-                                            <%--</c:forEach>--%>
-                                            <%--</select>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -1089,6 +1083,47 @@
 </body>
 </html>
 <script>
+    //检查联系人是否达到要求
+    function checkContacts() {
+        var isAllDistribution = true;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                isAllDistribution = result.ret;
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        })
+        return isAllDistribution;
+    }
+    //自动校验并且填写
+    function automaticFillIn() {
+        var value = $("#changeType input:checked").val();
+        if (value==1){
+            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
+            $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+            $("#pSociologyCode").val($("#csSociologyCode").val());
+            $("#pScopeOperation").val($("#csScopeOperation").val());
+            $("#pAddress").val($("#csAddress").val());
+            console.log($("#csUnitProperties option:selected").val());
+            $("#pUnitProperties").val($("#csUnitProperties option:selected").val());
+
+        }else {
+            $("#no_legal_person1").show();
+            $("#legal_person1").hide();
+            $("#changeType1 input[type='radio'][name='pType'][value='0']").attr("checked",true);
+            $("#pName").val($("#csName").val());
+            $("#pIdcard").val($("#csIdcard").val());
+            $("#pAddress2").val($("#csAddress2").val());
+        }
+    }
     $(function () {
         //---------
         FileUtils.uploadFiles({

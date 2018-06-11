@@ -313,6 +313,22 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/Contacts/checkContacts", name = "联系人 检测", method = RequestMethod.POST)
+    public HttpResult checkContacts() {
+        try {
+            boolean flag = projectInfoService.checkContacts();
+            if (flag){
+                return HttpResult.newCorrectResult("成功!");
+            }else {
+                return HttpResult.newErrorResult("失败!");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getAreaList", name = "城市 县 get", method = RequestMethod.POST)
     public Object getAreaList(Integer pid) {
         try {
