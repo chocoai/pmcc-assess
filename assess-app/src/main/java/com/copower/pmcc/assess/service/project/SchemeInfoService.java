@@ -44,7 +44,7 @@ public class SchemeInfoService {
     @Transactional
     public void saveChange(SchemeInfoDetailVDto detailVDto) {
         SchemeInfo schemeInfo = new SchemeInfo();
-        if (!StringUtils.isEmpty(detailVDto.getProcessInsId())  && !StringUtils.isEmpty(detailVDto.getProjectID())){
+        if (StringUtils.isEmpty(detailVDto.getProcessInsId())  || StringUtils.isEmpty(detailVDto.getProjectID())){
             ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(detailVDto.getPlanDetailsId());
             detailVDto.setProcessInsId(projectPlanDetails.getProcessInsId());
             detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");

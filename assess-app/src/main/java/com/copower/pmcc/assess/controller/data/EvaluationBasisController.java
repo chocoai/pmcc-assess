@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.EvaluationBasisDao;
-import com.copower.pmcc.assess.dal.dao.EvaluationBasisFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
@@ -62,6 +60,13 @@ public class EvaluationBasisController {
             vo = service.list(methodStr);//关键字查询
         }
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/lists", name = "get列表", method = RequestMethod.GET)
+    public Object lists() {
+        List<EvaluationBasisVo> vos = service.listNs(null);
+        return vos;
     }
 
     @ResponseBody

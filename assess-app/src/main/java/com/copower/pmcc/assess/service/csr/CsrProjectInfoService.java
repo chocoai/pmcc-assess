@@ -394,6 +394,8 @@ public class CsrProjectInfoService {
                     }
                     projectInfo.setProjectMemberId(k);
                     projectInfoService.updateProjectInfo(projectInfo);
+                    projectMemberDto.setProjectId(projectId);
+                    projectMemberService.updateProjectMember(projectMemberDto);
                     //项目立项
                     projectInfoService.initProjectInfo(projectInfo);
                 } catch (Exception e) {

@@ -16,6 +16,8 @@ import com.copower.pmcc.assess.service.project.SchemeInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -33,6 +35,7 @@ import java.util.List;
 @Component
 @WorkFlowAnnotation(desc = "收益法成果")
 public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -49,12 +52,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
-        List<EvaluationHypothesisDto> hypothesisDtos = hypothesisService.listN(null);
-        List<EvaluationBasisDto> basisDtos = basisService.listN(null);
-        List<EvaluationPrincipleDto> principleDtos = principleService.listN(null);
-        modelAndView.addObject("hypothesisList",hypothesisDtos);
-        modelAndView.addObject("principleList",principleDtos);
-        modelAndView.addObject("basisList",basisDtos);
         return modelAndView;
     }
 
@@ -77,12 +74,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
-        List<EvaluationHypothesisVo> hypothesisDtos = hypothesisService.listNs(null);
-        List<EvaluationBasisVo> basisVos = basisService.listNs(null);
-        List<EvaluationPrincipleVo> principleVos = principleService.listNs(null);
-        modelAndView.addObject("hypothesisList",hypothesisDtos);
-        modelAndView.addObject("principleList",principleVos);
-        modelAndView.addObject("basisList",basisVos);
+
         return modelAndView;
     }
 
@@ -108,10 +100,17 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         if (!StringUtils.isEmpty(formData)){
-            SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
-            detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
-            detailVDto.setProcessInsId(processInsId);
-            detailVDto.setPlanDetailsId(projectPlanDetails.getId());
+            try {
+                SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
+                detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
+                detailVDto.setProcessInsId(processInsId);
+                detailVDto.setPlanDetailsId(projectPlanDetails.getId());
+                if (detailVDto!=null){
+                    schemeInfoService.saveChange(detailVDto);
+                }
+            }catch (Exception e){
+                logger.error("异常! "+e.getMessage());
+            }
         }
     }
 
