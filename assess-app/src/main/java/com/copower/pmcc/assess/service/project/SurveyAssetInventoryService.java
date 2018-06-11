@@ -49,7 +49,7 @@ public class SurveyAssetInventoryService {
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
         if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventoryDto surveyAssetInventoryDto = surveyAssetCommonDataDto.getSurveyAssetInventoryDto();
-            SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto = surveyAssetCommonDataDto.getSurveyAssetOtherTemplateDto();
+//            SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto = surveyAssetCommonDataDto.getSurveyAssetOtherTemplateDto();
             List<SurveyAssetTemplateDto> surveyAssetTemplateDtos = surveyAssetCommonDataDto.getSurveyAssetTemplateDtos();
             SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
             if (surveyAssetInventory != null) {
@@ -58,8 +58,8 @@ public class SurveyAssetInventoryService {
                 Integer pid = surveyAssetInventory.getId();
                 SurveyAssetOtherTemplate surveyAssetOtherTemplate = surveyAssetOtherTemplateDao.getSurveyAssetOtherTemplateByPid(pid);
                 if (surveyAssetOtherTemplate != null) {
-                    surveyAssetOtherTemplateDto.setId(surveyAssetOtherTemplate.getId());
-                    surveyAssetOtherTemplateDao.update(surveyAssetOtherTemplateDto);
+//                    surveyAssetOtherTemplateDto.setId(surveyAssetOtherTemplate.getId());
+//                    surveyAssetOtherTemplateDao.update(surveyAssetOtherTemplateDto);
                 }
                 if (surveyAssetTemplateDtos.size() > 0) {
                     int j = surveyAssetTemplateDao.deleteByPid(pid);
@@ -82,11 +82,11 @@ public class SurveyAssetInventoryService {
                 surveyAssetInventoryDto.setCreator(processControllerComponent.getThisUser());
                 int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
 
-                surveyAssetOtherTemplateDto.setProjectId(projectId);
-                surveyAssetOtherTemplateDto.setPlanDetailId(planId);
-                surveyAssetOtherTemplateDto.setCreator(processControllerComponent.getThisUser());
-                surveyAssetOtherTemplateDto.setPid(pid);
-                surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
+//                surveyAssetOtherTemplateDto.setProjectId(projectId);
+//                surveyAssetOtherTemplateDto.setPlanDetailId(planId);
+//                surveyAssetOtherTemplateDto.setCreator(processControllerComponent.getThisUser());
+//                surveyAssetOtherTemplateDto.setPid(pid);
+//                surveyAssetOtherTemplateDao.save(surveyAssetOtherTemplateDto);
 
 //                List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
                 int i = 0;

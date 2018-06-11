@@ -39,6 +39,10 @@ public class SurveyAssetOtherTemplate {
 
     private Integer pid;
 
+    private Integer sorting;
+
+    private Integer type;
+
     public Integer getId() {
         return id;
     }
@@ -181,5 +185,21 @@ public class SurveyAssetOtherTemplate {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
