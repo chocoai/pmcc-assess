@@ -90,6 +90,7 @@
             groupB += "模板数据" ;
             groupB += "</label>" ;
             groupB += "<div class='col-sm-11'>" ;
+            groupB += "<input type='hidden' name='dataID'"+"value="+result[i].id +">"   ;
             groupB += "<input type='hidden' value='"+result[i].template +"'id='templateHypothesis"+result[i].id +"'>";
             groupB += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'"+ "id=templateHypothesisV"+result[i].id +">" ;
             groupB += result[i].template;

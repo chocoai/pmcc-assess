@@ -16,6 +16,8 @@ import com.copower.pmcc.assess.service.project.SchemeInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -33,6 +35,7 @@ import java.util.List;
 @Component
 @WorkFlowAnnotation(desc = "收益法成果")
 public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -97,10 +100,17 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         if (!StringUtils.isEmpty(formData)){
-            SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
-            detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
-            detailVDto.setProcessInsId(processInsId);
-            detailVDto.setPlanDetailsId(projectPlanDetails.getId());
+            try {
+                SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
+                detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
+                detailVDto.setProcessInsId(processInsId);
+                detailVDto.setPlanDetailsId(projectPlanDetails.getId());
+                if (detailVDto!=null){
+                    schemeInfoService.saveChange(detailVDto);
+                }
+            }catch (Exception e){
+                logger.error("异常! "+e.getMessage());
+            }
         }
     }
 

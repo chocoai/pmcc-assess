@@ -57,11 +57,11 @@
         var arr = principleFun.data();
         var name = $(dd).attr("data-name");
         var id = $(dd).attr("data-value");
-        var template = $("#"+arr[0]+id).val();
+        var template = $("#"+arr[1]+id).val();
         var regex = '/\{' + name + '\}/g';
         if (template != ''){
             var template = template.replace(eval(regex), $(dd).val());
-            $("#"+arr[1]+id).val(template);
+            $("#"+arr[0]+id).val(template);
         }
     };
     principleFun.writeList = function (result) {
@@ -88,8 +88,9 @@
             groupB += "模板数据" ;
             groupB += "</label>" ;
             groupB += "<div class='col-sm-11'>" ;
-            groupB += "<input type='hidden' value='"+result[i].template +"'id='templatePrinciple"+result[i].id +"'>";
-            groupB += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'"+ "id=templatePrincipleV"+result[i].id +">" ;
+            groupB += "<input type='hidden' name='dataID'"+"value="+result[i].id +">"   ;
+            groupB += "<input type='hidden' value='"+result[i].template +"'id='templatePrincipleV"+result[i].id +"'>";
+            groupB += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'"+ "id=templatePrinciple"+result[i].id +">" ;
             groupB += result[i].template;
             groupB += "</textarea>" ;
             groupB += "</div>" ;
