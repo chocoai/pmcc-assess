@@ -40,4 +40,21 @@ public class SurveyAssetOtherTemplateDao {
     }
 
 
+    public List<SurveyAssetOtherTemplate> getSurveyAssetTemplate(Integer pid) {
+        SurveyAssetOtherTemplateExample example = new SurveyAssetOtherTemplateExample();
+
+        if (pid != null) {
+            example.createCriteria().andPidEqualTo(pid);
+        }
+
+        example.setOrderByClause("sorting");
+        List<SurveyAssetOtherTemplate> surveyAssetOtherTemplates = surveyAssetOtherTemplateMapper.selectByExample(example);
+
+        return surveyAssetOtherTemplates;
+    }
+
+    public boolean delete(Integer id) {
+        int i = surveyAssetOtherTemplateMapper.deleteByPrimaryKey(id);
+        return i > 0;
+    }
 }

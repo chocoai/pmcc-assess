@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class SurveyAssetCommonDataDto {
     private SurveyAssetInventoryDto surveyAssetInventoryDto;
-    private SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto;
+//    private SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto;
     private List<SurveyAssetTemplateDto> surveyAssetTemplateDtos;
 
     public SurveyAssetInventoryDto getSurveyAssetInventoryDto() {
@@ -18,13 +18,13 @@ public class SurveyAssetCommonDataDto {
         this.surveyAssetInventoryDto = surveyAssetInventoryDto;
     }
 
-    public SurveyAssetOtherTemplateDto getSurveyAssetOtherTemplateDto() {
-        return surveyAssetOtherTemplateDto;
-    }
-
-    public void setSurveyAssetOtherTemplateDto(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
-        this.surveyAssetOtherTemplateDto = surveyAssetOtherTemplateDto;
-    }
+//    public SurveyAssetOtherTemplateDto getSurveyAssetOtherTemplateDto() {
+//        return surveyAssetOtherTemplateDto;
+//    }
+//
+//    public void setSurveyAssetOtherTemplateDto(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
+//        this.surveyAssetOtherTemplateDto = surveyAssetOtherTemplateDto;
+//    }
 
     public List<SurveyAssetTemplateDto> getSurveyAssetTemplateDtos() {
         return surveyAssetTemplateDtos;
