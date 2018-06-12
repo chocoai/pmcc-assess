@@ -661,15 +661,15 @@ public class ProjectInfoService {
      * 联系人 检查数量是否达到要求
      * @return
      */
-    public boolean checkContacts(){
-        boolean flag = false;
-        if (initiateContactsService.checkContacts(InitiateContactsEnum.ONE)){
-            if (initiateContactsService.checkContacts(InitiateContactsEnum.TWO)){
-                if (initiateContactsService.checkContacts(InitiateContactsEnum.THREE)){
-                    flag = true;
-                }
-            }
-        }
-        return flag;
+    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum){
+        return initiateContactsService.checkContacts(initiateContactsEnum);
+    }
+
+    /**
+     * 第一次填写后留下的委托人 数据信息
+     * @return
+     */
+    public InitiateConsignorDto oneFirstConsignor(){
+        return consignorService.oneFirstConsignor();
     }
 }

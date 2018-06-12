@@ -318,28 +318,30 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托单位
+                                        单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <div class="input-group">
-                                            <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"
-                                                   class="form-control" required="required">
-                                            <input type="text" id="csEntrustmentUnitX" placeholder="委托单位"
-                                                   value="${projectInfo.consignorVo.csEntrustmentUnitName}"
-                                                   class="form-control" required="required" readonly="readonly">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="选择" id="btn_select_customer">
-                                                <i class="fa fa-search"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
-                                        </div>
+                                        <input type="text" id="csEntrustmentUnit" placeholder="单位" class="form-control" required="required"
+                                               value="${projectInfo.consignorVo.csEntrustmentUnitName}" >
+                                        <%--<div class="input-group">--%>
+                                            <%--<input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"--%>
+                                                   <%--class="form-control" required="required">--%>
+                                            <%--<input type="text" id="csEntrustmentUnitX" placeholder="单位"--%>
+                                                   <%--value="${projectInfo.consignorVo.csEntrustmentUnitName}"--%>
+                                                   <%--class="form-control" required="required" readonly="readonly">--%>
+                                            <%--<span class="input-group-btn">--%>
+                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                        <%--data-toggle="tooltip"--%>
+                                                        <%--data-original-title="选择" id="btn_select_customer">--%>
+                                                <%--<i class="fa fa-search"></i>--%>
+                                                <%--</button>--%>
+                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                        <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                                        <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                                <%--<i class="fa fa-trash-o"></i>--%>
+                                                <%--</button>--%>
+                                            <%--</span>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
 
@@ -580,26 +582,27 @@
                                     单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"
-                                               class="form-control" required="required">
-                                        <input type="text" id="pEntrustmentUnitX"
-                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}"
-                                               placeholder="单位" onclick="automaticFillIn()"
-                                               class="form-control" required="required" readonly="readonly">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    data-toggle="tooltip"
-                                                    data-original-title="选择" id="btn_select_customer1">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="$(this).closest('.input-group').find('input').val('');"
-                                                    data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-			                            </span>
-                                    </div>
+                                    <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
+                                           class="form-control" required="required" placeholder="单位">
+                                    <%--<div class="input-group">--%>
+                                        <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
+                                               <%--class="form-control" required="required">--%>
+                                        <%--<input type="text" id="pEntrustmentUnitX"--%>
+                                               <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
+                                               <%--class="form-control" required="required" readonly="readonly">--%>
+                                        <%--<span class="input-group-btn">--%>
+                                            <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                    <%--data-toggle="tooltip"--%>
+                                                    <%--data-original-title="选择" id="btn_select_customer1">--%>
+                                            <%--<i class="fa fa-search"></i>--%>
+                                            <%--</button>--%>
+                                            <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                    <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                                    <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                            <%--<i class="fa fa-trash-o"></i>--%>
+                                            <%--</button>--%>
+			                            <%--</span>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
 
@@ -985,6 +988,7 @@
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply();">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -1083,6 +1087,34 @@
 </body>
 </html>
 <script>
+    oneFirstConsignor();
+    //第一次填写后留下的委托人 数据信息
+    function oneFirstConsignor() {
+        var changeType = '${oneFirstConsignor.csType}';
+        if (changeType !=null && changeType != ''){
+            if (changeType==1){
+                $("#changeType input[type='radio'][name='csType'][value='1']").attr("checked",true);
+                $("#no_legal_person").hide();
+                $("#legal_person").show();
+                $("#csEntrustmentUnit").val('${oneFirstConsignor.csEntrustmentUnit}');
+                if ($("#csEntrustmentUnitX").length > 0){
+                    $("#csEntrustmentUnitX").val('${oneFirstConsignor.csEntrustmentUnit}');
+                }
+                $("#csLegalRepresentative").val('${oneFirstConsignor.csLegalRepresentative}');
+                $("#csSociologyCode").val('${oneFirstConsignor.csSociologyCode}');
+                $("#csScopeOperation").val('${oneFirstConsignor.csScopeOperation}');
+                $("#csAddress").val('${oneFirstConsignor.csAddress}');
+                var csUnitProperties = '${oneFirstConsignor.csUnitProperties}';
+                if (csUnitProperties!=null && csUnitProperties!=''){
+                    $("#csUnitProperties").val(csUnitProperties);
+                }
+            }else {
+                $("#changeType input[type='radio'][name='csType'][value='0']").attr("checked",true);
+                $("#no_legal_person").show();
+                $("#legal_person").hide();
+            }
+        }
+    }
     //检查联系人是否达到要求
     function checkContacts() {
         var isAllDistribution = true;
@@ -1092,6 +1124,11 @@
             dataType: "json",
             async: false,
             success: function (result) {
+                if (result.ret){
+                    Alert("success!");
+                }else {
+                    Alert(result.errmsg);
+                }
                 isAllDistribution = result.ret;
             },
             error: function (result) {
@@ -1102,26 +1139,62 @@
         return isAllDistribution;
     }
     //自动校验并且填写
+    automaticFillIn();
     function automaticFillIn() {
-        var value = $("#changeType input:checked").val();
-        if (value==1){
-            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
-            $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
-            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
-            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
-            $("#pSociologyCode").val($("#csSociologyCode").val());
-            $("#pScopeOperation").val($("#csScopeOperation").val());
-            $("#pAddress").val($("#csAddress").val());
-            console.log($("#csUnitProperties option:selected").val());
-            $("#pUnitProperties").val($("#csUnitProperties option:selected").val());
+        var value = $("#changeType input[name='csType']:checked").val();
+        var consignor = formParams("frm_consignor"); //委托人信息
+        console.log(consignor);
+        if (! $("#pEntrustmentUnitX").length > 0 ){
+            $("#pEntrustmentUnit").one("click", function(){
+                if (value==1){
+                    $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
+                    if ($("#pEntrustmentUnitX").length > 0){
+                        $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+                    }
+                    $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+                    $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+                    $("#pSociologyCode").val($("#csSociologyCode").val());
+                    $("#pScopeOperation").val($("#csScopeOperation").val());
+                    $("#pAddress").val($("#csAddress").val());
+                    var selectV = $("#csUnitProperties option:selected").val();
+                    if (selectV != null && selectV!= ''){
+                        $("#pUnitProperties").val(selectV);
+                    }
 
+                }else {
+                    $("#no_legal_person1").show();
+                    $("#legal_person1").hide();
+                    $("#changeType1 input[type='radio'][name='pType'][value='0']").attr("checked",true);
+                    $("#pName").val($("#csName").val());
+                    $("#pIdcard").val($("#csIdcard").val());
+                    $("#pAddress2").val($("#csAddress2").val());
+                }
+            });
         }else {
-            $("#no_legal_person1").show();
-            $("#legal_person1").hide();
-            $("#changeType1 input[type='radio'][name='pType'][value='0']").attr("checked",true);
-            $("#pName").val($("#csName").val());
-            $("#pIdcard").val($("#csIdcard").val());
-            $("#pAddress2").val($("#csAddress2").val());
+            $("#pEntrustmentUnitX").one("click", function(){
+                if (value==1){
+                    $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
+                    if ($("#pEntrustmentUnitX").length > 0){
+                        $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+                    }
+                    $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+                    $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+                    $("#pSociologyCode").val($("#csSociologyCode").val());
+                    $("#pScopeOperation").val($("#csScopeOperation").val());
+                    $("#pAddress").val($("#csAddress").val());
+                    var selectV = $("#csUnitProperties option:selected").val();
+                    if (selectV != null && selectV!= ''){
+                        $("#pUnitProperties").val(selectV);
+                    }
+                }else {
+                    $("#no_legal_person1").show();
+                    $("#legal_person1").hide();
+                    $("#changeType1 input[type='radio'][name='pType'][value='0']").attr("checked",true);
+                    $("#pName").val($("#csName").val());
+                    $("#pIdcard").val($("#csIdcard").val());
+                    $("#pAddress2").val($("#csAddress2").val());
+                }
+            });
         }
     }
     $(function () {
@@ -1418,68 +1491,85 @@
     }
 
     //CRM
-    document.getElementById("btn_select_customer").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#csEntrustmentUnit").val(nodes[0].id);
-                $("#csEntrustmentUnitX").val(nodes[0].name);
-                var id = nodes[0].id;
-                console.log("----------------------");
-                loadInitContactsListA(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "csLegalRepresentative", "csAddress", "csScopeOperation", "csSociologyCode");
+    if ($("#btn_select_customer").length > 0){
+        document.getElementById("btn_select_customer").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#csEntrustmentUnit").length > 0){
+                        $("#csEntrustmentUnit").val(nodes[0].id);
                     }
-                });
-            }
-        });
+                    if ($("#csEntrustmentUnitX").length > 0){
+                        $("#csEntrustmentUnitX").val(nodes[0].name);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListA(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "csLegalRepresentative", "csAddress", "csScopeOperation", "csSociologyCode");
+                        }
+                    });
+                }
+            });
+        }
     }
 
-    document.getElementById("btn_select_customer1").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#pEntrustmentUnit").val(nodes[0].id);
-                $("#pEntrustmentUnitX").val(nodes[0].name);
-                var id = nodes[0].id;
-                loadInitContactsListB(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "pLegalRepresentative", "pAddress", "pScopeOperation", "pSociologyCode");
+    if ($("#btn_select_customer1").length > 0){
+        document.getElementById("btn_select_customer1").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#pEntrustmentUnit").length > 0){
+                        $("#pEntrustmentUnit").val(nodes[0].id);
                     }
-                });
-            }
-        });
+                    if ($("#pEntrustmentUnitX").length > 0){
+                        $("#pEntrustmentUnitX").val(nodes[0].name);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListB(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "pLegalRepresentative", "pAddress", "pScopeOperation", "pSociologyCode");
+                        }
+                    });
+                }
+            });
+        }
     }
 
-    document.getElementById("btn_select_customer2").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#uUseUnitX").val(nodes[0].name);
-                $("#uUseUnit").val(nodes[0].id);
-                var id = nodes[0].id;
-                loadInitContactsListC(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
+    if ($("#btn_select_customer2").length > 0){
+        document.getElementById("btn_select_customer2").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#uUseUnitX").length > 0){
+                        $("#uUseUnitX").val(nodes[0].name);
                     }
-                });
-            }
-        });
+                    if ($("#uUseUnit").length > 0){
+                        $("#uUseUnit").val(nodes[0].id);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListC(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     var flags = new Array();
@@ -1793,6 +1883,10 @@
     }
 
     function projectApply() {
+        //联系人校验
+        if (!checkContacts()){
+            return false;
+        }
         //js校验
         if (!$("#frm_project_info").valid()) {
             return false;

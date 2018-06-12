@@ -4,12 +4,16 @@ import com.copower.pmcc.assess.dal.dao.InitiateConsignorDao;
 import com.copower.pmcc.assess.dto.input.project.InitiateConsignorDto;
 import com.copower.pmcc.assess.dto.output.project.InitiateConsignorVo;
 import com.copower.pmcc.erp.common.CommonService;
+import org.apache.commons.collections.comparators.ComparatorChain;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,7 +37,7 @@ public class InitiateConsignorService {
             dto.setCsLegalRepresentative(null);
             dto.setCsEntrustmentUnit(null);
         }
-        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
+        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);
     }
 
@@ -52,7 +56,7 @@ public class InitiateConsignorService {
 
     @Transactional
     public boolean update(InitiateConsignorDto dto) {
-        if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
+        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 
@@ -74,4 +78,28 @@ public class InitiateConsignorService {
         BeanUtils.copyProperties(dto, vo);
         return vo;
     }
+
+    /**
+     * 第一次填写后留下的委托人 数据信息
+     * @return
+     */
+    public InitiateConsignorDto oneFirstConsignor() {
+        List<InitiateConsignorDto> dtos = dao.getList();
+        Collections.sort(dtos,new Comparator<Object>(){
+            @Override
+            public int compare(Object o1, Object o2) {
+                InitiateConsignorDto consignorA = (InitiateConsignorDto)o1;
+                InitiateConsignorDto consignorB = (InitiateConsignorDto)o2;
+                if (!ObjectUtils.isEmpty(consignorA.getGmtCreated()) &&  !ObjectUtils.isEmpty(consignorB.getGmtCreated())){
+                    return consignorA.getGmtCreated().compareTo(consignorB.getGmtCreated());
+                }else if (consignorA.getGmtCreated() == null){
+                    return consignorA.getCsName().compareTo(consignorB.getCsName());
+                }
+                return 0;
+            }
+        });
+        InitiateConsignorDto consignorDto = dtos.get(dtos.size()-1);
+        return consignorDto;
+    }
+
 }
