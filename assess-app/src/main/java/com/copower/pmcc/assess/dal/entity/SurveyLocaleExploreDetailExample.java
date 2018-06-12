@@ -1354,6 +1354,76 @@ public class SurveyLocaleExploreDetailExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andDefaultLocaltionIsNull() {
+            addCriterion("default_localtion is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionIsNotNull() {
+            addCriterion("default_localtion is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionEqualTo(String value) {
+            addCriterion("default_localtion =", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionNotEqualTo(String value) {
+            addCriterion("default_localtion <>", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionGreaterThan(String value) {
+            addCriterion("default_localtion >", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionGreaterThanOrEqualTo(String value) {
+            addCriterion("default_localtion >=", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionLessThan(String value) {
+            addCriterion("default_localtion <", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionLessThanOrEqualTo(String value) {
+            addCriterion("default_localtion <=", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionLike(String value) {
+            addCriterion("default_localtion like", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionNotLike(String value) {
+            addCriterion("default_localtion not like", value, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionIn(List<String> values) {
+            addCriterion("default_localtion in", values, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionNotIn(List<String> values) {
+            addCriterion("default_localtion not in", values, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionBetween(String value1, String value2) {
+            addCriterion("default_localtion between", value1, value2, "defaultLocaltion");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefaultLocaltionNotBetween(String value1, String value2) {
+            addCriterion("default_localtion not between", value1, value2, "defaultLocaltion");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

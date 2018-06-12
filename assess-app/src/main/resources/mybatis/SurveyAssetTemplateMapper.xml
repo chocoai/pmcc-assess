@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
-    <result column="inventory_content" property="inventoryContent" jdbcType="VARCHAR" />
+    <result column="inventory_content" property="inventoryContent" jdbcType="INTEGER" />
     <result column="are_consistent" property="areConsistent" jdbcType="VARCHAR" />
     <result column="registration_address" property="registrationAddress" jdbcType="VARCHAR" />
     <result column="actual_address" property="actualAddress" jdbcType="VARCHAR" />
@@ -123,7 +123,7 @@
       voucher, survey_time, creator, 
       gmt_created, gmt_modified, spare_field, 
       pid)
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{inventoryContent,jdbcType=INTEGER}, 
       #{areConsistent,jdbcType=VARCHAR}, #{registrationAddress,jdbcType=VARCHAR}, #{actualAddress,jdbcType=VARCHAR}, 
       #{differenceReason,jdbcType=VARCHAR}, #{credential,jdbcType=VARCHAR}, #{credentialAccessory,jdbcType=VARCHAR}, 
       #{voucher,jdbcType=VARCHAR}, #{surveyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
@@ -193,7 +193,7 @@
         #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="inventoryContent != null" >
-        #{inventoryContent,jdbcType=VARCHAR},
+        #{inventoryContent,jdbcType=INTEGER},
       </if>
       <if test="areConsistent != null" >
         #{areConsistent,jdbcType=VARCHAR},
@@ -255,7 +255,7 @@
         plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       </if>
       <if test="record.inventoryContent != null" >
-        inventory_content = #{record.inventoryContent,jdbcType=VARCHAR},
+        inventory_content = #{record.inventoryContent,jdbcType=INTEGER},
       </if>
       <if test="record.areConsistent != null" >
         are_consistent = #{record.areConsistent,jdbcType=VARCHAR},
@@ -306,7 +306,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
-      inventory_content = #{record.inventoryContent,jdbcType=VARCHAR},
+      inventory_content = #{record.inventoryContent,jdbcType=INTEGER},
       are_consistent = #{record.areConsistent,jdbcType=VARCHAR},
       registration_address = #{record.registrationAddress,jdbcType=VARCHAR},
       actual_address = #{record.actualAddress,jdbcType=VARCHAR},
@@ -334,7 +334,7 @@
         plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       </if>
       <if test="inventoryContent != null" >
-        inventory_content = #{inventoryContent,jdbcType=VARCHAR},
+        inventory_content = #{inventoryContent,jdbcType=INTEGER},
       </if>
       <if test="areConsistent != null" >
         are_consistent = #{areConsistent,jdbcType=VARCHAR},
@@ -382,7 +382,7 @@
     update tb_survey_asset_template
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
-      inventory_content = #{inventoryContent,jdbcType=VARCHAR},
+      inventory_content = #{inventoryContent,jdbcType=INTEGER},
       are_consistent = #{areConsistent,jdbcType=VARCHAR},
       registration_address = #{registrationAddress,jdbcType=VARCHAR},
       actual_address = #{actualAddress,jdbcType=VARCHAR},

@@ -165,10 +165,10 @@
         })
     }
 
-    //显示图片附件
+    //显示视频附件
     function loadSurveyVideoFiles() {
         FileUtils.getFileShows({
-            target: "surveyImage",
+            target: "surveyVideo",
             formData: {
                 tableName: "tb_survey_locale_explore_detail",
                 tableId: ${surveyLocaleExploreDetail.id},

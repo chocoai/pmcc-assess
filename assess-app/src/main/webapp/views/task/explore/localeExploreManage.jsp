@@ -42,6 +42,8 @@
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                         <input type="hidden" id="surveyLocaltion" name="surveyLocaltion"
                                value="${surveyLocaleExploreDetail.surveyLocaltion}">
+                        <input type="hidden" id="defaultLocaltion" name="defaultLocaltion"
+                               value="${surveyLocaleExploreDetail.defaultLocaltion}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘人<span class="symbol required"></span></label>
@@ -111,6 +113,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 查勘定位
@@ -183,6 +186,7 @@
         </div>
     </div>
 </div>
+
 </body>
 <script src='/assets/js/comm/pmcc.js'></script>
 <script src='/assets/js/comm/erp-footer.js'></script>
@@ -205,6 +209,7 @@
         }
         var dynamicFormData = formParams("frm_dynamic_content");
         var data = formParams("frm_survey");
+        console.log(data);
         data.dynamicFormData = dynamicFormData;
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyLocale/save",
@@ -274,14 +279,28 @@
         });
     }
 
+    //解析定位结果
+    function onCompleteSuccess(data) {
+        $("#defaultLocaltion").val(data.formattedAddress);
+    }
+
+    //解析定位错误信息
+    function onError(data) {
+        //暂不处理
+    }
+
     //map选址成功回调
     function positionPickerSuccess(positionResult) {
+        console.log("进来" + positionResult.position);
         $("#surveyLocaltion").val(positionResult.position);
     }
     //map选址失败回调
     function positionPickerFail(positionResult) {
         //暂不处理
     }
+
+
+
 </script>
 
 

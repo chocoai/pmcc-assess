@@ -24,29 +24,23 @@ public class SurveyAssetOtherTemplateDao {
         return i > 0;
     }
 
-    public SurveyAssetOtherTemplate getSurveyAssetOtherTemplateByPid(Integer pid) {
+    public List<SurveyAssetOtherTemplate> getSurveyAssetOtherTemplateByPid(Integer pid) {
         SurveyAssetOtherTemplateExample example = new SurveyAssetOtherTemplateExample();
         example.createCriteria().andPidEqualTo(pid);
-        List<SurveyAssetOtherTemplate> surveyAssetOtherTemplate = surveyAssetOtherTemplateMapper.selectByExample(example);
-        if (CollectionUtils.isNotEmpty(surveyAssetOtherTemplate)) {
-            return surveyAssetOtherTemplate.get(0);
-        }
-        return null;
+        return surveyAssetOtherTemplateMapper.selectByExample(example);
     }
 
-    public boolean update(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
-        int i = surveyAssetOtherTemplateMapper.updateByPrimaryKeySelective(surveyAssetOtherTemplateDto);
+    public boolean update(SurveyAssetOtherTemplate surveyAssetOtherTemplate) {
+        int i = surveyAssetOtherTemplateMapper.updateByPrimaryKeySelective(surveyAssetOtherTemplate);
         return i > 0;
     }
 
 
     public List<SurveyAssetOtherTemplate> getSurveyAssetTemplate(Integer pid) {
         SurveyAssetOtherTemplateExample example = new SurveyAssetOtherTemplateExample();
-
         if (pid != null) {
             example.createCriteria().andPidEqualTo(pid);
         }
-
         example.setOrderByClause("sorting");
         List<SurveyAssetOtherTemplate> surveyAssetOtherTemplates = surveyAssetOtherTemplateMapper.selectByExample(example);
 

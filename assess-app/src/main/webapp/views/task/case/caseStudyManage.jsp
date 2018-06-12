@@ -44,6 +44,8 @@
                         <input type="hidden" name="dynamicTableName" value="${surveyCaseStudyDetail.dynamicTableName}">
                         <input type="hidden" id="caseLocaltion" name="caseLocaltion"
                                value="${surveyCaseStudyDetail.caseLocaltion}">
+                        <input type="hidden" id="defaultLocaltion" name="defaultLocaltion"
+                               value="${surveyCaseStudyDetail.defaultLocaltion}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -239,7 +241,8 @@
     </div>
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+<script src='/assets/js/comm/pmcc.js'></script>
+<script src='/assets/js/comm/erp-footer.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
@@ -329,6 +332,16 @@
                 }
             }
         })
+    }
+
+    //解析定位结果
+    function onCompleteSuccess(data) {
+        $("#defaultLocaltion").val(data.formattedAddress);
+    }
+
+    //解析定位错误信息
+    function onError(data) {
+        //暂不处理
     }
 
     //map选址成功回调
