@@ -140,7 +140,7 @@
                                                     tableId: ${surveyLocaleExploreDetail.id},
                                                     fieldsName: "survey_localtion"
                                                 },
-                                                deleteFlag: false
+                                                deleteFlag: true
                                             })
                                         }
                                     </script>

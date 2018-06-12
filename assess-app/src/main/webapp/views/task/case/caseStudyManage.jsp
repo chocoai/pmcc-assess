@@ -196,7 +196,7 @@
                                             marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
                                 </c:if>
                                 <c:if test="${surveyCaseStudyDetail.id ne 0}">
-                                    <div id="_surveyLocaltion">
+                                    <div id="_caseLocaltion">
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
@@ -209,9 +209,9 @@
                                                 formData: {
                                                     tableName: "tb_survey_case_study_detail",
                                                     tableId: ${surveyCaseStudyDetail.id},
-                                                    fieldsName: "case_localtion"
+                                                    fieldsName: "survey_localtion"
                                                 },
-                                                deleteFlag: false
+                                                deleteFlag: true
                                             })
                                         }
                                     </script>

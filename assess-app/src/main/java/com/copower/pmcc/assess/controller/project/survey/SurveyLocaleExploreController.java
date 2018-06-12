@@ -58,6 +58,7 @@ public class SurveyLocaleExploreController {
         SurveyLocaleExploreDetail surveyLocaleExploreDetail = null;
         if (id != null && id > 0) {
             surveyLocaleExploreDetail = surveyLocaleExploreDetailService.getSingelDetail(id);
+            if(surveyLocaleExploreDetail.getDynamicFormId()==null) surveyLocaleExploreDetail.setDynamicFormId(0);
             String moduleJsonString = formConfigureService.getModuleJsonString(surveyLocaleExploreDetail.getDynamicFormId(), surveyLocaleExploreDetail.getDynamicTableId());
             modelAndView.addObject("JsonValue", moduleJsonString);
         } else {

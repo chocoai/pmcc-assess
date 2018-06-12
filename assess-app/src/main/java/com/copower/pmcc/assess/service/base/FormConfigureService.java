@@ -1020,7 +1020,10 @@ public class FormConfigureService {
      */
     public String getModuleJsonString(Integer moduleId, Integer tableId) {
         BaseFormModule baseFormModule = hrBaseFormDao.getBaseFormModule(moduleId);
-        Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
-        return mapToJsonString(objectMap);
+        if(baseFormModule!=null){
+            Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
+            return mapToJsonString(objectMap);
+        }
+        return null;
     }
 }
