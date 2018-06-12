@@ -54,13 +54,19 @@ public class InitiateContactsService {
                     contactsDto.setcPid(InitiateContactsDto.CPID);
                     contactsDto.setcType(flag);
                     dtos.add(contactsDto);
-//                    int id = dao.save(contactsDto);
-//                    contactsDto.setId(id);
-//                    vo = change(contactsDto);
-//                    vos.add(vo);
                 }
 
-//                Collections.sort(dtos);//暂时不处理
+                Collections.sort(dtos,new Comparator<Object>(){
+                    @Override
+                    public int compare(Object o1, Object o2) {
+                        InitiateContactsDto contactsA = (InitiateContactsDto)o1;
+                        InitiateContactsDto contactsB = (InitiateContactsDto)o2;
+                        if (contactsA.getGmtCreated()!=null && contactsB.getGmtCreated()!=null){
+                            return contactsA.getGmtCreated().compareTo(contactsB.getGmtCreated());
+                        }
+                        return 0;
+                    }
+                });//暂时不处理
                 int temp = 5;
                 for (int i = 0; i < temp; i++) {
                     InitiateContactsDto contactsDto = dtos.get(i);

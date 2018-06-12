@@ -211,9 +211,9 @@
                                 <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="hidden" id="departmentId" name="departmentId">
+                                        <input type="hidden" id="departmentId" name="departmentId" value="${projectInfo.departmentId}">
                                         <input id='departmentName' class='form-control' required="required"
-                                               readonly="readonly" maxlength="200">
+                                               readonly="readonly" maxlength="200" value="${projectInfo.departmentName}">
                                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="selectDepartment();" data-toggle="tooltip"
@@ -236,8 +236,10 @@
                                 <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" id="userAccountManagerID" name="userAccountManager">
+                                        <input type="hidden" name="projectMemberId" value="${projectInfo.projectMemberVo.id}">
+                                        <input type="hidden" name="userAccountManager" value="${projectInfo.projectMemberVo.userAccountManager}">
                                         <input type="text" class="form-control" readonly="readonly"
-                                               value="${projectInfo.userAccountManagerName}" required="required"
+                                               value="${projectInfo.projectMemberVo.userAccountManagerName}" required="required"
                                                id="userAccountManager" maxlength="200">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -309,7 +311,7 @@
                                     自然人<input type="radio" name="csType" value="0" checked="checked">
                                 </c:when>
                                 <c:when test="${projectInfo == null}">
-                                    法人<input type="radio" name="csType" value="1" checked="checked">
+                                    法人<input type="radio" name="csType" value="1">
                                     自然人<input type="radio" name="csType" value="0" >
                                 </c:when>
                             </c:choose>
@@ -318,28 +320,30 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        委托单位
+                                        单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <div class="input-group">
-                                            <input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"
-                                                   class="form-control" required="required">
-                                            <input type="text" id="csEntrustmentUnitX" placeholder="委托单位"
-                                                   value="${projectInfo.consignorVo.csEntrustmentUnitName}"
-                                                   class="form-control" required="required" readonly="readonly">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="选择" id="btn_select_customer">
-                                                <i class="fa fa-search"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
-                                        </div>
+                                        <input type="text" id="csEntrustmentUnit" placeholder="单位" class="form-control" required="required"
+                                               value="${projectInfo.consignorVo.csEntrustmentUnit}" >
+                                        <%--<div class="input-group">--%>
+                                            <%--<input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"--%>
+                                                   <%--class="form-control" required="required">--%>
+                                            <%--<input type="text" id="csEntrustmentUnitX" placeholder="单位"--%>
+                                                   <%--value="${projectInfo.consignorVo.csEntrustmentUnitName}"--%>
+                                                   <%--class="form-control" required="required" readonly="readonly">--%>
+                                            <%--<span class="input-group-btn">--%>
+                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                        <%--data-toggle="tooltip"--%>
+                                                        <%--data-original-title="选择" id="btn_select_customer">--%>
+                                                <%--<i class="fa fa-search"></i>--%>
+                                                <%--</button>--%>
+                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                        <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                                        <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                                <%--<i class="fa fa-trash-o"></i>--%>
+                                                <%--</button>--%>
+                                            <%--</span>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
 
@@ -348,19 +352,9 @@
                                         法定代表
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csLegalRepresentative != null}">
-                                                <input type="text" name="csLegalRepresentative"
-                                                       id="csLegalRepresentative"
-                                                       value="${projectInfo.consignorVo.csLegalRepresentative}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csLegalRepresentative"
-                                                       id="csLegalRepresentative" placeholder="法定代表人"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csLegalRepresentative"
+                                               id="csLegalRepresentative" placeholder="法定代表人"
+                                               class="form-control" required="required" value="${projectInfo.consignorVo.csLegalRepresentative}">
                                     </div>
                                 </div>
 
@@ -369,17 +363,8 @@
                                         社会统一信用代码
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csSociologyCode != null}">
-                                                <input type="text" name="csSociologyCode" id="csSociologyCode"
-                                                       value="${projectInfo.consignorVo.csSociologyCode}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csSociologyCode" id="csSociologyCode"
-                                                       placeholder="社会统一信用代码" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csSociologyCode" id="csSociologyCode" value="${projectInfo.consignorVo.csSociologyCode}"
+                                               placeholder="社会统一信用代码" class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -390,17 +375,8 @@
                                         经营范围
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csScopeOperation != null}">
-                                                <input type="text" name="csScopeOperation" id="csScopeOperation"
-                                                       value="${projectInfo.consignorVo.csScopeOperation}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csScopeOperation" id="csScopeOperation"
-                                                       placeholder="经营范围" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csScopeOperation" id="csScopeOperation"
+                                               placeholder="经营范围" class="form-control" required="required" value="${projectInfo.consignorVo.csScopeOperation}">
                                     </div>
                                 </div>
 
@@ -409,17 +385,8 @@
                                         单位地址
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csAddress != null}">
-                                                <input type="text" name="csAddress" id="csAddress"
-                                                       value="${projectInfo.consignorVo.csAddress}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csAddress" id="csAddress" placeholder="单位地址"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csAddress" id="csAddress" placeholder="单位地址"
+                                               class="form-control" required="required" value="${projectInfo.consignorVo.csAddress}">
                                     </div>
                                 </div>
 
@@ -580,26 +547,27 @@
                                     单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"
-                                               class="form-control" required="required">
-                                        <input type="text" id="pEntrustmentUnitX"
-                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}"
-                                               placeholder="单位" onclick="automaticFillIn()"
-                                               class="form-control" required="required" readonly="readonly">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    data-toggle="tooltip"
-                                                    data-original-title="选择" id="btn_select_customer1">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="$(this).closest('.input-group').find('input').val('');"
-                                                    data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-			                            </span>
-                                    </div>
+                                    <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
+                                           class="form-control" required="required" placeholder="单位" value="${projectInfo.possessorVo.pEntrustmentUnitName}">
+                                    <%--<div class="input-group">--%>
+                                        <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
+                                               <%--class="form-control" required="required">--%>
+                                        <%--<input type="text" id="pEntrustmentUnitX"--%>
+                                               <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
+                                               <%--class="form-control" required="required" readonly="readonly">--%>
+                                        <%--<span class="input-group-btn">--%>
+                                            <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                    <%--data-toggle="tooltip"--%>
+                                                    <%--data-original-title="选择" id="btn_select_customer1">--%>
+                                            <%--<i class="fa fa-search"></i>--%>
+                                            <%--</button>--%>
+                                            <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                    <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                                    <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                            <%--<i class="fa fa-trash-o"></i>--%>
+                                            <%--</button>--%>
+			                            <%--</span>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
 
@@ -823,35 +791,26 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    报告使用单位
+                                    单位
                                 </label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
-                                               required="required">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
-                                                <input type="text" id="uUseUnitX"
-                                                       value="${projectInfo.unitInformationVo.uUseUnitName}"
-                                                       class="form-control">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" id="uUseUnitX" readonly="readonly"
-                                                       placeholder="报告使用单位" class="form-control" maxlength="200">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default docs-tooltip"
-                                                            data-toggle="tooltip"
-                                                            data-original-title="选择" id="btn_select_customer2">
-                                                    <i class="fa fa-search"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default docs-tooltip"
-                                                            onclick="$(this).closest('.input-group').find('input').val('');"
-                                                            data-toggle="tooltip" data-original-title="清除">
-                                                    <i class="fa fa-trash-o"></i>
-                                                    </button>
-                                                </span>
-                                            </c:otherwise>
-                                        </c:choose>
+                                               required="required" value="${projectInfo.unitInformationVo.uUseUnit}">
+                                        <input type="text" id="uUseUnitX" readonly="readonly"
+                                               placeholder="单位" class="form-control" value="${projectInfo.unitInformationVo.uUseUnitName}">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择" id="btn_select_customer2">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -906,8 +865,7 @@
                                         <c:forEach items="${ProjectAFFILIATED}" var="item">
                                             <c:choose>
                                                 <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
-                                                    <option value="${item.id}"
-                                                            selected="selected">${item.name}</option>
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <option value="${item.id}">${item.name}</option>
@@ -985,6 +943,7 @@
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply();">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -1083,6 +1042,33 @@
 </body>
 </html>
 <script>
+    oneFirstConsignor();
+    //第一次填写后留下的委托人 数据信息
+    function oneFirstConsignor() {
+        var oneFirstConsignor = "${oneFirstConsignor}" ;
+        if (oneFirstConsignor != null && oneFirstConsignor!=''){
+            var csType = "${oneFirstConsignor.csType}";
+            if (csType != '' && csType != null){
+                if (csType==1){
+                    $("#changeType input[name='csType'][value='1']").attr("checked",true);
+                }else if (csType==0){
+                    $("#changeType input[name='csType'][value='0']").attr("checked",true);
+                }
+            }
+            $("#csEntrustmentUnit").val('${oneFirstConsignor.csEntrustmentUnit}');
+            $("#csLegalRepresentative").val('${oneFirstConsignor.csLegalRepresentative}');
+            $("#csSociologyCode").val('${oneFirstConsignor.csSociologyCode}');
+            $("#csScopeOperation").val('${oneFirstConsignor.csScopeOperation}');
+            $("#csAddress").val('${oneFirstConsignor.csAddress}');
+            $("#csAddress2").val('${oneFirstConsignor.csAddress}');
+            $("#csIdcard").val('${oneFirstConsignor.csIdcard}');
+            $("#csName").val('${oneFirstConsignor.csName}');
+            var csUnitProperties = '${oneFirstConsignor.csUnitProperties}';
+            if (csUnitProperties!=null && csUnitProperties!=''){
+                $("#csUnitProperties").val(csUnitProperties);
+            }
+        }
+    }
     //检查联系人是否达到要求
     function checkContacts() {
         var isAllDistribution = true;
@@ -1092,6 +1078,11 @@
             dataType: "json",
             async: false,
             success: function (result) {
+                if (result.ret){
+                    // Alert("success!");
+                }else {
+                    Alert(result.errmsg);
+                }
                 isAllDistribution = result.ret;
             },
             error: function (result) {
@@ -1100,29 +1091,6 @@
             }
         })
         return isAllDistribution;
-    }
-    //自动校验并且填写
-    function automaticFillIn() {
-        var value = $("#changeType input:checked").val();
-        if (value==1){
-            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
-            $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
-            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
-            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
-            $("#pSociologyCode").val($("#csSociologyCode").val());
-            $("#pScopeOperation").val($("#csScopeOperation").val());
-            $("#pAddress").val($("#csAddress").val());
-            console.log($("#csUnitProperties option:selected").val());
-            $("#pUnitProperties").val($("#csUnitProperties option:selected").val());
-
-        }else {
-            $("#no_legal_person1").show();
-            $("#legal_person1").hide();
-            $("#changeType1 input[type='radio'][name='pType'][value='0']").attr("checked",true);
-            $("#pName").val($("#csName").val());
-            $("#pIdcard").val($("#csIdcard").val());
-            $("#pAddress2").val($("#csAddress2").val());
-        }
     }
     $(function () {
         //---------
@@ -1366,28 +1334,57 @@
         });
     }
 
-    //选项框
+
+    //选项框  自动校验并且填写
     $(document).ready(function () {
         $("#no_legal_person").hide();
         $("#changeType input[type='radio'][name='csType']").change(function () {
             if ($(this).val() == 1) {
+                $("#changeType input[type='radio'][name='csType'][value='0']").removeAttr("checked");
+                $(this).attr("checked",true);
                 $("#no_legal_person").hide();
                 $("#legal_person").show();
             }
             if ($(this).val() == 0) {
+                $("#changeType input[type='radio'][name='csType'][value='1']").removeAttr("checked");
+                $(this).attr("checked",true);
                 $("#no_legal_person").show();
                 $("#legal_person").hide();
             }
         });
         $("#no_legal_person1").hide();
         $("#changeType1 input[type='radio'][name='pType']").change(function () {
+            var value = $("#changeType :radio:checked").val();
             if ($(this).val() == 1) {
+                $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
+                $(this).attr("checked",true);
                 $("#no_legal_person1").hide();
                 $("#legal_person1").show();
+
+                $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked",true);
+                $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
+                if ($("#pEntrustmentUnitX").length > 0){
+                    $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+                }
+                $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+                $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+                $("#pSociologyCode").val($("#csSociologyCode").val());
+                $("#pScopeOperation").val($("#csScopeOperation").val());
+                $("#pAddress").val($("#csAddress").val());
+                var selectV = $("#csUnitProperties option:selected").val();
+                if (selectV != null && selectV!= ''){
+                    $("#pUnitProperties").val(selectV);
+                }
             }
             if ($(this).val() == 0) {
+                $("#changeType1 input[type='radio'][name='pType'][value='1']").removeAttr("checked");
+                $(this).attr("checked",true);
                 $("#no_legal_person1").show();
                 $("#legal_person1").hide();
+
+                $("#pName").val($("#csName").val());
+                $("#pIdcard").val($("#csIdcard").val());
+                $("#pAddress2").val($("#csAddress2").val());
             }
         });
     });
@@ -1418,68 +1415,85 @@
     }
 
     //CRM
-    document.getElementById("btn_select_customer").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#csEntrustmentUnit").val(nodes[0].id);
-                $("#csEntrustmentUnitX").val(nodes[0].name);
-                var id = nodes[0].id;
-                console.log("----------------------");
-                loadInitContactsListA(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "csLegalRepresentative", "csAddress", "csScopeOperation", "csSociologyCode");
+    if ($("#btn_select_customer").length > 0){
+        document.getElementById("btn_select_customer").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#csEntrustmentUnit").length > 0){
+                        $("#csEntrustmentUnit").val(nodes[0].id);
                     }
-                });
-            }
-        });
+                    if ($("#csEntrustmentUnitX").length > 0){
+                        $("#csEntrustmentUnitX").val(nodes[0].name);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListA(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "csLegalRepresentative", "csAddress", "csScopeOperation", "csSociologyCode");
+                        }
+                    });
+                }
+            });
+        }
     }
 
-    document.getElementById("btn_select_customer1").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#pEntrustmentUnit").val(nodes[0].id);
-                $("#pEntrustmentUnitX").val(nodes[0].name);
-                var id = nodes[0].id;
-                loadInitContactsListB(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "pLegalRepresentative", "pAddress", "pScopeOperation", "pSociologyCode");
+    if ($("#btn_select_customer1").length > 0){
+        document.getElementById("btn_select_customer1").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#pEntrustmentUnit").length > 0){
+                        $("#pEntrustmentUnit").val(nodes[0].id);
                     }
-                });
-            }
-        });
+                    if ($("#pEntrustmentUnitX").length > 0){
+                        $("#pEntrustmentUnitX").val(nodes[0].name);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListB(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "pLegalRepresentative", "pAddress", "pScopeOperation", "pSociologyCode");
+                        }
+                    });
+                }
+            });
+        }
     }
 
-    document.getElementById("btn_select_customer2").onclick = function () {
-        crmCustomer.select({
-            multi: false,//是否允许多选
-            onSelected: function (nodes) {
-                $("#uUseUnitX").val(nodes[0].name);
-                $("#uUseUnit").val(nodes[0].id);
-                var id = nodes[0].id;
-                loadInitContactsListC(id);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                    data: "crmId=" + id,
-                    success: function (msg) {
-                        console.log(msg);
-                        writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
+    if ($("#btn_select_customer2").length > 0){
+        document.getElementById("btn_select_customer2").onclick = function () {
+            crmCustomer.select({
+                multi: false,//是否允许多选
+                onSelected: function (nodes) {
+                    if ($("#uUseUnitX").length > 0){
+                        $("#uUseUnitX").val(nodes[0].name);
                     }
-                });
-            }
-        });
+                    if ($("#uUseUnit").length > 0){
+                        $("#uUseUnit").val(nodes[0].id);
+                    }
+                    var id = nodes[0].id;
+                    loadInitContactsListC(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                        data: "crmId=" + id,
+                        success: function (msg) {
+                            console.log(msg);
+                            writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     var flags = new Array();
@@ -1579,40 +1593,13 @@
     }
 
     $(function () {//修改专用
-        var csType = ${projectInfo.consignorVo.csType}+"";
-        var pType = ${projectInfo.possessorVo.pType}+"";
-        if (pType != "") {
-            if (csType == 1) {
-                //需要获取到委托人  然后取出联系人对应的crmID,下面两个同理
-                $.post(//非自然人 机构等
-                    "${pageContext.request.contextPath}/projectInfo/Consignor/get",
-                    {id: $("#consignorid").val()},
-                    function (data) {
-                        loadInitContactsListA(data.csEntrustmentUnit);
-                    }
-                );
-            } else {//自然人
-                loadInitContactsList($("#consignorid").val(), "tb_ListA", flags[0]);
-            }
-
-            if (pType == 1) {
-                $.post(
-                    "${pageContext.request.contextPath}/projectInfo/Possessor/get",
-                    {id: $("#possessorid").val()},
-                    function (data) {
-                        loadInitContactsListB(data.pEntrustmentUnit);
-                    }
-                );
-            } else {
-                loadInitContactsList($("#possessorid").val(), "tb_ListB", flags[1]);
-            }
-            $.post(
-                "${pageContext.request.contextPath}/projectInfo/UnitInformation/get",
-                {id: $("#unitInformationid").val()},
-                function (data) {
-                    loadInitContactsListC(data.uUseUnit);
-                }
-            );
+        var projectInfo = '${projectInfo}';
+        if (projectInfo != null && projectInfo!=''){
+            var csType = ${projectInfo.consignorVo.csType}+"";
+            var pType = ${projectInfo.possessorVo.pType}+"";
+            loadInitContactsList("${projectInfo.consignorVo.id}","tb_ListA",flags[0]);
+            loadInitContactsList("${projectInfo.possessorVo.id}","tb_ListB",flags[1]);
+            loadInitContactsList("${projectInfo.unitInformationVo.id}","tb_ListC",flags[2]);
         }
     });
 
@@ -1793,6 +1780,10 @@
     }
 
     function projectApply() {
+        //联系人校验
+        if (!checkContacts()){
+            return false;
+        }
         //js校验
         if (!$("#frm_project_info").valid()) {
             return false;

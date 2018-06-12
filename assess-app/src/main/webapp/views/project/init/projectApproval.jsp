@@ -15,6 +15,9 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 项目信息</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -130,6 +133,9 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 委托人</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -151,7 +157,7 @@
                                     法定代表
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csLegalRepresentative}</label>                                </div>
                             </div>
 
                             <div class="x-valid">
@@ -159,7 +165,7 @@
                                     社会统一信用代码
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csSociologyCode}</label>                                </div>
                             </div>
                         </div>
 
@@ -169,7 +175,7 @@
                                     经营范围
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csScopeOperation}</label>                                </div>
                             </div>
 
                             <div class="x-valid">
@@ -177,7 +183,7 @@
                                     单位地址
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>                                </div>
+                                    <label class="form-control">${projectInfo.consignorVo.csAddress}</label>                                </div>
                             </div>
 
                             <div class="x-valid">
@@ -242,23 +248,24 @@
                         </div>
                     </div>
                     </form>
+
                 </div>
 
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2> 委托人联系人</h2>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                     <table class="table table-bordered" id="tb_ListA">
+                        <caption>联系人</caption>
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
+
             </div>
+
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 占有人</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -380,21 +387,21 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2> 占有人联系人</h2>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                     <table class="table table-bordered" id="tb_ListB">
+                        <caption>联系人</caption>
                         <!-- cerare document add ajax data-->
                     </table>
                 </div>
             </div>
+
+
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 报告使用单位</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -460,18 +467,16 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2> 报告使用单位联系人</h2>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
-                    <table class="table table-bordered" id="tb_ListC">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                    <div>
+                        <table class="table table-bordered" id="tb_ListC">
+                            <caption>联系人</caption>
+                            <!-- cerare document add ajax data-->
+                        </table>
+                    </div>
                 </div>
             </div>
+
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -536,21 +541,6 @@
     });
     var flags = new Array();
     flags[0] = 1,flags[1] = 2,flags[2] = 3;
-    function loadInitContactsList(id,tb_List) {
-        var cols = [];
-        cols.push({field: 'cName', title: '姓名'});
-        cols.push({field: 'cDept', title: '部门'});
-        cols.push({field: 'cEmail', title: '邮箱'});
-        cols.push({field: 'cPhone', title: '部门'});
-
-        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            crmId: id,flag:flags[0]}, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
-    }
-
     function loadInitContactsListC(id,tb_List,flag) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
@@ -574,11 +564,8 @@
             $("#no_legal_person").hide();
             $("#legal_person").show();
             try {
-                var val = ${projectInfo.consignorVo.csEntrustmentUnit}+"";
-                var id = ${projectInfo.consignorVo.id}+"";
-                if (val!='' && val != null){
-                    // loadInitContactsList(val,"tb_ListA");
-                }
+                var val = "${projectInfo.consignorVo.csEntrustmentUnit}";
+                var id = "${projectInfo.consignorVo.id}";
                 if (id!=null && id!=''){
                     loadInitContactsListC(id,"tb_ListA",flags[0]);
                 }
@@ -606,9 +593,7 @@
             $("#legal_person1").show();
             try {
                 var val = ${projectInfo.possessorVo.pEntrustmentUnit}+"";
-                if (val!='' && val!=null){
-                    // loadInitContactsList(val,"tb_ListB");
-                }
+
                 var id = ${projectInfo.possessorVo.id}+"";
                 if (id!=null && id!=''){
                     loadInitContactsListC(id,"tb_ListB",flags[1]);
@@ -629,9 +614,8 @@
                 console.info(e);
             }
         }
-
-        <%--loadInitContactsList(${projectInfo.unitInformationVo.uUseUnit},"tb_ListC");--%>
-        loadInitContactsListC(${projectInfo.unitInformationVo.id},"tb_ListC",flags[2]);
+        console.log('${projectInfo.unitInformationVo.id}');
+        loadInitContactsListC('${projectInfo.unitInformationVo.id}',"tb_ListC",flags[2]);
     });
 </script>
 

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
@@ -98,6 +99,7 @@ public class ProjectInfoController {
         modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
+        modelAndView.addObject("oneFirstConsignor", projectInfoService.oneFirstConsignor());//第一次填写后留下的委托人 数据信息
 
         List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
         modelAndView.addObject("projectTypeList", projectTypeList);
@@ -124,10 +126,10 @@ public class ProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
-        //modelAndView.addObject("projectId", projectInfo.getId());
 
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
+        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
@@ -316,11 +318,14 @@ public class ProjectInfoController {
     @RequestMapping(value = "/Contacts/checkContacts", name = "联系人 检测", method = RequestMethod.POST)
     public HttpResult checkContacts() {
         try {
-            boolean flag = projectInfoService.checkContacts();
-            if (flag){
-                return HttpResult.newCorrectResult("成功!");
+            if (projectInfoService.checkContacts(InitiateContactsEnum.ONE)){
+                if (projectInfoService.checkContacts(InitiateContactsEnum.TWO)){
+                    return HttpResult.newCorrectResult("联系人符合约束");
+                }else {
+                    return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_B.getVal()+"联系人不符合约束");
+                }
             }else {
-                return HttpResult.newErrorResult("失败!");
+                return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_A.getVal()+"联系人不符合约束");
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

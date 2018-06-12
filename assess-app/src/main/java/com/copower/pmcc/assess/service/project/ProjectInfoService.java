@@ -380,6 +380,13 @@ public class ProjectInfoService {
     public ProjectInfoVo getVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
+        if (!ObjectUtils.isEmpty(projectInfo.getId())){
+            ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
+            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+            BeanUtils.copyProperties(projectMember,projectMemberVo);
+            projectMemberVo.setUserAccountManagerName(erpRpcUserService.getSysUser(projectMember.getUserAccountManager()).getUserName());
+            projectInfoVo.setProjectMemberVo(projectMemberVo);
+        }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProjectClassId())) {
             //大类
             projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
@@ -661,15 +668,15 @@ public class ProjectInfoService {
      * 联系人 检查数量是否达到要求
      * @return
      */
-    public boolean checkContacts(){
-        boolean flag = false;
-        if (initiateContactsService.checkContacts(InitiateContactsEnum.ONE)){
-            if (initiateContactsService.checkContacts(InitiateContactsEnum.TWO)){
-                if (initiateContactsService.checkContacts(InitiateContactsEnum.THREE)){
-                    flag = true;
-                }
-            }
-        }
-        return flag;
+    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum){
+        return initiateContactsService.checkContacts(initiateContactsEnum);
+    }
+
+    /**
+     * 第一次填写后留下的委托人 数据信息
+     * @return
+     */
+    public InitiateConsignorDto oneFirstConsignor(){
+        return consignorService.oneFirstConsignor();
     }
 }
