@@ -46,6 +46,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskSurveyIndex", "", 0, "0", "");
 
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
+        List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
         List<SurveyAssetTemplate> list = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
         if(list.size() == 0){
             for (BaseDataDic baseDataDic : baseDataDicList) {
@@ -55,7 +56,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
                 SurveyAssetTemplate surveyAssetTemplate = new SurveyAssetTemplate();
                 surveyAssetTemplate.setProjectId(projectId);
                 surveyAssetTemplate.setPlanDetailId(planDetailId);
-                surveyAssetTemplate.setInventoryContent(String.valueOf(inventoryContent));
+                surveyAssetTemplate.setInventoryContent(inventoryContent);
                 surveyAssetTemplateDao.save(surveyAssetTemplate);
             }
         }
@@ -65,7 +66,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
         List<SurveyAssetTemplateVo> surveyAssetTemplateVos = surveyAssetTemplateService.getVoList(surveyAssetTemplates);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
-        modelAndView.addObject("checkContentList", baseDataDicList); //数据字典
+        modelAndView.addObject("otherRightTypeList", otherRightTypeList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         modelAndView.addObject("parentProject",parentProject);
         modelAndView.addObject("surveyAssetTemplateVos",surveyAssetTemplateVos);

@@ -23,6 +23,8 @@ public class SurveyAssetInventory {
 
     private Date gmtModified;
 
+    private String defaultLocaltion;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class SurveyAssetInventory {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getDefaultLocaltion() {
+        return defaultLocaltion;
+    }
+
+    public void setDefaultLocaltion(String defaultLocaltion) {
+        this.defaultLocaltion = defaultLocaltion == null ? null : defaultLocaltion.trim();
     }
 }

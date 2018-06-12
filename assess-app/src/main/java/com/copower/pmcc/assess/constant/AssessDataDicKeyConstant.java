@@ -29,7 +29,9 @@ public class AssessDataDicKeyConstant {
     public static final String EARLYWARNING_MODE = "earlywarning.mode";  //预警方式
     public static final String PROJECT_INITIATE_URGENCY = "project.initiate.urgency";  //紧急程度
     public static final String VALUE_TYPE = "value.type";  //价值类型
+    //清查相关
     public static final String CHECK_CONTENT = "check.content"; //清查内容
+    public static final String OTHER_RIGHT_TYPE = "other.right.type";   //他权类型
 
     //案例相关
     public static final String CASE_TYPE = "case.type";  //案例类型

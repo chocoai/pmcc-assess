@@ -3,7 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 </head>
 
 
@@ -24,7 +25,9 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_assess" class="form-horizontal">
-
+                        <input type="hidden" name="id" value="${surveyAssetInventory.id}">
+                        <input type="hidden" id="defaultLocaltion" name="defaultLocaltion"
+                               value="${surveyAssetInventory.defaultLocaltion}">
                         <div class="form-group">
 
                             <div class="x-valid">
@@ -92,7 +95,7 @@
                                     <tr>
                                         <input type="hidden" id="id" name="id" value="${items.id}">
                                         <td>${s.index + 1}</td>
-                                        <td name="inventoryContent">${items.inventoryContentName}</td>
+                                        <td name="inventoryContent" dic-id="${items.inventoryContent}">${items.inventoryContentName}</td>
                                         <td>
                                             <input id="areConsistent${items.id}" name="areConsistent" type="checkbox"
                                                    value="一致" style="vertical-align:middle;"
@@ -296,6 +299,14 @@
                 </div>
             </div>
 
+            <div class="form-group" style="display: none">
+                <div class="col-sm-11">
+                        <iframe src="${pageContext.request.contextPath}/map/positionPicker?position="
+                                width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
+                                marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
+                </div>
+            </div>
+
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -382,10 +393,12 @@
                                             类型
                                         </label>
                                         <div class="col-sm-9">
-                                            <input type="text" placeholder="类型"
-                                                   id="type" name="type"
-                                                   class="form-control"
-                                                   value="${surveyAssetOtherTemplate.type}">
+                                            <select class="form-control" required id="type" name="type">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="items" items="${otherRightTypeList}">
+                                                    <option value="${items.id}">${items.name}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -587,7 +600,6 @@
             deleteFlag: true
         })
 
-
         FileUtils.uploadFiles({
             target: "credentialAccessory${surveyAssetTemplateVos.get(0).id}",
             disabledTarget: "btn_submit",
@@ -684,7 +696,7 @@
     //加载 他项权利列表
     function loadDataDicList() {
         var cols = [];
-        cols.push({field: 'type', title: '类型'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'otherRightsRegistrar', title: '他权登记人'});
         cols.push({field: 'rightHander', title: '实际行权人'});
         cols.push({field: 'registerArea', title: '登记面积'});
@@ -736,23 +748,6 @@
         });
     }
 
-
-    //    function getRowsData() {
-    //        var trs = $("#tb_List").find('tbody tr');
-    //        var data=[];
-    //        $.each(trs, function (i, tr) {
-    //            var item = {};
-    //            item.registrationAddress = $(tr).find('[name="registrationAddress"]').val();    //登记面积
-    //            item.actualAddress = $(tr).find('[name="actualAddress"]').val();                //实际面积
-    //            item.differenceReason = $(tr).find('[name="differenceReason"]').val();          //差异原因
-    //            item.credential = $(tr).find('[name="credential"]').val();                      //证明文件
-    //            item.voucher = $(tr).find('[name="voucher"]').val();                            //证明人
-    //            item.surveyTime = $(tr).find('[name="surveyTime"]').val();                      //查勘时间
-    //            data.push(item);
-    //        });
-    //        console.log(JSON.stringify(data));
-    //        return data;
-    //    }
     var items = "";
     function getRowsData() {
         var trs = $("#tb_surveyList").find('tbody tr');
@@ -767,7 +762,7 @@
             }else{
                 item.areConsistent = "不一致";
             }
-            item.inventoryContent = $(tr).find('[name="inventoryContent"]').text();    //清查内容
+            item.inventoryContent = $(tr).find('[name="inventoryContent"]').attr("dic-id");    //清查内容
             item.registrationAddress = $(tr).find('[name="registrationAddress"]').val();    //登记面积
             item.actualAddress = $(tr).find('[name="actualAddress"]').val();                //实际面积
             item.differenceReason = $(tr).find('[name="differenceReason"]').val();          //差异原因
@@ -871,7 +866,6 @@
     //        });
     //    }
     //评估人员
-    // 项目经理
     function selectEvaluator() {
         erpEmployee.select({
             onSelected: function (data) {
@@ -951,6 +945,18 @@
             })
         })
     }
+
+    //解析定位结果
+    function onCompleteSuccess(data) {
+        $("#defaultLocaltion").val(data.formattedAddress);
+    }
+
+    //解析定位错误信息
+    function onErrorFail(data) {
+        //暂不处理
+    }
+
+
 
 </script>
 

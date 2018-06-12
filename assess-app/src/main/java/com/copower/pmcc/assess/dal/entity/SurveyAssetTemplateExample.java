@@ -295,62 +295,52 @@ public class SurveyAssetTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentEqualTo(String value) {
+        public Criteria andInventoryContentEqualTo(Integer value) {
             addCriterion("inventory_content =", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentNotEqualTo(String value) {
+        public Criteria andInventoryContentNotEqualTo(Integer value) {
             addCriterion("inventory_content <>", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentGreaterThan(String value) {
+        public Criteria andInventoryContentGreaterThan(Integer value) {
             addCriterion("inventory_content >", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentGreaterThanOrEqualTo(String value) {
+        public Criteria andInventoryContentGreaterThanOrEqualTo(Integer value) {
             addCriterion("inventory_content >=", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentLessThan(String value) {
+        public Criteria andInventoryContentLessThan(Integer value) {
             addCriterion("inventory_content <", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentLessThanOrEqualTo(String value) {
+        public Criteria andInventoryContentLessThanOrEqualTo(Integer value) {
             addCriterion("inventory_content <=", value, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentLike(String value) {
-            addCriterion("inventory_content like", value, "inventoryContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andInventoryContentNotLike(String value) {
-            addCriterion("inventory_content not like", value, "inventoryContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andInventoryContentIn(List<String> values) {
+        public Criteria andInventoryContentIn(List<Integer> values) {
             addCriterion("inventory_content in", values, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentNotIn(List<String> values) {
+        public Criteria andInventoryContentNotIn(List<Integer> values) {
             addCriterion("inventory_content not in", values, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentBetween(String value1, String value2) {
+        public Criteria andInventoryContentBetween(Integer value1, Integer value2) {
             addCriterion("inventory_content between", value1, value2, "inventoryContent");
             return (Criteria) this;
         }
 
-        public Criteria andInventoryContentNotBetween(String value1, String value2) {
+        public Criteria andInventoryContentNotBetween(Integer value1, Integer value2) {
             addCriterion("inventory_content not between", value1, value2, "inventoryContent");
             return (Criteria) this;
         }

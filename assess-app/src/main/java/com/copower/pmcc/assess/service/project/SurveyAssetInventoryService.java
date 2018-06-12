@@ -51,14 +51,11 @@ public class SurveyAssetInventoryService {
     public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         Integer projectId = projectPlanDetails.getProjectId();
         Integer planId = projectPlanDetails.getPlanId();
-        List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
         if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventoryDto surveyAssetInventoryDto = surveyAssetCommonDataDto.getSurveyAssetInventoryDto();
-//            SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto = surveyAssetCommonDataDto.getSurveyAssetOtherTemplateDto();
             List<SurveyAssetTemplateDto> surveyAssetTemplateDtos = surveyAssetCommonDataDto.getSurveyAssetTemplateDtos();
             SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
             if (surveyAssetInventory != null) {
-//                surveyAssetInventoryDto.setId(surveyAssetInventory.getId());
                 surveyAssetInventoryDao.update(surveyAssetInventoryDto);
 
                 for(SurveyAssetTemplate surveyAssetTemplate : surveyAssetTemplateDtos){
@@ -83,12 +80,6 @@ public class SurveyAssetInventoryService {
                     surveyAssetTemplate.setCreator(processControllerComponent.getThisUser());
                     surveyAssetTemplateDao.update(surveyAssetTemplate);
                 }
-//                List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
-//                for (SurveyAssetTemplate surveyAssetTemplate : surveyAssetTemplates) {
-//                    surveyAssetTemplate.setPid(pid);
-//                    surveyAssetTemplate.setCreator(processControllerComponent.getThisUser());
-//                    surveyAssetTemplateDao.update(surveyAssetTemplate);
-//                }
             }
         }
     }
@@ -104,14 +95,13 @@ public class SurveyAssetInventoryService {
     public ModelAndView getSurveyAssetInventoryByProcessInsId(ModelAndView modelAndView, String processInsId) {
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
         if (surveyAssetInventory != null) {
+            List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
             List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(surveyAssetInventory.getId());
             List<SurveyAssetTemplateVo> surveyAssetTemplateVos = surveyAssetTemplateService.getVoList(surveyAssetTemplates);
 
             modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
             modelAndView.addObject("surveyAssetTemplateVos",surveyAssetTemplateVos);
-//            Integer pid = surveyAssetInventory.getId();
-//            surveyAssetOtherTemplateService.getSurveyAssetOtherTemplateByPid(modelAndView, pid);
-//            surveyAssetTemplateService.getSurveyAssetTemplateByPid(modelAndView, pid);
+            modelAndView.addObject("otherRightTypeList",otherRightTypeList);
             return modelAndView;
         }
         return modelAndView;
