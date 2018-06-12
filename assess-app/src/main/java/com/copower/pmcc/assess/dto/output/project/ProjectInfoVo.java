@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/10/23
  * @time: 15:46
  */
@@ -25,6 +25,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private InitiatePossessorVo possessorVo;
     private InitiateConsignorVo consignorVo;
     private InitiateUnitInformationVo unitInformationVo;
+    private ProjectMemberVo projectMemberVo;
     private String projectClassName;
     private String departmentName;
     private List<ProjectResponsibilityDto> planWorkStages;
@@ -165,5 +166,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setProjectClassName(String projectClassName) {
         this.projectClassName = projectClassName;
+    }
+
+    public ProjectMemberVo getProjectMemberVo() {
+        return projectMemberVo;
+    }
+
+    public void setProjectMemberVo(ProjectMemberVo projectMemberVo) {
+        this.projectMemberVo = projectMemberVo;
     }
 }

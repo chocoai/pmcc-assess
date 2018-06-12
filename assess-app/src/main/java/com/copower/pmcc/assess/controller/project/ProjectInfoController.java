@@ -126,10 +126,10 @@ public class ProjectInfoController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
-        //modelAndView.addObject("projectId", projectInfo.getId());
 
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
+        modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
         modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
