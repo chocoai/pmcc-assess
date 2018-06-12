@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.FuniHousesBuildUnitMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="lpbh" property="lpbh" jdbcType="INTEGER" />
+    <result column="ldbh" property="ldbh" jdbcType="INTEGER" />
+    <result column="dymc" property="dymc" jdbcType="VARCHAR" />
+    <result column="thb" property="thb" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, lpbh, ldbh, dymc, thb
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_funi_houses_build_unit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_funi_houses_build_unit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_funi_houses_build_unit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnitExample" >
+    delete from tb_funi_houses_build_unit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnit" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_funi_houses_build_unit (lpbh, ldbh, dymc, 
+      thb)
+    values (#{lpbh,jdbcType=INTEGER}, #{ldbh,jdbcType=INTEGER}, #{dymc,jdbcType=VARCHAR}, 
+      #{thb,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnit" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_funi_houses_build_unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lpbh != null" >
+        lpbh,
+      </if>
+      <if test="ldbh != null" >
+        ldbh,
+      </if>
+      <if test="dymc != null" >
+        dymc,
+      </if>
+      <if test="thb != null" >
+        thb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lpbh != null" >
+        #{lpbh,jdbcType=INTEGER},
+      </if>
+      <if test="ldbh != null" >
+        #{ldbh,jdbcType=INTEGER},
+      </if>
+      <if test="dymc != null" >
+        #{dymc,jdbcType=VARCHAR},
+      </if>
+      <if test="thb != null" >
+        #{thb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnitExample" resultType="java.lang.Integer" >
+    select count(*) from tb_funi_houses_build_unit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_funi_houses_build_unit
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.lpbh != null" >
+        lpbh = #{record.lpbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.ldbh != null" >
+        ldbh = #{record.ldbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.dymc != null" >
+        dymc = #{record.dymc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thb != null" >
+        thb = #{record.thb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_funi_houses_build_unit
+    set id = #{record.id,jdbcType=INTEGER},
+      lpbh = #{record.lpbh,jdbcType=INTEGER},
+      ldbh = #{record.ldbh,jdbcType=INTEGER},
+      dymc = #{record.dymc,jdbcType=VARCHAR},
+      thb = #{record.thb,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnit" >
+    update tb_funi_houses_build_unit
+    <set >
+      <if test="lpbh != null" >
+        lpbh = #{lpbh,jdbcType=INTEGER},
+      </if>
+      <if test="ldbh != null" >
+        ldbh = #{ldbh,jdbcType=INTEGER},
+      </if>
+      <if test="dymc != null" >
+        dymc = #{dymc,jdbcType=VARCHAR},
+      </if>
+      <if test="thb != null" >
+        thb = #{thb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesBuildUnit" >
+    update tb_funi_houses_build_unit
+    set lpbh = #{lpbh,jdbcType=INTEGER},
+      ldbh = #{ldbh,jdbcType=INTEGER},
+      dymc = #{dymc,jdbcType=VARCHAR},
+      thb = #{thb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

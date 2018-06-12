@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.mapper.FuniBlockMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.FuniBlock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="funi_code_id" property="funiCodeId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="funi_area_code_id" property="funiAreaCodeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, funi_code_id, name, area_id, funi_area_code_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlockExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_funi_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_funi_block
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_funi_block
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlockExample" >
+    delete from tb_funi_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlock" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_funi_block (funi_code_id, name, area_id, 
+      funi_area_code_id)
+    values (#{funiCodeId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, 
+      #{funiAreaCodeId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlock" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_funi_block
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="funiCodeId != null" >
+        funi_code_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="funiAreaCodeId != null" >
+        funi_area_code_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="funiCodeId != null" >
+        #{funiCodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="funiAreaCodeId != null" >
+        #{funiAreaCodeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlockExample" resultType="java.lang.Integer" >
+    select count(*) from tb_funi_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_funi_block
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.funiCodeId != null" >
+        funi_code_id = #{record.funiCodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null" >
+        area_id = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.funiAreaCodeId != null" >
+        funi_area_code_id = #{record.funiAreaCodeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_funi_block
+    set id = #{record.id,jdbcType=INTEGER},
+      funi_code_id = #{record.funiCodeId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      area_id = #{record.areaId,jdbcType=INTEGER},
+      funi_area_code_id = #{record.funiAreaCodeId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlock" >
+    update tb_funi_block
+    <set >
+      <if test="funiCodeId != null" >
+        funi_code_id = #{funiCodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="funiAreaCodeId != null" >
+        funi_area_code_id = #{funiAreaCodeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.FuniBlock" >
+    update tb_funi_block
+    set funi_code_id = #{funiCodeId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=INTEGER},
+      funi_area_code_id = #{funiAreaCodeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

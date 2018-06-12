@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.controller;
 
-
-
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.service.FuniWebService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
@@ -126,10 +125,8 @@ public class HomeController {
     @RequestMapping(value = "/getProjectList", name = "取得所有项目信息", method = RequestMethod.GET)
     public BootstrapTableVo getProjectList() {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo projectInfoByStatus = erpRpcProjectService.getProjectInfoByStatus(requestBaseParam.getOffset(), requestBaseParam.getLimit(), "",
-                requestBaseParam.getSearch());
+        BootstrapTableVo projectInfoByStatus = erpRpcProjectService.getProjectInfoByStatus(requestBaseParam.getOffset(), requestBaseParam.getLimit(), "", requestBaseParam.getSearch());
         return projectInfoByStatus;
     }
-
 
 }
