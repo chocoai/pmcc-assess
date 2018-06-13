@@ -40,37 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_funi_area" domainObjectName="FuniArea">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_block" domainObjectName="FuniBlock">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_developers" domainObjectName="FuniDevelopers">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses" domainObjectName="FuniHouses">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_build" domainObjectName="FuniHousesBuild">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_build_unit" domainObjectName="FuniHousesBuildUnit">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_mating" domainObjectName="FuniHousesMating">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_siting" domainObjectName="FuniHousesSiting">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_type" domainObjectName="FuniHousesType">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_property_management" domainObjectName="FuniPropertyManagement">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_property" domainObjectName="FuniHousesProperty">
+        <table tableName="tb_base_project_classify" domainObjectName="BaseProjectClassify">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

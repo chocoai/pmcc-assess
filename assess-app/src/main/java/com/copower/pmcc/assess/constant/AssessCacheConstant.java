@@ -13,10 +13,16 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_BASE_CATEGORY_PID = "pmcc:assess:base:category:pid";
     public static final String PMCC_ASSESS_BASE_CATEGORY_KEY = "pmcc:assess:base:category:key";
 
+    //项目分类
+    public static final String PMCC_ASSESS_PROJECT_CLASSIFY = "pmcc:assess:project:classify";
+    public static final String PMCC_ASSESS_PROJECT_CLASSIFY_ID = "pmcc:assess:project:classify:id";
+    public static final String PMCC_ASSESS_PROJECT_CLASSIFY_PID = "pmcc:assess:project:classify:pid";
+    public static final String PMCC_ASSESS_PROJECT_CLASSIFY_FIELD = "pmcc:assess:project:classify:field";
+
     //项目阶段
-    public static final String PMCC_ASSESS_WORK_STAGE="pmcc:assess:work:stage";
-    public static final String PMCC_ASSESS_WORK_STAGE_ID="pmcc:assess:work:stage:id";
-    public static final String PMCC_ASSESS_WORK_STAGE_TYPEID="pmcc:assess:work:stage:typeid";
+    public static final String PMCC_ASSESS_WORK_STAGE = "pmcc:assess:work:stage";
+    public static final String PMCC_ASSESS_WORK_STAGE_ID = "pmcc:assess:work:stage:id";
+    public static final String PMCC_ASSESS_WORK_STAGE_TYPEID = "pmcc:assess:work:stage:typeid";
 
 
     //阶段事项
@@ -25,7 +31,7 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_WORK_PHASE_KEY = "pmcc:assess:work:phase:key";
     public static final String PMCC_ASSESS_WORK_PHASE_CATEGORYID = "pmcc:assess:work:phase:categoryid";
 
-    
+
     //数据字典
     public static final String PMCC_ASSESS_DATA_DIC = "pmcc:assess:data:dic";
     public static final String PMCC_ASSESS_DATA_DIC_ID = "pmcc:assess:data:dic:id";
