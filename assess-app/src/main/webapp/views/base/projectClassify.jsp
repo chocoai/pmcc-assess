@@ -221,8 +221,23 @@
                                             动态表单
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="50" placeholder="动态表单"
-                                                   id="formModuleId" name="formModuleId" class="form-control">
+                                            <div class="input-group">
+                                                <input type="hidden" id="formModuleId" name="formModuleId" value="">
+                                                <input id='formModuleName' class='form-control' onclick="selectDynamicForm();"
+                                                       required="required" readonly="readonly" maxlength="200" >
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="selectDynamicForm();" data-toggle="tooltip"
+                                                        data-original-title="选择">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                 <button type="button" class="btn btn-default docs-tooltip"
+                                                         onclick="$(this).closest('.input-group').find('input').val('');"
+                                                         data-toggle="tooltip" data-original-title="清除">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -283,6 +298,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/dynamic-form-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
@@ -538,11 +554,19 @@
             }
         })
     }
+    //递归层级
     function getProjectClassifyLevelRecursion(keyValueDto) {
         if (keyValueDto) {
             getProjectClassifyLevelRecursion(keyValueDto.keyValueDto);
             strLevelHtml += '<a href="javascript:setSubProjectClassify(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
         }
+    }
+    //选择动态表单
+    function selectDynamicForm() {
+        assessDynamicForm.select(function (row) {
+            $("#formModuleId").val(row.id);
+            $("#formModuleName").val(row.cnName);
+        })
     }
 </script>
 

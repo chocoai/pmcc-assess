@@ -91,10 +91,12 @@ public class BaseFormDao {
     }
 
     public List<BaseFormModule> getBaseFormModuleList(Integer formId) {
-        if (formId == null) return null;
         BaseFormModuleExample example = new BaseFormModuleExample();
         BaseFormModuleExample.Criteria criteria = example.createCriteria();
-        criteria.andBisEnableEqualTo(true).andFormIdEqualTo(formId);
+        criteria.andBisEnableEqualTo(true);
+        if(formId!=null){
+            criteria.andFormIdEqualTo(formId);
+        }
         return hrBaseFormModuleMapper.selectByExample(example);
     }
 

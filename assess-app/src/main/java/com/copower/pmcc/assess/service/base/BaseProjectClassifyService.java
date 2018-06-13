@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseProjectClassifyDao;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dto.output.BaseProjectClassifyVo;
 import com.copower.pmcc.assess.dto.output.TreeViewVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -36,6 +38,8 @@ public class BaseProjectClassifyService {
     private BaseProjectClassifyDao cmsBaseProjectClassifyDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseFormService baseFormService;
 
     //region 获取项目分类列表
 
@@ -64,11 +68,25 @@ public class BaseProjectClassifyService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BaseProjectClassify> list = cmsBaseProjectClassifyDao.getListByPid(pid, requestBaseParam.getSearch());
+        List<BaseProjectClassifyVo> voList = LangUtils.transform(list, p -> {
+            return getBaseProjectClassifyVo(p);
+        });
         bootstrapTableVo.setTotal(page.getTotal());
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<BaseProjectClassify>() : list);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BaseProjectClassifyVo>() : voList);
         return bootstrapTableVo;
     }
     //endregion
+
+    public BaseProjectClassifyVo getBaseProjectClassifyVo(BaseProjectClassify baseProjectClassify) {
+        BaseProjectClassifyVo baseProjectClassifyVo = new BaseProjectClassifyVo();
+        BeanUtils.copyProperties(baseProjectClassify, baseProjectClassifyVo);
+        if (baseProjectClassify.getFormModuleId() != null) {
+            BaseFormModule baseFormModule = baseFormService.getCacheFormModuleById(baseProjectClassify.getFormModuleId());
+            if (baseFormModule != null)
+                baseProjectClassifyVo.setFormModuleName(baseFormModule.getCnName());
+        }
+        return baseProjectClassifyVo;
+    }
 
     //region 保存项目分类中的数据
 
@@ -78,7 +96,7 @@ public class BaseProjectClassifyService {
      * @param sysProjectClassify
      */
     public void saveProjectClassify(BaseProjectClassify sysProjectClassify) throws BusinessException {
-        if(sysProjectClassify==null)
+        if (sysProjectClassify == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (sysProjectClassify.getId() != null && sysProjectClassify.getId() > 0) {
             sysProjectClassify.setBisEnable(sysProjectClassify.getBisEnable() == null ? false : sysProjectClassify.getBisEnable());

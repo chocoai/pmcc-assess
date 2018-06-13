@@ -480,7 +480,7 @@
 <%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/declare-form-select.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.project-classify-select.js"></script>
 
 <script type="text/javascript">
     var treeGridJson = {};

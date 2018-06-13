@@ -6,10 +6,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
@@ -1023,4 +1020,5 @@ public class FormConfigureService {
         Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
         return mapToJsonString(objectMap);
     }
+
 }

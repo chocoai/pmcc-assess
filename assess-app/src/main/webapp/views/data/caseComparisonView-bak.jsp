@@ -235,7 +235,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.project-classify-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 

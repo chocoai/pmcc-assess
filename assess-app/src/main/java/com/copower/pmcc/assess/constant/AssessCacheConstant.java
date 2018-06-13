@@ -54,6 +54,9 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_ATTACHMENT_PHASE_TEMPLATE_PROCESS = "pmcc:assess:attachment:phase:template:process";
 
     //动态表单
+    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE = "pmcc:assess:dynamic:form:module";
+    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE_ID = "pmcc:assess:dynamic:form:module:id";
+    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE_NAME = "pmcc:assess:dynamic:form:module:name";
     public static final String PMCC_ASSESS_DYNAMIC_FORM_DATASOURCE = "pmcc:assess:dynamic:form:datasource"; //数据源
     public static final String PMCC_ASSESS_DYNAMIC_FORM_TEXT = "pmcc:assess:dynamic:form:text"; //显示值
 

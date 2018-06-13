@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,4 +46,18 @@ public class BaseFormService {
         return baseFormDao.getBaseFormModule(id);
     }
 
+    /**
+     * 从缓存中获取动态表单信息
+     * @param id
+     * @return
+     */
+    public BaseFormModule getCacheFormModuleById(Integer id){
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DYNAMIC_FORM_MODULE_ID, String.valueOf(id));
+        try {
+            BaseFormModule baseFormModule = LangUtils.singleCache(rdsKey, id, BaseFormModule.class, o -> baseFormDao.getBaseFormModule(o));
+            return baseFormModule;
+        } catch (Exception e) {
+            return baseFormDao.getBaseFormModule(id);
+        }
+    }
 }

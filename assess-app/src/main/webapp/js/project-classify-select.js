@@ -4,7 +4,7 @@
  */
 
 (function ($) {
-    var AssessDataDic = function () {
+    var AssessProjectClassify = function () {
         this.defaults = {
             modalName: "数据选择",
             key: "",
@@ -24,7 +24,7 @@
             },
             async: {
                 enable: true,
-                url: getContextPath() + "/baseDataDic/getBaseDicTree",
+                url: getContextPath() + "/baseProjectClassify/getBaseDicTree",
                 autoParam: ["id=pid"]
             },
             // 回调函数
@@ -36,13 +36,13 @@
         };
         this.zTreeObj = {};
     }
-    AssessDataDic.prototype = {
+    AssessProjectClassify.prototype = {
         select: function (options) {
             this.defaults = $.extend({}, this.defaults, options);
             var that = this;
-            var target = $("#assess_select_basedic_modal");
+            var target = $("#assess_select_project_classify_modal");
             if (target.length > 0) {
-                $("#assess_select_basedic_modal").remove();
+                $("#assess_select_project_classify_modal").remove();
             }
             if (that.defaults.multi) {
                 that.setting.check = {
@@ -51,7 +51,7 @@
                     chkboxType: {"Y": "", "N": ""}
                 };
             }
-            var html = '<div id="assess_select_basedic_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">';
+            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">';
             html += '<div class="modal-dialog">';
             html += '<div class="modal-content">';
             html += '<div class="modal-header">';
@@ -62,12 +62,12 @@
             html += '<div class="row">';
             html += '<div class="col-md-12">';
             html += '<div class="input-group">';
-            html += '<input type="text" id="assess_select_basedic_query_name" class="form-control">';
+            html += '<input type="text" id="assess_select_project_classify_query_name" class="form-control">';
             html += '<span class="input-group-btn">';
             html += '<a href="javascript://" onclick="assessDataDic.query()" class="btn btn-primary">查询</a>';
             html += '</span>';
             html += '</div>';
-            html += '<ul id="assess_select_basedic_ztree" class="ztree"></ul>';
+            html += '<ul id="assess_select_project_classify_ztree" class="ztree"></ul>';
             html += '</div>';
             html += '</div>';
             html += '</div>';
@@ -90,10 +90,10 @@
 
         //查询
         query: function () {
-            var queryName = $("#assess_select_basedic_query_name").val();
+            var queryName = $("#assess_select_project_classify_query_name").val();
             if (queryName) {
                 $.ajax({
-                    url: getContextPath() + "/baseDataDic/queryBaseDicTree",
+                    url: getContextPath() + "/baseProjectClassify/queryBaseDicTree",
                     data: {
                         name: queryName,
                         key: this.defaults.key
@@ -101,7 +101,7 @@
                     type: "post",
                     dataType: "json",
                     success: function (result) {
-                        $.fn.zTree.init($("#assess_select_basedic_ztree"), this.setting, result);
+                        $.fn.zTree.init($("#assess_select_project_classify_ztree"), this.setting, result);
                     }
                 })
             } else {
@@ -120,26 +120,26 @@
             if (this.defaults.onSelected) {
                 this.defaults.onSelected(nodes);
             }
-            $("#assess_select_basedic_modal").modal("hide");
+            $("#assess_select_project_classify_modal").modal("hide");
         },
 
         init: function () {
             var that = this;
             $.ajax({
-                url: getContextPath() + "/baseDataDic/getBaseDicByKey",
+                url: getContextPath() + "/baseProjectClassify/getBaseDicByKey",
                 data: {
                     key: that.defaults.key
                 },
                 type: "post",
                 dataType: "json",
                 success: function (result) {
-                    that.zTreeObj = $.fn.zTree.init($("#assess_select_basedic_ztree"), that.setting, result);
+                    that.zTreeObj = $.fn.zTree.init($("#assess_select_project_classify_ztree"), that.setting, result);
                     var rootNode = that.zTreeObj.getNodes()[0];
                     that.zTreeObj.expandNode(rootNode, true, false, true);
-                    $("#assess_select_basedic_modal").modal();
+                    $("#assess_select_project_classify_modal").modal();
                 }
             })
         }
     };
-    window.assessDataDic = new AssessDataDic();
+    window.assessProjectClassify = new AssessProjectClassify();
 })(jQuery);

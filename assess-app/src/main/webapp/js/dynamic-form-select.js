@@ -13,15 +13,14 @@
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessForm.onSelected(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessDynamicForm.onSelected(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#select_form_tb_list").bootstrapTable('destroy');
-        TableInit("select_form_tb_list", getContextPath()+"/formConfigure/getFormList", cols, {
-            name: $("#queryName").val(),
-            groupId: $("#queryGroupId").val()
+        TableInit("select_form_tb_list", getContextPath()+"/formConfigure/getFormModuleList", cols, {
+
         }, {
             showColumns: false,
             showRefresh: false,
@@ -42,13 +41,13 @@
         $('#select_form_modal').modal('hide');
     }
 
-    var AssessForm = function () {
+    var AssessDynamicForm = function () {
         this.callback = function (row) {
 
         }
     }
 
-    AssessForm.prototype.select = function (callback) {
+    AssessDynamicForm.prototype.select = function (callback) {
         var that = this;
         var target = $("#select_form_modal");
         if (target.length > 0) {
@@ -106,12 +105,12 @@
         $(document.body).append(html);
         loadSelectFormList();
     }
-    AssessForm.prototype.onSelected = function (index) {
+    AssessDynamicForm.prototype.onSelected = function (index) {
         var row = $("#select_form_tb_list").bootstrapTable('getData')[index];
         if (this.callback) {
             this.callback(row);
         }
         $('#select_form_modal').modal('hide');
     }
-    window.assessForm = new AssessForm();
+    window.assessDynamicForm = new AssessDynamicForm();
 })(jQuery)
