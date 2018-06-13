@@ -449,7 +449,7 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'fieldName', title: '字段名称'});
-        cols.push({field: 'formModuleId', title: '动态表单'});
+        cols.push({field: 'formModuleName', title: '动态表单'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);
