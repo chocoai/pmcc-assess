@@ -59,6 +59,10 @@ public class ProjectInfo {
 
     private Integer projectMemberId;
 
+    private String remarkEntrustpurpose;
+
+    private String remarkValuetype;
+
     public Integer getId() {
         return id;
     }
@@ -281,5 +285,21 @@ public class ProjectInfo {
 
     public void setProjectMemberId(Integer projectMemberId) {
         this.projectMemberId = projectMemberId;
+    }
+
+    public String getRemarkEntrustpurpose() {
+        return remarkEntrustpurpose;
+    }
+
+    public void setRemarkEntrustpurpose(String remarkEntrustpurpose) {
+        this.remarkEntrustpurpose = remarkEntrustpurpose == null ? null : remarkEntrustpurpose.trim();
+    }
+
+    public String getRemarkValuetype() {
+        return remarkValuetype;
+    }
+
+    public void setRemarkValuetype(String remarkValuetype) {
+        this.remarkValuetype = remarkValuetype == null ? null : remarkValuetype.trim();
     }
 }

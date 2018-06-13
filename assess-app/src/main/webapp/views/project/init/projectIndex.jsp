@@ -64,6 +64,74 @@
 
                         <div class="form-group">
                             <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="entrustPurpose" name="entrustPurpose" class="form-control"
+                                            required="required">
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${list_entrustment_purpose}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.id == projectInfo.entrustPurpose}">
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                                    <%--<input type="hidden" value="${item.remark}">--%>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托备注</label>
+                                <div class="col-sm-3">
+                                    <input placeholder="委托备注"  name="remarkEntrustPurpose"
+                                            class="form-control" id="remarkEntrustPurpose" value="">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="评估基准日" id="completeDateStart"
+                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="valueType" name="valueType" class="form-control" required="required">
+                                        <option selected="selected" value="">请选择</option>
+                                        <c:forEach items="${value_type}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.id == projectInfo.valueType}">
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">价值类型备注</label>
+                                <div class="col-sm-3">
+                                    <input placeholder="价值类型备注"  name="remarkValueType"
+                                           class="form-control" id="remarkValueType">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">大类<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="projectClassId" name="projectClassId" class="form-control"
@@ -82,38 +150,9 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <select id="entrustPurpose" name="entrustPurpose" class="form-control"
-                                            required="required">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${list_entrustment_purpose}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id == projectInfo.entrustPurpose}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <input required="required" placeholder="评估基准日" id="completeDateStart"
-                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly"
-                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
-
-                                </div>
-                            </div>
                         </div>
+
+
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
@@ -188,24 +227,6 @@
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <select id="valueType" name="valueType" class="form-control" required="required">
-                                        <option selected="selected" value="">请选择</option>
-                                        <c:forEach items="${value_type}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id == projectInfo.valueType}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
@@ -244,7 +265,7 @@
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
-                                                    data-original-title="选择" onclick="selectUserAccountMember()">
+                                                    data-original-title="选择" onclick="selectUserAccountManager()">
                                             <i class="fa fa-search"></i>
                                             </button>
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -259,14 +280,14 @@
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-
+                                    <span class="checkbox-inline">
+                                        <input type="checkbox" id="userAccountMemberCheckBox" onclick="selectUserAccountMember()">
+                                        <label for="userAccountMemberCheckBox">下级分派</label>
+                                    </span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <span class="checkbox-inline">
-                                        <input type="checkbox" id="userAccountMemberCheckBox">
-                                    <label for="userAccountMemberCheckBox">下级分派</label>
-                                    </span>
-
+                                    <input type="hidden" id="userAccountMember" name="userAccountMember" value="${projectInfo.projectMemberVo.userAccountMember}">
+                                    <input type="text" id="userAccountMemberID" class="form-control" readonly="readonly" value="${projectInfo.projectMemberVo.userAccountMemberName}">
                                 </div>
                             </div>
 
@@ -323,7 +344,7 @@
                                         单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <input type="text" id="csEntrustmentUnit" placeholder="单位" class="form-control" required="required"
+                                        <input type="text" id="csEntrustmentUnit" name="csEntrustmentUnit" placeholder="单位" class="form-control" required="required"
                                                value="${projectInfo.consignorVo.csEntrustmentUnit}" >
                                         <%--<div class="input-group">--%>
                                             <%--<input type="hidden" name="csEntrustmentUnit" id="csEntrustmentUnit"--%>
@@ -1042,6 +1063,42 @@
 </body>
 </html>
 <script>
+    $("#valueType").change(function () {
+        var selected = $(this).children('option:selected').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
+            type: "get",
+            dataType: "json",
+            data: {id: selected},
+            success: function (result) {
+                if (result.ret) {
+                    $("#remarkValueType").val(result.data.remark);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    });
+    $("#entrustPurpose").change(function () {
+        var selected = $(this).children('option:selected').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
+            type: "get",
+            dataType: "json",
+            data: {id: selected},
+            success: function (result) {
+                if (result.ret) {
+                    $("#remarkEntrustPurpose").val(result.data.remark);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    });
     oneFirstConsignor();
     //第一次填写后留下的委托人 数据信息
     function oneFirstConsignor() {
@@ -1051,21 +1108,21 @@
             if (csType != '' && csType != null){
                 if (csType==1){
                     $("#changeType input[name='csType'][value='1']").attr("checked",true);
+                    $("#csAddress").val('${oneFirstConsignor.csAddress}');
+                    $("#csEntrustmentUnit").val('${oneFirstConsignor.csEntrustmentUnit}');
+                    $("#csLegalRepresentative").val('${oneFirstConsignor.csLegalRepresentative}');
+                    $("#csSociologyCode").val('${oneFirstConsignor.csSociologyCode}');
+                    $("#csScopeOperation").val('${oneFirstConsignor.csScopeOperation}');
+                    var csUnitProperties = '${oneFirstConsignor.csUnitProperties}';
+                    if (csUnitProperties!=null && csUnitProperties!=''){
+                        $("#csUnitProperties").val(csUnitProperties);
+                    }
                 }else if (csType==0){
+                    $("#csAddress2").val('${oneFirstConsignor.csAddress}');
+                    $("#csIdcard").val('${oneFirstConsignor.csIdcard}');
+                    $("#csName").val('${oneFirstConsignor.csName}');
                     $("#changeType input[name='csType'][value='0']").attr("checked",true);
                 }
-            }
-            $("#csEntrustmentUnit").val('${oneFirstConsignor.csEntrustmentUnit}');
-            $("#csLegalRepresentative").val('${oneFirstConsignor.csLegalRepresentative}');
-            $("#csSociologyCode").val('${oneFirstConsignor.csSociologyCode}');
-            $("#csScopeOperation").val('${oneFirstConsignor.csScopeOperation}');
-            $("#csAddress").val('${oneFirstConsignor.csAddress}');
-            $("#csAddress2").val('${oneFirstConsignor.csAddress}');
-            $("#csIdcard").val('${oneFirstConsignor.csIdcard}');
-            $("#csName").val('${oneFirstConsignor.csName}');
-            var csUnitProperties = '${oneFirstConsignor.csUnitProperties}';
-            if (csUnitProperties!=null && csUnitProperties!=''){
-                $("#csUnitProperties").val(csUnitProperties);
             }
         }
     }
@@ -1324,14 +1381,42 @@
     }
 
     // 项目经理
-    //userAccountManager
-    function selectUserAccountMember() {
+    function selectUserAccountManager() {
         erpEmployee.select({
             onSelected: function (data) {
                 $("#userAccountManager").val(data.name);
                 $("#userAccountManagerID").val(data.account);
-            }
+            },
+            multi:true
         });
+    }
+
+    // 项目成员
+    function selectUserAccountMember() {
+        var userAccountManagerID = $("#userAccountManagerID").val();
+        if (userAccountManagerID!=null && userAccountManagerID!=''){
+            erpEmployee.select({
+                onSelected: function (data) {
+                    var userAccountMemberID = $("#userAccountMemberID").val();
+                    if (userAccountMemberID==null && userAccountMemberID==''){
+                        var v = data.account;
+                        var v1 = data.name;
+                        $("#userAccountMember").val(v);
+                        $("#userAccountMemberID").val(v1);
+                    }else {
+                        if ($("#userAccountMember").val() == ''){
+                            $("#userAccountMember").val(data.account);
+                            $("#userAccountMemberID").val(data.name);
+                        }else {
+                            var v = $("#userAccountMember").val()+">"+data.account;
+                            var v1 = $("#userAccountMemberID").val()+">"+data.name;
+                            $("#userAccountMember").val(v);
+                            $("#userAccountMemberID").val(v1);
+                        }
+                    }
+                }
+            });
+        }
     }
 
 
@@ -1502,6 +1587,7 @@
     //加载联系人列表
     function loadInitContactsListA(id) {
         var cols = [];
+        var cPid = "${projectInfo.consignorVo.id}" ;
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
@@ -1515,18 +1601,30 @@
                 return str;
             }
         });
+        var pid = "${projectInfo.consignorVo.id}" ;
         $("#tb_ListA").bootstrapTable("destroy");
-        TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
-            crmId: id, flag: flags[0]
-        }, {
-            showColumns: false,
-            showRefresh: true,
-            search: true
-        });
+        if (pid==null || pid==''){
+            TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                crmId: id, flag: flags[0],pid:cPid
+            }, {
+                showColumns: false,
+                showRefresh: true,
+                search: true
+            });
+        }else {
+            TableInit("tb_ListA", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                flag: flags[0],pid:cPid
+            }, {
+                showColumns: false,
+                showRefresh: true,
+                search: true
+            });
+        }
     }
 
     function loadInitContactsListB(id) {
         var cols = [];
+        var cPid = "${projectInfo.possessorVo.id}" ;
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
@@ -1541,17 +1639,28 @@
             }
         });
         $("#tb_ListB").bootstrapTable("destroy");
-        TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
-            crmId: id, flag: flags[1]
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
+        if (cPid==null || cPid==''){
+            TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                crmId: id, flag: flags[1],pid:cPid
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }else {
+            TableInit("tb_ListB", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                flag: flags[1],pid:cPid
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }
     }
 
     function loadInitContactsListC(id) {
         var cols = [];
+        var cPid = "${projectInfo.unitInformationVo.id}" ;
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
@@ -1566,13 +1675,23 @@
             }
         });
         $("#tb_ListC").bootstrapTable("destroy");
-        TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
-            crmId: id, flag: flags[2]
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
+        if (cPid==null || cPid==''){
+            TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                crmId: id, flag: flags[2]
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }else {
+            TableInit("tb_ListC", "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+                flag: flags[2],pid:cPid
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }
     }
 
     //修改专用
@@ -1582,14 +1701,48 @@
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
-
-        TableInit("" + tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVosX", cols, {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:removeUpdateContacts(' +"'"+ id+"','"+tb_List+"','"+flag +"','"+row.id+"'"+')">删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        TableInit("" + tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             pid: id, flag: flag
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+    }
+
+    //修改专用
+    function removeUpdateContacts(pid, tb_List, flag,id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/Contacts/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        loadInitContactsList(pid,tb_List,flag);
+                        window.onload;
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
     }
 
     $(function () {//修改专用
@@ -1624,8 +1777,6 @@
         data.cName = $("#cName").val();
         data.cPhone = $("#cPhone").val();
         data.cEmail = $("#cEmail").val();
-        // data.cType = $("#cType option:selected").val();
-        // var cType = $("#cType option:selected").val();
         var cType = $("#cType").val();
         if (cType == 1) {//修改 添加委托联系人
             var consignorid = document.getElementById("consignorid").value;
@@ -1780,9 +1931,12 @@
     }
 
     function projectApply() {
-        //联系人校验
-        if (!checkContacts()){
-            return false;
+        var projectinfoid = $("#projectinfoid").val();
+        if (projectinfoid==null || projectinfoid==''){
+            //联系人校验
+            if (!checkContacts()){
+                return false;
+            }
         }
         //js校验
         if (!$("#frm_project_info").valid()) {

@@ -39,12 +39,6 @@
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.entrustPurposeName}</label>
-                                </div>
-                            </div>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
@@ -91,9 +85,9 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">价值类型备注<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.departmentName}</label>
+                                    <label class="form-control">${projectInfo.remarkValuetype}</label>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +102,29 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理下级<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.userAccountMemberName}</label>
+                                    <label class="form-control">${projectInfo.projectMemberVo.userAccountMemberName}</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${projectInfo.departmentName}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">委托目的备注<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${projectInfo.remarkEntrustpurpose}</label>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +164,7 @@
                                     委托单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnitName}</label>
+                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
                                 </div>
                             </div>
 
@@ -278,7 +294,7 @@
                                         占有单位
                                     </label>
                                     <div class="col-sm-3">
-                                        <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnitName}</label>
+                                        <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
                                     </div>
                                 </div>
 
@@ -548,7 +564,7 @@
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
-        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVosX", cols,{
+        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
             pid: id,flag:flag}, {
             showColumns: false,
             showRefresh: false,
@@ -564,9 +580,9 @@
             $("#no_legal_person").hide();
             $("#legal_person").show();
             try {
-                var val = "${projectInfo.consignorVo.csEntrustmentUnit}";
                 var id = "${projectInfo.consignorVo.id}";
                 if (id!=null && id!=''){
+                    console.log("consignorID:"+id);
                     loadInitContactsListC(id,"tb_ListA",flags[0]);
                 }
             }catch (e){
@@ -577,7 +593,7 @@
             $("#no_legal_person").show();
             $("#legal_person").hide();
             try {
-                var val = ${projectInfo.consignorVo.id}+"";
+                var val = "${projectInfo.consignorVo.id}";
                 if(val!='' && val!=null){
                     loadInitContactsListC(val,"tb_ListA",flags[0]);
                 }
@@ -587,14 +603,12 @@
         }
 
         $("#no_legal_person1").hide();
-        var changeTypeA = ${projectInfo.possessorVo.pType}
+        var changeTypeA = '${projectInfo.possessorVo.pType}';
         if (changeTypeA==1){
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
             try {
-                var val = ${projectInfo.possessorVo.pEntrustmentUnit}+"";
-
-                var id = ${projectInfo.possessorVo.id}+"";
+                var id = "${projectInfo.possessorVo.id}";
                 if (id!=null && id!=''){
                     loadInitContactsListC(id,"tb_ListB",flags[1]);
                 }
@@ -606,7 +620,7 @@
             $("#no_legal_person1").show();
             $("#legal_person1").hide();
             try {
-                var val = ${projectInfo.possessorVo.id}+"";
+                var val = "${projectInfo.possessorVo.id}";
                 if (val!='' && val!=null){
                     loadInitContactsListC(val,"tb_ListB",flags[1]);
                 }
@@ -614,7 +628,6 @@
                 console.info(e);
             }
         }
-        console.log('${projectInfo.unitInformationVo.id}');
         loadInitContactsListC('${projectInfo.unitInformationVo.id}',"tb_ListC",flags[2]);
     });
 </script>

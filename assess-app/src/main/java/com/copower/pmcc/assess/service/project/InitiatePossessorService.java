@@ -30,6 +30,7 @@ public class InitiatePossessorService {
             dto.setpSociologyCode(null);
             dto.setpLegalRepresentative(null);
             dto.setpEntrustmentUnit(null);
+        }else {
         }
         if (dto.getCreator()==null)dto.setCreator(commonService.thisUserAccount());
         return dao.add(dto);

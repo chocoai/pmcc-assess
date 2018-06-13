@@ -193,15 +193,18 @@ public class ProjectInfoService {
         possessorService.update(possessorDto);
         projectMemberService.saveReturnId(projectMemberDto);
         unitInformationService.update(unitInformationDto);
+        update_BaseAttachment_(consignorDto.getId(), InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+        update_BaseAttachment_(possessorDto.getId(), InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
+        update_BaseAttachment_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
     }
 
     @Transactional
     public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
         boolean flag = true;
         try {
-            int i = possessorService.add(possessorDto);
             int v = consignorService.add(consignorDto);
             int j = unitInformationService.add(unitInformationDto);
+            int i = possessorService.add(possessorDto);
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
 
             if (consignorDto.getCsType() == 1 && possessorDto.getpType() == 1) {//说明是法人 则不需要更新
@@ -384,9 +387,10 @@ public class ProjectInfoService {
         if (!ObjectUtils.isEmpty(projectInfo.getId())){
             ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
             ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+            String s1 = accountGet(projectMember.getUserAccountManager());
             BeanUtils.copyProperties(projectMember,projectMemberVo);
-            projectMemberVo.setUserAccountManagerName(erpRpcUserService.getSysUser(projectMember.getUserAccountManager()).getUserName());
             projectInfoVo.setProjectMemberVo(projectMemberVo);
+            projectInfoVo.setUserAccountManagerName(s1);
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProjectClassId())) {
             //大类
@@ -414,11 +418,7 @@ public class ProjectInfoService {
         projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
         projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
-        //项目经理 与下级
-        if (!ObjectUtils.isEmpty(projectMember)) {//erpRpcUserService
-            projectInfoVo.setUserAccountManagerName(erpRpcUserService.getSysUser(projectMember.getUserAccountManager()).getUserName());
-            //projectInfoVo.setUserAccountMemberName(erpRpcUserService.getSysUser(projectMember.getUserAccountMember()).getUserName());
-        }
+
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
             //价值类型
             projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
@@ -490,6 +490,15 @@ public class ProjectInfoService {
             }
         }
         return v;
+    }
+
+    public String accountGet(String account){
+        String[] strings = account.split(",");
+        StringBuilder builder = new StringBuilder(1024);
+        for (String s:strings){
+            builder.append(erpRpcUserService.getSysUser(s).getUserName()+" ");
+        }
+        return builder.toString();
     }
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
@@ -575,22 +584,18 @@ public class ProjectInfoService {
     }
 
     /*联系人 vo crm*/
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer cType,Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = initiateContactsService.listVo(crmId, flag);
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
-
-    /*联系人 vo*/
-    public BootstrapTableVo listContactsVos(Integer pid, Integer flag) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InitiateContactsVo> vos = initiateContactsService.getVoList(pid, flag);
+        List<InitiateContactsVo> vos = null;
+        if (ObjectUtils.isEmpty(pid)){
+            pid = InitiateContactsDto.CPID;
+        }
+        if (!ObjectUtils.isEmpty(crmId)){
+            initiateContactsService.writeContacts(crmId,cType,pid);//写入本地
+        }
+        vos = initiateContactsService.getVoList(pid, cType);//从本地获取
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -685,4 +690,5 @@ public class ProjectInfoService {
     public InitiateConsignorDto oneFirstConsignor(){
         return consignorService.oneFirstConsignor();
     }
+
 }
