@@ -56,6 +56,7 @@ public class ProjectMemberService {
         upateProjectMemeberToErp(projectMember.getProjectId(), projectMember.getUserAccountManager(), projectMember.getUserAccountMember());
     }
 
+    @Transactional
     public boolean updateProjectMember(ProjectMemberDto projectMemberDto){
         return projectMemberDao.updateProjectMember(change(projectMemberDto));
     }

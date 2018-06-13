@@ -101,7 +101,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.userAccountManagerName}</label>
+                                    <label class="form-control">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                                 </div>
                             </div>
 
