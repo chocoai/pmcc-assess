@@ -16,7 +16,6 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
@@ -63,9 +62,7 @@
                                            value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
-
                         </div>
-
                     </form>
 
                     <div class="x_title">
@@ -600,6 +597,7 @@
             deleteFlag: true
         })
 
+        //清查内容附件上传和加载
         FileUtils.uploadFiles({
             target: "credentialAccessory${surveyAssetTemplateVos.get(0).id}",
             disabledTarget: "btn_submit",
@@ -743,11 +741,12 @@
             showRefresh: false,
             search: false,
             onLoadSuccess: function () {
-                $(".tooltips").tooltip();
+                $(".tooltips").tooltip();   //提示
             }
         });
     }
 
+    //获取清查内容数据
     var items = "";
     function getRowsData() {
         var trs = $("#tb_surveyList").find('tbody tr');
@@ -875,10 +874,11 @@
         });
     }
 
+    //他权
     function addData() {
         $("#frm").clearAll();
     }
-
+    //他权保存
     function saveData() {
         var flag = false;
         var data = formParams("frm");
@@ -909,14 +909,14 @@
             })
         }
     }
-
+    //他权修改
     function editHrProfessional(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $('#divBox').modal();
     }
-
+    //他权删除
     function delData(id, tbId) {
         console.log(id);
         console.log(tbId);
@@ -948,15 +948,13 @@
 
     //解析定位结果
     function onCompleteSuccess(data) {
-        $("#defaultLocaltion").val(data.formattedAddress);
+        $("#defaultLocaltion").val(data.position);
     }
 
     //解析定位错误信息
     function onErrorFail(data) {
-        //暂不处理
+        window.location.reload();
     }
-
-
 
 </script>
 

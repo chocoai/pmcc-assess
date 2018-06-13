@@ -16,7 +16,7 @@
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-案例调查明细</h2>
+                    <h2>案例调查明细</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -29,7 +29,7 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-案例信息</h2>
+                    <h2>案例信息</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -196,7 +196,7 @@
                                             marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
                                 </c:if>
                                 <c:if test="${surveyCaseStudyDetail.id ne 0}">
-                                    <div id="_surveyLocaltion">
+                                    <div id="_caseLocaltion">
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
@@ -209,9 +209,9 @@
                                                 formData: {
                                                     tableName: "tb_survey_case_study_detail",
                                                     tableId: ${surveyCaseStudyDetail.id},
-                                                    fieldsName: "case_localtion"
+                                                    fieldsName: "survey_localtion"
                                                 },
-                                                deleteFlag: false
+                                                deleteFlag: true
                                             })
                                         }
                                     </script>
@@ -336,12 +336,12 @@
 
     //解析定位结果
     function onCompleteSuccess(data) {
-        $("#defaultLocaltion").val(data.formattedAddress);
+        $("#defaultLocaltion").val(data.position);
     }
 
     //解析定位错误信息
     function onError(data) {
-        //暂不处理
+        window.location.reload();
     }
 
     //map选址成功回调
