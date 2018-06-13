@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.dao.InitiateContactsDao;
 import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
@@ -37,9 +38,15 @@ public class InitiateContactsService {
     private InitiateContactsDao dao;
 
 
+    /**
+     * 从crm中输入数据
+     * @param crmId
+     * @param cType
+     * @return
+     */
     @Transactional
-    public List<InitiateContactsVo> listVo(Integer crmId,Integer flag){
-        List<InitiateContactsVo> vos = new ArrayList<>();
+    public void writeContacts(Integer crmId,Integer cType,Integer pid){
+        List<CrmCustomerLinkmanDto> writeCustomer = new ArrayList<>();
         if (crmId!=null){
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
             InitiateContactsVo vo = null;
@@ -51,11 +58,12 @@ public class InitiateContactsService {
                     contactsDto.setcEmail(dto.getEmail());
                     contactsDto.setcName(dto.getName());
                     contactsDto.setcPhone(dto.getPhoneNumber());
-                    contactsDto.setcPid(InitiateContactsDto.CPID);
-                    contactsDto.setcType(flag);
+                    contactsDto.setcPid(pid);
+                    contactsDto.setcType(cType);
                     dtos.add(contactsDto);
                 }
 
+                //排序之后 取5个写入本地 接着把5个最新的存入CRM中
                 Collections.sort(dtos,new Comparator<Object>(){
                     @Override
                     public int compare(Object o1, Object o2) {
@@ -69,13 +77,16 @@ public class InitiateContactsService {
                 });//暂时不处理
                 int temp = 5;
                 for (int i = 0; i < temp; i++) {
+                    CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
                     InitiateContactsDto contactsDto = dtos.get(i);
                     if (contactsDto != null){
+                        crmCustomerLinkmanDto.setName(contactsDto.getcName());
+                        crmCustomerLinkmanDto.setDepartment(contactsDto.getcDept());
+                        crmCustomerLinkmanDto.setEmail(contactsDto.getcEmail());
+                        crmCustomerLinkmanDto.setPhoneNumber(contactsDto.getcPhone());
                         contactsDto.setCreator(commonService.thisUserAccount());
                         int id = dao.save(contactsDto);
-                        contactsDto.setId(id);
-                        vo = change(contactsDto);
-                        vos.add(vo);
+                        writeCustomer.add(crmCustomerLinkmanDto);
                     }
 
                 }
@@ -83,9 +94,21 @@ public class InitiateContactsService {
                 logger.error(e.getMessage());
             }
         }else {
-            vos = getVoList(InitiateContactsDto.CPID,flag);
         }
-        return vos;
+        writeCrmCustomerDto(writeCustomer,cType);
+    }
+
+    /**
+     * 回写到CRM中
+     * @param writeCustomer
+     * @param cType
+     */
+    public void writeCrmCustomerDto(List<CrmCustomerLinkmanDto> writeCustomer,Integer cType){
+        if (!ObjectUtils.isEmpty(cType)){
+            if (cType.equals(InitiateContactsEnum.THREE.getNum())){//只有报告使用单位才能回写
+                //CRM中暂时没有提供方法
+            }
+        }
     }
 
     @Transactional
@@ -120,13 +143,9 @@ public class InitiateContactsService {
         return dao.update(dto);
     }
 
-    public List<InitiateContactsVo> getVoList(Integer cPid,Integer flag) {
+    public List<InitiateContactsVo> getVoList(Integer cPid,Integer cType) {
         List<InitiateContactsVo> vos = new ArrayList<>();
-        if (cPid==null && flag!=null){
-            dao.getList(flag).parallelStream().forEach(oo -> vos.add(change(oo)));
-        }else if (cPid!=null && flag!=null){
-            dao.getList(cPid,flag,commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
-        }
+        dao.getList(cPid,cType,commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
         return vos;
     }
 

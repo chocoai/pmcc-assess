@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,19 +57,23 @@ public class InitiateContactsDao {
         return change(mapper.selectByPrimaryKey(id));
     }
 
-    public List<InitiateContactsDto> getList(Integer flag){
-        List<InitiateContactsDto> dtos = new ArrayList<>();
-        InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andCTypeEqualTo(flag);
-        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
-        return dtos;
-    }
 
     public List<InitiateContactsDto> getList(Integer cPid,Integer cType,String createPeople){
         List<InitiateContactsDto> dtos = new ArrayList<>();
         InitiateContactsExample example = new InitiateContactsExample();
-        example.createCriteria().andCPidEqualTo(cPid).andCTypeEqualTo(cType).andIdIsNotNull().andCreatorEqualTo(createPeople);
-        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
+        InitiateContactsExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (!ObjectUtils.isEmpty(cPid)){//主表(关联的主表,如:委托人id)
+            criteria.andCPidEqualTo(cPid);
+        }
+        if (!ObjectUtils.isEmpty(cType)){//类型如:委托人,资产占有人,报告使用单位
+            criteria.andCTypeEqualTo(cType);
+        }
+        if (!StringUtils.isEmpty(createPeople)){//当前用户
+            criteria.andCreatorEqualTo(createPeople);
+        }
+        List<InitiateContacts> contacts = mapper.selectByExample(example);
+        contacts.parallelStream().forEach(oo -> dtos.add(change(oo)));
         return dtos;
     }
 

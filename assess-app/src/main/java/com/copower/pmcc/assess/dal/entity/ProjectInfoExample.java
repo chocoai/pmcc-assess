@@ -1854,6 +1854,146 @@ public class ProjectInfoExample {
             addCriterion("project_member_id not between", value1, value2, "projectMemberId");
             return (Criteria) this;
         }
+
+        public Criteria andRemarkEntrustpurposeIsNull() {
+            addCriterion("remark_entrustPurpose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeIsNotNull() {
+            addCriterion("remark_entrustPurpose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeEqualTo(String value) {
+            addCriterion("remark_entrustPurpose =", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeNotEqualTo(String value) {
+            addCriterion("remark_entrustPurpose <>", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeGreaterThan(String value) {
+            addCriterion("remark_entrustPurpose >", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeGreaterThanOrEqualTo(String value) {
+            addCriterion("remark_entrustPurpose >=", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeLessThan(String value) {
+            addCriterion("remark_entrustPurpose <", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeLessThanOrEqualTo(String value) {
+            addCriterion("remark_entrustPurpose <=", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeLike(String value) {
+            addCriterion("remark_entrustPurpose like", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeNotLike(String value) {
+            addCriterion("remark_entrustPurpose not like", value, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeIn(List<String> values) {
+            addCriterion("remark_entrustPurpose in", values, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeNotIn(List<String> values) {
+            addCriterion("remark_entrustPurpose not in", values, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeBetween(String value1, String value2) {
+            addCriterion("remark_entrustPurpose between", value1, value2, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEntrustpurposeNotBetween(String value1, String value2) {
+            addCriterion("remark_entrustPurpose not between", value1, value2, "remarkEntrustpurpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeIsNull() {
+            addCriterion("remark_valueType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeIsNotNull() {
+            addCriterion("remark_valueType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeEqualTo(String value) {
+            addCriterion("remark_valueType =", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeNotEqualTo(String value) {
+            addCriterion("remark_valueType <>", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeGreaterThan(String value) {
+            addCriterion("remark_valueType >", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeGreaterThanOrEqualTo(String value) {
+            addCriterion("remark_valueType >=", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeLessThan(String value) {
+            addCriterion("remark_valueType <", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeLessThanOrEqualTo(String value) {
+            addCriterion("remark_valueType <=", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeLike(String value) {
+            addCriterion("remark_valueType like", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeNotLike(String value) {
+            addCriterion("remark_valueType not like", value, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeIn(List<String> values) {
+            addCriterion("remark_valueType in", values, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeNotIn(List<String> values) {
+            addCriterion("remark_valueType not in", values, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeBetween(String value1, String value2) {
+            addCriterion("remark_valueType between", value1, value2, "remarkValuetype");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkValuetypeNotBetween(String value1, String value2) {
+            addCriterion("remark_valueType not between", value1, value2, "remarkValuetype");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
