@@ -5,6 +5,8 @@ import com.copower.pmcc.assess.dto.input.project.InitiateConsignorDto;
 import com.copower.pmcc.assess.dto.output.project.InitiateConsignorVo;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.comparators.ComparatorChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.List;
  */
 @Service
 public class InitiateConsignorService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -88,12 +91,16 @@ public class InitiateConsignorService {
         Collections.sort(dtos,new Comparator<Object>(){
             @Override
             public int compare(Object o1, Object o2) {
-                InitiateConsignorDto consignorA = (InitiateConsignorDto)o1;
-                InitiateConsignorDto consignorB = (InitiateConsignorDto)o2;
-                if (!ObjectUtils.isEmpty(consignorA.getGmtCreated()) &&  !ObjectUtils.isEmpty(consignorB.getGmtCreated())){
-                    return consignorA.getGmtCreated().compareTo(consignorB.getGmtCreated());
-                }else if (consignorA.getGmtCreated() == null){
-                    return consignorA.getCsName().compareTo(consignorB.getCsName());
+                try {
+                    InitiateConsignorDto consignorA = (InitiateConsignorDto)o1;
+                    InitiateConsignorDto consignorB = (InitiateConsignorDto)o2;
+                    if (!ObjectUtils.isEmpty(consignorA.getGmtCreated()) &&  !ObjectUtils.isEmpty(consignorB.getGmtCreated())){
+                        return consignorA.getGmtCreated().compareTo(consignorB.getGmtCreated());
+                    }else if (consignorA.getGmtCreated() == null){
+                        return consignorA.getCsName().compareTo(consignorB.getCsName());
+                    }
+                }catch (Exception e){
+                    logger.error("异常异常最好刷新  这里容易出异常!");
                 }
                 return 0;
             }

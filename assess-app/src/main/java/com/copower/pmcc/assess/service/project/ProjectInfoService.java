@@ -219,7 +219,7 @@ public class ProjectInfoService {
                 //附件更新
                 update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
                 update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
-
+                projectMemberDto.setCreator(commonService.thisUserAccount());
                 int k = projectMemberService.saveReturnId(projectMemberDto);
                 ProjectInfo projectInfo = change(projectInfoDto);
                 projectInfo.setConsignorId(v);//设置 关联id
@@ -231,6 +231,7 @@ public class ProjectInfoService {
                 int id = 0;
                 id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
                 projectMemberDto.setProjectId(id);
+                projectMemberDto.setId(k);
                 //2018-06-08标记
                 projectMemberService.updateProjectMember(projectMemberDto);
                 update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
@@ -402,7 +403,12 @@ public class ProjectInfoService {
             projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getDistrict())) {
-            projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));//县
+            try {
+                projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));//县
+            }catch (Exception e){
+                projectInfoVo.setDistrictName("没有匹配到县的数据");
+                logger.error(e.getMessage()+"------------------------");
+            }
         }
         //紧急程度
         projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
