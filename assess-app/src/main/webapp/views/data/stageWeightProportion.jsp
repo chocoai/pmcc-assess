@@ -80,10 +80,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
+                                        <label class="col-sm-2 control-label">
                                             委托目的<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-10">
                                             <select class="form-control" required id="entrustPurpose"
                                                     name="entrustPurpose">
                                                 <option value="">-请选择-</option>
@@ -95,35 +95,62 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            阶段<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="stage" name="stage">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${stageList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                <c:forEach var="item" items="${stageList}">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                阶段<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <label id="stage" name="stage" class="control-label" temp="${item.id}">
+                                                        ${item.name}
+                                                </label>
+                                            </div>
 
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            占比<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="proportion" name="proportion" class="form-control">
-                                        </div>
-                                        <div class="col-sm-1">
+                                            <div>
+                                                <label class="col-sm-2 control-label">
+                                                    占比<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" required data-rule-maxlength="50"
+                                                           placeholder="占比"
+                                                           id="proportionList" name="proportionList" temp-id="${item.id}"
+                                                           class="form-control" value="">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </c:forEach>
+
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-3 control-label">--%>
+                                            <%--阶段<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-9">--%>
+                                            <%--<select class="form-control" required id="stage" name="stage">--%>
+                                                <%--<option value="">-请选择-</option>--%>
+                                                <%--<c:forEach var="item" items="${stageList}">--%>
+                                                    <%--<option value="${item.id}">${item.name}</option>--%>
+                                                <%--</c:forEach>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
+                                <%--<div class="form-group">--%>
+                                    <%--<div>--%>
+                                        <%--<label class="col-sm-3 control-label">--%>
+                                            <%--占比<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-9">--%>
+                                            <%--<input type="text" required data-rule-maxlength="50" placeholder="名称"--%>
+                                                   <%--id="proportion" name="proportion" class="form-control">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="col-sm-1">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
 
                             </div>
                         </div>
@@ -136,7 +163,8 @@
                             保存
                         </button>
                     </div>
-                </div></form>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -150,9 +178,66 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title" id="editTitle"></h3>
             </div>
-            <div id="divShow">
+            <form id="frm_edit" class="form-horizontal">
+                <input type="hidden" id="id1" name="id" value="">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
 
-            </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            委托目的<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <label id="entrustPurpose1" name="entrustPurpose" class="control-label">
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <c:forEach var="item" items="${stageList}">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                阶段<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <label id="stage1" name="stage" class="control-label" temp="${item.id}">
+                                                        ${item.name}
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                                <label class="col-sm-2 control-label">
+                                                    占比<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" required data-rule-maxlength="50"
+                                                           placeholder="占比"
+                                                           id="proportionList1" name="proportionList" temp-id="${item.id}"
+                                                           class="form-control" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="editData()">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </form>
 
         </div>
     </div>
@@ -198,6 +283,7 @@
 
     //删除 阶段权重占比数据
     function delData(entrustPurpose, tbId) {
+        console.log(entrustPurpose);
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -231,7 +317,18 @@
     //新增 阶段权重占比数据
     function saveData() {
         var flag = false;
-        var data = $("#frm").serialize();
+//        var data = $("#frm").serialize();
+        var data = formParams("frm");
+        var str = data.proportionList;
+        var arr = str.split(",");
+        var total = 0;
+        for(var i=0;i<arr.length;i++){
+            total += parseInt(arr[i]);
+        }
+        if(total != 100){
+            toastr.error('占比之和不为100!');
+            return flag;
+        }
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/stageWeightProportion/save",
@@ -254,6 +351,44 @@
             })
         }
     }
+    //新增 阶段权重占比数据
+    function editData() {
+        var flag = false;
+        var data = formParams("frm_edit");
+//        var data = $("#frm_edit").serialize();
+        var str = data.proportionList;
+        var arr = str.split(",");
+        var total = 0;
+        for(var i=0;i<arr.length;i++){
+            total += parseInt(arr[i]);
+        }
+        if(total != 100){
+            toastr.error('占比之和不为100!');
+            return flag;
+        }
+        if ($("#frm_edit").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/stageWeightProportion/save",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadDataDicList();
+                        $('#divEdit').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
     //-------------------------------------------------------------------------------------
 
     //加载节点角色数据
@@ -390,22 +525,19 @@
         var data = {};
         data.entrustPurpose = row.entrustPurpose;
         document.getElementById('editTitle').innerHTML = row.entrustPurposeName;
+        $("#frm_edit").clearAll();
         $.ajax({
             url: "${pageContext.request.contextPath}/stageWeightProportion/edit",
             type: "post",
-            dataType: "html",
+            dataType: "json",
             data: data,
             success: function (result) {
-                alert(result);
-                if (result.ret) {
-                    console.info(result.data.stageWeightProportions);
-                    $("#frm_edit").clearAll();
-                    $('#divEdit').modal();
-                    $('#divShow').html(result);
-                }
-                else {
-                    Alert("请求数据失败，失败原因:" + result.errmsg);
-                }
+                $("#frm_edit").find('[name="entrustPurpose"]').text(row.entrustPurposeName);
+                $("#frm_edit").find('[name="id"]').val(row.entrustPurpose);
+                $.each(result, function (i, temp) {
+                    $("#frm_edit").find('[temp-id=' + temp.stage + ']').val(temp.proportion);
+                })
+                $('#divEdit').modal();
             },
             error: function (result) {
                 console.info(result);

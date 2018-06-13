@@ -83,6 +83,8 @@ public class SurveyCaseStudyDetailController {
         SurveyCaseStudyDetail surveyCaseStudyDetail = null;
         if (id != null && id > 0) {
             surveyCaseStudyDetail = surveyCaseStudyDetailService.getSingelDetail(id);
+            String moduleJsonString = formConfigureService.getModuleJsonString(surveyCaseStudyDetail.getDynamicFormId(), surveyCaseStudyDetail.getDynamicTableId());
+            modelAndView.addObject("JsonValue", moduleJsonString);
         }
         List<SurveyCaseStudyDetailVo> surveyCaseStudyDetailVo = surveyCaseStudyDetailService.getName(id);
         SurveyCaseStudyDetailVo surveyCaseStudyDetailName = surveyCaseStudyDetailVo.get(0);

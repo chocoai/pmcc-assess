@@ -14,7 +14,7 @@
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-查勘明细</h2>
+                    <h2>查勘明细</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -281,17 +281,16 @@
 
     //解析定位结果
     function onCompleteSuccess(data) {
-        $("#defaultLocaltion").val(data.formattedAddress);
+        $("#defaultLocaltion").val(data.position);
     }
 
     //解析定位错误信息
     function onError(data) {
-        //暂不处理
+        window.location.reload();
     }
 
     //map选址成功回调
     function positionPickerSuccess(positionResult) {
-        console.log("进来" + positionResult.position);
         $("#surveyLocaltion").val(positionResult.position);
     }
     //map选址失败回调

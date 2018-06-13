@@ -34,9 +34,7 @@ public class StageWeightProportionDao {
 
     public boolean save(StageWeightProportion stageWeightProportion) {
         StageWeightProportionExample example = new StageWeightProportionExample();
-        StageWeightProportionExample.Criteria criteria = example.createCriteria();
-        criteria.andEntrustPurposeEqualTo(stageWeightProportion.getEntrustPurpose());
-        criteria.andStageEqualTo(stageWeightProportion.getStage());
+        example.createCriteria().andEntrustPurposeEqualTo(stageWeightProportion.getEntrustPurpose()).andStageEqualTo(stageWeightProportion.getStage());
         List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
         if (stageWeightProportions != null && stageWeightProportions.size() > 0) {
             return false;

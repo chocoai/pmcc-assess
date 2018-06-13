@@ -1,12 +1,15 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.StageWeightProportionDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.dto.output.data.ProportionTempVo;
 import com.copower.pmcc.assess.dto.output.data.StageWeightProportionVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -17,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service(value = "stageWeightProportionService")
 public class StageWeightProportionService {
@@ -27,6 +32,8 @@ public class StageWeightProportionService {
 
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
 
     public BootstrapTableVo getList(Integer entrustmentPurpose) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -61,16 +68,44 @@ public class StageWeightProportionService {
         });
     }
 
-    public boolean save(StageWeightProportion stageWeightProportion) throws BusinessException {
-        if (stageWeightProportion == null) {
+    public boolean save(StageWeightProportionDto stageWeightProportionDto) throws BusinessException {
+        if (stageWeightProportionDto == null) {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         }
-        if (stageWeightProportion.getId() != null && stageWeightProportion.getId() > 0) {
-            return stageWeightProportionDao.update(stageWeightProportion);
+        String proportionList = stageWeightProportionDto.getProportionList();
+        String[] strings = proportionList.split(",");
+        if (stageWeightProportionDto.getId() != null && stageWeightProportionDto.getId() > 0) {
+            Integer entrustPurpose = stageWeightProportionDto.getId();
+            List<StageWeightProportion> stageWeightProportions = stageWeightProportionDao.getList(entrustPurpose);
+            boolean flag = false;
+            for(int i = 0;i<stageWeightProportions.size();i++){
+                stageWeightProportions.get(i).setProportion(Integer.valueOf(strings[i]));
+                flag = stageWeightProportionDao.update(stageWeightProportions.get(i));
+                if(flag){
+                    continue;
+                }else{
+                    break;
+                }
+            }
+            return flag;
         } else {
-            return stageWeightProportionDao.save(stageWeightProportion);
+            List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_WORK_STAGE);
+            boolean flag = false;
+            for(int i = 0;i<baseDataDics.size();i++){
+                StageWeightProportionDto stageWeightProportionDto1 = new StageWeightProportionDto();
+                stageWeightProportionDto1.setEntrustPurpose(stageWeightProportionDto.getEntrustPurpose());
+                stageWeightProportionDto1.setStage(baseDataDics.get(i).getId());
+                stageWeightProportionDto1.setProportion(Integer.valueOf(strings[i]));
+                stageWeightProportionDto1.setCreator(processControllerComponent.getThisUser());
+                flag = stageWeightProportionDao.save(stageWeightProportionDto1);
+                if(flag){
+                    continue;
+                }else{
+                    break;
+                }
+            }
+            return flag;
         }
-
     }
 
     public boolean delete(Integer entrustPurpose) throws BusinessException {
@@ -92,7 +127,8 @@ public class StageWeightProportionService {
                         proportionTempVo.setEntrustPurpose(stageWeightProportionVo.getEntrustPurpose());
                     }
                 }
-                if(str.size() > 0){
+
+            if(str.size() > 0){
                     String stageProportionName = String.join(",", str); //转字符串
                     proportionTempVo.setEntrustPurposeName(name);
                     proportionTempVo.setStageProportionName(stageProportionName);

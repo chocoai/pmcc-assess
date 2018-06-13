@@ -15,7 +15,7 @@
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-查勘明细</h2>
+                    <h2>查勘明细</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -27,7 +27,7 @@
 
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-查勘信息详情</h2>
+                    <h2>查勘信息详情</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -126,7 +126,10 @@
     </div>
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+<script src='/assets/js/comm/pmcc.js'></script>
+<script src='/assets/js/comm/erp-footer.js'></script>
+<script src='${pageContext.request.contextPath}/js/datadic-utils.js'></script>
+<script src='${pageContext.request.contextPath}/js/common.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
 

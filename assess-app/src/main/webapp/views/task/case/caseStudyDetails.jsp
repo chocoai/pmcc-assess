@@ -15,13 +15,28 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <!--填写表单-->
+            <input type="hidden" id="JsonValue" value='${JsonValue}'>
+            <div class="x_panel" style="display: none;">
+                <div class="x_title">
+                    <h2>查勘明细</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form id="frm_dynamic_content" class="form-horizontal">
+
+                    </form>
+                </div>
+            </div>
+
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>${parentProject.projectPhaseName}-案例调查详情</h2>
+                    <h2>案例调查详情</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="frm_survey" class="form-horizontal">
+                        <input type="hidden" name="dynamicFormId" value="${surveyCaseStudyDetail.dynamicFormId}">
+                        <input type="hidden" name="dynamicTableId" value="${surveyCaseStudyDetail.dynamicTableId}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -137,9 +152,9 @@
                                                 formData: {
                                                     tableName: "tb_survey_case_study_detail",
                                                     tableId: ${surveyCaseStudyDetail.id},
-                                                    fieldsName: "case_localtion"
+                                                    fieldsName: "survey_localtion"
                                                 },
-                                                deleteFlag: false
+                                                deleteFlag: true
                                             })
                                         }
                                     </script>
@@ -165,11 +180,31 @@
     </div>
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
-
+<script src='/assets/js/comm/pmcc.js'></script>
+<script src='/assets/js/comm/erp-footer.js'></script>
+<script src='${pageContext.request.contextPath}/js/datadic-utils.js'></script>
+<script src='${pageContext.request.contextPath}/js/common.js'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
 
+    $(function () {
+        if("${surveyCaseStudyDetail.dynamicFormId}"!="0"){
+            showDynamicForm();
+        }
 
+    })
+
+    //显示动态表单数据
+    function showDynamicForm() {
+        FormConfigureUtils.getDynamicFormHtml({
+            formModuleId: $("#frm_survey").find('[name=dynamicFormId]').val(),
+            readOnly: true,
+            jsonValue: $("#JsonValue").val(),
+            success: function (html) {
+                $("#frm_dynamic_content").append(html).closest('.x_panel').show();
+            }
+        });
+    }
 
 </script>
 
