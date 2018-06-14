@@ -425,6 +425,206 @@ public class BaseProjectClassifyExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplyUrlIsNull() {
+            addCriterion("apply_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlIsNotNull() {
+            addCriterion("apply_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlEqualTo(String value) {
+            addCriterion("apply_url =", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlNotEqualTo(String value) {
+            addCriterion("apply_url <>", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlGreaterThan(String value) {
+            addCriterion("apply_url >", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("apply_url >=", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlLessThan(String value) {
+            addCriterion("apply_url <", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlLessThanOrEqualTo(String value) {
+            addCriterion("apply_url <=", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlLike(String value) {
+            addCriterion("apply_url like", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlNotLike(String value) {
+            addCriterion("apply_url not like", value, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlIn(List<String> values) {
+            addCriterion("apply_url in", values, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlNotIn(List<String> values) {
+            addCriterion("apply_url not in", values, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlBetween(String value1, String value2) {
+            addCriterion("apply_url between", value1, value2, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyUrlNotBetween(String value1, String value2) {
+            addCriterion("apply_url not between", value1, value2, "applyUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlIsNull() {
+            addCriterion("detail_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlIsNotNull() {
+            addCriterion("detail_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlEqualTo(String value) {
+            addCriterion("detail_url =", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlNotEqualTo(String value) {
+            addCriterion("detail_url <>", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlGreaterThan(String value) {
+            addCriterion("detail_url >", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("detail_url >=", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlLessThan(String value) {
+            addCriterion("detail_url <", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlLessThanOrEqualTo(String value) {
+            addCriterion("detail_url <=", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlLike(String value) {
+            addCriterion("detail_url like", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlNotLike(String value) {
+            addCriterion("detail_url not like", value, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlIn(List<String> values) {
+            addCriterion("detail_url in", values, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlNotIn(List<String> values) {
+            addCriterion("detail_url not in", values, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlBetween(String value1, String value2) {
+            addCriterion("detail_url between", value1, value2, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailUrlNotBetween(String value1, String value2) {
+            addCriterion("detail_url not between", value1, value2, "detailUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultIsNull() {
+            addCriterion("bis_default is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultIsNotNull() {
+            addCriterion("bis_default is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultEqualTo(Boolean value) {
+            addCriterion("bis_default =", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultNotEqualTo(Boolean value) {
+            addCriterion("bis_default <>", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultGreaterThan(Boolean value) {
+            addCriterion("bis_default >", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_default >=", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultLessThan(Boolean value) {
+            addCriterion("bis_default <", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_default <=", value, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultIn(List<Boolean> values) {
+            addCriterion("bis_default in", values, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultNotIn(List<Boolean> values) {
+            addCriterion("bis_default not in", values, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_default between", value1, value2, "bisDefault");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDefaultNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_default not between", value1, value2, "bisDefault");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

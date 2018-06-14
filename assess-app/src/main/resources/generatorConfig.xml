@@ -40,10 +40,7 @@
 
         <!-- 具体表 -->
 
-        <table tableName="tb_project_phase" domainObjectName="ProjectPhase">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_project_work_stage" domainObjectName="ProjectWorkStage">
+        <table tableName="tb_base_project_classify" domainObjectName="BaseProjectClassify">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

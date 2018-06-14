@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.dto.output.project.*;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -117,6 +118,8 @@ public class ProjectInfoService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 项目立项申请
@@ -291,7 +294,7 @@ public class ProjectInfoService {
             //发起流程后更新项目的项目id
             projectInfo.setProcessInsId(processUserDto.getProcessInsId());
             projectInfoDao.updateProjectInfo(projectInfo);
-        }else{//直接进入下一阶段
+        } else {//直接进入下一阶段
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
             updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
@@ -384,23 +387,40 @@ public class ProjectInfoService {
     public ProjectInfoVo getVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        if (!ObjectUtils.isEmpty(projectInfo.getId())){
+        if (!ObjectUtils.isEmpty(projectInfo.getId()) && projectInfo.getId() > 0) {
             ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
             ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-            String s1 = accountGet(projectMember.getUserAccountManager(),1);
-            String s2 = accountGet(projectMember.getUserAccountMember(),0);
-            BeanUtils.copyProperties(projectMember,projectMemberVo);
-            if(org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountManagerName())){
+            String s1 = accountGet(projectMember.getUserAccountManager(), 1);
+            String s2 = accountGet(projectMember.getUserAccountMember(), 0);
+            BeanUtils.copyProperties(projectMember, projectMemberVo);
+            if (org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountManagerName())) {
                 projectMemberVo.setUserAccountManagerName(s1);
             }
-            if(org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountMemberName())){
+            if (org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountMemberName())) {
                 projectMemberVo.setUserAccountMemberName(s2);
             }
             projectInfoVo.setProjectMemberVo(projectMemberVo);
         }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProjectClassId())) {
-            //大类
-            projectInfoVo.setProjectClassName(baseDataDicChange(projectInfo.getProjectClassId(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS)));
+        //项目类型
+        if (projectInfo.getProjectClassId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectClassId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectClassName(projectClassify.getName());
+            }
+        }
+        //项目类别
+        if (projectInfo.getProjectTypeId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectTypeId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectTypeName(projectClassify.getName());
+            }
+        }
+        //项目范围
+        if (projectInfo.getProjectCategoryId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectCategoryId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectCategoryName(projectClassify.getName());
+            }
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
             //委托目的
@@ -415,16 +435,18 @@ public class ProjectInfoService {
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getDistrict())) {
             try {
                 projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));//县
-            }catch (Exception e){
+            } catch (Exception e) {
                 projectInfoVo.setDistrictName("没有匹配到县的数据");
-                logger.error(e.getMessage()+"------------------------");
+                logger.error(e.getMessage() + "------------------------");
             }
         }
         //紧急程度
-        projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
-        projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
-        ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
-
+        if(projectInfo.getUrgency()!=null){
+            projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
+        }
+        if (projectInfo.getDepartmentId() != null) {
+            projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
+        }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
             //价值类型
             projectInfoVo.setProjectTypeName(baseDataDicChange(projectInfo.getValueType(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE)));
@@ -468,7 +490,7 @@ public class ProjectInfoService {
             projectInfoVo.setPossessorVo(possessorVo);
         }
 
-        if (!ObjectUtils.isEmpty(projectInfo.getUnitInformationId())){
+        if (!ObjectUtils.isEmpty(projectInfo.getUnitInformationId())) {
             InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
             if (StringUtils.isNotBlank(unitInformationVo.getuUnitProperties())) {
                 String uUnitPropertiesName = getBaseDataDic(unitInformationVo.getuUnitProperties()).getName();
@@ -498,27 +520,27 @@ public class ProjectInfoService {
         return v;
     }
 
-    public String accountGet(String account,int flag){
+    public String accountGet(String account, int flag) {
         StringBuilder builder = new StringBuilder(1024);
-        if (flag==1){
-            if (!org.springframework.util.StringUtils.isEmpty(account)){
+        if (flag == 1) {
+            if (!org.springframework.util.StringUtils.isEmpty(account)) {
                 String[] strings = account.split(",");
-                for (String s:strings){
-                    if (!org.springframework.util.StringUtils.isEmpty(s)){
-                        builder.append(erpRpcUserService.getSysUser(s).getUserName()+" ");
+                for (String s : strings) {
+                    if (!org.springframework.util.StringUtils.isEmpty(s)) {
+                        builder.append(erpRpcUserService.getSysUser(s).getUserName() + " ");
                     }
                 }
 
             }
-        }else {
-            if (!org.springframework.util.StringUtils.isEmpty(account)){
+        } else {
+            if (!org.springframework.util.StringUtils.isEmpty(account)) {
                 String[] strings = account.split(">");
-                for (String s1:strings){
-                    if (!org.springframework.util.StringUtils.isEmpty(s1)){
+                for (String s1 : strings) {
+                    if (!org.springframework.util.StringUtils.isEmpty(s1)) {
                         String[] strings1 = s1.split(",");
-                        for (String ss:strings1){
-                            if (!org.springframework.util.StringUtils.isEmpty(ss)){
-                                builder.append(erpRpcUserService.getSysUser(ss).getUserName()+" ");
+                        for (String ss : strings1) {
+                            if (!org.springframework.util.StringUtils.isEmpty(ss)) {
+                                builder.append(erpRpcUserService.getSysUser(ss).getUserName() + " ");
                             }
                         }
                     }
@@ -612,16 +634,16 @@ public class ProjectInfoService {
     }
 
     /*联系人 vo crm*/
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer cType,Integer pid) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer cType, Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<InitiateContactsVo> vos = null;
-        if (ObjectUtils.isEmpty(pid)){
+        if (ObjectUtils.isEmpty(pid)) {
             pid = InitiateContactsDto.CPID;
         }
-        if (!ObjectUtils.isEmpty(crmId)){
-            initiateContactsService.writeContacts(crmId,cType,pid);//写入本地
+        if (!ObjectUtils.isEmpty(crmId)) {
+            initiateContactsService.writeContacts(crmId, cType, pid);//写入本地
         }
         vos = initiateContactsService.getVoList(pid, cType);//从本地获取
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
@@ -705,17 +727,19 @@ public class ProjectInfoService {
 
     /**
      * 联系人 检查数量是否达到要求
+     *
      * @return
      */
-    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum){
+    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum) {
         return initiateContactsService.checkContacts(initiateContactsEnum);
     }
 
     /**
      * 第一次填写后留下的委托人 数据信息
+     *
      * @return
      */
-    public InitiateConsignorDto oneFirstConsignor(){
+    public InitiateConsignorDto oneFirstConsignor() {
         return consignorService.oneFirstConsignor();
     }
 

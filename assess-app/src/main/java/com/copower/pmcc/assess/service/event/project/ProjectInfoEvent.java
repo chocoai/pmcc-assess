@@ -33,6 +33,8 @@ public class ProjectInfoEvent extends BaseProcessEvent {
         //更新流程到下一节点
         //将下阶段设置为可编辑计划
         try {
+            //回写crm联系人信息
+
             ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
             projectInfoService.updateProjectInfo(projectInfo);

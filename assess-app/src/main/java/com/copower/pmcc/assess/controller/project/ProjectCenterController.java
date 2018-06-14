@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class ProjectCenterController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectCenterService projectCenterService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @RequestMapping(value = "/index", name = "项目中心")
     public ModelAndView index() {
@@ -92,6 +96,15 @@ public class ProjectCenterController {
     @RequestMapping(value = "/projectCsrList", name = "项目 债权列表")
     public ModelAndView projectCsrList() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectCsrList");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectInitSelect", name = "项目立项选择")
+    public ModelAndView projectInitSelect() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectInitSelect");
+        //获取到类型 类别 范围
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("keyValueDtoList",keyValueDtoList);
         return modelAndView;
     }
 
