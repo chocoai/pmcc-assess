@@ -27,12 +27,11 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目类型<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="projectTypeId" name="projectTypeId" class="form-control"
-                                            required="required" onchange="loadProjectCategoryList($('#projectTypeId').val())">
+                                    <select id="projectTypeId" name="projectTypeId" class="form-control" required="required">
                                         <option value="">请选择</option>
-                                        <c:forEach items="${projectTypeList}" var="item">
+                                        <c:forEach items="${listClass_assess}" var="item">
                                             <c:choose>
-                                                <c:when test="${item.id==projectInfo.projectTypeId}">
+                                                <c:when test="${item.id == projectInfo.projectTypeId}">
                                                     <option value="${item.id}" selected="selected">${item.name}</option>
                                                 </c:when>
                                                 <c:otherwise>
@@ -48,6 +47,17 @@
                                 <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="projectCategoryId" name="projectCategoryId" class="form-control" required="required">
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${listClass_assess}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.id == projectInfo.projectCategoryId}">
+                                                    <option value="${item.id}" selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -1269,7 +1279,7 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        loadProjectCategoryList('${projectInfo.projectTypeId}','${projectInfo.projectCategoryId}');
+        <%--loadProjectCategoryList('${projectInfo.projectTypeId}','${projectInfo.projectCategoryId}');--%>
     })
 
     /*省 市 县 js*/
@@ -1918,17 +1928,17 @@
     }
 
     //加载项目类别
-    function loadProjectCategoryList(projectTypeId,projectCategoryId) {
-        $("#projectCategoryId").empty();
-        if(projectTypeId){
-            AssessCommon.getProjectCategoryList(projectTypeId,function (html,data) {
-                $("#projectCategoryId").append(html);
-                if(projectCategoryId){
-                    $("#projectCategoryId").val(projectCategoryId);
-                }
-            })
-        }
-    }
+    // function loadProjectCategoryList(projectTypeId,projectCategoryId) {
+    //     $("#projectCategoryId").empty();
+    //     if(projectTypeId){
+    //         AssessCommon.getProjectCategoryList(projectTypeId,function (html,data) {
+    //             $("#projectCategoryId").append(html);
+    //             if(projectCategoryId){
+    //                 $("#projectCategoryId").val(projectCategoryId);
+    //             }
+    //         })
+    //     }
+    // }
 
     function projectApply() {
         var projectinfoid = $("#projectinfoid").val();

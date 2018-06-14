@@ -387,10 +387,16 @@ public class ProjectInfoService {
         if (!ObjectUtils.isEmpty(projectInfo.getId())){
             ProjectMember projectMember = projectMemberService.getById(projectInfo.getProjectMemberId());
             ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-            String s1 = accountGet(projectMember.getUserAccountManager());
+            String s1 = accountGet(projectMember.getUserAccountManager(),1);
+            String s2 = accountGet(projectMember.getUserAccountMember(),0);
             BeanUtils.copyProperties(projectMember,projectMemberVo);
+            if(org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountManagerName())){
+                projectMemberVo.setUserAccountManagerName(s1);
+            }
+            if(org.springframework.util.StringUtils.isEmpty(projectMemberVo.getUserAccountMemberName())){
+                projectMemberVo.setUserAccountMemberName(s2);
+            }
             projectInfoVo.setProjectMemberVo(projectMemberVo);
-            projectInfoVo.setUserAccountManagerName(s1);
         }
         if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getProjectClassId())) {
             //大类
@@ -492,11 +498,33 @@ public class ProjectInfoService {
         return v;
     }
 
-    public String accountGet(String account){
-        String[] strings = account.split(",");
+    public String accountGet(String account,int flag){
         StringBuilder builder = new StringBuilder(1024);
-        for (String s:strings){
-            builder.append(erpRpcUserService.getSysUser(s).getUserName()+" ");
+        if (flag==1){
+            if (!org.springframework.util.StringUtils.isEmpty(account)){
+                String[] strings = account.split(",");
+                for (String s:strings){
+                    if (!org.springframework.util.StringUtils.isEmpty(s)){
+                        builder.append(erpRpcUserService.getSysUser(s).getUserName()+" ");
+                    }
+                }
+
+            }
+        }else {
+            if (!org.springframework.util.StringUtils.isEmpty(account)){
+                String[] strings = account.split(">");
+                for (String s1:strings){
+                    if (!org.springframework.util.StringUtils.isEmpty(s1)){
+                        String[] strings1 = s1.split(",");
+                        for (String ss:strings1){
+                            if (!org.springframework.util.StringUtils.isEmpty(ss)){
+                                builder.append(erpRpcUserService.getSysUser(ss).getUserName()+" ");
+                            }
+                        }
+                    }
+                }
+
+            }
         }
         return builder.toString();
     }
