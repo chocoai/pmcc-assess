@@ -38,6 +38,14 @@
         </div>
     </div>
     <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_interestAssistUpload">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
         </label>
@@ -62,7 +70,18 @@
 <script type="text/javascript">
     $(function () {
         interestAssist();
+        
     });
+    function loadinterestAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "interestAssistUpload",
+            formData: {
+                tableName: "tb_csr_principal_interest",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function interestAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrPrincipalInterest/loadLoanPrincipalInterest",
@@ -75,7 +94,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-
+                    loadinterestAssistFiles(data.id);
                     $("#frm_interestAssist").initForm(result.data);
                 }
                 else {

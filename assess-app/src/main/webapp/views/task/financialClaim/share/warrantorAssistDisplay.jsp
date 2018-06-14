@@ -14,7 +14,14 @@
         </div>
     </div>
 
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_warrantorAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -38,11 +45,20 @@
 </div>
 
 
-
 <script type="text/javascript">
     $(function () {
         warrantorAssist();
     });
+    function loadwarrantorAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "warrantorAssistUpload",
+            formData: {
+                tableName: "tb_csr_guarantor",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function warrantorAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -55,7 +71,9 @@
                 search: false,
                 showRefresh: false,
                 onClickRow: function (row) {
+
                     $("#frm_warrantorAssist").initForm(row);
+                    loadwarrantorAssistFiles(row.id)
                 }
             });
     }

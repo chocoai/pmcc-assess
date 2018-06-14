@@ -43,6 +43,7 @@ public class financialClaimBaseAssist implements ProjectTaskInterface {
         ProjectPlanDetails planDetailsParent = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
         modelAndView.addObject("planDetailsParent", planDetailsParent);
         modelAndView.addObject("boxCnName", planDetailsParent.getProjectPhaseName());
+        modelAndView.addObject("currUserAccount", processControllerComponent.getThisUser());
         return modelAndView;
     }
 

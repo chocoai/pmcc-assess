@@ -296,6 +296,15 @@
         </div>
     </div>
     <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="assessAssistUpload" name="assessAssistUpload" type="file" multiple="false">
+            <div id="_assessAssistUpload">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
         </label>
@@ -317,6 +326,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-4 col-sm-offset-5">
         <a href="javascript:;" class="btn btn-warning" onclick="assessAssistSubmit();">
             保存
@@ -328,7 +338,34 @@
 <script type="text/javascript">
     $(function () {
         loadassessAssist();
+        FileUtils.uploadFiles({
+            target: "assessAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_calculation",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_assessAssist [name$='id']").val()
+                };
+                $("#assessAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadassessAssistFiles($("#frm_assessAssist [name$='id']").val());
+            }
+        });
     });
+    function loadassessAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "assessAssistUpload",
+            formData: {
+                tableName: "tb_csr_calculation",
+                creater: "${currUserAccount}",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function loadassessAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -361,6 +398,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_assessAssist").initForm(row);
+                    loadassessAssistFiles(row.id);
                 }
             });
     }

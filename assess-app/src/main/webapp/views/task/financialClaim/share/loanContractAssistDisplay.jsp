@@ -54,7 +54,14 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_LoanContractAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -81,6 +88,16 @@
     $(function () {
         loadLoanContractAssist();
     });
+    function loadLoanContractAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "LoanContractAssistUpload",
+            formData: {
+                tableName: "tb_csr_contract",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function loadLoanContractAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrContract/loadLoanContractAssist",
@@ -93,6 +110,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
+                    loadLoanContractAssistFiles(data.id);
                     $("#frm_loanContractAssist").initForm(result.data);
                 }
                 else {

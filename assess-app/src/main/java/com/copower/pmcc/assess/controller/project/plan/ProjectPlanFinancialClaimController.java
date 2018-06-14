@@ -103,4 +103,26 @@ public class ProjectPlanFinancialClaimController {
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/stopDetails", name = "停用某项任务", method = RequestMethod.POST)
+    public HttpResult stopDetails(Integer id) {
+        try {
+            projectPlanFinancialClaimService.updateProjectPlanDetails(id,0);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/startDetails", name = "启用某项任务", method = RequestMethod.POST)
+    public HttpResult startDetails(Integer id) {
+        try {
+            projectPlanFinancialClaimService.updateProjectPlanDetails(id,1);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
 }

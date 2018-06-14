@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.service.csr;
 
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerMortgageDao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerMortgageVo;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,11 +34,25 @@ public class CsrBorrowerMortgageService {
     private ProjectPlanFinancialClaimService projectPlanFinancialClaimService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
 
     public CsrBorrowerMortgage saveCsrBorrowerMortgage(CsrBorrowerMortgage csrBorrowerMortgage, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
         try {
             if (csrBorrowerMortgage.getId() == null || csrBorrowerMortgage.getId() <= 0) {
                 csrBorrowerMortgageDao.addCsrBorrowerMortgage(csrBorrowerMortgage);
+                //更新附件信息
+                BaseAttachment baseAttachment = new BaseAttachment();
+                baseAttachment.setTableName("tb_csr_borrower_mortgage");
+                baseAttachment.setTableId(0);
+                baseAttachment.setCreater(processControllerComponent.getThisUser());
+
+                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                baseAttachmentNew.setTableId(csrBorrowerMortgage.getId());
+
+                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrBorrowerMortgageDao.updateCsrBorrowerMortgage(csrBorrowerMortgage);
             }
