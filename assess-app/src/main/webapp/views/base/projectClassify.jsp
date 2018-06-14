@@ -224,7 +224,7 @@
                                             <div class="input-group">
                                                 <input type="hidden" id="formModuleId" name="formModuleId" value="">
                                                 <input id='formModuleName' class='form-control' onclick="selectDynamicForm();"
-                                                       required="required" readonly="readonly" maxlength="200" >
+                                                       readonly="readonly" maxlength="200" >
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="selectDynamicForm();" data-toggle="tooltip"

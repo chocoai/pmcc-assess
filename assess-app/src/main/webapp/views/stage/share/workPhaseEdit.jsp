@@ -288,7 +288,7 @@
             }
         );
         TableInit(documentEl, "${pageContext.request.contextPath}/ProjectPhase/list", cols, {
-            classId: 0,
+            classId: $("#clasId").val(),
             typeId: typeId,
             categoryId: categoryId
         }, {
@@ -341,6 +341,7 @@
             $('#class_type_category_label').text(lab);
 
             /**填装值**/
+            $('#projectClassId').val($("#classId").val());
             $('#projectTypeId').val(typeId);
             $('#projectCategoryId').val(categoryId);
             $('#phaseTime').val(1); //默认给一个工时
