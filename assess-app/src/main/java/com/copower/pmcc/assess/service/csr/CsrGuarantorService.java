@@ -1,12 +1,15 @@
 package com.copower.pmcc.assess.service.csr;
 
+import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrGuarantorDao;
+import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
 import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrCalculationVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrGuarantorVo;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -31,11 +34,24 @@ public class CsrGuarantorService {
     private CsrGuarantorDao csrGuarantorDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
     public CsrGuarantor saveCsrGuarantor(CsrGuarantor csrGuarantor, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
         try {
             if (csrGuarantor.getId() == null || csrGuarantor.getId() <= 0) {
                 csrGuarantorDao.addCsrGuarantor(csrGuarantor);
+                //更新附件信息
+                BaseAttachment baseAttachment = new BaseAttachment();
+                baseAttachment.setTableName("tb_csr_guarantor");
+                baseAttachment.setTableId(0);
+                baseAttachment.setCreater(processControllerComponent.getThisUser());
+
+                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                baseAttachmentNew.setTableId(csrGuarantor.getId());
+
+                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrGuarantorDao.updateCsrGuarantor(csrGuarantor);
             }

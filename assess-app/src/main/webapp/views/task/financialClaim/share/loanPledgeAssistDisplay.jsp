@@ -129,7 +129,14 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_PledgeAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -156,6 +163,16 @@
     $(function () {
         loanPledgeAssist();
     });
+    function loadPledgeAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "PledgeAssistUpload",
+            formData: {
+                tableName: "tb_csr_borrower_mortgage",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function loanPledgeAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -173,6 +190,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_loanPledgeAssist").initForm(row);
+                    loadPledgeAssistFiles(row.id)
                 }
             });
     }

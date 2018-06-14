@@ -126,7 +126,7 @@
                                         <input type="hidden" id="departmentId" name="departmentId"
                                                value="${projectInfo.departmentId}">
                                         <input id='departmentName' class='form-control' required="required"
-                                               readonly="readonly" maxlength="200" onclick="selectDepartment();"
+                                               readonly="readonly" maxlength="200"
                                                value="${projectInfo.departmentName}">
                                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -221,7 +221,7 @@
                                                value="${projectInfo.projectMemberVo.userAccountManager}">
                                         <input type="text" class="form-control" readonly="readonly"
                                                value="${projectInfo.projectMemberVo.userAccountManagerName}"
-                                               required="required" onclick="selectUserAccountManager()"
+                                               required="required"
                                                id="userAccountManager" maxlength="200">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -264,8 +264,7 @@
                                     <input type="hidden" id="userAccountMember" name="userAccountMember"
                                            value="${projectInfo.projectMemberVo.userAccountMember}">
                                     <input type="text" id="userAccountMemberID" class="form-control" readonly="readonly"
-                                           onclick="selectUserAccountMember();"
-                                           value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                                          onclick="selectUserAccountMember();" value="${projectInfo.projectMemberVo.userAccountMemberName}">
                                 </div>
                             </div>
                         </div>
@@ -290,10 +289,8 @@
                 <div class="x_content">
                     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
                         <div id="changeType">
-                            法人<input type="radio" name="csType"
-                                     value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
-                            自然人<input type="radio" name="csType"
-                                      value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
+                            法人<input type="radio" name="csType" value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
+                            自然人<input type="radio" name="csType" value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
                         </div>
                         <div id="legal_person" class="panel-body">
                             <div class="form-group">
@@ -489,10 +486,8 @@
                 </div>
                 <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
                     <div id="changeType1">
-                        法人<input type="radio" name="pType"
-                                 value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
-                        自然人<input type="radio" name="pType"
-                                  value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
+                        法人<input type="radio" name="pType" value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
+                        自然人<input type="radio" name="pType" value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
                     </div>
                     <div id="legal_person1" class="panel-body">
 
@@ -1297,7 +1292,7 @@
         for (var i = 0; i < len; i++) {
             var optionLen = $("#district option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value", item[i].areaId);
+            fieldElment.setAttribute("value", item[i].id);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
 
@@ -1851,6 +1846,30 @@
         json = JSON.stringify(data);
     }
 
+    //检查联系人是否达到要求
+    function checkContacts() {
+        var isAllDistribution = true;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+
+                } else {
+                    Alert(result.errmsg);
+                }
+                isAllDistribution = result.ret;
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        })
+        return isAllDistribution;
+    }
+
     function projectApply() {
         var projectinfoid = $("#projectinfoid").val();
         if (projectinfoid == null || projectinfoid == '') {
@@ -1877,14 +1896,7 @@
         $.ajax({
             type: "POST",
             url: getContextPath() + "/projectInfo/projectApplySubmit",
-            data: {
-                formData: json,
-                projectinfoid: $("#projectinfoid").val(),
-                consignorid: $("#consignorid").val(),
-                possessorid: $("#consignorid").val(),
-                possessorid: $("#possessorid").val(),
-                unitInformationid: $("#unitInformationid").val()
-            },
+            data: "formData=" + json + "&projectinfoid=" + $("#projectinfoid").val() + "&consignorid=" + $("#consignorid").val() + "&possessorid=" + $("#consignorid").val() + "&possessorid=" + $("#possessorid").val() + "&unitInformationid=" + $("#unitInformationid").val(),
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作

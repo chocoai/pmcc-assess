@@ -260,6 +260,14 @@
         </div>
     </div>
     <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_assessAssistUpload">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
         </label>
@@ -285,6 +293,16 @@
     $(function () {
         loadassessAssist();
     });
+    function loadassessAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "assessAssistUpload",
+            formData: {
+                tableName: "tb_csr_calculation",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function loadassessAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -310,6 +328,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_assessAssist").initForm(row);
+                    loadassessAssistFiles(row.id)
                 }
             });
     }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
+import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
@@ -36,6 +37,8 @@ public class ProjectInfoEvent extends BaseProcessEvent {
             //回写crm联系人信息
 
             ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processExecution.getProcessInstanceId());
+            //回写到CRM中
+            projectInfoService.writeCrmCustomerDto(projectInfo.getId(), InitiateContactsEnum.THREE.getNum());
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
             projectInfoService.updateProjectInfo(projectInfo);
             List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");

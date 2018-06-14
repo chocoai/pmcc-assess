@@ -13,6 +13,7 @@
     <result column="c_email" property="cEmail" jdbcType="VARCHAR" />
     <result column="c_spare_field" property="cSpareField" jdbcType="VARCHAR" />
     <result column="c_pid" property="cPid" jdbcType="INTEGER" />
+    <result column="crm_id" property="crmId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, c_type, c_name, c_dept, c_phone, c_email, 
-    c_spare_field, c_pid
+    c_spare_field, c_pid, crm_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiateContactsExample" >
     select
@@ -113,11 +114,11 @@
     insert into tb_initiate_contacts (creator, gmt_created, gmt_modified, 
       c_type, c_name, c_dept, 
       c_phone, c_email, c_spare_field, 
-      c_pid)
+      c_pid, crm_id)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{cType,jdbcType=INTEGER}, #{cName,jdbcType=VARCHAR}, #{cDept,jdbcType=VARCHAR}, 
       #{cPhone,jdbcType=VARCHAR}, #{cEmail,jdbcType=VARCHAR}, #{cSpareField,jdbcType=VARCHAR}, 
-      #{cPid,jdbcType=INTEGER})
+      #{cPid,jdbcType=INTEGER}, #{crmId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateContacts" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -155,6 +156,9 @@
       <if test="cPid != null" >
         c_pid,
       </if>
+      <if test="crmId != null" >
+        crm_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -186,6 +190,9 @@
       </if>
       <if test="cPid != null" >
         #{cPid,jdbcType=INTEGER},
+      </if>
+      <if test="crmId != null" >
+        #{crmId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="record.cPid != null" >
         c_pid = #{record.cPid,jdbcType=INTEGER},
       </if>
+      <if test="record.crmId != null" >
+        crm_id = #{record.crmId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +258,8 @@
       c_phone = #{record.cPhone,jdbcType=VARCHAR},
       c_email = #{record.cEmail,jdbcType=VARCHAR},
       c_spare_field = #{record.cSpareField,jdbcType=VARCHAR},
-      c_pid = #{record.cPid,jdbcType=INTEGER}
+      c_pid = #{record.cPid,jdbcType=INTEGER},
+      crm_id = #{record.crmId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +297,9 @@
       <if test="cPid != null" >
         c_pid = #{cPid,jdbcType=INTEGER},
       </if>
+      <if test="crmId != null" >
+        crm_id = #{crmId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -300,7 +314,8 @@
       c_phone = #{cPhone,jdbcType=VARCHAR},
       c_email = #{cEmail,jdbcType=VARCHAR},
       c_spare_field = #{cSpareField,jdbcType=VARCHAR},
-      c_pid = #{cPid,jdbcType=INTEGER}
+      c_pid = #{cPid,jdbcType=INTEGER},
+      crm_id = #{crmId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

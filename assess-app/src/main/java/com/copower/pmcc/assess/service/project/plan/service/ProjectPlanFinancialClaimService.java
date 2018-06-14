@@ -188,6 +188,11 @@ public class ProjectPlanFinancialClaimService {
         } else {
             details += (String.format("\"%sprojectPhaseName\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
         }
+        if (projectPlanDetailsVo.getBisEnable() != null) {
+            details += (String.format("\"%sbisEnable\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), projectPlanDetailsVo.getBisEnable()));
+        } else {
+            details += (String.format("\"%sbisEnable\":\"%s\",", projectPlanDetailsVo.getDeclareFormName(), ""));
+        }
         return details;
     }
 
@@ -210,7 +215,7 @@ public class ProjectPlanFinancialClaimService {
         //对每一个客户添加相应的默认工作任务事项
         StringBuilder stringBuilder = new StringBuilder();
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name, plan_id, project_id,project_phase_id, status, " + "sorting,project_work_stage_id, first_pid, pid, bis_last_layer) " +
-                "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
+                "" + "" + "" + "" + "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
 
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
@@ -246,8 +251,8 @@ public class ProjectPlanFinancialClaimService {
             for (ProjectPhase item : filter) {
 
                 String string = String.format(sqlTemp, String.format("%s|%s", projectPlanDetails.getProjectPhaseName(), item.getProjectPhaseName()), item.getPhaseTime(), projectPlanDetails
-                        .getPlanId(), projectPlanDetails.getProjectId(), item.getId(), ProcessStatusEnum.RUN.getValue(), item.getPhaseSort(), projectPlan.getWorkStageId(), 0,
-                        projectPlanDetails.getId(), true);
+                        .getPlanId(), projectPlanDetails.getProjectId(), item.getId(), ProcessStatusEnum.RUN.getValue(), item.getPhaseSort(), projectPlan.getWorkStageId(), 0, projectPlanDetails
+                        .getId(), true);
                 stringBuilder.append(string);
             }
         }
@@ -281,6 +286,9 @@ public class ProjectPlanFinancialClaimService {
         }
         if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
             for (ProjectPlanDetails item : projectPlanDetails) {
+                if (item.getBisEnable() == false) {
+                    continue;
+                }
                 item.setPlanStartDate(DateUtils.parse(projectPlanFinancialClaimFastDto.getPlanStartDate()));
                 item.setPlanEndDate(DateUtils.parse(projectPlanFinancialClaimFastDto.getPlanEndDate()));
                 item.setPlanHours(projectPlanFinancialClaimFastDto.getPlanHours());
@@ -296,6 +304,18 @@ public class ProjectPlanFinancialClaimService {
     }
 
     public void updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails) throws BusinessException {
+        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+    }
+
+    public void updateProjectPlanDetails(Integer id, Integer type) throws BusinessException {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        if (type == 0) {
+            projectPlanDetails.setBisEnable(false);
+            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        } else {
+            projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetails.setBisEnable(true);
+        }
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }
 
@@ -344,6 +364,7 @@ public class ProjectPlanFinancialClaimService {
 
         ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
         projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
+
         projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
         List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(projectPlanDetailsWhere);
 

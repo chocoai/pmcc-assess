@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -78,6 +79,10 @@ public class CsrBorrowerService {
     private CommonService commonService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseAttachmentDao baseAttachmentDao;
 
     public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -133,8 +138,6 @@ public class CsrBorrowerService {
         }
         return responseEntity;
     }
-
-
 
     /**
      * 返回 下载的数据流
@@ -238,7 +241,8 @@ public class CsrBorrowerService {
     }
 
     public List<CsrBorrowerVo> getCsrBorrowerVos(List<CsrBorrower> csrBorrowerList) {
-        if (CollectionUtils.isEmpty(csrBorrowerList)) return null;
+        if (CollectionUtils.isEmpty(csrBorrowerList))
+            return null;
         List<Integer> tableIds = LangUtils.transform(csrBorrowerList, p -> p.getId());
         BaseAttachment queryParam = new BaseAttachment();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
@@ -268,6 +272,16 @@ public class CsrBorrowerService {
         try {
             if (csrBorrowerEntering.getId() == null || csrBorrowerEntering.getId() <= 0) {
                 csrBorrowerEnteringDao.addCsrBorrowerEntering(csrBorrowerEntering);
+                //更新附件信息
+                BaseAttachment baseAttachment = new BaseAttachment();
+                baseAttachment.setTableName("tb_csr_borrower_entering");
+                baseAttachment.setTableId(0);
+                baseAttachment.setCreater(processControllerComponent.getThisUser());
+
+                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                baseAttachmentNew.setTableId(csrBorrowerEntering.getId());
+
+                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrBorrowerEnteringDao.update(csrBorrowerEntering);
             }
@@ -311,17 +325,20 @@ public class CsrBorrowerService {
 
     /**
      * 导出报告excle
-     * @param filePath 附件路径
+     *
+     * @param filePath  附件路径
      * @param dataIndex 数据开始行
-     * @param mapList 数据  list行 Map<String,Object> Map<PO_jkr,涂桂芝></>
+     * @param mapList   数据  list行 Map<String,Object> Map<PO_jkr,涂桂芝></>
      */
-    public void exportReportExcel(String filePath, Integer dataIndex, List<Map<String,Object>> mapList){
+    public void exportReportExcel(String filePath, Integer dataIndex, List<Map<String, Object>> mapList) {
         try {
             Map<String, Integer> report = getReportExcelOneKey(filePath);
             FileInputStream inputStream = new FileInputStream(filePath);
             int size = mapList.size();
-            if (dataIndex <= 0) throw new Exception("数据输入非法");
-            if (!(size >= dataIndex)) throw new Exception("数据列表非法");
+            if (dataIndex <= 0)
+                throw new Exception("数据输入非法");
+            if (!(size >= dataIndex))
+                throw new Exception("数据列表非法");
             Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
             //暂时只取第一个工作表
             Sheet sheet = workbook.getSheetAt(0);
@@ -329,13 +346,13 @@ public class CsrBorrowerService {
             Cell cell = null;
             for (int i = dataIndex; i < size; i++) {
                 row = sheet.getRow(i);//行
-                Map<String, Object>  objectMap = mapList.get(i);
-                for (Map.Entry<String, Object> objectEntry:objectMap.entrySet()){
+                Map<String, Object> objectMap = mapList.get(i);
+                for (Map.Entry<String, Object> objectEntry : objectMap.entrySet()) {
                     String key = objectEntry.getKey();
                     Object value = objectEntry.getValue();
-                    Integer cellIndex = getReportExcelColumn(report,key);
+                    Integer cellIndex = getReportExcelColumn(report, key);
                     cell = row.getCell(cellIndex);//列
-                    if (cell!=null){
+                    if (cell != null) {
                         cell.setCellValue(value.toString());
                     }
                 }
@@ -353,12 +370,12 @@ public class CsrBorrowerService {
         }
     }
 
-    private  Integer getReportExcelColumn(Map<String, Integer> report,String key)throws Exception{
+    private Integer getReportExcelColumn(Map<String, Integer> report, String key) throws Exception {
         Integer temp = null;
-        for (Map.Entry<String, Integer> entry:report.entrySet()){
+        for (Map.Entry<String, Integer> entry : report.entrySet()) {
             Map.Entry<String, Integer> integerEntry = entry;
             String k = integerEntry.getKey();
-            if (k.equals(key)){//匹配成功!
+            if (k.equals(key)) {//匹配成功!
                 temp = integerEntry.getValue();
             }
         }
@@ -367,11 +384,12 @@ public class CsrBorrowerService {
 
     /**
      * 获取第一行的key
+     *
      * @param filePath
      * @return
      * @throws Exception
      */
-    private  Map<String, Integer> getReportExcelOneKey(String filePath)throws Exception{
+    private Map<String, Integer> getReportExcelOneKey(String filePath) throws Exception {
         //列数以2003版为基准 最大是16384
         final Integer MAX_COLUMN = 16384;
         Map<String, Integer> integerMap = new HashMap<>();
@@ -382,15 +400,15 @@ public class CsrBorrowerService {
         //因为是第一行作为key所以只取第一行
         Row row = sheet.getRow(0);
         Cell cell = null;
-        if (row!=null){
+        if (row != null) {
             for (int i = 0; i < MAX_COLUMN; i++) {
                 cell = row.getCell(i);
-                if (cell!=null){
+                if (cell != null) {
                     cell.setCellType(Cell.CELL_TYPE_STRING);
                     String cellValue = cell.getStringCellValue();
-                    if (!org.springframework.util.StringUtils.isEmpty(cellValue)){
+                    if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
                         //取key
-                        integerMap.put(cellValue,i);
+                        integerMap.put(cellValue, i);
                     }
                 }
             }

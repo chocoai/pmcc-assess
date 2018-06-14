@@ -39,7 +39,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_csr_project_info" domainObjectName="CsrProjectInfo">
+
+        <table tableName="tb_base_project_classify" domainObjectName="BaseProjectClassify">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

@@ -25,6 +25,8 @@ public class InitiateContacts {
 
     private Integer cPid;
 
+    private String crmId;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class InitiateContacts {
 
     public void setcPid(Integer cPid) {
         this.cPid = cPid;
+    }
+
+    public String getCrmId() {
+        return crmId;
+    }
+
+    public void setCrmId(String crmId) {
+        this.crmId = crmId == null ? null : crmId.trim();
     }
 }

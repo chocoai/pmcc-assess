@@ -86,7 +86,12 @@ public class ProjectPlanDetailsService {
             for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
                 for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                     if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                        projectPlanDetailsVo.setUrl(responsibilityDto.getUrl());
+
+                        if (responsibilityDto.getUrl().contains("?")) {
+                            projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                        } else {
+                            projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                        }
                     }
                 }
             }
@@ -130,6 +135,10 @@ public class ProjectPlanDetailsService {
                 bidBaseAttachments = bidBaseAttachmentService.getAttachmentListByTableName("tb_project_plan_details", detailsIds);
             }
             for (ProjectPlanDetails item : projectPlanDetails) {
+                if(item.getBisEnable()==false)
+                {
+                    continue;
+                }
                 ProjectPlanDetailsVo projectPlanDetailsVo = getProjectPlanDetailsVo(item);
                 if (bidBaseAttachments != null && bidBaseAttachments.size() > 0) {
                     List<BaseAttachment> filter = LangUtils.filter(bidBaseAttachments, o -> {

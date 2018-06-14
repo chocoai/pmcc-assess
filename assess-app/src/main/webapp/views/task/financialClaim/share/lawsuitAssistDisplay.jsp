@@ -19,7 +19,14 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <div id="_lawsuitAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -46,6 +53,16 @@
     $(function () {
         lawsuitAssist();
     });
+    function loadlawsuitAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "lawsuitAssistUpload",
+            formData: {
+                tableName: "tb_csr_litigation",
+                tableId: tableId
+            },
+            deleteFlag: false
+        });
+    }
     function lawsuitAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrLitigation/loadLoanLitigation",
@@ -58,6 +75,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
+                    loadlawsuitAssistFiles(data.id);
                     $("#frm_lawsuitAssist").initForm(result.data);
                 }
                 else {

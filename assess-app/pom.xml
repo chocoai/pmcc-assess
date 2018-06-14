@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>hr-api</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.10</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
@@ -41,12 +41,12 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
-            <version>1.0.70</version>
+            <version>1.0.73</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>bpm-api</artifactId>
-            <version>1.0.53</version>
+            <version>1.0.55</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.copower</groupId>

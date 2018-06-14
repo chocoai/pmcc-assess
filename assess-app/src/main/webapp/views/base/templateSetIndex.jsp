@@ -36,77 +36,69 @@
                             <div id="tree" class="col-md-3">
 
                             </div>
-
                             <div class="col-md-9">
-                                <div class="x_content">
-                                    <input type="hidden" id="tabs_index_value">
-                                    <input type="hidden" id="tree_value" value="0">
-                                    <div class="col-xs-10">
-                                        <!-- Tab panes -->
-                                        <div class="tab-content">
-                                            <div class="tab-pane" id="settings">
-                                                <label class="label label-warning" id="lab_entrust"></label>
-                                                <c:forEach var="reportItem" items="${reportType}">
-                                                    <label class="radio-inline"><input type="radio" value="${reportItem.id}" name="reportType" checked="checked"
-                                                                                       onclick="reloadTableList()"> ${reportItem.name}</label>
-                                                </c:forEach>
-                                                <label class="radio-inline"><input type="radio" value="0" name="csType" checked="checked"
-                                                                                   onclick="reloadTableList()"> 自然人</label>
-                                                <label class="radio-inline"><input type="radio" value="1" name="csType"
-                                                                                   onclick="reloadTableList()"> 法人</label>
-
-                                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                                        <li role="presentation" class="active"><a href="#tab_bookmark" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">书签</a>
-                                                        </li>
-                                                        <li role="presentation" class=""><a href="#tab_template" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">模板</a>
-                                                        </li>
-                                                    </ul>
-                                                    <div id="myTabContent" class="tab-content">
-                                                        <div  class="tab-pane fade active in" id="tab_bookmark" aria-labelledby="home-tab">
-                                                            <p id="toolbar">
-                                                                <a class="btn btn-success" onclick="addBookmark(0)">
-                                                                    新增书签
-                                                                </a>
-                                                            </p>
-                                                            <table id="tb_bookmark_list" class="table table-bordered"></table>
-                                                        </div>
-                                                        <div  class="tab-pane fade" id="tab_template" aria-labelledby="profile-tab">
-                                                            <p id="toolbar_files">
-                                                                <a class="btn btn-success" onclick="addBookmark(0)">
-                                                                    新增模板
-                                                                </a>
-                                                            </p>
-                                                            <table id="tb_files_list" class="table table-bordered"></table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                <input type="hidden" id="tree_value" value="0">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <select id='entrust' name='entrust' class='form-control search-select select2' onchange="getProjectClassify()">
+                                            <c:forEach var="item" items="${entrust}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <select id='csType' name='csType' class='form-control  search-select select2' onchange="reloadTableList()">
+                                            <option value="0">自然人</option>
+                                            <option value="1">法人</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <select id='reportTypeId' name='reportTypeId' class='form-control  search-select select2' onchange="reloadTableList()">
+                                            <c:forEach var="item" items="${reportType}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#tab_bookmark" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">书签</a>
+                                            </li>
+                                            <li role="presentation" class=""><a href="#tab_template" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">模板</a>
+                                            </li>
+                                        </ul>
+                                        <div id="myTabContent" class="tab-content">
+                                            <div class="tab-pane fade active in" id="tab_bookmark" aria-labelledby="home-tab">
+                                                <p id="toolbar">
+                                                    <a class="btn btn-success" onclick="addBookmark(0)">
+                                                        新增书签
+                                                    </a>
+                                                </p>
+                                                <table id="tb_bookmark_list" class="table table-bordered"></table>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab_template" aria-labelledby="profile-tab">
+                                                <p id="toolbar_files">
+                                                    <a class="btn btn-success" onclick="addReportTemplate()">
+                                                        新增模板
+                                                    </a>
+                                                </p>
+                                                <table id="tb_files_list" class="table table-bordered"></table>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <!-- required for floating -->
-                                        <!-- Nav tabs -->
-                                        <ul class="nav nav-tabs tabs-right">
-                                            <c:forEach var="item" items="${entrust}">
-                                                <li id="settings-li-${item.id}" class=""><a id="tabs_a_${item.id}" href="#settings" onclick="changeTabs(${item.id})" data-toggle="tab"
-                                                                                            aria-expanded="false">${item.name}</a>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+
 
 <div id="modalSubTemplate" class="modal fade bs-example-modal-lg"
      data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
@@ -236,20 +228,96 @@
         </div>
     </div>
 </div>
+
+
+<div id="modalTemplateFiles" class="modal fade bs-example-modal-lg"
+     data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class='modal-header'>
+                <h3 class='modal-title'>模板设置</h3></div>
+            <form id='frm_files' class='form-horizontal'>
+                <input type='hidden' id="files_id" name='id' value="0">
+                <div class='modal-body'>
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <div class='panel-body'>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            模板名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input name='filesRemarks' class='form-control' required
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            报告适用范围<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select id='classifyId' name='classifyId' required class='form-control  search-select select2'>
+                                                <option value="0">全部实用</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'>
+                                        <label
+                                                class='col-sm-2 control-label'>报告模板</label>
+                                        <div class='col-sm-10'>
+                                            <input id="uploadTemplateFileReport" name="uploadTemplateFileReport" type="file" multiple="false">
+                                            <div id="_uploadTemplateFileReport">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class='x-valid'>
+                                        <label
+                                                class='col-sm-2 control-label'>汇总模板</label>
+                                        <div class='col-sm-10'>
+                                            <input id="uploadTemplateFileExport" name="uploadTemplateFileExport" type="file" multiple="false">
+                                            <div id="_uploadTemplateFileExport">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class='modal-footer'>
+                <button type='button' data-dismiss='modal' class='btn btn-default'>取消</button>
+                <button type='button' class='btn btn-primary save_custom_model' onclick="saveTemplateFiles();">保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
 
 <script type="text/javascript">
     var tableList = $("#tb_bookmark_list");
     var tableSubList = $("#tb_fileds_sublevel_list");
+    var tableFilesList = $("#tb_files_list");
     $(function () {
+        $("#entrust").select2();
+        $("#csType").select2();
+        $("#reportTypeId").select2();
         loadTree();
-        $("#settings").addClass("active");
-        $("#settings-li-${firstEntrust}").addClass("active");
-        $(":radio[name='reportType'][value='${firstReportType}']").prop("checked", "checked");
+
         loadDatagrid();
         loadSubDatagrid();
-        changeTabs(${firstEntrust});
+        loadTemplateFilesTableList();
+        getProjectClassify();
         $("#dataPoolTableId").select2();
         $("#dataPoolColumnsId").select2();
         $("#dataPoolTemplateId").select2();
@@ -270,7 +338,45 @@
                 loadTemplateAttachment($("#id").val());
             }
         });
+
+        FileUtils.uploadFiles({
+            target: "uploadTemplateFileReport",
+            showFileList: false,
+            fileExtArray: ["doc", "docx"]
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_base_report_template_files",
+                    creater: "${currUserAccount}",
+                    tableId: $("#files_id").val(),
+                    fieldsName: "report"
+                };
+                $("#uploadTemplateFileReport").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadTemplateFilesAttachment($("#files_id").val(), "report");
+            }
+        });
+        FileUtils.uploadFiles({
+            target: "uploadTemplateFileExport",
+            showFileList: false,
+            fileExtArray: ["xls", "xlsx"]
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_base_report_template_files",
+                    creater: "${currUserAccount}",
+                    tableId: $("#files_id").val(),
+                    fieldsName: "export"
+                };
+                $("#uploadTemplateFileExport").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadTemplateFilesAttachment($("#files_id").val(), "export");
+            }
+        });
     });
+
     //加载附件
     function loadTemplateAttachment(tableId) {
         FileUtils.getFileShows({
@@ -283,25 +389,45 @@
             deleteFlag: true
         });
     }
-    function changeTabs(id) {
-        $("#lab_entrust").html($("#tabs_a_" + id + "").html());
-        $("#tabs_index_value").val(id);
-        reloadTableList();
+
+    //加载附件
+    function loadTemplateFilesAttachment(tableId, fieldsName) {
+        var target = "uploadTemplateFile";
+        switch (fieldsName) {
+            case "report": {
+                target += "Report";
+                break;
+            }
+            case "export": {
+                target += "Export";
+                break;
+            }
+        }
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                tableName: "tb_base_report_template_files",
+                creater: "${currUserAccount}",
+                tableId: tableId,
+                fieldsName: fieldsName
+            },
+            deleteFlag: true
+        });
     }
     function reloadTableList() {
         TableReload(tableList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateList", {
             customId: $("#tree_value").val(),
-            entrustId: $("#tabs_index_value").val(),
-            reportId: $("input[name='reportType']:checked").val(),
-            csType: $("input[name='csType']:checked").val(),
+            entrustId: $("#entrust").val(),
+            reportId: $("#reportTypeId").val(),
+            csType: $("#csType").val()
         });
+        reloadTemplateFilesTableList();
     }
-
     function reloadSubTableList() {
         TableReload(tableSubList, "${pageContext.request.contextPath}/templateSet/getBaseReportSubTemplateList", {
             customId: $("#tree_value").val(),
-            entrustId: $("#tabs_index_value").val(),
-            reportId: $("input[name='reportType']:checked").val(),
+            entrustId: $("#entrust").val(),
+            reportId: $("#reportTypeId").val(),
             pid: $("#pid").val()
         });
     }
@@ -368,8 +494,8 @@
         TableInit(tableSubList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateList", cols,
             {
                 customId: $("#tree_value").val(),
-                entrustId: $("#tabs_index_value").val(),
-                reportId: $("input[name='reportType']:checked").val(),
+                entrustId: $("#entrust").val(),
+                reportId: $("#reportTypeId").val(),
                 pid: $("#pid").val()
             }, {
                 toolbar: '#sublevel_toolbar',
@@ -426,17 +552,15 @@
         TableInit(tableList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateList", cols,
             {
                 customId: $("#tree_value").val(),
-                entrustId: $("#tabs_index_value").val(),
-                reportId: $("input[name='reportType']:checked").val(),
-                csType: $("input[name='csType']:checked").val()
+                entrustId: $("#entrust").val(),
+                reportId: $("#reportTypeId").val(),
+                csType: $("#csType").val()
             }, {
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
                 }
             });
     }
-
-
     function addBookmark(id) {
         var pid = $("#pid").val();
         $("#frm").clearAll();
@@ -453,7 +577,6 @@
         loadTemplateAttachment(0);
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
-
     function editBookmark(id) {
         $.ajax({
             url: "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateById",
@@ -487,7 +610,6 @@
             }
         });
     }
-
     function changePool() {
         var dataPoolType = $("#dataPoolType").val();
         if (!dataPoolType) {
@@ -534,7 +656,6 @@
             }
         });
     }
-
     function deleteBookmark(id) {
         var tips = "是否确认删除当前表单?";
 
@@ -570,7 +691,6 @@
             });
         });
     }
-
     function loadTableCloumns() {
         var dataPoolTableId = $("#dataPoolTableId").val();
         if (!dataPoolTableId) {
@@ -598,7 +718,6 @@
             }
         });
     }
-
     function saveTemplate() {
         if (!$("#frm").valid()) {
             return false;
@@ -606,9 +725,9 @@
         Loading.progressShow();
         var data = formParams("frm");
         data["customerId"] = $("#tree_value").val();
-        data["entrustId"] = $("#tabs_index_value").val();
-        data["reportTypeId"] = $("input[name='reportType']:checked").val();
-        data["csType"] = $("input[name='csType']:checked").val();
+        data["entrustId"] = $("#entrust").val();
+        data["reportTypeId"] = $("#reportTypeId").val();
+        data["csType"] = $("#csType").val();
 
         $.ajax({
             url: "${pageContext.request.contextPath}/templateSet/saveTemplateData",
@@ -638,12 +757,204 @@
         });
 
     }
-
     function showSubTemplate(id) {
         $("#pid").val(id);
         reloadSubTableList();
         $('#modalSubTemplate').modal({backdrop: 'static', keyboard: false});
     }
+
+    function loadTemplateFilesTableList() {
+        var cols = [];
+        cols.push({field: 'id', title: '编号', visible: false});
+        cols.push({field: 'classifyName', title: '适用范围', width: '10%'});
+        cols.push({field: 'filesRemarks', title: '显示名称', width: '20%'});
+        cols.push({
+            field: 'reportFiles', title: '报告模板', width: '30%', formatter: function (value, row, index) {
+                var s = "";
+                if (value) {
+                    $.each(value, function (i, j) {
+                        s += value;
+                    })
+                }
+                return s;
+            }
+        });
+        cols.push({
+            field: 'exportFiles', title: '汇总表模板', width: '30%', formatter: function (value, row, index) {
+                var s = "";
+                if (value) {
+                    $.each(value, function (i, j) {
+                        s += value;
+                    })
+                }
+                return s;
+            }
+        });
+        cols.push({
+            field: 'opation', title: '操作', width: '15%', formatter: function (value, row, index) {
+                var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editTemplateFiles(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
+
+                if (row.bisEnable) {
+                    s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='停用' onclick='stopFiles(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-stop fa-white'></i></a>";
+                }
+                else {
+                    s += "<a href='javascript:;' class='btn btn-xs btn-info tooltips'  data-toggle='tooltip' data-original-title='启用' onclick='satrtFiles(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-play fa-white'></i></a>";
+                }
+                return s;
+            }
+        });
+
+        TableInit(tableFilesList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateFilesList", cols,
+            {
+                customId: $("#tree_value").val(),
+                entrustId: $("#entrust").val(),
+                reportId: $("#reportTypeId").val(),
+                csType: $("#csType").val()
+            }, {
+                toolbar: "#toolbar_files",
+                onLoadSuccess: function () {
+                    $(".tooltips").tooltip();
+                }
+            });
+    }
+    function reloadTemplateFilesTableList() {
+        TableReload(tableFilesList, "${pageContext.request.contextPath}/templateSet/getBaseReportTemplateFilesList", {
+            customId: $("#tree_value").val(),
+            entrustId: $("#entrust").val(),
+            reportId: $("#reportTypeId").val(),
+            csType: $("#csType").val()
+        });
+    }
+    function addReportTemplate() {
+        $("#frm_files").clearAll();
+        $("#files_id").val(0);
+        loadTemplateFilesAttachment(0, "report");
+        loadTemplateFilesAttachment(0, "export");
+        $('#modalTemplateFiles').modal({backdrop: 'static', keyboard: false});
+    }
+    function editTemplateFiles(id) {
+        $("#frm_files").clearAll();
+        var row = $(tableFilesList).bootstrapTable("getRowByUniqueId", id);
+        $("#frm_files").initForm(row);
+        loadTemplateFilesAttachment(id, "report");
+        loadTemplateFilesAttachment(id, "export");
+        $('#modalTemplateFiles').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function saveTemplateFiles() {
+        if (!$("#frm_files").valid()) {
+            return false;
+        }
+        var data = formParams("frm_files");
+        data["customerId"] = $("#tree_value").val();
+        data["entrustId"] = $("#entrust").val();
+        data["reportTypeId"] = $("#reportTypeId").val();
+        data["csType"] = $("#csType").val();
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/templateSet/saveTemplateFilesData",
+            data: data,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("保存成功");
+                    reloadTemplateFilesTableList();
+                    $('#modalTemplateFiles').modal('hide');
+                }
+                else {
+                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+    function stopFiles(id) {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/templateSet/stopBaseReportTemplateFiles",
+            data: {
+                id: id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    reloadTemplateFilesTableList();
+                }
+                else {
+                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+    function satrtFiles(id) {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/templateSet/startBaseReportTemplateFiles",
+            data: {
+                id: id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    reloadTemplateFilesTableList();
+                }
+                else {
+                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
+    function getProjectClassify() {
+        reloadTableList();
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/templateSet/getClassifyList",
+            data: {
+                id: $("#entrust").val()
+            },
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    var ativityHtml = "<option value='0'>所有适用</option>";
+                    if (result.ret) {
+                        $.each(result.data, function (i, j) {
+                            ativityHtml += "<option value='" + j.id + "'>" + j.name + "</option>";
+                        });
+                    }
+                    $("#classifyId").html(ativityHtml);
+                    $("#classifyId").select2();
+                }
+                else {
+                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
 </script>
 
 

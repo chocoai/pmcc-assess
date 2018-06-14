@@ -6,8 +6,10 @@ import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseReportDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.output.BaseReportTemplateFilesVo;
+import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateFilesVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -41,6 +43,10 @@ public class BaseReportService {
     private BaseAttachmentDao baseAttachmentDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     public List<BaseReportTable> getBaseReportTableList(Integer typeId) {
         return baseReportDao.getBaseReportTableList(typeId);
@@ -53,9 +59,11 @@ public class BaseReportService {
     public List<BaseReportColumns> getBaseReportColumnsList(Integer tableId) {
         return baseReportDao.getBaseReportColumnsList(tableId);
     }
+
     public BaseReportColumns getBaseReportColumnsById(Integer id) {
         return baseReportDao.getBaseReportColumnsById(id);
     }
+
     public void deleteBaseReportTemplate(Integer id) {
         baseReportDao.deleteBaseReportTemplate(id);
     }
@@ -94,13 +102,11 @@ public class BaseReportService {
         return bootstrapTableVo;
     }
 
-
     //根据条件取得设置的报告模板书签
     public List<BaseReportTemplate> getBaseReportTemplateList(BaseReportTemplate baseReportTemplate) {
         List<BaseReportTemplate> baseReportTemplates = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, "");
         return baseReportTemplates;
     }
-
 
     public BaseReportTemplate getBaseReportTemplateById(Integer id) {
         return baseReportDao.getBaseReportTemplateById(id);
@@ -160,7 +166,7 @@ public class BaseReportService {
         if (type == 0) {
             baseReportDao.deleteBaseReportTemplateFiles(id);
         } else {
-            baseReportDao.deleteAllBaseReportTemplateFiles();
+            baseReportDao.deleteAllBaseReportTemplateFiles(id);
             BaseReportTemplateFiles baseReportTemplateFiles = baseReportDao.getBaseReportTemplateFilesById(id);
             baseReportTemplateFiles.setBisEnable(true);
             baseReportDao.updateBaseReportTemplateFiles(baseReportTemplateFiles);
@@ -173,6 +179,7 @@ public class BaseReportService {
 
     public void addBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {
         baseReportTemplateFiles.setCreator(processControllerComponent.getThisUser());
+        baseReportTemplateFiles.setBisEnable(false);
         baseReportDao.addBaseReportTemplateFiles(baseReportTemplateFiles);
         //更新附件信息
         BaseAttachment baseAttachment = new BaseAttachment();
@@ -186,8 +193,7 @@ public class BaseReportService {
 
     public BaseReportTemplateFiles getBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {
         List<BaseReportTemplateFiles> baseReportTemplateFiless = baseReportDao.getBaseReportTemplateFilesByExample(baseReportTemplateFiles, "");
-        if (CollectionUtils.isNotEmpty(baseReportTemplateFiless))
-        {
+        if (CollectionUtils.isNotEmpty(baseReportTemplateFiless)) {
             return baseReportTemplateFiless.get(0);
         }
         return null;
@@ -213,6 +219,14 @@ public class BaseReportService {
         if (baseReportTemplateFiles != null) {
             BeanUtils.copyProperties(baseReportTemplateFiles, baseReportTemplateFilesVo);
         }
+        baseReportTemplateFilesVo.setClassifyName("全部");
+        if (baseReportTemplateFiles.getClassifyId() > 0) {
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(baseReportTemplateFiles.getClassifyId());
+            if (baseProjectClassify != null) {
+                baseReportTemplateFilesVo.setClassifyName(baseProjectClassify.getName());
+            }
+        }
+
         List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName("tb_base_report_template_files", Lists.newArrayList(baseReportTemplateFiles.getId()));
 
         //取报告模板
@@ -221,8 +235,8 @@ public class BaseReportService {
         });
 
         if (CollectionUtils.isNotEmpty(filter)) {
-            List<KeyValueDto> transform = getKeyValueDtos(filter);
-            baseReportTemplateFilesVo.setReportFiles(transform);
+            List<String> reportFiles = LangUtils.transform(filter, o -> baseAttachmentService.getViewHtml(o));
+            baseReportTemplateFilesVo.setReportFiles(reportFiles);
         }
         //取导出汇总模板
         filter = LangUtils.filter(baseAttachments, o -> {
@@ -230,9 +244,10 @@ public class BaseReportService {
         });
 
         if (CollectionUtils.isNotEmpty(filter)) {
-            List<KeyValueDto> transform = getKeyValueDtos(filter);
-            baseReportTemplateFilesVo.setExportFiles(transform);
+            List<String> exportFiles = LangUtils.transform(filter, o -> baseAttachmentService.getViewHtml(o));
+            baseReportTemplateFilesVo.setExportFiles(exportFiles);
         }
+
         return baseReportTemplateFilesVo;
     }
 
@@ -244,6 +259,30 @@ public class BaseReportService {
             keyValueDto.setExplain(o.getFileExtension());
             return keyValueDto;
         });
+    }
+
+    public Integer getReportTemplate(Integer customerId,Integer entrustId,Integer reportTypeId,Integer csTypeId,Integer classifyId) {
+        BaseReportTemplateFiles baseReportTemplateFiles = new BaseReportTemplateFiles();
+        baseReportTemplateFiles.setCustomerId(customerId);
+        baseReportTemplateFiles.setEntrustId(entrustId);
+        baseReportTemplateFiles.setReportTypeId(reportTypeId);
+        baseReportTemplateFiles.setCsType(csTypeId);
+        baseReportTemplateFiles.setClassifyId(classifyId);
+        List<BaseReportTemplateFiles> baseReportTemplateFilesList = baseReportDao.getBaseReportTemplateFilesByExample(baseReportTemplateFiles, "");
+        if (CollectionUtils.isNotEmpty(baseReportTemplateFilesList)) {
+            baseReportTemplateFiles = baseReportTemplateFilesList.get(0);
+            BaseAttachment baseAttachment = new BaseAttachment();
+            baseAttachment.setTableName("tb_base_report_template_files");
+            baseAttachment.setTableId(baseReportTemplateFiles.getId());
+            baseAttachment.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
+            List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(baseAttachment);
+            if (CollectionUtils.isNotEmpty(attachmentList)) {
+                return attachmentList.get(0).getId();
+            }
+
+        }
+        return 0;
+
     }
 
 }

@@ -221,6 +221,12 @@
             </div>
 
             <div class="modal-footer">
+                <button id="btn_details_start" type="button" class="btn btn-info" onclick="startDetails()">
+                    启用
+                </button>
+                <button id="btn_details_stop" type="button" class="btn btn-warning" onclick="stopDetails()">
+                    停用
+                </button>
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
@@ -286,6 +292,7 @@
             </div>
 
             <div class="modal-footer">
+
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
@@ -303,6 +310,58 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 
 <script type="text/javascript">
+
+    function startDetails() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/planFinancialClaim/startDetails",
+            data: {
+                id: $("#planDetailsId").val()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+
+                if (result.ret) {
+                    $('#div_plan').modal('hide');
+                    ReloadLoadProjectPlanDetails();
+                } else {
+                    Alert("删除数据失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+    function stopDetails() {
+        Alert("停用后将不会发起相应的任务流程，是否确认停用?", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/planFinancialClaim/stopDetails",
+                data: {
+                    id: $("#planDetailsId").val()
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+
+                    if (result.ret) {
+                        $('#div_plan').modal('hide');
+                        ReloadLoadProjectPlanDetails();
+                    } else {
+                        Alert("删除数据失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        });
+    }
+
     $(function () {
         getPlanItemList();
         loadProjectPlanDetails();
@@ -319,8 +378,15 @@
         cols.push({
             field: '${item.phaseForm}', title: '${item.projectPhaseName}', formatter: function (value, row, index) {
                 var s = row["${item.phaseForm}executeUserName"];
-
                 return s;
+            },
+            cellStyle: function (value, row, index) {
+                if (row["${item.phaseForm}bisEnable"] == "false") {
+                    return {css: {"background-color": "#f0ad4e"}}
+                }
+                else {
+                    return {css: {"background-color": "none"}}
+                }
             }
         });
         </c:forEach>
@@ -343,6 +409,14 @@
                     $("#executeUserName").val(row[field + "executeUserName"]);
                     $("#planHours").val(row[field + "planHours"]);
                     $("#planRemarks").val(row[field + "planRemarks"]);
+                    if (row[field + "bisEnable"] == "false") {
+                        $("#btn_details_start").show();
+                        $("#btn_details_stop").hide();
+                    }
+                    else {
+                        $("#btn_details_start").hide();
+                        $("#btn_details_stop").show();
+                    }
                     $('#div_plan').modal({backdrop: 'static', keyboard: false});
                 }
             });

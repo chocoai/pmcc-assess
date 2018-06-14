@@ -330,6 +330,9 @@ public class ProjectPlanService {
         //数据效性验证
         StringBuilder sb = new StringBuilder();
         for (ProjectPlanDetails item : projectPlanDetails) {
+            if (item.getBisEnable() == false) {
+                continue;//如果停用则不发起任务
+            }
             if (item.getPid() > 0) {
                 if (item.getPlanStartDate() == null) {
                     sb.append(String.format("%s请设置相应的[开始时间]<br/>", item.getProjectPhaseName()));
@@ -512,7 +515,7 @@ public class ProjectPlanService {
         String url = new String();
         switch (responsibileModelEnum) {
             case TASK:
-                url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskIndex?responsibilityId=" + projectPlanResponsibility.getId();
+                url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskIndex";
                 break;
             case PLAN:
             case NEWPLAN:
@@ -521,6 +524,7 @@ public class ProjectPlanService {
             case ALLTASK:
                 url = "/" + applicationConstant.getAppKey() + "/projectTaskAll/projectTaskAllIndex?planId=" + projectPlanResponsibility.getPlanId();
         }
+        projectPlanResponsibility.setProjectDetailsUrl("/" + applicationConstant.getAppKey() + "/projectInfo/projectDetails?projectId=" + projectPlanResponsibility.getProjectId());
         projectPlanResponsibility.setUrl(url);
         bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
     }

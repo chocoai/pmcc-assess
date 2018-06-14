@@ -3,6 +3,8 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.List;
  */
 @Service
 public class CrmCustomerService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CrmRpcCustomerService crmRpcCustomerService;
 
@@ -32,5 +35,35 @@ public class CrmCustomerService {
      */
     public List<CrmCustomerLinkmanDto> getCustomerLinkmanList(Integer customerId) {
         return crmRpcCustomerService.getCustomerLinkmanList(customerId);
+    }
+
+    public void updateCrmCustomer(CrmCustomerLinkmanDto crmCustomerLinkmanDto){
+        try {
+            crmRpcCustomerService.updateCustomerLinkman(crmCustomerLinkmanDto);
+        }catch (Exception e1){
+            try {
+                logger.error("exception:  ===>"+e1.getMessage());
+                throw e1;
+            }catch (Exception e){
+
+            }
+        }
+    }
+
+    /**
+     * 添加联系人到CRM中
+     * @param crmCustomerLinkmanDto
+     */
+    public void saveCrmCustomer(CrmCustomerLinkmanDto crmCustomerLinkmanDto){
+        try {
+            crmRpcCustomerService.addCustomerLinkman(crmCustomerLinkmanDto);
+        }catch (Exception e1){
+            try {
+                logger.error("exception:  ===>"+e1.getMessage());
+                throw e1;
+            }catch (Exception e){
+
+            }
+        }
     }
 }
