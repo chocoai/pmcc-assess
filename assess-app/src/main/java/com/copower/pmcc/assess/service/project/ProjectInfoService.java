@@ -270,6 +270,7 @@ public class ProjectInfoService {
     @Transactional
     public void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();

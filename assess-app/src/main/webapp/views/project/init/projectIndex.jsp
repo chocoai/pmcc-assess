@@ -289,20 +289,8 @@
                 <div class="x_content">
                     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
                         <div id="changeType">
-                            <c:choose>
-                                <c:when test="${projectInfo.consignorVo.csType == 1}">
-                                    法人<input type="radio" name="csType" value="1" checked="checked">
-                                    自然人<input type="radio" name="csType" value="0" >
-                                </c:when>
-                                <c:when test="${projectInfo.consignorVo.csType == 0}">
-                                    法人<input type="radio" name="csType" value="1">
-                                    自然人<input type="radio" name="csType" value="0" checked="checked">
-                                </c:when>
-                                <c:when test="${projectInfo == null}">
-                                    法人<input type="radio" name="csType" value="1">
-                                    自然人<input type="radio" name="csType" value="0" >
-                                </c:when>
-                            </c:choose>
+                            法人<input type="radio" name="csType" value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
+                            自然人<input type="radio" name="csType" value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
                         </div>
                         <div id="legal_person" class="panel-body">
                             <div class="form-group">
@@ -498,20 +486,8 @@
                 </div>
                 <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
                     <div id="changeType1">
-                        <c:choose>
-                            <c:when test="${projectInfo.possessorVo.pType == 1}">
-                                法人<input type="radio" name="pType" value="1" checked="checked">
-                                自然人<input type="radio" name="pType" value="0" >
-                            </c:when>
-                            <c:when test="${projectInfo.possessorVo.pType == 0}">
-                                法人<input type="radio" name="pType" value="1">
-                                自然人<input type="radio" name="pType" value="0" checked="checked">
-                            </c:when>
-                            <c:when test="${projectInfo == null}">
-                                法人<input type="radio" name="pType" value="1" checked="checked">
-                                自然人<input type="radio" name="pType" value="0" >
-                            </c:when>
-                        </c:choose>
+                        法人<input type="radio" name="pType" value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
+                        自然人<input type="radio" name="pType" value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
                     </div>
                     <div id="legal_person1" class="panel-body">
 
@@ -849,7 +825,6 @@
                                             </c:choose>
                                         </c:forEach>
                                     </select>
-
                                 </div>
                             </div>
 

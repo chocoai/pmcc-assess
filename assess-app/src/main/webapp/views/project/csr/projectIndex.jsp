@@ -13,34 +13,18 @@
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> 项目信息</h2>
+                    <h2>
+                        项目信息
+                        <small>${csrProjectInfo.projectClassName}/${csrProjectInfo.projectTypeName}/${csrProjectInfo.projectCategoryName}</small>
+                    </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="frm_csr_project_info" class="form-horizontal" enctype="multipart/form-data">
                         <input type="hidden" id="id" name="id" value="${csrProjectInfo.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <input type="hidden" name="projectTypeId" value="${csrProjectInfo.projectTypeId}">
-                                    <select id="projectCategoryId" name="projectCategoryId" class="form-control"
-                                            required="required">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${projectCategoryList}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id==csrProjectInfo.projectTypeId}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" name="projectClassId" value="${csrProjectInfo.projectClassId}">
+                        <input type="hidden" name="projectTypeId" value="${csrProjectInfo.projectTypeId}">
+                        <input type="hidden" name="projectCategoryId" value="${csrProjectInfo.projectCategoryId}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
