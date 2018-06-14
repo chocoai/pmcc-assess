@@ -71,7 +71,7 @@ public class InitiateContactsService {
                     dtos.add(contactsDto);
                 }
 
-                //排序之后 取5个写入本地 接着把5个最新的存入CRM中
+                //排序之后 取5个写入本地
                 Collections.sort(dtos,new Comparator<Object>(){
                     @Override
                     public int compare(Object o1, Object o2) {
