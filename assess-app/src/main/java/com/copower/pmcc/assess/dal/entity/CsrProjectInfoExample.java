@@ -192,6 +192,66 @@ public class CsrProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andProjectClassIdIsNull() {
+            addCriterion("project_class_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdIsNotNull() {
+            addCriterion("project_class_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdEqualTo(Integer value) {
+            addCriterion("project_class_id =", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdNotEqualTo(Integer value) {
+            addCriterion("project_class_id <>", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdGreaterThan(Integer value) {
+            addCriterion("project_class_id >", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_class_id >=", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdLessThan(Integer value) {
+            addCriterion("project_class_id <", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_class_id <=", value, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdIn(List<Integer> values) {
+            addCriterion("project_class_id in", values, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdNotIn(List<Integer> values) {
+            addCriterion("project_class_id not in", values, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_class_id between", value1, value2, "projectClassId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_class_id not between", value1, value2, "projectClassId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectTypeIdIsNull() {
             addCriterion("project_type_id is null");
             return (Criteria) this;

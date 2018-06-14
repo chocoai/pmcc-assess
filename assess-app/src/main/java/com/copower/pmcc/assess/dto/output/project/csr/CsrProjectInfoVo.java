@@ -9,6 +9,7 @@ import java.util.List;
  * Created by kings on 2018-5-31.
  */
 public class CsrProjectInfoVo extends CsrProjectInfo {
+    private String projectClassName;
     private String projectTypeName;
     private String distributionUserName;
     private String customerTypeName;
@@ -16,6 +17,14 @@ public class CsrProjectInfoVo extends CsrProjectInfo {
     private String statusName;
     private String projectCategoryName;
     private List<CsrProjectInfoGroupVo> csrProjectInfoGroupVos = new ArrayList<>();
+
+    public String getProjectClassName() {
+        return projectClassName;
+    }
+
+    public void setProjectClassName(String projectClassName) {
+        this.projectClassName = projectClassName;
+    }
 
     public String getStatusName() {
         return statusName;
