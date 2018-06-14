@@ -35,7 +35,7 @@ import java.util.List;
 @Service
 public class BaseProjectClassifyService {
     @Autowired
-    private BaseProjectClassifyDao cmsBaseProjectClassifyDao;
+    private BaseProjectClassifyDao baseProjectClassifyDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -52,7 +52,7 @@ public class BaseProjectClassifyService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BaseProjectClassify> list = cmsBaseProjectClassifyDao.getListObject(fieldName, name);
+        List<BaseProjectClassify> list = baseProjectClassifyDao.getListObject(fieldName, name);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<BaseProjectClassify>() : list);
         return bootstrapTableVo;
@@ -67,7 +67,7 @@ public class BaseProjectClassifyService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BaseProjectClassify> list = cmsBaseProjectClassifyDao.getListByPid(pid, requestBaseParam.getSearch());
+        List<BaseProjectClassify> list = baseProjectClassifyDao.getListByPid(pid, requestBaseParam.getSearch());
         List<BaseProjectClassifyVo> voList = LangUtils.transform(list, p -> {
             return getBaseProjectClassifyVo(p);
         });
@@ -100,14 +100,14 @@ public class BaseProjectClassifyService {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (sysProjectClassify.getId() != null && sysProjectClassify.getId() > 0) {
             sysProjectClassify.setBisEnable(sysProjectClassify.getBisEnable() == null ? false : sysProjectClassify.getBisEnable());
-            if (!cmsBaseProjectClassifyDao.updateObject(sysProjectClassify)) {
+            if (!baseProjectClassifyDao.updateObject(sysProjectClassify)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         } else {
             sysProjectClassify.setBisEnable(sysProjectClassify.getBisEnable() == null ? false : sysProjectClassify.getBisEnable());
             sysProjectClassify.setBisDelete(false);
             sysProjectClassify.setCreator(processControllerComponent.getThisUser());
-            if (!cmsBaseProjectClassifyDao.addObject(sysProjectClassify)) {
+            if (!baseProjectClassifyDao.addObject(sysProjectClassify)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         }
@@ -123,10 +123,10 @@ public class BaseProjectClassifyService {
      * @param id
      */
     public void delProjectClassify(Integer id) throws BusinessException {
-        BaseProjectClassify sysProjectClassify = cmsBaseProjectClassifyDao.getSingleObject(id);
+        BaseProjectClassify sysProjectClassify = baseProjectClassifyDao.getSingleObject(id);
         if (sysProjectClassify != null) {
             sysProjectClassify.setBisDelete(true);
-            if (!cmsBaseProjectClassifyDao.updateObject(sysProjectClassify))
+            if (!baseProjectClassifyDao.updateObject(sysProjectClassify))
                 throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
             processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY, "");
         }
@@ -145,10 +145,10 @@ public class BaseProjectClassifyService {
         try {
 
             String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_FIELD, fieldName);
-            List<BaseProjectClassify> dataDics = LangUtils.listCache(costsKeyPrefix, fieldName, BaseProjectClassify.class, input -> cmsBaseProjectClassifyDao.getEnableList(input));
+            List<BaseProjectClassify> dataDics = LangUtils.listCache(costsKeyPrefix, fieldName, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableList(input));
             return dataDics;
         } catch (Exception e) {
-            return cmsBaseProjectClassifyDao.getEnableList(fieldName);
+            return baseProjectClassifyDao.getEnableList(fieldName);
         }
 
     }
@@ -157,10 +157,10 @@ public class BaseProjectClassifyService {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_FIELD, fieldName);
 
         try {
-            BaseProjectClassify sysProjectClassify = LangUtils.singleCache(costsKeyPrefix, fieldName, BaseProjectClassify.class, o -> cmsBaseProjectClassifyDao.getSingleObject(o));
+            BaseProjectClassify sysProjectClassify = LangUtils.singleCache(costsKeyPrefix, fieldName, BaseProjectClassify.class, o -> baseProjectClassifyDao.getSingleObject(o));
             return sysProjectClassify;
         } catch (Exception e) {
-            return cmsBaseProjectClassifyDao.getSingleObject(fieldName);
+            return baseProjectClassifyDao.getSingleObject(fieldName);
         }
 
     }
@@ -176,10 +176,10 @@ public class BaseProjectClassifyService {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID, String.valueOf(pid));
 
         try {
-            List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> cmsBaseProjectClassifyDao.getEnableListByPid(input));
+            List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableListByPid(input));
             return sysProjectClassifys;
         } catch (Exception e) {
-            return cmsBaseProjectClassifyDao.getEnableListByPid(pid);
+            return baseProjectClassifyDao.getEnableListByPid(pid);
         }
     }
 
@@ -191,10 +191,10 @@ public class BaseProjectClassifyService {
     public BaseProjectClassify getCacheProjectClassifyById(Integer id) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_ID, String.valueOf(id));
         try {
-            BaseProjectClassify sysProjectClassify = LangUtils.singleCache(rdsKey, id, BaseProjectClassify.class, o -> cmsBaseProjectClassifyDao.getSingleObject(o));
+            BaseProjectClassify sysProjectClassify = LangUtils.singleCache(rdsKey, id, BaseProjectClassify.class, o -> baseProjectClassifyDao.getSingleObject(o));
             return sysProjectClassify;
         } catch (Exception e) {
-            return cmsBaseProjectClassifyDao.getSingleObject(id);
+            return baseProjectClassifyDao.getSingleObject(id);
         }
     }
 
@@ -205,7 +205,7 @@ public class BaseProjectClassifyService {
      * @return
      */
     public BaseProjectClassify getProjectClassifyById(Integer id) {
-        return cmsBaseProjectClassifyDao.getSingleObject(id);
+        return baseProjectClassifyDao.getSingleObject(id);
     }
 
     /**
@@ -252,6 +252,59 @@ public class BaseProjectClassifyService {
             }
         }
         return keyValueDtoList;
+    }
+
+    /**
+     * 获取默认类型
+     *
+     * @return
+     */
+    public BaseProjectClassify getDefaultClass() {
+        BaseProjectClassify queryParam = new BaseProjectClassify();
+        queryParam.setBisDefault(true);
+        queryParam.setPid(0);
+        List<BaseProjectClassify> classList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
+        if (CollectionUtils.isEmpty(classList)) return null;
+        return classList.get(0);
+    }
+
+    /**
+     * 获取默认类别
+     *
+     * @return
+     */
+    public BaseProjectClassify getDefaultType() {
+        BaseProjectClassify defaultClass = getDefaultClass();
+        if (defaultClass == null) return null;
+        BaseProjectClassify queryParam = new BaseProjectClassify();
+        queryParam.setBisDefault(true);
+        queryParam.setPid(defaultClass.getId());
+        List<BaseProjectClassify> typeList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
+        if (CollectionUtils.isEmpty(typeList)) return null;
+        return typeList.get(0);
+    }
+
+    /**
+     * 获取默认范围
+     *
+     * @return
+     */
+    public BaseProjectClassify getDefaultCategory(Integer typeId) {
+        List<BaseProjectClassify> categoryList = null;
+        BaseProjectClassify queryParam = new BaseProjectClassify();
+        queryParam.setBisDefault(true);
+        if (typeId != null && typeId > 0) {
+            queryParam.setPid(typeId);
+            categoryList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
+            if (CollectionUtils.isNotEmpty(categoryList))
+                return categoryList.get(0);
+        }
+        BaseProjectClassify defaultType = getDefaultType();
+        if (defaultType == null) return null;
+        queryParam.setPid(defaultType.getId());
+        categoryList = baseProjectClassifyDao.getProjectClassifyList(queryParam);
+        if (CollectionUtils.isEmpty(categoryList)) return null;
+        return categoryList.get(0);
     }
 
     /**
@@ -348,7 +401,7 @@ public class BaseProjectClassifyService {
     public List<ZtreeDto> queryProjectClassifyTree(String name) {
         if (StringUtils.isBlank(name))
             return Lists.newArrayList();
-        List<BaseProjectClassify> dataDicList = cmsBaseProjectClassifyDao.getListObject(null, name);
+        List<BaseProjectClassify> dataDicList = baseProjectClassifyDao.getListObject(null, name);
         if (CollectionUtils.isEmpty(dataDicList))
             return Lists.newArrayList();
         return LangUtils.transform(dataDicList, p -> {

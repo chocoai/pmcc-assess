@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.dal.dao;
 
-import com.copower.pmcc.assess.constant.DeclareRecordConstant;
-import com.copower.pmcc.assess.dal.custom.entity.DeclareRecordRowMapper;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.DeclareRecordExample;
 import com.copower.pmcc.assess.dal.mapper.DeclareRecordMapper;
@@ -25,8 +23,10 @@ public class DeclareRecordDao {
     }
 
     /*所有记录*/
-    public List<DeclareRecord> queryAll(String projectID){
-        List<DeclareRecord> declareRecords = jdbcTemplate.query(DeclareRecordConstant.SQLSELECT4,new DeclareRecordRowMapper(),projectID);
+    public List<DeclareRecord> queryAll(Integer projectID){
+        DeclareRecordExample example = new DeclareRecordExample();
+        example.createCriteria().andProjectIdEqualTo(projectID);
+        List<DeclareRecord> declareRecords = mapper.selectByExample(example);
         return declareRecords;
     }
 

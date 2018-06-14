@@ -55,7 +55,7 @@ public class DeclareRecordService {
      *
      * @param projectID
      */
-    public void schemeareagroupauxiliary(String projectID) {
+    public void schemeareagroupauxiliary(Integer projectID) {
         /**
          * 思路:所有非省会城市必然有一个中心城市即省会，有可能没有下级城市但是也可能有
          * 需求市 把相同城市下的房产信息放在一个列表中,然后在添加到一个列表中
@@ -88,7 +88,7 @@ public class DeclareRecordService {
                                     if (d.getProvince().equals(parentId) && d.getCity().equals(areaId) && d.getDistrict().equals(districtID)) {
                                         objectDto = new SchemeJudgeObjectDto();
                                         d1s.add(d);
-                                        objectDto.setProjectId(Integer.parseInt(projectID));
+                                        objectDto.setProjectId(projectID);
                                         objectDto.setDeclareRecordId(d.getId());
                                         objectDto.setCreator(commonService.thisUserAccount());
                                         objectDto.setAreaGroupId(0);
@@ -103,7 +103,7 @@ public class DeclareRecordService {
                             }
                             if (d1s.size() >= 1) {
                                 SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
-                                groupDto.setProjectId(Integer.parseInt(projectID));
+                                groupDto.setProjectId(projectID);
                                 groupDto.setCreator(commonService.thisUserAccount());
                                 groupDto.setCity(areaId);
                                 groupDto.setProvince(id + "");
@@ -139,7 +139,7 @@ public class DeclareRecordService {
                         if (!ObjectUtils.isEmpty(d) && !StringUtils.isEmpty(getProvince) && !StringUtils.isEmpty(getCity)) {
                             if (getProvince.equals(parentId) && getCity.equals(areaId)) {
                                 d2s.add(d);
-                                objectDto.setProjectId(Integer.parseInt(projectID));
+                                objectDto.setProjectId(projectID);
                                 objectDto.setDeclareRecordId(d.getId());
                                 objectDto.setCreator(commonService.thisUserAccount());
                                 objectDto.setAreaGroupId(0);
@@ -152,7 +152,7 @@ public class DeclareRecordService {
                     }
                     if (d2s.size() >= 1) {
                         SchemeAreaGroupDto groupDto = new SchemeAreaGroupDto();
-                        groupDto.setProjectId(Integer.parseInt(projectID));
+                        groupDto.setProjectId(projectID);
                         groupDto.setCreator(commonService.thisUserAccount());
                         groupDto.setCity(areaId);
                         groupDto.setProvince(id + "");

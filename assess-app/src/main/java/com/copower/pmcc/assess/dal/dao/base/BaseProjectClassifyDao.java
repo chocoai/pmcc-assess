@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao.base;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassifyExample;
 import com.copower.pmcc.assess.dal.mapper.BaseProjectClassifyMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 @Repository
 public class BaseProjectClassifyDao {
     @Autowired
-    private BaseProjectClassifyMapper sysProjectClassifyMapper;
+    private BaseProjectClassifyMapper baseProjectClassifyMapper;
 
     //region 获取所有项目分类列表
 
@@ -40,10 +41,16 @@ public class BaseProjectClassifyDao {
             criteria.andNameLike("%"+name+"%");
         }
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = sysProjectClassifyMapper.selectByExample(example);
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
     //endregion
+    
+    public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify){
+        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+        MybatisUtils.convertObj2Example(baseProjectClassify,example);
+        return baseProjectClassifyMapper.selectByExample(example);
+    }
 
     //region 获取数据根据pid
 
@@ -60,7 +67,7 @@ public class BaseProjectClassifyDao {
             criteria.andNameLike(search);
         }
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = sysProjectClassifyMapper.selectByExample(example);
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
     //endregion
@@ -79,7 +86,7 @@ public class BaseProjectClassifyDao {
                 .andPidEqualTo(pid)
                 .andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = sysProjectClassifyMapper.selectByExample(example);
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
     //endregion
@@ -106,7 +113,7 @@ public class BaseProjectClassifyDao {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         example.createCriteria().andFieldNameEqualTo(fieldName);
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = sysProjectClassifyMapper.selectByExample(example);
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         if(CollectionUtils.isEmpty(list))
             return null;
         return list.get(0);
@@ -125,7 +132,7 @@ public class BaseProjectClassifyDao {
                 .andBisEnableEqualTo(true)
                 .andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = sysProjectClassifyMapper.selectByExample(example);
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
     //endregion
@@ -138,7 +145,7 @@ public class BaseProjectClassifyDao {
      * @return
      */
     public BaseProjectClassify getSingleObject(Integer id) {
-        BaseProjectClassify sysProjectClassify = sysProjectClassifyMapper.selectByPrimaryKey(id);
+        BaseProjectClassify sysProjectClassify = baseProjectClassifyMapper.selectByPrimaryKey(id);
         return sysProjectClassify;
     }
     //endregion
@@ -153,7 +160,7 @@ public class BaseProjectClassifyDao {
      */
     public boolean addObject(BaseProjectClassify sysProjectClassify) {
         if (sysProjectClassify == null) return false;
-        return sysProjectClassifyMapper.insertSelective(sysProjectClassify) > 0;
+        return baseProjectClassifyMapper.insertSelective(sysProjectClassify) > 0;
     }
     //endregion
 
@@ -167,7 +174,7 @@ public class BaseProjectClassifyDao {
      */
     public boolean updateObject(BaseProjectClassify sysProjectClassify) {
         if (sysProjectClassify == null) return false;
-        return sysProjectClassifyMapper.updateByPrimaryKeySelective(sysProjectClassify) > 0;
+        return baseProjectClassifyMapper.updateByPrimaryKeySelective(sysProjectClassify) > 0;
     }
     //endregion
 
@@ -185,7 +192,7 @@ public class BaseProjectClassifyDao {
         if (id != null) {
             criteria.andIdNotEqualTo(id);
         }
-        return sysProjectClassifyMapper.countByExample(example) > 0;
+        return baseProjectClassifyMapper.countByExample(example) > 0;
     }
 
 

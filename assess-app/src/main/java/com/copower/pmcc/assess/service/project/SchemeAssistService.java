@@ -137,7 +137,7 @@ public class SchemeAssistService {
         vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
         if (vos.size() < 1) {
             //说明需要初始化
-            declareRecordService.schemeareagroupauxiliary(projectID + "");//初始化
+            declareRecordService.schemeareagroupauxiliary(projectID);//初始化
             vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
             if (vos.size() >= 1) {
                 return vos;

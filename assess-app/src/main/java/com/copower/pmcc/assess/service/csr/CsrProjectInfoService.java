@@ -201,16 +201,6 @@ public class CsrProjectInfoService {
         for (CsrProjectInfoGroup csrProjectInfoGroup : csrProjectInfoGroupVos) {
             vos.add(projectInfoGroupService.change(csrProjectInfoGroup));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectTypeName())) {
-            csrProjectInfoVo.setProjectTypeName("债券项目");
-        } else {
-            csrProjectInfoVo.setProjectTypeName("默认项目");
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(csrProjectInfoVo.getProjectCategoryId())) {
-            csrProjectInfoVo.setProjectCategoryName("债券项目");
-        } else {
-            csrProjectInfoVo.setProjectCategoryName("默认项目");
-        }
         csrProjectInfoVo.setCsrProjectInfoGroupVos(vos);
         return csrProjectInfoVo;
     }

@@ -100,9 +100,6 @@ public class ProjectInfoController {
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
         modelAndView.addObject("oneFirstConsignor", projectInfoService.oneFirstConsignor());//第一次填写后留下的委托人 数据信息
 
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
-        modelAndView.addObject("projectTypeList", projectTypeList);
-
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setId(0);
         projectInfo.setProjectClassId(projectClassId);

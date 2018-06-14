@@ -32,6 +32,7 @@ import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
@@ -120,6 +121,8 @@ public class ProjectInfoService {
     private ProjectPlanService projectPlanService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     /**
      * 项目立项申请
@@ -245,7 +248,7 @@ public class ProjectInfoService {
             } catch (Exception e) {
                 try {
                     flag = false;
-                    logger.error("exception!"+e.getMessage());
+                    logger.error("exception!" + e.getMessage());
                     throw e;
                 } catch (Exception e2) {
 
@@ -269,15 +272,42 @@ public class ProjectInfoService {
      */
     @Transactional
     public void initProjectInfo(ProjectInfo projectInfo) throws BusinessException {
-        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+        Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
+        Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
 
+        if (CollectionUtils.isEmpty(projectWorkStages)) {
+            BaseProjectClassify defaultType = baseProjectClassifyService.getDefaultType();
+            if (defaultType != null) {
+                projectTypeId = defaultType.getId();
+            }
+            projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
+        }
+
+        List<ProjectPhase> projectPhaseList = null;
+        if (projectCategoryId != null && projectCategoryId > 0) {
+            //取一次事项
+            projectPhaseList = projectPhaseService.getCacheProjectPhaseByCategoryId(projectCategoryId);
+        }
+
+        if (projectCategoryId == null || projectCategoryId <= 0 || CollectionUtils.isEmpty(projectPhaseList)) {
+            //取得默认项目范围
+            BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(projectTypeId);
+            if (defaultCategory != null) {
+                projectCategoryId = defaultCategory.getId();
+            }
+        }
+
+
+        if (CollectionUtils.isEmpty(projectWorkStages))
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
             projectPlan.setProjectId(projectInfo.getId());
             projectPlan.setProcessInsId("-1");
             projectPlan.setWorkStageId(item.getId());
-            projectPlan.setCategoryId(projectInfo.getProjectCategoryId());
+            projectPlan.setCategoryId(projectCategoryId);
             projectPlan.setPlanName(item.getWorkStageName());
             projectPlan.setCreator(processControllerComponent.getThisUser());
             projectPlan.setCreated(new Date());
@@ -443,7 +473,7 @@ public class ProjectInfoService {
             }
         }
         //紧急程度
-        if(projectInfo.getUrgency()!=null){
+        if (projectInfo.getUrgency() != null) {
             projectInfoVo.setUrgencyName(baseDataDicChange(projectInfo.getUrgency(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_INITIATE_URGENCY)));
         }
         if (projectInfo.getDepartmentId() != null) {
