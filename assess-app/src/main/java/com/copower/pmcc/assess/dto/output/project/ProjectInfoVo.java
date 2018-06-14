@@ -13,6 +13,7 @@ import java.util.List;
  * @time: 15:46
  */
 public class ProjectInfoVo extends ProjectInfo {
+    private String projectClassName;
     private String projectTypeName;
     private String projectCategoryName;
     private String entrustPurposeName;
@@ -26,26 +27,17 @@ public class ProjectInfoVo extends ProjectInfo {
     private InitiateConsignorVo consignorVo;
     private InitiateUnitInformationVo unitInformationVo;
     private ProjectMemberVo projectMemberVo;
-    private String projectClassName;
     private String departmentName;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
     private List<ProjectResponsibilityDto> taskAllWorkStages;
 
-    public String getProjectTypeName() {
-        return projectTypeName;
+    public String getProjectClassName() {
+        return projectClassName;
     }
 
-    public void setProjectTypeName(String projectTypeName) {
-        this.projectTypeName = projectTypeName;
-    }
-
-    public String getProjectCategoryName() {
-        return projectCategoryName;
-    }
-
-    public void setProjectCategoryName(String projectCategoryName) {
-        this.projectCategoryName = projectCategoryName;
+    public void setProjectClassName(String projectClassName) {
+        this.projectClassName = projectClassName;
     }
 
     public String getDepartmentName() {
@@ -78,6 +70,22 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setTaskAllWorkStages(List<ProjectResponsibilityDto> taskAllWorkStages) {
         this.taskAllWorkStages = taskAllWorkStages;
+    }
+
+    public String getProjectTypeName() {
+        return projectTypeName;
+    }
+
+    public void setProjectTypeName(String projectTypeName) {
+        this.projectTypeName = projectTypeName;
+    }
+
+    public String getProjectCategoryName() {
+        return projectCategoryName;
+    }
+
+    public void setProjectCategoryName(String projectCategoryName) {
+        this.projectCategoryName = projectCategoryName;
     }
 
     public String getEntrustPurposeName() {
@@ -158,14 +166,6 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setUnitInformationVo(InitiateUnitInformationVo unitInformationVo) {
         this.unitInformationVo = unitInformationVo;
-    }
-
-    public String getProjectClassName() {
-        return projectClassName;
-    }
-
-    public void setProjectClassName(String projectClassName) {
-        this.projectClassName = projectClassName;
     }
 
     public ProjectMemberVo getProjectMemberVo() {

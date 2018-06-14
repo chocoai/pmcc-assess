@@ -66,11 +66,9 @@ public class ProjectInfoController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
-
     @Lazy
     @Autowired
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
-
     @Lazy
     @Autowired
     private ErpRpcUserService erpRpcUserService;
@@ -86,7 +84,7 @@ public class ProjectInfoController {
 
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
-    public ModelAndView view() {
+    public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
@@ -104,6 +102,14 @@ public class ProjectInfoController {
 
         List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
         modelAndView.addObject("projectTypeList", projectTypeList);
+
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setId(0);
+        projectInfo.setProjectClassId(projectClassId);
+        projectInfo.setProjectTypeId(projectTypeId);
+        projectInfo.setProjectCategoryId(projectCategoryId);
+        ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 
@@ -113,7 +119,7 @@ public class ProjectInfoController {
         try {
             if (projectinfoid != null && projectinfoid != 0) {
                 projectInfoService.projectUpdate(projectInfoService.format(formData), projectinfoid, consignorid, possessorid, unitInformationid);
-            }else {
+            } else {
                 boolean flag = projectInfoService.projectApply(projectInfoService.format(formData));
                 if (!flag) return HttpResult.newErrorResult("异常!");
             }
@@ -283,9 +289,9 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag,Integer pid) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag, Integer pid) {
         BootstrapTableVo vo = null;
-        vo = projectInfoService.listContactsVo(crmId, flag,pid);
+        vo = projectInfoService.listContactsVo(crmId, flag, pid);
         return vo;
     }
 
@@ -321,14 +327,14 @@ public class ProjectInfoController {
     @RequestMapping(value = "/Contacts/checkContacts", name = "联系人 检测", method = RequestMethod.POST)
     public HttpResult checkContacts() {
         try {
-            if (projectInfoService.checkContacts(InitiateContactsEnum.ONE)){
-                if (projectInfoService.checkContacts(InitiateContactsEnum.TWO)){
+            if (projectInfoService.checkContacts(InitiateContactsEnum.ONE)) {
+                if (projectInfoService.checkContacts(InitiateContactsEnum.TWO)) {
                     return HttpResult.newCorrectResult("联系人符合约束");
-                }else {
-                    return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_B.getVal()+"联系人不符合约束");
+                } else {
+                    return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_B.getVal() + "联系人不符合约束");
                 }
-            }else {
-                return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_A.getVal()+"联系人不符合约束");
+            } else {
+                return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_A.getVal() + "联系人不符合约束");
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -422,8 +428,6 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
-
 
 
 }

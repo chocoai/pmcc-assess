@@ -198,12 +198,64 @@ public class BaseProjectClassifyService {
         }
     }
 
+    /**
+     * 获取单个分类
+     *
+     * @param id
+     * @return
+     */
     public BaseProjectClassify getProjectClassifyById(Integer id) {
         return cmsBaseProjectClassifyDao.getSingleObject(id);
     }
 
     /**
-     * 获取字典的数据层次
+     * 获取立项项目类型 类别 范围
+     *
+     * @return
+     */
+    public List<KeyValueDto> getProjectInitClassify() {
+        List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
+        List<BaseProjectClassify> classList = getCacheProjectClassifyListByPid(0);//获取到类型数据
+        if (CollectionUtils.isNotEmpty(classList)) {
+            KeyValueDto keyValueDto = null;
+            for (BaseProjectClassify baseProjectClassify : classList) {
+                keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(String.valueOf(baseProjectClassify.getId()));
+                keyValueDto.setValue(baseProjectClassify.getName());
+                //找对应的类别
+                List<BaseProjectClassify> typeList = getCacheProjectClassifyListByPid(baseProjectClassify.getId());
+                if (CollectionUtils.isNotEmpty(typeList)) {
+                    List<KeyValueDto> projectClassifyDtoList = Lists.newArrayList();
+                    for (BaseProjectClassify projectClassify : typeList) {
+                        KeyValueDto projectClassifyDto = new KeyValueDto();
+                        projectClassifyDto.setKey(String.valueOf(projectClassify.getId()));
+                        projectClassifyDto.setValue(projectClassify.getName());
+                        projectClassifyDto.setExplain(projectClassify.getApplyUrl());
+                        //找出对应的范围
+                        List<BaseProjectClassify> categoryList = getCacheProjectClassifyListByPid(projectClassify.getId());
+                        if (CollectionUtils.isNotEmpty(categoryList)) {
+                            List<KeyValueDto> classifyDtoList = Lists.newArrayList();
+                            for (BaseProjectClassify classify : categoryList) {
+                                KeyValueDto classifyDto = new KeyValueDto();
+                                classifyDto.setKey(String.valueOf(classify.getId()));
+                                classifyDto.setValue(classify.getName());
+                                classifyDto.setExplain(StringUtils.isBlank(classify.getApplyUrl()) ? projectClassify.getApplyUrl() : classify.getApplyUrl());
+                                classifyDtoList.add(classifyDto);
+                            }
+                            projectClassifyDto.setKeyValueDtos(classifyDtoList);
+                        }
+                        projectClassifyDtoList.add(projectClassifyDto);
+                    }
+                    keyValueDto.setKeyValueDtos(projectClassifyDtoList);
+                }
+                keyValueDtoList.add(keyValueDto);
+            }
+        }
+        return keyValueDtoList;
+    }
+
+    /**
+     * 获取项目分类的数据层次
      *
      * @param id
      * @return
