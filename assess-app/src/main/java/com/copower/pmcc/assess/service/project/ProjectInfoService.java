@@ -242,6 +242,7 @@ public class ProjectInfoService {
             } catch (Exception e) {
                 try {
                     flag = false;
+                    logger.error("exception!"+e.getMessage());
                     throw e;
                 } catch (Exception e2) {
 

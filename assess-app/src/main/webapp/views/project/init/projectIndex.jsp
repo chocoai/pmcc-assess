@@ -46,19 +46,14 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目类别<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="projectCategoryId" name="projectCategoryId" class="form-control" required="required">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${listClass_assess}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id == projectInfo.projectCategoryId}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
+                                    <c:if test="${projectInfo.projectCategoryId != null}">
+                                        <input type="hidden"  value="${projectInfo.projectCategoryId}"  name="projectCategoryId">
+                                        <input type="text" readonly="readonly" class="form-control" value="默认项目"  >
+                                    </c:if>
+                                    <c:if test="${projectInfo.projectCategoryId == null}">
+                                        <input type="hidden" value="3"  name="projectCategoryId">
+                                        <input type="text" readonly="readonly" class="form-control" value="默认项目"  >
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -105,10 +100,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input required="required" placeholder="评估基准日" id="completeDateStart"
-                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                    <input required="required" placeholder="评估基准日" id="valuationDate"
+                                           name="valuationDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
-                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
+                                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
 
                                 </div>
                             </div>
