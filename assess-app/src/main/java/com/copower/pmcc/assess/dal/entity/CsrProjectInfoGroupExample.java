@@ -694,6 +694,136 @@ public class CsrProjectInfoGroupExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andRemarksIsNull() {
+            addCriterion("remarks is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksIsNotNull() {
+            addCriterion("remarks is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksEqualTo(String value) {
+            addCriterion("remarks =", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksNotEqualTo(String value) {
+            addCriterion("remarks <>", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksGreaterThan(String value) {
+            addCriterion("remarks >", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksGreaterThanOrEqualTo(String value) {
+            addCriterion("remarks >=", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksLessThan(String value) {
+            addCriterion("remarks <", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksLessThanOrEqualTo(String value) {
+            addCriterion("remarks <=", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksLike(String value) {
+            addCriterion("remarks like", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksNotLike(String value) {
+            addCriterion("remarks not like", value, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksIn(List<String> values) {
+            addCriterion("remarks in", values, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksNotIn(List<String> values) {
+            addCriterion("remarks not in", values, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksBetween(String value1, String value2) {
+            addCriterion("remarks between", value1, value2, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarksNotBetween(String value1, String value2) {
+            addCriterion("remarks not between", value1, value2, "remarks");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateIsNull() {
+            addCriterion("valuation_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateIsNotNull() {
+            addCriterion("valuation_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateEqualTo(Date value) {
+            addCriterion("valuation_date =", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotEqualTo(Date value) {
+            addCriterion("valuation_date <>", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateGreaterThan(Date value) {
+            addCriterion("valuation_date >", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("valuation_date >=", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateLessThan(Date value) {
+            addCriterion("valuation_date <", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateLessThanOrEqualTo(Date value) {
+            addCriterion("valuation_date <=", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateIn(List<Date> values) {
+            addCriterion("valuation_date in", values, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotIn(List<Date> values) {
+            addCriterion("valuation_date not in", values, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateBetween(Date value1, Date value2) {
+            addCriterion("valuation_date between", value1, value2, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotBetween(Date value1, Date value2) {
+            addCriterion("valuation_date not between", value1, value2, "valuationDate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

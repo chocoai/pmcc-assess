@@ -32,6 +32,7 @@
     <result column="project_member_id" property="projectMemberId" jdbcType="INTEGER" />
     <result column="remark_entrustPurpose" property="remarkEntrustpurpose" jdbcType="VARCHAR" />
     <result column="remark_valueType" property="remarkValuetype" jdbcType="VARCHAR" />
+    <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -97,7 +98,7 @@
     complete_date_actual, complete_date_start, process_ins_id, status, project_status, 
     public_project_id, creator, gmt_created, gmt_modified, attachment_project_info_id, 
     consignor_id, unit_information_id, possessor_id, project_member_id, remark_entrustPurpose, 
-    remark_valueType
+    remark_valueType, valuation_date
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -143,7 +144,7 @@
       gmt_created, gmt_modified, attachment_project_info_id, 
       consignor_id, unit_information_id, possessor_id, 
       project_member_id, remark_entrustPurpose, 
-      remark_valueType)
+      remark_valueType, valuation_date)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
@@ -154,7 +155,7 @@
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{attachmentProjectInfoId,jdbcType=VARCHAR}, 
       #{consignorId,jdbcType=INTEGER}, #{unitInformationId,jdbcType=INTEGER}, #{possessorId,jdbcType=INTEGER}, 
       #{projectMemberId,jdbcType=INTEGER}, #{remarkEntrustpurpose,jdbcType=VARCHAR}, 
-      #{remarkValuetype,jdbcType=VARCHAR})
+      #{remarkValuetype,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -249,6 +250,9 @@
       <if test="remarkValuetype != null" >
         remark_valueType,
       </if>
+      <if test="valuationDate != null" >
+        valuation_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectClassId != null" >
@@ -337,6 +341,9 @@
       </if>
       <if test="remarkValuetype != null" >
         #{remarkValuetype,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationDate != null" >
+        #{valuationDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -439,6 +446,9 @@
       <if test="record.remarkValuetype != null" >
         remark_valueType = #{record.remarkValuetype,jdbcType=VARCHAR},
       </if>
+      <if test="record.valuationDate != null" >
+        valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -475,7 +485,8 @@
       possessor_id = #{record.possessorId,jdbcType=INTEGER},
       project_member_id = #{record.projectMemberId,jdbcType=INTEGER},
       remark_entrustPurpose = #{record.remarkEntrustpurpose,jdbcType=VARCHAR},
-      remark_valueType = #{record.remarkValuetype,jdbcType=VARCHAR}
+      remark_valueType = #{record.remarkValuetype,jdbcType=VARCHAR},
+      valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -570,6 +581,9 @@
       <if test="remarkValuetype != null" >
         remark_valueType = #{remarkValuetype,jdbcType=VARCHAR},
       </if>
+      <if test="valuationDate != null" >
+        valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -603,7 +617,8 @@
       possessor_id = #{possessorId,jdbcType=INTEGER},
       project_member_id = #{projectMemberId,jdbcType=INTEGER},
       remark_entrustPurpose = #{remarkEntrustpurpose,jdbcType=VARCHAR},
-      remark_valueType = #{remarkValuetype,jdbcType=VARCHAR}
+      remark_valueType = #{remarkValuetype,jdbcType=VARCHAR},
+      valuation_date = #{valuationDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

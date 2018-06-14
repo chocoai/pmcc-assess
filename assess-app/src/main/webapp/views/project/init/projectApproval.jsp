@@ -43,7 +43,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <label class="form-control"><fmt:formatDate value="${projectInfo.completeDateStart}" /></label>
+                                    <label class="form-control"><fmt:formatDate value="${projectInfo.valuationDate}" /></label>
                                 </div>
                             </div>
                         </div>

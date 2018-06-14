@@ -60,6 +60,8 @@ public class ProjectInfoDto extends ProjectInfo {
 
     private Integer customerId;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    private Date valuationDate;
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date completeDatePlan;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date completeDateActual;
@@ -300,5 +302,13 @@ public class ProjectInfoDto extends ProjectInfo {
 
     public void setUserAccountMember(String userAccountMember) {
         this.userAccountMember = userAccountMember;
+    }
+
+    public Date getValuationDate() {
+        return valuationDate;
+    }
+
+    public void setValuationDate(Date valuationDate) {
+        this.valuationDate = valuationDate;
     }
 }
