@@ -17,6 +17,7 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
 
     private String dataPoolTypename;//数据来源
 
+
     private List<KeyValueDto> keyValueDtos;
 
     public String getTypeName() {

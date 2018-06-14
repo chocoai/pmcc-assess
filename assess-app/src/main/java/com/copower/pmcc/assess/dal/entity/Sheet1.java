@@ -3,173 +3,125 @@ package com.copower.pmcc.assess.dal.entity;
 public class Sheet1 {
     private Integer id;
 
-    private String f1;
+    private String khxm;
 
-    private String f2;
+    private String sfzhm;
 
-    private String f3;
+    private String ejfh;
 
-    private String poDyh;
+    private String sjhth;
 
-    private String poJkr;
+    private String dkffsj;
 
-    private String f6;
+    private String dkje;
 
-    private String poSfzhm;
+    private String dkpz;
 
-    private String f8;
+    private String dkqx;
 
-    private String poHyzk;
+    private String dbfs;
 
-    private String poSjhth;
+    private String hyzk;
 
-    private String f11;
+    private String xlqk;
 
-    private String poDkpz;
+    private String gzdw;
 
-    private String f13;
+    private String jkrzw;
 
-    private String poDkje;
+    private String hjdz;
 
-    private String poLx;
+    private String xjzdz;
 
-    private String f16;
+    private String sfhtqxn;
 
-    private String f17;
+    private String bzqxnmsxgnr;
 
-    private String poDbfs;
+    private String htqdr;
 
-    private String f19;
+    private String dywdz;
 
-    private String f20;
+    private String tdxz;
 
-    private String poDywdz;
+    private String tdmj;
 
-    private String f22;
+    private String fcxz;
 
-    private String poFcxz;
+    private String fcmj;
 
-    private String f24;
+    private String dywwpjz;
 
-    private String f25;
+    private String dywxz;
 
-    private String f26;
+    private String sfqscf;
 
-    private String poFcmj;
+    private String qszk;
 
-    private String poDywscdj;
+    private String sfybzr;
 
-    private String poDywsczj;
+    private String bzrqk;
 
-    private String poDywbxl;
+    private String ssbq;
 
-    private String poDywbxjz;
+    private String ssbqqk;
 
-    private String f32;
+    private String fxjzr;
 
-    private String poPmfbl;
+    private String bjlxh;
 
-    private String poPmfje;
+    private String bjye;
 
-    private String poSsfbl;
+    private String lxye;
 
-    private String poSsfje;
+    private String wjfl;
 
-    private String poZxfbl;
+    private String blzcscje;
 
-    private String poZxfje;
+    private String bjscbl;
 
-    private String poSfjdfbl;
+    private String bxscbl;
 
-    private String poSfjdfje;
+    private String scsj;
 
-    private String f41;
+    private String bgyxq;
 
-    private String f42;
+    private String dywscdj;
 
-    private String poXgsfhj;
+    private String dywsczj;
 
-    private String f44;
+    private String dywbxl;
 
-    private String f45;
+    private String dywbxjz;
 
-    private String f46;
+    private String pmfbl;
 
-    private String f47;
+    private String pmfje;
 
-    private String f48;
+    private String ssfbl;
 
-    private String f49;
+    private String ssfje;
 
-    private String f50;
+    private String zxfbl;
 
-    private String f51;
+    private String zxfje;
 
-    private String f52;
+    private String sfjdfbl;
 
-    private String f53;
+    private String sfjdfje;
 
-    private String f54;
+    private String ghsfje;
 
-    private String f55;
+    private String xgsfhj;
 
-    private String f56;
+    private String bxjsr;
 
-    private String poBxjsr;
-
-    private String f58;
-
-    private String f59;
-
-    private String poBjscbl;
-
-    private String poBxscbl;
-
-    private String f62;
-
-    private String f63;
-
-    private String f64;
-
-    private String f65;
-
-    private String f66;
-
-    private String f67;
-
-    private String f68;
-
-    private String f69;
-
-    private String f70;
-
-    private String f71;
-
-    private String f72;
-
-    private String f73;
-
-    private String f74;
-
-    private String f75;
-
-    private String f76;
-
-    private String f77;
-
-    private String f78;
-
-    private String f79;
-
-    private String f80;
-
-    private String f81;
-
-    private String f82;
-
-    private String f83;
+    private String bgcjsj;
 
     private Integer attachmentId;
+
+    private String version;
+
+    private String role;
 
     public Integer getId() {
         return id;
@@ -179,668 +131,460 @@ public class Sheet1 {
         this.id = id;
     }
 
-    public String getF1() {
-        return f1;
+    public String getKhxm() {
+        return khxm;
     }
 
-    public void setF1(String f1) {
-        this.f1 = f1 == null ? null : f1.trim();
+    public void setKhxm(String khxm) {
+        this.khxm = khxm == null ? null : khxm.trim();
     }
 
-    public String getF2() {
-        return f2;
+    public String getSfzhm() {
+        return sfzhm;
     }
 
-    public void setF2(String f2) {
-        this.f2 = f2 == null ? null : f2.trim();
+    public void setSfzhm(String sfzhm) {
+        this.sfzhm = sfzhm == null ? null : sfzhm.trim();
     }
 
-    public String getF3() {
-        return f3;
+    public String getEjfh() {
+        return ejfh;
     }
 
-    public void setF3(String f3) {
-        this.f3 = f3 == null ? null : f3.trim();
+    public void setEjfh(String ejfh) {
+        this.ejfh = ejfh == null ? null : ejfh.trim();
     }
 
-    public String getPoDyh() {
-        return poDyh;
+    public String getSjhth() {
+        return sjhth;
     }
 
-    public void setPoDyh(String poDyh) {
-        this.poDyh = poDyh == null ? null : poDyh.trim();
+    public void setSjhth(String sjhth) {
+        this.sjhth = sjhth == null ? null : sjhth.trim();
     }
 
-    public String getPoJkr() {
-        return poJkr;
+    public String getDkffsj() {
+        return dkffsj;
     }
 
-    public void setPoJkr(String poJkr) {
-        this.poJkr = poJkr == null ? null : poJkr.trim();
+    public void setDkffsj(String dkffsj) {
+        this.dkffsj = dkffsj == null ? null : dkffsj.trim();
     }
 
-    public String getF6() {
-        return f6;
+    public String getDkje() {
+        return dkje;
     }
 
-    public void setF6(String f6) {
-        this.f6 = f6 == null ? null : f6.trim();
+    public void setDkje(String dkje) {
+        this.dkje = dkje == null ? null : dkje.trim();
     }
 
-    public String getPoSfzhm() {
-        return poSfzhm;
+    public String getDkpz() {
+        return dkpz;
     }
 
-    public void setPoSfzhm(String poSfzhm) {
-        this.poSfzhm = poSfzhm == null ? null : poSfzhm.trim();
+    public void setDkpz(String dkpz) {
+        this.dkpz = dkpz == null ? null : dkpz.trim();
     }
 
-    public String getF8() {
-        return f8;
+    public String getDkqx() {
+        return dkqx;
     }
 
-    public void setF8(String f8) {
-        this.f8 = f8 == null ? null : f8.trim();
+    public void setDkqx(String dkqx) {
+        this.dkqx = dkqx == null ? null : dkqx.trim();
     }
 
-    public String getPoHyzk() {
-        return poHyzk;
+    public String getDbfs() {
+        return dbfs;
     }
 
-    public void setPoHyzk(String poHyzk) {
-        this.poHyzk = poHyzk == null ? null : poHyzk.trim();
+    public void setDbfs(String dbfs) {
+        this.dbfs = dbfs == null ? null : dbfs.trim();
     }
 
-    public String getPoSjhth() {
-        return poSjhth;
+    public String getHyzk() {
+        return hyzk;
     }
 
-    public void setPoSjhth(String poSjhth) {
-        this.poSjhth = poSjhth == null ? null : poSjhth.trim();
+    public void setHyzk(String hyzk) {
+        this.hyzk = hyzk == null ? null : hyzk.trim();
     }
 
-    public String getF11() {
-        return f11;
+    public String getXlqk() {
+        return xlqk;
     }
 
-    public void setF11(String f11) {
-        this.f11 = f11 == null ? null : f11.trim();
+    public void setXlqk(String xlqk) {
+        this.xlqk = xlqk == null ? null : xlqk.trim();
     }
 
-    public String getPoDkpz() {
-        return poDkpz;
+    public String getGzdw() {
+        return gzdw;
     }
 
-    public void setPoDkpz(String poDkpz) {
-        this.poDkpz = poDkpz == null ? null : poDkpz.trim();
+    public void setGzdw(String gzdw) {
+        this.gzdw = gzdw == null ? null : gzdw.trim();
     }
 
-    public String getF13() {
-        return f13;
+    public String getJkrzw() {
+        return jkrzw;
     }
 
-    public void setF13(String f13) {
-        this.f13 = f13 == null ? null : f13.trim();
+    public void setJkrzw(String jkrzw) {
+        this.jkrzw = jkrzw == null ? null : jkrzw.trim();
     }
 
-    public String getPoDkje() {
-        return poDkje;
+    public String getHjdz() {
+        return hjdz;
     }
 
-    public void setPoDkje(String poDkje) {
-        this.poDkje = poDkje == null ? null : poDkje.trim();
+    public void setHjdz(String hjdz) {
+        this.hjdz = hjdz == null ? null : hjdz.trim();
     }
 
-    public String getPoLx() {
-        return poLx;
+    public String getXjzdz() {
+        return xjzdz;
     }
 
-    public void setPoLx(String poLx) {
-        this.poLx = poLx == null ? null : poLx.trim();
+    public void setXjzdz(String xjzdz) {
+        this.xjzdz = xjzdz == null ? null : xjzdz.trim();
     }
 
-    public String getF16() {
-        return f16;
+    public String getSfhtqxn() {
+        return sfhtqxn;
     }
 
-    public void setF16(String f16) {
-        this.f16 = f16 == null ? null : f16.trim();
+    public void setSfhtqxn(String sfhtqxn) {
+        this.sfhtqxn = sfhtqxn == null ? null : sfhtqxn.trim();
     }
 
-    public String getF17() {
-        return f17;
+    public String getBzqxnmsxgnr() {
+        return bzqxnmsxgnr;
     }
 
-    public void setF17(String f17) {
-        this.f17 = f17 == null ? null : f17.trim();
+    public void setBzqxnmsxgnr(String bzqxnmsxgnr) {
+        this.bzqxnmsxgnr = bzqxnmsxgnr == null ? null : bzqxnmsxgnr.trim();
     }
 
-    public String getPoDbfs() {
-        return poDbfs;
+    public String getHtqdr() {
+        return htqdr;
     }
 
-    public void setPoDbfs(String poDbfs) {
-        this.poDbfs = poDbfs == null ? null : poDbfs.trim();
+    public void setHtqdr(String htqdr) {
+        this.htqdr = htqdr == null ? null : htqdr.trim();
     }
 
-    public String getF19() {
-        return f19;
+    public String getDywdz() {
+        return dywdz;
     }
 
-    public void setF19(String f19) {
-        this.f19 = f19 == null ? null : f19.trim();
+    public void setDywdz(String dywdz) {
+        this.dywdz = dywdz == null ? null : dywdz.trim();
     }
 
-    public String getF20() {
-        return f20;
+    public String getTdxz() {
+        return tdxz;
     }
 
-    public void setF20(String f20) {
-        this.f20 = f20 == null ? null : f20.trim();
+    public void setTdxz(String tdxz) {
+        this.tdxz = tdxz == null ? null : tdxz.trim();
     }
 
-    public String getPoDywdz() {
-        return poDywdz;
+    public String getTdmj() {
+        return tdmj;
     }
 
-    public void setPoDywdz(String poDywdz) {
-        this.poDywdz = poDywdz == null ? null : poDywdz.trim();
+    public void setTdmj(String tdmj) {
+        this.tdmj = tdmj == null ? null : tdmj.trim();
     }
 
-    public String getF22() {
-        return f22;
+    public String getFcxz() {
+        return fcxz;
     }
 
-    public void setF22(String f22) {
-        this.f22 = f22 == null ? null : f22.trim();
+    public void setFcxz(String fcxz) {
+        this.fcxz = fcxz == null ? null : fcxz.trim();
     }
 
-    public String getPoFcxz() {
-        return poFcxz;
+    public String getFcmj() {
+        return fcmj;
     }
 
-    public void setPoFcxz(String poFcxz) {
-        this.poFcxz = poFcxz == null ? null : poFcxz.trim();
+    public void setFcmj(String fcmj) {
+        this.fcmj = fcmj == null ? null : fcmj.trim();
     }
 
-    public String getF24() {
-        return f24;
+    public String getDywwpjz() {
+        return dywwpjz;
     }
 
-    public void setF24(String f24) {
-        this.f24 = f24 == null ? null : f24.trim();
+    public void setDywwpjz(String dywwpjz) {
+        this.dywwpjz = dywwpjz == null ? null : dywwpjz.trim();
     }
 
-    public String getF25() {
-        return f25;
+    public String getDywxz() {
+        return dywxz;
     }
 
-    public void setF25(String f25) {
-        this.f25 = f25 == null ? null : f25.trim();
+    public void setDywxz(String dywxz) {
+        this.dywxz = dywxz == null ? null : dywxz.trim();
     }
 
-    public String getF26() {
-        return f26;
+    public String getSfqscf() {
+        return sfqscf;
     }
 
-    public void setF26(String f26) {
-        this.f26 = f26 == null ? null : f26.trim();
+    public void setSfqscf(String sfqscf) {
+        this.sfqscf = sfqscf == null ? null : sfqscf.trim();
     }
 
-    public String getPoFcmj() {
-        return poFcmj;
+    public String getQszk() {
+        return qszk;
     }
 
-    public void setPoFcmj(String poFcmj) {
-        this.poFcmj = poFcmj == null ? null : poFcmj.trim();
+    public void setQszk(String qszk) {
+        this.qszk = qszk == null ? null : qszk.trim();
     }
 
-    public String getPoDywscdj() {
-        return poDywscdj;
+    public String getSfybzr() {
+        return sfybzr;
     }
 
-    public void setPoDywscdj(String poDywscdj) {
-        this.poDywscdj = poDywscdj == null ? null : poDywscdj.trim();
+    public void setSfybzr(String sfybzr) {
+        this.sfybzr = sfybzr == null ? null : sfybzr.trim();
     }
 
-    public String getPoDywsczj() {
-        return poDywsczj;
+    public String getBzrqk() {
+        return bzrqk;
     }
 
-    public void setPoDywsczj(String poDywsczj) {
-        this.poDywsczj = poDywsczj == null ? null : poDywsczj.trim();
+    public void setBzrqk(String bzrqk) {
+        this.bzrqk = bzrqk == null ? null : bzrqk.trim();
     }
 
-    public String getPoDywbxl() {
-        return poDywbxl;
+    public String getSsbq() {
+        return ssbq;
     }
 
-    public void setPoDywbxl(String poDywbxl) {
-        this.poDywbxl = poDywbxl == null ? null : poDywbxl.trim();
+    public void setSsbq(String ssbq) {
+        this.ssbq = ssbq == null ? null : ssbq.trim();
     }
 
-    public String getPoDywbxjz() {
-        return poDywbxjz;
+    public String getSsbqqk() {
+        return ssbqqk;
     }
 
-    public void setPoDywbxjz(String poDywbxjz) {
-        this.poDywbxjz = poDywbxjz == null ? null : poDywbxjz.trim();
+    public void setSsbqqk(String ssbqqk) {
+        this.ssbqqk = ssbqqk == null ? null : ssbqqk.trim();
     }
 
-    public String getF32() {
-        return f32;
+    public String getFxjzr() {
+        return fxjzr;
     }
 
-    public void setF32(String f32) {
-        this.f32 = f32 == null ? null : f32.trim();
+    public void setFxjzr(String fxjzr) {
+        this.fxjzr = fxjzr == null ? null : fxjzr.trim();
     }
 
-    public String getPoPmfbl() {
-        return poPmfbl;
+    public String getBjlxh() {
+        return bjlxh;
     }
 
-    public void setPoPmfbl(String poPmfbl) {
-        this.poPmfbl = poPmfbl == null ? null : poPmfbl.trim();
+    public void setBjlxh(String bjlxh) {
+        this.bjlxh = bjlxh == null ? null : bjlxh.trim();
     }
 
-    public String getPoPmfje() {
-        return poPmfje;
+    public String getBjye() {
+        return bjye;
     }
 
-    public void setPoPmfje(String poPmfje) {
-        this.poPmfje = poPmfje == null ? null : poPmfje.trim();
+    public void setBjye(String bjye) {
+        this.bjye = bjye == null ? null : bjye.trim();
     }
 
-    public String getPoSsfbl() {
-        return poSsfbl;
+    public String getLxye() {
+        return lxye;
     }
 
-    public void setPoSsfbl(String poSsfbl) {
-        this.poSsfbl = poSsfbl == null ? null : poSsfbl.trim();
+    public void setLxye(String lxye) {
+        this.lxye = lxye == null ? null : lxye.trim();
     }
 
-    public String getPoSsfje() {
-        return poSsfje;
+    public String getWjfl() {
+        return wjfl;
     }
 
-    public void setPoSsfje(String poSsfje) {
-        this.poSsfje = poSsfje == null ? null : poSsfje.trim();
+    public void setWjfl(String wjfl) {
+        this.wjfl = wjfl == null ? null : wjfl.trim();
     }
 
-    public String getPoZxfbl() {
-        return poZxfbl;
+    public String getBlzcscje() {
+        return blzcscje;
     }
 
-    public void setPoZxfbl(String poZxfbl) {
-        this.poZxfbl = poZxfbl == null ? null : poZxfbl.trim();
+    public void setBlzcscje(String blzcscje) {
+        this.blzcscje = blzcscje == null ? null : blzcscje.trim();
     }
 
-    public String getPoZxfje() {
-        return poZxfje;
+    public String getBjscbl() {
+        return bjscbl;
     }
 
-    public void setPoZxfje(String poZxfje) {
-        this.poZxfje = poZxfje == null ? null : poZxfje.trim();
+    public void setBjscbl(String bjscbl) {
+        this.bjscbl = bjscbl == null ? null : bjscbl.trim();
     }
 
-    public String getPoSfjdfbl() {
-        return poSfjdfbl;
+    public String getBxscbl() {
+        return bxscbl;
     }
 
-    public void setPoSfjdfbl(String poSfjdfbl) {
-        this.poSfjdfbl = poSfjdfbl == null ? null : poSfjdfbl.trim();
+    public void setBxscbl(String bxscbl) {
+        this.bxscbl = bxscbl == null ? null : bxscbl.trim();
     }
 
-    public String getPoSfjdfje() {
-        return poSfjdfje;
+    public String getScsj() {
+        return scsj;
     }
 
-    public void setPoSfjdfje(String poSfjdfje) {
-        this.poSfjdfje = poSfjdfje == null ? null : poSfjdfje.trim();
+    public void setScsj(String scsj) {
+        this.scsj = scsj == null ? null : scsj.trim();
     }
 
-    public String getF41() {
-        return f41;
+    public String getBgyxq() {
+        return bgyxq;
     }
 
-    public void setF41(String f41) {
-        this.f41 = f41 == null ? null : f41.trim();
+    public void setBgyxq(String bgyxq) {
+        this.bgyxq = bgyxq == null ? null : bgyxq.trim();
     }
 
-    public String getF42() {
-        return f42;
+    public String getDywscdj() {
+        return dywscdj;
     }
 
-    public void setF42(String f42) {
-        this.f42 = f42 == null ? null : f42.trim();
+    public void setDywscdj(String dywscdj) {
+        this.dywscdj = dywscdj == null ? null : dywscdj.trim();
     }
 
-    public String getPoXgsfhj() {
-        return poXgsfhj;
+    public String getDywsczj() {
+        return dywsczj;
     }
 
-    public void setPoXgsfhj(String poXgsfhj) {
-        this.poXgsfhj = poXgsfhj == null ? null : poXgsfhj.trim();
+    public void setDywsczj(String dywsczj) {
+        this.dywsczj = dywsczj == null ? null : dywsczj.trim();
     }
 
-    public String getF44() {
-        return f44;
+    public String getDywbxl() {
+        return dywbxl;
     }
 
-    public void setF44(String f44) {
-        this.f44 = f44 == null ? null : f44.trim();
+    public void setDywbxl(String dywbxl) {
+        this.dywbxl = dywbxl == null ? null : dywbxl.trim();
     }
 
-    public String getF45() {
-        return f45;
+    public String getDywbxjz() {
+        return dywbxjz;
     }
 
-    public void setF45(String f45) {
-        this.f45 = f45 == null ? null : f45.trim();
+    public void setDywbxjz(String dywbxjz) {
+        this.dywbxjz = dywbxjz == null ? null : dywbxjz.trim();
     }
 
-    public String getF46() {
-        return f46;
+    public String getPmfbl() {
+        return pmfbl;
     }
 
-    public void setF46(String f46) {
-        this.f46 = f46 == null ? null : f46.trim();
+    public void setPmfbl(String pmfbl) {
+        this.pmfbl = pmfbl == null ? null : pmfbl.trim();
     }
 
-    public String getF47() {
-        return f47;
+    public String getPmfje() {
+        return pmfje;
     }
 
-    public void setF47(String f47) {
-        this.f47 = f47 == null ? null : f47.trim();
+    public void setPmfje(String pmfje) {
+        this.pmfje = pmfje == null ? null : pmfje.trim();
     }
 
-    public String getF48() {
-        return f48;
+    public String getSsfbl() {
+        return ssfbl;
     }
 
-    public void setF48(String f48) {
-        this.f48 = f48 == null ? null : f48.trim();
+    public void setSsfbl(String ssfbl) {
+        this.ssfbl = ssfbl == null ? null : ssfbl.trim();
     }
 
-    public String getF49() {
-        return f49;
+    public String getSsfje() {
+        return ssfje;
     }
 
-    public void setF49(String f49) {
-        this.f49 = f49 == null ? null : f49.trim();
+    public void setSsfje(String ssfje) {
+        this.ssfje = ssfje == null ? null : ssfje.trim();
     }
 
-    public String getF50() {
-        return f50;
+    public String getZxfbl() {
+        return zxfbl;
     }
 
-    public void setF50(String f50) {
-        this.f50 = f50 == null ? null : f50.trim();
+    public void setZxfbl(String zxfbl) {
+        this.zxfbl = zxfbl == null ? null : zxfbl.trim();
     }
 
-    public String getF51() {
-        return f51;
+    public String getZxfje() {
+        return zxfje;
     }
 
-    public void setF51(String f51) {
-        this.f51 = f51 == null ? null : f51.trim();
+    public void setZxfje(String zxfje) {
+        this.zxfje = zxfje == null ? null : zxfje.trim();
     }
 
-    public String getF52() {
-        return f52;
+    public String getSfjdfbl() {
+        return sfjdfbl;
     }
 
-    public void setF52(String f52) {
-        this.f52 = f52 == null ? null : f52.trim();
+    public void setSfjdfbl(String sfjdfbl) {
+        this.sfjdfbl = sfjdfbl == null ? null : sfjdfbl.trim();
     }
 
-    public String getF53() {
-        return f53;
+    public String getSfjdfje() {
+        return sfjdfje;
     }
 
-    public void setF53(String f53) {
-        this.f53 = f53 == null ? null : f53.trim();
+    public void setSfjdfje(String sfjdfje) {
+        this.sfjdfje = sfjdfje == null ? null : sfjdfje.trim();
     }
 
-    public String getF54() {
-        return f54;
+    public String getGhsfje() {
+        return ghsfje;
     }
 
-    public void setF54(String f54) {
-        this.f54 = f54 == null ? null : f54.trim();
+    public void setGhsfje(String ghsfje) {
+        this.ghsfje = ghsfje == null ? null : ghsfje.trim();
     }
 
-    public String getF55() {
-        return f55;
+    public String getXgsfhj() {
+        return xgsfhj;
     }
 
-    public void setF55(String f55) {
-        this.f55 = f55 == null ? null : f55.trim();
+    public void setXgsfhj(String xgsfhj) {
+        this.xgsfhj = xgsfhj == null ? null : xgsfhj.trim();
     }
 
-    public String getF56() {
-        return f56;
+    public String getBxjsr() {
+        return bxjsr;
     }
 
-    public void setF56(String f56) {
-        this.f56 = f56 == null ? null : f56.trim();
+    public void setBxjsr(String bxjsr) {
+        this.bxjsr = bxjsr == null ? null : bxjsr.trim();
     }
 
-    public String getPoBxjsr() {
-        return poBxjsr;
+    public String getBgcjsj() {
+        return bgcjsj;
     }
 
-    public void setPoBxjsr(String poBxjsr) {
-        this.poBxjsr = poBxjsr == null ? null : poBxjsr.trim();
-    }
-
-    public String getF58() {
-        return f58;
-    }
-
-    public void setF58(String f58) {
-        this.f58 = f58 == null ? null : f58.trim();
-    }
-
-    public String getF59() {
-        return f59;
-    }
-
-    public void setF59(String f59) {
-        this.f59 = f59 == null ? null : f59.trim();
-    }
-
-    public String getPoBjscbl() {
-        return poBjscbl;
-    }
-
-    public void setPoBjscbl(String poBjscbl) {
-        this.poBjscbl = poBjscbl == null ? null : poBjscbl.trim();
-    }
-
-    public String getPoBxscbl() {
-        return poBxscbl;
-    }
-
-    public void setPoBxscbl(String poBxscbl) {
-        this.poBxscbl = poBxscbl == null ? null : poBxscbl.trim();
-    }
-
-    public String getF62() {
-        return f62;
-    }
-
-    public void setF62(String f62) {
-        this.f62 = f62 == null ? null : f62.trim();
-    }
-
-    public String getF63() {
-        return f63;
-    }
-
-    public void setF63(String f63) {
-        this.f63 = f63 == null ? null : f63.trim();
-    }
-
-    public String getF64() {
-        return f64;
-    }
-
-    public void setF64(String f64) {
-        this.f64 = f64 == null ? null : f64.trim();
-    }
-
-    public String getF65() {
-        return f65;
-    }
-
-    public void setF65(String f65) {
-        this.f65 = f65 == null ? null : f65.trim();
-    }
-
-    public String getF66() {
-        return f66;
-    }
-
-    public void setF66(String f66) {
-        this.f66 = f66 == null ? null : f66.trim();
-    }
-
-    public String getF67() {
-        return f67;
-    }
-
-    public void setF67(String f67) {
-        this.f67 = f67 == null ? null : f67.trim();
-    }
-
-    public String getF68() {
-        return f68;
-    }
-
-    public void setF68(String f68) {
-        this.f68 = f68 == null ? null : f68.trim();
-    }
-
-    public String getF69() {
-        return f69;
-    }
-
-    public void setF69(String f69) {
-        this.f69 = f69 == null ? null : f69.trim();
-    }
-
-    public String getF70() {
-        return f70;
-    }
-
-    public void setF70(String f70) {
-        this.f70 = f70 == null ? null : f70.trim();
-    }
-
-    public String getF71() {
-        return f71;
-    }
-
-    public void setF71(String f71) {
-        this.f71 = f71 == null ? null : f71.trim();
-    }
-
-    public String getF72() {
-        return f72;
-    }
-
-    public void setF72(String f72) {
-        this.f72 = f72 == null ? null : f72.trim();
-    }
-
-    public String getF73() {
-        return f73;
-    }
-
-    public void setF73(String f73) {
-        this.f73 = f73 == null ? null : f73.trim();
-    }
-
-    public String getF74() {
-        return f74;
-    }
-
-    public void setF74(String f74) {
-        this.f74 = f74 == null ? null : f74.trim();
-    }
-
-    public String getF75() {
-        return f75;
-    }
-
-    public void setF75(String f75) {
-        this.f75 = f75 == null ? null : f75.trim();
-    }
-
-    public String getF76() {
-        return f76;
-    }
-
-    public void setF76(String f76) {
-        this.f76 = f76 == null ? null : f76.trim();
-    }
-
-    public String getF77() {
-        return f77;
-    }
-
-    public void setF77(String f77) {
-        this.f77 = f77 == null ? null : f77.trim();
-    }
-
-    public String getF78() {
-        return f78;
-    }
-
-    public void setF78(String f78) {
-        this.f78 = f78 == null ? null : f78.trim();
-    }
-
-    public String getF79() {
-        return f79;
-    }
-
-    public void setF79(String f79) {
-        this.f79 = f79 == null ? null : f79.trim();
-    }
-
-    public String getF80() {
-        return f80;
-    }
-
-    public void setF80(String f80) {
-        this.f80 = f80 == null ? null : f80.trim();
-    }
-
-    public String getF81() {
-        return f81;
-    }
-
-    public void setF81(String f81) {
-        this.f81 = f81 == null ? null : f81.trim();
-    }
-
-    public String getF82() {
-        return f82;
-    }
-
-    public void setF82(String f82) {
-        this.f82 = f82 == null ? null : f82.trim();
-    }
-
-    public String getF83() {
-        return f83;
-    }
-
-    public void setF83(String f83) {
-        this.f83 = f83 == null ? null : f83.trim();
+    public void setBgcjsj(String bgcjsj) {
+        this.bgcjsj = bgcjsj == null ? null : bgcjsj.trim();
     }
 
     public Integer getAttachmentId() {
@@ -849,5 +593,21 @@ public class Sheet1 {
 
     public void setAttachmentId(Integer attachmentId) {
         this.attachmentId = attachmentId;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version == null ? null : version.trim();
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role == null ? null : role.trim();
     }
 }

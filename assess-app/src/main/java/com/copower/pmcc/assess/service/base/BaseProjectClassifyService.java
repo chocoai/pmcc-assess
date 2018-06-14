@@ -183,6 +183,10 @@ public class BaseProjectClassifyService {
         }
     }
 
+    public List<BaseProjectClassify> getProjectClassifyListByPids(List<Integer> pids) {
+        return cmsBaseProjectClassifyDao.getEnableListByPids(pids);
+    }
+
     /**
      * 获取缓存中的项目分类数据
      *

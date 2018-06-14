@@ -65,8 +65,6 @@ public class BaseReportDao {
     public BaseReportColumns getBaseReportColumnsById(Integer id) {
         return baseReportColumnsMapper.selectByPrimaryKey(id);
     }
-    
-    
 
     public List<BaseReportTemplate> getBaseReportTemplateByExample(BaseReportTemplate baseReportTemplate, String bookMarkName) {
         BaseReportTemplateExample example = new BaseReportTemplateExample();
@@ -98,8 +96,6 @@ public class BaseReportDao {
         return baseReportTemplateMapper.updateByPrimaryKeySelective(baseReportTemplate) >= 0;
     }
 
-
-
     public List<BaseReportTemplateFiles> getBaseReportTemplateFilesByExample(BaseReportTemplateFiles baseReportTemplateFiles, String search) {
         BaseReportTemplateFilesExample example = new BaseReportTemplateFilesExample();
         BaseReportTemplateFilesExample.Criteria criteria = example.createCriteria();
@@ -122,12 +118,20 @@ public class BaseReportDao {
         return baseReportTemplateFilesMapper.updateByPrimaryKeySelective(baseReportTemplateFiles) >= 0;
     }
 
-    public Boolean deleteAllBaseReportTemplateFiles() {
+    public Boolean deleteAllBaseReportTemplateFiles(Integer id) {
 
-        BaseReportTemplateFilesExample example=new BaseReportTemplateFilesExample();
-        BaseReportTemplateFiles baseReportTemplateFiles=new BaseReportTemplateFiles();
+        BaseReportTemplateFilesExample example = new BaseReportTemplateFilesExample();
+        BaseReportTemplateFiles where = baseReportTemplateFilesMapper.selectByPrimaryKey(id);
+        BaseReportTemplateFilesExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        criteria.andCustomerIdEqualTo(where.getCustomerId());
+        criteria.andEntrustIdEqualTo(where.getEntrustId());
+        criteria.andReportTypeIdEqualTo(where.getReportTypeId());
+        criteria.andCsTypeEqualTo(where.getCsType());
+        criteria.andClassifyIdEqualTo(where.getClassifyId());
+
+        BaseReportTemplateFiles baseReportTemplateFiles = new BaseReportTemplateFiles();
         baseReportTemplateFiles.setBisEnable(false);
-      return   baseReportTemplateFilesMapper.updateByExample(baseReportTemplateFiles,example)>0;
+        return baseReportTemplateFilesMapper.updateByExampleSelective(baseReportTemplateFiles, example) > 0;
     }
 
     public Boolean addBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {

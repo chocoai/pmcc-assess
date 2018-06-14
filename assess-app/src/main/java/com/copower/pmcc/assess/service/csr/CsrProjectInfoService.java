@@ -23,6 +23,7 @@ import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.BaseReportService;
+import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.*;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -45,10 +46,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -74,6 +72,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.xml.bind.Element;
+import java.math.BigDecimal;
 import java.util.*;
 
 import java.io.File;
@@ -142,6 +142,8 @@ public class CsrProjectInfoService {
     private FormConfigureService formConfigureService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 获取vo
@@ -957,8 +959,15 @@ public class CsrProjectInfoService {
             attachment.setFieldsName("report");
             try {
                 List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
-                attachment.setFileName(String.valueOf(mapList.get(0).get("PO_jkr") + "报告"));
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
+                attachment.setFileName(String.valueOf(mapList.get(0).get("khxm") + "报告"));
+                //templateSetService 取报告模板
+
+                //
+
+                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName("single.csr");
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
+                Integer templateId = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;
@@ -968,7 +977,7 @@ public class CsrProjectInfoService {
                     for (Map<String, Object> map : mapList) {
                         try {
                             Map<String, String> stringMap = toMapString(map);
-                            stringMap.put("{PO_number}", String.valueOf(i));
+                            stringMap.put("${number}", String.valueOf(i));
                             AsposeUtils.replaceText(localFullPath, stringMap);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -993,7 +1002,39 @@ public class CsrProjectInfoService {
     private Map<String, String> toMapString(Map<String, Object> map) {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
-            stringMap.put("{" + stringObjectEntry.getKey() + "}", String.valueOf(stringObjectEntry.getValue()));
+            String value = String.valueOf(stringObjectEntry.getValue());
+            switch (stringObjectEntry.getKey()) {
+                case "dkffsj":
+                case "htqdr":
+                case "fxjzr":
+                case "bgyxq": {
+                    value = value.replaceAll("/", "-");
+                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
+                    value = format;
+                    break;
+                }
+                case "bgcjsj": {
+                    value = value.replaceAll("/", "-");
+                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_PATTERN);
+                    value = DateUtils.getUpperDate(format);
+                    break;
+                }
+                case "bjscbl":
+                case "bxscbl":
+                case "dywbxl":
+                case "pmfbl":
+                case "ssfbl":
+                case "zxfbl":
+                case "sfjdfbl": {
+                    value = FormatUtils.numberToPercent(Double.parseDouble(value), 2);
+                    break;
+                }
+                case "bzqxnmsxgnr": {
+                    value = String.valueOf(stringObjectEntry.getValue());
+                    break;
+                }
+            }
+            stringMap.put("${" + stringObjectEntry.getKey() + "}", value);
         }
         return stringMap;
     }

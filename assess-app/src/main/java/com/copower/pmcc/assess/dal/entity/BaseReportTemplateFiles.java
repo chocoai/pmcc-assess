@@ -23,6 +23,8 @@ public class BaseReportTemplateFiles {
 
     private Date gmtModified;
 
+    private Integer classifyId;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class BaseReportTemplateFiles {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getClassifyId() {
+        return classifyId;
+    }
+
+    public void setClassifyId(Integer classifyId) {
+        this.classifyId = classifyId;
     }
 }

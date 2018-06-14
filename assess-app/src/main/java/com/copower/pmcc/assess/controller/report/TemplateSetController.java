@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dto.output.CrmTreeDto;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,13 +43,18 @@ public class TemplateSetController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseReportService baseReportService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @RequestMapping(value = "/templateSetIndex", name = "进入报告配置页面")
     public ModelAndView templateSetIndex() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/templateSetIndex");
-        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
-        modelAndView.addObject("entrust", baseDataDicsA);
-        modelAndView.addObject("firstEntrust", baseDataDicsA.get(0).getId());//第一个抵押评估对象
+        List<BaseProjectClassify> cacheProjectClassifyListByPid = baseProjectClassifyService.getCacheProjectClassifyListByPid(0);
+        List<Integer> transform = LangUtils.transform(cacheProjectClassifyListByPid, o -> o.getId());
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getProjectClassifyListByPids(transform);
+
+        modelAndView.addObject("entrust", baseProjectClassifies);
+        modelAndView.addObject("firstEntrust", cacheProjectClassifyListByPid.get(0).getId());//第一个抵押评估对象
         List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportType", cacheDataDicList);
         modelAndView.addObject("firstReportType", cacheDataDicList.get(0).getId());
@@ -61,7 +67,7 @@ public class TemplateSetController {
         Integer key = BaseReportDataPoolTypeEnum.TEMPLATE.getKey();
         modelAndView.addObject("templateId", key);//模板类型
         modelAndView.addObject("templateTypeId", BaseReportMarkbookTypeEnum.TEMPLATE.getKey());
-
+        modelAndView.addObject("currUserAccount", processControllerComponent.getThisUser());
         return modelAndView;
     }
 
@@ -197,10 +203,6 @@ public class TemplateSetController {
         return baseReportTemplateByExample;
     }
 
-
-
-
-
     @ResponseBody
     @RequestMapping(value = "/saveTemplateFilesData", name = "保存模板文件设置的字段内容 ", method = RequestMethod.POST)
     public HttpResult saveTemplateFilesData(BaseReportTemplateFiles baseReportTemplateFiles) {
@@ -221,7 +223,7 @@ public class TemplateSetController {
     @RequestMapping(value = "/startBaseReportTemplateFiles", name = "启用一个模板定义 ", method = RequestMethod.POST)
     public HttpResult startBaseReportTemplateFiles(Integer id) {
         try {
-            baseReportService.changeBaseReportTemplateFiles(id,1);
+            baseReportService.changeBaseReportTemplateFiles(id, 1);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -232,8 +234,19 @@ public class TemplateSetController {
     @RequestMapping(value = "/stopBaseReportTemplateFiles", name = "停用一个模板定义 ", method = RequestMethod.POST)
     public HttpResult stopBaseReportTemplateFiles(Integer id) {
         try {
-            baseReportService.changeBaseReportTemplateFiles(id,0);
+            baseReportService.changeBaseReportTemplateFiles(id, 0);
             return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getClassifyList", name = "取得范围列表 ", method = RequestMethod.GET)
+    public HttpResult getClassifyList(Integer id) {
+        try {
+            List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByPid(id);
+            return HttpResult.newCorrectResult(baseProjectClassifies);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

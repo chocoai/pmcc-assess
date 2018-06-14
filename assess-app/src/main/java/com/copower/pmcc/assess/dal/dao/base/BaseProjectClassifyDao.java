@@ -84,6 +84,13 @@ public class BaseProjectClassifyDao {
     }
     //endregion
 
+    public List<BaseProjectClassify> getEnableListByPids(List<Integer> integers)
+    {
+        BaseProjectClassifyExample example=new BaseProjectClassifyExample();
+        example.createCriteria().andPidIn(integers);
+        return sysProjectClassifyMapper.selectByExample(example);
+    }
+
     /**
      * 获取可用数据根据字段名称
      *

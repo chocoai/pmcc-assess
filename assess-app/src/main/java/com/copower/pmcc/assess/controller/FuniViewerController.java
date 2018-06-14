@@ -63,12 +63,18 @@ public class FuniViewerController {
     @ResponseBody
     @RequestMapping(value = "/updateHouses", name = "更新楼盘信息", method = RequestMethod.POST)
     public HttpResult updateHouses(Integer page) {
-      // funiWebService.getFuniHousesList(1);
+        //funiWebService.getFuniHousesList(1);
         FuniHouses funiHouses = new FuniHouses();
         List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses);
         for (FuniHouses item : funiHousesList) {
-            funiWebService.getFuniHousesDetails(item.getFuniweb(), item.getId());
-            funiWebService.getFuniHousesType(item.getFuniweb(), item.getId());
+            if(item.getFuniweb().contains("{COMMUNITY_ID}"))
+            {
+                continue;
+            }
+            if (item.getId() >=2394) {
+                funiWebService.getFuniHousesDetails(item.getFuniweb(), item.getId());
+                funiWebService.getFuniHousesType(item.getFuniweb(), item.getId());
+            }
         }
         return HttpResult.newCorrectResult();
     }

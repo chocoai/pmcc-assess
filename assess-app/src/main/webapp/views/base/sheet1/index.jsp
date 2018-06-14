@@ -49,16 +49,9 @@
                 return "<input type='checkbox' class='backTask' id='chk_" + row.id + "'/>";
             }
         });
-        cols.push({field: 'poJkr', title: '借款人'});
-        cols.push({field: 'poSfzhm', title: '身份证'});
-        cols.push({field: 'poDywdz', title: '抵押物地址'});
-        cols.push({field: 'poFcxz', title: '抵押物类型'});
-        cols.push({field: 'poFcmj', title: '数量'});
-        cols.push({field: 'poDywscdj', title: '市场单价'});
-        cols.push({field: 'poDywsczj', title: '市场价值判断'});
-        cols.push({field: 'poDywbxl', title: '变现系数'});
-        cols.push({field: 'poDywbxjz', title: '变现价值'});
-        cols.push({field: 'poDyh', title: '分行'});
+        cols.push({field: 'khxm', title: '借款人'});
+        cols.push({field: 'sfzhm', title: '身份证'});
+        cols.push({field: 'ejfh', title: '分行'});
         cols.push({field: 'attachmentHtml', title: '报告'});
         TableInit("tb_List", "${pageContext.request.contextPath}/sheet1/getSheet1List", cols, {}, {});
     }

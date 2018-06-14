@@ -39,8 +39,10 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <table tableName="tb_base_project_classify" domainObjectName="BaseProjectClassify">
+        <table tableName="tb_base_report_template_files" domainObjectName="BaseReportTemplateFiles">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="sheet1" domainObjectName="Sheet1">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
