@@ -65,4 +65,10 @@ public class CaseComparisonDao {
         example.createCriteria().andIdIsNotNull();
         return caseComparisonMapper.selectByExample(example);
     }
+
+    public List<DataCaseComparison> getDataByExploreFormType(Integer exploreFormType) {
+        DataCaseComparisonExample example = new DataCaseComparisonExample();
+        example.createCriteria().andExploreFormTypeEqualTo(exploreFormType);
+        return caseComparisonMapper.selectByExample(example);
+    }
 }

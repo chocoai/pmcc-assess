@@ -3,10 +3,14 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.common.enums.CaseComparisonEnum;
 import com.copower.pmcc.assess.dal.dao.CaseComparisonDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseFormModuleService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -36,6 +40,10 @@ public class CaseComparisonService {
     private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private BaseFormModuleService baseFormModuleService;
 
 
     @Transactional
@@ -57,10 +65,10 @@ public class CaseComparisonService {
         return caseComparisonDao.update(dto);
     }
 
-    @Transactional(readOnly = true)
-    public CaseComparisonVo get(Integer id) {
-        return change(caseComparisonDao.get(id));
-    }
+//    @Transactional(readOnly = true)
+//    public CaseComparisonVo get(Integer id) {
+//        return change(caseComparisonDao.get(id));
+//    }
 
     @Transactional(readOnly = true)
     private List<DataCaseComparison> list(String name) {
@@ -68,18 +76,18 @@ public class CaseComparisonService {
         return list;
     }
 
-    public BootstrapTableVo listVos(String name) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataCaseComparison> list = list(name);
-        List<CaseComparisonVo> vos = LangUtils.transform(list, p -> {
-            return change(p);
-        });
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CaseComparisonVo>() : vos);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
+//    public BootstrapTableVo listVos(String name) {
+//        BootstrapTableVo vo = new BootstrapTableVo();
+//        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+//        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+//        List<DataCaseComparison> list = list(name);
+//        List<CaseComparisonVo> vos = LangUtils.transform(list, p -> {
+//            return change(p);
+//        });
+//        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CaseComparisonVo>() : vos);
+//        vo.setTotal(page.getTotal());
+//        return vo;
+//    }
 
     private CaseComparisonDto change(CaseComparisonVo vo) {
         CaseComparisonDto dto = new CaseComparisonVo();
@@ -87,17 +95,17 @@ public class CaseComparisonService {
         return dto;
     }
 
-    private CaseComparisonVo change(DataCaseComparison dataCaseComparison) {
-        CaseComparisonVo vo = new CaseComparisonVo();
-        BeanUtils.copyProperties(dataCaseComparison, vo);
-        if (dataCaseComparison.getFormTypeId() != null && dataCaseComparison.getFormTypeId() > 0) {
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataCaseComparison.getFormTypeId());
-            if (baseDataDic != null) {
-                vo.setFormTypeName(baseDataDic.getName());
-            }
-        }
-        return vo;
-    }
+//    private CaseComparisonVo change(DataCaseComparison dataCaseComparison) {
+//        CaseComparisonVo vo = new CaseComparisonVo();
+//        BeanUtils.copyProperties(dataCaseComparison, vo);
+//        if (dataCaseComparison.getFormTypeId() != null && dataCaseComparison.getFormTypeId() > 0) {
+//            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(dataCaseComparison.getFormTypeId());
+//            if (baseDataDic != null) {
+//                vo.setFormTypeName(baseDataDic.getName());
+//            }
+//        }
+//        return vo;
+//    }
 
     public Map<Integer, Object> getTypeMap() {
         Map<Integer, Object> map = new HashMap<>();
@@ -108,5 +116,18 @@ public class CaseComparisonService {
 
     public List<DataCaseComparison> getAll() {
        return caseComparisonDao.getAll();
+    }
+
+    public BootstrapTableVo getDataByExploreFormType(Integer exploreFormType) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataCaseComparison> dataCaseComparisonList = caseComparisonDao.getDataByExploreFormType(exploreFormType);
+        vo.setTotal(page.getTotal());
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(dataCaseComparisonList) ? new ArrayList<DataCaseComparison>() : dataCaseComparisonList);
+//        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDataById(id);
+//        Integer formModuleId = baseProjectClassify.getFormModuleId();
+//        BaseFormModule baseFormModule = baseFormModuleService.getDataById(formModuleId);
+        return vo;
     }
 }

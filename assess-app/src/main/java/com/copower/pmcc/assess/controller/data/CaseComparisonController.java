@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.CaseComparisonFieldService;
 import com.copower.pmcc.assess.service.data.CaseComparisonService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -36,6 +38,8 @@ public class CaseComparisonController {
 
     @Autowired
     private CaseComparisonFieldService fieldService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
@@ -47,9 +51,9 @@ public class CaseComparisonController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String methodStr) {
-        BootstrapTableVo vo = null;
-        vo = service.listVos(methodStr);//关键字查询
+    public BootstrapTableVo list(Integer exploreFormType) {
+        BootstrapTableVo vo = service.getDataByExploreFormType(exploreFormType);
+//        vo = service.listVos(methodStr);//关键字查询
         return vo;
     }
 
@@ -58,7 +62,7 @@ public class CaseComparisonController {
     public Object get(@RequestParam(value = "id") Integer id) {
         CaseComparisonDto dto = null;
         try {
-            dto = service.get(id);
+//            dto = service.get(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

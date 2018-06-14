@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DataCaseComparisonMapper {
     int countByExample(DataCaseComparisonExample example);

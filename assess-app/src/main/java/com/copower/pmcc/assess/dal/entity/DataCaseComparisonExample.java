@@ -235,133 +235,263 @@ public class DataCaseComparisonExample {
             return (Criteria) this;
         }
 
-        public Criteria andUExplainIsNull() {
-            addCriterion("u_explain is null");
+        public Criteria andExploreExplainIsNull() {
+            addCriterion("explore_explain is null");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainIsNotNull() {
-            addCriterion("u_explain is not null");
+        public Criteria andExploreExplainIsNotNull() {
+            addCriterion("explore_explain is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainEqualTo(String value) {
-            addCriterion("u_explain =", value, "uExplain");
+        public Criteria andExploreExplainEqualTo(String value) {
+            addCriterion("explore_explain =", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainNotEqualTo(String value) {
-            addCriterion("u_explain <>", value, "uExplain");
+        public Criteria andExploreExplainNotEqualTo(String value) {
+            addCriterion("explore_explain <>", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainGreaterThan(String value) {
-            addCriterion("u_explain >", value, "uExplain");
+        public Criteria andExploreExplainGreaterThan(String value) {
+            addCriterion("explore_explain >", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainGreaterThanOrEqualTo(String value) {
-            addCriterion("u_explain >=", value, "uExplain");
+        public Criteria andExploreExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("explore_explain >=", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainLessThan(String value) {
-            addCriterion("u_explain <", value, "uExplain");
+        public Criteria andExploreExplainLessThan(String value) {
+            addCriterion("explore_explain <", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainLessThanOrEqualTo(String value) {
-            addCriterion("u_explain <=", value, "uExplain");
+        public Criteria andExploreExplainLessThanOrEqualTo(String value) {
+            addCriterion("explore_explain <=", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainLike(String value) {
-            addCriterion("u_explain like", value, "uExplain");
+        public Criteria andExploreExplainLike(String value) {
+            addCriterion("explore_explain like", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainNotLike(String value) {
-            addCriterion("u_explain not like", value, "uExplain");
+        public Criteria andExploreExplainNotLike(String value) {
+            addCriterion("explore_explain not like", value, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainIn(List<String> values) {
-            addCriterion("u_explain in", values, "uExplain");
+        public Criteria andExploreExplainIn(List<String> values) {
+            addCriterion("explore_explain in", values, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainNotIn(List<String> values) {
-            addCriterion("u_explain not in", values, "uExplain");
+        public Criteria andExploreExplainNotIn(List<String> values) {
+            addCriterion("explore_explain not in", values, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainBetween(String value1, String value2) {
-            addCriterion("u_explain between", value1, value2, "uExplain");
+        public Criteria andExploreExplainBetween(String value1, String value2) {
+            addCriterion("explore_explain between", value1, value2, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andUExplainNotBetween(String value1, String value2) {
-            addCriterion("u_explain not between", value1, value2, "uExplain");
+        public Criteria andExploreExplainNotBetween(String value1, String value2) {
+            addCriterion("explore_explain not between", value1, value2, "exploreExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdIsNull() {
-            addCriterion("form_type_id is null");
+        public Criteria andCaseExplainIsNull() {
+            addCriterion("case_explain is null");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdIsNotNull() {
-            addCriterion("form_type_id is not null");
+        public Criteria andCaseExplainIsNotNull() {
+            addCriterion("case_explain is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdEqualTo(Integer value) {
-            addCriterion("form_type_id =", value, "formTypeId");
+        public Criteria andCaseExplainEqualTo(String value) {
+            addCriterion("case_explain =", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdNotEqualTo(Integer value) {
-            addCriterion("form_type_id <>", value, "formTypeId");
+        public Criteria andCaseExplainNotEqualTo(String value) {
+            addCriterion("case_explain <>", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdGreaterThan(Integer value) {
-            addCriterion("form_type_id >", value, "formTypeId");
+        public Criteria andCaseExplainGreaterThan(String value) {
+            addCriterion("case_explain >", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("form_type_id >=", value, "formTypeId");
+        public Criteria andCaseExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("case_explain >=", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdLessThan(Integer value) {
-            addCriterion("form_type_id <", value, "formTypeId");
+        public Criteria andCaseExplainLessThan(String value) {
+            addCriterion("case_explain <", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdLessThanOrEqualTo(Integer value) {
-            addCriterion("form_type_id <=", value, "formTypeId");
+        public Criteria andCaseExplainLessThanOrEqualTo(String value) {
+            addCriterion("case_explain <=", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdIn(List<Integer> values) {
-            addCriterion("form_type_id in", values, "formTypeId");
+        public Criteria andCaseExplainLike(String value) {
+            addCriterion("case_explain like", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdNotIn(List<Integer> values) {
-            addCriterion("form_type_id not in", values, "formTypeId");
+        public Criteria andCaseExplainNotLike(String value) {
+            addCriterion("case_explain not like", value, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdBetween(Integer value1, Integer value2) {
-            addCriterion("form_type_id between", value1, value2, "formTypeId");
+        public Criteria andCaseExplainIn(List<String> values) {
+            addCriterion("case_explain in", values, "caseExplain");
             return (Criteria) this;
         }
 
-        public Criteria andFormTypeIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("form_type_id not between", value1, value2, "formTypeId");
+        public Criteria andCaseExplainNotIn(List<String> values) {
+            addCriterion("case_explain not in", values, "caseExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseExplainBetween(String value1, String value2) {
+            addCriterion("case_explain between", value1, value2, "caseExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseExplainNotBetween(String value1, String value2) {
+            addCriterion("case_explain not between", value1, value2, "caseExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeIsNull() {
+            addCriterion("explore_form_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeIsNotNull() {
+            addCriterion("explore_form_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeEqualTo(Integer value) {
+            addCriterion("explore_form_type =", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeNotEqualTo(Integer value) {
+            addCriterion("explore_form_type <>", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeGreaterThan(Integer value) {
+            addCriterion("explore_form_type >", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("explore_form_type >=", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeLessThan(Integer value) {
+            addCriterion("explore_form_type <", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("explore_form_type <=", value, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeIn(List<Integer> values) {
+            addCriterion("explore_form_type in", values, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeNotIn(List<Integer> values) {
+            addCriterion("explore_form_type not in", values, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeBetween(Integer value1, Integer value2) {
+            addCriterion("explore_form_type between", value1, value2, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExploreFormTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("explore_form_type not between", value1, value2, "exploreFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeIsNull() {
+            addCriterion("case_form_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeIsNotNull() {
+            addCriterion("case_form_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeEqualTo(Integer value) {
+            addCriterion("case_form_type =", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeNotEqualTo(Integer value) {
+            addCriterion("case_form_type <>", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeGreaterThan(Integer value) {
+            addCriterion("case_form_type >", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_form_type >=", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeLessThan(Integer value) {
+            addCriterion("case_form_type <", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("case_form_type <=", value, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeIn(List<Integer> values) {
+            addCriterion("case_form_type in", values, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeNotIn(List<Integer> values) {
+            addCriterion("case_form_type not in", values, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeBetween(Integer value1, Integer value2) {
+            addCriterion("case_form_type between", value1, value2, "caseFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFormTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_form_type not between", value1, value2, "caseFormType");
             return (Criteria) this;
         }
 

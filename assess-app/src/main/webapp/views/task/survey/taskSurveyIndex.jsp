@@ -56,9 +56,9 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">核对日期<span class="symbol required"></span></label>
                                 <div class="col-sm-2">
-                                    <input required="required" placeholder="核对日期" id="checkDate" name="checkDate"
-                                           data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly"
+                                    <input type="text" required placeholder="核对日期" id="checkDate" name="checkDate"
+                                           data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
+                                           readonly="readonly"
                                            value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
@@ -88,58 +88,60 @@
                         </tr>
                         </thead>
                         <tbody>
-                                <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
-                                    <tr>
-                                        <input type="hidden" id="id" name="id" value="${items.id}">
-                                        <td>${s.index + 1}</td>
-                                        <td name="inventoryContent" dic-id="${items.inventoryContent}">${items.inventoryContentName}</td>
-                                        <td>
-                                            <input id="areConsistent${items.id}" name="areConsistent" type="checkbox"
-                                                   value="一致" style="vertical-align:middle;"
-                                                   onclick="showHiddenCheck(this,${items.id})"/>
-                                            <span style="vertical-align:middle;">一致</span>
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="登记面积"
-                                                   id="registrationAddress${items.id}" name="registrationAddress"
-                                                   class="form-control showHidden" value="${items.registrationAddress}">
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="实际面积"
-                                                   id="actualAddress${items.id}" name="actualAddress"
-                                                   class="form-control showHidden" value="${items.actualAddress}">
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="差异原因"
-                                                   id="differenceReason${items.id}" name="differenceReason"
-                                                   class="form-control showHidden" value="${items.differenceReason}">
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明文件"
-                                                   id="credential${items.id}" name="credential"
-                                                   class="form-control showHidden" value="${items.credential}">
-                                        </td>
-                                        <td>
-                                            <input id="credentialAccessory${items.id}" name="credentialAccessory"
-                                                   type="file" multiple="false" class="showHidden">
-                                            <div id="_credentialAccessory${items.id}" class="showHidden"></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明人"
-                                                   id="voucher${items.id}" name="voucher"
-                                                   class="form-control showHidden" value="${items.voucher}">
-                                        </td>
-                                        <td>
-                                            <input placeholder="调查时间" id="surveyTime${items.id}" name="surveyTime"
-                                                   data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate showHidden"
-                                                   readonly="readonly" value='<fmt:formatDate value="${items.surveyTime}" pattern="yyyy-MM-dd"/>'>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空重填</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                        <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
+                            <tr>
+                                <input type="hidden" id="id" name="id" value="${items.id}">
+                                <td>${s.index + 1}</td>
+                                <td name="inventoryContent"
+                                    dic-id="${items.inventoryContent}">${items.inventoryContentName}</td>
+                                <td>
+                                    <input id="areConsistent${items.id}" name="areConsistent" type="checkbox"
+                                           value="一致" style="vertical-align:middle;"
+                                           onclick="showHiddenCheck(this,${items.id})"/>
+                                    <span style="vertical-align:middle;">一致</span>
+                                </td>
+                                <td>
+                                    <input type="text" data-rule-maxlength="50" placeholder="登记面积"
+                                           id="registrationAddress${items.id}" name="registrationAddress"
+                                           class="form-control showHidden" value="${items.registrationAddress}">
+                                </td>
+                                <td>
+                                    <input type="text" data-rule-maxlength="50" placeholder="实际面积"
+                                           id="actualAddress${items.id}" name="actualAddress"
+                                           class="form-control showHidden" value="${items.actualAddress}">
+                                </td>
+                                <td>
+                                    <input type="text" data-rule-maxlength="50" placeholder="差异原因"
+                                           id="differenceReason${items.id}" name="differenceReason"
+                                           class="form-control showHidden" value="${items.differenceReason}">
+                                </td>
+                                <td>
+                                    <input type="text" data-rule-maxlength="50" placeholder="证明文件"
+                                           id="credential${items.id}" name="credential"
+                                           class="form-control showHidden" value="${items.credential}">
+                                </td>
+                                <td>
+                                    <input id="credentialAccessory${items.id}" name="credentialAccessory"
+                                           type="file" multiple="false" class="showHidden">
+                                    <div id="_credentialAccessory${items.id}" class="showHidden"></div>
+                                </td>
+                                <td>
+                                    <input type="text" data-rule-maxlength="50" placeholder="证明人"
+                                           id="voucher${items.id}" name="voucher"
+                                           class="form-control showHidden" value="${items.voucher}">
+                                </td>
+                                <td>
+                                    <input placeholder="调查时间" id="surveyTime${items.id}" name="surveyTime"
+                                           data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate showHidden"
+                                           readonly="readonly"
+                                           value='<fmt:formatDate value="${items.surveyTime}" pattern="yyyy-MM-dd"/>'>
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空重填</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
 
@@ -298,9 +300,9 @@
 
             <div class="form-group" style="display: none">
                 <div class="col-sm-11">
-                        <iframe src="${pageContext.request.contextPath}/map/positionPicker?position="
-                                width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
-                                marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
+                    <iframe src="${pageContext.request.contextPath}/map/positionPicker?position="
+                            width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
+                            marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
                 </div>
             </div>
 
@@ -756,9 +758,9 @@
             var item = {};
 
             var temp = $(tr).find('[name="areConsistent"]:checked').prop("checked");    //是否一致
-            if(temp){
+            if (temp) {
                 item.areConsistent = "一致";    //是否一致
-            }else{
+            } else {
                 item.areConsistent = "不一致";
             }
             item.inventoryContent = $(tr).find('[name="inventoryContent"]').attr("dic-id");    //清查内容
@@ -885,7 +887,7 @@
         data.projectId = ${projectPlanDetails.projectId};
         data.planDetailId = ${projectPlanDetails.planId};
         data.pid = ${empty surveyAssetInventory?0:surveyAssetInventory.id};
-        console.log(data);
+//        console.log(data);
 //        var data = $("#frm").serialize();
         if ($("#frm").valid()) {
             $.ajax({
