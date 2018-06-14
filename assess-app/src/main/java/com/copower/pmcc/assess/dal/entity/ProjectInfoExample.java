@@ -1994,6 +1994,66 @@ public class ProjectInfoExample {
             addCriterion("remark_valueType not between", value1, value2, "remarkValuetype");
             return (Criteria) this;
         }
+
+        public Criteria andValuationDateIsNull() {
+            addCriterion("valuation_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateIsNotNull() {
+            addCriterion("valuation_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateEqualTo(Date value) {
+            addCriterion("valuation_date =", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotEqualTo(Date value) {
+            addCriterion("valuation_date <>", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateGreaterThan(Date value) {
+            addCriterion("valuation_date >", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("valuation_date >=", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateLessThan(Date value) {
+            addCriterion("valuation_date <", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateLessThanOrEqualTo(Date value) {
+            addCriterion("valuation_date <=", value, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateIn(List<Date> values) {
+            addCriterion("valuation_date in", values, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotIn(List<Date> values) {
+            addCriterion("valuation_date not in", values, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateBetween(Date value1, Date value2) {
+            addCriterion("valuation_date between", value1, value2, "valuationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andValuationDateNotBetween(Date value1, Date value2) {
+            addCriterion("valuation_date not between", value1, value2, "valuationDate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

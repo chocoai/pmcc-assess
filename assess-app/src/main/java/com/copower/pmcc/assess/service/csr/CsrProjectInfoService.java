@@ -156,6 +156,28 @@ public class CsrProjectInfoService {
             return null;
         CsrProjectInfoVo csrProjectInfoVo = new CsrProjectInfoVo();
         BeanUtils.copyProperties(csrProjectInfo, csrProjectInfoVo);
+        //项目类型
+        if (csrProjectInfo.getProjectClassId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(csrProjectInfo.getProjectClassId());
+            if (projectClassify != null) {
+                csrProjectInfoVo.setProjectClassName(projectClassify.getName());
+            }
+        }
+        //项目类别
+        if (csrProjectInfo.getProjectTypeId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(csrProjectInfo.getProjectTypeId());
+            if (projectClassify != null) {
+                csrProjectInfoVo.setProjectTypeName(projectClassify.getName());
+            }
+        }
+        //项目范围
+        if (csrProjectInfo.getProjectCategoryId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(csrProjectInfo.getProjectCategoryId());
+            if (projectClassify != null) {
+                csrProjectInfoVo.setProjectCategoryName(projectClassify.getName());
+            }
+        }
+
         if (StringUtils.isNotBlank(csrProjectInfo.getDistributionUser())) {
             SysUserDto sysUser = erpRpcUserService.getSysUser(csrProjectInfo.getDistributionUser());
             if (sysUser != null)
@@ -374,10 +396,14 @@ public class CsrProjectInfoService {
                     projectInfo = new ProjectInfo();
                     projectInfo.setProjectClassId(0);
                     projectInfo.setEntrustPurpose(csrProjectInfo.getEntrustPurpose());
+                    projectInfo.setProjectClassId(csrProjectInfo.getProjectClassId());
                     projectInfo.setProjectTypeId(csrProjectInfo.getProjectTypeId());
                     projectInfo.setProjectCategoryId(csrProjectInfo.getProjectCategoryId());
                     projectInfo.setCreator(csrProjectInfo.getCreator());
                     projectInfo.setProjectName(infoGroup.getProjectName());
+                    projectInfo.setRemarks(csrProjectInfo.getRemark());
+                    projectInfo.setValuationDate(csrProjectInfo.getValuationDate());
+                    projectInfo.setCompleteDateStart(csrProjectInfo.getValuationDate());
                     int projectId = projectInfoService.saveProjectInfo_returnID(projectInfo);
 
                     //保存项目成员

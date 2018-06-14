@@ -21,6 +21,10 @@ public class CsrProjectInfoGroup {
 
     private Date gmtModified;
 
+    private String remarks;
+
+    private Date valuationDate;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +95,21 @@ public class CsrProjectInfoGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
+    }
+
+    public Date getValuationDate() {
+        return valuationDate;
+    }
+
+    public void setValuationDate(Date valuationDate) {
+        this.valuationDate = valuationDate;
     }
 }

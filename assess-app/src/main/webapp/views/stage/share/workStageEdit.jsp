@@ -21,6 +21,7 @@
 
             <form id="modify_work_stage_form" class="form-horizontal">
                 <input type="hidden" id="workStageIdKey" name="id">
+                <input type="hidden" id="workStageProjectClassId" name="projectClassId">
                 <input type="hidden" id="workStageProjectTypeId" name="projectTypeId">
 
                 <div class="modal-body">
@@ -340,6 +341,7 @@
                 $('#work_stage_label').text(lab);
 
                 /**填装值**/
+                $('#workStageProjectClassId').val($("#classId").val());
                 $('#workStageProjectTypeId').val(typeId);
                 $('#workStagebisLoadDefalut').prop("checked", true);
                 $('#workStagebisEnable').prop("checked", true);

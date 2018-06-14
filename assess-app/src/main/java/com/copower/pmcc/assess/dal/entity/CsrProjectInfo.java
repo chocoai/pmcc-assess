@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrProjectInfo {
     private Integer id;
 
+    private Integer projectClassId;
+
     private Integer projectTypeId;
 
     private Integer projectCategoryId;
@@ -45,6 +47,14 @@ public class CsrProjectInfo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProjectClassId() {
+        return projectClassId;
+    }
+
+    public void setProjectClassId(Integer projectClassId) {
+        this.projectClassId = projectClassId;
     }
 
     public Integer getProjectTypeId() {

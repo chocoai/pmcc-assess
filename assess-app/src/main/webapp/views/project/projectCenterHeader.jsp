@@ -8,11 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <small>
 
-    <a class="btn btn-danger" href="${pageContext.request.contextPath}/projectInfo/projectIndex" target="_blank">
+    <a class="btn btn-danger" href="${pageContext.request.contextPath}/projectCenter/projectInitSelect" target="_blank">
         新建项目
-    </a>
-    <a class="btn btn-danger" href="${pageContext.request.contextPath}/csrProjectInfo/projectIndex" target="_blank">
-        新建债权项目
     </a>
     <a class="btn btn-primary" href="${pageContext.request.contextPath}/projectCenter/projectCsrList?menuid=${menuid}" target="_self">
         债权项目列表

@@ -53,26 +53,22 @@ public class CsrProjectInfoController {
     private CsrProjectInfoGroupService projectInfoGroupService;
     @Autowired
     private CsrBorrowerService service;
-    @Autowired
-    private BaseProjectCategoryService baseProjectCategoryService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
-    public ModelAndView view() {
+    public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/csr/projectIndex", "0", 0, "0", "");
         modelAndView.addObject("boxCnName", "项目立项");
         modelAndView.addObject("thisTitle", "项目立项");
         modelAndView.addObject("boxprocessIcon", "fa-bookmark-o");
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
 
-        BaseProjectCategory projectType = baseProjectCategoryService.getProjectCategoryByKey(BaseConstant.PMCC_ASSESS_STAGE_TYPE_CSR);
-        CsrProjectInfoVo csrProjectInfo = new CsrProjectInfoVo();
+        CsrProjectInfo csrProjectInfo=new CsrProjectInfo();
         csrProjectInfo.setId(0);
-        csrProjectInfo.setProjectTypeId(projectType.getId());
-        csrProjectInfo.setProjectTypeName(projectType.getName());
-        modelAndView.addObject("csrProjectInfo", csrProjectInfo);
-
-        List<BaseProjectCategory> projectCategoryList = baseProjectCategoryService.getProjectCategoryListByPid(projectType.getId());
-        modelAndView.addObject("projectCategoryList", projectCategoryList);
+        csrProjectInfo.setProjectClassId(projectClassId);
+        csrProjectInfo.setProjectTypeId(projectTypeId);
+        csrProjectInfo.setProjectCategoryId(projectCategoryId);
+        CsrProjectInfoVo csrProjectInfoVo = csrProjectInfoService.getCsrProjectInfoVo(csrProjectInfo);
+        modelAndView.addObject("csrProjectInfo", csrProjectInfoVo);
         return modelAndView;
     }
 
@@ -82,8 +78,6 @@ public class CsrProjectInfoController {
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getCsrProjectInfoVo(processInsId);
         modelAndView.addObject("csrProjectInfo", csrProjectInfo);
         modelAndView.addObject("list_entrustment_purpose", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE));//委托目的
-        List<BaseProjectCategory> projectCategoryList = baseProjectCategoryService.getProjectCategoryListByPid(csrProjectInfo.getProjectTypeId());
-        modelAndView.addObject("projectCategoryList", projectCategoryList);
         return modelAndView;
     }
 

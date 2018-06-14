@@ -13,6 +13,12 @@ public class BaseProjectClassify {
 
     private Integer formModuleId;
 
+    private String applyUrl;
+
+    private String detailUrl;
+
+    private Boolean bisDefault;
+
     private Boolean bisEnable;
 
     private Boolean bisDelete;
@@ -65,6 +71,30 @@ public class BaseProjectClassify {
 
     public void setFormModuleId(Integer formModuleId) {
         this.formModuleId = formModuleId;
+    }
+
+    public String getApplyUrl() {
+        return applyUrl;
+    }
+
+    public void setApplyUrl(String applyUrl) {
+        this.applyUrl = applyUrl == null ? null : applyUrl.trim();
+    }
+
+    public String getDetailUrl() {
+        return detailUrl;
+    }
+
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl == null ? null : detailUrl.trim();
+    }
+
+    public Boolean getBisDefault() {
+        return bisDefault;
+    }
+
+    public void setBisDefault(Boolean bisDefault) {
+        this.bisDefault = bisDefault;
     }
 
     public Boolean getBisEnable() {

@@ -29,10 +29,10 @@ public class BaseProjectClassifyController {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
-    //region 基础数据字典配置页面视图
+    //region 基础数据项目分类配置页面视图
 
     /**
-     * 基础数据字典配置页面视图
+     * 基础数据项目分类配置页面视图
      * @return
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -42,10 +42,10 @@ public class BaseProjectClassifyController {
     }
     //endregion
 
-    //region 获取字典列表数据
+    //region 获取项目分类列表数据
 
     /**
-     * 获取字典列表数据
+     * 获取项目分类列表数据
      *
      * @return
      */
@@ -56,7 +56,7 @@ public class BaseProjectClassifyController {
     }
 
     /**
-     * 获取字典列表数据
+     * 获取项目分类列表数据
      *
      * @return
      */
@@ -68,7 +68,7 @@ public class BaseProjectClassifyController {
     //endregion
 
     /**
-     * 获取字典列表数据
+     * 获取项目分类列表数据
      *
      * @return
      */
@@ -79,14 +79,14 @@ public class BaseProjectClassifyController {
             List<BaseProjectClassify> sysProjectClassifys = baseProjectClassifyService.getCacheProjectClassifyListByPid(pid);
             return HttpResult.newCorrectResult(sysProjectClassifys);
         } catch (Exception e) {
-            LOGGER.error("获取数据字典异常", e);
+            LOGGER.error("获取数据项目分类异常", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
     //endregion
 
     /**
-     * 获取字典列表数据
+     * 获取项目分类列表数据
      *
      * @return
      */
@@ -97,15 +97,15 @@ public class BaseProjectClassifyController {
             List<BaseProjectClassify> sysProjectClassifys = baseProjectClassifyService.getCacheProjectClassifyList(fieldName);
             return HttpResult.newCorrectResult(sysProjectClassifys);
         } catch (Exception e) {
-            LOGGER.error("获取数据字典异常", e);
+            LOGGER.error("获取数据项目分类异常", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
-    //region 保存字典数据
+    //region 保存项目分类数据
 
     /**
-     * 保存字典数据
+     * 保存项目分类数据
      *
      * @param sysProjectClassify
      * @return
@@ -116,7 +116,7 @@ public class BaseProjectClassifyController {
         try {
             baseProjectClassifyService.saveProjectClassify(sysProjectClassify);
         } catch (Exception e) {
-            LOGGER.error("保存数据字典异常", e);
+            LOGGER.error("保存数据项目分类异常", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -124,7 +124,7 @@ public class BaseProjectClassifyController {
     //endregion
 
     /**
-     * 获取字典列表by pid
+     * 获取项目分类列表by pid
      *
      * @param fieldName
      * @return
@@ -137,7 +137,7 @@ public class BaseProjectClassifyController {
     }
 
     /**
-     * 获取字典详细信息
+     * 获取项目分类详细信息
      *
      * @param id
      * @return
@@ -152,7 +152,7 @@ public class BaseProjectClassifyController {
     }
 
     /**
-     * 删除字典数据
+     * 删除项目分类数据
      *
      * @param id
      * @return
@@ -163,14 +163,14 @@ public class BaseProjectClassifyController {
         try {
             baseProjectClassifyService.delProjectClassify(id);
         } catch (Exception e) {
-            LOGGER.error("删除数据字典异常", e);
+            LOGGER.error("删除数据项目分类异常", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
 
     /**
-     * 删除字典数据
+     * 删除项目分类数据
      *
      * @param id
      * @return
@@ -181,7 +181,7 @@ public class BaseProjectClassifyController {
         try {
             return HttpResult.newCorrectResult(baseProjectClassifyService.getProjectClassifyLevel(id));
         } catch (Exception e) {
-            LOGGER.error("获取字典层级异常", e);
+            LOGGER.error("获取项目分类层级异常", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

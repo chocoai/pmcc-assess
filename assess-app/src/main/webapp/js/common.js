@@ -81,6 +81,34 @@
                     }
                 });
             }
+        },
+
+        //根据项目类型获取项目类别
+        getProjectClassifyList:function (typeId,callback) {
+            if (typeId) {
+                $.ajax({
+                    url: getContextPath() + "/baseProjectClassify/getCacheProjectClassifyListByPid",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        pid: typeId
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                            });
+                            if(callback){
+                                callback(retHtml, result.data);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
         }
     };
 

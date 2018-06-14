@@ -218,13 +218,35 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
+                                            申请url
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text"  data-rule-maxlength="100" placeholder="申请url"
+                                                   id="applyUrl" name="applyUrl" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
+                                            详情url
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text"  data-rule-maxlength="100" placeholder="详情url"
+                                                   id="detailUrl" name="detailUrl" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-3 control-label">
                                             动态表单
                                         </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <input type="hidden" id="formModuleId" name="formModuleId" value="">
                                                 <input id='formModuleName' class='form-control' onclick="selectDynamicForm();"
-                                                       required="required" readonly="readonly" maxlength="200" >
+                                                       readonly="readonly" maxlength="200" >
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="selectDynamicForm();" data-toggle="tooltip"
