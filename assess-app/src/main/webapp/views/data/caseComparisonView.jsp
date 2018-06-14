@@ -39,11 +39,20 @@
                                 <div class="x_title">
                                     案例配置
                                 </div>
-                                <div class="x_content">
-                                    <div id="customer_view" class="form-horizontal">
 
+                                <%--<div id="customer_view" class="form-horizontal">--%>
+
+                                <%--</div>--%>
+                                <div class="x_content" id="case_comparison" style="display: none;">
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            href="#divBox"
+                                            onclick="addCaseComparison();"> 新增
+                                    </button>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="tb_List" class="table table-bordered"></table>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -54,6 +63,200 @@
     </div>
 </div>
 </body>
+
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">案例对比配置</h3>
+            </div>
+            <form id="frm" class="form-horizontal">
+                <input type="hidden" id="exploreFormType" name="exploreFormType" value="">
+                <input type="hidden" id="id" name="id" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="name" id="name" placeholder="名称"
+                                                   class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            查勘数据模板<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="模板内容" class="form-control" id="exploreExplain"
+                                                      name="exploreExplain" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            查勘数据模板<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="模板内容" class="form-control" id="caseExplain"
+                                                      name="caseExplain" required="required"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--查勘数据模板<span class="symbol required"></span>--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<div class="input-group">--%>
+                                                <%--<input type="hidden" id="formTypeId" name="formTypeId">--%>
+                                                <%--<input type="text" name="formTypeName" id="formTypeName" readonly="readonly"--%>
+                                                       <%--placeholder="查勘表单" class="form-control" required="required">--%>
+                                                <%--<span class="input-group-btn">--%>
+                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                        <%--onclick="selectFormType();" data-toggle="tooltip"--%>
+                                                        <%--data-original-title="选择">--%>
+                                                    <%--<i class="fa fa-search"></i>--%>
+                                                <%--</button>--%>
+                                                 <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                                         <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                                         <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                                    <%--<i class="fa fa-trash-o"></i>--%>
+                                                <%--</button>--%>
+                                                <%--</span>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveCaseComparison()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 显示字段列表 -->
+<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="titleContent">字段管理</h3>
+            </div>
+            <input type="hidden" name="caseId" id="caseId">
+            <div class="panel-body">
+        <span id="toolbarSub">
+            <button type="button" class="btn btn-success" onclick="addMethodField()"
+                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+            </button>
+        </span>
+                <table class="table table-bordered" id="tbDataDicList">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 子项数据 添加 ===========-->
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" data-height="300"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="titleContent2">字段</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="firSubA" name="firSubA" class="form-horizontal">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            字段名称
+                                            <input type="hidden" name="caseId" id="caseIdNG">
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="uName" name="uName" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <%--<select class="form-control search-select select2" name="tableName" id="tableName"--%>
+                                                    <%--required="required">--%>
+                                                <%--<option>请选择</option>--%>
+                                                <%--<c:forEach items="${userList}" var="tableVar">--%>
+                                                    <%--<option value="${tableVar.key}">${tableVar.key}</option>--%>
+                                                <%--</c:forEach>--%>
+                                            <%--</select>--%>
+                                                <input type="text" id="tableName" name="tableName" class="form-control" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            表字段
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="fieldName" name="fieldName" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default">
+                                    取消
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                                    保存
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!--row -->
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <link rel="stylesheet" href="/assets/plugins/zTree_v3/css/metroStyle/metroStyle.css">
 <script type="text/javascript" src="/assets/plugins/zTree_v3/js/jquery.ztree.all.min.js"></script>
@@ -78,7 +281,11 @@
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
                 //显示配置信息
-
+                if(treeNode.isParent == false){
+                    loadCaseComparisonList(treeNode.id);
+                }else{
+                    $("#case_comparison").hide();
+                }
             }
         }
     };
@@ -95,7 +302,6 @@
         zTreeObj.selectNode(rootNode);
         zTreeObj.expandNode(rootNode, true, false, true);
     }
-
 
     //查询项目分类
     function queryProjectClassify() {
@@ -118,16 +324,218 @@
         }
     }
 
+    //加载 案例对比配置 基础数据列表
+    function loadCaseComparisonList(exploreFormType) {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'exploreExplain', title: '查勘数据模板'});
+        cols.push({field: 'caseExplain', title: '案例数据模板'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="查看选项"  onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑"  onclick="editCaseComparison(' + index + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_List").bootstrapTable('destroy');
+        TableInit("tb_List", "${pageContext.request.contextPath}/caseComparison/list", cols, {
+            exploreFormType: exploreFormType
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $("#case_comparison").show();
+                $("#frm").find('[name="exploreFormType"]').attr("value",exploreFormType);
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //对新增 案例对比配置 数据处理
+    function addCaseComparison() {
+        var value = $("#frm").find('[name="exploreFormType"]').attr("value");
+        $("#frm").clearAll();
+        $("#frm").find('[name="exploreFormType"]').attr("value",value);
+    }
+    //新增 案例对比配置 数据
+    function saveCaseComparison() {
+        var data = formParams("frm");
+        console.log(data);
+//        return false;
+        if ($("#frm").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseComparison/save",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        loadCaseComparisonList(data.exploreFormType);
+                        $('#divBox').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 案例对比配置 数据()
+    function removeData(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseComparison/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        var value = $("#frm").find('[name="exploreFormType"]').attr("value");
+                        loadCaseComparisonList(value);//重载 (刷新)
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
+
+    //案例对比配置 修改
+    function editCaseComparison(index) {
+        var row = $("#tb_List").bootstrapTable('getData')[index];
+        console.log(row);
+//        $("#frm").find('[name="id"]').attr('value',row.id);
+        $("#frm").clearAll();
+//        $("#frm").clearAll();
+        $("#frm").initForm(row);
+        $('#divBox').modal();
+    }
 
 
+    //------------------------------------------------------------------------------------------------------------------
 
+    //加载子项节点数据
+    function loadSubDataDicList(pid, fn) {
+        var cols = [];
+        cols.push({field: 'uName', title: '名称'});
+        cols.push({field: 'tableName', title: '表名称'});
+        cols.push({field: 'fieldName', title: '字段名称'});
+        cols.push({
+            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        var caseId = document.getElementById("caseId");
+        caseId.value = pid;
+        $("#tbDataDicList").bootstrapTable("destroy");
+        TableInit("tbDataDicList", "${pageContext.request.contextPath}/caseComparisonNG/listField",
+            cols, {caseId: pid}, {
+                showRefresh: false,                  //是否显示刷新按钮
+                toolbar: '#toolbarSub',
+                uniqueId: "id",
+                onLoadSuccess: function () {
 
+                }
+            });
+    }
 
+    //设置子项数据
+    function setSubDataDic(pid) {
+        $("#divSubDataDic").modal();//显示
+        $("#tbDataDicList").clearAll();//清除数据
+        loadSubDataDicList(pid, function () {
+            $('#divSubDataDic').modal("show");
+        });
+    }
 
+    //新增 子项 字段数据
+    function addMethodField() {
+//        $("#tableName").select2();
+        var caseId = document.getElementById("caseId");
+        $("#firSub").clearAll();
+        var value = $("#tbDataDicList").find('tbody').find('tr:eq(0)').find('td:eq(2)').text();
+        $("#firSubA").find('[name="tableName"]').val(value);
+        $('#firSub').modal();
+        var caseIdNG = document.getElementById("caseIdNG");
+        caseIdNG.value = caseId.value;
+    }
+    //保存新增 子项 字段的数据
+    function saveFileld() {
+        var data = formParams("firSubA");//应该是自动form参数
+        console.log(data);
+        return false;
+        if ($("#firSubA").valid()) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseComparisonNG/addField",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    console.info(result);
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#firSub').modal('hide');//隐藏
+                        var caseId = document.getElementById("caseId").value;
+                        setSubDataDic(caseId);
+                    } else {
+                        toastr.success('调用服务端方法失败');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
+    }
+
+    //删除 子项 子项
+    function delDataDic(id) {
+        Alert("确认要删除么？", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseComparisonNG/delete",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        var caseId = document.getElementById("caseId").value;
+                        setSubDataDic(caseId);
+                    }
+                    else {
+                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        })
+    }
 
 
 
 </script>
-
-
 </html>

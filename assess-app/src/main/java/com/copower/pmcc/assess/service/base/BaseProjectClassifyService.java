@@ -430,4 +430,8 @@ public class BaseProjectClassifyService {
     }
 
 
+    public BaseProjectClassify getDataById(Integer id) {
+        BaseProjectClassify baseProjectClassify = cmsBaseProjectClassifyDao.getSingleObject(id);
+        return baseProjectClassify;
+    }
 }

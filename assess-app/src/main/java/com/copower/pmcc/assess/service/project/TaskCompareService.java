@@ -213,11 +213,11 @@ public class TaskCompareService {
                 for (Map.Entry<String, Object> stringObjectEntry : stringObjectMap.entrySet()) {
                     for (DataCaseComparisonField caseComparisonField : caseComparisonFields) {
                         if(stringObjectEntry.getKey().equals(caseComparisonField.getFieldName())){
-                            dataCaseComparison.setuExplain(dataCaseComparison.getuExplain().replaceAll(caseComparisonField.getuName(), String.valueOf(stringObjectEntry.getValue())));  //替换
+                            dataCaseComparison.setExploreExplain(dataCaseComparison.getExploreExplain().replaceAll(caseComparisonField.getuName(), String.valueOf(stringObjectEntry.getValue())));  //替换
                         }
                     }
                 }
-                keyValueDto.setValue(dataCaseComparison.getuExplain().replaceAll("\\{","").replaceAll("}",""));
+                keyValueDto.setValue(dataCaseComparison.getExploreExplain().replaceAll("\\{","").replaceAll("}",""));
                 dtoList.add(keyValueDto);
             }
             keyValueDtoList.add(dtoList);

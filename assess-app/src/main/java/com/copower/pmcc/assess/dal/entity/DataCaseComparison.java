@@ -7,9 +7,13 @@ public class DataCaseComparison {
 
     private String name;
 
-    private String uExplain;
+    private String exploreExplain;
 
-    private Integer formTypeId;
+    private String caseExplain;
+
+    private Integer exploreFormType;
+
+    private Integer caseFormType;
 
     private String creator;
 
@@ -33,20 +37,36 @@ public class DataCaseComparison {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getuExplain() {
-        return uExplain;
+    public String getExploreExplain() {
+        return exploreExplain;
     }
 
-    public void setuExplain(String uExplain) {
-        this.uExplain = uExplain == null ? null : uExplain.trim();
+    public void setExploreExplain(String exploreExplain) {
+        this.exploreExplain = exploreExplain == null ? null : exploreExplain.trim();
     }
 
-    public Integer getFormTypeId() {
-        return formTypeId;
+    public String getCaseExplain() {
+        return caseExplain;
     }
 
-    public void setFormTypeId(Integer formTypeId) {
-        this.formTypeId = formTypeId;
+    public void setCaseExplain(String caseExplain) {
+        this.caseExplain = caseExplain == null ? null : caseExplain.trim();
+    }
+
+    public Integer getExploreFormType() {
+        return exploreFormType;
+    }
+
+    public void setExploreFormType(Integer exploreFormType) {
+        this.exploreFormType = exploreFormType;
+    }
+
+    public Integer getCaseFormType() {
+        return caseFormType;
+    }
+
+    public void setCaseFormType(Integer caseFormType) {
+        this.caseFormType = caseFormType;
     }
 
     public String getCreator() {

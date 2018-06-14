@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="u_explain" property="uExplain" jdbcType="VARCHAR" />
-    <result column="form_type_id" property="formTypeId" jdbcType="INTEGER" />
+    <result column="explore_explain" property="exploreExplain" jdbcType="VARCHAR" />
+    <result column="case_explain" property="caseExplain" jdbcType="VARCHAR" />
+    <result column="explore_form_type" property="exploreFormType" jdbcType="INTEGER" />
+    <result column="case_form_type" property="caseFormType" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, u_explain, form_type_id, creator, gmt_created, gmt_modified
+    id, name, explore_explain, case_explain, explore_form_type, case_form_type, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparisonExample" >
     select
@@ -105,12 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_case_comparison (name, u_explain, form_type_id, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{name,jdbcType=VARCHAR}, #{uExplain,jdbcType=VARCHAR}, #{formTypeId,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_case_comparison (name, explore_explain, case_explain, 
+      explore_form_type, case_form_type, creator, 
+      gmt_created, gmt_modified)
+    values (#{name,jdbcType=VARCHAR}, #{exploreExplain,jdbcType=VARCHAR}, #{caseExplain,jdbcType=VARCHAR}, 
+      #{exploreFormType,jdbcType=INTEGER}, #{caseFormType,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,11 +124,17 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="uExplain != null" >
-        u_explain,
+      <if test="exploreExplain != null" >
+        explore_explain,
       </if>
-      <if test="formTypeId != null" >
-        form_type_id,
+      <if test="caseExplain != null" >
+        case_explain,
+      </if>
+      <if test="exploreFormType != null" >
+        explore_form_type,
+      </if>
+      <if test="caseFormType != null" >
+        case_form_type,
       </if>
       <if test="creator != null" >
         creator,
@@ -141,11 +150,17 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="uExplain != null" >
-        #{uExplain,jdbcType=VARCHAR},
+      <if test="exploreExplain != null" >
+        #{exploreExplain,jdbcType=VARCHAR},
       </if>
-      <if test="formTypeId != null" >
-        #{formTypeId,jdbcType=INTEGER},
+      <if test="caseExplain != null" >
+        #{caseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="exploreFormType != null" >
+        #{exploreFormType,jdbcType=INTEGER},
+      </if>
+      <if test="caseFormType != null" >
+        #{caseFormType,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -173,11 +188,17 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.uExplain != null" >
-        u_explain = #{record.uExplain,jdbcType=VARCHAR},
+      <if test="record.exploreExplain != null" >
+        explore_explain = #{record.exploreExplain,jdbcType=VARCHAR},
       </if>
-      <if test="record.formTypeId != null" >
-        form_type_id = #{record.formTypeId,jdbcType=INTEGER},
+      <if test="record.caseExplain != null" >
+        case_explain = #{record.caseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exploreFormType != null" >
+        explore_form_type = #{record.exploreFormType,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseFormType != null" >
+        case_form_type = #{record.caseFormType,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -197,8 +218,10 @@
     update tb_data_case_comparison
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      u_explain = #{record.uExplain,jdbcType=VARCHAR},
-      form_type_id = #{record.formTypeId,jdbcType=INTEGER},
+      explore_explain = #{record.exploreExplain,jdbcType=VARCHAR},
+      case_explain = #{record.caseExplain,jdbcType=VARCHAR},
+      explore_form_type = #{record.exploreFormType,jdbcType=INTEGER},
+      case_form_type = #{record.caseFormType,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -212,11 +235,17 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="uExplain != null" >
-        u_explain = #{uExplain,jdbcType=VARCHAR},
+      <if test="exploreExplain != null" >
+        explore_explain = #{exploreExplain,jdbcType=VARCHAR},
       </if>
-      <if test="formTypeId != null" >
-        form_type_id = #{formTypeId,jdbcType=INTEGER},
+      <if test="caseExplain != null" >
+        case_explain = #{caseExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="exploreFormType != null" >
+        explore_form_type = #{exploreFormType,jdbcType=INTEGER},
+      </if>
+      <if test="caseFormType != null" >
+        case_form_type = #{caseFormType,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -233,8 +262,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.DataCaseComparison" >
     update tb_data_case_comparison
     set name = #{name,jdbcType=VARCHAR},
-      u_explain = #{uExplain,jdbcType=VARCHAR},
-      form_type_id = #{formTypeId,jdbcType=INTEGER},
+      explore_explain = #{exploreExplain,jdbcType=VARCHAR},
+      case_explain = #{caseExplain,jdbcType=VARCHAR},
+      explore_form_type = #{exploreFormType,jdbcType=INTEGER},
+      case_form_type = #{caseFormType,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
