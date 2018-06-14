@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -192,8 +193,18 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        modelAndView.addObject("projectStatusEnum", enumByName.getKey());
-        modelAndView.addObject("projectInfo", projectInfo);
+        if (!StringUtils.isEmpty(enumByName)){
+            modelAndView.addObject("projectStatusEnum", enumByName.getKey());
+        }
+        try {
+            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            modelAndView.addObject("projectInfo", projectInfoVo);
+        }catch (Exception e){
+            logger.error("异常!");
+            logger.error(e.getMessage());
+            logger.error("可能报:Source must not be null");
+            modelAndView.addObject("projectInfo", projectInfo);
+        }
 
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         //项目当前责任人信息

@@ -376,6 +376,9 @@ public class CsrProjectInfoService {
                     projectInfo.setProjectCategoryId(csrProjectInfo.getProjectCategoryId());
                     projectInfo.setCreator(csrProjectInfo.getCreator());
                     projectInfo.setProjectName(infoGroup.getProjectName());
+                    projectInfo.setRemarks(csrProjectInfo.getRemark());
+                    projectInfo.setValuationDate(csrProjectInfo.getValuationDate());
+                    projectInfo.setCompleteDateStart(csrProjectInfo.getValuationDate());
                     int projectId = projectInfoService.saveProjectInfo_returnID(projectInfo);
 
                     //保存项目成员

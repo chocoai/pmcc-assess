@@ -63,6 +63,8 @@ public class ProjectInfo {
 
     private String remarkValuetype;
 
+    private Date valuationDate;
+
     public Integer getId() {
         return id;
     }
@@ -301,5 +303,13 @@ public class ProjectInfo {
 
     public void setRemarkValuetype(String remarkValuetype) {
         this.remarkValuetype = remarkValuetype == null ? null : remarkValuetype.trim();
+    }
+
+    public Date getValuationDate() {
+        return valuationDate;
+    }
+
+    public void setValuationDate(Date valuationDate) {
+        this.valuationDate = valuationDate;
     }
 }
