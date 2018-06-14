@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.entity.InitiateContactsExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface InitiateContactsMapper {
     int countByExample(InitiateContactsExample example);

@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.dao.InitiateContactsDao;
+import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.entity.InitiateContacts;
 import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.InitiateContactsVo;
+import com.copower.pmcc.assess.dto.output.project.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
@@ -16,6 +19,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -36,7 +40,10 @@ public class InitiateContactsService {
 
     @Autowired
     private InitiateContactsDao dao;
-
+    @Autowired
+    private ProjectInfoDao projectInfoDao;
+    @Autowired
+    private InitiateUnitInformationService unitInformationService;
 
     /**
      * 从crm中输入数据
@@ -60,6 +67,7 @@ public class InitiateContactsService {
                     contactsDto.setcPhone(dto.getPhoneNumber());
                     contactsDto.setcPid(pid);
                     contactsDto.setcType(cType);
+                    contactsDto.setCrmId(dto.getId()+"");
                     dtos.add(contactsDto);
                 }
 
@@ -95,18 +103,55 @@ public class InitiateContactsService {
             }
         }else {
         }
-        writeCrmCustomerDto(writeCustomer,cType);
     }
 
     /**
      * 回写到CRM中
-     * @param writeCustomer
+     * @param projectID
      * @param cType
      */
-    public void writeCrmCustomerDto(List<CrmCustomerLinkmanDto> writeCustomer,Integer cType){
+    public void writeCrmCustomerDto(Integer projectID,Integer cType){
         if (!ObjectUtils.isEmpty(cType)){
             if (cType.equals(InitiateContactsEnum.THREE.getNum())){//只有报告使用单位才能回写
                 //CRM中暂时没有提供方法
+                Integer pid = projectInfoDao.getProjectInfoById(projectID).getUnitInformationId();
+                InitiateUnitInformationVo unitInformationVo = unitInformationService.get(pid);
+                if (!ObjectUtils.isEmpty(pid)){
+                    List<InitiateContactsVo> contactsVos = getVoList(pid,cType);
+                    for (InitiateContactsVo contacts:contactsVos){
+                        String tempString = contacts.getCrmId();
+                        String uUseUnit = unitInformationVo.getuUseUnit();
+                        if (!StringUtils.isEmpty(uUseUnit)){
+                            //标记一下这里容易出现问题 ==>  customerID
+                            try {
+                                Integer customerID = Integer.parseInt(uUseUnit);
+                                CrmCustomerLinkmanDto crmCustomer = new CrmCustomerLinkmanDto();
+                                crmCustomer.setPhoneNumber(contacts.getcPhone());
+                                crmCustomer.setEmail(contacts.getcEmail());
+                                crmCustomer.setName(contacts.getcName());
+                                crmCustomer.setDepartment(contacts.getcDept());
+                                crmCustomer.setCustomerId(customerID);
+                                crmCustomer.setCustomerManager(null);
+                                crmCustomer.setOtherContact(null);
+                                if (!StringUtils.isEmpty(tempString)){//需要更新的crm
+                                    Integer crmID = Integer.parseInt(tempString);
+                                    crmCustomerService.updateCrmCustomer(crmCustomer);
+                                }else {//需要添加进去的crm
+                                    crmCustomerService.saveCrmCustomer(crmCustomer);
+                                }
+                            }catch (Exception e){
+                                try {
+                                    logger.error("exception: ======> "+e.getMessage());
+                                    throw e;
+                                }catch (Exception e1){
+
+                                }
+                            }
+
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -140,6 +185,8 @@ public class InitiateContactsService {
     }
 
     public boolean update(InitiateContactsDto dto) {
+        InitiateContactsDto contactsDto = getById(dto.getId());
+        dto.setCrmId(contactsDto.getCrmId());
         return dao.update(dto);
     }
 

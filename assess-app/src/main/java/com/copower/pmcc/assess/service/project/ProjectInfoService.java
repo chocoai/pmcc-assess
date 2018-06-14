@@ -720,4 +720,13 @@ public class ProjectInfoService {
         return consignorService.oneFirstConsignor();
     }
 
+    /**
+     * 回写到CRM中
+     * @param projectID
+     * @param cType
+     */
+    public void writeCrmCustomerDto(Integer projectID,Integer cType){
+        initiateContactsService.writeCrmCustomerDto(projectID,cType);
+    }
+
 }
