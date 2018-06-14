@@ -824,6 +824,76 @@ public class InitiateContactsExample {
             addCriterion("c_pid not between", value1, value2, "cPid");
             return (Criteria) this;
         }
+
+        public Criteria andCrmIdIsNull() {
+            addCriterion("crm_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdIsNotNull() {
+            addCriterion("crm_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdEqualTo(String value) {
+            addCriterion("crm_id =", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdNotEqualTo(String value) {
+            addCriterion("crm_id <>", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdGreaterThan(String value) {
+            addCriterion("crm_id >", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdGreaterThanOrEqualTo(String value) {
+            addCriterion("crm_id >=", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdLessThan(String value) {
+            addCriterion("crm_id <", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdLessThanOrEqualTo(String value) {
+            addCriterion("crm_id <=", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdLike(String value) {
+            addCriterion("crm_id like", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdNotLike(String value) {
+            addCriterion("crm_id not like", value, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdIn(List<String> values) {
+            addCriterion("crm_id in", values, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdNotIn(List<String> values) {
+            addCriterion("crm_id not in", values, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdBetween(String value1, String value2) {
+            addCriterion("crm_id between", value1, value2, "crmId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCrmIdNotBetween(String value1, String value2) {
+            addCriterion("crm_id not between", value1, value2, "crmId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

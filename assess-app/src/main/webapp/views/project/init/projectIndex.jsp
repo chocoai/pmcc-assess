@@ -63,10 +63,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input required="required" placeholder="评估基准日" id="completeDateStart"
-                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                    <input required="required" placeholder="评估基准日" id="valuationDate"
+                                           name="valuationDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
-                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
+                                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
 
                                 </div>
                             </div>
@@ -240,12 +240,23 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    <span class="checkbox-inline">
-                                        <input type="checkbox" id="userAccountMemberCheckBox">
-                                        <label for="userAccountMemberCheckBox">下级分派</label>
-                                    </span>
-                                </label>
+                                <label class="col-sm-1 control-label">接收任务时间<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="接收任务时间" id="completeDateStart"
+                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">实际完成日期<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input required="required" placeholder="实际完成日期" id="completeDateActual"
+                                           name="completeDateActual" data-date-format="yyyy-mm-dd"
+                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           value="<fmt:formatDate value='${projectInfo.completeDateActual}' pattern='yyyy-MM-dd'/>">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -500,25 +511,7 @@
                                     <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
                                            class="form-control" required="required" placeholder="单位"
                                            value="${projectInfo.possessorVo.pEntrustmentUnitName}">
-                                    <%--<div class="input-group">--%>
-                                    <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
-                                    <%--class="form-control" required="required">--%>
-                                    <%--<input type="text" id="pEntrustmentUnitX"--%>
-                                    <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
-                                    <%--class="form-control" required="required" readonly="readonly">--%>
-                                    <%--<span class="input-group-btn">--%>
-                                    <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                    <%--data-toggle="tooltip"--%>
-                                    <%--data-original-title="选择" id="btn_select_customer1">--%>
-                                    <%--<i class="fa fa-search"></i>--%>
-                                    <%--</button>--%>
-                                    <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                    <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
-                                    <%--data-toggle="tooltip" data-original-title="清除">--%>
-                                    <%--<i class="fa fa-trash-o"></i>--%>
-                                    <%--</button>--%>
-                                    <%--</span>--%>
-                                    <%--</div>--%>
+
                                 </div>
                             </div>
 
@@ -945,7 +938,7 @@
                                             号码
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="cPhone" id="cPhone" placeholder="号码"
+                                            <input type="text" name="cPhone" id="cPhone" data-rule-number='true' placeholder="号码"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
@@ -1029,7 +1022,7 @@
             }
         })
     });
-    oneFirstConsignor();
+    // oneFirstConsignor();
     //第一次填写后留下的委托人 数据信息
     function oneFirstConsignor() {
         var oneFirstConsignor = "${oneFirstConsignor}";
@@ -1055,29 +1048,6 @@
                 }
             }
         }
-    }
-    //检查联系人是否达到要求
-    function checkContacts() {
-        var isAllDistribution = true;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
-            type: "post",
-            dataType: "json",
-            async: false,
-            success: function (result) {
-                if (result.ret) {
-                    // Alert("success!");
-                } else {
-                    Alert(result.errmsg);
-                }
-                isAllDistribution = result.ret;
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        })
-        return isAllDistribution;
     }
     $(function () {
         //---------
@@ -1279,7 +1249,7 @@
                 var optionEle = document.createElement("option");
                 optionEle.setAttribute("value", "");
                 optionEle.setAttribute("name", "city");
-                optionEle.appendChild("请选择");
+                optionEle.appendChild(document.createTextNode("请选择"));
                 TableFieldElement.appendChild(optionEle);
             }
         }
@@ -1292,7 +1262,8 @@
         for (var i = 0; i < len; i++) {
             var optionLen = $("#district option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value", item[i].id);
+            // fieldElment.setAttribute("value", item[i].id);
+            fieldElment.setAttribute("value", item[i].areaId);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
 
@@ -1846,22 +1817,33 @@
         json = JSON.stringify(data);
     }
 
-    //加载项目类别
-    // function loadProjectCategoryList(projectTypeId,projectCategoryId) {
-    //     $("#projectCategoryId").empty();
-    //     if(projectTypeId){
-    //         AssessCommon.getProjectCategoryList(projectTypeId,function (html,data) {
-    //             $("#projectCategoryId").append(html);
-    //             if(projectCategoryId){
-    //                 $("#projectCategoryId").val(projectCategoryId);
-    //             }
-    //         })
-    //     }
-    // }
+    //检查联系人是否达到要求
+    function checkContacts() {
+        var isAllDistribution = true;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+
+                } else {
+                    Alert(result.errmsg);
+                }
+                isAllDistribution = result.ret;
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        })
+        return isAllDistribution;
+    }
 
     function projectApply() {
         var projectinfoid = $("#projectinfoid").val();
-        if (projectinfoid == null || projectinfoid == '') {
+        if (projectinfoid == null || projectinfoid == '' || projectinfoid==0) {
             //联系人校验
             if (!checkContacts()) {
                 return false;
