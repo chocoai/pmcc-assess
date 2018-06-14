@@ -29,9 +29,9 @@
                                             项目类型:
                                         </label>
                                         <div class="col-sm-2">
-                                            <select name="typeId" id="typeId" class="form-control">
+                                            <select name="classId" id="classId" class="form-control">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${projectTypeList}">
+                                                <c:forEach var="item" items="${projectClassList}">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -42,12 +42,21 @@
                                             项目类别:
                                         </label>
                                         <div class="col-sm-2">
+                                            <select name="typeId" id="typeId" class="form-control">
+                                                <option value="" selected="selected">-请选择-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="col-sm-1 control-label">
+                                            项目范围:
+                                        </label>
+                                        <div class="col-sm-2">
                                             <select name="categoryId" id="categoryId" class="form-control">
                                                 <option value="" selected="selected">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
                             </form>
                             <div class="x_panel">
@@ -64,13 +73,10 @@
                                 </p>
                                 <table id="project_phase_list_table" class="table table-bordered"></table>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -101,15 +107,23 @@
         return groupKey;
     };
 
+    //加载项目类别
+    projectWorkStagePhaseObj.loadType = function loadCategory(classId) {
+        $("#categoryId").empty();
+        if (classId) {
+            AssessCommon.getProjectClassifyList(classId,function (html,data) {
+                $("#typeId").html(html);
+            })
+        }
+    };
 
-    //加载项目类别类目
+    //加载项目范围
     projectWorkStagePhaseObj.loadCategory = function loadCategory(typeId) {
         $("#categoryId").empty();
         if (typeId) {
-            loadCategoryByPid(typeId, function (html, data) {
+            AssessCommon.getProjectClassifyList(typeId,function (html,data) {
                 $("#categoryId").html(html);
-            });
-
+            })
         }
     };
 
@@ -128,7 +142,12 @@
 
 
         //-------------start: 界面事件触发 ---------//
-        //项目类型下拉列表事件触发
+        //项目类型
+        $('#classId').change(function () {
+            projectWorkStagePhaseObj.loadType($(this).val());
+        })
+
+        //项目类别下拉列表事件触发
         $('#typeId').change(function () {
             var typeId = $("#typeId").val();
             projectWorkStagePhaseObj.loadCategory(typeId);
@@ -166,31 +185,6 @@
         //-------------end: 界面事件触发 ---------//
     });
 
-
-    function loadCategoryByPid(pid, fn) {
-        if (pid) {
-            $.ajax({
-                url: getContextPath() + "/ProjectPhase/getBidProjectCategoryListByPid",
-                type: "get",
-                dataType: "json",
-                data: {
-                    pid: pid
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        var retHtml = '<option value="" selected>-请选择-</option>';
-                        $.each(result.data, function (i, item) {
-                            retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
-                        });
-                        fn(retHtml, result.data);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        }
-    }
 </script>
 
 </html>

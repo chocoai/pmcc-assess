@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
 import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
@@ -59,8 +60,10 @@ public class ProjectPhaseController {
     private BaseAssistService baseAssistService;
     @Autowired
     private BaseProjectCategoryService baseProjectCategoryService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
-    @RequestMapping(value = "/view", name = "工程管理页面视图", method = RequestMethod.GET)
+    @RequestMapping(value = "/view", name = "阶段事项页面视图", method = RequestMethod.GET)
     public ModelAndView view() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/stage/ProjectPhase");
         //取工作内容具体项的关系表单信息
@@ -71,9 +74,8 @@ public class ProjectPhaseController {
         List<PublicRole> publicRoleConfig = bpmRpcBoxRoleUserService.getPublicRoleConfig();
         modelAndView.addObject("publicRole", publicRoleConfig);
 
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
-        modelAndView.addObject("projectTypeList", projectTypeList);
-
+        List<BaseProjectClassify> projectClassList = baseProjectClassifyService.getCacheProjectClassifyListByPid(0);
+        modelAndView.addObject("projectClassList", projectClassList);
         return modelAndView;
     }
 
@@ -254,10 +256,9 @@ public class ProjectPhaseController {
 
     }
 
-    @RequestMapping(value = "/getBidProjectCategoryListByPid", name = "取得项目类型", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBidProjectCategoryListByPid", name = "取得项目类别", method = RequestMethod.GET)
     @ResponseBody
     public HttpResult getBidProjectCategoryListByPid(Integer pid) {
-
         List<BaseProjectCategory> bidProjectCategories = baseProjectCategoryService.getProjectCategoryListByPid(pid);
         return HttpResult.newCorrectResult(bidProjectCategories);
 
