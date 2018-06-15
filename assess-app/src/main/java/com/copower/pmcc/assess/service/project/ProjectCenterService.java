@@ -6,12 +6,14 @@ import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressVO;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -65,6 +67,8 @@ public class ProjectCenterService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private CsrProjectInfoService csrProjectInfoService;
+    @Autowired
+    private BaseProjectClassifyService projectClassifyService;
 
     public Integer getTodayTaskCount() {
         Date date = new Date();
@@ -206,6 +210,8 @@ public class ProjectCenterService {
                 BeanUtils.copyProperties(item,projectInfoVo);
                 projectInfoVo.setId(item.getId());
                 projectInfoVo.setProjectName(item.getProjectName());
+                BaseProjectClassify baseProjectClassify = projectClassifyService.getProjectInfoByClassify(projectInfoVo);
+                projectInfoVo.setBaseProjectClassify(baseProjectClassify);
 
 //                BidProjectCategory bidProjectCategory = bidProjectCategoryService.getBidProjectCategoryById(item.getProjectCategoryId());
 //                if(bidProjectCategory!=null){

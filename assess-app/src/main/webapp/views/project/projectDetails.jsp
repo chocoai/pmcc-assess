@@ -124,7 +124,12 @@
                 </div>
             </div>
             <!--招标信息-->
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == defaultProjectDetails}">
+                <%@include file="/views/share/project/projectDefaultInfo.jsp" %>
+            </c:if>
+            <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == csrProjectDetails}">
+                <%@include file="/views/share/project/projectCsrInfo.jsp" %>
+            </c:if>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>项目成员</h2>
