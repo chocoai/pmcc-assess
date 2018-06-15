@@ -40,8 +40,8 @@ public class BaseReplaceRecordService {
      * @param attachmentId
      * @return
      */
-    public BaseReplaceRecord getRecordByAttachmentId(Integer attachmentId,Boolean bisReplace) {
-        return baseReplaceRecordDao.getRecordByAttachmentId(attachmentId,bisReplace);
+    public BaseReplaceRecord getRecordByAttachmentId(Integer attachmentId, Boolean bisReplace) {
+        return baseReplaceRecordDao.getRecordByAttachmentId(attachmentId, bisReplace);
     }
 
     public BaseReplaceRecord getRecordById(Integer id) {
@@ -58,11 +58,11 @@ public class BaseReplaceRecordService {
             baseReplaceRecordDao.updateBaseReplaceRecord(baseReplaceRecord);
         } else {
             //新增时先检查是否已存在相同的附件id，并且还未被替换过的数据
-            if(baseReplaceRecord.getAttachmentId()!=null){
-                BaseReplaceRecord record = getRecordByAttachmentId(baseReplaceRecord.getAttachmentId(),false);
-                if(record==null){
+            if (baseReplaceRecord.getAttachmentId() != null) {
+                BaseReplaceRecord record = getRecordByAttachmentId(baseReplaceRecord.getAttachmentId(), false);
+                if (record == null) {
                     baseReplaceRecordDao.addBaseReplaceRecord(baseReplaceRecord);
-                }else{
+                } else {
                     record.setContent(baseReplaceRecord.getContent());
                     baseReplaceRecordDao.updateBaseReplaceRecord(record);
                 }
@@ -79,15 +79,45 @@ public class BaseReplaceRecordService {
         Integer attachmentId = baseReplaceRecord.getAttachmentId();
         BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(attachmentId);
         //将附件下载到本地处理
-        String loaclFileName = baseAttachmentService.createNoRepeatFileName(baseAttachment.getFileExtension());
-        String localFileDir = baseAttachmentService.createTempBasePath();
-        String localFullPath = localFileDir + File.separator + loaclFileName;
-        ftpUtilsExtense.downloadFileToLocal(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), loaclFileName, localFileDir);
+        String localFullPath = baseAttachmentService.downloadFtpFileToLocal(attachmentId);
         String content = baseReplaceRecord.getContent();
         if (StringUtils.isNotBlank(content)) {
             List<DataReplaceDto> dataReplaceDtoList = JSON.parseArray(content, DataReplaceDto.class);
             //特殊处理
             //1.循环所有需要替换的内容，将只是文本分一组，将只是书签的分一组，将文件的分一组
+            //2.如果是文件则找出文件，并检查需替换的内容，如果内容为空则只替换文件，如果不为空则循环替换，可能存在递归操作
+            if (CollectionUtils.isNotEmpty(dataReplaceDtoList)) {
+                Map<String, String> textMap = Maps.newHashMap();
+                Map<String, String> bookmarkMap = Maps.newHashMap();
+                Map<String, String> fileMap = Maps.newHashMap();
+                for (DataReplaceDto dataReplaceDto : dataReplaceDtoList) {
+                    switch (dataReplaceDto.getDataReplaceTypeEnum()) {
+                        case FILE:
+                            BaseReplaceRecord replaceRecord = getRecordById(dataReplaceDto.getReplaceRecordId());
+                            if (replaceRecord == null) continue;
+                            if (StringUtils.isBlank(replaceRecord.getContent())) {
+                                fileMap.put(dataReplaceDto.getKey(), baseAttachmentService.downloadFtpFileToLocal(replaceRecord.getAttachmentId()));
+                            } else {
+                                //递归处理附件
+                            }
+                            break;
+                        case TEXT:
+                            textMap.put(dataReplaceDto.getKey(), dataReplaceDto.getValue());
+                            break;
+                        case BOOKMARK:
+                            bookmarkMap.put(dataReplaceDto.getKey(), dataReplaceDto.getValue());
+                            break;
+                    }
+                }
+
+                //分组完成后，分别做对应的替换操作
+                if (!textMap.isEmpty())
+                    AsposeUtils.replaceText(localFullPath, textMap);
+                if (!bookmarkMap.isEmpty())
+                    AsposeUtils.replaceBookmark(localFullPath, bookmarkMap);
+                if (!fileMap.isEmpty())
+                    AsposeUtils.insertDocument(localFullPath, fileMap);
+            }
 
         }
         //再将附件上传到相同位置
@@ -101,4 +131,6 @@ public class BaseReplaceRecordService {
         baseReplaceRecord.setBisReplace(true);
         baseReplaceRecordDao.updateBaseReplaceRecord(baseReplaceRecord);
     }
+
+    //private String
 }

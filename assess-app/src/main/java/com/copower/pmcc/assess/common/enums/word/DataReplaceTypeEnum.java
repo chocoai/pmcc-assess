@@ -13,7 +13,7 @@ import java.util.List;
  * @time: 15:46
  */
 public enum DataReplaceTypeEnum {
-    TEXT("text", "文本"), BOOKMARK("bookmark", "书签");
+    TEXT("text", "文本"), BOOKMARK("bookmark", "书签"), FILE("file", "文件");
 
     private String key;
 
