@@ -184,7 +184,7 @@ public class BaseProjectClassifyService {
     }
 
     public List<BaseProjectClassify> getProjectClassifyListByPids(List<Integer> pids) {
-        return cmsBaseProjectClassifyDao.getEnableListByPids(pids);
+        return baseProjectClassifyDao.getEnableListByPids(pids);
     }
 
     /**
@@ -431,7 +431,7 @@ public class BaseProjectClassifyService {
 
 
     public BaseProjectClassify getDataById(Integer id) {
-        BaseProjectClassify baseProjectClassify = cmsBaseProjectClassifyDao.getSingleObject(id);
+        BaseProjectClassify baseProjectClassify = baseProjectClassifyDao.getSingleObject(id);
         return baseProjectClassify;
     }
 }

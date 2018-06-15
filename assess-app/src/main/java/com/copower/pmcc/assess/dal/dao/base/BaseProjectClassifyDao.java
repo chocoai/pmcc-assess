@@ -95,7 +95,7 @@ public class BaseProjectClassifyDao {
     {
         BaseProjectClassifyExample example=new BaseProjectClassifyExample();
         example.createCriteria().andPidIn(integers);
-        return sysProjectClassifyMapper.selectByExample(example);
+        return baseProjectClassifyMapper.selectByExample(example);
     }
 
     /**
