@@ -24,6 +24,9 @@
     <result column="jd" property="jd" jdbcType="VARCHAR" />
     <result column="wd" property="wd" jdbcType="VARCHAR" />
     <result column="fxqj" property="fxqj" jdbcType="VARCHAR" />
+    <result column="kts" property="kts" jdbcType="VARCHAR" />
+    <result column="hts" property="hts" jdbcType="VARCHAR" />
+    <result column="cg" property="cg" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -85,7 +88,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, lpbh, jzmj, zdmj, glfs, gsfs, tx, wl, wylx, jzlb, zxqk, tdsynx, zhs, wyf, wygsbh, 
-    wygs, yxdl, kpsj, jfsj, jd, wd, fxqj
+    wygs, yxdl, kpsj, jfsj, jd, wd, fxqj, kts, hts, cg
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesPropertyExample" >
     select
@@ -126,13 +129,15 @@
       wylx, jzlb, zxqk, tdsynx, 
       zhs, wyf, wygsbh, wygs, 
       yxdl, kpsj, jfsj, jd, 
-      wd, fxqj)
+      wd, fxqj, kts, hts, 
+      cg)
     values (#{lpbh,jdbcType=INTEGER}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
       #{glfs,jdbcType=VARCHAR}, #{gsfs,jdbcType=VARCHAR}, #{tx,jdbcType=VARCHAR}, #{wl,jdbcType=VARCHAR}, 
       #{wylx,jdbcType=VARCHAR}, #{jzlb,jdbcType=VARCHAR}, #{zxqk,jdbcType=VARCHAR}, #{tdsynx,jdbcType=VARCHAR}, 
       #{zhs,jdbcType=VARCHAR}, #{wyf,jdbcType=VARCHAR}, #{wygsbh,jdbcType=INTEGER}, #{wygs,jdbcType=VARCHAR}, 
       #{yxdl,jdbcType=VARCHAR}, #{kpsj,jdbcType=VARCHAR}, #{jfsj,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, 
-      #{wd,jdbcType=VARCHAR}, #{fxqj,jdbcType=VARCHAR})
+      #{wd,jdbcType=VARCHAR}, #{fxqj,jdbcType=VARCHAR}, #{kts,jdbcType=VARCHAR}, #{hts,jdbcType=VARCHAR}, 
+      #{cg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesProperty" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -203,6 +208,15 @@
       <if test="fxqj != null" >
         fxqj,
       </if>
+      <if test="kts != null" >
+        kts,
+      </if>
+      <if test="hts != null" >
+        hts,
+      </if>
+      <if test="cg != null" >
+        cg,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="lpbh != null" >
@@ -267,6 +281,15 @@
       </if>
       <if test="fxqj != null" >
         #{fxqj,jdbcType=VARCHAR},
+      </if>
+      <if test="kts != null" >
+        #{kts,jdbcType=VARCHAR},
+      </if>
+      <if test="hts != null" >
+        #{hts,jdbcType=VARCHAR},
+      </if>
+      <if test="cg != null" >
+        #{cg,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -345,6 +368,15 @@
       <if test="record.fxqj != null" >
         fxqj = #{record.fxqj,jdbcType=VARCHAR},
       </if>
+      <if test="record.kts != null" >
+        kts = #{record.kts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hts != null" >
+        hts = #{record.hts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cg != null" >
+        cg = #{record.cg,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -373,7 +405,10 @@
       jfsj = #{record.jfsj,jdbcType=VARCHAR},
       jd = #{record.jd,jdbcType=VARCHAR},
       wd = #{record.wd,jdbcType=VARCHAR},
-      fxqj = #{record.fxqj,jdbcType=VARCHAR}
+      fxqj = #{record.fxqj,jdbcType=VARCHAR},
+      kts = #{record.kts,jdbcType=VARCHAR},
+      hts = #{record.hts,jdbcType=VARCHAR},
+      cg = #{record.cg,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -444,6 +479,15 @@
       <if test="fxqj != null" >
         fxqj = #{fxqj,jdbcType=VARCHAR},
       </if>
+      <if test="kts != null" >
+        kts = #{kts,jdbcType=VARCHAR},
+      </if>
+      <if test="hts != null" >
+        hts = #{hts,jdbcType=VARCHAR},
+      </if>
+      <if test="cg != null" >
+        cg = #{cg,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -469,7 +513,10 @@
       jfsj = #{jfsj,jdbcType=VARCHAR},
       jd = #{jd,jdbcType=VARCHAR},
       wd = #{wd,jdbcType=VARCHAR},
-      fxqj = #{fxqj,jdbcType=VARCHAR}
+      fxqj = #{fxqj,jdbcType=VARCHAR},
+      kts = #{kts,jdbcType=VARCHAR},
+      hts = #{hts,jdbcType=VARCHAR},
+      cg = #{cg,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

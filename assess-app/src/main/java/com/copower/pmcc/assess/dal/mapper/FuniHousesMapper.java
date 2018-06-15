@@ -16,21 +16,15 @@ public interface FuniHousesMapper {
 
     int insertSelective(FuniHouses record);
 
-    List<FuniHouses> selectByExampleWithBLOBs(FuniHousesExample example);
-
     List<FuniHouses> selectByExample(FuniHousesExample example);
 
     FuniHouses selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") FuniHouses record, @Param("example") FuniHousesExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") FuniHouses record, @Param("example") FuniHousesExample example);
-
     int updateByExample(@Param("record") FuniHouses record, @Param("example") FuniHousesExample example);
 
     int updateByPrimaryKeySelective(FuniHouses record);
-
-    int updateByPrimaryKeyWithBLOBs(FuniHouses record);
 
     int updateByPrimaryKey(FuniHouses record);
 }

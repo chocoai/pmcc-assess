@@ -924,6 +924,76 @@ public class FuniHousesExample {
             return (Criteria) this;
         }
 
+        public Criteria andLpjsIsNull() {
+            addCriterion("lpjs is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsIsNotNull() {
+            addCriterion("lpjs is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsEqualTo(String value) {
+            addCriterion("lpjs =", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsNotEqualTo(String value) {
+            addCriterion("lpjs <>", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsGreaterThan(String value) {
+            addCriterion("lpjs >", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsGreaterThanOrEqualTo(String value) {
+            addCriterion("lpjs >=", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsLessThan(String value) {
+            addCriterion("lpjs <", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsLessThanOrEqualTo(String value) {
+            addCriterion("lpjs <=", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsLike(String value) {
+            addCriterion("lpjs like", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsNotLike(String value) {
+            addCriterion("lpjs not like", value, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsIn(List<String> values) {
+            addCriterion("lpjs in", values, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsNotIn(List<String> values) {
+            addCriterion("lpjs not in", values, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsBetween(String value1, String value2) {
+            addCriterion("lpjs between", value1, value2, "lpjs");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjsNotBetween(String value1, String value2) {
+            addCriterion("lpjs not between", value1, value2, "lpjs");
+            return (Criteria) this;
+        }
+
         public Criteria andJdIsNull() {
             addCriterion("jd is null");
             return (Criteria) this;
@@ -1651,6 +1721,66 @@ public class FuniHousesExample {
 
         public Criteria andCsNotBetween(String value1, String value2) {
             addCriterion("cs not between", value1, value2, "cs");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditIsNull() {
+            addCriterion("bis_edit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditIsNotNull() {
+            addCriterion("bis_edit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditEqualTo(Boolean value) {
+            addCriterion("bis_edit =", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditNotEqualTo(Boolean value) {
+            addCriterion("bis_edit <>", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditGreaterThan(Boolean value) {
+            addCriterion("bis_edit >", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_edit >=", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditLessThan(Boolean value) {
+            addCriterion("bis_edit <", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_edit <=", value, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditIn(List<Boolean> values) {
+            addCriterion("bis_edit in", values, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditNotIn(List<Boolean> values) {
+            addCriterion("bis_edit not in", values, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_edit between", value1, value2, "bisEdit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEditNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_edit not between", value1, value2, "bisEdit");
             return (Criteria) this;
         }
     }

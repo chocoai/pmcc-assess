@@ -45,6 +45,12 @@ public class FuniHousesProperty {
 
     private String fxqj;
 
+    private String kts;
+
+    private String hts;
+
+    private String cg;
+
     public Integer getId() {
         return id;
     }
@@ -219,5 +225,29 @@ public class FuniHousesProperty {
 
     public void setFxqj(String fxqj) {
         this.fxqj = fxqj == null ? null : fxqj.trim();
+    }
+
+    public String getKts() {
+        return kts;
+    }
+
+    public void setKts(String kts) {
+        this.kts = kts == null ? null : kts.trim();
+    }
+
+    public String getHts() {
+        return hts;
+    }
+
+    public void setHts(String hts) {
+        this.hts = hts == null ? null : hts.trim();
+    }
+
+    public String getCg() {
+        return cg;
+    }
+
+    public void setCg(String cg) {
+        this.cg = cg == null ? null : cg.trim();
     }
 }

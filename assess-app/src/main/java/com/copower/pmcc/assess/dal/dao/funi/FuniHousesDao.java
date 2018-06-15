@@ -33,6 +33,7 @@ public class FuniHousesDao {
             criteria.andLpmcLike(search);
         }
         MybatisUtils.convertObj2Criteria(funiHouses, criteria);
+        example.setOrderByClause(" id desc");
         List<FuniHouses> funiHousess = funiHousesMapper.selectByExample(example);
         return funiHousess;
     }

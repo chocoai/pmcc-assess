@@ -79,8 +79,11 @@ public class FuniViewerController {
     public HttpResult updateHouses(Integer page) {
         funiWebService.getFuniHousesList(1);
         FuniHouses funiHouses = new FuniHouses();
+        funiHouses.setBisEdit(false);
         List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses, "");
         for (FuniHouses item : funiHousesList) {
+            item.setBisEdit(true);
+            funiHousesDao.editFuniHouses(item);
             if (item.getFuniweb().contains("{COMMUNITY_ID}")) {
                 continue;
             }

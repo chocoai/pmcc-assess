@@ -25,6 +25,8 @@ public class FuniHouses {
 
     private String ssskzh;
 
+    private String lpjs;
+
     private String jd;
 
     private String wd;
@@ -47,7 +49,7 @@ public class FuniHouses {
 
     private String cs;
 
-    private String lpjs;
+    private Boolean bisEdit;
 
     public Integer getId() {
         return id;
@@ -145,6 +147,14 @@ public class FuniHouses {
         this.ssskzh = ssskzh == null ? null : ssskzh.trim();
     }
 
+    public String getLpjs() {
+        return lpjs;
+    }
+
+    public void setLpjs(String lpjs) {
+        this.lpjs = lpjs == null ? null : lpjs.trim();
+    }
+
     public String getJd() {
         return jd;
     }
@@ -233,11 +243,11 @@ public class FuniHouses {
         this.cs = cs == null ? null : cs.trim();
     }
 
-    public String getLpjs() {
-        return lpjs;
+    public Boolean getBisEdit() {
+        return bisEdit;
     }
 
-    public void setLpjs(String lpjs) {
-        this.lpjs = lpjs == null ? null : lpjs.trim();
+    public void setBisEdit(Boolean bisEdit) {
+        this.bisEdit = bisEdit;
     }
 }
