@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseProjectClassifyDao;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.BaseProjectClassifyVo;
 import com.copower.pmcc.assess.dto.output.TreeViewVo;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,49 @@ public class BaseProjectClassifyService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<BaseProjectClassify>() : list);
         return bootstrapTableVo;
+    }
+
+    /**
+     * 根据项目详细获取具体的项目类别
+     * @param projectInfo
+     * @return
+     */
+    public BaseProjectClassify getProjectInfoByClassify(ProjectInfo projectInfo){
+        if (ObjectUtils.isEmpty(projectInfo)){
+            try {
+                throw  new Exception("exception =====>");
+            }catch (Exception e){
+
+            }
+        }
+        BaseProjectClassify baseProjectClassify = null;
+        Integer id = null;
+        Integer projectCategoryId = projectInfo.getProjectCategoryId();
+        Integer projectTypeId = projectInfo.getProjectTypeId();
+        Integer projectClassId = projectInfo.getProjectClassId();
+        //最先匹配 projectTypeId (此值最容易有值)
+        if (!ObjectUtils.isEmpty(projectTypeId)){
+            id = projectTypeId;
+            baseProjectClassify = getCacheProjectClassifyById(id);
+            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+                return baseProjectClassify;
+            }
+        }
+        if (!ObjectUtils.isEmpty(projectClassId)){
+            id = projectClassId;
+            baseProjectClassify = getCacheProjectClassifyById(id);
+            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+                return baseProjectClassify;
+            }
+        }
+        if (!ObjectUtils.isEmpty(projectCategoryId)){
+            id = projectCategoryId;
+            baseProjectClassify = getCacheProjectClassifyById(id);
+            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+                return baseProjectClassify;
+            }
+        }
+        return null;
     }
 
     /**

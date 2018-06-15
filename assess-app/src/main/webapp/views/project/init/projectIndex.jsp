@@ -1343,7 +1343,8 @@
                             $("#userAccountMemberID").val(v1);
                         }
                     }
-                }
+                },
+                multi: true
             });
         }
     }

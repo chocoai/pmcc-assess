@@ -247,8 +247,15 @@
         });
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
-                var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
-
+                <%--var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";--%>
+                var detailUrl = "" ;
+                if (row.baseProjectClassify !=null && row.baseProjectClassify!=''){
+                    detailUrl = "${pageContext.request.contextPath}/"+ row.baseProjectClassify.detailUrl+"?projectId="+row.id;
+                }else{
+                    detailUrl = "#" ;
+                }
+                var url = "" +detailUrl+"" ;
+                var str = "<a target='_blank' href='" + detailUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 return str;
             }
         });
