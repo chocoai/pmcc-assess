@@ -3,18 +3,18 @@ package com.copower.pmcc.assess.service.csr;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerEnteringDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
+import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -31,17 +31,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +77,14 @@ public class CsrBorrowerService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CsrProjectInfoService csrProjectInfoService;
+    @Autowired
+    private BaseReportService baseReportService;
+    @Autowired
+    private CsrBorrowerMortgageService csrBorrowerMortgageService;
 
     public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -321,6 +323,23 @@ public class CsrBorrowerService {
             }
         }
         return csrBorrowerEnteringVo;
+    }
+
+    public ResponseEntity<byte[]>  exportFormBorrowers(HttpServletRequest request, HttpServletResponse response,Integer csrProjectInfoID){
+        ResponseEntity<byte[]> responseEntity = null;
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
+        BaseReportTemplateFilesDto baseReportTemplateFilesDto = null;
+        baseReportTemplateFilesDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(),baseDataDic.getId(),csrProjectInfo.getCustomerType(),csrProjectInfo.getProjectTypeId(),csrProjectInfo.getProjectCategoryId());
+        responseEntity = toExportFormBorrowers(request,response,baseReportTemplateFilesDto,csrProjectInfoID);
+        return  responseEntity;
+    }
+
+    private ResponseEntity<byte[]> toExportFormBorrowers(HttpServletRequest request, HttpServletResponse response,BaseReportTemplateFilesDto templateFilesDto,Integer csrProjectInfoID){
+        ResponseEntity<byte[]> responseEntity = null;
+        CsrBorrowerMortgage csrBorrowerMortgage = null;
+        List<CsrBorrowerMortgage> csrBorrowerMortgages = csrBorrowerMortgageService.getCsrProjectMortgages(csrProjectInfoID);
+        return responseEntity;
     }
 
     /**

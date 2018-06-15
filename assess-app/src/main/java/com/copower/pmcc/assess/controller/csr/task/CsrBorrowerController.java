@@ -78,4 +78,19 @@ public class CsrBorrowerController {
         return null;
     }
 
+    @RequestMapping(value = "/exportFormBorrowers",name = "报表 导出",method = {RequestMethod.GET})
+    public ResponseEntity<byte[]> exportFormBorrowers(HttpServletRequest request, HttpServletResponse response,Integer csrProjectInfoID){
+        try {
+            ResponseEntity<byte[]> responseEntity = null;
+            responseEntity = csrBorrowerService.exportFormBorrowers(request,response,csrProjectInfoID);
+            if (responseEntity!=null) {
+                return responseEntity;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            logger.error("下载异常");
+        }
+        return null;
+    }
+
 }
