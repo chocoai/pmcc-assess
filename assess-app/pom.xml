@@ -435,7 +435,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <warName>assess-app</warName>
+                    <warName>pmcc-assess</warName>
                     <warSourceExcludes>
                         excludes/**
                     </warSourceExcludes>
