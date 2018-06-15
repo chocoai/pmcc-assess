@@ -67,7 +67,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">查勘时间<span class="symbol required"></span></label>
@@ -373,8 +372,9 @@
     function selectSurveyPeople() {
         erpEmployee.select({
             onSelected: function (data) {
+                console.log(data);
                 $("#surveyPeople").val(data.name);
-                $("#userAccountManagerID").val(data.account);
+//                $("#userAccountManagerID").val(data.account);
             }
         });
     }

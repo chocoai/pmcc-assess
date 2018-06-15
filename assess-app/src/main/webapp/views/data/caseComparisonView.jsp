@@ -106,7 +106,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            查勘数据模板<span class="symbol required"></span>
+                                            案例数据模板<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="模板内容" class="form-control" id="caseExplain"
@@ -114,31 +114,56 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">选择案例<span class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <input type="hidden" id="caseFormType" name="caseFormType" value="">
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                       value="" required="required"
+                                                       id="caseFormTypeName" name="caseFormTypeName" maxlength="200">
+                                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    data-toggle="tooltip"
+                                                    data-original-title="选择" onclick="selectCase()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--查勘数据模板<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<div class="input-group">--%>
-                                                <%--<input type="hidden" id="formTypeId" name="formTypeId">--%>
-                                                <%--<input type="text" name="formTypeName" id="formTypeName" readonly="readonly"--%>
-                                                       <%--placeholder="查勘表单" class="form-control" required="required">--%>
-                                                <%--<span class="input-group-btn">--%>
-                                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                                        <%--onclick="selectFormType();" data-toggle="tooltip"--%>
-                                                        <%--data-original-title="选择">--%>
-                                                    <%--<i class="fa fa-search"></i>--%>
-                                                <%--</button>--%>
-                                                 <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                                         <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
-                                                         <%--data-toggle="tooltip" data-original-title="清除">--%>
-                                                    <%--<i class="fa fa-trash-o"></i>--%>
-                                                <%--</button>--%>
-                                                <%--</span>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="x-valid">--%>
+                                <%--<label class="col-sm-2 control-label">--%>
+                                <%--查勘数据模板<span class="symbol required"></span>--%>
+                                <%--</label>--%>
+                                <%--<div class="col-sm-10">--%>
+                                <%--<div class="input-group">--%>
+                                <%--<input type="hidden" id="formTypeId" name="formTypeId">--%>
+                                <%--<input type="text" name="formTypeName" id="formTypeName" readonly="readonly"--%>
+                                <%--placeholder="查勘表单" class="form-control" required="required">--%>
+                                <%--<span class="input-group-btn">--%>
+                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                <%--onclick="selectFormType();" data-toggle="tooltip"--%>
+                                <%--data-original-title="选择">--%>
+                                <%--<i class="fa fa-search"></i>--%>
+                                <%--</button>--%>
+                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                <%--<i class="fa fa-trash-o"></i>--%>
+                                <%--</button>--%>
+                                <%--</span>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
                             </div>
                         </div>
@@ -152,7 +177,7 @@
                         保存
                     </button>
                 </div>
-            </form>
+                </div></form>
         </div>
     </div>
 </div>
@@ -171,7 +196,7 @@
             <div class="panel-body">
         <span id="toolbarSub">
             <button type="button" class="btn btn-success" onclick="addMethodField()"
-                    data-toggle="modal" href="#divSubDataDicManage"> 新增
+                    data-toggle="modal" href="#firSub"> 新增
             </button>
         </span>
                 <table class="table table-bordered" id="tbDataDicList">
@@ -182,7 +207,8 @@
 </div>
 
 <!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" data-height="300"
+<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     data-height="300"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width: 520px;">
         <div class="modal-content">
@@ -195,6 +221,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form id="firSubA" name="firSubA" class="form-horizontal">
+                            <%--<input type="hidden" id="tableName" name="tableName" value="">--%>
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -216,17 +243,17 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <%--<select class="form-control search-select select2" name="tableName" id="tableName"--%>
-                                                    <%--required="required">--%>
-                                                <%--<option>请选择</option>--%>
-                                                <%--<c:forEach items="${userList}" var="tableVar">--%>
-                                                    <%--<option value="${tableVar.key}">${tableVar.key}</option>--%>
-                                                <%--</c:forEach>--%>
+                                            <%--required="required">--%>
+                                            <%--<option>请选择</option>--%>
+                                            <%--<c:forEach items="${userList}" var="tableVar">--%>
+                                            <%--<option value="${tableVar.key}">${tableVar.key}</option>--%>
+                                            <%--</c:forEach>--%>
                                             <%--</select>--%>
-                                                <input type="text" id="tableName" name="tableName" class="form-control" readonly="readonly">
+                                            <input type="text" id="tableName" name="tableName" class="form-control"
+                                                   readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -236,6 +263,37 @@
                                         <div class="col-sm-10">
                                             <input type="text" id="fieldName" name="fieldName" class="form-control"
                                                    required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <%--<div class="form-group">--%>
+                                    <%--<div class="x-valid">--%>
+                                        <%--<label class="col-sm-2 control-label">--%>
+                                            <%--类型--%>
+                                        <%--</label>--%>
+                                        <%--<div class="col-sm-10">--%>
+                                            <%--<select class="form-control search-select select2" name="type" id="type"--%>
+                                                    <%--required>--%>
+                                                <%--<option value="">请选择</option>--%>
+                                                <%--<option value="0">查勘</option>--%>
+                                                <%--<option value="1">案例</option>--%>
+                                            <%--</select>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类型
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" required id="type" name="type">
+                                                <option value="">请选择</option>
+                                                <option value="0">查勘</option>
+                                                <option value="1">案例</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -260,6 +318,7 @@
 
 <link rel="stylesheet" href="/assets/plugins/zTree_v3/css/metroStyle/metroStyle.css">
 <script type="text/javascript" src="/assets/plugins/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/project-classify-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     var zTreeObj;
@@ -281,9 +340,9 @@
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
                 //显示配置信息
-                if(treeNode.isParent == false){
+                if (treeNode.isParent == false) {
                     loadCaseComparisonList(treeNode.id);
-                }else{
+                } else {
                     $("#case_comparison").hide();
                 }
             }
@@ -333,7 +392,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="查看选项"  onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="查看选项"  onclick="setSubDataDic(' + index + ');" ><i class="fa fa-bars fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑"  onclick="editCaseComparison(' + index + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -349,7 +408,7 @@
             search: false,
             onLoadSuccess: function () {
                 $("#case_comparison").show();
-                $("#frm").find('[name="exploreFormType"]').attr("value",exploreFormType);
+                $("#frm").find('[name="exploreFormType"]').attr("value", exploreFormType);
                 $('.tooltips').tooltip();
             }
         });
@@ -359,7 +418,7 @@
     function addCaseComparison() {
         var value = $("#frm").find('[name="exploreFormType"]').attr("value");
         $("#frm").clearAll();
-        $("#frm").find('[name="exploreFormType"]').attr("value",value);
+        $("#frm").find('[name="exploreFormType"]').attr("value", value);
     }
     //新增 案例对比配置 数据
     function saveCaseComparison() {
@@ -421,9 +480,7 @@
     function editCaseComparison(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         console.log(row);
-//        $("#frm").find('[name="id"]').attr('value',row.id);
         $("#frm").clearAll();
-//        $("#frm").clearAll();
         $("#frm").initForm(row);
         $('#divBox').modal();
     }
@@ -437,6 +494,7 @@
         cols.push({field: 'uName', title: '名称'});
         cols.push({field: 'tableName', title: '表名称'});
         cols.push({field: 'fieldName', title: '字段名称'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -460,30 +518,41 @@
     }
 
     //设置子项数据
-    function setSubDataDic(pid) {
-        $("#divSubDataDic").modal();//显示
-        $("#tbDataDicList").clearAll();//清除数据
-        loadSubDataDicList(pid, function () {
-            $('#divSubDataDic').modal("show");
-        });
+    function setSubDataDic(index) {
+        console.log(index);
+        var row = $("#tb_List").bootstrapTable('getData')[index];
+        if(row != undefined){
+            $("#tableName").val(row.tableName);
+            $("#divSubDataDic").modal();//显示
+            $("#tbDataDicList").clearAll();//清除数据
+            loadSubDataDicList(row.id, function () {
+                $('#divSubDataDic').modal("show");
+            });
+        }else{
+            $("#divSubDataDic").modal();//显示
+            $("#tbDataDicList").clearAll();//清除数据
+            loadSubDataDicList(index, function () {
+                $('#divSubDataDic').modal("show");
+            });
+        }
     }
 
     //新增 子项 字段数据
     function addMethodField() {
-//        $("#tableName").select2();
+//        $("#type").select2();
         var caseId = document.getElementById("caseId");
+        var value = $("#firSubA").find('[name="tableName"]').val();
         $("#firSub").clearAll();
-        var value = $("#tbDataDicList").find('tbody').find('tr:eq(0)').find('td:eq(2)').text();
         $("#firSubA").find('[name="tableName"]').val(value);
-        $('#firSub').modal();
+//        $('#firSub').modal();
         var caseIdNG = document.getElementById("caseIdNG");
         caseIdNG.value = caseId.value;
     }
     //保存新增 子项 字段的数据
     function saveFileld() {
-        var data = formParams("firSubA");//应该是自动form参数
+        var data = formParams("firSubA");
         console.log(data);
-        return false;
+//        return false;
         if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseComparisonNG/addField",
@@ -496,9 +565,10 @@
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var caseId = document.getElementById("caseId").value;
+                        console.log(caseId);
                         setSubDataDic(caseId);
                     } else {
-                        toastr.success('调用服务端方法失败');
+                        toastr.warning(result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -521,6 +591,7 @@
                     if (result.ret) {
                         toastr.success('删除成功');
                         var caseId = document.getElementById("caseId").value;
+                        console.log(caseId);
                         setSubDataDic(caseId);
                     }
                     else {
@@ -535,6 +606,18 @@
         })
     }
 
+    function selectCase() {
+        assessProjectClassify.select({
+            key: AssessProjectClassifyKey.single,
+            onSelected: function (nodes) {
+                console.log(nodes);
+//                $("#caseFormType").attr('value',nodes.name);
+//                $("#caseFormType").val(nodes.name);
+                $("#caseFormTypeName").val(nodes[0].name);
+                $("#caseFormType").val(nodes[0].id);
+            }
+        })
+    }
 
 
 </script>
