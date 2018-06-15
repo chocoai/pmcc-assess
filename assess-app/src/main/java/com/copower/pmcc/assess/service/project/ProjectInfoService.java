@@ -416,6 +416,38 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
+    public ProjectInfoVo getVoCsr(ProjectInfo projectInfo){
+        ProjectInfoVo projectInfoVo = new ProjectInfoVo();
+        BeanUtils.copyProperties(projectInfo, projectInfoVo);
+        //项目类型
+        if (projectInfo.getProjectClassId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectClassId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectClassName(projectClassify.getName());
+            }
+        }
+        //项目类别
+        if (projectInfo.getProjectTypeId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectTypeId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectTypeName(projectClassify.getName());
+                projectInfoVo.setBaseProjectClassify(projectClassify);
+            }
+        }
+        //项目范围
+        if (projectInfo.getProjectCategoryId() != null) {
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectCategoryId());
+            if (projectClassify != null) {
+                projectInfoVo.setProjectCategoryName(projectClassify.getName());
+            }
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
+            //委托目的
+            projectInfoVo.setEntrustPurposeName(baseDataDicChange(projectInfo.getEntrustPurpose(), bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE)));
+        }
+        return projectInfoVo;
+    }
+
     public ProjectInfoVo getVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
@@ -445,6 +477,7 @@ public class ProjectInfoService {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectTypeId());
             if (projectClassify != null) {
                 projectInfoVo.setProjectTypeName(projectClassify.getName());
+                projectInfoVo.setBaseProjectClassify(projectClassify);
             }
         }
         //项目范围

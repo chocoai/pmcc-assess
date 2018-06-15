@@ -51,7 +51,17 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+<script type="text/javascript">
+    $(function () {
+        assessProjectClassify.select({
+            key: AssessProjectClassifyKey.single,
+            onSelected: function (nodes) {
+                console.log(nodes);
+            }
+        })
+    })
+</script>
 
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/project-classify-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project;
 
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 
@@ -27,6 +28,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private InitiateConsignorVo consignorVo;
     private InitiateUnitInformationVo unitInformationVo;
     private ProjectMemberVo projectMemberVo;
+    private BaseProjectClassify baseProjectClassify;
     private String departmentName;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
@@ -174,5 +176,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setProjectMemberVo(ProjectMemberVo projectMemberVo) {
         this.projectMemberVo = projectMemberVo;
+    }
+
+    public BaseProjectClassify getBaseProjectClassify() {
+        return baseProjectClassify;
+    }
+
+    public void setBaseProjectClassify(BaseProjectClassify baseProjectClassify) {
+        this.baseProjectClassify = baseProjectClassify;
     }
 }
