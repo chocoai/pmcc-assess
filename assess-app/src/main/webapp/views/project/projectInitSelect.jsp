@@ -54,7 +54,7 @@
 <script type="text/javascript">
     $(function () {
         assessProjectClassify.select({
-            key: 'single',
+            key: AssessProjectClassifyKey.single,
             onSelected: function (nodes) {
                 console.log(nodes);
             }
