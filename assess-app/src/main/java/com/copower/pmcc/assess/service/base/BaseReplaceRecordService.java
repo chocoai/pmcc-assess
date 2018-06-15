@@ -85,9 +85,10 @@ public class BaseReplaceRecordService {
         ftpUtilsExtense.downloadFileToLocal(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), loaclFileName, localFileDir);
         String content = baseReplaceRecord.getContent();
         if (StringUtils.isNotBlank(content)) {
-            List<DataReplaceDto> keyValueDtoList = JSON.parseArray(content, DataReplaceDto.class);
+            List<DataReplaceDto> dataReplaceDtoList = JSON.parseArray(content, DataReplaceDto.class);
             //特殊处理
-            //1.
+            //1.循环所有需要替换的内容，将只是文本分一组，将只是书签的分一组，将文件的分一组
+
         }
         //再将附件上传到相同位置
         try {
