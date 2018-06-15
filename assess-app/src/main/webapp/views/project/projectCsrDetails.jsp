@@ -199,6 +199,9 @@
                                     <button type="button" class="btn btn-primary" onclick="downloadsBorrower('')">
                                         下载
                                     </button>
+                                    <button type="button" class="btn btn-primary" onclick="">
+                                        数据导出
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +216,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             <div class="x_panel">
                 <div class="x_title">
@@ -307,6 +312,11 @@
         }else {
             window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds="+id;
         }
+    }
+
+    //数据导出
+    function exportWordForm() {
+        
     }
 </script>
 <script type="application/javascript">
