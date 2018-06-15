@@ -7,6 +7,8 @@ public class DataCaseComparisonField {
 
     private Integer caseId;
 
+    private Integer type;
+
     private String uName;
 
     private String tableName;
@@ -33,6 +35,14 @@ public class DataCaseComparisonField {
 
     public void setCaseId(Integer caseId) {
         this.caseId = caseId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getuName() {

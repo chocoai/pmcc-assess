@@ -40,7 +40,7 @@ public class CaseComparisonFieldController {
                 if (flag){
                     return HttpResult.newCorrectResult();
                 }else {
-                    return HttpResult.newErrorResult("添加失败");
+                    return HttpResult.newErrorResult("添加的字段名称已存在!");
                 }
             }
         } catch (Exception e) {

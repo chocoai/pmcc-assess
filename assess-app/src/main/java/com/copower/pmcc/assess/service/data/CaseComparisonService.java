@@ -2,15 +2,14 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.CaseComparisonEnum;
 import com.copower.pmcc.assess.dal.dao.CaseComparisonDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
+import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseFormModuleService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -44,6 +43,7 @@ public class CaseComparisonService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseFormModuleService baseFormModuleService;
+
 
 
     @Transactional
@@ -123,11 +123,38 @@ public class CaseComparisonService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataCaseComparison> dataCaseComparisonList = caseComparisonDao.getDataByExploreFormType(exploreFormType);
+        List<CaseComparisonVo> caseComparisonVoList = getVoList(dataCaseComparisonList);
+//        for (DataCaseComparison dataCaseComparison:dataCaseComparisonList){
+//            Integer caseFormType = dataCaseComparison.getCaseFormType();
+//            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDataById(caseFormType);
+//            String name = baseProjectClassify.getName();
+//            CaseComparisonVo caseComparisonVo = new CaseComparisonVo();
+//        }
         vo.setTotal(page.getTotal());
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(dataCaseComparisonList) ? new ArrayList<DataCaseComparison>() : dataCaseComparisonList);
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(caseComparisonVoList) ? new ArrayList<CaseComparisonVo>() : caseComparisonVoList);
 //        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDataById(id);
 //        Integer formModuleId = baseProjectClassify.getFormModuleId();
 //        BaseFormModule baseFormModule = baseFormModuleService.getDataById(formModuleId);
         return vo;
+    }
+
+    private List<CaseComparisonVo> getVoList(List<DataCaseComparison> list) {
+        if (org.apache.commons.collections.CollectionUtils.isEmpty(list)) return null;
+        return LangUtils.transform(list, p -> {
+            CaseComparisonVo caseComparisonVo = new CaseComparisonVo();
+            BeanUtils.copyProperties(p, caseComparisonVo);
+            Integer exploreFormType = p.getExploreFormType();
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getDataById(exploreFormType);
+            Integer formModuleId = projectClassify.getFormModuleId();
+            BaseFormModule baseFormModule = baseFormModuleService.getDataById(formModuleId);
+            String tableName = baseFormModule.getTableName();
+            caseComparisonVo.setTableName(tableName);
+            if (p.getCaseFormType() != null) {
+                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDataById(p.getCaseFormType());
+                if (baseProjectClassify != null)
+                    caseComparisonVo.setCaseFormTypeName(baseProjectClassify.getName());
+            }
+            return caseComparisonVo;
+        });
     }
 }
