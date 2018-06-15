@@ -234,6 +234,51 @@ public class ProjectInfoController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/csrProjectDetails", name = "项目详情")
+    public ModelAndView csrProjectDetails(Integer projectId) throws BusinessException {
+        ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+
+        ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
+        if (!StringUtils.isEmpty(enumByName)){
+            modelAndView.addObject("projectStatusEnum", enumByName.getKey());
+        }
+        try {
+            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            modelAndView.addObject("projectInfo", projectInfoVo);
+        }catch (Exception e){
+            logger.error("异常!");
+            logger.error(e.getMessage());
+            logger.error("可能报:Source must not be null");
+            modelAndView.addObject("projectInfo", projectInfo);
+        }
+
+        modelAndView.addObject("thisTitle", projectInfo.getProjectName());
+        //项目当前责任人信息
+        List<KeyValueDto> keyValueDtos = getKeyValueDtos(projectId);
+
+        modelAndView.addObject("keyValueDtos", keyValueDtos);
+        modelAndView.addObject("projectFlog", "1");
+        modelAndView.addObject("projectId", projectInfo.getId());
+        //取项目成员
+        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+        modelAndView.addObject("projectMemberVo", projectMemberVo);
+
+        //变更项目成员的取值
+        if (projectInfo.getDepartmentId() != null) {
+            List<String> managerUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPM(projectInfo.getDepartmentId());
+            modelAndView.addObject("managerUserAccounts", FormatUtils.transformListString(managerUserAccounts));
+            List<String> memberUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPA(projectInfo.getDepartmentId());
+            modelAndView.addObject("memberUserAccounts", FormatUtils.transformListString(memberUserAccounts));
+        }
+        //判断当前人员是否关注项目
+        ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
+        modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
+
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/getProjectTaskByProjectId", name = "取得项目工作成果", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPlanByProjectId(Integer projecId) {
