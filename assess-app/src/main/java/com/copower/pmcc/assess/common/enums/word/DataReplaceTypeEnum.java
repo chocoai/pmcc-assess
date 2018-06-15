@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.common.enums;
+package com.copower.pmcc.assess.common.enums.word;
 
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
@@ -12,21 +12,21 @@ import java.util.List;
  * @data: 2017/11/2
  * @time: 15:46
  */
-public enum BaseReportMarkbookTypeEnum {
-    TEXT(0, "文本"),BOOKMARK(1, "书签"), TEMPLATE(2, "子模板");
+public enum DataReplaceTypeEnum {
+    TEXT("text", "文本"), BOOKMARK("bookmark", "书签"), FILE("file", "文件");
 
-    private Integer key;
+    private String key;
 
     private String name;
 
-    private BaseReportMarkbookTypeEnum(Integer key, String name) {
+    private DataReplaceTypeEnum(String key, String name) {
         this.name = name;
         this.key = key;
     }
 
-    public static BaseReportMarkbookTypeEnum getEnumByName(Integer id) {
-        for (BaseReportMarkbookTypeEnum e : BaseReportMarkbookTypeEnum.values()) {
-            if (e.getKey() == id) {
+    public static DataReplaceTypeEnum getEnumByName(String id) {
+        for (DataReplaceTypeEnum e : DataReplaceTypeEnum.values()) {
+            if (e.getKey() .equals(id)) {
                 return e;
             }
         }
@@ -35,7 +35,7 @@ public enum BaseReportMarkbookTypeEnum {
 
     public static List<KeyValueDto> getBaseReportTemplateTypeEnumList() {
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportMarkbookTypeEnum e : BaseReportMarkbookTypeEnum.values()) {
+        for (DataReplaceTypeEnum e : DataReplaceTypeEnum.values()) {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(e.getKey()));
             keyValueDto.setValue(e.getName());
@@ -44,11 +44,11 @@ public enum BaseReportMarkbookTypeEnum {
         return keyValueDtos;
     }
 
-    public Integer getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(Integer key) {
+    public void setKey(String key) {
         this.key = key;
     }
 

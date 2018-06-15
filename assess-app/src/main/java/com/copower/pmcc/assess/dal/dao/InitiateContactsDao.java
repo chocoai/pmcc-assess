@@ -45,6 +45,7 @@ public class InitiateContactsDao {
         if (!StringUtils.isEmpty(crmTemp)){
             initiateContacts.setCrmId(crmTemp);
         }
+        dto.setCreator(dto1.getCreator());
         return mapper.updateByPrimaryKey(initiateContacts)==1;
     }
 

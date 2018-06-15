@@ -343,6 +343,7 @@ public class ProjectInfoController {
     public HttpResult add(InitiateContactsDto dto) {
         try {
             if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
+                projectInfoService.updateContacts(dto);
             } else {
                 projectInfoService.addContacts(dto);
             }

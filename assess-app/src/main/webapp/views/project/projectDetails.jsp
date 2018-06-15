@@ -125,7 +125,7 @@
             </div>
             <!--招标信息-->
             <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == defaultProjectDetails}">
-                <%@include file="/views/share/project/projectDefaultInfo.jsp" %>
+                <%@include file="/views/share/project/projectInfo.jsp" %>
             </c:if>
             <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == csrProjectDetails}">
                 <%@include file="/views/share/project/projectCsrInfo.jsp" %>

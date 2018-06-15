@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.constant.AssessParameterConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.csr.CsrProjectInfoDao;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
@@ -656,39 +657,30 @@ public class CsrProjectInfoService {
         //债权目前所有的数据都源于 固定的7张表
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
+        if(StringUtils.isBlank(borrowerIds))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
 
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
-        BaseReportTemplateFiles baseReportTemplateFilesWhere = new BaseReportTemplateFiles();
-        baseReportTemplateFilesWhere.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
-        baseReportTemplateFilesWhere.setReportTypeId(baseDataDic.getId());//取预评报告
-        baseReportTemplateFilesWhere.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
-        baseReportTemplateFilesWhere.setEntrustId(csrProjectInfo.getEntrustPurpose());
-        baseReportTemplateFilesWhere.setBisEnable(true);
-        BaseReportTemplateFiles baseReportTemplateFiles = baseReportService.getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
-        if (baseReportTemplateFiles == null)
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
+                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
+
         BaseAttachment queryParam = new BaseAttachment();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
-        queryParam.setTableId(baseReportTemplateFiles.getId());
+        queryParam.setTableId(reportTemplateFileDto.getBaseReportTemplateFiles().getId());
         queryParam.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
         List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
         BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
+        List<BaseReportTemplate> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateList();
+        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
         BaseAttachment attachment = new BaseAttachment();
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
         attachment.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
-        List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
-
-        BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
-        baseReportTemplate.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
-        baseReportTemplate.setReportTypeId(baseDataDic.getId());//取预评报告
-        baseReportTemplate.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
-        baseReportTemplate.setEntrustId(csrProjectInfo.getEntrustPurpose());
-        baseReportTemplate.setBisEnable(true);
-        List<BaseReportTemplate> baseReportTemplateList = baseReportService.getBaseReportTemplateList(baseReportTemplate);
         for (Integer integer : list) {
             try {
                 //拷贝表数据及FTP附件
@@ -781,6 +773,7 @@ public class CsrProjectInfoService {
      * @param contractNumber
      * @return
      */
+
     public CsrBorrower useHistoryBorrower(Integer csrProjectId, String secondLevelBranch, String idNumber, String contractNumber) {
         CsrBorrower queryParam = new CsrBorrower();
         queryParam.setCsrProjectId(csrProjectId);

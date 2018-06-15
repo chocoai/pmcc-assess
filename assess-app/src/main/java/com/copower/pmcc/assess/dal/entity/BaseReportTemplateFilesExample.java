@@ -415,6 +415,66 @@ public class BaseReportTemplateFilesExample {
             return (Criteria) this;
         }
 
+        public Criteria andClassifyIdIsNull() {
+            addCriterion("classify_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdIsNotNull() {
+            addCriterion("classify_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdEqualTo(Integer value) {
+            addCriterion("classify_id =", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdNotEqualTo(Integer value) {
+            addCriterion("classify_id <>", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdGreaterThan(Integer value) {
+            addCriterion("classify_id >", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("classify_id >=", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdLessThan(Integer value) {
+            addCriterion("classify_id <", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("classify_id <=", value, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdIn(List<Integer> values) {
+            addCriterion("classify_id in", values, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdNotIn(List<Integer> values) {
+            addCriterion("classify_id not in", values, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdBetween(Integer value1, Integer value2) {
+            addCriterion("classify_id between", value1, value2, "classifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassifyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("classify_id not between", value1, value2, "classifyId");
+            return (Criteria) this;
+        }
+
         public Criteria andCsTypeIsNull() {
             addCriterion("cs_type is null");
             return (Criteria) this;
@@ -472,6 +532,66 @@ public class BaseReportTemplateFilesExample {
 
         public Criteria andCsTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("cs_type not between", value1, value2, "csType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexIsNull() {
+            addCriterion("insert_row_index is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexIsNotNull() {
+            addCriterion("insert_row_index is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexEqualTo(Integer value) {
+            addCriterion("insert_row_index =", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexNotEqualTo(Integer value) {
+            addCriterion("insert_row_index <>", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexGreaterThan(Integer value) {
+            addCriterion("insert_row_index >", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexGreaterThanOrEqualTo(Integer value) {
+            addCriterion("insert_row_index >=", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexLessThan(Integer value) {
+            addCriterion("insert_row_index <", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexLessThanOrEqualTo(Integer value) {
+            addCriterion("insert_row_index <=", value, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexIn(List<Integer> values) {
+            addCriterion("insert_row_index in", values, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexNotIn(List<Integer> values) {
+            addCriterion("insert_row_index not in", values, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexBetween(Integer value1, Integer value2) {
+            addCriterion("insert_row_index between", value1, value2, "insertRowIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertRowIndexNotBetween(Integer value1, Integer value2) {
+            addCriterion("insert_row_index not between", value1, value2, "insertRowIndex");
             return (Criteria) this;
         }
 
@@ -722,66 +842,6 @@ public class BaseReportTemplateFilesExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdIsNull() {
-            addCriterion("classify_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdIsNotNull() {
-            addCriterion("classify_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdEqualTo(Integer value) {
-            addCriterion("classify_id =", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdNotEqualTo(Integer value) {
-            addCriterion("classify_id <>", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdGreaterThan(Integer value) {
-            addCriterion("classify_id >", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("classify_id >=", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdLessThan(Integer value) {
-            addCriterion("classify_id <", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdLessThanOrEqualTo(Integer value) {
-            addCriterion("classify_id <=", value, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdIn(List<Integer> values) {
-            addCriterion("classify_id in", values, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdNotIn(List<Integer> values) {
-            addCriterion("classify_id not in", values, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdBetween(Integer value1, Integer value2) {
-            addCriterion("classify_id between", value1, value2, "classifyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andClassifyIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("classify_id not between", value1, value2, "classifyId");
             return (Criteria) this;
         }
     }
