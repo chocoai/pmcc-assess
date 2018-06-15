@@ -302,19 +302,19 @@ public class BaseReportService {
         //2.未找到对应的模板 先以范围为全部进行查询 如果依然未找到 则取公司下的模板
         BaseReportTemplateFiles baseReportTemplateFilesWhere = new BaseReportTemplateFiles();
         baseReportTemplateFilesWhere.setCsType(csTypeId);//客户类型 1、自然人、法人
-        baseReportTemplateFilesWhere.setReportTypeId(reportTypeId);//取预评报告
+        baseReportTemplateFilesWhere.setReportTypeId(reportTypeId);
         baseReportTemplateFilesWhere.setCustomerId(customerId);//客户单位
         baseReportTemplateFilesWhere.setEntrustId(projectTypeId);
         baseReportTemplateFilesWhere.setClassifyId(projectCategoryId);
         baseReportTemplateFilesWhere.setBisEnable(true);
         BaseReportTemplateFiles baseReportTemplateFiles = getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
         if (baseReportTemplateFiles == null) {
-            projectCategoryId = 0;
+            projectCategoryId = 0;//不与范围相关
             baseReportTemplateFilesWhere.setClassifyId(projectCategoryId);
             baseReportTemplateFiles = getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
         }
         if (baseReportTemplateFiles == null) {
-            customerId = 0;
+            customerId = 0;//公司下的模板
             baseReportTemplateFilesWhere.setCustomerId(customerId);
             baseReportTemplateFiles = getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
         }
@@ -324,7 +324,7 @@ public class BaseReportService {
         //取对应的书签
         BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
         baseReportTemplate.setCsType(csTypeId);//客户类型 1、自然人、法人
-        baseReportTemplate.setReportTypeId(reportTypeId);//取预评报告
+        baseReportTemplate.setReportTypeId(reportTypeId);
         baseReportTemplate.setCustomerId(customerId);//客户单位
         baseReportTemplate.setEntrustId(projectTypeId);
         baseReportTemplate.setBisEnable(true);
