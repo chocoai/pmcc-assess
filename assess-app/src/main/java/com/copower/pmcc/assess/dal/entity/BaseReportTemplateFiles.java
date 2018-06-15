@@ -13,7 +13,11 @@ public class BaseReportTemplateFiles {
 
     private Integer reportTypeId;
 
+    private Integer classifyId;
+
     private Integer csType;
+
+    private Integer insertRowIndex;
 
     private Boolean bisEnable;
 
@@ -22,8 +26,6 @@ public class BaseReportTemplateFiles {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer classifyId;
 
     public Integer getId() {
         return id;
@@ -65,12 +67,28 @@ public class BaseReportTemplateFiles {
         this.reportTypeId = reportTypeId;
     }
 
+    public Integer getClassifyId() {
+        return classifyId;
+    }
+
+    public void setClassifyId(Integer classifyId) {
+        this.classifyId = classifyId;
+    }
+
     public Integer getCsType() {
         return csType;
     }
 
     public void setCsType(Integer csType) {
         this.csType = csType;
+    }
+
+    public Integer getInsertRowIndex() {
+        return insertRowIndex;
+    }
+
+    public void setInsertRowIndex(Integer insertRowIndex) {
+        this.insertRowIndex = insertRowIndex;
     }
 
     public Boolean getBisEnable() {
@@ -103,13 +121,5 @@ public class BaseReportTemplateFiles {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getClassifyId() {
-        return classifyId;
-    }
-
-    public void setClassifyId(Integer classifyId) {
-        this.classifyId = classifyId;
     }
 }
