@@ -13,7 +13,15 @@
         </div>
     </div>
 
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="warrantorAssistUpload" name="warrantorAssistUpload" type="file" multiple="false">
+            <div id="_warrantorAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -50,7 +58,33 @@
 <script type="text/javascript">
     $(function () {
         warrantorAssist();
+        FileUtils.uploadFiles({
+            target: "warrantorAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_guarantor",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_warrantorAssist [name$='id']").val()
+                };
+                $("#warrantorAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                warrantorAssistFiles($("#frm_warrantorAssist [name$='id']").val());
+            }
+        });
     });
+    function warrantorAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "warrantorAssistUpload",
+            formData: {
+                tableName: "tb_csr_guarantor",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function warrantorAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -72,6 +106,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_warrantorAssist").initForm(row);
+                    warrantorAssistFiles(row.id);
                 }
             });
     }
@@ -123,12 +158,13 @@
                 if (result.ret) {
                     toastr.success('保存成功');
                     warrantorAssistReload();
-                    var actualHours=$("#frm_warrantorAssist [name$='actualHours']").val();
-                    var taskRemarks=$("#frm_warrantorAssist [name$='taskRemarks']").val();
+                    var actualHours = $("#frm_warrantorAssist [name$='actualHours']").val();
+                    var taskRemarks = $("#frm_warrantorAssist [name$='taskRemarks']").val();
                     $("#frm_warrantorAssist").clearAll();
                     $("#frm_warrantorAssist").validate();
                     $("#frm_warrantorAssist [name$='actualHours']").val(actualHours);
                     $("#frm_warrantorAssist [name$='taskRemarks']").val(taskRemarks);
+                    $("#_warrantorAssistUpload").html("");
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);

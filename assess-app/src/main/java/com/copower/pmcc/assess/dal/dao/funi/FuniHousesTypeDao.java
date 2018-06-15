@@ -25,6 +25,12 @@ public class FuniHousesTypeDao {
         return funiHousesTypeMapper.selectByPrimaryKey(id);
     }
 
+    public List<FuniHousesType> getFuniHousesTypeList(Integer lpbh) {
+        FuniHousesTypeExample example = new FuniHousesTypeExample();
+        example.createCriteria().andLpbhEqualTo(lpbh);
+        List<FuniHousesType> funiHousesTypes = funiHousesTypeMapper.selectByExample(example);
+        return funiHousesTypes;
+    }
     public List<FuniHousesType> getFuniHousesTypeList(FuniHousesType funiHousesType) {
         FuniHousesTypeExample example = new FuniHousesTypeExample();
         MybatisUtils.convertObj2Example(funiHousesType, example);

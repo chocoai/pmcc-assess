@@ -25,6 +25,13 @@ public class FuniHousesPropertyDao {
         return funiHousesPropertyMapper.selectByPrimaryKey(id);
     }
 
+    public List<FuniHousesProperty> getFuniHousesPropertyList(Integer lpbh) {
+        FuniHousesPropertyExample example = new FuniHousesPropertyExample();
+        example.createCriteria().andLpbhEqualTo(lpbh);
+        List<FuniHousesProperty> funiHousesPropertys = funiHousesPropertyMapper.selectByExample(example);
+        return funiHousesPropertys;
+    }
+
     public List<FuniHousesProperty> getFuniHousesPropertyList(FuniHousesProperty funiHousesProperty) {
         FuniHousesPropertyExample example = new FuniHousesPropertyExample();
         MybatisUtils.convertObj2Example(funiHousesProperty, example);

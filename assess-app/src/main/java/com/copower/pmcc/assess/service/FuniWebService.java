@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.dal.dao.funi.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +18,9 @@ import java.lang.annotation.ElementType;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -172,57 +175,41 @@ public class FuniWebService {
         FuniHouses funiHouses = funiHousesDao.getFuniHouses(lpbh);
         //基本信息=================================================
 
-        if(!select.get(0).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(0).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setJzmj(select.get(0).childNodes().get(0).childNodes().get(0).toString());//建筑面积
-        }
-        else
-        {
+        } else {
             funiHouses.setJzmj("暂无");
         }
-        if(!select.get(1).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(1).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setZdmj(select.get(1).childNodes().get(0).childNodes().get(0).toString());//占地面积
-        }
-        else
-        {
+        } else {
             funiHouses.setZdmj("暂无");
         }
-        if(!select.get(2).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(2).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setRjl(select.get(2).childNodes().get(0).childNodes().get(0).toString());//容积率
-        }
-        else
-        {
+        } else {
             funiHouses.setRjl("暂无");
         }
-        if(!select.get(3).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(3).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLhl(select.get(3).childNodes().get(0).childNodes().get(0).toString());//绿化率
-        }
-        else
-        {
+        } else {
             funiHouses.setLhl("暂无");//绿化率
         }
-        if(!select.get(4).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(4).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setCwxx(select.get(4).childNodes().get(0).toString());//车位信息
-        }
-        else
-        {
+        } else {
             funiHouses.setCwxx("暂无");
         }
-        if(!select.get(5).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(5).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLpdz(select.get(5).childNodes().get(0).childNodes().get(0).toString());//项目地址
-        }
-        else
-        {
+        } else {
             funiHouses.setLpdz("暂无");
         }
-        if(!select.get(6).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(6).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setSldz(select.get(6).childNodes().get(0).toString());//售楼地址
-        }
-        else
-        {
+        } else {
             funiHouses.setSldz("暂无");
         }
-
-
 
         String string = select.get(7).childNodes().get(0).toString();
         if (StringUtils.isNotBlank(string)) {
@@ -298,8 +285,15 @@ public class FuniWebService {
                     Elements h2a = item.select("h2 a");
 
                     Elements address = item.select(".address");
+                    String string = h2a.get(0).childNodes().get(0).toString();
 
                     FuniHouses funiHouses = new FuniHouses();
+                    funiHouses.setLpmc(string);
+                    List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses, "");
+                    if (CollectionUtils.isNotEmpty(funiHousesList)) {
+                        continue;
+                    }
+                    funiHouses = new FuniHouses();
                     funiHouses.setLpmc(h2a.get(0).childNodes().get(0).toString());
                     String s = h2a.get(0).attributes().get("href");
                     funiHouses.setFuniweb("http://www.funi.com" + s.split(";")[0]);

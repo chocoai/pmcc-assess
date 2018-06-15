@@ -164,76 +164,6 @@ public class FuniBlockExample {
             return (Criteria) this;
         }
 
-        public Criteria andFuniCodeIdIsNull() {
-            addCriterion("funi_code_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdIsNotNull() {
-            addCriterion("funi_code_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdEqualTo(String value) {
-            addCriterion("funi_code_id =", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdNotEqualTo(String value) {
-            addCriterion("funi_code_id <>", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdGreaterThan(String value) {
-            addCriterion("funi_code_id >", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdGreaterThanOrEqualTo(String value) {
-            addCriterion("funi_code_id >=", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdLessThan(String value) {
-            addCriterion("funi_code_id <", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdLessThanOrEqualTo(String value) {
-            addCriterion("funi_code_id <=", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdLike(String value) {
-            addCriterion("funi_code_id like", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdNotLike(String value) {
-            addCriterion("funi_code_id not like", value, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdIn(List<String> values) {
-            addCriterion("funi_code_id in", values, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdNotIn(List<String> values) {
-            addCriterion("funi_code_id not in", values, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdBetween(String value1, String value2) {
-            addCriterion("funi_code_id between", value1, value2, "funiCodeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andFuniCodeIdNotBetween(String value1, String value2) {
-            addCriterion("funi_code_id not between", value1, value2, "funiCodeId");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -304,123 +234,183 @@ public class FuniBlockExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdIsNull() {
-            addCriterion("area_id is null");
+        public Criteria andSfbhIsNull() {
+            addCriterion("sfbh is null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdIsNotNull() {
-            addCriterion("area_id is not null");
+        public Criteria andSfbhIsNotNull() {
+            addCriterion("sfbh is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdEqualTo(Integer value) {
-            addCriterion("area_id =", value, "areaId");
+        public Criteria andSfbhEqualTo(Integer value) {
+            addCriterion("sfbh =", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdNotEqualTo(Integer value) {
-            addCriterion("area_id <>", value, "areaId");
+        public Criteria andSfbhNotEqualTo(Integer value) {
+            addCriterion("sfbh <>", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdGreaterThan(Integer value) {
-            addCriterion("area_id >", value, "areaId");
+        public Criteria andSfbhGreaterThan(Integer value) {
+            addCriterion("sfbh >", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("area_id >=", value, "areaId");
+        public Criteria andSfbhGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sfbh >=", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdLessThan(Integer value) {
-            addCriterion("area_id <", value, "areaId");
+        public Criteria andSfbhLessThan(Integer value) {
+            addCriterion("sfbh <", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdLessThanOrEqualTo(Integer value) {
-            addCriterion("area_id <=", value, "areaId");
+        public Criteria andSfbhLessThanOrEqualTo(Integer value) {
+            addCriterion("sfbh <=", value, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdIn(List<Integer> values) {
-            addCriterion("area_id in", values, "areaId");
+        public Criteria andSfbhIn(List<Integer> values) {
+            addCriterion("sfbh in", values, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdNotIn(List<Integer> values) {
-            addCriterion("area_id not in", values, "areaId");
+        public Criteria andSfbhNotIn(List<Integer> values) {
+            addCriterion("sfbh not in", values, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdBetween(Integer value1, Integer value2) {
-            addCriterion("area_id between", value1, value2, "areaId");
+        public Criteria andSfbhBetween(Integer value1, Integer value2) {
+            addCriterion("sfbh between", value1, value2, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("area_id not between", value1, value2, "areaId");
+        public Criteria andSfbhNotBetween(Integer value1, Integer value2) {
+            addCriterion("sfbh not between", value1, value2, "sfbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdIsNull() {
-            addCriterion("funi_area_code_id is null");
+        public Criteria andCsbhIsNull() {
+            addCriterion("csbh is null");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdIsNotNull() {
-            addCriterion("funi_area_code_id is not null");
+        public Criteria andCsbhIsNotNull() {
+            addCriterion("csbh is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdEqualTo(Integer value) {
-            addCriterion("funi_area_code_id =", value, "funiAreaCodeId");
+        public Criteria andCsbhEqualTo(Integer value) {
+            addCriterion("csbh =", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdNotEqualTo(Integer value) {
-            addCriterion("funi_area_code_id <>", value, "funiAreaCodeId");
+        public Criteria andCsbhNotEqualTo(Integer value) {
+            addCriterion("csbh <>", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdGreaterThan(Integer value) {
-            addCriterion("funi_area_code_id >", value, "funiAreaCodeId");
+        public Criteria andCsbhGreaterThan(Integer value) {
+            addCriterion("csbh >", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("funi_area_code_id >=", value, "funiAreaCodeId");
+        public Criteria andCsbhGreaterThanOrEqualTo(Integer value) {
+            addCriterion("csbh >=", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdLessThan(Integer value) {
-            addCriterion("funi_area_code_id <", value, "funiAreaCodeId");
+        public Criteria andCsbhLessThan(Integer value) {
+            addCriterion("csbh <", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdLessThanOrEqualTo(Integer value) {
-            addCriterion("funi_area_code_id <=", value, "funiAreaCodeId");
+        public Criteria andCsbhLessThanOrEqualTo(Integer value) {
+            addCriterion("csbh <=", value, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdIn(List<Integer> values) {
-            addCriterion("funi_area_code_id in", values, "funiAreaCodeId");
+        public Criteria andCsbhIn(List<Integer> values) {
+            addCriterion("csbh in", values, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdNotIn(List<Integer> values) {
-            addCriterion("funi_area_code_id not in", values, "funiAreaCodeId");
+        public Criteria andCsbhNotIn(List<Integer> values) {
+            addCriterion("csbh not in", values, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdBetween(Integer value1, Integer value2) {
-            addCriterion("funi_area_code_id between", value1, value2, "funiAreaCodeId");
+        public Criteria andCsbhBetween(Integer value1, Integer value2) {
+            addCriterion("csbh between", value1, value2, "csbh");
             return (Criteria) this;
         }
 
-        public Criteria andFuniAreaCodeIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("funi_area_code_id not between", value1, value2, "funiAreaCodeId");
+        public Criteria andCsbhNotBetween(Integer value1, Integer value2) {
+            addCriterion("csbh not between", value1, value2, "csbh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhIsNull() {
+            addCriterion("qybh is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhIsNotNull() {
+            addCriterion("qybh is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhEqualTo(Integer value) {
+            addCriterion("qybh =", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhNotEqualTo(Integer value) {
+            addCriterion("qybh <>", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhGreaterThan(Integer value) {
+            addCriterion("qybh >", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhGreaterThanOrEqualTo(Integer value) {
+            addCriterion("qybh >=", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhLessThan(Integer value) {
+            addCriterion("qybh <", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhLessThanOrEqualTo(Integer value) {
+            addCriterion("qybh <=", value, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhIn(List<Integer> values) {
+            addCriterion("qybh in", values, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhNotIn(List<Integer> values) {
+            addCriterion("qybh not in", values, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhBetween(Integer value1, Integer value2) {
+            addCriterion("qybh between", value1, value2, "qybh");
+            return (Criteria) this;
+        }
+
+        public Criteria andQybhNotBetween(Integer value1, Integer value2) {
+            addCriterion("qybh not between", value1, value2, "qybh");
             return (Criteria) this;
         }
     }

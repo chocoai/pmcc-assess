@@ -42,6 +42,15 @@
         </div>
     </div>
     <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="interestAssistUpload" name="interestAssistUpload" type="file" multiple="false">
+            <div id="_interestAssistUpload">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
         </label>
@@ -73,7 +82,33 @@
 <script type="text/javascript">
     $(function () {
         interestAssist();
+        FileUtils.uploadFiles({
+            target: "interestAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_principal_interest",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_interestAssist [name$='id']").val()
+                };
+                $("#interestAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadinterestAssistFiles($("#frm_interestAssist [name$='id']").val());
+            }
+        });
     });
+    function loadinterestAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "interestAssistUpload",
+            formData: {
+                tableName: "tb_csr_principal_interest",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function interestAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrPrincipalInterest/loadLoanPrincipalInterest",
@@ -89,6 +124,7 @@
                     $("#frm_interestAssist").clearAll();
                     $("#frm_interestAssist").validate();
                     $("#frm_interestAssist").initForm(result.data);
+                    loadinterestAssistFiles(result.data.id);
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);

@@ -4,49 +4,23 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
-
-<body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="row">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <%@include file="/views/share/main_pageHead.jsp" %>
-                        <div class="row">
-                            <div class="col-md-12 page-header">
-                                <!-- start: DEFAULT TREE PANEL -->
-                                <input type="hidden" id="currOrgId" value="${currOrgId}">
-                                <input type="hidden" id="tableId" value="${tableId}">
-                                <%--${tableColumns}--%>
-                                <div class="panel panel-default">
-                                    ${html}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER --><div class="container body">    <div class="main_container">        <%@include file="/views/share/main_navigation.jsp" %>        <%@include file="/views/share/main_head.jsp" %>        <div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 ">
+            <!-- start: DEFAULT TREE PANEL -->
+            <input type="hidden" id="currOrgId" value="${currOrgId}">
+            <input type="hidden" id="tableId" value="${tableId}">
+            <%--${tableColumns}--%>
+            <div class="x_panel">
+                ${html}
             </div>
         </div>
-
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
-</body>
-<%@include file="/views/share/model_employee.jsp" %>
-<%@include file="/views/share/main_footer.jsp" %>
+</div>
+    <%@include file="/views/share/model_employee.jsp" %>
+    <%@include file="/views/share/main_footer.jsp" %>
+</div>
 <script type="application/javascript">
     var selNumber = [];
     var index = 1;
@@ -156,7 +130,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                      var  html = "";
+                        var  html = "";
                         $.each(result.data, function (i, j) {
                             html += "<option value='" + j.key + "'>" + j.value + "</option>";
                         });
@@ -414,5 +388,3 @@
     }
 
 </script>
-
-</html>

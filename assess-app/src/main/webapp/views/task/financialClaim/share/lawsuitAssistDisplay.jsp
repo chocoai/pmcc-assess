@@ -75,7 +75,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    loadlawsuitAssistFiles(data.id);
+                    loadlawsuitAssistFiles(result.data.id);
                     $("#frm_lawsuitAssist").initForm(result.data);
                 }
                 else {

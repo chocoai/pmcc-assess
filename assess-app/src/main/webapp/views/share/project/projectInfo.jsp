@@ -9,11 +9,14 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html lang="en" class="no-js">
 <div class="x_panel">
-    <div class="x_title">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
         <h2> 项目信息</h2>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content collapse" >
         <div class="form-horizontal">
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">

@@ -17,6 +17,7 @@
     <result column="zhs" property="zhs" jdbcType="VARCHAR" />
     <result column="wyf" property="wyf" jdbcType="VARCHAR" />
     <result column="wygsbh" property="wygsbh" jdbcType="INTEGER" />
+    <result column="wygs" property="wygs" jdbcType="VARCHAR" />
     <result column="yxdl" property="yxdl" jdbcType="VARCHAR" />
     <result column="kpsj" property="kpsj" jdbcType="VARCHAR" />
     <result column="jfsj" property="jfsj" jdbcType="VARCHAR" />
@@ -84,7 +85,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, lpbh, jzmj, zdmj, glfs, gsfs, tx, wl, wylx, jzlb, zxqk, tdsynx, zhs, wyf, wygsbh, 
-    yxdl, kpsj, jfsj, jd, wd, fxqj
+    wygs, yxdl, kpsj, jfsj, jd, wd, fxqj
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesPropertyExample" >
     select
@@ -123,15 +124,15 @@
     insert into tb_funi_houses_property (lpbh, jzmj, zdmj, 
       glfs, gsfs, tx, wl, 
       wylx, jzlb, zxqk, tdsynx, 
-      zhs, wyf, wygsbh, yxdl, 
-      kpsj, jfsj, jd, wd, 
-      fxqj)
+      zhs, wyf, wygsbh, wygs, 
+      yxdl, kpsj, jfsj, jd, 
+      wd, fxqj)
     values (#{lpbh,jdbcType=INTEGER}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
       #{glfs,jdbcType=VARCHAR}, #{gsfs,jdbcType=VARCHAR}, #{tx,jdbcType=VARCHAR}, #{wl,jdbcType=VARCHAR}, 
       #{wylx,jdbcType=VARCHAR}, #{jzlb,jdbcType=VARCHAR}, #{zxqk,jdbcType=VARCHAR}, #{tdsynx,jdbcType=VARCHAR}, 
-      #{zhs,jdbcType=VARCHAR}, #{wyf,jdbcType=VARCHAR}, #{wygsbh,jdbcType=INTEGER}, #{yxdl,jdbcType=VARCHAR}, 
-      #{kpsj,jdbcType=VARCHAR}, #{jfsj,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, #{wd,jdbcType=VARCHAR}, 
-      #{fxqj,jdbcType=VARCHAR})
+      #{zhs,jdbcType=VARCHAR}, #{wyf,jdbcType=VARCHAR}, #{wygsbh,jdbcType=INTEGER}, #{wygs,jdbcType=VARCHAR}, 
+      #{yxdl,jdbcType=VARCHAR}, #{kpsj,jdbcType=VARCHAR}, #{jfsj,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, 
+      #{wd,jdbcType=VARCHAR}, #{fxqj,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesProperty" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -180,6 +181,9 @@
       </if>
       <if test="wygsbh != null" >
         wygsbh,
+      </if>
+      <if test="wygs != null" >
+        wygs,
       </if>
       <if test="yxdl != null" >
         yxdl,
@@ -242,6 +246,9 @@
       </if>
       <if test="wygsbh != null" >
         #{wygsbh,jdbcType=INTEGER},
+      </if>
+      <if test="wygs != null" >
+        #{wygs,jdbcType=VARCHAR},
       </if>
       <if test="yxdl != null" >
         #{yxdl,jdbcType=VARCHAR},
@@ -317,6 +324,9 @@
       <if test="record.wygsbh != null" >
         wygsbh = #{record.wygsbh,jdbcType=INTEGER},
       </if>
+      <if test="record.wygs != null" >
+        wygs = #{record.wygs,jdbcType=VARCHAR},
+      </if>
       <if test="record.yxdl != null" >
         yxdl = #{record.yxdl,jdbcType=VARCHAR},
       </if>
@@ -357,6 +367,7 @@
       zhs = #{record.zhs,jdbcType=VARCHAR},
       wyf = #{record.wyf,jdbcType=VARCHAR},
       wygsbh = #{record.wygsbh,jdbcType=INTEGER},
+      wygs = #{record.wygs,jdbcType=VARCHAR},
       yxdl = #{record.yxdl,jdbcType=VARCHAR},
       kpsj = #{record.kpsj,jdbcType=VARCHAR},
       jfsj = #{record.jfsj,jdbcType=VARCHAR},
@@ -412,6 +423,9 @@
       <if test="wygsbh != null" >
         wygsbh = #{wygsbh,jdbcType=INTEGER},
       </if>
+      <if test="wygs != null" >
+        wygs = #{wygs,jdbcType=VARCHAR},
+      </if>
       <if test="yxdl != null" >
         yxdl = #{yxdl,jdbcType=VARCHAR},
       </if>
@@ -449,6 +463,7 @@
       zhs = #{zhs,jdbcType=VARCHAR},
       wyf = #{wyf,jdbcType=VARCHAR},
       wygsbh = #{wygsbh,jdbcType=INTEGER},
+      wygs = #{wygs,jdbcType=VARCHAR},
       yxdl = #{yxdl,jdbcType=VARCHAR},
       kpsj = #{kpsj,jdbcType=VARCHAR},
       jfsj = #{jfsj,jdbcType=VARCHAR},

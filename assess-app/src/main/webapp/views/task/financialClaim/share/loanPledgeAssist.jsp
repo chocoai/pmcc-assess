@@ -141,7 +141,15 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="loanPledgeAssistUpload" name="loanPledgeAssistUpload" type="file" multiple="false">
+            <div id="_loanPledgeAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -175,7 +183,33 @@
 <script type="text/javascript">
     $(function () {
         loanPledgeAssist();
+        FileUtils.uploadFiles({
+            target: "loanPledgeAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_borrower_mortgage",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_loanPledgeAssist [name$='id']").val()
+                };
+                $("#loanPledgeAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadloanPledgeAssistFiles($("#frm_loanPledgeAssist [name$='id']").val());
+            }
+        });
     });
+    function loadloanPledgeAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "loanPledgeAssistUpload",
+            formData: {
+                tableName: "tb_csr_borrower_mortgage",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function loanPledgeAssist() {
         var cols = [];
         cols.push({field: 'id', title: 'id', visible: false});
@@ -201,6 +235,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_loanPledgeAssist").initForm(row);
+                    loadloanPledgeAssistFiles(row.id);
                 },
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
@@ -260,6 +295,7 @@
                     $("#frm_loanPledgeAssist").validate();
                     $("#frm_loanPledgeAssist [name$='actualHours']").val(actualHours);
                     $("#frm_loanPledgeAssist [name$='taskRemarks']").val(taskRemarks);
+                    $("#_loanPledgeAssistUpload").html("");
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);

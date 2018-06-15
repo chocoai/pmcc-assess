@@ -94,7 +94,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    loadinterestAssistFiles(data.id);
+                    loadinterestAssistFiles(result.data.id);
                     $("#frm_interestAssist").initForm(result.data);
                 }
                 else {

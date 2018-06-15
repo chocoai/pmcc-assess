@@ -31,6 +31,8 @@ public class FuniHousesProperty {
 
     private Integer wygsbh;
 
+    private String wygs;
+
     private String yxdl;
 
     private String kpsj;
@@ -161,6 +163,14 @@ public class FuniHousesProperty {
 
     public void setWygsbh(Integer wygsbh) {
         this.wygsbh = wygsbh;
+    }
+
+    public String getWygs() {
+        return wygs;
+    }
+
+    public void setWygs(String wygs) {
+        this.wygs = wygs == null ? null : wygs.trim();
     }
 
     public String getYxdl() {

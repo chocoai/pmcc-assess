@@ -82,7 +82,6 @@ public class ProjectInfoController {
     @Autowired
     private BaseProjectCategoryService baseProjectCategoryService;
 
-
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
@@ -118,7 +117,8 @@ public class ProjectInfoController {
                 projectInfoService.projectUpdate(projectInfoService.format(formData), projectinfoid, consignorid, possessorid, unitInformationid);
             } else {
                 boolean flag = projectInfoService.projectApply(projectInfoService.format(formData));
-                if (!flag) return HttpResult.newErrorResult("异常!");
+                if (!flag)
+                    return HttpResult.newErrorResult("异常!");
             }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -155,7 +155,6 @@ public class ProjectInfoController {
         modelAndView.addObject("projectInfo", vo);
         return modelAndView;
     }
-
 
     /**
      * 审批提交
@@ -196,13 +195,13 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)){
+        if (!StringUtils.isEmpty(enumByName)) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
             ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("异常!");
             logger.error(e.getMessage());
             logger.error("可能报:Source must not be null");
@@ -230,6 +229,9 @@ public class ProjectInfoController {
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
+        ///
+//        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectid(projectInfo.getId());
+//        modelAndView.addObject("projectDetailsVo", projectPlanDetailsVos);
 
         return modelAndView;
     }
@@ -241,13 +243,13 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)){
+        if (!StringUtils.isEmpty(enumByName)) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
             ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("异常!");
             logger.error(e.getMessage());
             logger.error("可能报:Source must not be null");
@@ -337,7 +339,6 @@ public class ProjectInfoController {
         return vo;
     }
 
-
     @ResponseBody
     @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
     public HttpResult add(InitiateContactsDto dto) {
@@ -390,7 +391,8 @@ public class ProjectInfoController {
         try {
             if (pid != null) {
                 List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList("" + pid);
-                if (sysAreaDtos != null) return sysAreaDtos;
+                if (sysAreaDtos != null)
+                    return sysAreaDtos;
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -405,7 +407,8 @@ public class ProjectInfoController {
         if (crmId != null) {
             CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
             try {
-                if (crmCustomerDto != null) return crmCustomerDto;
+                if (crmCustomerDto != null)
+                    return crmCustomerDto;
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 return HttpResult.newErrorResult(e.getMessage());
@@ -470,6 +473,5 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
 }

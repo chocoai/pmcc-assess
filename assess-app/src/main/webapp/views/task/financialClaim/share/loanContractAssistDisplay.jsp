@@ -110,7 +110,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    loadLoanContractAssistFiles(data.id);
+                    loadLoanContractAssistFiles(result.data.id);
                     $("#frm_loanContractAssist").initForm(result.data);
                 }
                 else {

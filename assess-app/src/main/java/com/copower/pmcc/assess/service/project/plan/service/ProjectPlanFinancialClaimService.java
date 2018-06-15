@@ -43,6 +43,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.regexp.RE;
 import org.aspectj.weaver.ast.Or;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -215,7 +216,7 @@ public class ProjectPlanFinancialClaimService {
         //对每一个客户添加相应的默认工作任务事项
         StringBuilder stringBuilder = new StringBuilder();
         String sqlTemp = "insert into tb_project_plan_details (project_phase_name, plan_id, project_id,project_phase_id, status, " + "sorting,project_work_stage_id, first_pid, pid, bis_last_layer) " +
-                "" + "" + "" + "" + "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
+                "" + "" + "" + "" + "" + "" + "" + "" + "" + "values ('%s',%s,%s,%s,'%s',0,%s,1,0,false);";
 
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         if (CollectionUtils.isNotEmpty(csrBorrowers)) {
@@ -407,6 +408,7 @@ public class ProjectPlanFinancialClaimService {
                 //更新业务
                 item.setProcessInsId(processUserDto.getProcessInsId());
                 item.setStatus(ProcessStatusEnum.RUN.getValue());
+                item.setTaskSubmitTime(new Date());
                 projectPlanDetailsDao.updateProjectPlanDetails(item);
 
                 if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
@@ -420,6 +422,7 @@ public class ProjectPlanFinancialClaimService {
             } else {
                 item.setStatus(ProcessStatusEnum.FINISH.getValue());
                 item.setReturnDetailsReason("");
+                item.setTaskSubmitTime(new Date());
                 projectPlanDetailsDao.updateProjectPlanDetails(item);
 
             }

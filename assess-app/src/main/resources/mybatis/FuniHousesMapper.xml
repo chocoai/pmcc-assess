@@ -12,10 +12,19 @@
     <result column="lpdz" property="lpdz" jdbcType="VARCHAR" />
     <result column="sldz" property="sldz" jdbcType="VARCHAR" />
     <result column="kfsbh" property="kfsbh" jdbcType="INTEGER" />
+    <result column="kfs" property="kfs" jdbcType="VARCHAR" />
     <result column="ssskzh" property="ssskzh" jdbcType="VARCHAR" />
     <result column="jd" property="jd" jdbcType="VARCHAR" />
     <result column="wd" property="wd" jdbcType="VARCHAR" />
     <result column="funiweb" property="funiweb" jdbcType="VARCHAR" />
+    <result column="qybh" property="qybh" jdbcType="INTEGER" />
+    <result column="qy" property="qy" jdbcType="VARCHAR" />
+    <result column="sqbh" property="sqbh" jdbcType="INTEGER" />
+    <result column="sq" property="sq" jdbcType="VARCHAR" />
+    <result column="sfbh" property="sfbh" jdbcType="INTEGER" />
+    <result column="sf" property="sf" jdbcType="VARCHAR" />
+    <result column="csbh" property="csbh" jdbcType="INTEGER" />
+    <result column="cs" property="cs" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.entity.FuniHouses" extends="BaseResultMap" >
     <result column="lpjs" property="lpjs" jdbcType="LONGVARCHAR" />
@@ -79,7 +88,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, lpmc, jzmj, zdmj, rjl, lhl, cwxx, lpdz, sldz, kfsbh, ssskzh, jd, wd, funiweb
+    id, lpmc, jzmj, zdmj, rjl, lhl, cwxx, lpdz, sldz, kfsbh, kfs, ssskzh, jd, wd, funiweb, 
+    qybh, qy, sqbh, sq, sfbh, sf, csbh, cs
   </sql>
   <sql id="Blob_Column_List" >
     lpjs
@@ -138,13 +148,17 @@
     </selectKey>
     insert into tb_funi_houses (lpmc, jzmj, zdmj, 
       rjl, lhl, cwxx, lpdz, 
-      sldz, kfsbh, ssskzh, 
-      jd, wd, funiweb, lpjs
+      sldz, kfsbh, kfs, ssskzh, 
+      jd, wd, funiweb, qybh, 
+      qy, sqbh, sq, sfbh, 
+      sf, csbh, cs, lpjs
       )
     values (#{lpmc,jdbcType=VARCHAR}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
       #{rjl,jdbcType=VARCHAR}, #{lhl,jdbcType=VARCHAR}, #{cwxx,jdbcType=VARCHAR}, #{lpdz,jdbcType=VARCHAR}, 
-      #{sldz,jdbcType=VARCHAR}, #{kfsbh,jdbcType=INTEGER}, #{ssskzh,jdbcType=VARCHAR}, 
-      #{jd,jdbcType=VARCHAR}, #{wd,jdbcType=VARCHAR}, #{funiweb,jdbcType=VARCHAR}, #{lpjs,jdbcType=LONGVARCHAR}
+      #{sldz,jdbcType=VARCHAR}, #{kfsbh,jdbcType=INTEGER}, #{kfs,jdbcType=VARCHAR}, #{ssskzh,jdbcType=VARCHAR}, 
+      #{jd,jdbcType=VARCHAR}, #{wd,jdbcType=VARCHAR}, #{funiweb,jdbcType=VARCHAR}, #{qybh,jdbcType=INTEGER}, 
+      #{qy,jdbcType=VARCHAR}, #{sqbh,jdbcType=INTEGER}, #{sq,jdbcType=VARCHAR}, #{sfbh,jdbcType=INTEGER}, 
+      #{sf,jdbcType=VARCHAR}, #{csbh,jdbcType=INTEGER}, #{cs,jdbcType=VARCHAR}, #{lpjs,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHouses" >
@@ -180,6 +194,9 @@
       <if test="kfsbh != null" >
         kfsbh,
       </if>
+      <if test="kfs != null" >
+        kfs,
+      </if>
       <if test="ssskzh != null" >
         ssskzh,
       </if>
@@ -191,6 +208,30 @@
       </if>
       <if test="funiweb != null" >
         funiweb,
+      </if>
+      <if test="qybh != null" >
+        qybh,
+      </if>
+      <if test="qy != null" >
+        qy,
+      </if>
+      <if test="sqbh != null" >
+        sqbh,
+      </if>
+      <if test="sq != null" >
+        sq,
+      </if>
+      <if test="sfbh != null" >
+        sfbh,
+      </if>
+      <if test="sf != null" >
+        sf,
+      </if>
+      <if test="csbh != null" >
+        csbh,
+      </if>
+      <if test="cs != null" >
+        cs,
       </if>
       <if test="lpjs != null" >
         lpjs,
@@ -224,6 +265,9 @@
       <if test="kfsbh != null" >
         #{kfsbh,jdbcType=INTEGER},
       </if>
+      <if test="kfs != null" >
+        #{kfs,jdbcType=VARCHAR},
+      </if>
       <if test="ssskzh != null" >
         #{ssskzh,jdbcType=VARCHAR},
       </if>
@@ -235,6 +279,30 @@
       </if>
       <if test="funiweb != null" >
         #{funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="qybh != null" >
+        #{qybh,jdbcType=INTEGER},
+      </if>
+      <if test="qy != null" >
+        #{qy,jdbcType=VARCHAR},
+      </if>
+      <if test="sqbh != null" >
+        #{sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="sq != null" >
+        #{sq,jdbcType=VARCHAR},
+      </if>
+      <if test="sfbh != null" >
+        #{sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="csbh != null" >
+        #{csbh,jdbcType=INTEGER},
+      </if>
+      <if test="cs != null" >
+        #{cs,jdbcType=VARCHAR},
       </if>
       <if test="lpjs != null" >
         #{lpjs,jdbcType=LONGVARCHAR},
@@ -280,6 +348,9 @@
       <if test="record.kfsbh != null" >
         kfsbh = #{record.kfsbh,jdbcType=INTEGER},
       </if>
+      <if test="record.kfs != null" >
+        kfs = #{record.kfs,jdbcType=VARCHAR},
+      </if>
       <if test="record.ssskzh != null" >
         ssskzh = #{record.ssskzh,jdbcType=VARCHAR},
       </if>
@@ -291,6 +362,30 @@
       </if>
       <if test="record.funiweb != null" >
         funiweb = #{record.funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qybh != null" >
+        qybh = #{record.qybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.qy != null" >
+        qy = #{record.qy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sqbh != null" >
+        sqbh = #{record.sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.sq != null" >
+        sq = #{record.sq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfbh != null" >
+        sfbh = #{record.sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.sf != null" >
+        sf = #{record.sf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csbh != null" >
+        csbh = #{record.csbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.cs != null" >
+        cs = #{record.cs,jdbcType=VARCHAR},
       </if>
       <if test="record.lpjs != null" >
         lpjs = #{record.lpjs,jdbcType=LONGVARCHAR},
@@ -312,10 +407,19 @@
       lpdz = #{record.lpdz,jdbcType=VARCHAR},
       sldz = #{record.sldz,jdbcType=VARCHAR},
       kfsbh = #{record.kfsbh,jdbcType=INTEGER},
+      kfs = #{record.kfs,jdbcType=VARCHAR},
       ssskzh = #{record.ssskzh,jdbcType=VARCHAR},
       jd = #{record.jd,jdbcType=VARCHAR},
       wd = #{record.wd,jdbcType=VARCHAR},
       funiweb = #{record.funiweb,jdbcType=VARCHAR},
+      qybh = #{record.qybh,jdbcType=INTEGER},
+      qy = #{record.qy,jdbcType=VARCHAR},
+      sqbh = #{record.sqbh,jdbcType=INTEGER},
+      sq = #{record.sq,jdbcType=VARCHAR},
+      sfbh = #{record.sfbh,jdbcType=INTEGER},
+      sf = #{record.sf,jdbcType=VARCHAR},
+      csbh = #{record.csbh,jdbcType=INTEGER},
+      cs = #{record.cs,jdbcType=VARCHAR},
       lpjs = #{record.lpjs,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -333,10 +437,19 @@
       lpdz = #{record.lpdz,jdbcType=VARCHAR},
       sldz = #{record.sldz,jdbcType=VARCHAR},
       kfsbh = #{record.kfsbh,jdbcType=INTEGER},
+      kfs = #{record.kfs,jdbcType=VARCHAR},
       ssskzh = #{record.ssskzh,jdbcType=VARCHAR},
       jd = #{record.jd,jdbcType=VARCHAR},
       wd = #{record.wd,jdbcType=VARCHAR},
-      funiweb = #{record.funiweb,jdbcType=VARCHAR}
+      funiweb = #{record.funiweb,jdbcType=VARCHAR},
+      qybh = #{record.qybh,jdbcType=INTEGER},
+      qy = #{record.qy,jdbcType=VARCHAR},
+      sqbh = #{record.sqbh,jdbcType=INTEGER},
+      sq = #{record.sq,jdbcType=VARCHAR},
+      sfbh = #{record.sfbh,jdbcType=INTEGER},
+      sf = #{record.sf,jdbcType=VARCHAR},
+      csbh = #{record.csbh,jdbcType=INTEGER},
+      cs = #{record.cs,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -371,6 +484,9 @@
       <if test="kfsbh != null" >
         kfsbh = #{kfsbh,jdbcType=INTEGER},
       </if>
+      <if test="kfs != null" >
+        kfs = #{kfs,jdbcType=VARCHAR},
+      </if>
       <if test="ssskzh != null" >
         ssskzh = #{ssskzh,jdbcType=VARCHAR},
       </if>
@@ -382,6 +498,30 @@
       </if>
       <if test="funiweb != null" >
         funiweb = #{funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="qybh != null" >
+        qybh = #{qybh,jdbcType=INTEGER},
+      </if>
+      <if test="qy != null" >
+        qy = #{qy,jdbcType=VARCHAR},
+      </if>
+      <if test="sqbh != null" >
+        sqbh = #{sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="sq != null" >
+        sq = #{sq,jdbcType=VARCHAR},
+      </if>
+      <if test="sfbh != null" >
+        sfbh = #{sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        sf = #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="csbh != null" >
+        csbh = #{csbh,jdbcType=INTEGER},
+      </if>
+      <if test="cs != null" >
+        cs = #{cs,jdbcType=VARCHAR},
       </if>
       <if test="lpjs != null" >
         lpjs = #{lpjs,jdbcType=LONGVARCHAR},
@@ -400,10 +540,19 @@
       lpdz = #{lpdz,jdbcType=VARCHAR},
       sldz = #{sldz,jdbcType=VARCHAR},
       kfsbh = #{kfsbh,jdbcType=INTEGER},
+      kfs = #{kfs,jdbcType=VARCHAR},
       ssskzh = #{ssskzh,jdbcType=VARCHAR},
       jd = #{jd,jdbcType=VARCHAR},
       wd = #{wd,jdbcType=VARCHAR},
       funiweb = #{funiweb,jdbcType=VARCHAR},
+      qybh = #{qybh,jdbcType=INTEGER},
+      qy = #{qy,jdbcType=VARCHAR},
+      sqbh = #{sqbh,jdbcType=INTEGER},
+      sq = #{sq,jdbcType=VARCHAR},
+      sfbh = #{sfbh,jdbcType=INTEGER},
+      sf = #{sf,jdbcType=VARCHAR},
+      csbh = #{csbh,jdbcType=INTEGER},
+      cs = #{cs,jdbcType=VARCHAR},
       lpjs = #{lpjs,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -418,10 +567,19 @@
       lpdz = #{lpdz,jdbcType=VARCHAR},
       sldz = #{sldz,jdbcType=VARCHAR},
       kfsbh = #{kfsbh,jdbcType=INTEGER},
+      kfs = #{kfs,jdbcType=VARCHAR},
       ssskzh = #{ssskzh,jdbcType=VARCHAR},
       jd = #{jd,jdbcType=VARCHAR},
       wd = #{wd,jdbcType=VARCHAR},
-      funiweb = #{funiweb,jdbcType=VARCHAR}
+      funiweb = #{funiweb,jdbcType=VARCHAR},
+      qybh = #{qybh,jdbcType=INTEGER},
+      qy = #{qy,jdbcType=VARCHAR},
+      sqbh = #{sqbh,jdbcType=INTEGER},
+      sq = #{sq,jdbcType=VARCHAR},
+      sfbh = #{sfbh,jdbcType=INTEGER},
+      sf = #{sf,jdbcType=VARCHAR},
+      csbh = #{csbh,jdbcType=INTEGER},
+      cs = #{cs,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

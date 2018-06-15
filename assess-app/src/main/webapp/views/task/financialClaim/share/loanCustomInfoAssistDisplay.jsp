@@ -128,7 +128,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    loadCustomInfoAssistFiles(data.id);
+                    loadCustomInfoAssistFiles(result.data.id);
                     $("#frm_loanCustomInfoAssist").initForm(result.data);
                 }
                 else {

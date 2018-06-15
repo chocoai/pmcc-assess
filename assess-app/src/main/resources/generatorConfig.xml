@@ -39,8 +39,13 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <table tableName="tb_base_project_classify" domainObjectName="BaseProjectClassify">
+        <table tableName="tb_funi_block" domainObjectName="FuniBlock">
+        <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+    </table>
+        <table tableName="tb_funi_houses" domainObjectName="FuniHouses">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_funi_houses_property" domainObjectName="FuniHousesProperty">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

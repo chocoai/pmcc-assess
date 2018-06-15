@@ -4,52 +4,43 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
+<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER --><div class="container body">    <div class="main_container">        <%@include file="/views/share/main_navigation.jsp" %>        <%@include file="/views/share/main_head.jsp" %>        <div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 ">
+            <!-- start: DEFAULT TREE PANEL -->
 
-<body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="row">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>${baseViewDto.currentMenu.name}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p id="toolbar">
+                        <button type="button" class="btn btn-success"
+                                onclick="addForm()"> 新增
+                        </button>
+                    </p>
+                    <table id="tb_reportTable" class="table table-bordered" >
 
-                        <p id="toolbar">
-                            <button type="button" class="btn btn-success"
-                                    onclick="addForm()"> 新增
-                            </button>
-                        </p>
-                        <table class="table table-bordered" id="tb_reportTable">
-
-                        </table>
-
-                    </div>
+                    </table>
                 </div>
             </div>
+            <!-- end: DEFAULT TREE PANEL -->
         </div>
-
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
-</body>
+</div>
+</div>
 
 
-<div id="divForm" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divForm" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">编辑表或视图</h4>
             </div>
-            <div class="modal-body ">
+            <div class="modal-body">
                 <form class="form-horizontal" id="frm_form">
                     <div class="form-group ">
                         <div class="x-valid">
@@ -64,8 +55,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  ">
-                        <div class="x-valid ">
+                    <div class="form-group ">
+                        <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 表名视图名称
                             </label>
@@ -96,10 +87,21 @@
                     <div class="form-group ">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
-                                是否允许导出
+                                允许导出
                             </label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <select required id="bisExport" name="bisExport" class="form-control">
+                                    <option value="1" selected="selected">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                数据权限控制
+                            </label>
+                            <div class="col-sm-3">
+                                <select required id="bisBaseRole" name="bisBaseRole" class="form-control">
                                     <option value="1">是</option>
                                     <option value="0">否</option>
                                 </select>
@@ -134,15 +136,15 @@
         </div>
     </div>
 </div>
-
-<div id="divFormColumns" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="divFormColumns" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">字段设置</h4>
             </div>
             <div class="modal-body">
-                <div class="form-horizontal" style="height: 400px;overflow: auto">
+                <div class="form-horizontal">
                     <input type="hidden" name="tableId" id="tableId">
                     <input type="hidden" name="columnsCount" id="columnsCount">
                     <table class="table table-striped table-bordered table-hover">
@@ -177,7 +179,6 @@
     </div>
 </div>
 
-
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
@@ -189,25 +190,26 @@
         cols.push({field: 'tableName', title: '表名视图名称'});
         cols.push({field: 'reportType', title: '表单类型'});
         cols.push({
-            field: 'bisExport', title: '是否允许导出', formatter: function (value) {
+            field: 'bisExport', title: '允许导出', formatter: function (value) {
+                return getBoolChs(value);
+            }
+        });
+        cols.push({
+            field: 'bisBaseRole', title: '数据权限控制', formatter: function (value) {
                 return getBoolChs(value);
             }
         });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-
-
-                var s = "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips' onclick='editForm(" + row.id + ")'   ><i class='fa fa-edit fa-white'></i></a>";
-                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips'  onclick='delForm(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
-                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='字段设置'  class='btn btn-xs btn-warning tooltips'  onclick='loadTableColumns(" + row.id+",\"" +row.tableName+ "\")'   ><i class='fa fa-wrench fa-white'></i></a>";
-                return s;
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadTableColumns(' + row.id + ',\'' + row.tableName + '\')"><i class="fa fa-edit"></i>字段设置</a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:editForm(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
+                str += '<a class="btn btn-xs btn-warning" href="javascript:delForm(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '</div>';
+                return str;
             }
         });
-        TableInit("tb_reportTable", "${pageContext.request.contextPath}/reportSet/getReportTableList", cols,{},{
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
+        TableInit("tb_reportTable", "${pageContext.request.contextPath}/reportSet/getReportTableList", cols);
     });
 
     function editForm(id) {
@@ -229,6 +231,13 @@
                     else {
                         $("#bisExport").val("0");
                     }
+                    if (result.data["bisExport"]) {
+                        $("#bisBaseRole").val("1");
+                    }
+                    else {
+                        $("#bisBaseRole").val("0");
+                    }
+                    $("#tableName").select2().val(result.data["tableName"]).trigger("change");
                     $('#divForm').modal({backdrop: 'static', keyboard: false});
                 }
                 else {
@@ -426,6 +435,7 @@
     $(function () {
         $("#projectClassId").change(function () {
             $("#projectTypeId,#projectCategoryId").empty();
+
             loadDataDicByPid($(this).val(), function (retHtml, data) {
                 $("#projectTypeId").html(retHtml);
             });
@@ -440,11 +450,11 @@
             $("#projectTypeId,#projectCategoryId").empty();
         })
         setTimeout(function () {
-            $(".btn-edit-object").on("click", document, function () {
+            $(".btn-edit-object").on("click",document,function () {
                 alert(1);
                 setTimeout(initTypeAndCategory(), 300);
             })
-        }, 2000);
+        },2000);
         $("#tableName").select2();
     })
 
@@ -477,5 +487,5 @@
         }
     }
 </script>
-
+</body>
 </html>

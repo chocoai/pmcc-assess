@@ -1124,6 +1124,76 @@ public class FuniHousesPropertyExample {
             return (Criteria) this;
         }
 
+        public Criteria andWygsIsNull() {
+            addCriterion("wygs is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsIsNotNull() {
+            addCriterion("wygs is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsEqualTo(String value) {
+            addCriterion("wygs =", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsNotEqualTo(String value) {
+            addCriterion("wygs <>", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsGreaterThan(String value) {
+            addCriterion("wygs >", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsGreaterThanOrEqualTo(String value) {
+            addCriterion("wygs >=", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsLessThan(String value) {
+            addCriterion("wygs <", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsLessThanOrEqualTo(String value) {
+            addCriterion("wygs <=", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsLike(String value) {
+            addCriterion("wygs like", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsNotLike(String value) {
+            addCriterion("wygs not like", value, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsIn(List<String> values) {
+            addCriterion("wygs in", values, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsNotIn(List<String> values) {
+            addCriterion("wygs not in", values, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsBetween(String value1, String value2) {
+            addCriterion("wygs between", value1, value2, "wygs");
+            return (Criteria) this;
+        }
+
+        public Criteria andWygsNotBetween(String value1, String value2) {
+            addCriterion("wygs not between", value1, value2, "wygs");
+            return (Criteria) this;
+        }
+
         public Criteria andYxdlIsNull() {
             addCriterion("yxdl is null");
             return (Criteria) this;
