@@ -44,23 +44,23 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
                 DeclareRecord declareRecord = new DeclareRecord();
                 declareRecord.setProjectId(declareInfo.getProjectId());
                 //申报数据特定字段记录
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)) {
-                    declareRecord.setName(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_NAME)));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_NAME)) {
+                    declareRecord.setName(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_NAME)));
                 }
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)) {
-                    declareRecord.setProvince(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_PROVINCE)));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_PROVINCE)) {
+                    declareRecord.setProvince(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_PROVINCE)));
                 }
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)) {
-                    declareRecord.setCity(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_CITY)));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_CITY)) {
+                    declareRecord.setCity(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_CITY)));
                 }
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)) {
-                    declareRecord.setDistrict(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_DISTRICT)));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_DISTRICT)) {
+                    declareRecord.setDistrict(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_DISTRICT)));
                 }
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA)) {
-                    declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA))));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_FLOOR_AREA)) {
+                    declareRecord.setFloorArea(new BigDecimal(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_FLOOR_AREA))));
                 }
-                if (map.containsKey(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)) {
-                    declareRecord.setOwnership(String.valueOf(map.get(AssessFieldNameConstant.PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP)));
+                if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_OWNERSHIP)) {
+                    declareRecord.setOwnership(String.valueOf(map.get(AssessFieldNameConstant.DECLARE_RECORD_OWNERSHIP)));
                 }
                 declareRecord.setCreator(processControllerComponent.getThisUser());
                 declareRecordDao.addDeclareRecord(declareRecord);

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseReportDao;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateFilesVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -283,6 +284,20 @@ public class BaseReportService {
         }
         return 0;
 
+    }
+
+    /**
+     * 根据条件查询报告模板
+     * @param customerId 客户id
+     * @param reportTypeId 报告类型
+     * @param csTypeId 客户类型
+     * @param projectTypeId 项目类别
+     * @param projectCategoryId 项目范围
+     * @return
+     */
+    public BaseReportTemplateFilesDto getReportTemplateFile(Integer customerId, Integer reportTypeId, Integer csTypeId,Integer projectTypeId ,Integer projectCategoryId) {
+
+        return null;
     }
 
 }

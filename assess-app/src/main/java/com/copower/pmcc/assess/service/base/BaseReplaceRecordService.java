@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.dao.base.BaseReplaceRecordDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseReplaceRecord;
+import com.copower.pmcc.assess.dto.input.word.DataReplaceDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
@@ -84,14 +85,9 @@ public class BaseReplaceRecordService {
         ftpUtilsExtense.downloadFileToLocal(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), loaclFileName, localFileDir);
         String content = baseReplaceRecord.getContent();
         if (StringUtils.isNotBlank(content)) {
-            List<KeyValueDto> keyValueDtoList = JSON.parseArray(content, KeyValueDto.class);
-            if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
-                Map<String, String> map = Maps.newHashMap();
-                keyValueDtoList.forEach(p -> {
-                    map.put(p.getKey(), p.getValue());
-                });
-                AsposeUtils.replaceBookmark(localFullPath,map);
-            }
+            List<DataReplaceDto> keyValueDtoList = JSON.parseArray(content, DataReplaceDto.class);
+            //特殊处理
+            //1.
         }
         //再将附件上传到相同位置
         try {
