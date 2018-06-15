@@ -97,7 +97,7 @@ public class BaseAttachmentService {
      */
     public String createTempBasePath(String... params) {
         String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + getTempUploadPath();
-        //清除昨天以外的临时文件
+        //清除今天、昨天以外的临时文件
         FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
         filePath += File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount();
         for (String param : params) {
@@ -609,5 +609,20 @@ public class BaseAttachmentService {
         stringBuilder.append(String.format("<a onclick=\"FileUtils.showAttachment(%s,'%s')\" class=\"fileupload-preview\">%s(%s)</a><br>",
                 baseAttachment.getId(), baseAttachment.getFileExtension(), baseAttachment.getFileName(), baseAttachment.getFileSize()));
         return stringBuilder.toString();
+    }
+
+    /**
+     * 下载ftp附件到本地
+     * @param attachmentId
+     * @return
+     * @throws Exception
+     */
+    public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
+        BaseAttachment baseAttachment = baseAttachmentDao.getAttachmentById(attachmentId);
+        String loaclFileName = createNoRepeatFileName(baseAttachment.getFileExtension());
+        String localFileDir = createTempBasePath();
+        String localFullPath = localFileDir + File.separator + loaclFileName;
+        ftpUtilsExtense.downloadFileToLocal(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), loaclFileName, localFileDir);
+        return localFullPath;
     }
 }

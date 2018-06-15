@@ -3,6 +3,9 @@ package com.copower.pmcc.assess.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.collect.Maps;
@@ -63,12 +66,12 @@ public class PoiTest {
     public void testReplaceWord() {
         String filePath = "C:\\Users\\kings\\Desktop\\软件设置表格\\新债权评估标准化模板（20180527）.doc";
         Map<String, String> map = Maps.newHashMap();
-        map.put("PO_khxm","张三");
-        map.put("PO_ejfh","巴中");
-        map.put("PO_ejfh1","巴中");
+        map.put("PO_khxm", "张三");
+        map.put("PO_ejfh", "巴中");
+        map.put("PO_ejfh1", "巴中");
 
         try {
-            AsposeUtils.replaceBookmark(filePath,map);
+            AsposeUtils.replaceBookmark(filePath, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,19 +81,19 @@ public class PoiTest {
     public void testReplaceWordText() {
         String filePath = "C:\\Users\\kings\\Desktop\\软件设置表格\\新债权评估标准化模板（20180527）.doc";
         Map<String, String> map = Maps.newHashMap();
-        map.put("张三","李四");
-        map.put("巴中","南充");
+        map.put("张三", "李四");
+        map.put("巴中", "南充");
 
         try {
-            AsposeUtils.replaceText(filePath,map);
+            AsposeUtils.replaceText(filePath, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void jsonTest(){
-        String str="[{\"key\": \"PO_ejfh\", \"value\": \"广安\", \"explain\": \"1\"}, {\"key\": \"PO_ejfh1\", \"value\": \"广安\", \"explain\": \"1\"}, {\"key\": \"PO_khxm\", \"value\": \"何川\", \"explain\": \"1\"}]";
+    public void jsonTest() {
+        String str = "[{\"key\": \"PO_ejfh\", \"value\": \"广安\", \"explain\": \"1\"}, {\"key\": \"PO_ejfh1\", \"value\": \"广安\", \"explain\": \"1\"}, {\"key\": \"PO_khxm\", \"value\": \"何川\", \"explain\": \"1\"}]";
 
         List<KeyValueDto> ts = JSON.parseArray(str, KeyValueDto.class);
 
@@ -100,6 +103,19 @@ public class PoiTest {
             System.out.print(o.getClass());
         }
         System.out.print(ts);
+    }
+
+    @Test
+    public void insertDocument() {
+        try {
+            String filePath = "D:\\test\\main.doc";
+            Map<String, String> map = Maps.newHashMap();
+            map.put("yoyo","D:\\test\\1.docx");
+            map.put("yoyo1","D:\\test\\2.docx");
+            AsposeUtils.insertDocument(filePath,map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

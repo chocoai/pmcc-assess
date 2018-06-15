@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,10 +30,7 @@ import java.util.Map;
 public class replaceTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
+
 
     @org.junit.Test
     public void replaceWord() {
@@ -45,7 +43,7 @@ public class replaceTest {
                     String resultFilePath = String.format("D:\\ZResult\\%s.doc", map.get("PO_jkr"));
                     FileUtils.copyFile(filePath, resultFilePath);
                     Map<String, String> stringMap = toMapString(map);
-                    stringMap.put("{PO_number}",String.valueOf(i));
+                    stringMap.put("{PO_number}", String.valueOf(i));
                     AsposeUtils.replaceText(resultFilePath, stringMap);
                     i++;
                 } catch (Exception e) {
@@ -58,55 +56,66 @@ public class replaceTest {
     private Map<String, String> toMapString(Map<String, Object> map) {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
-            stringMap.put("{"+stringObjectEntry.getKey()+"}", String.valueOf(stringObjectEntry.getValue()));
+            stringMap.put("{" + stringObjectEntry.getKey() + "}", String.valueOf(stringObjectEntry.getValue()));
         }
         return stringMap;
     }
 
     @Test
-    public void gener(){
+    public void gener() {
         generateTemp("1,2");
     }
 
-    public void generateTemp(String ids){
+    public void generateTemp(String ids) {
 
-        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-        for (Integer integer : integerList) {
-            BaseAttachment attachment = new BaseAttachment();
-            attachment.setTableName("sheet1");
-            attachment.setFieldsName("report");
-            try {
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
-                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
-                String localFileDir = baseAttachmentService.createTempBasePath();
-                String localFullPath = localFileDir + File.separator + loaclFileName;
-                ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
-                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id="+integer);
-                if (CollectionUtils.isNotEmpty(mapList)) {
-                    int i = 1;
-                    for (Map<String, Object> map : mapList) {
-                        try {
-                            Map<String, String> stringMap = toMapString(map);
-                            stringMap.put("{PO_number}",String.valueOf(i));
-                            AsposeUtils.replaceText(localFullPath, stringMap);
-                            i++;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                //再将附件上传到相同位置
-                try {
-                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
-                } catch (Exception e) {
+//        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+//        for (Integer integer : integerList) {
+//            BaseAttachment attachment = new BaseAttachment();
+//            attachment.setTableName("sheet1");
+//            attachment.setFieldsName("report");
+//            try {
+//                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
+//                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
+//                String localFileDir = baseAttachmentService.createTempBasePath();
+//                String localFullPath = localFileDir + File.separator + loaclFileName;
+//                ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
+//                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
+//                if (CollectionUtils.isNotEmpty(mapList)) {
+//                    int i = 1;
+//                    for (Map<String, Object> map : mapList) {
+//                        try {
+//                            Map<String, String> stringMap = toMapString(map);
+//                            stringMap.put("{PO_number}", String.valueOf(i));
+//                            AsposeUtils.replaceText(localFullPath, stringMap);
+//                            i++;
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//                //再将附件上传到相同位置
+//                try {
+//                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
+//                } catch (Exception e) {
+//
+//                }
+//
+//                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s", ftpAttachment.getId(), integer));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+    }
+    @Test
+    public void getFilterString() {
+        Map<String, Object> map = jdbcTemplate.queryForMap("SELECT  * from tb_funi_houses where id=77");
+        String lpjs = String.valueOf(map.get("lpjs"));
+        System.out.print(filterAnnotation(lpjs));
+    }
 
-                }
-
-                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s",ftpAttachment.getId(),integer));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public String filterAnnotation(String string) {
+        String s = StringUtils.replacePattern(string, "<!--.*?-->", "");
+        return s;
     }
 }
 
