@@ -1521,11 +1521,13 @@
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
+        cols.push({field: 'id', visible: false, title: "id"});
         cols.push({field: 'cPhone', title: '部门'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="updateContacts(' + row.id + ',\'tb_ListA\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsA(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
@@ -1557,12 +1559,14 @@
         var cPid = "${projectInfo.possessorVo.id}";
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'id', visible: false, title: "id"});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="updateContacts(' + row.id + ',\'tb_ListB\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsB(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
@@ -1593,12 +1597,14 @@
         var cPid = "${projectInfo.unitInformationVo.id}";
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'id', visible: false, title: "id"});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="updateContacts(' + row.id + ',\'tb_ListC\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning" href="javascript:deteteContactsC(' + row.id + ',\'tb_List\')">删除</a>';
                 str += '</div>';
                 return str;
@@ -1698,6 +1704,11 @@
         $("#cType").val(contactsEnum);
         $("#cTypeShow").text(str);
         $('#divBoxContacts').modal("show");
+    }
+
+    // 修改 联系人 view
+    function updateContacts(id,tbList) {
+        
     }
 
     //新增  联系人

@@ -732,6 +732,9 @@ public class ProjectInfoService {
         return initiateContactsService.remove(id);
     }
 
+    /*联系人修改*/
+    public boolean updateContacts(InitiateContactsDto dto){return initiateContactsService.update(dto);}
+
     public ProjectInfo change(ProjectInfoDto dto) {
         ProjectInfo projectInfo = new ProjectInfo();
         BeanUtils.copyProperties(dto, projectInfo);

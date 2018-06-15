@@ -68,7 +68,6 @@ public class CsrBorrowerController {
     public ResponseEntity<byte[]> downloadBorrowers(String borrowerIds, HttpServletRequest request, HttpServletResponse response){
         try {
             ResponseEntity<byte[]> responseEntity = csrBorrowerService.downloadBorrower(borrowerIds,request,response);
-            responseEntity.getBody();
             if (responseEntity!=null) {
                 return responseEntity;
             }
