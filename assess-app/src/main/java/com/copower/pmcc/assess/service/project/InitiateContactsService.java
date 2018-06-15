@@ -185,8 +185,7 @@ public class InitiateContactsService {
     }
 
     public boolean update(InitiateContactsDto dto) {
-        InitiateContactsDto contactsDto = getById(dto.getId());
-        dto.setCrmId(contactsDto.getCrmId());
+
         return dao.update(dto);
     }
 
