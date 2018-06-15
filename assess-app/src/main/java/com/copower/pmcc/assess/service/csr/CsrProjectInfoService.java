@@ -656,19 +656,29 @@ public class CsrProjectInfoService {
         //债权目前所有的数据都源于 固定的7张表
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
+        if(StringUtils.isBlank(borrowerIds))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
 
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
+        Integer customerId = csrProjectInfo.getEntrustmentUnitId();//客户id
         BaseReportTemplateFiles baseReportTemplateFilesWhere = new BaseReportTemplateFiles();
         baseReportTemplateFilesWhere.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
         baseReportTemplateFilesWhere.setReportTypeId(baseDataDic.getId());//取预评报告
-        baseReportTemplateFilesWhere.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
-        baseReportTemplateFilesWhere.setEntrustId(csrProjectInfo.getEntrustPurpose());
+        baseReportTemplateFilesWhere.setCustomerId(customerId);//客户单位
+        baseReportTemplateFilesWhere.setEntrustId(csrProjectInfo.getProjectTypeId());
         baseReportTemplateFilesWhere.setBisEnable(true);
         BaseReportTemplateFiles baseReportTemplateFiles = baseReportService.getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
+        if (baseReportTemplateFiles == null) {
+            customerId = 0;//取公司下的模板
+            baseReportTemplateFilesWhere.setCustomerId(customerId);
+            baseReportTemplateFiles = baseReportService.getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
+        }
         if (baseReportTemplateFiles == null)
             throw new BusinessException("未找到对应的报告模板");
+
+
         BaseAttachment queryParam = new BaseAttachment();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
         queryParam.setTableId(baseReportTemplateFiles.getId());
@@ -682,10 +692,11 @@ public class CsrProjectInfoService {
         attachment.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
 
+        //取书签
         BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
         baseReportTemplate.setCsType(csrProjectInfo.getCustomerType());//客户类型 1、自然人、法人
         baseReportTemplate.setReportTypeId(baseDataDic.getId());//取预评报告
-        baseReportTemplate.setCustomerId(csrProjectInfo.getEntrustmentUnitId());//客户单位
+        baseReportTemplate.setCustomerId(customerId);//客户单位
         baseReportTemplate.setEntrustId(csrProjectInfo.getEntrustPurpose());
         baseReportTemplate.setBisEnable(true);
         List<BaseReportTemplate> baseReportTemplateList = baseReportService.getBaseReportTemplateList(baseReportTemplate);
@@ -781,6 +792,7 @@ public class CsrProjectInfoService {
      * @param contractNumber
      * @return
      */
+
     public CsrBorrower useHistoryBorrower(Integer csrProjectId, String secondLevelBranch, String idNumber, String contractNumber) {
         CsrBorrower queryParam = new CsrBorrower();
         queryParam.setCsrProjectId(csrProjectId);

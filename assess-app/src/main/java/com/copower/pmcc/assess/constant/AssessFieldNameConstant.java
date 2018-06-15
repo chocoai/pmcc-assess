@@ -9,12 +9,12 @@ package com.copower.pmcc.assess.constant;
  */
 public class AssessFieldNameConstant {
     //申报记录关键字段
-    public static final String PMCC_ASSESS_DECLARE_RECORD_NAME = "name"; //申报记录名称
-    public static final String PMCC_ASSESS_DECLARE_RECORD_PROVINCE = "province"; //申报记录省
-    public static final String PMCC_ASSESS_DECLARE_RECORD_CITY = "city"; //申报记录市
-    public static final String PMCC_ASSESS_DECLARE_RECORD_DISTRICT = "district"; //申报记录区县
-    public static final String PMCC_ASSESS_DECLARE_RECORD_FLOOR_AREA = "floor_area"; //申报记录建筑面积
-    public static final String PMCC_ASSESS_DECLARE_RECORD_OWNERSHIP = "ownership"; //所有权人
+    public static final String DECLARE_RECORD_NAME = "name"; //申报记录名称
+    public static final String DECLARE_RECORD_PROVINCE = "province"; //申报记录省
+    public static final String DECLARE_RECORD_CITY = "city"; //申报记录市
+    public static final String DECLARE_RECORD_DISTRICT = "district"; //申报记录区县
+    public static final String DECLARE_RECORD_FLOOR_AREA = "floor_area"; //申报记录建筑面积
+    public static final String DECLARE_RECORD_OWNERSHIP = "ownership"; //所有权人
 
     //债权借款人
     public static final String CSR_BORROWER_SECOND_LEVEL_BRANCH = "second_level_branch"; //二级分行
