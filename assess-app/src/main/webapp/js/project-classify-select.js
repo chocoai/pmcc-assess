@@ -24,7 +24,7 @@
             },
             async: {
                 enable: true,
-                url: getContextPath() + "/baseProjectClassify/getBaseDicTree",
+                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTree",
                 autoParam: ["id=pid"]
             },
             // 回调函数
@@ -64,7 +64,7 @@
             html += '<div class="input-group">';
             html += '<input type="text" id="assess_select_project_classify_query_name" class="form-control">';
             html += '<span class="input-group-btn">';
-            html += '<a href="javascript://" onclick="assessDataDic.query()" class="btn btn-primary">查询</a>';
+            html += '<a href="javascript://" onclick="assessProjectClassify.query()" class="btn btn-primary">查询</a>';
             html += '</span>';
             html += '</div>';
             html += '<ul id="assess_select_project_classify_ztree" class="ztree"></ul>';
@@ -75,7 +75,7 @@
             html += '<button type="button" data-dismiss="modal" class="btn btn-default">';
             html += '取消';
             html += '</button>';
-            html += '<button type="button" class="btn btn-primary" onclick="assessDataDic.getSelected()">';
+            html += '<button type="button" class="btn btn-primary" onclick="assessProjectClassify.getSelected()">';
             html += '确定';
             html += '</button>';
             html += '</div>';
@@ -93,7 +93,7 @@
             var queryName = $("#assess_select_project_classify_query_name").val();
             if (queryName) {
                 $.ajax({
-                    url: getContextPath() + "/baseProjectClassify/queryBaseDicTree",
+                    url: getContextPath() + "/baseProjectClassify/queryProjectClassifyTree",
                     data: {
                         name: queryName,
                         key: this.defaults.key
@@ -126,7 +126,7 @@
         init: function () {
             var that = this;
             $.ajax({
-                url: getContextPath() + "/baseProjectClassify/getBaseDicByKey",
+                url: getContextPath() + "/baseProjectClassify/getProjectClassifyByKey",
                 data: {
                     key: that.defaults.key
                 },
