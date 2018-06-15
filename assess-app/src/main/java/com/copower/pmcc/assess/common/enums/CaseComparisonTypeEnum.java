@@ -10,6 +10,16 @@ public enum CaseComparisonTypeEnum {
         this.name = name;
     }
 
+    // 普通方法
+    public static String getName(int type) {
+        for (CaseComparisonTypeEnum c : CaseComparisonTypeEnum.values()) {
+            if (c.getId() == type) {
+                return c.name;
+            }
+        }
+        return null;
+    }
+
     public Integer getId() {
         return id;
     }
