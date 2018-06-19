@@ -78,6 +78,26 @@ public class BaseReplaceRecordService {
     public void replaceRecordContent(BaseReplaceRecord baseReplaceRecord) throws Exception {
         Integer attachmentId = baseReplaceRecord.getAttachmentId();
         BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(attachmentId);
+        String localFullPath = getReplaceFile(baseReplaceRecord);
+        //再将附件上传到相同位置
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(baseAttachment.getFilePath(), new FileInputStream(localFullPath), baseAttachment.getFtpFilesName());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        //更新已替换状态
+        baseReplaceRecord.setBisReplace(true);
+        baseReplaceRecordDao.updateBaseReplaceRecord(baseReplaceRecord);
+    }
+
+    /**
+     * 获取替换完成的文件
+     *
+     * @param baseReplaceRecord
+     * @return
+     */
+    private String getReplaceFile(BaseReplaceRecord baseReplaceRecord) throws Exception {
+        Integer attachmentId = baseReplaceRecord.getAttachmentId();
         //将附件下载到本地处理
         String localFullPath = baseAttachmentService.downloadFtpFileToLocal(attachmentId);
         String content = baseReplaceRecord.getContent();
@@ -98,7 +118,7 @@ public class BaseReplaceRecordService {
                             if (StringUtils.isBlank(replaceRecord.getContent())) {
                                 fileMap.put(dataReplaceDto.getKey(), baseAttachmentService.downloadFtpFileToLocal(replaceRecord.getAttachmentId()));
                             } else {
-                                //递归处理附件
+                                fileMap.put(dataReplaceDto.getKey(), getReplaceFile(replaceRecord));
                             }
                             break;
                         case TEXT:
@@ -109,7 +129,6 @@ public class BaseReplaceRecordService {
                             break;
                     }
                 }
-
                 //分组完成后，分别做对应的替换操作
                 if (!textMap.isEmpty())
                     AsposeUtils.replaceText(localFullPath, textMap);
@@ -118,19 +137,7 @@ public class BaseReplaceRecordService {
                 if (!fileMap.isEmpty())
                     AsposeUtils.insertDocument(localFullPath, fileMap);
             }
-
         }
-        //再将附件上传到相同位置
-        try {
-            ftpUtilsExtense.uploadFilesToFTP(baseAttachment.getFilePath(), new FileInputStream(localFullPath), baseAttachment.getFtpFilesName());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-
-        //更新已替换状态
-        baseReplaceRecord.setBisReplace(true);
-        baseReplaceRecordDao.updateBaseReplaceRecord(baseReplaceRecord);
+        return localFullPath;
     }
-
-    //private String
 }

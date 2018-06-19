@@ -77,7 +77,7 @@ public class ProjectPlanDetailsService {
 
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectid(Integer projectId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectid(projectId);
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, true);
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());

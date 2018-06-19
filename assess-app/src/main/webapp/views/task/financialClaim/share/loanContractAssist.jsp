@@ -60,7 +60,15 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="loanContractAssistUpload" name="loanContractAssistUpload" type="file" multiple="false">
+            <div id="_loanContractAssistUpload">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-1 control-label">
             实际工时<span class="symbol required"></span>
@@ -72,6 +80,7 @@
             </div>
         </div>
     </div>
+
     <div class="form-group">
         <label class="col-sm-1 control-label">
             成果描述
@@ -93,7 +102,33 @@
 <script type="text/javascript">
     $(function () {
         loadLoanContractAssist();
+        FileUtils.uploadFiles({
+            target: "loanContractAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_contract",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_loanContractAssist [name$='id']").val()
+                };
+                $("#loanContractAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadloanContractAssistFiles($("#frm_loanContractAssist [name$='id']").val());
+            }
+        });
     });
+    function loadloanContractAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "loanContractAssistUpload",
+            formData: {
+                tableName: "tb_csr_contract",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function loadLoanContractAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrContract/loadLoanContractAssist",
@@ -109,6 +144,7 @@
                     $("#frm_loanContractAssist").clearAll();
                     $("#frm_loanContractAssist").validate();
                     $("#frm_loanContractAssist").initForm(result.data);
+                    loadloanContractAssistFiles(result.data.id);
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);

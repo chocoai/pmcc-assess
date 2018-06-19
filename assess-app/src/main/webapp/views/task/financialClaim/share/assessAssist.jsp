@@ -7,8 +7,9 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" required
-                       placeholder="评估方法" name="appraisalMethod" class="form-control">
+                <select required placeholder="评估方法" name="appraisalMethod" class="form-control search-select select2" multiple>
+
+                </select>
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -338,6 +339,7 @@
 <script type="text/javascript">
     $(function () {
         loadassessAssist();
+        loadAssessAssistSelect();//加载下拉选项
         FileUtils.uploadFiles({
             target: "assessAssistUpload",
             showFileList: false
@@ -355,6 +357,34 @@
             }
         });
     });
+    function loadAssessAssistSelect() {
+        //appraisalMethod
+        //<option value=""></option>
+        $.ajax({
+            url: "${pageContext.request.contextPath}/csrCalculation/getSelectOption",
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    var data = result.data.evaluation_method;
+                    var html = "";
+                    $.each(data, function (i, j) {
+                        html += "<option value='" + j.name + "'>" + j.name + "</option>";
+                    });
+                    $("#frm_assessAssist [name$='appraisalMethod']").html(html);
+                    $("#frm_assessAssist [name$='appraisalMethod']").select2();
+                }
+                else {
+                    Alert("删除数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
     function loadassessAssistFiles(tableId) {
         FileUtils.getFileShows({
             target: "assessAssistUpload",
@@ -398,6 +428,7 @@
                 showRefresh: false,
                 onClickRow: function (row) {
                     $("#frm_assessAssist").initForm(row);
+                    $("#frm_assessAssist [name$='appraisalMethod']").select2("val", row.appraisalMethod.split(","));
                     loadassessAssistFiles(row.id);
                 }
             });
@@ -500,6 +531,8 @@
                     $("#frm_assessAssist").validate();
                     $("#frm_assessAssist [name$='actualHours']").val(actualHours);
                     $("#frm_assessAssist [name$='taskRemarks']").val(taskRemarks);
+                    $("#_assessAssistUpload").html("");
+                    $("#frm_assessAssist [name$='appraisalMethod']").select2().val("").trigger("change");
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);

@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.FuniHouses;
 import com.copower.pmcc.assess.dal.entity.FuniHousesExample;
 import com.copower.pmcc.assess.dal.mapper.FuniHousesMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,9 +26,14 @@ public class FuniHousesDao {
         return funiHousesMapper.selectByPrimaryKey(id);
     }
 
-    public List<FuniHouses> getFuniHousesList(FuniHouses funiHouses) {
+    public List<FuniHouses> getFuniHousesList(FuniHouses funiHouses, String search) {
         FuniHousesExample example = new FuniHousesExample();
-        MybatisUtils.convertObj2Example(funiHouses, example);
+        FuniHousesExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(search)) {
+            criteria.andLpmcLike(search);
+        }
+        MybatisUtils.convertObj2Criteria(funiHouses, criteria);
+        example.setOrderByClause(" id desc");
         List<FuniHouses> funiHousess = funiHousesMapper.selectByExample(example);
         return funiHousess;
     }

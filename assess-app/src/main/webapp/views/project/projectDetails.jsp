@@ -131,11 +131,14 @@
                 <%@include file="/views/share/project/projectCsrInfo.jsp" %>
             </c:if>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
                     <h2>项目成员</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content collapse">
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
@@ -154,6 +157,50 @@
                     <h2>工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
+                <div class="bs-glyphicons">
+                    <%--<ul class="bs-glyphicons-list">--%>
+                        <%--<c:forEach var="item" items="${projectDetailsVo}">--%>
+                            <%--<c:if test="${item.bisLastLayer==true}">--%>
+                                <%--<c:if test="${item.taskSubmitTime==null}">--%>
+                                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;background-color: #eea236;color: #fcfcfc">--%>
+                                    <%--<p>--%>
+                                            <%--${item.projectPhaseName}${item.projectPhaseName}--%>
+                                    <%--</p>--%>
+                                    <%--<p>--%>
+                                        <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-info tooltips">--%>
+                                            <%--<i class="fa fa-user fa-white"></i>--%>
+                                        <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
+                                                                                    <%--pattern="yyyy-MM-dd"/>)--%>
+                                    <%--</p>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${item.taskSubmitTime!=null}">--%>
+                                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;">--%>
+                                    <%--<p>--%>
+                                            <%--${item.projectPhaseName}${item.projectPhaseName}--%>
+                                    <%--</p>--%>
+                                    <%--<p>--%>
+                                        <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-warning tooltips">--%>
+                                            <%--<i class="fa fa-user fa-white"></i>--%>
+                                        <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
+                                                                                    <%--pattern="yyyy-MM-dd"/>)--%>
+                                    <%--</p>--%>
+                                    <%--<p>--%>
+                                        <%--<a data-placement="top" data-original-title="提交时间" class="btn btn-xs btn-success tooltips">--%>
+                                            <%--<i class="fa fa-clock-o fa-white"></i>--%>
+                                        <%--</a><fmt:formatDate value="${item.taskSubmitTime}"--%>
+                                                            <%--pattern="yyyy-MM-dd"/>--%>
+                                    <%--</p>--%>
+                                <%--</c:if>--%>
+                                <%--</li>--%>
+                            <%--</c:if>--%>
+
+                        <%--</c:forEach>--%>
+
+
+                    <%--</ul>--%>
+                </div>
+
+
                 <div class="treeGrid panel-body x_content" style="padding: 0px;">
                     <table id="PlanItemListed" class="table table-bordered"></table>
                 </div>
@@ -342,30 +389,30 @@
                 },
                 {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
                 {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
+//                {
+//                    field: 'tasks', align: 'center', title: '工作成果', width: '15%', formatter: function (value, row) {
+//                    var s = "";
+//                    if (value) {
+//                        $.each(value, function (i, j) {
+//                            s += "<a onclick='showAttachment(" + j.key + ",\"" + j.explain + "\")'  class='fileupload-preview'>" + j.value + "</a>";
+//                            s += "<a>";
+//                            s += "<i class='fa fa-download' onclick='downAttachments(" + j.key + ")'style='margin-left: 15px;font-size: 15px;'></i>";
+//                            s += "<br/>";
+//                            s += "</a>";
+//                        })
+//                    }
+//                    return s;
+//                }
+//                },
                 {
-                    field: 'tasks', align: 'center', title: '工作成果', width: '15%', formatter: function (value, row) {
-                    var s = "";
-                    if (value) {
-                        $.each(value, function (i, j) {
-                            s += "<a onclick='showAttachment(" + j.key + ",\"" + j.explain + "\")'  class='fileupload-preview'>" + j.value + "</a>";
-                            s += "<a>";
-                            s += "<i class='fa fa-download' onclick='downAttachments(" + j.key + ")'style='margin-left: 15px;font-size: 15px;'></i>";
-                            s += "<br/>";
-                            s += "</a>";
-                        })
-                    }
-                    return s;
-                }
-                },
-                {
-                    field: 'processInsId', align: 'center', title: '操作', width: '10%', formatter: function (value, row) {
+                    field: 'processInsId', align: 'center', title: '查看成果', width: '10%', formatter: function (value, row) {
 
                     var s = "";
                     if (row.bisLastLayer) {
                         if (row.url) {
                             s += "<a target='_blank' href='" + row.url + "'>提交</a> "
                         } else {
-                             s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                            s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
 
                         }
                     }
@@ -374,6 +421,13 @@
                 }
             ]]
         });
+    }
+
+    function loadpage(url, detailsId) {
+        if (url == null || url == "") {
+            url = "${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + detailsId;
+        }
+        window.open(url);
     }
 
     function followProject() {

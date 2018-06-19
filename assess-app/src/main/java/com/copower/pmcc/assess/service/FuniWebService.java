@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.dal.dao.funi.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +18,9 @@ import java.lang.annotation.ElementType;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -82,9 +85,9 @@ public class FuniWebService {
 
     private void office(Elements select, Integer lpbh) {
         FuniHousesProperty funiHousesProperty = new FuniHousesProperty();
-        funiHousesProperty.setWylx(select.get(0).childNodes().get(0).toString());//物业类型
-        funiHousesProperty.setWyf(select.get(1).childNodes().get(0).toString());//物业费
-        String string = select.get(2).childNodes().get(0).toString();//物业公司
+        funiHousesProperty.setWylx(checkNull(select, 0));//物业类型
+        funiHousesProperty.setWyf(checkNull(select, 1));//物业费
+        String string = checkNull(select, 2);//物业公司
         if (StringUtils.isNotBlank(string)) {
             FuniPropertyManagement funiPropertyManagement = funiPropertyManagementDao.getFuniPropertyManagement(string);
             if (funiPropertyManagement == null) {
@@ -93,29 +96,40 @@ public class FuniWebService {
                 funiPropertyManagementDao.addFuniPropertyManagement(funiPropertyManagement);
             }
             funiHousesProperty.setWygsbh(funiPropertyManagement.getId());//物业公司
+            funiHousesProperty.setWygs(string);
         }
-        funiHousesProperty.setYxdl(select.get(3).childNodes().get(0).toString());//营销代理
-        funiHousesProperty.setJzlb(select.get(4).childNodes().get(0).toString());//建筑类别
-        funiHousesProperty.setZxqk(select.get(5).childNodes().get(0).toString());//装修情况
-        //层高
-        funiHousesProperty.setTdsynx(select.get(7).childNodes().get(0).toString());//土地使用年限
-        funiHousesProperty.setJzmj(select.get(8).childNodes().get(0).toString());//建筑面积
-        funiHousesProperty.setZhs(select.get(9).childNodes().get(0).toString());//总户数
+        funiHousesProperty.setYxdl(checkNull(select, 3));//营销代理
+        funiHousesProperty.setJzlb(checkNull(select, 4));//建筑类别
+        funiHousesProperty.setZxqk(checkNull(select, 5));//装修情况
+        funiHousesProperty.setCg(checkNull(select, 6));//层高
+        funiHousesProperty.setTdsynx(checkNull(select, 7));//土地使用年限
+        funiHousesProperty.setJzmj(checkNull(select, 8));//建筑面积
+        funiHousesProperty.setZhs(checkNull(select, 9));//总户数
 
-        funiHousesProperty.setKpsj(select.get(10).childNodes().get(0).toString());//开盘时间
-        funiHousesProperty.setJfsj(select.get(11).childNodes().get(0).toString());//交房时间
-        funiHousesProperty.setFxqj(select.get(12).childNodes().get(0).toString());//户型区间
+        funiHousesProperty.setKpsj(checkNull(select, 10));//开盘时间
+        funiHousesProperty.setJfsj(checkNull(select, 11));//交房时间
+        funiHousesProperty.setFxqj(checkNull(select, 12));//户型区间
+        funiHousesProperty.setKts(checkNull(select, 13));//客梯数
+        funiHousesProperty.setHts(checkNull(select, 14));//货梯数
         //客梯数
         //货梯数
         funiHousesProperty.setLpbh(lpbh);
         funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
     }
 
+    private String checkNull(Elements select, Integer index) {
+        String string = select.get(index).childNodes().get(0).toString();
+        if (StringUtils.isBlank(string)) {
+            string = "暂无";
+        }
+        return string;
+    }
+
     private void business(Elements select, Integer lpbh) {
         FuniHousesProperty funiHousesProperty = new FuniHousesProperty();
-        funiHousesProperty.setWylx(select.get(0).childNodes().get(0).toString());//物业类型
-        funiHousesProperty.setWyf(select.get(1).childNodes().get(0).toString());//物业费
-        String string = select.get(2).childNodes().get(0).toString();//物业公司
+        funiHousesProperty.setWylx(checkNull(select, 0));//物业类型
+        funiHousesProperty.setWyf(checkNull(select, 1));//物业费
+        String string = checkNull(select, 2);//物业公司
         if (StringUtils.isNotBlank(string)) {
             FuniPropertyManagement funiPropertyManagement = funiPropertyManagementDao.getFuniPropertyManagement(string);
             if (funiPropertyManagement == null) {
@@ -123,31 +137,32 @@ public class FuniWebService {
                 funiPropertyManagement.setPropertyManagementName(string);
                 funiPropertyManagementDao.addFuniPropertyManagement(funiPropertyManagement);
             }
+            funiHousesProperty.setWygs(string);
             funiHousesProperty.setWygsbh(funiPropertyManagement.getId());//开发商
         }
-        funiHousesProperty.setTdsynx(select.get(3).childNodes().get(0).toString());//土地使用年限
-        funiHousesProperty.setZhs(select.get(4).childNodes().get(0).toString());//总户数
-        funiHousesProperty.setJzlb(select.get(5).childNodes().get(0).toString());//建筑类别
-        funiHousesProperty.setYxdl(select.get(6).childNodes().get(0).toString());//营销代理
-        funiHousesProperty.setZxqk(select.get(7).childNodes().get(0).toString());//装修情况
-        funiHousesProperty.setJzmj(select.get(8).childNodes().get(0).toString());//建筑面积
-        funiHousesProperty.setKpsj(select.get(9).childNodes().get(0).toString());//开盘时间
-        funiHousesProperty.setJfsj(select.get(10).childNodes().get(0).toString());//交房时间
-        funiHousesProperty.setFxqj(select.get(11).childNodes().get(0).toString());//户型区间
+        funiHousesProperty.setTdsynx(checkNull(select, 3));//土地使用年限
+        funiHousesProperty.setZhs(checkNull(select, 4));//总户数
+        funiHousesProperty.setJzlb(checkNull(select, 5));//建筑类别
+        funiHousesProperty.setYxdl(checkNull(select, 6));//营销代理
+        funiHousesProperty.setZxqk(checkNull(select, 7));//装修情况
+        funiHousesProperty.setJzmj(checkNull(select, 8));//建筑面积
+        funiHousesProperty.setKpsj(checkNull(select, 9));//开盘时间
+        funiHousesProperty.setJfsj(checkNull(select, 10));//交房时间
+        funiHousesProperty.setFxqj(checkNull(select, 11));//户型区间
         funiHousesProperty.setLpbh(lpbh);
         funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
     }
 
     private void house(Elements select, Integer lpbh) {
         FuniHousesProperty funiHousesProperty = new FuniHousesProperty();
-        funiHousesProperty.setWylx(select.get(0).childNodes().get(0).toString());//物业类型
-        funiHousesProperty.setJzlb(select.get(1).childNodes().get(0).toString());//建筑类别
-        funiHousesProperty.setZxqk(select.get(2).childNodes().get(0).toString());//装修情况
-        funiHousesProperty.setTdsynx(select.get(3).childNodes().get(0).toString());//土地使用年限
-        funiHousesProperty.setZhs(select.get(4).childNodes().get(0).toString());//总户数
-        funiHousesProperty.setWyf(select.get(5).childNodes().get(0).toString());//物业费
+        funiHousesProperty.setWylx(checkNull(select, 0));//物业类型
+        funiHousesProperty.setJzlb(checkNull(select, 1));//建筑类别
+        funiHousesProperty.setZxqk(checkNull(select, 2));//装修情况
+        funiHousesProperty.setTdsynx(checkNull(select, 3));//土地使用年限
+        funiHousesProperty.setZhs(checkNull(select, 4));//总户数
+        funiHousesProperty.setWyf(checkNull(select, 5));//物业费
 
-        String string = select.get(6).childNodes().get(0).toString();//物业公司
+        String string = checkNull(select, 6);//物业公司
         if (StringUtils.isNotBlank(string)) {
             FuniPropertyManagement funiPropertyManagement = funiPropertyManagementDao.getFuniPropertyManagement(string);
             if (funiPropertyManagement == null) {
@@ -155,15 +170,16 @@ public class FuniWebService {
                 funiPropertyManagement.setPropertyManagementName(string);
                 funiPropertyManagementDao.addFuniPropertyManagement(funiPropertyManagement);
             }
+            funiHousesProperty.setWygs(string);
             funiHousesProperty.setWygsbh(funiPropertyManagement.getId());//开发商
         }
 
-        funiHousesProperty.setYxdl(select.get(7).childNodes().get(0).toString());//营销代理
-        funiHousesProperty.setZdmj(select.get(8).childNodes().get(0).toString());//占地面积
-        funiHousesProperty.setJzmj(select.get(9).childNodes().get(0).toString());//建筑面积
-        funiHousesProperty.setKpsj(select.get(10).childNodes().get(0).toString());//开盘时间
-        funiHousesProperty.setJfsj(select.get(11).childNodes().get(0).toString());//交房时间
-        funiHousesProperty.setFxqj(select.get(12).childNodes().get(0).toString());//户型区间
+        funiHousesProperty.setYxdl(checkNull(select, 7));//营销代理
+        funiHousesProperty.setZdmj(checkNull(select, 8));//占地面积
+        funiHousesProperty.setJzmj(checkNull(select, 9));//建筑面积
+        funiHousesProperty.setKpsj(checkNull(select, 10));//开盘时间
+        funiHousesProperty.setJfsj(checkNull(select, 11));//交房时间
+        funiHousesProperty.setFxqj(checkNull(select, 12));//户型区间
         funiHousesProperty.setLpbh(lpbh);
         funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
     }
@@ -172,57 +188,41 @@ public class FuniWebService {
         FuniHouses funiHouses = funiHousesDao.getFuniHouses(lpbh);
         //基本信息=================================================
 
-        if(!select.get(0).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(0).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setJzmj(select.get(0).childNodes().get(0).childNodes().get(0).toString());//建筑面积
-        }
-        else
-        {
+        } else {
             funiHouses.setJzmj("暂无");
         }
-        if(!select.get(1).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(1).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setZdmj(select.get(1).childNodes().get(0).childNodes().get(0).toString());//占地面积
-        }
-        else
-        {
+        } else {
             funiHouses.setZdmj("暂无");
         }
-        if(!select.get(2).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(2).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setRjl(select.get(2).childNodes().get(0).childNodes().get(0).toString());//容积率
-        }
-        else
-        {
+        } else {
             funiHouses.setRjl("暂无");
         }
-        if(!select.get(3).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(3).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLhl(select.get(3).childNodes().get(0).childNodes().get(0).toString());//绿化率
-        }
-        else
-        {
+        } else {
             funiHouses.setLhl("暂无");//绿化率
         }
-        if(!select.get(4).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(4).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setCwxx(select.get(4).childNodes().get(0).toString());//车位信息
-        }
-        else
-        {
+        } else {
             funiHouses.setCwxx("暂无");
         }
-        if(!select.get(5).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(5).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLpdz(select.get(5).childNodes().get(0).childNodes().get(0).toString());//项目地址
-        }
-        else
-        {
+        } else {
             funiHouses.setLpdz("暂无");
         }
-        if(!select.get(6).childNodes().get(0).toString().equals("暂无")) {
+        if (!select.get(6).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setSldz(select.get(6).childNodes().get(0).toString());//售楼地址
-        }
-        else
-        {
+        } else {
             funiHouses.setSldz("暂无");
         }
-
-
 
         String string = select.get(7).childNodes().get(0).toString();
         if (StringUtils.isNotBlank(string)) {
@@ -233,12 +233,18 @@ public class FuniWebService {
                 funiDevelopersDao.addFuniDevelopers(funiDevelopers);
             }
             funiHouses.setKfsbh(funiDevelopers.getId());//开发商
+            funiHouses.setKfs(string);
         }
 
         funiHouses.setSsskzh(select.get(8).childNodes().get(0).toString());//销售许可证
-        Elements p = select.get(9).select("p");
+        Elements p = select.get(9).select(".showDetail");
         if (p.size() > 0) {
-            funiHouses.setLpjs(p.get(0).childNodes().get(0).toString());//楼盘介绍
+            String string1 = p.toString();
+
+            String s = StringUtils.replacePattern(string1, "<.*?>", "");
+            funiHouses.setLpjs(s);//楼盘介绍
+        } else {
+            funiHouses.setLpjs("暂无");
         }
         funiHousesDao.editFuniHouses(funiHouses);
     }
@@ -298,8 +304,15 @@ public class FuniWebService {
                     Elements h2a = item.select("h2 a");
 
                     Elements address = item.select(".address");
+                    String string = h2a.get(0).childNodes().get(0).toString();
 
                     FuniHouses funiHouses = new FuniHouses();
+                    funiHouses.setLpmc(string);
+                    List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses, "");
+                    if (CollectionUtils.isNotEmpty(funiHousesList)) {
+                        continue;
+                    }
+                    funiHouses = new FuniHouses();
                     funiHouses.setLpmc(h2a.get(0).childNodes().get(0).toString());
                     String s = h2a.get(0).attributes().get("href");
                     funiHouses.setFuniweb("http://www.funi.com" + s.split(";")[0]);

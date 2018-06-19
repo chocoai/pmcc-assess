@@ -23,8 +23,9 @@ public class CaseComparisonFieldDao {
     public boolean add(DataCaseComparisonField dto) {
         boolean flag = true;
         DataCaseComparisonFieldExample example = new DataCaseComparisonFieldExample();
-        example.createCriteria().andUNameEqualTo(dto.getuName());
-        if (mapper.selectByExample(example).size() > 0) flag = false;
+        example.createCriteria().andUNameEqualTo(dto.getuName()).andCaseIdEqualTo(dto.getCaseId());
+        List<DataCaseComparisonField> dataCaseComparisonFields = mapper.selectByExample(example);
+        if (dataCaseComparisonFields.size() > 0) flag = false;
         if (flag) return mapper.insertSelective(change(dto)) == 1;
         return flag;
     }
@@ -59,6 +60,7 @@ public class CaseComparisonFieldDao {
         if (StringUtils.isNotBlank(name)) {
             example.createCriteria().andUNameLike("%" + name + "%");
         }
+        example.setOrderByClause("type DESC,id DESC");
         list = mapper.selectByExample(example);
         list.parallelStream().forEach(c -> dtos.add(change(c)));
         return dtos;

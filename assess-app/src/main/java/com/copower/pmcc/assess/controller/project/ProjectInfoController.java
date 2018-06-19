@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
-import com.copower.pmcc.assess.common.enums.ProjectDetailsFlagEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
@@ -193,17 +192,23 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectDetails", name = "项目详情")
     public ModelAndView projectDetails(Integer projectId) throws BusinessException {
         ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
-        //flagURL 和 BaseProjectClassify中的url 比较确定项目类别
-        String flagURL = "projectInfo/projectDetails" ;
-        modelAndView.addObject(ProjectDetailsFlagEnum.FLAG_URL_DEFAULT.getFlagStr(),flagURL);
+
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
         if (!StringUtils.isEmpty(enumByName)){
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
-        modelAndView.addObject("projectInfo", projectInfoVo);
+        try {
+            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            modelAndView.addObject("projectInfo", projectInfoVo);
+        }catch (Exception e){
+            logger.error("异常!");
+            logger.error(e.getMessage());
+            logger.error("可能报:Source must not be null");
+            modelAndView.addObject("projectInfo", projectInfo);
+        }
+
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         //项目当前责任人信息
         List<KeyValueDto> keyValueDtos = getKeyValueDtos(projectId);
@@ -234,15 +239,20 @@ public class ProjectInfoController {
         ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
 
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        //flagURL 和 BaseProjectClassify中的url 比较确定项目类别
-        String flagURL = "projectInfo/csrProjectDetails" ;
-        modelAndView.addObject(ProjectDetailsFlagEnum.FLAG_URL_CSR.getFlagStr(),flagURL);
+
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
         if (!StringUtils.isEmpty(enumByName)){
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getVoCsr(projectInfo);
-        modelAndView.addObject("projectInfo", projectInfoVo);
+        try {
+            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            modelAndView.addObject("projectInfo", projectInfoVo);
+        }catch (Exception e){
+            logger.error("异常!");
+            logger.error(e.getMessage());
+            logger.error("可能报:Source must not be null");
+            modelAndView.addObject("projectInfo", projectInfo);
+        }
 
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         //项目当前责任人信息

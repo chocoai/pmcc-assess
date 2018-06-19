@@ -8,7 +8,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="借款人" name="name" class="form-control" >
+                       placeholder="借款人" name="name" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -47,7 +47,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="工作单位" name="workUnit" class="form-control" >
+                       placeholder="工作单位" name="workUnit" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -56,7 +56,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="职务" name="post" class="form-control" >
+                       placeholder="职务" name="post" class="form-control">
             </div>
         </div>
     </div>
@@ -76,7 +76,16 @@
         <div class="x-valid">
             <div class="col-sm-5">
                 <input type="text" required
-                       placeholder="现居住地址" name="presentAddress" class="form-control" >
+                       placeholder="现居住地址" name="presentAddress" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label
+                class='col-sm-1 control-label'>附件</label>
+        <div class='col-sm-11'>
+            <input id="loanCustomInfoAssistUpload" name="loanCustomInfoAssistUpload" type="file" multiple="false">
+            <div id="_loanCustomInfoAssistUpload">
             </div>
         </div>
     </div>
@@ -112,13 +121,39 @@
 <script type="text/javascript">
     $(function () {
         loanCustomInfoAssist();
+        FileUtils.uploadFiles({
+            target: "loanCustomInfoAssistUpload",
+            showFileList: false
+        }, {
+            onUpload: function (file) {//上传之前触发
+                var formData = {
+                    tableName: "tb_csr_borrower_entering",
+                    creater: "${currUserAccount}",
+                    tableId: $("#frm_loanCustomInfoAssist [name$='id']").val()
+                };
+                $("#loanCustomInfoAssistUpload").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+            },
+            onUploadComplete: function () {
+                loadloanCustomInfoAssistFiles($("#frm_loanCustomInfoAssist [name$='id']").val());
+            }
+        });
     });
+    function loadloanCustomInfoAssistFiles(tableId) {
+        FileUtils.getFileShows({
+            target: "loanCustomInfoAssistUpload",
+            formData: {
+                tableName: "tb_csr_borrower_entering",
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
     function loanCustomInfoAssist() {
         $.ajax({
             url: "${pageContext.request.contextPath}/csrBorrower/loadLoanBorrower",
             data: {
                 borrowerId: "${planDetailsParent.projectPhaseId}",//该项业务特殊，存储的内容为客户编号
-                detailsId:$("#loanCustomInfoAssist_details_id").val()
+                detailsId: $("#loanCustomInfoAssist_details_id").val()
             },
             type: "get",
             dataType: "json",
@@ -128,6 +163,7 @@
                     $("#frm_loanCustomInfoAssist").clearAll();
                     $("#frm_loanCustomInfoAssist").validate();
                     $("#frm_loanCustomInfoAssist").initForm(result.data);
+                    loadloanCustomInfoAssistFiles(result.data.id);
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
@@ -147,7 +183,7 @@
         var data = formParams("frm_loanCustomInfoAssist");
         data["bisImport"] = false;
         data["borrowerId"] = "${planDetailsParent.projectPhaseId}";//该项业务特殊，存储的内容为客户编号
-        data["detailsId"]=$("#loanCustomInfoAssist_details_id").val();
+        data["detailsId"] = $("#loanCustomInfoAssist_details_id").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/csrBorrower/saveLoanBorrower",
             data: data,

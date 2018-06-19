@@ -31,6 +31,8 @@ public class FuniHousesProperty {
 
     private Integer wygsbh;
 
+    private String wygs;
+
     private String yxdl;
 
     private String kpsj;
@@ -42,6 +44,12 @@ public class FuniHousesProperty {
     private String wd;
 
     private String fxqj;
+
+    private String kts;
+
+    private String hts;
+
+    private String cg;
 
     public Integer getId() {
         return id;
@@ -163,6 +171,14 @@ public class FuniHousesProperty {
         this.wygsbh = wygsbh;
     }
 
+    public String getWygs() {
+        return wygs;
+    }
+
+    public void setWygs(String wygs) {
+        this.wygs = wygs == null ? null : wygs.trim();
+    }
+
     public String getYxdl() {
         return yxdl;
     }
@@ -209,5 +225,29 @@ public class FuniHousesProperty {
 
     public void setFxqj(String fxqj) {
         this.fxqj = fxqj == null ? null : fxqj.trim();
+    }
+
+    public String getKts() {
+        return kts;
+    }
+
+    public void setKts(String kts) {
+        this.kts = kts == null ? null : kts.trim();
+    }
+
+    public String getHts() {
+        return hts;
+    }
+
+    public void setHts(String hts) {
+        this.hts = hts == null ? null : hts.trim();
+    }
+
+    public String getCg() {
+        return cg;
+    }
+
+    public void setCg(String cg) {
+        this.cg = cg == null ? null : cg.trim();
     }
 }

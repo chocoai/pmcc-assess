@@ -3,13 +3,13 @@ package com.copower.pmcc.assess.dal.entity;
 public class FuniBlock {
     private Integer id;
 
-    private String funiCodeId;
-
     private String name;
 
-    private Integer areaId;
+    private Integer sfbh;
 
-    private Integer funiAreaCodeId;
+    private Integer csbh;
+
+    private Integer qybh;
 
     public Integer getId() {
         return id;
@@ -17,14 +17,6 @@ public class FuniBlock {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getFuniCodeId() {
-        return funiCodeId;
-    }
-
-    public void setFuniCodeId(String funiCodeId) {
-        this.funiCodeId = funiCodeId == null ? null : funiCodeId.trim();
     }
 
     public String getName() {
@@ -35,19 +27,27 @@ public class FuniBlock {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getAreaId() {
-        return areaId;
+    public Integer getSfbh() {
+        return sfbh;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setSfbh(Integer sfbh) {
+        this.sfbh = sfbh;
     }
 
-    public Integer getFuniAreaCodeId() {
-        return funiAreaCodeId;
+    public Integer getCsbh() {
+        return csbh;
     }
 
-    public void setFuniAreaCodeId(Integer funiAreaCodeId) {
-        this.funiAreaCodeId = funiAreaCodeId;
+    public void setCsbh(Integer csbh) {
+        this.csbh = csbh;
+    }
+
+    public Integer getQybh() {
+        return qybh;
+    }
+
+    public void setQybh(Integer qybh) {
+        this.qybh = qybh;
     }
 }

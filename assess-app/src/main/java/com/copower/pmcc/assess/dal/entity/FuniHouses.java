@@ -21,7 +21,11 @@ public class FuniHouses {
 
     private Integer kfsbh;
 
+    private String kfs;
+
     private String ssskzh;
+
+    private String lpjs;
 
     private String jd;
 
@@ -29,7 +33,23 @@ public class FuniHouses {
 
     private String funiweb;
 
-    private String lpjs;
+    private Integer qybh;
+
+    private String qy;
+
+    private Integer sqbh;
+
+    private String sq;
+
+    private Integer sfbh;
+
+    private String sf;
+
+    private Integer csbh;
+
+    private String cs;
+
+    private Boolean bisEdit;
 
     public Integer getId() {
         return id;
@@ -111,12 +131,28 @@ public class FuniHouses {
         this.kfsbh = kfsbh;
     }
 
+    public String getKfs() {
+        return kfs;
+    }
+
+    public void setKfs(String kfs) {
+        this.kfs = kfs == null ? null : kfs.trim();
+    }
+
     public String getSsskzh() {
         return ssskzh;
     }
 
     public void setSsskzh(String ssskzh) {
         this.ssskzh = ssskzh == null ? null : ssskzh.trim();
+    }
+
+    public String getLpjs() {
+        return lpjs;
+    }
+
+    public void setLpjs(String lpjs) {
+        this.lpjs = lpjs == null ? null : lpjs.trim();
     }
 
     public String getJd() {
@@ -143,11 +179,75 @@ public class FuniHouses {
         this.funiweb = funiweb == null ? null : funiweb.trim();
     }
 
-    public String getLpjs() {
-        return lpjs;
+    public Integer getQybh() {
+        return qybh;
     }
 
-    public void setLpjs(String lpjs) {
-        this.lpjs = lpjs == null ? null : lpjs.trim();
+    public void setQybh(Integer qybh) {
+        this.qybh = qybh;
+    }
+
+    public String getQy() {
+        return qy;
+    }
+
+    public void setQy(String qy) {
+        this.qy = qy == null ? null : qy.trim();
+    }
+
+    public Integer getSqbh() {
+        return sqbh;
+    }
+
+    public void setSqbh(Integer sqbh) {
+        this.sqbh = sqbh;
+    }
+
+    public String getSq() {
+        return sq;
+    }
+
+    public void setSq(String sq) {
+        this.sq = sq == null ? null : sq.trim();
+    }
+
+    public Integer getSfbh() {
+        return sfbh;
+    }
+
+    public void setSfbh(Integer sfbh) {
+        this.sfbh = sfbh;
+    }
+
+    public String getSf() {
+        return sf;
+    }
+
+    public void setSf(String sf) {
+        this.sf = sf == null ? null : sf.trim();
+    }
+
+    public Integer getCsbh() {
+        return csbh;
+    }
+
+    public void setCsbh(Integer csbh) {
+        this.csbh = csbh;
+    }
+
+    public String getCs() {
+        return cs;
+    }
+
+    public void setCs(String cs) {
+        this.cs = cs == null ? null : cs.trim();
+    }
+
+    public Boolean getBisEdit() {
+        return bisEdit;
+    }
+
+    public void setBisEdit(Boolean bisEdit) {
+        this.bisEdit = bisEdit;
     }
 }

@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
  */
 public class CaseComparisonVo extends CaseComparisonDto {
     private String formTypeName;
+    private String caseFormTypeName;
+    private String tableName;
 
     public String getFormTypeName() {
         return formTypeName;
@@ -14,5 +16,21 @@ public class CaseComparisonVo extends CaseComparisonDto {
 
     public void setFormTypeName(String formTypeName) {
         this.formTypeName = formTypeName;
+    }
+
+    public String getCaseFormTypeName() {
+        return caseFormTypeName;
+    }
+
+    public void setCaseFormTypeName(String caseFormTypeName) {
+        this.caseFormTypeName = caseFormTypeName;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }
