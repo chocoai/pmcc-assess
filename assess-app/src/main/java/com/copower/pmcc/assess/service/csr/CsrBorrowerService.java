@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.csr;
 
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
+import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -219,14 +221,18 @@ public class CsrBorrowerService {
         tableID = Preconditions.checkNotNull(tableID,"不能为null");
         List<String> filePaths = new ArrayList<>();
         String localDirPath = baseAttachmentService.createTempBasePath();
-        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_REPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
+//        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_REPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
+        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
         for (BaseAttachment baseAttachment:baseAttachmentList){
             if (!ObjectUtils.isEmpty(baseAttachment)){
                 String fileSuffix = baseAttachment.getFileExtension();
                 String localFileName = UUID.randomUUID().toString().substring(0, 7)  + "." + fileSuffix;
                 //临时下载
-                readImportData(localDirPath, localFileName, baseAttachment,AssessFieldNameConstant.CSR_BORROWER_REPORT);
-                filePaths.add(localDirPath + localFileName);
+                String ss = readImportData(localDirPath, localFileName, baseAttachment,AssessFieldNameConstant.CSR_BORROWER_REPORT);
+                //必须保证 baseAttachmentList size==1 的情况下才能这样做 ,因为在当前情况是唯一
+//                filePaths.add(localDirPath +"/"+ localFileName);//第一个存入地址
+                filePaths.add(ss);//第一个存入地址
+                filePaths.add(localFileName);//第二个存入名称
             }
         }
         return filePaths;
@@ -240,20 +246,29 @@ public class CsrBorrowerService {
      * @param localFileName
      * @param baseAttachment
      */
-    private void readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment,String fileName) {
+    private String readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment,String fileName) {
+        try {
+            String s = baseAttachmentService.downloadFtpFileToLocal(baseAttachment.getId());
+            if (!org.springframework.util.StringUtils.isEmpty(s)){
+                return s;
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
         List<BaseAttachment> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName,null);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
             BaseAttachment sysAttachment = attachmentList.get(0);
             String fullPath = localDirPath + File.separator + localFileName;
             if (!com.copower.pmcc.erp.common.utils.FileUtils.checkFileExists(new File(fullPath))) {
                 try {
-                    ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+//                    ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), localFileName, localDirPath);
                 } catch (Exception e) {
                     //拷贝失败
                     logger.error(e.getMessage(), e);
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -380,6 +395,7 @@ public class CsrBorrowerService {
     private ResponseEntity<byte[]> toExportFormBorrowers(HttpServletRequest request, HttpServletResponse response,BaseReportTemplateFilesDto templateFilesDto,Integer csrProjectInfoID){
         ResponseEntity<byte[]> responseEntity = null;
         CsrBorrowerMortgage csrBorrowerMortgage = null;
+        Integer dataIndex = null;
         List<CsrBorrowerMortgage> csrBorrowerMortgages = csrBorrowerMortgageService.getCsrProjectMortgages(csrProjectInfoID);
         //获取下载到临时目录的模型报表文件 这里可能是word 也可能是 excel
         List<String> filePaths = changeBaseAttachment(templateFilesDto.getBaseReportTemplateFiles().getId());
@@ -391,49 +407,80 @@ public class CsrBorrowerService {
                     CsrBorrower csrBorrower = getCsrBorrowerByID(Integer.parseInt(csrBorrowerMortgage.getBorrowerId()));
                     if (!ObjectUtils.isEmpty(csrBorrower)){
                         csrBorrowers.add(csrBorrower);
+                        dataIndex = csrBorrowerMortgage.getExcelRowIndex();
                     }
                 }
             }
         }
         //根据模型约定只会有一个模型文件
         String filePath = filePaths.get(0);
-        List<Map<String, String>> mapList = getBookmarkContent(templateFilesDto.getBaseReportTemplateList(),csrBorrowers);
-        responseEntity = writeCsrBorrowerModel(filePath,mapList);
+        List<Map<String, Object>> mapList = getBookmarkContent(templateFilesDto.getBaseReportTemplateVoList(),csrBorrowers);
+//        responseEntity = writeCsrBorrowerModel(filePath,mapList);
+        try {
+            if (ObjectUtils.isEmpty(dataIndex)){
+                dataIndex = 5;
+            }
+            exportReportExcel(filePath,dataIndex,mapList);
+            byte[] bytes = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
+            responseEntity = FileUtils.getFileUtils().createResponse(filePaths.get(1), bytes);
+        }catch (Exception e){
+            try {
+                throw e;
+            }catch (Exception e1){
+
+            }
+        }
         return responseEntity;
     }
 
+    @Deprecated
     private ResponseEntity<byte[]> writeCsrBorrowerModel(String filePath,List<Map<String, String>> mapList){
         ResponseEntity<byte[]> responseEntity = null;
-        if (!org.springframework.util.StringUtils.isEmpty(filePath)){
+        String localDirPath = baseAttachmentService.createTempBasePath();
+        List<File> fileList = new ArrayList<>();
+        //暂时先写死
+        String suffix = "doc" ;
+        String zipName = "数据回写"+UUID.randomUUID().toString().substring(0, 4) + ".zip" ;
+        String zipPath = localDirPath+"/"+zipName;
+        try {
+            for (Map<String, String> map:mapList){
+                String path = localDirPath+"/" +UUID.randomUUID().toString().substring(0,4)+"."+suffix;
+                org.apache.commons.io.FileUtils.copyFile(new File(filePath),new File(path));
+                if (!ObjectUtils.isEmpty(map)){
+                    AsposeUtils.replaceBookmark(path,map);
+                    fileList.add(new File(path));
+                }
+            }
+            byte[] bytes = FileUtils.getZipFile(fileList, zipPath);
+            responseEntity = FileUtils.getFileUtils().createResponse(zipName, bytes);
+        }catch (Exception e){
+            try {
+                throw e;
+            }catch (Exception e1){
 
-        }
-        for (Map<String, String> map:mapList){
-
+            }
         }
         return responseEntity;
     }
 
-    private List<Map<String, String>> getBookmarkContent(List<BaseReportTemplate> baseReportTemplateList,Set<CsrBorrower> csrBorrowers){
-        List<Map<String, String>> mapList = new ArrayList<>();
-        Map<String, String> stringMap = null;
+    private List<Map<String, Object>> getBookmarkContent(List<BaseReportTemplateVo> baseReportTemplateList, Set<CsrBorrower> csrBorrowers){
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> stringMap = null;
         final String tableName =  "tb_csr_borrower" ;
         List<KeyValueDto>  keyValueDtos = formConfigureService.getFieldList(tableName);
         for (CsrBorrower csrBorrower:csrBorrowers){
             if (!ObjectUtils.isEmpty(csrBorrower)){
                 stringMap = new HashMap<>();
-                for (BaseReportTemplate baseReportTemplate:baseReportTemplateList){
+                for (BaseReportTemplateVo baseReportTemplate:baseReportTemplateList){
                     if (!ObjectUtils.isEmpty(baseReportTemplate)){
                         String key = baseReportTemplate.getBookmarkName();
                         try {
-                            DataCsrFieldRelation csrFieldRelation = csrFieldRelationService.getByAnotherName(key);
-                            if (!ObjectUtils.isEmpty(csrFieldRelation)){
-                                String keyValue = equalsCsrBorrowerFieldName(CsrBorrower.class,csrFieldRelation.getFieldName());
-                                if (!org.springframework.util.StringUtils.isEmpty(keyValue)){
-                                    final BeanWrapper src = new BeanWrapperImpl(csrBorrower);
-                                    Object srcValue = src.getPropertyValue(keyValue);
-                                    if (!org.springframework.util.StringUtils.isEmpty(srcValue)){
-                                        stringMap.put(key,(String) srcValue);
-                                    }
+                            String keyValue = equalsCsrBorrowerFieldName(CsrBorrower.class,baseReportTemplate.getColumnName());
+                            if (!org.springframework.util.StringUtils.isEmpty(keyValue)){
+                                final BeanWrapper src = new BeanWrapperImpl(csrBorrower);
+                                Object srcValue = src.getPropertyValue(keyValue);
+                                if (!org.springframework.util.StringUtils.isEmpty(srcValue)){
+                                    stringMap.put(key,(String) srcValue);
                                 }
                             }
                         }catch (Exception e){
@@ -446,6 +493,7 @@ public class CsrBorrowerService {
                         }
                     }
                 }
+                mapList.add(stringMap);
             }
         }
         return mapList;
@@ -504,7 +552,23 @@ public class CsrBorrowerService {
                 throw new Exception("数据输入非法");
             if (!(size >= dataIndex))
                 throw new Exception("数据列表非法");
-            Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+//            Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+            Workbook workbook = null;
+            String suffix = filePath.substring(filePath.length()-4,filePath.length());
+            try {
+                if (Objects.equal("xlsx",suffix)){//07版
+                    workbook = new XSSFWorkbook(inputStream) ;
+                }else {
+                    workbook = new HSSFWorkbook(inputStream) ;
+                }
+            }catch (Exception e){
+                try {
+                    logger.error("----------->"+e.getMessage());
+                    throw e;
+                }catch (Exception e1){
+
+                }
+            }
             //暂时只取第一个工作表
             Sheet sheet = workbook.getSheetAt(0);
             Row row = null;
@@ -522,6 +586,7 @@ public class CsrBorrowerService {
                     }
                 }
             }
+            inputStream.close();
             BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
             workbook.write(outputStream);
             outputStream.flush();
@@ -556,28 +621,65 @@ public class CsrBorrowerService {
      */
     private Map<String, Integer> getReportExcelOneKey(String filePath) throws Exception {
         //列数以2003版为基准 最大是16384
-        final Integer MAX_COLUMN = 16384;
+//        final Integer MAX_COLUMN = 16384;
+        final Integer MAX_COLUMN = 84;
         Map<String, Integer> integerMap = new HashMap<>();
         FileInputStream inputStream = new FileInputStream(filePath);
-        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
-        //暂时只取第一个工作表
-        Sheet sheet = workbook.getSheetAt(0);
-        //因为是第一行作为key所以只取第一行
-        Row row = sheet.getRow(0);
-        Cell cell = null;
-        if (row != null) {
-            for (int i = 0; i < MAX_COLUMN; i++) {
-                cell = row.getCell(i);
-                if (cell != null) {
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
-                    String cellValue = cell.getStringCellValue();
-                    if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
-                        //取key
-                        integerMap.put(cellValue, i);
+//        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+//        Workbook workbook = null;
+        String suffix = filePath.substring(filePath.length()-4,filePath.length());
+        try {
+            if (Objects.equal("xlsx",suffix)){//07版
+                XSSFWorkbook workbook = new XSSFWorkbook(new BufferedInputStream(new FileInputStream(filePath))) ;
+                //暂时只取第一个工作表
+                Sheet sheet = workbook.getSheetAt(0);
+                //因为是第一行作为key所以只取第一行
+                Row row = sheet.getRow(0);
+                Cell cell = null;
+                if (row != null) {
+                    for (int i = 0; i < MAX_COLUMN; i++) {
+                        cell = row.getCell(i);
+                        if (cell != null) {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            String cellValue = cell.getStringCellValue();
+                            if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
+                                //取key
+                                integerMap.put(cellValue, i);
+                            }
+                        }
+                    }
+                }
+            }else {
+                HSSFWorkbook  workbook = new HSSFWorkbook(inputStream) ;
+                //暂时只取第一个工作表
+                Sheet sheet = workbook.getSheetAt(0);
+                //因为是第一行作为key所以只取第一行
+                Row row = sheet.getRow(0);
+                Cell cell = null;
+                if (row != null) {
+                    for (int i = 0; i < MAX_COLUMN; i++) {
+                        cell = row.getCell(i);
+                        if (cell != null) {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            String cellValue = cell.getStringCellValue();
+                            if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
+                                //取key
+                                integerMap.put(cellValue, i);
+                            }
+                        }
                     }
                 }
             }
+        }catch (Exception e){
+            try {
+                logger.error("----------->"+e.getMessage());
+                throw e;
+            }catch (Exception e1){
+
+            }
         }
+
+        inputStream.close();
         return integerMap;
     }
 }

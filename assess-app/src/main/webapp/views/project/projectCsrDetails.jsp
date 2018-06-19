@@ -426,15 +426,15 @@
     }
 
     function addWorkLog() {
-        $("#id").val(0);
-        $("#title").val("");
-        $("#content").val("");
-        $("#projectIds").val("${csrProjectInfo.id}");
-        $("#projectNames").val("${csrProjectInfo.projectName}");
-        $("#_file_upload").html("");
-        $('#workLog').modal({
-            backdrop: 'static'
-        });
+        <%--$("#id").val(0);--%>
+        <%--$("#title").val("");--%>
+        <%--$("#content").val("");--%>
+        <%--$("#projectIds").val("${csrProjectInfo.id}");--%>
+        <%--$("#projectNames").val("${csrProjectInfo.projectName}");--%>
+        <%--$("#_file_upload").html("");--%>
+        <%--$('#workLog').modal({--%>
+            <%--backdrop: 'static'--%>
+        <%--});--%>
     }
 
     function treeGridload() {

@@ -56,7 +56,6 @@ public class FileUtils {
         File zipFile = new File(zipPathAndName);
         // 文件输出流
         if (!zipFile.exists()){
-//            zipFile.mkdirs();
         }
         FileOutputStream outputStream = new FileOutputStream(zipPathAndName);
         // 压缩流
@@ -68,6 +67,7 @@ public class FileUtils {
             File file = fileList.get(i);
             zipFile(file, zipOutputStream);
         }
+        zipOutputStream.flush();
         // 关闭压缩流、文件流
         zipOutputStream.close();
         outputStream.close();

@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -118,6 +119,9 @@ public class BaseAttachmentDao {
         BaseAttachmentExample example = new BaseAttachmentExample();//
         BaseAttachmentExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
+        if (!ObjectUtils.isEmpty(table_id)){
+            criteria.andTableIdEqualTo(table_id);
+        }
         if (!org.springframework.util.StringUtils.isEmpty(fields_name)){
             criteria.andFieldsNameEqualTo(fields_name);
         }
