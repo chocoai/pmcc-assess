@@ -650,10 +650,7 @@ public class CsrProjectInfoService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
                 , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
-        if (CollectionUtils.isEmpty(reportTemplateFileDto.getBaseReportTemplateList())) return null;
-        return LangUtils.transform(reportTemplateFileDto.getBaseReportTemplateList(), p -> {
-            return baseReportService.getBaseReportTemplateVo(p);
-        });
+       return reportTemplateFileDto.getBaseReportTemplateVoList();
     }
 
     /**
@@ -696,7 +693,7 @@ public class CsrProjectInfoService {
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
         BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
-        List<BaseReportTemplate> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateList();
+        List<BaseReportTemplateVo> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateVoList();
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
         BaseAttachment attachment = new BaseAttachment();
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
