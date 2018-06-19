@@ -1544,73 +1544,73 @@ public class FuniHousesPropertyExample {
             return (Criteria) this;
         }
 
-        public Criteria andFxqjIsNull() {
-            addCriterion("fxqj is null");
+        public Criteria andHxqjIsNull() {
+            addCriterion("hxqj is null");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjIsNotNull() {
-            addCriterion("fxqj is not null");
+        public Criteria andHxqjIsNotNull() {
+            addCriterion("hxqj is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjEqualTo(String value) {
-            addCriterion("fxqj =", value, "fxqj");
+        public Criteria andHxqjEqualTo(String value) {
+            addCriterion("hxqj =", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjNotEqualTo(String value) {
-            addCriterion("fxqj <>", value, "fxqj");
+        public Criteria andHxqjNotEqualTo(String value) {
+            addCriterion("hxqj <>", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjGreaterThan(String value) {
-            addCriterion("fxqj >", value, "fxqj");
+        public Criteria andHxqjGreaterThan(String value) {
+            addCriterion("hxqj >", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjGreaterThanOrEqualTo(String value) {
-            addCriterion("fxqj >=", value, "fxqj");
+        public Criteria andHxqjGreaterThanOrEqualTo(String value) {
+            addCriterion("hxqj >=", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjLessThan(String value) {
-            addCriterion("fxqj <", value, "fxqj");
+        public Criteria andHxqjLessThan(String value) {
+            addCriterion("hxqj <", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjLessThanOrEqualTo(String value) {
-            addCriterion("fxqj <=", value, "fxqj");
+        public Criteria andHxqjLessThanOrEqualTo(String value) {
+            addCriterion("hxqj <=", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjLike(String value) {
-            addCriterion("fxqj like", value, "fxqj");
+        public Criteria andHxqjLike(String value) {
+            addCriterion("hxqj like", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjNotLike(String value) {
-            addCriterion("fxqj not like", value, "fxqj");
+        public Criteria andHxqjNotLike(String value) {
+            addCriterion("hxqj not like", value, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjIn(List<String> values) {
-            addCriterion("fxqj in", values, "fxqj");
+        public Criteria andHxqjIn(List<String> values) {
+            addCriterion("hxqj in", values, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjNotIn(List<String> values) {
-            addCriterion("fxqj not in", values, "fxqj");
+        public Criteria andHxqjNotIn(List<String> values) {
+            addCriterion("hxqj not in", values, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjBetween(String value1, String value2) {
-            addCriterion("fxqj between", value1, value2, "fxqj");
+        public Criteria andHxqjBetween(String value1, String value2) {
+            addCriterion("hxqj between", value1, value2, "hxqj");
             return (Criteria) this;
         }
 
-        public Criteria andFxqjNotBetween(String value1, String value2) {
-            addCriterion("fxqj not between", value1, value2, "fxqj");
+        public Criteria andHxqjNotBetween(String value1, String value2) {
+            addCriterion("hxqj not between", value1, value2, "hxqj");
             return (Criteria) this;
         }
 

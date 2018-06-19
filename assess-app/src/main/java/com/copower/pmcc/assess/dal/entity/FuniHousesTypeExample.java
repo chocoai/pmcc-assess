@@ -344,73 +344,73 @@ public class FuniHousesTypeExample {
             return (Criteria) this;
         }
 
-        public Criteria andFxIsNull() {
-            addCriterion("fx is null");
+        public Criteria andHxIsNull() {
+            addCriterion("hx is null");
             return (Criteria) this;
         }
 
-        public Criteria andFxIsNotNull() {
-            addCriterion("fx is not null");
+        public Criteria andHxIsNotNull() {
+            addCriterion("hx is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFxEqualTo(String value) {
-            addCriterion("fx =", value, "fx");
+        public Criteria andHxEqualTo(String value) {
+            addCriterion("hx =", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxNotEqualTo(String value) {
-            addCriterion("fx <>", value, "fx");
+        public Criteria andHxNotEqualTo(String value) {
+            addCriterion("hx <>", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxGreaterThan(String value) {
-            addCriterion("fx >", value, "fx");
+        public Criteria andHxGreaterThan(String value) {
+            addCriterion("hx >", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxGreaterThanOrEqualTo(String value) {
-            addCriterion("fx >=", value, "fx");
+        public Criteria andHxGreaterThanOrEqualTo(String value) {
+            addCriterion("hx >=", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxLessThan(String value) {
-            addCriterion("fx <", value, "fx");
+        public Criteria andHxLessThan(String value) {
+            addCriterion("hx <", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxLessThanOrEqualTo(String value) {
-            addCriterion("fx <=", value, "fx");
+        public Criteria andHxLessThanOrEqualTo(String value) {
+            addCriterion("hx <=", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxLike(String value) {
-            addCriterion("fx like", value, "fx");
+        public Criteria andHxLike(String value) {
+            addCriterion("hx like", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxNotLike(String value) {
-            addCriterion("fx not like", value, "fx");
+        public Criteria andHxNotLike(String value) {
+            addCriterion("hx not like", value, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxIn(List<String> values) {
-            addCriterion("fx in", values, "fx");
+        public Criteria andHxIn(List<String> values) {
+            addCriterion("hx in", values, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxNotIn(List<String> values) {
-            addCriterion("fx not in", values, "fx");
+        public Criteria andHxNotIn(List<String> values) {
+            addCriterion("hx not in", values, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxBetween(String value1, String value2) {
-            addCriterion("fx between", value1, value2, "fx");
+        public Criteria andHxBetween(String value1, String value2) {
+            addCriterion("hx between", value1, value2, "hx");
             return (Criteria) this;
         }
 
-        public Criteria andFxNotBetween(String value1, String value2) {
-            addCriterion("fx not between", value1, value2, "fx");
+        public Criteria andHxNotBetween(String value1, String value2) {
+            addCriterion("hx not between", value1, value2, "hx");
             return (Criteria) this;
         }
 

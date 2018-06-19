@@ -23,7 +23,7 @@ public class FuniHouses {
 
     private String kfs;
 
-    private String ssskzh;
+    private String xsxkz;
 
     private String lpjs;
 
@@ -47,9 +47,13 @@ public class FuniHouses {
 
     private Integer csbh;
 
-    private String cs;
+    private String csmc;
 
     private Boolean bisEdit;
+
+    private String xmdz;
+
+    private String lptp;
 
     public Integer getId() {
         return id;
@@ -139,12 +143,12 @@ public class FuniHouses {
         this.kfs = kfs == null ? null : kfs.trim();
     }
 
-    public String getSsskzh() {
-        return ssskzh;
+    public String getXsxkz() {
+        return xsxkz;
     }
 
-    public void setSsskzh(String ssskzh) {
-        this.ssskzh = ssskzh == null ? null : ssskzh.trim();
+    public void setXsxkz(String xsxkz) {
+        this.xsxkz = xsxkz == null ? null : xsxkz.trim();
     }
 
     public String getLpjs() {
@@ -235,12 +239,12 @@ public class FuniHouses {
         this.csbh = csbh;
     }
 
-    public String getCs() {
-        return cs;
+    public String getCsmc() {
+        return csmc;
     }
 
-    public void setCs(String cs) {
-        this.cs = cs == null ? null : cs.trim();
+    public void setCsmc(String csmc) {
+        this.csmc = csmc == null ? null : csmc.trim();
     }
 
     public Boolean getBisEdit() {
@@ -249,5 +253,21 @@ public class FuniHouses {
 
     public void setBisEdit(Boolean bisEdit) {
         this.bisEdit = bisEdit;
+    }
+
+    public String getXmdz() {
+        return xmdz;
+    }
+
+    public void setXmdz(String xmdz) {
+        this.xmdz = xmdz == null ? null : xmdz.trim();
+    }
+
+    public String getLptp() {
+        return lptp;
+    }
+
+    public void setLptp(String lptp) {
+        this.lptp = lptp == null ? null : lptp.trim();
     }
 }

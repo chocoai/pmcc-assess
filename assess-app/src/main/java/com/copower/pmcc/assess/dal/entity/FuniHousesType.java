@@ -9,7 +9,7 @@ public class FuniHousesType {
 
     private Integer dybh;
 
-    private String fx;
+    private String hx;
 
     private String mj;
 
@@ -65,12 +65,12 @@ public class FuniHousesType {
         this.dybh = dybh;
     }
 
-    public String getFx() {
-        return fx;
+    public String getHx() {
+        return hx;
     }
 
-    public void setFx(String fx) {
-        this.fx = fx == null ? null : fx.trim();
+    public void setHx(String hx) {
+        this.hx = hx == null ? null : hx.trim();
     }
 
     public String getMj() {

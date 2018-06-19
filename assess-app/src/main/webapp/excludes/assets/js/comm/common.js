@@ -47,7 +47,7 @@
                         } else if (fieldTagName == "label") {
                             formField.html(value);
                         } else {
-                            formField.val(value);
+                            formField.html(value);
                         }
                     }
                     //图片链接处理form.find("img[fieldata=img_url]")
