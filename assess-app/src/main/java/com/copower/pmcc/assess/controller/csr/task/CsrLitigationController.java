@@ -38,7 +38,7 @@ public class CsrLitigationController {
 
     @ResponseBody
     @RequestMapping(value = "/loadLoanLitigation", name = "根据借款人信息取得诉讼保全数据", method = RequestMethod.GET)
-    public HttpResult loadLoanLitigation(Integer borrowerId,Integer detailsId) {
+    public HttpResult loadLoanLitigation(String borrowerId,Integer detailsId) {
         try {
             CsrLitigationVo csrLitigationVo = csrLitigationService.loadLoanLitigation(borrowerId, detailsId);
             return HttpResult.newCorrectResult(csrLitigationVo);

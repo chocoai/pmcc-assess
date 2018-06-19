@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerExample;
 import com.copower.pmcc.assess.dal.mapper.CsrBorrowerMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,14 @@ public class CsrBorrowerDao {
 
     public CsrBorrower getCsrBorrowerByID(Integer id){
         return csrBorrowerMapper.selectByPrimaryKey(id);
+    }
+
+    public CsrBorrower getCsrBorrowerByID(String borrowerId){
+        CsrBorrowerExample example = new CsrBorrowerExample();
+        List<CsrBorrower> csrBorrowerList = csrBorrowerMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(csrBorrowerList))
+            return csrBorrowerList.get(0);
+        return null;
     }
 
     public List<CsrBorrower> borrowerListsA(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID,Integer csrProjectInfoGroupID){

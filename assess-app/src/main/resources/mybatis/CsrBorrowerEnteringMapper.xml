@@ -3,7 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrBorrowerEnteringMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
+    <result column="borrower_id" property="borrowerId" jdbcType="VARCHAR" />
     <result column="first_level_branch" property="firstLevelBranch" jdbcType="VARCHAR" />
     <result column="second_level_branch" property="secondLevelBranch" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -115,7 +115,7 @@
       name, id_number, marital_status, 
       education, work_unit, post, 
       domicile_place, present_address)
-    values (#{borrowerId,jdbcType=INTEGER}, #{firstLevelBranch,jdbcType=VARCHAR}, #{secondLevelBranch,jdbcType=VARCHAR}, 
+    values (#{borrowerId,jdbcType=VARCHAR}, #{firstLevelBranch,jdbcType=VARCHAR}, #{secondLevelBranch,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, 
       #{education,jdbcType=VARCHAR}, #{workUnit,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, 
       #{domicilePlace,jdbcType=VARCHAR}, #{presentAddress,jdbcType=VARCHAR})
@@ -162,7 +162,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="borrowerId != null" >
-        #{borrowerId,jdbcType=INTEGER},
+        #{borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="firstLevelBranch != null" >
         #{firstLevelBranch,jdbcType=VARCHAR},
@@ -209,7 +209,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.borrowerId != null" >
-        borrower_id = #{record.borrowerId,jdbcType=INTEGER},
+        borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="record.firstLevelBranch != null" >
         first_level_branch = #{record.firstLevelBranch,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_borrower_entering
     set id = #{record.id,jdbcType=INTEGER},
-      borrower_id = #{record.borrowerId,jdbcType=INTEGER},
+      borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       first_level_branch = #{record.firstLevelBranch,jdbcType=VARCHAR},
       second_level_branch = #{record.secondLevelBranch,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -268,7 +268,7 @@
     update tb_csr_borrower_entering
     <set >
       <if test="borrowerId != null" >
-        borrower_id = #{borrowerId,jdbcType=INTEGER},
+        borrower_id = #{borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="firstLevelBranch != null" >
         first_level_branch = #{firstLevelBranch,jdbcType=VARCHAR},
@@ -305,7 +305,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering" >
     update tb_csr_borrower_entering
-    set borrower_id = #{borrowerId,jdbcType=INTEGER},
+    set borrower_id = #{borrowerId,jdbcType=VARCHAR},
       first_level_branch = #{firstLevelBranch,jdbcType=VARCHAR},
       second_level_branch = #{secondLevelBranch,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.entity;
 public class CsrBorrowerEntering {
     private Integer id;
 
-    private Integer borrowerId;
+    private String borrowerId;
 
     private String firstLevelBranch;
 
@@ -33,12 +33,12 @@ public class CsrBorrowerEntering {
         this.id = id;
     }
 
-    public Integer getBorrowerId() {
+    public String getBorrowerId() {
         return borrowerId;
     }
 
-    public void setBorrowerId(Integer borrowerId) {
-        this.borrowerId = borrowerId;
+    public void setBorrowerId(String borrowerId) {
+        this.borrowerId = borrowerId == null ? null : borrowerId.trim();
     }
 
     public String getFirstLevelBranch() {

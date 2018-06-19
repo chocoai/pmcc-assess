@@ -7,7 +7,7 @@ public class CsrLitigation {
 
     private Integer csrProjectId;
 
-    private Integer borrowerId;
+    private String borrowerId;
 
     private String litigationPreservation;
 
@@ -37,12 +37,12 @@ public class CsrLitigation {
         this.csrProjectId = csrProjectId;
     }
 
-    public Integer getBorrowerId() {
+    public String getBorrowerId() {
         return borrowerId;
     }
 
-    public void setBorrowerId(Integer borrowerId) {
-        this.borrowerId = borrowerId;
+    public void setBorrowerId(String borrowerId) {
+        this.borrowerId = borrowerId == null ? null : borrowerId.trim();
     }
 
     public String getLitigationPreservation() {

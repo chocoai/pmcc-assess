@@ -165,6 +165,76 @@ public class CsrBorrowerExample {
             return (Criteria) this;
         }
 
+        public Criteria andBorrowerIdIsNull() {
+            addCriterion("borrower_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdIsNotNull() {
+            addCriterion("borrower_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdEqualTo(String value) {
+            addCriterion("borrower_id =", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdNotEqualTo(String value) {
+            addCriterion("borrower_id <>", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdGreaterThan(String value) {
+            addCriterion("borrower_id >", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdGreaterThanOrEqualTo(String value) {
+            addCriterion("borrower_id >=", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdLessThan(String value) {
+            addCriterion("borrower_id <", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdLessThanOrEqualTo(String value) {
+            addCriterion("borrower_id <=", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdLike(String value) {
+            addCriterion("borrower_id like", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdNotLike(String value) {
+            addCriterion("borrower_id not like", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdIn(List<String> values) {
+            addCriterion("borrower_id in", values, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdNotIn(List<String> values) {
+            addCriterion("borrower_id not in", values, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdBetween(String value1, String value2) {
+            addCriterion("borrower_id between", value1, value2, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdNotBetween(String value1, String value2) {
+            addCriterion("borrower_id not between", value1, value2, "borrowerId");
+            return (Criteria) this;
+        }
+
         public Criteria andCsrProjectIdIsNull() {
             addCriterion("csr_project_id is null");
             return (Criteria) this;
@@ -1045,6 +1115,66 @@ public class CsrBorrowerExample {
             return (Criteria) this;
         }
 
+        public Criteria andReplaceRecordIdIsNull() {
+            addCriterion("replace_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdIsNotNull() {
+            addCriterion("replace_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdEqualTo(Integer value) {
+            addCriterion("replace_record_id =", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdNotEqualTo(Integer value) {
+            addCriterion("replace_record_id <>", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdGreaterThan(Integer value) {
+            addCriterion("replace_record_id >", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("replace_record_id >=", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdLessThan(Integer value) {
+            addCriterion("replace_record_id <", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdLessThanOrEqualTo(Integer value) {
+            addCriterion("replace_record_id <=", value, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdIn(List<Integer> values) {
+            addCriterion("replace_record_id in", values, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdNotIn(List<Integer> values) {
+            addCriterion("replace_record_id not in", values, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdBetween(Integer value1, Integer value2) {
+            addCriterion("replace_record_id between", value1, value2, "replaceRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplaceRecordIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("replace_record_id not between", value1, value2, "replaceRecordId");
+            return (Criteria) this;
+        }
+
         public Criteria andBisImportIsNull() {
             addCriterion("bis_import is null");
             return (Criteria) this;
@@ -1102,6 +1232,66 @@ public class CsrBorrowerExample {
 
         public Criteria andBisImportNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_import not between", value1, value2, "bisImport");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateIsNull() {
+            addCriterion("bis_generate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateIsNotNull() {
+            addCriterion("bis_generate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateEqualTo(Boolean value) {
+            addCriterion("bis_generate =", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateNotEqualTo(Boolean value) {
+            addCriterion("bis_generate <>", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateGreaterThan(Boolean value) {
+            addCriterion("bis_generate >", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_generate >=", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateLessThan(Boolean value) {
+            addCriterion("bis_generate <", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_generate <=", value, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateIn(List<Boolean> values) {
+            addCriterion("bis_generate in", values, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateNotIn(List<Boolean> values) {
+            addCriterion("bis_generate not in", values, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_generate between", value1, value2, "bisGenerate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisGenerateNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_generate not between", value1, value2, "bisGenerate");
             return (Criteria) this;
         }
 

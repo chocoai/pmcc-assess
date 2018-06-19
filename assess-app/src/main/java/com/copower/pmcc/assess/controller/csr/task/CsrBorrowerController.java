@@ -47,7 +47,7 @@ public class CsrBorrowerController {
 
     @ResponseBody
     @RequestMapping(value = "/loadLoanBorrower", name = "读取录入借款人", method = RequestMethod.GET)
-    public HttpResult loadLoanBorrower(Integer borrowerId,Integer detailsId) {
+    public HttpResult loadLoanBorrower(String borrowerId,Integer detailsId) {
         try {
             CsrBorrowerEnteringVo csrBorrowerEnteringVo = csrBorrowerService.loadLoanBorrower(borrowerId, detailsId);
             return HttpResult.newCorrectResult(csrBorrowerEnteringVo);
