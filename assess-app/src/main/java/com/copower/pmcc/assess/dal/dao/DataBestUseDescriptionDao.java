@@ -32,8 +32,15 @@ public class DataBestUseDescriptionDao {
     }
 
     public boolean addDataBestUseDescription(DataBestUseDescription dataBestUseDescription) {
-        int i = dataBestUseDescriptionMapper.insert(dataBestUseDescription);
-        return i > 0;
+        DataBestUseDescriptionExample example = new DataBestUseDescriptionExample();
+        example.createCriteria().andNameEqualTo(dataBestUseDescription.getName()).andDescriptionEqualTo(dataBestUseDescription.getDescription());
+        List<DataBestUseDescription> dataBestUseDescriptions = dataBestUseDescriptionMapper.selectByExample(example);
+        if(dataBestUseDescriptions.size() > 0){
+            return false;
+        }else{
+            int i = dataBestUseDescriptionMapper.insert(dataBestUseDescription);
+            return i > 0;
+        }
     }
 
     public boolean editDataBestUseDescription(DataBestUseDescription dataBestUseDescription) {
