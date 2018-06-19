@@ -19,7 +19,7 @@ public class DataNumberRule {
 
     private Integer sameReportType;
 
-    private String recount;
+    private Integer recount;
 
     private String creator;
 
@@ -91,12 +91,12 @@ public class DataNumberRule {
         this.sameReportType = sameReportType;
     }
 
-    public String getRecount() {
+    public Integer getRecount() {
         return recount;
     }
 
-    public void setRecount(String recount) {
-        this.recount = recount == null ? null : recount.trim();
+    public void setRecount(Integer recount) {
+        this.recount = recount;
     }
 
     public String getCreator() {

@@ -615,62 +615,52 @@ public class DataNumberRuleExample {
             return (Criteria) this;
         }
 
-        public Criteria andRecountEqualTo(String value) {
+        public Criteria andRecountEqualTo(Integer value) {
             addCriterion("recount =", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountNotEqualTo(String value) {
+        public Criteria andRecountNotEqualTo(Integer value) {
             addCriterion("recount <>", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountGreaterThan(String value) {
+        public Criteria andRecountGreaterThan(Integer value) {
             addCriterion("recount >", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountGreaterThanOrEqualTo(String value) {
+        public Criteria andRecountGreaterThanOrEqualTo(Integer value) {
             addCriterion("recount >=", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountLessThan(String value) {
+        public Criteria andRecountLessThan(Integer value) {
             addCriterion("recount <", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountLessThanOrEqualTo(String value) {
+        public Criteria andRecountLessThanOrEqualTo(Integer value) {
             addCriterion("recount <=", value, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountLike(String value) {
-            addCriterion("recount like", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountNotLike(String value) {
-            addCriterion("recount not like", value, "recount");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecountIn(List<String> values) {
+        public Criteria andRecountIn(List<Integer> values) {
             addCriterion("recount in", values, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountNotIn(List<String> values) {
+        public Criteria andRecountNotIn(List<Integer> values) {
             addCriterion("recount not in", values, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountBetween(String value1, String value2) {
+        public Criteria andRecountBetween(Integer value1, Integer value2) {
             addCriterion("recount between", value1, value2, "recount");
             return (Criteria) this;
         }
 
-        public Criteria andRecountNotBetween(String value1, String value2) {
+        public Criteria andRecountNotBetween(Integer value1, Integer value2) {
             addCriterion("recount not between", value1, value2, "recount");
             return (Criteria) this;
         }
