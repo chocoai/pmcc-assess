@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.csr;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrContractDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.CsrCalculation;
 import com.copower.pmcc.assess.dal.entity.CsrContract;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
@@ -10,6 +11,7 @@ import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsSe
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class CsrContractService {
                 csrContractDao.addCsrContract(csrContract);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_contract");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrContract.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -61,7 +63,7 @@ public class CsrContractService {
         return csrContract;
     }
 
-    public CsrContractVo loadCsrContract(Integer borrowerId, Integer detailsId) throws BusinessException {
+    public CsrContractVo loadCsrContract(String borrowerId, Integer detailsId) throws BusinessException {
         CsrContract csrContractReturn = null;
         CsrContract csrContract = new CsrContract();
         csrContract.setBorrowerId(borrowerId);

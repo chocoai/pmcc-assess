@@ -31,7 +31,7 @@ public class CsrBorrowerEnteringDao {
         return csrBorrowerEnteringMapper.updateByPrimaryKey(csrBorrowerEntering)==1;
     }
 
-    public CsrBorrowerEntering getCsrBorrowerEnteringByBorrowerId(Integer id){
+    public CsrBorrowerEntering getCsrBorrowerEnteringByBorrowerId(String id){
         CsrBorrowerEnteringExample example=new CsrBorrowerEnteringExample();
         example.createCriteria().andBorrowerIdEqualTo(id);
         List<CsrBorrowerEntering> csrBorrowerEnterings = csrBorrowerEnteringMapper.selectByExample(example);

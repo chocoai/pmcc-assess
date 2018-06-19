@@ -75,7 +75,7 @@ public class CsrCalculationController {
     //取得测算情况
     @ResponseBody
     @RequestMapping(value = "/getCsrCalculation", name = "取得测算情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrCalculation(Integer borrowerId, Integer detailsId) {
+    public BootstrapTableVo getCsrCalculation(String borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

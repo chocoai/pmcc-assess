@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsSe
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class CsrPrincipalInterestService {
                 csrPrincipalInterestDao.addCsrPrincipalInterest(csrPrincipalInterest);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_principal_interest");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrPrincipalInterest.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -61,7 +62,7 @@ public class CsrPrincipalInterestService {
         return csrPrincipalInterest;
     }
 
-    public CsrPrincipalInterestVo loadLoanPrincipalInterest(Integer borrowerId, Integer detailsId) throws BusinessException {
+    public CsrPrincipalInterestVo loadLoanPrincipalInterest(String borrowerId, Integer detailsId) throws BusinessException {
         CsrPrincipalInterest csrContractReturnReturn = null;
         CsrPrincipalInterest csrPrincipalInterest = new CsrPrincipalInterest();
         csrPrincipalInterest.setBorrowerId(borrowerId);

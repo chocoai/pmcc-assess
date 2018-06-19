@@ -235,52 +235,62 @@ public class CsrBorrowerMortgageExample {
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdEqualTo(Integer value) {
+        public Criteria andBorrowerIdEqualTo(String value) {
             addCriterion("borrower_id =", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdNotEqualTo(Integer value) {
+        public Criteria andBorrowerIdNotEqualTo(String value) {
             addCriterion("borrower_id <>", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdGreaterThan(Integer value) {
+        public Criteria andBorrowerIdGreaterThan(String value) {
             addCriterion("borrower_id >", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andBorrowerIdGreaterThanOrEqualTo(String value) {
             addCriterion("borrower_id >=", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdLessThan(Integer value) {
+        public Criteria andBorrowerIdLessThan(String value) {
             addCriterion("borrower_id <", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdLessThanOrEqualTo(Integer value) {
+        public Criteria andBorrowerIdLessThanOrEqualTo(String value) {
             addCriterion("borrower_id <=", value, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdIn(List<Integer> values) {
+        public Criteria andBorrowerIdLike(String value) {
+            addCriterion("borrower_id like", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdNotLike(String value) {
+            addCriterion("borrower_id not like", value, "borrowerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBorrowerIdIn(List<String> values) {
             addCriterion("borrower_id in", values, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdNotIn(List<Integer> values) {
+        public Criteria andBorrowerIdNotIn(List<String> values) {
             addCriterion("borrower_id not in", values, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdBetween(Integer value1, Integer value2) {
+        public Criteria andBorrowerIdBetween(String value1, String value2) {
             addCriterion("borrower_id between", value1, value2, "borrowerId");
             return (Criteria) this;
         }
 
-        public Criteria andBorrowerIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andBorrowerIdNotBetween(String value1, String value2) {
             addCriterion("borrower_id not between", value1, value2, "borrowerId");
             return (Criteria) this;
         }
