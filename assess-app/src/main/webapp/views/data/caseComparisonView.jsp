@@ -98,7 +98,10 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="模板内容" class="form-control" id="exploreExplain"
-                                                      name="exploreExplain" required="required"></textarea>
+                                                      name="exploreExplain" required="required" onkeyup="extractTemplateExplore()"></textarea>
+                                            <div class="template-explore">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +113,10 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="模板内容" class="form-control" id="caseExplain"
-                                                      name="caseExplain" required="required"></textarea>
+                                                      name="caseExplain" required="required" onkeyup="extractTemplateCase()"></textarea>
+                                            <div class="template-case">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +227,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form id="firSubA" name="firSubA" class="form-horizontal">
-                            <%--<input type="hidden" id="tableName" name="tableName" value="">--%>
+                            <input type="hidden" id="" name="id" value="">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -322,6 +328,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     var zTreeObj;
+//    var fieldExplore = null;
     var setting = {
         data: {
             simpleData: {
@@ -339,6 +346,7 @@
         // 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
+                console.log(treeNode);
                 //显示配置信息
                 if (treeNode.isParent == false) {
                     loadCaseComparisonList(treeNode.id);
@@ -416,10 +424,44 @@
 
     //对新增 案例对比配置 数据处理
     function addCaseComparison() {
+        $('.template-explore').empty();
+        $('.template-case').empty();
         var value = $("#frm").find('[name="exploreFormType"]').attr("value");
         $("#frm").clearAll();
         $("#frm").find('[name="exploreFormType"]').attr("value", value);
     }
+
+    //提取查勘字段
+    function extractTemplateExplore() {
+        $('.template-explore').empty();
+        var text=$("#exploreExplain").val();
+        var exploreArray = AssessCommon.extractField(text);
+        if(exploreArray&&exploreArray.length>0){
+            var html='';
+            $.each(exploreArray,function (i,item) {
+//                field  = exploreArray;
+                html+='<span class="label label-default" style="font-weight:bold">'+item+'</span> ';
+            })
+            $('.template-explore').append(html);
+        }
+    }
+
+    //提取案例字段
+    function extractTemplateCase() {
+        $('.template-case').empty();
+        var text=$("#caseExplain").val();
+        var caseArray = AssessCommon.extractField(text);
+        if(caseArray&&caseArray.length>0){
+            var html='';
+            $.each(caseArray,function (i,item) {
+//                field  = exploreArray;
+                html+='<span class="label label-default" style="font-weight:bold">'+item+'</span> ';
+            })
+            $('.template-case').append(html);
+        }
+    }
+
+
     //新增 案例对比配置 数据
     function saveCaseComparison() {
         var data = formParams("frm");
@@ -486,6 +528,8 @@
     }
 
 
+
+
     //------------------------------------------------------------------------------------------------------------------
 
     //加载子项节点数据
@@ -498,7 +542,9 @@
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑"  onclick="editCaseComparisonDic(' + index + ',\'tbDataDicList\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除"  onclick="delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-minus fa-white"></i></a>';
+
                 str += '</div>';
                 return str;
             }
@@ -578,6 +624,17 @@
         }
     }
 
+    //案例对比子项配置 修改
+    function editCaseComparisonDic(index) {
+        var row = $("#tbDataDicList").bootstrapTable('getData')[index];
+        console.log(row);
+//        var value = $("#firSubA").find('[name="tableName"]').val();
+        $("#firSub").clearAll();
+//        $("#firSubA").find('[name="tableName"]').val(value);
+        $("#firSub").initForm(row);
+        $('#firSub').modal();
+    }
+
     //删除 子项 子项
     function delDataDic(id) {
         Alert("确认要删除么？", 2, null, function () {
@@ -619,6 +676,18 @@
         })
     }
 
+    function queryCaseComparison(){
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        var node = zTree.getNodes();
+        var nodes = zTree.transformToArray(node);
+        var value=$("#queryName").val();
+        console.log(node);
+        console.log(nodes);
+        var nodes = zTree.getNodesByParamFuzzy("name", value,null);
+        if (nodes.length>0) {
+            zTree.selectNode(nodes[0]);
+        }
+    }
 
 </script>
 </html>
