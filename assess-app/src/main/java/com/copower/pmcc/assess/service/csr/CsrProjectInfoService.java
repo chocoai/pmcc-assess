@@ -3,12 +3,11 @@ package com.copower.pmcc.assess.service.csr;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.ReflectUtils;
-import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
-import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
-import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
@@ -21,8 +20,10 @@ import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
+import com.copower.pmcc.assess.dto.input.word.DataReplaceDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.*;
@@ -358,6 +359,7 @@ public class CsrProjectInfoService {
      * @throws BusinessException
      * @throws BpmException
      */
+    @Transactional(rollbackFor = Exception.class)
     public void crsProjectEdit(CsrProjectInfo csrProjectInfo, ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         if (csrProjectInfo == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
@@ -459,7 +461,7 @@ public class CsrProjectInfoService {
         Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
         int coloumNum = sheet.getRow(0).getPhysicalNumberOfCells();//总列数
         int startRowNumber = csrProjectInfo.getStartRowNumber();//读取业务数据的起始行序号
-        List<DataCsrFieldRelation> fieldRelations = dataCsrFieldRelationService.getAllList();
+        List<BaseReportTemplateVo> reportTemplateList = getReportTemplateList(csrProjectInfo);
         List<CsrInvalidRule> ruleList = csrInvalidRuleService.getRuleList(csrProjectInfo.getId());//过滤规则数据
         HashMap<Integer, String> invalidRuleIndexMap = Maps.newHashMap();//需要参与过滤的列
         HashMap<Integer, CsrImportColumnDto> hashMap = Maps.newHashMap();
@@ -481,14 +483,15 @@ public class CsrProjectInfoService {
                     String value = PoiUtils.getCellValue(cell);
                     if (StringUtils.isBlank(value))
                         continue;
-                    //关联到配置
+                    //关联到配置 需读取报告对应的配置
                     CsrImportColumnDto csrImportColumnDto = new CsrImportColumnDto();
                     csrImportColumnDto.setColumnIndex(i);
                     csrImportColumnDto.setColumnName(value);
-                    DataCsrFieldRelation fieldRelation = dataCsrFieldRelationService.getFieldRelationFromList(fieldRelations, value);
-                    if (fieldRelation != null) {
-                        csrImportColumnDto.setTableName(fieldRelation.getTableName());
-                        csrImportColumnDto.setFieldName(fieldRelation.getFieldName());
+                    //待处理 设置书签对应的表与字段
+                    BaseReportTemplateVo baseReportTemplateVo = baseReportService.getBaseReportTemplate(reportTemplateList, value);
+                    if (baseReportTemplateVo != null) {
+                        csrImportColumnDto.setTableName(baseReportTemplateVo.getTableName());
+                        csrImportColumnDto.setFieldName(baseReportTemplateVo.getColumnName());
                     }
                     hashMap.put(i, csrImportColumnDto);
 
@@ -528,6 +531,7 @@ public class CsrProjectInfoService {
                         CsrLitigation csrLitigation = null;//诉讼保全
                         CsrPrincipalInterest csrPrincipalInterest = null;//本金利息
                         //region 处理数据到核心字段 实体类中
+
                         for (Map.Entry<Integer, CsrImportColumnDto> entry : hashMap.entrySet()) {
                             CsrImportColumnDto columnDto = entry.getValue();
                             if (StringUtils.isNotBlank(columnDto.getTableName()) && StringUtils.isNotBlank(columnDto.getFieldName())) {
@@ -535,68 +539,68 @@ public class CsrProjectInfoService {
                                 cell = row.getCell(entry.getKey());
                                 if (cell == null)
                                     continue;
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_BORROWER)) {
-                                    if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_SECOND_LEVEL_BRANCH)) {
-                                        secondLevelBranch = PoiUtils.getCellValue(cell);
-                                    }
-                                    if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_ID_NUMBER)) {
-                                        idNumber = PoiUtils.getCellValue(cell);
-                                    }
-                                    if (csrBorrower == null)
-                                        csrBorrower = new CsrBorrower();
-                                    try {
-                                        ReflectUtils.setProperty(csrBorrower, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                if (StringUtils.equals(PoiUtils.getCellValue(cell), "黄运全")) {
+                                    int j = 0;
+                                    int f = j;//
                                 }
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_BORROWER_MORTGAGE)) {
-                                    if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_MORTGAGE_CONTRACT_NUMBER)) {
-                                        contractNumber = PoiUtils.getCellValue(cell);
-                                    }
-                                    if (csrBorrowerMortgage == null)
-                                        csrBorrowerMortgage = new CsrBorrowerMortgage();
-                                    try {
-                                        ReflectUtils.setProperty(csrBorrowerMortgage, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_CONTRACT)) {
-                                    if (csrContract == null)
-                                        csrContract = new CsrContract();
-                                    try {
-                                        ReflectUtils.setProperty(csrContract, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_GUARANTOR)) {
-                                    if (csrGuarantor == null)
-                                        csrGuarantor = new CsrGuarantor();
-                                    try {
-                                        ReflectUtils.setProperty(csrGuarantor, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_LITIGATION)) {
-                                    if (csrLitigation == null)
-                                        csrLitigation = new CsrLitigation();
-                                    try {
-                                        ReflectUtils.setProperty(csrLitigation, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (StringUtils.equals(columnDto.getTableName(), AssessTableNameConstant.CSR_PRINCIPAL_INTEREST)) {
-                                    if (csrPrincipalInterest == null)
-                                        csrPrincipalInterest = new CsrPrincipalInterest();
-                                    try {
-                                        ReflectUtils.setProperty(csrPrincipalInterest, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                switch (columnDto.getTableName()) {
+                                    case AssessTableNameConstant.CSR_BORROWER:
+                                        if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_SECOND_LEVEL_BRANCH)) {
+                                            secondLevelBranch = PoiUtils.getCellValue(cell);
+                                        }
+                                        if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_BORROWER_ID_NUMBER)) {
+                                            idNumber = PoiUtils.getCellValue(cell);
+                                        }
+                                        csrBorrower = csrBorrower == null ? new CsrBorrower() : csrBorrower;
+                                        try {
+                                            ReflectUtils.setProperty(csrBorrower, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case AssessTableNameConstant.CSR_BORROWER_MORTGAGE:
+                                        csrBorrowerMortgage = csrBorrowerMortgage == null ? new CsrBorrowerMortgage() : csrBorrowerMortgage;
+                                        try {
+                                            ReflectUtils.setProperty(csrBorrowerMortgage, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case AssessTableNameConstant.CSR_CONTRACT:
+                                        if (StringUtils.equals(columnDto.getFieldName(), AssessFieldNameConstant.CSR_CONTRACT_CONTRACT_NUMBER)) {
+                                            contractNumber = PoiUtils.getCellValue(cell);
+                                        }
+                                        csrContract = csrContract == null ? new CsrContract() : csrContract;
+                                        try {
+                                            ReflectUtils.setProperty(csrContract, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case AssessTableNameConstant.CSR_GUARANTOR:
+                                        csrGuarantor = csrGuarantor == null ? new CsrGuarantor() : csrGuarantor;
+                                        try {
+                                            ReflectUtils.setProperty(csrGuarantor, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case AssessTableNameConstant.CSR_LITIGATION:
+                                        csrLitigation = csrLitigation == null ? new CsrLitigation() : csrLitigation;
+                                        try {
+                                            ReflectUtils.setProperty(csrLitigation, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    case AssessTableNameConstant.CSR_PRINCIPAL_INTEREST:
+                                        csrPrincipalInterest = csrPrincipalInterest == null ? new CsrPrincipalInterest() : csrPrincipalInterest;
+                                        try {
+                                            ReflectUtils.setProperty(csrPrincipalInterest, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
                                 }
                             }
                         }
@@ -623,7 +627,6 @@ public class CsrProjectInfoService {
                         if (csrPrincipalInterest != null) {
                             csrImportBorrowerDto.getCsrPrincipalInterestList().add(csrPrincipalInterest);
                         }
-
                     }
                 } catch (Exception e) {
                     //找出错误行数据，并返回错误给前端用户
@@ -632,8 +635,21 @@ public class CsrProjectInfoService {
 
             }
         }
-        importToDataBase(csrProjectInfo.getId(), importBorrowerDtoList);
+        importToDataBaseExtend(csrProjectInfo.getId(), importBorrowerDtoList);
         is.close();
+    }
+
+    /**
+     * 获取债权报告模板所有配置的书签
+     *
+     * @param csrProjectInfo
+     * @return
+     */
+    private List<BaseReportTemplateVo> getReportTemplateList(CsrProjectInfo csrProjectInfo) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
+                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        return reportTemplateFileDto.getBaseReportTemplateVoList();
     }
 
     /**
@@ -657,7 +673,7 @@ public class CsrProjectInfoService {
         //债权目前所有的数据都源于 固定的7张表
 
         //提供寻找模板的方法 与 客户 客户类型 委托目的相关
-        if(StringUtils.isBlank(borrowerIds))
+        if (StringUtils.isBlank(borrowerIds))
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
 
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
@@ -676,7 +692,7 @@ public class CsrProjectInfoService {
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
         BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
-        List<BaseReportTemplate> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateList();
+        List<BaseReportTemplateVo> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateVoList();
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
         BaseAttachment attachment = new BaseAttachment();
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
@@ -691,26 +707,26 @@ public class CsrProjectInfoService {
                     //1.检查配置的书签有几张表
                     //2.先找到主表信息,再找从表数据
                     //3.循环书签
-                    HashSet<Integer> tableSet = Sets.newHashSet();
-                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
-                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(bookmark.getDataPoolType());
+                    HashSet<String> tableSet = Sets.newHashSet();
+                    for (BaseReportTemplateVo reportTemplateVo : baseReportTemplateList) {
+                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(reportTemplateVo.getDataPoolType());
                         switch (dataPoolTypeEnum) {
                             case COLUMNS:
-                                tableSet.add(bookmark.getDataPoolTableId());
+                                tableSet.add(reportTemplateVo.getTableName());
                                 break;
                         }
                     }
-                    Map<Integer, Map<String, Object>> map = Maps.newHashMap();
+                    Map<String, Map<String, Object>> map = Maps.newHashMap();
                     Map<String, Object> objectMap = null;
-                    List<BaseReportTable> baseReportTableList = baseReportService.getBaseReportTableList(Lists.newArrayList(tableSet));
-
+                    CsrBorrower csrBorrower = csrBorrowerDao.getCsrBorrowerByID(integer);
+                    String borrowerId = csrBorrower.getBorrowerId();
                     String sql = "";
-                    for (BaseReportTable reportTable : baseReportTableList) {
-                        switch (reportTable.getTableName()) {
+                    for (String tableName : tableSet) {
+                        switch (tableName) {
                             case AssessTableNameConstant.CSR_BORROWER:
                                 objectMap = formConfigureService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
                                 if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                    map.put(tableName, objectMap);
                                 break;
                             case AssessTableNameConstant.CSR_BORROWER_MORTGAGE:
                             case AssessTableNameConstant.CSR_CONTRACT:
@@ -718,40 +734,57 @@ public class CsrProjectInfoService {
                             case AssessTableNameConstant.CSR_LITIGATION:
                             case AssessTableNameConstant.CSR_PRINCIPAL_INTEREST:
                             case AssessTableNameConstant.CSR_CALCULATION:
-                                sql = String.format("select * from %s where borrower_id=%s", reportTable.getTableName(), integer);
-                                objectMap = formConfigureService.getObjectSingle(sql, new Object[0]);
-                                if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                sql = String.format("select * from %s where borrower_id='%s'", tableName, borrowerId);
+                                List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+                                if (CollectionUtils.isNotEmpty(mapList)) {
+                                    map.put(tableName, mapList.get(0));
+                                }
                                 break;
                             case AssessTableNameConstant.CSR_PROJECT_INFO:
-                                sql = String.format("select * from %s where borrower_id=%s", reportTable.getTableName(), csrProjectId);
+                                sql = String.format("select * from %s where id=%s", tableName, csrProjectId);
                                 objectMap = formConfigureService.getObjectSingle(sql, new Object[0]);
                                 if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                    map.put(tableName, objectMap);
                                 break;
                         }
                     }
 
-                    List<KeyValueDto> keyValueDtoList = Lists.newArrayList();//书签对应值数据
+                    List<DataReplaceDto> dataReplaceDtoList = Lists.newArrayList();
+                    for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplateList) {
+                        //循环所有书签 依次找到书签或文本对应的值
 
-                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
-                        KeyValueDto keyValueDto = new KeyValueDto();
-                        //对应类型不同处理方式有区别
-                        keyValueDto.setExplain(String.valueOf(BaseReportDataPoolTypeEnum.COLUMNS.getKey()));
-                        keyValueDto.setKey(bookmark.getBookmarkName());
-                        Map<String, Object> stringObjectMap = map.get(bookmark.getDataPoolTableId());
+                        Map<String, Object> stringObjectMap = map.get(baseReportTemplateVo.getTableName());
+                        if (stringObjectMap == null) continue;//不处理
+                        Object o = stringObjectMap.get(baseReportTemplateVo.getColumnName());
+                        if (o == null) continue;//不处理
+                        String value=String.valueOf(o);
+                        if(StringUtils.isEmpty(value))continue;//空值不处理
 
-                        BaseReportColumns baseReportColumns = baseReportService.getBaseReportColumnsById(bookmark.getDataPoolColumnsId());
-                        keyValueDto.setValue(String.valueOf(stringObjectMap.get(baseReportColumns.getColumnsName())));
-                        keyValueDtoList.add(keyValueDto);
+                        DataReplaceDto dataReplaceDto = new DataReplaceDto();
+                        dataReplaceDto.setKey(String.format("${%s}",baseReportTemplateVo.getBookmarkName()));
+                        dataReplaceDto.setValue(value);
+                        BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());
+                        switch (reportMarkbookTypeEnum) {
+                            case TEXT:
+                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.TEXT);
+                                break;
+                            case BOOKMARK:
+                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.BOOKMARK);
+
+                                //也可能是文件的替换
+                                break;
+                            case TEMPLATE:
+                                //暂不做处理
+                                break;
+                        }
+                        dataReplaceDtoList.add(dataReplaceDto);
                     }
-
                     //写入到替换数据表
                     BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
                     baseReplaceRecord.setAttachmentId(ftpAttachment.getId());
                     baseReplaceRecord.setBisReplace(false);
                     baseReplaceRecord.setCreator(commonService.thisUserAccount());
-                    baseReplaceRecord.setContent(JSON.toJSONString(keyValueDtoList));
+                    baseReplaceRecord.setContent(JSON.toJSONString(dataReplaceDtoList));
                     baseReplaceRecordService.saveBaseReplaceRecord(baseReplaceRecord);
 
                     //将书签的替换成相应内容
@@ -762,40 +795,6 @@ public class CsrProjectInfoService {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * 确定是否使用已有的借款人信息
-     *
-     * @param csrProjectId
-     * @param secondLevelBranch
-     * @param idNumber
-     * @param contractNumber
-     * @return
-     */
-
-    public CsrBorrower useHistoryBorrower(Integer csrProjectId, String secondLevelBranch, String idNumber, String contractNumber) {
-        CsrBorrower queryParam = new CsrBorrower();
-        queryParam.setCsrProjectId(csrProjectId);
-        queryParam.setSecondLevelBranch(secondLevelBranch);
-        queryParam.setIdNumber(idNumber);
-        List<CsrBorrower> csrBorrowerList = csrBorrowerDao.getCsrBorrowerList(queryParam);
-        if (CollectionUtils.isNotEmpty(csrBorrowerList)) {
-            List<String> borrowerIds = LangUtils.transform(csrBorrowerList, p -> p.getBorrowerId());
-            List<CsrBorrowerMortgage> mortgageList = csrBorrowerMortgageDao.getCsrBorrowerMortgageList(borrowerIds);
-            if (CollectionUtils.isNotEmpty(mortgageList)) {
-                for (CsrBorrowerMortgage csrBorrowerMortgage : mortgageList) {
-                    if (StringUtils.equals(csrBorrowerMortgage.getContractNumber(), contractNumber)) {
-                        for (CsrBorrower csrBorrower : csrBorrowerList) {
-                            if (csrBorrower.getId().equals(csrBorrowerMortgage.getBorrowerId())) {
-                                return csrBorrower;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -813,11 +812,11 @@ public class CsrProjectInfoService {
             for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
                 CsrBorrower csrBorrower = borrowerDto.getCsrBorrower();
                 if (csrBorrower != null) {
-                    List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
+                    List<CsrContract> csrContractList = borrowerDto.getCsrContractList();
                     if (StringUtils.equals(csrBorrower.getSecondLevelBranch(), secondLevelBranch) && StringUtils.equals(csrBorrower.getIdNumber(), idNumber)) {
-                        if (CollectionUtils.isNotEmpty(csrBorrowerMortgageList)) {
-                            for (CsrBorrowerMortgage csrBorrowerMortgage : csrBorrowerMortgageList) {
-                                if (StringUtils.equals(csrBorrowerMortgage.getContractNumber(), contractNumber)) {
+                        if (CollectionUtils.isNotEmpty(csrContractList)) {
+                            for (CsrContract csrContract : csrContractList) {
+                                if (StringUtils.equals(csrContract.getContractNumber(), contractNumber)) {
                                     return borrowerDto;
                                 }
                             }
@@ -841,15 +840,20 @@ public class CsrProjectInfoService {
      *
      * @param borrowerDtos
      */
-    private void importToDataBase(Integer csrProjectId, List<CsrImportBorrowerDto> borrowerDtos) {
+    private void importToDataBaseExtend(Integer csrProjectId, List<CsrImportBorrowerDto> borrowerDtos) {
+        StringBuilder stringBuilder = new StringBuilder();
         if (CollectionUtils.isNotEmpty(borrowerDtos)) {
             for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
                 CsrBorrower csrBorrower = borrowerDto.getCsrBorrower();
                 if (csrBorrower != null) {
-                    csrBorrower.setCsrProjectId(csrProjectId);
-                    csrBorrower.setBisImport(true);
-                    csrBorrower.setCreator(commonService.thisUserAccount());
-                    csrBorrowerDao.addCsrBorrower(csrBorrower);
+                    if (StringUtils.isBlank(csrBorrower.getBorrowerId())) {
+                        //做新增处理
+                        csrBorrower.setBorrowerId(UUID.randomUUID().toString());
+                        csrBorrower.setCsrProjectId(csrProjectId);
+                        csrBorrower.setBisImport(true);
+                        csrBorrower.setCreator(commonService.thisUserAccount());
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrBorrower));
+                    }
                 }
                 List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
                 if (CollectionUtils.isNotEmpty(csrBorrowerMortgageList)) {
@@ -858,7 +862,7 @@ public class CsrProjectInfoService {
                         csrBorrowerMortgage.setBorrowerId(csrBorrower.getBorrowerId());
                         csrBorrowerMortgage.setBisImport(true);
                         csrBorrowerMortgage.setCreator(commonService.thisUserAccount());
-                        csrBorrowerMortgageDao.addCsrBorrowerMortgage(csrBorrowerMortgage);
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrBorrowerMortgage));
                     }
                 }
                 List<CsrContract> csrContractList = borrowerDto.getCsrContractList();
@@ -868,7 +872,7 @@ public class CsrProjectInfoService {
                         csrContract.setBorrowerId(csrBorrower.getBorrowerId());
                         csrContract.setBisImport(true);
                         csrContract.setCreator(commonService.thisUserAccount());
-                        csrContractDao.addCsrContract(csrContract);
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrContract));
                     }
                 }
                 List<CsrGuarantor> csrGuarantorList = borrowerDto.getCsrGuarantorList();
@@ -878,7 +882,7 @@ public class CsrProjectInfoService {
                         csrGuarantor.setBorrowerId(csrBorrower.getBorrowerId());
                         csrGuarantor.setBisImport(true);
                         csrGuarantor.setCreator(commonService.thisUserAccount());
-                        csrGuarantorDao.addCsrGuarantor(csrGuarantor);
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrGuarantor));
                     }
                 }
                 List<CsrLitigation> csrLitigationList = borrowerDto.getCsrLitigationList();
@@ -888,7 +892,7 @@ public class CsrProjectInfoService {
                         csrLitigation.setBorrowerId(csrBorrower.getBorrowerId());
                         csrLitigation.setBisImport(true);
                         csrLitigation.setCreator(commonService.thisUserAccount());
-                        csrLitigationDao.addCsrLitigation(csrLitigation);
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrLitigation));
                     }
                 }
                 List<CsrPrincipalInterest> csrPrincipalInterestList = borrowerDto.getCsrPrincipalInterestList();
@@ -898,12 +902,14 @@ public class CsrProjectInfoService {
                         csrPrincipalInterest.setBorrowerId(csrBorrower.getBorrowerId());
                         csrPrincipalInterest.setBisImport(true);
                         csrPrincipalInterest.setCreator(commonService.thisUserAccount());
-                        csrPrincipalInterestDao.addCsrPrincipalInterest(csrPrincipalInterest);
+                        stringBuilder.append(new CreateInsertHelp().createInsert(csrPrincipalInterest));
                     }
                 }
             }
+            jdbcTemplate.execute(stringBuilder.toString());
         }
     }
+
 
     /**
      * 债权人列表信息

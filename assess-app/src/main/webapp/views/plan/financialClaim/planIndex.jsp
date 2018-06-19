@@ -13,7 +13,7 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectCsrInfo.jsp" %>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>${panelTitle}阶段工作计划</h2>

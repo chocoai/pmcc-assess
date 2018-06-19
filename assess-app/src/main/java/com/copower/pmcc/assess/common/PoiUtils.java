@@ -41,14 +41,14 @@ public class PoiUtils {
             switch (cell.getCellType()) {
                 case HSSFCell.CELL_TYPE_NUMERIC: // 数字
                     //如果为时间格式的内容
+                    double numericCellValue = cell.getNumericCellValue();
                     if (HSSFDateUtil.isCellDateFormatted(cell)) {
                         //注：format格式 yyyy-MM-dd hh:mm:ss 中小时为12小时制，若要24小时制，则把小h变为H即可，yyyy-MM-dd HH:mm:ss
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        value = sdf.format(HSSFDateUtil.getJavaDate(cell.
-                                getNumericCellValue())).toString();
+                        value = sdf.format(HSSFDateUtil.getJavaDate(numericCellValue)).toString();
                         break;
                     } else {
-                        value = new DecimalFormat("0").format(cell.getNumericCellValue());
+                        value = String.valueOf(numericCellValue);
                     }
                     break;
                 case HSSFCell.CELL_TYPE_STRING: // 字符串
