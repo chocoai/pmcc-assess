@@ -6,10 +6,8 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.ReflectUtils;
-import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
-import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
-import com.copower.pmcc.assess.common.enums.CustomerTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.*;
+import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
@@ -22,6 +20,7 @@ import com.copower.pmcc.assess.dal.dao.csr.*;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
+import com.copower.pmcc.assess.dto.input.word.DataReplaceDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
@@ -540,9 +539,9 @@ public class CsrProjectInfoService {
                                 cell = row.getCell(entry.getKey());
                                 if (cell == null)
                                     continue;
-                                if(StringUtils.equals(PoiUtils.getCellValue(cell),"黄运全")){
-                                    int j=0;
-                                    int f=j;//
+                                if (StringUtils.equals(PoiUtils.getCellValue(cell), "黄运全")) {
+                                    int j = 0;
+                                    int f = j;//
                                 }
                                 switch (columnDto.getTableName()) {
                                     case AssessTableNameConstant.CSR_BORROWER:
@@ -650,7 +649,7 @@ public class CsrProjectInfoService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
                 , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
-       return reportTemplateFileDto.getBaseReportTemplateVoList();
+        return reportTemplateFileDto.getBaseReportTemplateVoList();
     }
 
     /**
@@ -708,26 +707,26 @@ public class CsrProjectInfoService {
                     //1.检查配置的书签有几张表
                     //2.先找到主表信息,再找从表数据
                     //3.循环书签
-                    HashSet<Integer> tableSet = Sets.newHashSet();
-                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
-                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(bookmark.getDataPoolType());
+                    HashSet<String> tableSet = Sets.newHashSet();
+                    for (BaseReportTemplateVo reportTemplateVo : baseReportTemplateList) {
+                        BaseReportDataPoolTypeEnum dataPoolTypeEnum = BaseReportDataPoolTypeEnum.getEnumByName(reportTemplateVo.getDataPoolType());
                         switch (dataPoolTypeEnum) {
                             case COLUMNS:
-                                tableSet.add(bookmark.getDataPoolTableId());
+                                tableSet.add(reportTemplateVo.getTableName());
                                 break;
                         }
                     }
-                    Map<Integer, Map<String, Object>> map = Maps.newHashMap();
+                    Map<String, Map<String, Object>> map = Maps.newHashMap();
                     Map<String, Object> objectMap = null;
-                    List<BaseReportTable> baseReportTableList = baseReportService.getBaseReportTableList(Lists.newArrayList(tableSet));
-
+                    CsrBorrower csrBorrower = csrBorrowerDao.getCsrBorrowerByID(integer);
+                    String borrowerId = csrBorrower.getBorrowerId();
                     String sql = "";
-                    for (BaseReportTable reportTable : baseReportTableList) {
-                        switch (reportTable.getTableName()) {
+                    for (String tableName : tableSet) {
+                        switch (tableName) {
                             case AssessTableNameConstant.CSR_BORROWER:
                                 objectMap = formConfigureService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
                                 if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                    map.put(tableName, objectMap);
                                 break;
                             case AssessTableNameConstant.CSR_BORROWER_MORTGAGE:
                             case AssessTableNameConstant.CSR_CONTRACT:
@@ -735,40 +734,57 @@ public class CsrProjectInfoService {
                             case AssessTableNameConstant.CSR_LITIGATION:
                             case AssessTableNameConstant.CSR_PRINCIPAL_INTEREST:
                             case AssessTableNameConstant.CSR_CALCULATION:
-                                sql = String.format("select * from %s where borrower_id=%s", reportTable.getTableName(), integer);
-                                objectMap = formConfigureService.getObjectSingle(sql, new Object[0]);
-                                if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                sql = String.format("select * from %s where borrower_id='%s'", tableName, borrowerId);
+                                List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+                                if (CollectionUtils.isNotEmpty(mapList)) {
+                                    map.put(tableName, mapList.get(0));
+                                }
                                 break;
                             case AssessTableNameConstant.CSR_PROJECT_INFO:
-                                sql = String.format("select * from %s where borrower_id=%s", reportTable.getTableName(), csrProjectId);
+                                sql = String.format("select * from %s where id=%s", tableName, csrProjectId);
                                 objectMap = formConfigureService.getObjectSingle(sql, new Object[0]);
                                 if (objectMap != null)
-                                    map.put(reportTable.getId(), objectMap);
+                                    map.put(tableName, objectMap);
                                 break;
                         }
                     }
 
-                    List<KeyValueDto> keyValueDtoList = Lists.newArrayList();//书签对应值数据
+                    List<DataReplaceDto> dataReplaceDtoList = Lists.newArrayList();
+                    for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplateList) {
+                        //循环所有书签 依次找到书签或文本对应的值
 
-                    for (BaseReportTemplate bookmark : baseReportTemplateList) {
-                        KeyValueDto keyValueDto = new KeyValueDto();
-                        //对应类型不同处理方式有区别
-                        keyValueDto.setExplain(String.valueOf(BaseReportDataPoolTypeEnum.COLUMNS.getKey()));
-                        keyValueDto.setKey(bookmark.getBookmarkName());
-                        Map<String, Object> stringObjectMap = map.get(bookmark.getDataPoolTableId());
+                        Map<String, Object> stringObjectMap = map.get(baseReportTemplateVo.getTableName());
+                        if (stringObjectMap == null) continue;//不处理
+                        Object o = stringObjectMap.get(baseReportTemplateVo.getColumnName());
+                        if (o == null) continue;//不处理
+                        String value=String.valueOf(o);
+                        if(StringUtils.isEmpty(value))continue;//空值不处理
 
-                        BaseReportColumns baseReportColumns = baseReportService.getBaseReportColumnsById(bookmark.getDataPoolColumnsId());
-                        keyValueDto.setValue(String.valueOf(stringObjectMap.get(baseReportColumns.getColumnsName())));
-                        keyValueDtoList.add(keyValueDto);
+                        DataReplaceDto dataReplaceDto = new DataReplaceDto();
+                        dataReplaceDto.setKey(String.format("${%s}",baseReportTemplateVo.getBookmarkName()));
+                        dataReplaceDto.setValue(value);
+                        BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());
+                        switch (reportMarkbookTypeEnum) {
+                            case TEXT:
+                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.TEXT);
+                                break;
+                            case BOOKMARK:
+                                dataReplaceDto.setDataReplaceTypeEnum(DataReplaceTypeEnum.BOOKMARK);
+
+                                //也可能是文件的替换
+                                break;
+                            case TEMPLATE:
+                                //暂不做处理
+                                break;
+                        }
+                        dataReplaceDtoList.add(dataReplaceDto);
                     }
-
                     //写入到替换数据表
                     BaseReplaceRecord baseReplaceRecord = new BaseReplaceRecord();
                     baseReplaceRecord.setAttachmentId(ftpAttachment.getId());
                     baseReplaceRecord.setBisReplace(false);
                     baseReplaceRecord.setCreator(commonService.thisUserAccount());
-                    baseReplaceRecord.setContent(JSON.toJSONString(keyValueDtoList));
+                    baseReplaceRecord.setContent(JSON.toJSONString(dataReplaceDtoList));
                     baseReplaceRecordService.saveBaseReplaceRecord(baseReplaceRecord);
 
                     //将书签的替换成相应内容
@@ -796,11 +812,11 @@ public class CsrProjectInfoService {
             for (CsrImportBorrowerDto borrowerDto : borrowerDtos) {
                 CsrBorrower csrBorrower = borrowerDto.getCsrBorrower();
                 if (csrBorrower != null) {
-                    List<CsrBorrowerMortgage> csrBorrowerMortgageList = borrowerDto.getCsrBorrowerMortgageList();
+                    List<CsrContract> csrContractList = borrowerDto.getCsrContractList();
                     if (StringUtils.equals(csrBorrower.getSecondLevelBranch(), secondLevelBranch) && StringUtils.equals(csrBorrower.getIdNumber(), idNumber)) {
-                        if (CollectionUtils.isNotEmpty(csrBorrowerMortgageList)) {
-                            for (CsrBorrowerMortgage csrBorrowerMortgage : csrBorrowerMortgageList) {
-                                if (StringUtils.equals(csrBorrowerMortgage.getContractNumber(), contractNumber)) {
+                        if (CollectionUtils.isNotEmpty(csrContractList)) {
+                            for (CsrContract csrContract : csrContractList) {
+                                if (StringUtils.equals(csrContract.getContractNumber(), contractNumber)) {
                                     return borrowerDto;
                                 }
                             }
@@ -893,6 +909,7 @@ public class CsrProjectInfoService {
             jdbcTemplate.execute(stringBuilder.toString());
         }
     }
+
 
     /**
      * 债权人列表信息
