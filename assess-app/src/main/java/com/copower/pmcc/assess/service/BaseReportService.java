@@ -23,6 +23,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,7 +115,24 @@ public class BaseReportService {
         return baseReportDao.getBaseReportTemplateById(id);
     }
 
-    private BaseReportTemplateVo getBaseReportTemplateVo(BaseReportTemplate baseReportTemplate) {
+    /**
+     * 从集合中获取对应书签信息
+     *
+     * @param baseReportTemplates
+     * @param name
+     * @return
+     */
+    public BaseReportTemplateVo getBaseReportTemplate(List<BaseReportTemplateVo> baseReportTemplates, String name) {
+        if (CollectionUtils.isEmpty(baseReportTemplates)) return null;
+        if (StringUtils.isBlank(name)) return null;
+        for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplates) {
+            if (StringUtils.equals(baseReportTemplateVo.getBookmarkName(), name))
+                return baseReportTemplateVo;
+        }
+        return null;
+    }
+
+    public BaseReportTemplateVo getBaseReportTemplateVo(BaseReportTemplate baseReportTemplate) {
         BaseReportTemplateVo baseReportTemplateVo = new BaseReportTemplateVo();
         if (baseReportTemplate != null) {
             BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
@@ -137,8 +155,9 @@ public class BaseReportService {
                         BaseReportColumns baseReportColumnsById = baseReportDao.getBaseReportColumnsById(baseReportTemplate.getDataPoolColumnsId());
                         if (baseReportTableById != null && baseReportColumnsById != null) {
                             baseReportTemplateVo.setDataPoolTypename(String.format("%s - %s", baseReportTableById.getCnName(), baseReportColumnsById.getColumnsCnName()));
+                            baseReportTemplateVo.setTableName(baseReportTableById.getTableName());
+                            baseReportTemplateVo.setColumnName(baseReportColumnsById.getColumnsName());
                         }
-
                         break;
                     }
                     case TEMPLATE: {
@@ -329,7 +348,12 @@ public class BaseReportService {
         baseReportTemplate.setEntrustId(projectTypeId);
         baseReportTemplate.setBisEnable(true);
         List<BaseReportTemplate> baseReportTemplateList = getBaseReportTemplateList(baseReportTemplate);
-        baseReportTemplateFilesDto.setBaseReportTemplateList(baseReportTemplateList);
+        if (CollectionUtils.isNotEmpty(baseReportTemplateList)) {
+            List<BaseReportTemplateVo> baseReportTemplateVoList = LangUtils.transform(baseReportTemplateList, p -> {
+                return getBaseReportTemplateVo(p);
+            });
+            baseReportTemplateFilesDto.setBaseReportTemplateVoList(baseReportTemplateVoList);
+        }
         return baseReportTemplateFilesDto;
     }
 

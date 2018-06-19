@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
+import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by kings on 2018-6-7.
@@ -117,5 +120,8 @@ public class replaceTest {
         String s = StringUtils.replacePattern(string, "<!--.*?-->", "");
         return s;
     }
+
+
+
 }
 
