@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrLitigation" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="csr_project_id" property="csrProjectId" jdbcType="INTEGER" />
-    <result column="borrower_id" property="borrowerId" jdbcType="INTEGER" />
+    <result column="borrower_id" property="borrowerId" jdbcType="VARCHAR" />
     <result column="litigation_preservation" property="litigationPreservation" jdbcType="VARCHAR" />
     <result column="litigation_preservation_info" property="litigationPreservationInfo" jdbcType="VARCHAR" />
     <result column="bis_import" property="bisImport" jdbcType="BIT" />
@@ -111,7 +111,7 @@
     insert into tb_csr_litigation (csr_project_id, borrower_id, litigation_preservation, 
       litigation_preservation_info, bis_import, creator, 
       gmt_created, gmt_modified)
-    values (#{csrProjectId,jdbcType=INTEGER}, #{borrowerId,jdbcType=INTEGER}, #{litigationPreservation,jdbcType=VARCHAR}, 
+    values (#{csrProjectId,jdbcType=INTEGER}, #{borrowerId,jdbcType=VARCHAR}, #{litigationPreservation,jdbcType=VARCHAR}, 
       #{litigationPreservationInfo,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -151,7 +151,7 @@
         #{csrProjectId,jdbcType=INTEGER},
       </if>
       <if test="borrowerId != null" >
-        #{borrowerId,jdbcType=INTEGER},
+        #{borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="litigationPreservation != null" >
         #{litigationPreservation,jdbcType=VARCHAR},
@@ -189,7 +189,7 @@
         csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
       </if>
       <if test="record.borrowerId != null" >
-        borrower_id = #{record.borrowerId,jdbcType=INTEGER},
+        borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="record.litigationPreservation != null" >
         litigation_preservation = #{record.litigationPreservation,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
     update tb_csr_litigation
     set id = #{record.id,jdbcType=INTEGER},
       csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
-      borrower_id = #{record.borrowerId,jdbcType=INTEGER},
+      borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       litigation_preservation = #{record.litigationPreservation,jdbcType=VARCHAR},
       litigation_preservation_info = #{record.litigationPreservationInfo,jdbcType=VARCHAR},
       bis_import = #{record.bisImport,jdbcType=BIT},
@@ -236,7 +236,7 @@
         csr_project_id = #{csrProjectId,jdbcType=INTEGER},
       </if>
       <if test="borrowerId != null" >
-        borrower_id = #{borrowerId,jdbcType=INTEGER},
+        borrower_id = #{borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="litigationPreservation != null" >
         litigation_preservation = #{litigationPreservation,jdbcType=VARCHAR},
@@ -262,7 +262,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrLitigation" >
     update tb_csr_litigation
     set csr_project_id = #{csrProjectId,jdbcType=INTEGER},
-      borrower_id = #{borrowerId,jdbcType=INTEGER},
+      borrower_id = #{borrowerId,jdbcType=VARCHAR},
       litigation_preservation = #{litigationPreservation,jdbcType=VARCHAR},
       litigation_preservation_info = #{litigationPreservationInfo,jdbcType=VARCHAR},
       bis_import = #{bisImport,jdbcType=BIT},

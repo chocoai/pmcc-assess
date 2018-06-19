@@ -38,7 +38,7 @@ public class CsrPrincipalInterestController {
 
     @ResponseBody
     @RequestMapping(value = "/loadLoanPrincipalInterest", name = "根据借款人信息取得诉讼保全数据", method = RequestMethod.GET)
-    public HttpResult loadLoanPrincipalInterest(Integer borrowerId, Integer detailsId) {
+    public HttpResult loadLoanPrincipalInterest(String borrowerId, Integer detailsId) {
         try {
             CsrPrincipalInterestVo csrPrincipalInterestVo = csrPrincipalInterestService.loadLoanPrincipalInterest(borrowerId, detailsId);
             return HttpResult.newCorrectResult(csrPrincipalInterestVo);

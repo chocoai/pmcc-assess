@@ -4,12 +4,14 @@ import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerMortgageDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
+import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerMortgageVo;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -45,7 +47,7 @@ public class CsrBorrowerMortgageService {
                 csrBorrowerMortgageDao.addCsrBorrowerMortgage(csrBorrowerMortgage);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_borrower_mortgage");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrowerMortgage.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -72,7 +74,7 @@ public class CsrBorrowerMortgageService {
         }
     }
 
-    public List<CsrBorrowerMortgageVo> getCsrBorrowerMortgage(Integer borrowerId, Integer detailsId) {
+    public List<CsrBorrowerMortgageVo> getCsrBorrowerMortgage(String borrowerId, Integer detailsId) {
         CsrBorrowerMortgage csrBorrowerMortgage = new CsrBorrowerMortgage();
         csrBorrowerMortgage.setBisImport(false);
         csrBorrowerMortgage.setBorrowerId(borrowerId);

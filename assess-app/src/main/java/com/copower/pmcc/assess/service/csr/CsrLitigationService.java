@@ -3,16 +3,14 @@ package com.copower.pmcc.assess.service.csr;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrLitigationDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrcalculationDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrContract;
-import com.copower.pmcc.assess.dal.entity.CsrLitigation;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrLitigationVo;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +43,7 @@ public class CsrLitigationService {
                 csrLitigationDao.addCsrLitigation(csrLitigation);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_litigation");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrLitigation.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -63,7 +61,7 @@ public class CsrLitigationService {
         return csrLitigation;
     }
 
-    public CsrLitigationVo loadLoanLitigation(Integer borrowerId, Integer detailsId) throws BusinessException {
+    public CsrLitigationVo loadLoanLitigation(String borrowerId, Integer detailsId) throws BusinessException {
         CsrLitigation csrContractReturnReturn = null;
         CsrLitigation csrLitigation = new CsrLitigation();
         csrLitigation.setBorrowerId(borrowerId);

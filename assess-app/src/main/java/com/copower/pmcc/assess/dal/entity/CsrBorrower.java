@@ -5,6 +5,8 @@ import java.util.Date;
 public class CsrBorrower {
     private Integer id;
 
+    private String borrowerId;
+
     private Integer csrProjectId;
 
     private Integer projectId;
@@ -31,7 +33,11 @@ public class CsrBorrower {
 
     private String presentAddress;
 
+    private Integer replaceRecordId;
+
     private Boolean bisImport;
+
+    private Boolean bisGenerate;
 
     private String creator;
 
@@ -45,6 +51,14 @@ public class CsrBorrower {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getBorrowerId() {
+        return borrowerId;
+    }
+
+    public void setBorrowerId(String borrowerId) {
+        this.borrowerId = borrowerId == null ? null : borrowerId.trim();
     }
 
     public Integer getCsrProjectId() {
@@ -151,12 +165,28 @@ public class CsrBorrower {
         this.presentAddress = presentAddress == null ? null : presentAddress.trim();
     }
 
+    public Integer getReplaceRecordId() {
+        return replaceRecordId;
+    }
+
+    public void setReplaceRecordId(Integer replaceRecordId) {
+        this.replaceRecordId = replaceRecordId;
+    }
+
     public Boolean getBisImport() {
         return bisImport;
     }
 
     public void setBisImport(Boolean bisImport) {
         this.bisImport = bisImport;
+    }
+
+    public Boolean getBisGenerate() {
+        return bisGenerate;
+    }
+
+    public void setBisGenerate(Boolean bisGenerate) {
+        this.bisGenerate = bisGenerate;
     }
 
     public String getCreator() {

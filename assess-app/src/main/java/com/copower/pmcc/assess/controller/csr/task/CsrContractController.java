@@ -37,7 +37,7 @@ public class CsrContractController {
 
     @ResponseBody
     @RequestMapping(value = "/loadLoanContractAssist", name = "根据借款人信息取得相应的合同信息", method = RequestMethod.GET)
-    public HttpResult loadLoanContractAssist(Integer borrowerId,Integer detailsId) {
+    public HttpResult loadLoanContractAssist(String borrowerId,Integer detailsId) {
         try {
             CsrContractVo csrContractVo = csrContractService.loadCsrContract(borrowerId, detailsId);
             return HttpResult.newCorrectResult(csrContractVo);

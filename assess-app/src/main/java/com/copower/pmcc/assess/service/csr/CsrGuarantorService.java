@@ -2,15 +2,13 @@ package com.copower.pmcc.assess.service.csr;
 
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrGuarantorDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
-import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrCalculationVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrGuarantorVo;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -44,7 +42,7 @@ public class CsrGuarantorService {
                 csrGuarantorDao.addCsrGuarantor(csrGuarantor);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_guarantor");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrGuarantor.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -61,7 +59,7 @@ public class CsrGuarantorService {
         return csrGuarantor;
     }
 
-    public List<CsrGuarantorVo> getCsrGuarantor(Integer borrowerId, Integer detailsId) {
+    public List<CsrGuarantorVo> getCsrGuarantor(String borrowerId, Integer detailsId) {
         List<CsrGuarantorVo> csrGuarantorVos = new ArrayList<>();
         CsrGuarantor csrGuarantor = new CsrGuarantor();
         csrGuarantor.setBorrowerId(borrowerId);

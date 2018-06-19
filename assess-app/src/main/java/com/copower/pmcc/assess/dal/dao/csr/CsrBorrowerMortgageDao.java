@@ -51,7 +51,7 @@ public class CsrBorrowerMortgageDao {
      * @param borrowerIds
      * @return
      */
-    public List<CsrBorrowerMortgage> getCsrBorrowerMortgageList(List<Integer> borrowerIds) {
+    public List<CsrBorrowerMortgage> getCsrBorrowerMortgageList(List<String> borrowerIds) {
         if (CollectionUtils.isEmpty(borrowerIds)) return null;
         CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
         CsrBorrowerMortgageExample.Criteria criteria = example.createCriteria();

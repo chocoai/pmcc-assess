@@ -8,10 +8,7 @@ import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerEnteringDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -274,7 +271,7 @@ public class CsrBorrowerService {
                 csrBorrowerEnteringDao.addCsrBorrowerEntering(csrBorrowerEntering);
                 //更新附件信息
                 BaseAttachment baseAttachment = new BaseAttachment();
-                baseAttachment.setTableName("tb_csr_borrower_entering");
+                baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrowerEntering.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
@@ -292,7 +289,7 @@ public class CsrBorrowerService {
         return csrBorrowerEntering;
     }
 
-    public CsrBorrowerEnteringVo loadLoanBorrower(Integer borrowerId, Integer detailsId) throws BusinessException {
+    public CsrBorrowerEnteringVo loadLoanBorrower(String borrowerId, Integer detailsId) throws BusinessException {
 
         CsrBorrowerEntering csrBorrowerEntering = csrBorrowerEnteringDao.getCsrBorrowerEnteringByBorrowerId(borrowerId);
         if (csrBorrowerEntering == null) {

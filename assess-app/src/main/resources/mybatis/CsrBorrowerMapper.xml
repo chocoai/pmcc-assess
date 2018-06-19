@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.mapper.CsrBorrowerMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.CsrBorrower" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="borrower_id" property="borrowerId" jdbcType="VARCHAR" />
     <result column="csr_project_id" property="csrProjectId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
@@ -16,7 +17,9 @@
     <result column="post" property="post" jdbcType="VARCHAR" />
     <result column="domicile_place" property="domicilePlace" jdbcType="VARCHAR" />
     <result column="present_address" property="presentAddress" jdbcType="VARCHAR" />
+    <result column="replace_record_id" property="replaceRecordId" jdbcType="INTEGER" />
     <result column="bis_import" property="bisImport" jdbcType="BIT" />
+    <result column="bis_generate" property="bisGenerate" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -80,9 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, csr_project_id, project_id, group_id, first_level_branch, second_level_branch, 
+    id, borrower_id, csr_project_id, project_id, group_id, first_level_branch, second_level_branch, 
     name, id_number, marital_status, education, work_unit, post, domicile_place, present_address, 
-    bis_import, creator, gmt_created, gmt_modified
+    replace_record_id, bis_import, bis_generate, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrowerExample" >
     select
@@ -118,17 +121,19 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_csr_borrower (csr_project_id, project_id, group_id, 
-      first_level_branch, second_level_branch, name, 
-      id_number, marital_status, education, 
-      work_unit, post, domicile_place, 
-      present_address, bis_import, creator, 
+    insert into tb_csr_borrower (borrower_id, csr_project_id, project_id, 
+      group_id, first_level_branch, second_level_branch, 
+      name, id_number, marital_status, 
+      education, work_unit, post, 
+      domicile_place, present_address, replace_record_id, 
+      bis_import, bis_generate, creator, 
       gmt_created, gmt_modified)
-    values (#{csrProjectId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, 
-      #{firstLevelBranch,jdbcType=VARCHAR}, #{secondLevelBranch,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{idNumber,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
-      #{workUnit,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, #{domicilePlace,jdbcType=VARCHAR}, 
-      #{presentAddress,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+    values (#{borrowerId,jdbcType=VARCHAR}, #{csrProjectId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
+      #{groupId,jdbcType=INTEGER}, #{firstLevelBranch,jdbcType=VARCHAR}, #{secondLevelBranch,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, 
+      #{education,jdbcType=VARCHAR}, #{workUnit,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, 
+      #{domicilePlace,jdbcType=VARCHAR}, #{presentAddress,jdbcType=VARCHAR}, #{replaceRecordId,jdbcType=INTEGER}, 
+      #{bisImport,jdbcType=BIT}, #{bisGenerate,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrower" >
@@ -137,6 +142,9 @@
     </selectKey>
     insert into tb_csr_borrower
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="borrowerId != null" >
+        borrower_id,
+      </if>
       <if test="csrProjectId != null" >
         csr_project_id,
       </if>
@@ -176,8 +184,14 @@
       <if test="presentAddress != null" >
         present_address,
       </if>
+      <if test="replaceRecordId != null" >
+        replace_record_id,
+      </if>
       <if test="bisImport != null" >
         bis_import,
+      </if>
+      <if test="bisGenerate != null" >
+        bis_generate,
       </if>
       <if test="creator != null" >
         creator,
@@ -190,6 +204,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="borrowerId != null" >
+        #{borrowerId,jdbcType=VARCHAR},
+      </if>
       <if test="csrProjectId != null" >
         #{csrProjectId,jdbcType=INTEGER},
       </if>
@@ -229,8 +246,14 @@
       <if test="presentAddress != null" >
         #{presentAddress,jdbcType=VARCHAR},
       </if>
+      <if test="replaceRecordId != null" >
+        #{replaceRecordId,jdbcType=INTEGER},
+      </if>
       <if test="bisImport != null" >
         #{bisImport,jdbcType=BIT},
+      </if>
+      <if test="bisGenerate != null" >
+        #{bisGenerate,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -254,6 +277,9 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.borrowerId != null" >
+        borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       </if>
       <if test="record.csrProjectId != null" >
         csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
@@ -294,8 +320,14 @@
       <if test="record.presentAddress != null" >
         present_address = #{record.presentAddress,jdbcType=VARCHAR},
       </if>
+      <if test="record.replaceRecordId != null" >
+        replace_record_id = #{record.replaceRecordId,jdbcType=INTEGER},
+      </if>
       <if test="record.bisImport != null" >
         bis_import = #{record.bisImport,jdbcType=BIT},
+      </if>
+      <if test="record.bisGenerate != null" >
+        bis_generate = #{record.bisGenerate,jdbcType=BIT},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -314,6 +346,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_csr_borrower
     set id = #{record.id,jdbcType=INTEGER},
+      borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
       csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       group_id = #{record.groupId,jdbcType=INTEGER},
@@ -327,7 +360,9 @@
       post = #{record.post,jdbcType=VARCHAR},
       domicile_place = #{record.domicilePlace,jdbcType=VARCHAR},
       present_address = #{record.presentAddress,jdbcType=VARCHAR},
+      replace_record_id = #{record.replaceRecordId,jdbcType=INTEGER},
       bis_import = #{record.bisImport,jdbcType=BIT},
+      bis_generate = #{record.bisGenerate,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -338,6 +373,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrower" >
     update tb_csr_borrower
     <set >
+      <if test="borrowerId != null" >
+        borrower_id = #{borrowerId,jdbcType=VARCHAR},
+      </if>
       <if test="csrProjectId != null" >
         csr_project_id = #{csrProjectId,jdbcType=INTEGER},
       </if>
@@ -377,8 +415,14 @@
       <if test="presentAddress != null" >
         present_address = #{presentAddress,jdbcType=VARCHAR},
       </if>
+      <if test="replaceRecordId != null" >
+        replace_record_id = #{replaceRecordId,jdbcType=INTEGER},
+      </if>
       <if test="bisImport != null" >
         bis_import = #{bisImport,jdbcType=BIT},
+      </if>
+      <if test="bisGenerate != null" >
+        bis_generate = #{bisGenerate,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -394,7 +438,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.CsrBorrower" >
     update tb_csr_borrower
-    set csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+    set borrower_id = #{borrowerId,jdbcType=VARCHAR},
+      csr_project_id = #{csrProjectId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       group_id = #{groupId,jdbcType=INTEGER},
       first_level_branch = #{firstLevelBranch,jdbcType=VARCHAR},
@@ -407,7 +452,9 @@
       post = #{post,jdbcType=VARCHAR},
       domicile_place = #{domicilePlace,jdbcType=VARCHAR},
       present_address = #{presentAddress,jdbcType=VARCHAR},
+      replace_record_id = #{replaceRecordId,jdbcType=INTEGER},
       bis_import = #{bisImport,jdbcType=BIT},
+      bis_generate = #{bisGenerate,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

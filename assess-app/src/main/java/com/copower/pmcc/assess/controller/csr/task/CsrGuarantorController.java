@@ -49,7 +49,7 @@ public class CsrGuarantorController {
     //取得保证人情况
     @ResponseBody
     @RequestMapping(value = "/getCsrGuarantor", name = "取得保证人情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrGuarantor(Integer borrowerId, Integer detailsId) {
+    public BootstrapTableVo getCsrGuarantor(String borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

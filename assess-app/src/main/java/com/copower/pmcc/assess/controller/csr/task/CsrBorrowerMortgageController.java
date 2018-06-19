@@ -49,7 +49,7 @@ public class CsrBorrowerMortgageController {
     //取得资产抵押情况列表
     @ResponseBody
     @RequestMapping(value = "/getCsrBorrowerMortgage", name = "取得借款人资产抵押情况", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrBorrowerMortgage(Integer borrowerId, Integer detailsId) {
+    public BootstrapTableVo getCsrBorrowerMortgage(String borrowerId, Integer detailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
