@@ -1194,73 +1194,73 @@ public class FuniHousesMatingExample {
             return (Criteria) this;
         }
 
-        public Criteria andKhgIsNull() {
-            addCriterion("khg is null");
+        public Criteria andKfgIsNull() {
+            addCriterion("kfg is null");
             return (Criteria) this;
         }
 
-        public Criteria andKhgIsNotNull() {
-            addCriterion("khg is not null");
+        public Criteria andKfgIsNotNull() {
+            addCriterion("kfg is not null");
             return (Criteria) this;
         }
 
-        public Criteria andKhgEqualTo(String value) {
-            addCriterion("khg =", value, "khg");
+        public Criteria andKfgEqualTo(String value) {
+            addCriterion("kfg =", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgNotEqualTo(String value) {
-            addCriterion("khg <>", value, "khg");
+        public Criteria andKfgNotEqualTo(String value) {
+            addCriterion("kfg <>", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgGreaterThan(String value) {
-            addCriterion("khg >", value, "khg");
+        public Criteria andKfgGreaterThan(String value) {
+            addCriterion("kfg >", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgGreaterThanOrEqualTo(String value) {
-            addCriterion("khg >=", value, "khg");
+        public Criteria andKfgGreaterThanOrEqualTo(String value) {
+            addCriterion("kfg >=", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgLessThan(String value) {
-            addCriterion("khg <", value, "khg");
+        public Criteria andKfgLessThan(String value) {
+            addCriterion("kfg <", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgLessThanOrEqualTo(String value) {
-            addCriterion("khg <=", value, "khg");
+        public Criteria andKfgLessThanOrEqualTo(String value) {
+            addCriterion("kfg <=", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgLike(String value) {
-            addCriterion("khg like", value, "khg");
+        public Criteria andKfgLike(String value) {
+            addCriterion("kfg like", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgNotLike(String value) {
-            addCriterion("khg not like", value, "khg");
+        public Criteria andKfgNotLike(String value) {
+            addCriterion("kfg not like", value, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgIn(List<String> values) {
-            addCriterion("khg in", values, "khg");
+        public Criteria andKfgIn(List<String> values) {
+            addCriterion("kfg in", values, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgNotIn(List<String> values) {
-            addCriterion("khg not in", values, "khg");
+        public Criteria andKfgNotIn(List<String> values) {
+            addCriterion("kfg not in", values, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgBetween(String value1, String value2) {
-            addCriterion("khg between", value1, value2, "khg");
+        public Criteria andKfgBetween(String value1, String value2) {
+            addCriterion("kfg between", value1, value2, "kfg");
             return (Criteria) this;
         }
 
-        public Criteria andKhgNotBetween(String value1, String value2) {
-            addCriterion("khg not between", value1, value2, "khg");
+        public Criteria andKfgNotBetween(String value1, String value2) {
+            addCriterion("kfg not between", value1, value2, "kfg");
             return (Criteria) this;
         }
 

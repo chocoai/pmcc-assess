@@ -1,17 +1,17 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.dao.HousePriceIndexDao;
 import com.copower.pmcc.assess.dal.dao.funi.FuniHousesDao;
+import com.copower.pmcc.assess.dal.dao.funi.FuniHousesMatingDao;
 import com.copower.pmcc.assess.dal.dao.funi.FuniHousesPropertyDao;
 import com.copower.pmcc.assess.dal.dao.funi.FuniHousesTypeDao;
-import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dal.entity.FuniHouses;
+import com.copower.pmcc.assess.dal.entity.FuniHousesMating;
 import com.copower.pmcc.assess.dal.entity.FuniHousesProperty;
 import com.copower.pmcc.assess.dal.entity.FuniHousesType;
-import com.copower.pmcc.assess.dto.output.BaseProcessVo;
 import com.copower.pmcc.assess.service.FuniWebService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -50,13 +50,26 @@ public class FuniViewerController {
     private FuniHousesTypeDao funiHousesTypeDao;
     @Autowired
     private FuniWebService funiWebService;
+    @Autowired
+    private FuniHousesMatingDao funiHousesMatingDao;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/funiIndex");
         return modelAndView;
     }
+    @RequestMapping(value = "/funiDetails", method = RequestMethod.GET)
+    public ModelAndView funiDetails(Integer lpbh) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/funiDetails");
 
+        FuniHouses funiHouses = funiHousesDao.getFuniHouses(lpbh);
+        modelAndView.addObject("funiHouses",funiHouses);
+        List<FuniHousesProperty> funiHousesPropertyList = funiHousesPropertyDao.getFuniHousesPropertyList(lpbh);
+        modelAndView.addObject("funiHousesPropertyList",funiHousesPropertyList);
+        FuniHousesMating funiHousesMating = funiHousesMatingDao.getFuniHousesMatingByLpbh(lpbh);
+        modelAndView.addObject("funiHousesMating",funiHousesMating);
+        return modelAndView;
+    }
     @ResponseBody
     @RequestMapping(value = "/getHousesList", name = "取得楼盘信息", method = RequestMethod.GET)
     public BootstrapTableVo getHousesList() {
@@ -107,5 +120,16 @@ public class FuniViewerController {
     public HttpResult getHousesType(Integer lpbh) {
         List<FuniHousesType> funiHousesTypeList = funiHousesTypeDao.getFuniHousesTypeList(lpbh);
         return HttpResult.newCorrectResult(funiHousesTypeList);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateHousesData", name = "更新楼盘信息", method = RequestMethod.POST)
+    public HttpResult updateHousesData(Integer id, String xxType, String keys, String values) {
+        try {
+            funiWebService.updateHousesData(id, xxType, keys, values);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }

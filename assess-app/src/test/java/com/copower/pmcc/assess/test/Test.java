@@ -17,6 +17,11 @@ public class Test {
 
     @org.junit.Test
     public void simpleTest(){
+
+        String s="[青白江区]成都市青白江区城厢镇金渊路81号";
+        String substring = s.substring(1, s.indexOf(']'));
+        System.out.println(substring);
+
         BigDecimal thisWorkYear = new BigDecimal(-366).divide(new BigDecimal(365),BigDecimal.ROUND_FLOOR);
         System.out.print(thisWorkYear);
     }

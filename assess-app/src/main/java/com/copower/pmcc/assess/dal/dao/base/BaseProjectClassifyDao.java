@@ -35,20 +35,39 @@ public class BaseProjectClassifyDao {
                 .andPidEqualTo(0)
                 .andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(fieldName)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%",fieldName));
+            criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }
         if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike("%"+name+"%");
+            criteria.andNameLike("%" + name + "%");
         }
         example.setOrderByClause("sorting");
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
     //endregion
-    
-    public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify){
+
+    public List<BaseProjectClassify> getListObject(String name, String key, Integer pid, List<String> filterKey) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        MybatisUtils.convertObj2Example(baseProjectClassify,example);
+        BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
+                .andBisEnableEqualTo(true)
+                .andBisDeleteEqualTo(false);
+        if (StringUtils.isNotBlank(key)) {
+            criteria.andFieldNameLike(MessageFormat.format("%{0}%", key));
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike("%" + name + "%");
+        }
+        if (pid != null) {
+            criteria.andPidEqualTo(pid);
+        }
+        example.setOrderByClause("sorting");
+        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
+        return list;
+    }
+
+    public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify) {
+        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+        MybatisUtils.convertObj2Example(baseProjectClassify, example);
         return baseProjectClassifyMapper.selectByExample(example);
     }
 
@@ -59,7 +78,7 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public List<BaseProjectClassify> getListByPid(Integer pid,String search) {
+    public List<BaseProjectClassify> getListByPid(Integer pid, String search) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         BaseProjectClassifyExample.Criteria criteria = example.createCriteria();
         criteria.andPidEqualTo(pid).andBisDeleteEqualTo(false);
@@ -91,9 +110,8 @@ public class BaseProjectClassifyDao {
     }
     //endregion
 
-    public List<BaseProjectClassify> getEnableListByPids(List<Integer> integers)
-    {
-        BaseProjectClassifyExample example=new BaseProjectClassifyExample();
+    public List<BaseProjectClassify> getEnableListByPids(List<Integer> integers) {
+        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         example.createCriteria().andPidIn(integers);
         return baseProjectClassifyMapper.selectByExample(example);
     }
@@ -105,7 +123,7 @@ public class BaseProjectClassifyDao {
      */
     public List<BaseProjectClassify> getEnableList(String fieldName) {
         BaseProjectClassify sysProjectClassify = getSingleObject(fieldName);
-        if(sysProjectClassify==null) return null;
+        if (sysProjectClassify == null) return null;
         return getEnableListByPid(sysProjectClassify.getId());
     }
     //endregion
@@ -116,12 +134,12 @@ public class BaseProjectClassifyDao {
      * @return
      */
     public BaseProjectClassify getSingleObject(String fieldName) {
-        if(StringUtils.isBlank(fieldName)) return null;
+        if (StringUtils.isBlank(fieldName)) return null;
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         example.createCriteria().andFieldNameEqualTo(fieldName);
         example.setOrderByClause("sorting");
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(list))
+        if (CollectionUtils.isEmpty(list))
             return null;
         return list.get(0);
     }
@@ -133,7 +151,7 @@ public class BaseProjectClassifyDao {
      * @return
      */
     public List<BaseProjectClassify> getEnableListByGroupName(String groupKey) {
-        if(StringUtils.isBlank(groupKey))return null;
+        if (StringUtils.isBlank(groupKey)) return null;
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         example.createCriteria()
                 .andBisEnableEqualTo(true)
@@ -187,12 +205,13 @@ public class BaseProjectClassifyDao {
 
     /**
      * 根据名称判断是否已存在
+     *
      * @param filedName
      * @param id
      * @return
      */
     public boolean isExist(String filedName, Integer id) {
-        if(StringUtils.isBlank(filedName)) return false;
+        if (StringUtils.isBlank(filedName)) return false;
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         BaseProjectClassifyExample.Criteria criteria = example.createCriteria();
         criteria.andFieldNameEqualTo(filedName);
