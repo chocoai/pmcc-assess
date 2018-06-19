@@ -16,7 +16,8 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
     private String typeName;//数据类型名称
 
     private String dataPoolTypename;//数据来源
-
+    private String tableName;
+    private String columnName;
 
     private List<KeyValueDto> keyValueDtos;
 
@@ -34,6 +35,22 @@ public class BaseReportTemplateVo extends BaseReportTemplate {
 
     public void setDataPoolTypename(String dataPoolTypename) {
         this.dataPoolTypename = dataPoolTypename;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public List<KeyValueDto> getKeyValueDtos() {

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dto.input.base;
 
 import com.copower.pmcc.assess.dal.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles;
+import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class BaseReportTemplateFilesDto {
     private BaseReportTemplateFiles baseReportTemplateFiles;
-    private List<BaseReportTemplate> baseReportTemplateList;
+    private List<BaseReportTemplateVo> baseReportTemplateVoList;
 
     public BaseReportTemplateFiles getBaseReportTemplateFiles() {
         return baseReportTemplateFiles;
@@ -20,11 +21,11 @@ public class BaseReportTemplateFilesDto {
         this.baseReportTemplateFiles = baseReportTemplateFiles;
     }
 
-    public List<BaseReportTemplate> getBaseReportTemplateList() {
-        return baseReportTemplateList;
+    public List<BaseReportTemplateVo> getBaseReportTemplateVoList() {
+        return baseReportTemplateVoList;
     }
 
-    public void setBaseReportTemplateList(List<BaseReportTemplate> baseReportTemplateList) {
-        this.baseReportTemplateList = baseReportTemplateList;
+    public void setBaseReportTemplateVoList(List<BaseReportTemplateVo> baseReportTemplateVoList) {
+        this.baseReportTemplateVoList = baseReportTemplateVoList;
     }
 }

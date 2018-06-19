@@ -7,7 +7,10 @@ import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.CreateInsertHelp;
+import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Maps;
 import org.apache.poi.hssf.record.formula.functions.T;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -22,6 +25,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by kings on 2018-5-31.
@@ -118,4 +122,16 @@ public class PoiTest {
         }
     }
 
+
+    @Test
+    public void insertSqlTest(){
+        CsrBorrower csrBorrower=new CsrBorrower();
+        csrBorrower.setProjectId(0);
+        csrBorrower.setBisImport(true);
+        csrBorrower.setBorrowerId(UUID.randomUUID().toString());
+        String s =new CreateInsertHelp().createInsert(csrBorrower);
+        System.out.print(s);
+
+        System.out.println(FormatUtils.camelToUnderline("borrowerId"));
+    }
 }
