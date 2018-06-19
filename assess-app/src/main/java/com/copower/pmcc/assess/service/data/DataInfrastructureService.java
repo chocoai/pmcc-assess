@@ -82,7 +82,7 @@ public class DataInfrastructureService {
     //修改附件中的table id 以及存附件的主表的附件id
     public boolean update_BaseAttachment(int pid, String fields_name){
         int TEMP = 0;
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name);
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name,null);
         //一般都只有一个
         if (baseAttachments.size()>0){
             BaseAttachment baseAttachment = baseAttachments.get(0);

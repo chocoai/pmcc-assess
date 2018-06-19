@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
+import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerEnteringDao;
@@ -15,9 +16,11 @@ import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -29,6 +32,8 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -40,14 +45,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -85,6 +94,10 @@ public class CsrBorrowerService {
     private BaseReportService baseReportService;
     @Autowired
     private CsrBorrowerMortgageService csrBorrowerMortgageService;
+    @Autowired
+    private FormConfigureService formConfigureService;
+    @Autowired
+    private DataCsrFieldRelationService csrFieldRelationService;
 
     public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -105,6 +118,11 @@ public class CsrBorrowerService {
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CsrBorrower>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
+    }
+
+    public CsrBorrower getCsrBorrowerByID(Integer id){
+        id = Preconditions.checkNotNull(id,"不能为null");
+        return csrBorrowerDao.getCsrBorrowerByID(id);
     }
 
     /**
@@ -176,7 +194,7 @@ public class CsrBorrowerService {
         List<BaseAttachment> baseAttachments = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             if (!org.springframework.util.StringUtils.isEmpty(ids[i])) {
-                List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(Integer.parseInt(ids[i]), report);
+                List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(Integer.parseInt(ids[i]), report,null);
                 baseAttachments.addAll(baseAttachmentList);
             }
         }
@@ -184,12 +202,35 @@ public class CsrBorrowerService {
             String localDirPath = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath();
             String localFileName = UUID.randomUUID().toString().substring(0, 7) + CsrBorrowerEnum.ZIP_NAME.getFilePath() + "." + baseAttachment.getFileExtension();
             //临时下载
-            readImportData(localDirPath, localFileName, baseAttachment);
+            readImportData(localDirPath, localFileName, baseAttachment,report);
             //收集 临时目录地址
             filePaths.add(localDirPath + localFileName);
         }
         return filePaths;
     }
+
+    /**
+     * 查找附件 并且把附件下载到临时的目录下
+     * @param tableID
+     * @return
+     */
+    private List<String> changeBaseAttachment(Integer tableID){
+        tableID = Preconditions.checkNotNull(tableID,"不能为null");
+        List<String> filePaths = new ArrayList<>();
+        String localDirPath = baseAttachmentService.createTempBasePath();
+        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_REPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
+        for (BaseAttachment baseAttachment:baseAttachmentList){
+            if (!ObjectUtils.isEmpty(baseAttachment)){
+                String fileSuffix = baseAttachment.getFileExtension();
+                String localFileName = UUID.randomUUID().toString().substring(0, 7)  + "." + fileSuffix;
+                //临时下载
+                readImportData(localDirPath, localFileName, baseAttachment,AssessFieldNameConstant.CSR_BORROWER_REPORT);
+                filePaths.add(localDirPath + localFileName);
+            }
+        }
+        return filePaths;
+    }
+
 
     /**
      * 将ftp的附件下载到本地
@@ -198,8 +239,8 @@ public class CsrBorrowerService {
      * @param localFileName
      * @param baseAttachment
      */
-    private void readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment) {
-        List<BaseAttachment> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), AssessFieldNameConstant.CSR_BORROWER_REPORT);
+    private void readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment,String fileName) {
+        List<BaseAttachment> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName,null);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
             BaseAttachment sysAttachment = attachmentList.get(0);
             String fullPath = localDirPath + File.separator + localFileName;
@@ -330,7 +371,7 @@ public class CsrBorrowerService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
         CsrProjectInfo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
         BaseReportTemplateFilesDto baseReportTemplateFilesDto = null;
-        baseReportTemplateFilesDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(),baseDataDic.getId(),csrProjectInfo.getCustomerType(),csrProjectInfo.getProjectTypeId(),csrProjectInfo.getProjectCategoryId());
+        baseReportTemplateFilesDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(),baseDataDic.getId(),0,csrProjectInfo.getProjectTypeId(),csrProjectInfo.getProjectCategoryId());
         responseEntity = toExportFormBorrowers(request,response,baseReportTemplateFilesDto,csrProjectInfoID);
         return  responseEntity;
     }
@@ -339,8 +380,112 @@ public class CsrBorrowerService {
         ResponseEntity<byte[]> responseEntity = null;
         CsrBorrowerMortgage csrBorrowerMortgage = null;
         List<CsrBorrowerMortgage> csrBorrowerMortgages = csrBorrowerMortgageService.getCsrProjectMortgages(csrProjectInfoID);
+        //获取下载到临时目录的模型报表文件 这里可能是word 也可能是 excel
+        List<String> filePaths = changeBaseAttachment(templateFilesDto.getBaseReportTemplateFiles().getId());
+        Set<CsrBorrower> csrBorrowers = new HashSet<>();
+        if(!ObjectUtils.isEmpty(csrBorrowerMortgages)){
+            for (int i = 0; i < csrBorrowerMortgages.size(); i++) {
+                csrBorrowerMortgage = csrBorrowerMortgages.get(i);
+                if (!ObjectUtils.isEmpty(csrBorrowerMortgage)){
+                    CsrBorrower csrBorrower = getCsrBorrowerByID(csrBorrowerMortgage.getBorrowerId());
+                    if (!ObjectUtils.isEmpty(csrBorrower)){
+                        csrBorrowers.add(csrBorrower);
+                    }
+                }
+            }
+        }
+        //根据模型约定只会有一个模型文件
+        String filePath = filePaths.get(0);
+        List<Map<String, String>> mapList = getBookmarkContent(templateFilesDto.getBaseReportTemplateList(),csrBorrowers);
+        responseEntity = writeCsrBorrowerModel(filePath,mapList);
         return responseEntity;
     }
+
+    private ResponseEntity<byte[]> writeCsrBorrowerModel(String filePath,List<Map<String, String>> mapList){
+        ResponseEntity<byte[]> responseEntity = null;
+        if (!org.springframework.util.StringUtils.isEmpty(filePath)){
+
+        }
+        for (Map<String, String> map:mapList){
+
+        }
+        return responseEntity;
+    }
+
+    private List<Map<String, String>> getBookmarkContent(List<BaseReportTemplate> baseReportTemplateList,Set<CsrBorrower> csrBorrowers){
+        List<Map<String, String>> mapList = new ArrayList<>();
+        Map<String, String> stringMap = null;
+        final String tableName =  "tb_csr_borrower" ;
+        List<KeyValueDto>  keyValueDtos = formConfigureService.getFieldList(tableName);
+        for (CsrBorrower csrBorrower:csrBorrowers){
+            if (!ObjectUtils.isEmpty(csrBorrower)){
+                stringMap = new HashMap<>();
+                for (BaseReportTemplate baseReportTemplate:baseReportTemplateList){
+                    if (!ObjectUtils.isEmpty(baseReportTemplate)){
+                        String key = baseReportTemplate.getBookmarkName();
+                        try {
+                            DataCsrFieldRelation csrFieldRelation = csrFieldRelationService.getByAnotherName(key);
+                            if (!ObjectUtils.isEmpty(csrFieldRelation)){
+                                String keyValue = equalsCsrBorrowerFieldName(CsrBorrower.class,csrFieldRelation.getFieldName());
+                                if (!org.springframework.util.StringUtils.isEmpty(keyValue)){
+                                    final BeanWrapper src = new BeanWrapperImpl(csrBorrower);
+                                    Object srcValue = src.getPropertyValue(keyValue);
+                                    if (!org.springframework.util.StringUtils.isEmpty(srcValue)){
+                                        stringMap.put(key,(String) srcValue);
+                                    }
+                                }
+                            }
+                        }catch (Exception e){
+                            try {
+                                logger.error("异常! --------> "+e.getMessage());
+                                throw e;
+                            }catch (Exception e1){
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return mapList;
+    }
+
+    /**
+     * 利用反射 获取成员变量 和 数据字段进行比较
+     * @param csrBorrowerClass
+     * @param fieldName
+     * @return
+     */
+    public String equalsCsrBorrowerFieldName(Class<CsrBorrower> csrBorrowerClass,String fieldName){
+        Field[] fields = csrBorrowerClass.getDeclaredFields();
+        String[] strings = fieldName.split("_") ;
+        StringBuilder builder = new StringBuilder(1024);
+        for (String s:strings){
+            builder.append(s);
+        }
+        for (Field field:fields){
+            String name = field.getName();
+            if (!org.springframework.util.StringUtils.isEmpty(fieldName)){
+                if (name.equalsIgnoreCase(builder.toString())){
+                    return name;
+                }
+
+            }
+        }
+        return null;
+    }
+
+    private String getDataBaseField(List<KeyValueDto>  keyValueDtos,String field){
+        String temp = "" ;
+        for (KeyValueDto keyValue:keyValueDtos){
+            if (Objects.equal(keyValue.getKey(),field)){
+                temp = keyValue.getKey();
+            }
+        }
+        return temp;
+    }
+
+
 
     /**
      * 导出报告excle

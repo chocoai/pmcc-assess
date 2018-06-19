@@ -155,4 +155,8 @@ public class DataCsrFieldRelationService {
         }
         return null;
     }
+
+    public DataCsrFieldRelation getByAnotherName(String anotherName){
+        return csrFieldRelationDao.getByAnotherName(anotherName);
+    }
 }
