@@ -18,7 +18,7 @@
     <result column="yh" property="yh" jdbcType="VARCHAR" />
     <result column="atm" property="atm" jdbcType="VARCHAR" />
     <result column="ct" property="ct" jdbcType="VARCHAR" />
-    <result column="khg" property="khg" jdbcType="VARCHAR" />
+    <result column="kfg" property="kfg" jdbcType="VARCHAR" />
     <result column="gy" property="gy" jdbcType="VARCHAR" />
     <result column="dyy" property="dyy" jdbcType="VARCHAR" />
     <result column="jsf" property="jsf" jdbcType="VARCHAR" />
@@ -83,7 +83,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, lpbh, gj, dt, yey, xx, zx, dx, yy, yd, sc, cs, csc, yh, atm, ct, khg, gy, dyy, 
+    id, lpbh, gj, dt, yey, xx, zx, dx, yy, yd, sc, cs, csc, yh, atm, ct, kfg, gy, dyy, 
     jsf, tyg
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesMatingExample" >
@@ -124,13 +124,13 @@
       yey, xx, zx, dx, 
       yy, yd, sc, cs, 
       csc, yh, atm, ct, 
-      khg, gy, dyy, jsf, 
+      kfg, gy, dyy, jsf, 
       tyg)
     values (#{lpbh,jdbcType=INTEGER}, #{gj,jdbcType=VARCHAR}, #{dt,jdbcType=VARCHAR}, 
       #{yey,jdbcType=VARCHAR}, #{xx,jdbcType=VARCHAR}, #{zx,jdbcType=VARCHAR}, #{dx,jdbcType=VARCHAR}, 
       #{yy,jdbcType=VARCHAR}, #{yd,jdbcType=INTEGER}, #{sc,jdbcType=VARCHAR}, #{cs,jdbcType=VARCHAR}, 
       #{csc,jdbcType=VARCHAR}, #{yh,jdbcType=VARCHAR}, #{atm,jdbcType=VARCHAR}, #{ct,jdbcType=VARCHAR}, 
-      #{khg,jdbcType=VARCHAR}, #{gy,jdbcType=VARCHAR}, #{dyy,jdbcType=VARCHAR}, #{jsf,jdbcType=VARCHAR}, 
+      #{kfg,jdbcType=VARCHAR}, #{gy,jdbcType=VARCHAR}, #{dyy,jdbcType=VARCHAR}, #{jsf,jdbcType=VARCHAR}, 
       #{tyg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesMating" >
@@ -184,8 +184,8 @@
       <if test="ct != null" >
         ct,
       </if>
-      <if test="khg != null" >
-        khg,
+      <if test="kfg != null" >
+        kfg,
       </if>
       <if test="gy != null" >
         gy,
@@ -246,8 +246,8 @@
       <if test="ct != null" >
         #{ct,jdbcType=VARCHAR},
       </if>
-      <if test="khg != null" >
-        #{khg,jdbcType=VARCHAR},
+      <if test="kfg != null" >
+        #{kfg,jdbcType=VARCHAR},
       </if>
       <if test="gy != null" >
         #{gy,jdbcType=VARCHAR},
@@ -320,8 +320,8 @@
       <if test="record.ct != null" >
         ct = #{record.ct,jdbcType=VARCHAR},
       </if>
-      <if test="record.khg != null" >
-        khg = #{record.khg,jdbcType=VARCHAR},
+      <if test="record.kfg != null" >
+        kfg = #{record.kfg,jdbcType=VARCHAR},
       </if>
       <if test="record.gy != null" >
         gy = #{record.gy,jdbcType=VARCHAR},
@@ -358,7 +358,7 @@
       yh = #{record.yh,jdbcType=VARCHAR},
       atm = #{record.atm,jdbcType=VARCHAR},
       ct = #{record.ct,jdbcType=VARCHAR},
-      khg = #{record.khg,jdbcType=VARCHAR},
+      kfg = #{record.kfg,jdbcType=VARCHAR},
       gy = #{record.gy,jdbcType=VARCHAR},
       dyy = #{record.dyy,jdbcType=VARCHAR},
       jsf = #{record.jsf,jdbcType=VARCHAR},
@@ -415,8 +415,8 @@
       <if test="ct != null" >
         ct = #{ct,jdbcType=VARCHAR},
       </if>
-      <if test="khg != null" >
-        khg = #{khg,jdbcType=VARCHAR},
+      <if test="kfg != null" >
+        kfg = #{kfg,jdbcType=VARCHAR},
       </if>
       <if test="gy != null" >
         gy = #{gy,jdbcType=VARCHAR},
@@ -450,7 +450,7 @@
       yh = #{yh,jdbcType=VARCHAR},
       atm = #{atm,jdbcType=VARCHAR},
       ct = #{ct,jdbcType=VARCHAR},
-      khg = #{khg,jdbcType=VARCHAR},
+      kfg = #{kfg,jdbcType=VARCHAR},
       gy = #{gy,jdbcType=VARCHAR},
       dyy = #{dyy,jdbcType=VARCHAR},
       jsf = #{jsf,jdbcType=VARCHAR},

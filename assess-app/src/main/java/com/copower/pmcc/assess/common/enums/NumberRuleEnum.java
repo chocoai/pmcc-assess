@@ -1,18 +1,18 @@
 package com.copower.pmcc.assess.common.enums;
 
-public enum CaseComparisonTypeEnum {
-    EXPLORE(0, "查勘"), CASE(1, "案例");
+public enum NumberRuleEnum {
+    NEWNUMBER(-1,"新号"),CONTINUOUS(0, "一直连续"), DISJUNCTION(1, "按年分断");
     private String name;
     private Integer id;
 
-    private CaseComparisonTypeEnum(Integer id, String name) {
+    private NumberRuleEnum(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // 普通方法
+    // name替换id
     public static String getName(int id) {
-        for (CaseComparisonTypeEnum c : CaseComparisonTypeEnum.values()) {
+        for (NumberRuleEnum c : NumberRuleEnum.values()) {
             if (c.getId() == id) {
                 return c.name;
             }

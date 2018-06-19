@@ -176,7 +176,7 @@
                                         <div class="col-sm-9">
                                             <select class="form-control" required id="sameReportType" name="sameReportType">
                                                 <option value="">-请选择-</option>
-                                                <option value="0">新号</option>
+                                                <option value="-1">新号</option>
                                                 <c:forEach var="items" items="${reportTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
                                                 </c:forEach>
@@ -193,8 +193,8 @@
                                         <div class="col-sm-9">
                                             <select class="form-control" required id="recount" name="recount">
                                                 <option value="">-请选择-</option>
-                                                    <option value="一直连续">一直连续</option>
-                                                    <option value="按年分断">按年分断</option>
+                                                    <option value="0">一直连续</option>
+                                                    <option value="1">按年分断</option>
                                             </select>
                                         </div>
                                     </div>
@@ -251,8 +251,8 @@
         cols.push({field: 'dateRule', title: '日期规则'});
         cols.push({field: 'figures', title: '位数'});
         cols.push({field: 'startNumber', title: '起始编号'});
-        cols.push({field: 'sameReportType', title: '同号的报告类型'});
-        cols.push({field: 'recount', title: '文号重新计算方式'});
+        cols.push({field: 'sameReportTypeName', title: '同号的报告类型'});
+        cols.push({field: 'recountName', title: '文号重新计算方式'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

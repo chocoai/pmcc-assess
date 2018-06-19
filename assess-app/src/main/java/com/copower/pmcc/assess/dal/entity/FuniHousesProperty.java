@@ -43,7 +43,7 @@ public class FuniHousesProperty {
 
     private String wd;
 
-    private String fxqj;
+    private String hxqj;
 
     private String kts;
 
@@ -219,12 +219,12 @@ public class FuniHousesProperty {
         this.wd = wd == null ? null : wd.trim();
     }
 
-    public String getFxqj() {
-        return fxqj;
+    public String getHxqj() {
+        return hxqj;
     }
 
-    public void setFxqj(String fxqj) {
-        this.fxqj = fxqj == null ? null : fxqj.trim();
+    public void setHxqj(String hxqj) {
+        this.hxqj = hxqj == null ? null : hxqj.trim();
     }
 
     public String getKts() {

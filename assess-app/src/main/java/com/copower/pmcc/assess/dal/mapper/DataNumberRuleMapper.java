@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dal.entity.DataNumberRuleExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DataNumberRuleMapper {
     int countByExample(DataNumberRuleExample example);
