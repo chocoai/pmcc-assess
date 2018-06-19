@@ -60,7 +60,7 @@ public class CaseComparisonFieldDao {
         if (StringUtils.isNotBlank(name)) {
             example.createCriteria().andUNameLike("%" + name + "%");
         }
-        example.setOrderByClause("type DESC,id DESC");
+        example.setOrderByClause("type DESC");
         list = mapper.selectByExample(example);
         list.parallelStream().forEach(c -> dtos.add(change(c)));
         return dtos;
