@@ -524,6 +524,8 @@
         console.log(row);
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        extractTemplateExplore();
+        extractTemplateCase();
         $('#divBox').modal();
     }
 
