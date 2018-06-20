@@ -292,6 +292,7 @@ public class BaseReportService {
         baseReportTemplateFiles.setEntrustId(entrustId);
         baseReportTemplateFiles.setReportTypeId(reportTypeId);
         baseReportTemplateFiles.setCsType(csTypeId);
+        baseReportTemplateFiles.setBisEnable(true);
         baseReportTemplateFiles.setClassifyId(classifyId);
         List<BaseReportTemplateFiles> baseReportTemplateFilesList = baseReportDao.getBaseReportTemplateFilesByExample(baseReportTemplateFiles, "");
         if (CollectionUtils.isNotEmpty(baseReportTemplateFilesList)) {

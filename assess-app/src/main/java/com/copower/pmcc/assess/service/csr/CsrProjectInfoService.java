@@ -2,6 +2,9 @@ package com.copower.pmcc.assess.service.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -968,14 +971,14 @@ public class CsrProjectInfoService {
      * @param ids
      */
     public void generateTemp(String ids) {
-        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        List<String> integerList = FormatUtils.transformString2List(ids);
         int i = 1;
-        for (Integer integer : integerList) {
+        for (String sjhth : integerList) {
             BaseAttachment attachment = new BaseAttachment();
             attachment.setTableName("sheet1");
             attachment.setFieldsName("report");
             try {
-                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
+                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where sjhth='" + sjhth + "'");
                 attachment.setFileName(String.valueOf(mapList.get(0).get("khxm") + "报告"));
                 //templateSetService 取报告模板
 
@@ -983,24 +986,49 @@ public class CsrProjectInfoService {
 
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName("single.csr");
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
-                Integer templateId = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+
+
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;
                 ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
-                if (CollectionUtils.isNotEmpty(mapList)) {
 
-                    for (Map<String, Object> map : mapList) {
-                        try {
-                            Map<String, String> stringMap = toMapString(map);
-                            stringMap.put("${number}", String.valueOf(i));
-                            AsposeUtils.replaceText(localFullPath, stringMap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                List<KeyValueDto> valueDtoList = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                int k = mapList.size();
+                for (Map<String, Object> map : mapList) {
+                    for (KeyValueDto keyValueDto : valueDtoList) {
+                        String local = baseAttachmentService.downloadFtpFileToLocal(Integer.valueOf(keyValueDto.getValue()));
+                        Map<String, String> stringMap = toMapString(map);
+                        if (mapList.size() > 1)
+                            stringMap.put("${dywxh}", k + "");
+                        else{
+                            stringMap.put("${dywxh}", "");
                         }
+                        AsposeUtils.replaceText(local, stringMap);
+
+                        Document doc = new Document(localFullPath);
+                        DocumentBuilder builder = new DocumentBuilder(doc);
+                        builder.moveToBookmark(keyValueDto.getKey());
+                        Document document = new Document(local);
+                        builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                        doc.save(localFullPath);
+                    }
+                    k--;
+                }
+
+                if (CollectionUtils.isNotEmpty(mapList)) {
+                    try {
+                        Map<String, String> stringMap = toMapString(mapList.get(0));
+                        stringMap.put("${number}", String.valueOf(i));
+                        AsposeUtils.replaceText(localFullPath, stringMap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
+
+
                 //再将附件上传到相同位置
                 try {
                     ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
@@ -1008,7 +1036,7 @@ public class CsrProjectInfoService {
                     logger.error(e.getMessage());
                 }
 
-                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s", ftpAttachment.getId(), integer));
+                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where sjhth='%s'", ftpAttachment.getId(), sjhth));
                 i++;
             } catch (Exception e) {
                 e.printStackTrace();
