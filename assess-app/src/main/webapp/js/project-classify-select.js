@@ -56,7 +56,10 @@
                     chkboxType: {"Y": "", "N": ""}
                 };
             }
-            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">';
+            that.setting.async.otherParam = {
+                "filterKey": that.defaults.filterKey.join()
+            };
+            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true" data-height="200">';
             html += '<div class="modal-dialog">';
             html += '<div class="modal-content">';
             html += '<div class="modal-header">';
@@ -102,7 +105,7 @@
                         name: queryName,
                         key: this.defaults.key,
                         pid: this.defaults.pid,
-                        filterKey: this.defaults.filterKey
+                        filterKey: this.defaults.filterKey.join()
                     },
                     type: "post",
                     dataType: "json",
@@ -131,11 +134,16 @@
 
         init: function () {
             var that = this;
+            var url = getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByKey";
+            var data = {key: that.defaults.key};
+            if (that.defaults.pid != undefined) {
+                var url = getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByPid";
+                var data = {pid: that.defaults.pid};
+            }
+            data.filterKey = this.defaults.filterKey.join();
             $.ajax({
-                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByKey",
-                data: {
-                    key: that.defaults.key
-                },
+                url: url,
+                data: data,
                 type: "post",
                 dataType: "json",
                 success: function (result) {

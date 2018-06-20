@@ -46,7 +46,7 @@
         var cols = [];
         cols.push({
             field: 'chk', align: 'center', title: '', width: '3%', formatter: function (value, row) {
-                return "<input type='checkbox' class='backTask' id='chk_" + row.id + "'/>";
+                return "<input type='checkbox' class='backTask' id='chk_" + row.sjhth + "'/>";
             }
         });
         cols.push({field: 'khxm', title: '借款人'});

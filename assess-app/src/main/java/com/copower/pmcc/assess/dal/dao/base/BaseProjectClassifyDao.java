@@ -29,7 +29,7 @@ public class BaseProjectClassifyDao {
      * @param name
      * @return
      */
-    public List<BaseProjectClassify> getListObject(String fieldName, String name) {
+    public List<BaseProjectClassify> getListObject(String name, String fieldName, Integer pid) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
                 .andBisEnableEqualTo(true)
@@ -39,6 +39,9 @@ public class BaseProjectClassifyDao {
         }
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike("%" + name + "%");
+        }
+        if (pid != null) {
+            criteria.andPidEqualTo(pid);
         }
         example.setOrderByClause("sorting");
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);

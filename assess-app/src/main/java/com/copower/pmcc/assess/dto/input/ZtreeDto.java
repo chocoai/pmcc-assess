@@ -7,6 +7,7 @@ public class ZtreeDto {
     private Integer id;
     private Integer pid;
     private String name;
+    private String key;
     private Boolean isParent;
 
     public Integer getId() {
@@ -31,6 +32,14 @@ public class ZtreeDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Boolean getIsParent() {

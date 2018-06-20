@@ -274,7 +274,7 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="exploreParentNodeId">
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/project-classify-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
@@ -300,9 +300,12 @@
         // 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                console.log(treeNode);
                 //显示配置信息
-                if (treeNode.isParent == false) {
+                if (treeNode.key == AssessProjectClassifyKey.explore) {
+                    var parentKeyNode = AssessCommon.getParentNodeByKey(treeNode, AssessProjectClassifyKey.explore);
+                    if (parentKeyNode) {
+                        $("#exploreParentNodeId").val(parentKeyNode.id);
+                    }
                     loadCaseComparisonList(treeNode.id);
                 } else {
                     $("#case_comparison").hide();
@@ -629,9 +632,12 @@
         })
     }
 
+    //选择案例
     function selectCase() {
         assessProjectClassify.select({
-            key: AssessProjectClassifyKey.single,
+            modalName: "案例选择",
+            pid: $("#exploreParentNodeId").val(),
+            filterKey: [AssessProjectClassifyKey.declare, AssessProjectClassifyKey.explore],
             onSelected: function (nodes) {
                 $("#caseFormTypeName").val(nodes[0].name);
                 $("#caseFormType").val(nodes[0].id);

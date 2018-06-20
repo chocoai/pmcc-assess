@@ -56,7 +56,7 @@ public class BaseProjectClassifyService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BaseProjectClassify> list = baseProjectClassifyDao.getListObject(fieldName, name);
+        List<BaseProjectClassify> list = baseProjectClassifyDao.getListObject(name, fieldName, 0);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<BaseProjectClassify>() : list);
         return bootstrapTableVo;
@@ -70,11 +70,7 @@ public class BaseProjectClassifyService {
      */
     public BaseProjectClassify getProjectInfoByClassify(ProjectInfo projectInfo) {
         if (ObjectUtils.isEmpty(projectInfo)) {
-            try {
-                throw new Exception("exception =====>");
-            } catch (Exception e) {
-
-            }
+            return null;
         }
         BaseProjectClassify baseProjectClassify = null;
         Integer id = null;
@@ -412,41 +408,6 @@ public class BaseProjectClassifyService {
         }
     }
 
-    public TreeViewVo getProjectClassifyTree(String fieldName) {
-
-        BaseProjectClassify hrBaseProjectClassify = getCacheProjectClassifyByFieldName(fieldName);
-        TreeViewVo treeViewVo = new TreeViewVo();
-        if (hrBaseProjectClassify != null) {
-            treeViewVo.setId(hrBaseProjectClassify.getId());
-            treeViewVo.setText(hrBaseProjectClassify.getName());
-            treeViewVo.setpId(0);
-            treeViewVo.setpName("");
-            treeViewVo.setNodes(getTreeView(hrBaseProjectClassify.getId()));
-        }
-        return treeViewVo;
-    }
-
-    private List<TreeViewVo> getTreeView(Integer pid) {
-        TreeViewVo treeViewVo;
-        List<BaseProjectClassify> hrBaseProjectClassifys = getCacheProjectClassifyListByPid(pid);
-        List<TreeViewVo> treeViewVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(hrBaseProjectClassifys)) {
-
-            for (BaseProjectClassify item : hrBaseProjectClassifys) {
-                treeViewVo = new TreeViewVo();
-                treeViewVo.setId(item.getId());
-                treeViewVo.setText(item.getName());
-                treeViewVo.setpId(item.getPid());
-                List<TreeViewVo> treeView = getTreeView(item.getId());
-                if (treeView.size() > 0) {
-                    treeViewVo.setNodes(treeView);
-                }
-                treeViewVos.add(treeViewVo);
-            }
-        }
-        return treeViewVos;
-    }
-
 
     /**
      * 查询数据信息
@@ -459,7 +420,7 @@ public class BaseProjectClassifyService {
         //2.pid为空 key 不为空 则以key查询数据再过滤
         //3.如果pid 与key都为空 则先以名称查询 再过滤
         List<BaseProjectClassify> baseProjectClassifyList = null;
-        baseProjectClassifyList = baseProjectClassifyDao.getListObject(null, name);
+        baseProjectClassifyList = baseProjectClassifyDao.getListObject(name, null, null);
         if (CollectionUtils.isEmpty(baseProjectClassifyList))
             return Lists.newArrayList();
         if (StringUtils.isNotBlank(filterKey)) {
@@ -564,6 +525,7 @@ public class BaseProjectClassifyService {
         ztreeDto.setId(baseProjectClassify.getId());
         ztreeDto.setPid(baseProjectClassify.getPid());
         ztreeDto.setName(baseProjectClassify.getName());
+        ztreeDto.setKey(baseProjectClassify.getFieldName());
         List<BaseProjectClassify> dataDics = getCacheProjectClassifyListByPid(baseProjectClassify.getId());
         ztreeDto.setIsParent(CollectionUtils.isNotEmpty(dataDics));
         return ztreeDto;

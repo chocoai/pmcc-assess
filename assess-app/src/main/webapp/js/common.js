@@ -2,6 +2,18 @@
  * Created by kings on 2018-5-21.
  */
 (function ($) {
+
+    //ztree获取父节点by key值
+    function getParentNodeByKey(node, key) {
+        if (node) {
+            if (node.key == key) {
+                return node.getParentNode();
+            } else {
+                getParentNodeByKey(node.getParentNode(), key);
+            }
+        }
+    }
+
     var assessCommon = {
         //iframe的宽高自适应
         autoIframeHeight: function (iframe) {
@@ -56,35 +68,7 @@
         },
 
         //根据项目类型获取项目类别
-        getProjectCategoryList:function (typeId,callback) {
-            if (typeId) {
-                $.ajax({
-                    url: getContextPath() + "/ProjectPhase/getBidProjectCategoryListByPid",
-                    type: "get",
-                    dataType: "json",
-                    data: {
-                        pid: typeId
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
-                            $.each(result.data, function (i, item) {
-                                retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
-                            });
-                            if(callback){
-                                callback(retHtml, result.data);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            }
-        },
-
-        //根据项目类型获取项目类别
-        getProjectClassifyList:function (typeId,callback) {
+        getProjectClassifyList: function (typeId, callback) {
             if (typeId) {
                 $.ajax({
                     url: getContextPath() + "/baseProjectClassify/getCacheProjectClassifyListByPid",
@@ -99,7 +83,7 @@
                             $.each(result.data, function (i, item) {
                                 retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                             });
-                            if(callback){
+                            if (callback) {
                                 callback(retHtml, result.data);
                             }
                         }
@@ -109,6 +93,11 @@
                     }
                 });
             }
+        },
+
+        //找到key值对应的父节点
+        getParentNodeByKey: function (node, key) {
+            return getParentNodeByKey(node, key);
         }
     };
 
