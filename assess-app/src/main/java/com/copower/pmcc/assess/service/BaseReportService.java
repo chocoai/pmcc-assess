@@ -310,7 +310,7 @@ public class BaseReportService {
 
     }
 
-    public List<Integer> getReportTemplate(Integer customerId, Integer entrustId, Integer reportTypeId, Integer csTypeId, Integer classifyId) {
+    public List<KeyValueDto> getReportTemplate(Integer customerId, Integer entrustId, Integer reportTypeId, Integer csTypeId, Integer classifyId) {
         BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
         baseReportTemplate.setCustomerId(customerId);
         baseReportTemplate.setEntrustId(entrustId);
@@ -327,7 +327,16 @@ public class BaseReportService {
             baseAttachment.setTableId(baseReportTemplate.getId());
             List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(transform, baseAttachment);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
-                return LangUtils.transform(attachmentList, o -> o.getId());
+                return LangUtils.transform(attachmentList, o -> {
+                    KeyValueDto keyValueDto = new KeyValueDto();
+                    List<BaseReportTemplate> filter = LangUtils.filter(baseReportTemplateList, p -> {
+                        return p.getId() == o.getTableId();
+                    });
+
+                    keyValueDto.setKey(filter.get(0).getBookmarkName());
+                    keyValueDto.setValue(o.getId().toString());
+                    return keyValueDto;
+                });
             }
 
         }
