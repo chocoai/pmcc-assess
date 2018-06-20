@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.base;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseProjectClassifyDao;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
@@ -15,6 +16,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
@@ -186,8 +188,7 @@ public class BaseProjectClassifyService {
      *
      * @return
      */
-    public List<BaseProjectClassify> getCacheProjectClassifyList(String fieldName) {
-
+    public List<BaseProjectClassify> getCacheProjectClassifyListByKey(String fieldName) {
         try {
 
             String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_FIELD, fieldName);
@@ -196,19 +197,36 @@ public class BaseProjectClassifyService {
         } catch (Exception e) {
             return baseProjectClassifyDao.getEnableList(fieldName);
         }
+    }
 
+    public List<BaseProjectClassify> getCacheProjectClassifyListByKey(String fieldName, String filterKey) {
+        List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByKey(fieldName);
+        return filterBaseProjectClassifyList(baseProjectClassifyList, filterKey);
     }
 
     public BaseProjectClassify getCacheProjectClassifyByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_FIELD, fieldName);
-
         try {
             BaseProjectClassify sysProjectClassify = LangUtils.singleCache(costsKeyPrefix, fieldName, BaseProjectClassify.class, o -> baseProjectClassifyDao.getSingleObject(o));
             return sysProjectClassify;
         } catch (Exception e) {
             return baseProjectClassifyDao.getSingleObject(fieldName);
         }
+    }
 
+    /**
+     * 集合过滤by filterKey
+     *
+     * @param list
+     * @param filterKey
+     * @return
+     */
+    private List<BaseProjectClassify> filterBaseProjectClassifyList(List<BaseProjectClassify> list, String filterKey) {
+        if (StringUtils.isBlank(filterKey)) return list;
+        List<String> stringList = FormatUtils.transformString2List(filterKey);
+        return LangUtils.filter(list, p -> {
+            return !stringList.contains(p.getFieldName());
+        });
     }
 
     //region 获取缓存中的项目分类数据
@@ -229,15 +247,9 @@ public class BaseProjectClassifyService {
         }
     }
 
-    public List<BaseProjectClassify> getCacheProjectClassifyList(Integer pid) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID, String.valueOf(pid));
-
-        try {
-            List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableListByPid(input));
-            return sysProjectClassifys;
-        } catch (Exception e) {
-            return baseProjectClassifyDao.getEnableListByPid(pid);
-        }
+    public List<BaseProjectClassify> getCacheProjectClassifyListByPid(Integer pid, String filterKey) {
+        List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByPid(pid);
+        return filterBaseProjectClassifyList(baseProjectClassifyList, filterKey);
     }
 
     public List<BaseProjectClassify> getProjectClassifyListByPids(List<Integer> pids) {
@@ -437,50 +449,116 @@ public class BaseProjectClassifyService {
 
 
     /**
-     * 获取数据信息
+     * 查询数据信息
      *
-     * @param pid
+     * @param name
      * @return
      */
-    public List<ZtreeDto> getProjectClassifyTree(String name, String key, Integer pid, String filterKey) {
-        if(StringUtils.isBlank(name)){
-            //缓存获取
-
-        }else{
-            //数据库中查询
-
-        }
-        List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByPid(pid);
+    public List<ZtreeDto> queryProjectClassifyTree(String name, Integer pid, String key, String filterKey) {
+        //1.如果pid不为空 则查询出数据 并过滤
+        //2.pid为空 key 不为空 则以key查询数据再过滤
+        //3.如果pid 与key都为空 则先以名称查询 再过滤
+        List<BaseProjectClassify> baseProjectClassifyList = null;
+        baseProjectClassifyList = baseProjectClassifyDao.getListObject(null, name);
         if (CollectionUtils.isEmpty(baseProjectClassifyList))
             return Lists.newArrayList();
+        if (StringUtils.isNotBlank(filterKey)) {
+            baseProjectClassifyList = filterBaseProjectClassifyList(baseProjectClassifyList, filterKey);
+        }
+
+        List<BaseProjectClassify> resultList = Lists.newArrayList();
+        if (pid != null) {
+            for (BaseProjectClassify baseProjectClassify : baseProjectClassifyList) {
+                if (nodeInPidDataList(baseProjectClassify, pid)) {
+                    resultList.add(baseProjectClassify);
+                }
+            }
+        }
+        if (StringUtils.isNotBlank(key)) {
+            for (BaseProjectClassify baseProjectClassify : baseProjectClassifyList) {
+                if (nodeInKeyDataList(baseProjectClassify, key)) {
+                    resultList.add(baseProjectClassify);
+                }
+            }
+        }
+        return LangUtils.transform(resultList, p -> {
+            return getZtreeDto(p);
+        });
+    }
+
+    /**
+     * 验证节点是否存在初始pid 数据中
+     *
+     * @param baseProjectClassify
+     * @param pid
+     */
+    private boolean nodeInPidDataList(BaseProjectClassify baseProjectClassify, Integer pid) {
+        boolean result = false;
+        if (baseProjectClassify.getPid().equals(pid)) {
+            return true;
+        } else {
+            BaseProjectClassify projectClassify = getCacheProjectClassifyById(baseProjectClassify.getPid());
+            if (projectClassify != null)
+                result = nodeInPidDataList(projectClassify, pid);
+        }
+        return result;
+    }
+
+    /**
+     * 验证节点是否存在初始key 数据中
+     *
+     * @param baseProjectClassify
+     * @param key
+     */
+    private boolean nodeInKeyDataList(BaseProjectClassify baseProjectClassify, String key) {
+        boolean result = false;
+        if (StringUtils.equals(key, baseProjectClassify.getFieldName())) {
+            return true;
+        } else {
+            BaseProjectClassify projectClassify = getCacheProjectClassifyById(baseProjectClassify.getPid());
+            if (projectClassify != null)
+                result = nodeInKeyDataList(projectClassify, key);
+        }
+        return result;
+    }
+
+    /**
+     * 获取树节点by pid
+     *
+     * @param pid
+     * @param filterKey
+     * @return
+     */
+    public List<ZtreeDto> getProjectClassifyTreeByPid(Integer pid, String filterKey) {
+        List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByPid(pid, filterKey);
+        if (CollectionUtils.isEmpty(baseProjectClassifyList)) return null;
         return LangUtils.transform(baseProjectClassifyList, p -> {
             return getZtreeDto(p);
         });
     }
 
     /**
-     * 查询数据信息
+     * 获取树节点by key
      *
-     * @param name
+     * @param key
+     * @param filterKey
      * @return
      */
-    public List<ZtreeDto> queryProjectClassifyTree(String name) {
-        if (StringUtils.isBlank(name))
-            return Lists.newArrayList();
-        List<BaseProjectClassify> dataDicList = baseProjectClassifyDao.getListObject(null, name);
-        if (CollectionUtils.isEmpty(dataDicList))
-            return Lists.newArrayList();
-        return LangUtils.transform(dataDicList, p -> {
+    public List<ZtreeDto> getProjectClassifyTreeByKey(String key, String filterKey) {
+        List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByKey(key, filterKey);
+        if (CollectionUtils.isEmpty(baseProjectClassifyList)) return null;
+        return LangUtils.transform(baseProjectClassifyList, p -> {
             return getZtreeDto(p);
         });
     }
 
-    public List<ZtreeDto> getProjectClassifyByKey(String key) {
-        BaseProjectClassify baseProjectClassify = getCacheProjectClassifyByFieldName(key);
-        if (baseProjectClassify == null) return null;
-        return Lists.newArrayList(getZtreeDto(baseProjectClassify));
-    }
 
+    /**
+     * 实体转ztree对象
+     *
+     * @param baseProjectClassify
+     * @return
+     */
     private ZtreeDto getZtreeDto(BaseProjectClassify baseProjectClassify) {
         ZtreeDto ztreeDto = new ZtreeDto();
         ztreeDto.setId(baseProjectClassify.getId());

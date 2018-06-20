@@ -11,6 +11,7 @@
 </div>
 
 <script src='/assets/js/comm/erp-head.js'></script>
+<script src='${pageContext.request.contextPath}/js/assess-key.js'></script>
 <script type="text/javascript">
     var viewJson = '${baseViewDtoJson}';
     var sysRemindUnReadCount = ${sysRemindUnReadCount};

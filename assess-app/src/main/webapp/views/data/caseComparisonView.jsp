@@ -28,7 +28,7 @@
                             <div class="input-group">
                                 <input type="text" id="queryName" class="form-control">
                                 <span class="input-group-btn">
-                              <a href="javascript://" onclick="queryCaseComparison()" class="btn btn-primary">查询</a>
+                              <a href="javascript://" onclick="queryProjectClassify()" class="btn btn-primary">查询</a>
                             </span>
                             </div>
                             <ul id="ztree" class="ztree"></ul>
@@ -98,7 +98,8 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="模板内容" class="form-control" id="exploreExplain"
-                                                      name="exploreExplain" required="required" onkeyup="extractTemplateExplore()"></textarea>
+                                                      name="exploreExplain" required="required"
+                                                      onkeyup="extractTemplateExplore()"></textarea>
                                             <div class="template-explore">
 
                                             </div>
@@ -113,7 +114,8 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <textarea placeholder="模板内容" class="form-control" id="caseExplain"
-                                                      name="caseExplain" required="required" onkeyup="extractTemplateCase()"></textarea>
+                                                      name="caseExplain" required="required"
+                                                      onkeyup="extractTemplateCase()"></textarea>
                                             <div class="template-case">
 
                                             </div>
@@ -145,45 +147,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                <%--<div class="form-group">--%>
-                                <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-2 control-label">--%>
-                                <%--查勘数据模板<span class="symbol required"></span>--%>
-                                <%--</label>--%>
-                                <%--<div class="col-sm-10">--%>
-                                <%--<div class="input-group">--%>
-                                <%--<input type="hidden" id="formTypeId" name="formTypeId">--%>
-                                <%--<input type="text" name="formTypeName" id="formTypeName" readonly="readonly"--%>
-                                <%--placeholder="查勘表单" class="form-control" required="required">--%>
-                                <%--<span class="input-group-btn">--%>
-                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                <%--onclick="selectFormType();" data-toggle="tooltip"--%>
-                                <%--data-original-title="选择">--%>
-                                <%--<i class="fa fa-search"></i>--%>
-                                <%--</button>--%>
-                                <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
-                                <%--data-toggle="tooltip" data-original-title="清除">--%>
-                                <%--<i class="fa fa-trash-o"></i>--%>
-                                <%--</button>--%>
-                                <%--</span>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveCaseComparison()">
+                            保存
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveCaseComparison()">
-                        保存
-                    </button>
-                </div>
-                </div></form>
+            </form>
         </div>
     </div>
 </div>
@@ -248,13 +225,6 @@
                                             表
                                         </label>
                                         <div class="col-sm-10">
-                                            <%--<select class="form-control search-select select2" name="tableName" id="tableName"--%>
-                                            <%--required="required">--%>
-                                            <%--<option>请选择</option>--%>
-                                            <%--<c:forEach items="${userList}" var="tableVar">--%>
-                                            <%--<option value="${tableVar.key}">${tableVar.key}</option>--%>
-                                            <%--</c:forEach>--%>
-                                            <%--</select>--%>
                                             <input type="text" id="tableName" name="tableName" class="form-control"
                                                    readonly="readonly">
                                         </div>
@@ -272,22 +242,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--类型--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<select class="form-control search-select select2" name="type" id="type"--%>
-                                                    <%--required>--%>
-                                                <%--<option value="">请选择</option>--%>
-                                                <%--<option value="0">查勘</option>--%>
-                                                <%--<option value="1">案例</option>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -322,13 +276,10 @@
 </div>
 
 
-<link rel="stylesheet" href="/assets/plugins/zTree_v3/css/metroStyle/metroStyle.css">
-<script type="text/javascript" src="/assets/plugins/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/project-classify-select.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="application/javascript">
+<script type="text/javascript">
     var zTreeObj;
-//    var fieldExplore = null;
     var setting = {
         data: {
             simpleData: {
@@ -340,8 +291,11 @@
         },
         async: {
             enable: true,
-            url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyTree",
-            autoParam: ["id=pid"]
+            url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyTreeByPid",
+            autoParam: ["id=pid"],
+            otherParam: {
+                "filterKey": [AssessProjectClassifyKey.declare, AssessProjectClassifyKey.case].join()
+            }
         },
         // 回调函数
         callback: {
@@ -363,11 +317,20 @@
 
     //初始化
     function ztreeInit() {
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, [{"id": 0, "pid": 0, "name": "数据信息", "isParent": true}]);
-        //展开第一级，选中根节点
-        var rootNode = zTreeObj.getNodes()[0];
-        zTreeObj.selectNode(rootNode);
-        zTreeObj.expandNode(rootNode, true, false, true);
+        $.ajax({
+            url: getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByKey",
+            data: {
+                key: AssessProjectClassifyKey.single
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.expandNode(rootNode, true, false, true);
+            }
+        })
     }
 
     //查询项目分类
@@ -375,22 +338,27 @@
         var queryName = $("#queryName").val();
         if (queryName) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyTree",
-                data: {name: queryName},
+                url: "${pageContext.request.contextPath}/baseProjectClassify/queryProjectClassifyTree",
+                data: {
+                    name: queryName,
+                    key: AssessProjectClassifyKey.single,
+                    "filterKey": [AssessProjectClassifyKey.declare, AssessProjectClassifyKey.case].join()
+                },
                 type: "post",
                 dataType: "json",
                 success: function (result) {
                     zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
-                    //选中第一个节点
+                    //展开第一级
                     var rootNode = zTreeObj.getNodes()[0];
-                    zTreeObj.selectNode(rootNode);
+                    zTreeObj.expandNode(rootNode, true, false, true);
                 }
             })
         } else {
             ztreeInit();
         }
     }
-
+</script>
+<script type="application/javascript">
     //加载 案例对比配置 基础数据列表
     function loadCaseComparisonList(exploreFormType) {
         var cols = [];
@@ -434,13 +402,13 @@
     //提取查勘字段
     function extractTemplateExplore() {
         $('.template-explore').empty();
-        var text=$("#exploreExplain").val();
+        var text = $("#exploreExplain").val();
         var exploreArray = AssessCommon.extractField(text);
-        if(exploreArray&&exploreArray.length>0){
-            var html='';
-            $.each(exploreArray,function (i,item) {
+        if (exploreArray && exploreArray.length > 0) {
+            var html = '';
+            $.each(exploreArray, function (i, item) {
 //                field  = exploreArray;
-                html+='<span class="label label-default" style="font-weight:bold">'+item+'</span> ';
+                html += '<span class="label label-default" style="font-weight:bold">' + item + '</span> ';
             })
             $('.template-explore').append(html);
         }
@@ -449,13 +417,13 @@
     //提取案例字段
     function extractTemplateCase() {
         $('.template-case').empty();
-        var text=$("#caseExplain").val();
+        var text = $("#caseExplain").val();
         var caseArray = AssessCommon.extractField(text);
-        if(caseArray&&caseArray.length>0){
-            var html='';
-            $.each(caseArray,function (i,item) {
+        if (caseArray && caseArray.length > 0) {
+            var html = '';
+            $.each(caseArray, function (i, item) {
 //                field  = exploreArray;
-                html+='<span class="label label-default" style="font-weight:bold">'+item+'</span> ';
+                html += '<span class="label label-default" style="font-weight:bold">' + item + '</span> ';
             })
             $('.template-case').append(html);
         }
@@ -528,8 +496,6 @@
     }
 
 
-
-
     //------------------------------------------------------------------------------------------------------------------
 
     //加载子项节点数据
@@ -567,14 +533,14 @@
     function setSubDataDic(index) {
         console.log(index);
         var row = $("#tb_List").bootstrapTable('getData')[index];
-        if(row != undefined){
+        if (row != undefined) {
             $("#tableName").val(row.tableName);
             $("#divSubDataDic").modal();//显示
             $("#tbDataDicList").clearAll();//清除数据
             loadSubDataDicList(row.id, function () {
                 $('#divSubDataDic').modal("show");
             });
-        }else{
+        } else {
             $("#divSubDataDic").modal();//显示
             $("#tbDataDicList").clearAll();//清除数据
             loadSubDataDicList(index, function () {
@@ -667,26 +633,10 @@
         assessProjectClassify.select({
             key: AssessProjectClassifyKey.single,
             onSelected: function (nodes) {
-                console.log(nodes);
-//                $("#caseFormType").attr('value',nodes.name);
-//                $("#caseFormType").val(nodes.name);
                 $("#caseFormTypeName").val(nodes[0].name);
                 $("#caseFormType").val(nodes[0].id);
             }
         })
-    }
-
-    function queryCaseComparison(){
-        var zTree = $.fn.zTree.getZTreeObj("ztree");
-        var node = zTree.getNodes();
-        var nodes = zTree.transformToArray(node);
-        var value=$("#queryName").val();
-        console.log(node);
-        console.log(nodes);
-        var nodes = zTree.getNodesByParamFuzzy("name", value,null);
-        if (nodes.length>0) {
-            zTree.selectNode(nodes[0]);
-        }
     }
 
 </script>

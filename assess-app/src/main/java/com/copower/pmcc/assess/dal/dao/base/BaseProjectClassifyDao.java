@@ -32,7 +32,7 @@ public class BaseProjectClassifyDao {
     public List<BaseProjectClassify> getListObject(String fieldName, String name) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
-                .andPidEqualTo(0)
+                .andBisEnableEqualTo(true)
                 .andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(fieldName)) {
             criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
@@ -46,24 +46,6 @@ public class BaseProjectClassifyDao {
     }
     //endregion
 
-    public List<BaseProjectClassify> getListObject(String name, String key, Integer pid, List<String> filterKey) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
-                .andBisEnableEqualTo(true)
-                .andBisDeleteEqualTo(false);
-        if (StringUtils.isNotBlank(key)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%", key));
-        }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        if (pid != null) {
-            criteria.andPidEqualTo(pid);
-        }
-        example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
-        return list;
-    }
 
     public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();

@@ -7,7 +7,7 @@
     var AssessProjectClassify = function () {
         this.defaults = {
             modalName: "数据选择",
-            key: "",//获取key值 以下的数据
+            key: AssessProjectClassifyKey.single,//获取key值 以下的数据
             pid: 0,//获取pid 以下的数据
             filterKey: [],//过滤值
             multi: false,//是否允许多选
@@ -26,10 +26,10 @@
             },
             async: {
                 enable: true,
-                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTree",
+                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByPid",
                 autoParam: ["id=pid"],
                 otherParam: {
-                    "filterKey": "1"
+                    "filterKey": this.defaults.filterKey.join()
                 }
             },
             // 回调函数
@@ -88,7 +88,6 @@
             html += '</div>';
             html += '</div>';
             $(document.body).append(html);
-            //console.log(that);
 
             that.init();
         },
@@ -133,7 +132,7 @@
         init: function () {
             var that = this;
             $.ajax({
-                url: getContextPath() + "/baseProjectClassify/getProjectClassifyByKey",
+                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByKey",
                 data: {
                     key: that.defaults.key
                 },
