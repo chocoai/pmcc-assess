@@ -169,7 +169,8 @@ public class CsrBorrowerService {
      */
     private ResponseEntity<byte[]> appleDownloadBaseAttachment(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
         ResponseEntity<byte[]> responseEntity = null;
-        String zipPathAndName = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath() + commonService.thisUserAccount() + zipName;
+        String localDirPath = baseAttachmentService.createTempBasePath();
+        String zipPathAndName =  localDirPath + zipName;
         List<File> fileList = new ArrayList<>();
         for (int i = 0; i < filePaths.size(); i++) {
             fileList.add(new File(filePaths.get(i)));
@@ -202,9 +203,10 @@ public class CsrBorrowerService {
             String localDirPath = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath();
             String localFileName = UUID.randomUUID().toString().substring(0, 7) + CsrBorrowerEnum.ZIP_NAME.getFilePath() + "." + baseAttachment.getFileExtension();
             //临时下载
-            readImportData(localDirPath, localFileName, baseAttachment,report);
+            String s = readImportData(localDirPath, localFileName, baseAttachment,report);
             //收集 临时目录地址
-            filePaths.add(localDirPath + localFileName);
+//            filePaths.add(localDirPath + localFileName);
+            filePaths.add(s);
         }
         return filePaths;
     }
@@ -215,7 +217,6 @@ public class CsrBorrowerService {
      * @return
      */
     private List<String> changeBaseAttachment(Integer tableID){
-        tableID = Preconditions.checkNotNull(tableID,"不能为null");
         List<String> filePaths = new ArrayList<>();
         String localDirPath = baseAttachmentService.createTempBasePath();
 //        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_REPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);

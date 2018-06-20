@@ -1029,7 +1029,7 @@
             }
         })
     });
-    oneFirstConsignor();
+    // oneFirstConsignor();
     //第一次填写后留下的委托人 数据信息
     function oneFirstConsignor() {
         var oneFirstConsignor = "${oneFirstConsignor}";
