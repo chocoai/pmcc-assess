@@ -42,7 +42,7 @@
                     <div class="x_panel">
                         <div class="x_content">
                             <p id="toolbar">
-                                <a class="btn btn-info" onclick="updateFuni()">
+                                <a id="btn_update_house" class="btn btn-info" onclick="updateFuni()">
                                     <i class="fa fa-refresh"></i>
                                     更新楼盘
                                 </a>
@@ -225,30 +225,32 @@
     }
     //保存数据
     function updateFuni() {
-        //Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/funiViewer/updateHouses",
-            type: "post",
-            dataType: "json",
-            data: {
-                page: 1
-            },
-            success: function (result) {
-                //Loading.progressHide();
-                if (result.ret) {
-                    toastr.success('保存成功');
+        Alert("根据楼盘将花费较长时间，确认要现在更新么？", 2, null, function () {
+            $("#btn_update_house").hide();
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/funiViewer/updateHouses",
+                type: "post",
+                dataType: "json",
+                data: {
+                    page: 1
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                //Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+            })
+        });
     }
-
     function addHouse() {
         $("#frm_house").clearAll();
         $('#model_house').modal({backdrop: 'static', keyboard: false});
