@@ -123,6 +123,8 @@ public class Sheet1 {
 
     private String role;
 
+    private String qtsm;
+
     public Integer getId() {
         return id;
     }
@@ -609,5 +611,13 @@ public class Sheet1 {
 
     public void setRole(String role) {
         this.role = role == null ? null : role.trim();
+    }
+
+    public String getQtsm() {
+        return qtsm;
+    }
+
+    public void setQtsm(String qtsm) {
+        this.qtsm = qtsm == null ? null : qtsm.trim();
     }
 }

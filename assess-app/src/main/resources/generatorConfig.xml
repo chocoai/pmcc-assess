@@ -55,10 +55,7 @@
         <!--<table tableName="tb_csr_contract" domainObjectName="CsrContract">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="tb_funi_houses" domainObjectName="FuniHouses">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_funi_houses_mating" domainObjectName="FuniHousesMating">
+        <table tableName="sheet1" domainObjectName="Sheet1">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table tableName="tb_csr_litigation" domainObjectName="CsrLitigation">-->

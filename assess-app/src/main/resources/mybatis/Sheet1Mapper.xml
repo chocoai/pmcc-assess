@@ -63,6 +63,7 @@
     <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="VARCHAR" />
     <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="qtsm" property="qtsm" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -128,7 +129,7 @@
     dywxz, sfqscf, qszk, sfybzr, bzrqk, ssbq, ssbqqk, fxjzr, bjlxh, bjye, lxye, wjfl, 
     blzcscje, bjscbl, bxscbl, scsj, bgyxq, dywscdj, dywsczj, dywbxl, dywbxjz, pmfbl, 
     pmfje, ssfbl, ssfje, zxfbl, zxfje, sfjdfbl, sfjdfje, ghsfje, xgsfhj, bxjsr, bgcjsj, 
-    attachment_id, version, role
+    attachment_id, version, role, qtsm
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1Example" >
     select
@@ -183,7 +184,7 @@
       zxfje, sfjdfbl, sfjdfje, 
       ghsfje, xgsfhj, bxjsr, 
       bgcjsj, attachment_id, version, 
-      role)
+      role, qtsm)
     values (#{khxm,jdbcType=VARCHAR}, #{sfzhm,jdbcType=VARCHAR}, #{ejfh,jdbcType=VARCHAR}, 
       #{sjhth,jdbcType=VARCHAR}, #{dkffsj,jdbcType=VARCHAR}, #{dkje,jdbcType=VARCHAR}, 
       #{dkpz,jdbcType=VARCHAR}, #{dkqx,jdbcType=VARCHAR}, #{dbfs,jdbcType=VARCHAR}, #{hyzk,jdbcType=VARCHAR}, 
@@ -203,7 +204,7 @@
       #{zxfje,jdbcType=VARCHAR}, #{sfjdfbl,jdbcType=VARCHAR}, #{sfjdfje,jdbcType=VARCHAR}, 
       #{ghsfje,jdbcType=VARCHAR}, #{xgsfhj,jdbcType=VARCHAR}, #{bxjsr,jdbcType=VARCHAR}, 
       #{bgcjsj,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, 
-      #{role,jdbcType=VARCHAR})
+      #{role,jdbcType=VARCHAR}, #{qtsm,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.Sheet1" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -391,6 +392,9 @@
       <if test="role != null" >
         role,
       </if>
+      <if test="qtsm != null" >
+        qtsm,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="khxm != null" >
@@ -572,6 +576,9 @@
       </if>
       <if test="role != null" >
         #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="qtsm != null" >
+        #{qtsm,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -767,6 +774,9 @@
       <if test="record.role != null" >
         role = #{record.role,jdbcType=VARCHAR},
       </if>
+      <if test="record.qtsm != null" >
+        qtsm = #{record.qtsm,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -834,7 +844,8 @@
       bgcjsj = #{record.bgcjsj,jdbcType=VARCHAR},
       attachment_id = #{record.attachmentId,jdbcType=INTEGER},
       version = #{record.version,jdbcType=VARCHAR},
-      role = #{record.role,jdbcType=VARCHAR}
+      role = #{record.role,jdbcType=VARCHAR},
+      qtsm = #{record.qtsm,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1022,6 +1033,9 @@
       <if test="role != null" >
         role = #{role,jdbcType=VARCHAR},
       </if>
+      <if test="qtsm != null" >
+        qtsm = #{qtsm,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -1086,7 +1100,8 @@
       bgcjsj = #{bgcjsj,jdbcType=VARCHAR},
       attachment_id = #{attachmentId,jdbcType=INTEGER},
       version = #{version,jdbcType=VARCHAR},
-      role = #{role,jdbcType=VARCHAR}
+      role = #{role,jdbcType=VARCHAR},
+      qtsm = #{qtsm,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

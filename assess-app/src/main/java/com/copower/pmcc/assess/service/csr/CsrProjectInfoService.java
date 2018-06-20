@@ -988,7 +988,6 @@ public class CsrProjectInfoService {
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
                 Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
 
-
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
@@ -1001,10 +1000,12 @@ public class CsrProjectInfoService {
                     for (KeyValueDto keyValueDto : valueDtoList) {
                         String local = baseAttachmentService.downloadFtpFileToLocal(Integer.valueOf(keyValueDto.getValue()));
                         Map<String, String> stringMap = toMapString(map);
-                        if (mapList.size() > 1)
-                            stringMap.put("${dywxh}", k + "");
-                        else{
-                            stringMap.put("${dywxh}", "");
+                        if (mapList.size() > 1) {
+                            stringMap.put("${dywxh}", "抵押物" + k);
+                            stringMap.put("${jzfxdywxh}", "抵押物" + k);
+                        } else {
+                            stringMap.put("${dywxh}", "抵押物");
+                            stringMap.put("${jzfxdywxh}", "");
                         }
                         AsposeUtils.replaceText(local, stringMap);
 
@@ -1028,7 +1029,6 @@ public class CsrProjectInfoService {
                     }
                 }
 
-
                 //再将附件上传到相同位置
                 try {
                     ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
@@ -1048,6 +1048,10 @@ public class CsrProjectInfoService {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
             String value = String.valueOf(stringObjectEntry.getValue());
+            if(StringUtils.isBlank(value) || value=="null")
+            {
+                value="";
+            }
             switch (stringObjectEntry.getKey()) {
                 case "tdxz":
 

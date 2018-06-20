@@ -76,8 +76,8 @@ public class Sheet1Controller {
         }
         List<Map<String, Object>> mapList = formConfigureService.getObjectList(sql, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         for (Map<String, Object> map : mapList) {
-            if (map.get("attachmentId") != null) {
-                BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(Integer.parseInt(String.valueOf(map.get("attachmentId"))));
+            if (map.get("attachment_id") != null) {
+                BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(Integer.parseInt(String.valueOf(map.get("attachment_id"))));
                 map.put("attachmentHtml", baseAttachmentService.getViewHtml(baseAttachment));
             }
         }

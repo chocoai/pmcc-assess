@@ -4353,6 +4353,76 @@ public class Sheet1Example {
             addCriterion("role not between", value1, value2, "role");
             return (Criteria) this;
         }
+
+        public Criteria andQtsmIsNull() {
+            addCriterion("qtsm is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmIsNotNull() {
+            addCriterion("qtsm is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmEqualTo(String value) {
+            addCriterion("qtsm =", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmNotEqualTo(String value) {
+            addCriterion("qtsm <>", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmGreaterThan(String value) {
+            addCriterion("qtsm >", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmGreaterThanOrEqualTo(String value) {
+            addCriterion("qtsm >=", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmLessThan(String value) {
+            addCriterion("qtsm <", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmLessThanOrEqualTo(String value) {
+            addCriterion("qtsm <=", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmLike(String value) {
+            addCriterion("qtsm like", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmNotLike(String value) {
+            addCriterion("qtsm not like", value, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmIn(List<String> values) {
+            addCriterion("qtsm in", values, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmNotIn(List<String> values) {
+            addCriterion("qtsm not in", values, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmBetween(String value1, String value2) {
+            addCriterion("qtsm between", value1, value2, "qtsm");
+            return (Criteria) this;
+        }
+
+        public Criteria andQtsmNotBetween(String value1, String value2) {
+            addCriterion("qtsm not between", value1, value2, "qtsm");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
