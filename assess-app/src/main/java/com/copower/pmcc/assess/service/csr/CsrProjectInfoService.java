@@ -647,8 +647,8 @@ public class CsrProjectInfoService {
      */
     private List<BaseReportTemplateVo> getReportTemplateList(CsrProjectInfo csrProjectInfo) {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
-                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
+                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
         return reportTemplateFileDto.getBaseReportTemplateVoList();
     }
 
@@ -679,8 +679,8 @@ public class CsrProjectInfoService {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
-                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
+                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 
@@ -754,14 +754,17 @@ public class CsrProjectInfoService {
                         //循环所有书签 依次找到书签或文本对应的值
 
                         Map<String, Object> stringObjectMap = map.get(baseReportTemplateVo.getTableName());
-                        if (stringObjectMap == null) continue;//不处理
+                        if (stringObjectMap == null)
+                            continue;//不处理
                         Object o = stringObjectMap.get(baseReportTemplateVo.getColumnName());
-                        if (o == null) continue;//不处理
-                        String value=String.valueOf(o);
-                        if(StringUtils.isEmpty(value))continue;//空值不处理
+                        if (o == null)
+                            continue;//不处理
+                        String value = String.valueOf(o);
+                        if (StringUtils.isEmpty(value))
+                            continue;//空值不处理
 
                         DataReplaceDto dataReplaceDto = new DataReplaceDto();
-                        dataReplaceDto.setKey(String.format("${%s}",baseReportTemplateVo.getBookmarkName()));
+                        dataReplaceDto.setKey(String.format("${%s}", baseReportTemplateVo.getBookmarkName()));
                         dataReplaceDto.setValue(value);
                         BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());
                         switch (reportMarkbookTypeEnum) {
@@ -910,7 +913,6 @@ public class CsrProjectInfoService {
         }
     }
 
-
     /**
      * 债权人列表信息
      *
@@ -1019,6 +1021,16 @@ public class CsrProjectInfoService {
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
             String value = String.valueOf(stringObjectEntry.getValue());
             switch (stringObjectEntry.getKey()) {
+                case "tdxz":
+
+                {
+                    if (StringUtils.isNotBlank(value)) {
+                        value = String.format("土地性质%s，面积${tdmj}平方米;", value);
+                    } else {
+                        value = "土地证未提供;";
+                    }
+                    break;
+                }
                 case "dkffsj":
                 case "htqdr":
                 case "fxjzr":
