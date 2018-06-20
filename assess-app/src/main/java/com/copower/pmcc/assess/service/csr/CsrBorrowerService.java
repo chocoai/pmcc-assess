@@ -40,10 +40,7 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -418,7 +415,7 @@ public class CsrBorrowerService {
 //        responseEntity = writeCsrBorrowerModel(filePath,mapList);
         try {
             if (ObjectUtils.isEmpty(dataIndex)){
-                dataIndex = 5;
+                dataIndex = 6;
             }
             exportReportExcel(filePath,dataIndex,mapList);
             byte[] bytes = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
@@ -571,25 +568,41 @@ public class CsrBorrowerService {
             }
             //暂时只取第一个工作表
             Sheet sheet = workbook.getSheetAt(0);
+            CellStyle cellStyle = sheet.getColumnStyle(dataIndex);//获取样式
             Row row = null;
             Cell cell = null;
             for (int i = dataIndex; i < size; i++) {
-                row = sheet.getRow(i);//行
-                Map<String, Object> objectMap = mapList.get(i);
-                for (Map.Entry<String, Object> objectEntry : objectMap.entrySet()) {
-                    String key = objectEntry.getKey();
-                    Object value = objectEntry.getValue();
-                    Integer cellIndex = getReportExcelColumn(report, key);
-                    cell = row.getCell(cellIndex);//列
-                    if (cell != null) {
-                        cell.setCellValue(value.toString());
+//                row = sheet.getRow(i);//行
+                row = sheet.createRow(i);//行
+                if (!ObjectUtils.isEmpty(row)){
+                    Map<String, Object> objectMap = mapList.get(i);
+                    if (!ObjectUtils.isEmpty(objectMap)){
+                        for (Map.Entry<String, Object> objectEntry : objectMap.entrySet()) {
+                            if (!ObjectUtils.isEmpty(objectEntry)){
+                                String key = objectEntry.getKey();
+                                Object value = objectEntry.getValue();
+                                Integer cellIndex = getReportExcelColumn(report, key);
+                                if (!ObjectUtils.isEmpty(cellIndex)){
+//                                    cell = row.getCell(cellIndex);//列
+                                    cell = row.createCell(cellIndex);//列
+                                    if (cell != null) {
+                                        if (!ObjectUtils.isEmpty(value)){
+//                                            cell.setCellStyle(PoiUtils.getStyle(workbook));
+                                            PoiUtils.setStyle(cellStyle);//设置边框
+                                            cell.setCellStyle(cellStyle);
+                                            cell.setCellValue(value.toString());
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            inputStream.close();
+//            inputStream.close();
             BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-            workbook.write(outputStream);
             outputStream.flush();
+            workbook.write(outputStream);
             outputStream.close();
         } catch (Exception e) {
             try {
@@ -602,12 +615,16 @@ public class CsrBorrowerService {
 
     private Integer getReportExcelColumn(Map<String, Integer> report, String key) throws Exception {
         Integer temp = null;
-        for (Map.Entry<String, Integer> entry : report.entrySet()) {
-            Map.Entry<String, Integer> integerEntry = entry;
-            String k = integerEntry.getKey();
-            if (k.equals(key)) {//匹配成功!
-                temp = integerEntry.getValue();
+        try {
+            for (Map.Entry<String, Integer> entry : report.entrySet()) {
+                Map.Entry<String, Integer> integerEntry = entry;
+                String k = integerEntry.getKey();
+                if (k.equals(key)) {//匹配成功!
+                    temp = integerEntry.getValue();
+                }
             }
+        }catch (Exception e){
+            logger.error("exception:"+e.getMessage());
         }
         return temp;
     }
@@ -624,13 +641,20 @@ public class CsrBorrowerService {
 //        final Integer MAX_COLUMN = 16384;
         final Integer MAX_COLUMN = 84;
         Map<String, Integer> integerMap = new HashMap<>();
-        FileInputStream inputStream = new FileInputStream(filePath);
+        File file = new File(filePath);
+        FileInputStream inputStream = new FileInputStream(file);
+        if (file.isFile()){
+            logger.info("测试!  "  +"------------");
+        }
+        if (file.exists()){
+            logger.info("测试!  "  +"..............");
+        }
 //        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
 //        Workbook workbook = null;
         String suffix = filePath.substring(filePath.length()-4,filePath.length());
         try {
             if (Objects.equal("xlsx",suffix)){//07版
-                XSSFWorkbook workbook = new XSSFWorkbook(new BufferedInputStream(new FileInputStream(filePath))) ;
+                XSSFWorkbook workbook = new XSSFWorkbook(inputStream) ;
                 //暂时只取第一个工作表
                 Sheet sheet = workbook.getSheetAt(0);
                 //因为是第一行作为key所以只取第一行

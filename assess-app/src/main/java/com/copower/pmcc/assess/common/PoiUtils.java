@@ -6,6 +6,8 @@ import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -18,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -130,6 +134,46 @@ public class PoiUtils {
         workbook.write(outputStream);
         outputStream.flush();
         outputStream.close();
+    }
+
+    public static CellStyle getStyle(Workbook workbook){
+        CellStyle cellStyle = workbook.createCellStyle();
+        Font font = getFontStyle(workbook,"微软雅黑");
+        cellStyle.setFont(font);
+        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);        //单元格垂直居中
+        //设置边框
+        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        return cellStyle;
+    }
+
+    public static void setStyle(CellStyle cellStyle){
+        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+    }
+
+
+
+    public static Font getFontStyle(Workbook workbook,String...fName){
+        Font font = workbook.createFont();
+        if (fName==null){
+            font.setFontName("Arial");
+        }
+        String s = font.getFontName();
+        Pattern pattern = Pattern.compile("[a-zA-Z]");
+        Matcher matcher = pattern.matcher(""+s);
+        while (matcher.find()){
+            if (matcher.group()==null){//中文或者非英文
+                font.setCharSet(HSSFFont.DEFAULT_CHARSET);//设置中文字体，那必须还要再对单元格进行编码设置
+            }
+        }
+        font.setFontHeightInPoints((short)12);                //字体大小
+//        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);             //加粗
+        return font;
     }
 
 

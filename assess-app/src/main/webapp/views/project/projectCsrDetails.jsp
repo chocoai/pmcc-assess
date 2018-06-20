@@ -199,9 +199,8 @@
                                     <button type="button" class="btn btn-primary" onclick="downloadsBorrower('')">
                                         下载
                                     </button>
-                                    <button type="button" class="btn btn-primary" onclick="exportWordForm()">
-                                        数据导出
-                                    </button>
+
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/csrBorrower/exportFormBorrowers?csrProjectInfoID=${csrProjectInfo.id}">数据导出</a>
                                 </div>
                             </div>
                         </div>
@@ -314,11 +313,7 @@
         }
     }
 
-    //数据导出
-    function exportWordForm() {
-        var csrProjectInfoID = "${csrProjectInfo.id}";
-        window.location.href = "${pageContext.request.contextPath}/csrBorrower/exportFormBorrowers?csrProjectInfoID="+csrProjectInfoID;
-    }
+
 </script>
 <script type="application/javascript">
 
