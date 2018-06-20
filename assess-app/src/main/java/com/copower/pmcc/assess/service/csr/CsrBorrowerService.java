@@ -644,10 +644,10 @@ public class CsrBorrowerService {
         File file = new File(filePath);
         FileInputStream inputStream = new FileInputStream(file);
         if (file.isFile()){
-            logger.info("测试!  "  +"------------");
+//            logger.info("测试!  "  +"------------");
         }
         if (file.exists()){
-            logger.info("测试!  "  +"..............");
+//            logger.info("测试!  "  +"..............");
         }
 //        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
 //        Workbook workbook = null;
