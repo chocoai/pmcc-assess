@@ -1923,6 +1923,76 @@ public class FuniHousesExample {
             addCriterion("lptp not between", value1, value2, "lptp");
             return (Criteria) this;
         }
+
+        public Criteria andLpjjIsNull() {
+            addCriterion("lpjj is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjIsNotNull() {
+            addCriterion("lpjj is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjEqualTo(String value) {
+            addCriterion("lpjj =", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjNotEqualTo(String value) {
+            addCriterion("lpjj <>", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjGreaterThan(String value) {
+            addCriterion("lpjj >", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjGreaterThanOrEqualTo(String value) {
+            addCriterion("lpjj >=", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjLessThan(String value) {
+            addCriterion("lpjj <", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjLessThanOrEqualTo(String value) {
+            addCriterion("lpjj <=", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjLike(String value) {
+            addCriterion("lpjj like", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjNotLike(String value) {
+            addCriterion("lpjj not like", value, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjIn(List<String> values) {
+            addCriterion("lpjj in", values, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjNotIn(List<String> values) {
+            addCriterion("lpjj not in", values, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjBetween(String value1, String value2) {
+            addCriterion("lpjj between", value1, value2, "lpjj");
+            return (Criteria) this;
+        }
+
+        public Criteria andLpjjNotBetween(String value1, String value2) {
+            addCriterion("lpjj not between", value1, value2, "lpjj");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

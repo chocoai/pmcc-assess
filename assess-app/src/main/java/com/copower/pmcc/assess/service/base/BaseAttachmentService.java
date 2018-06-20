@@ -228,8 +228,8 @@ public class BaseAttachmentService {
      * @param fields_name
      * @return
      */
-    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name){
-        return baseAttachmentDao.getByField_tableId(table_id,fields_name);
+    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name,String tableName){
+        return baseAttachmentDao.getByField_tableId(table_id,fields_name,tableName);
     }
 
     public List<BaseAttachment> getAttachmentList(List<Integer> tableIds, BaseAttachment sysAttachment) {

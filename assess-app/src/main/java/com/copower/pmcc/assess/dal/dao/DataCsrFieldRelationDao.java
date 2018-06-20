@@ -44,6 +44,16 @@ public class DataCsrFieldRelationDao {
         return false;
     }
 
+    public DataCsrFieldRelation getByAnotherName(String anotherName){
+        DataCsrFieldRelationExample example = new DataCsrFieldRelationExample();
+        example.createCriteria().andIdIsNotNull().andAnotherNameEqualTo(anotherName);
+        List<DataCsrFieldRelation> csrFieldRelations = mapper.selectByExample(example);
+        if (csrFieldRelations.size()<=0){
+            return null;
+        }
+        return csrFieldRelations.get(0);
+    }
+
     public List<DataCsrFieldRelation> dataCsrFieldRelationList(String displayName){
         DataCsrFieldRelationExample example = new DataCsrFieldRelationExample();
         if (StringUtils.isEmpty(displayName)){

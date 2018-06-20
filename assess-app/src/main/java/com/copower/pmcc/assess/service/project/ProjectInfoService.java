@@ -158,7 +158,7 @@ public class ProjectInfoService {
     public void update_BaseAttachment_(int pid, String fields_name, int flag) throws Exception {
         int TEMP = 0;
         //默认位置为0
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name);
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name,null);
         if (baseAttachments.size() >= 1) {
             //一般都只有一个
             BaseAttachment baseAttachment = baseAttachments.get(0);

@@ -20,6 +20,7 @@ public class AssessFieldNameConstant {
     public static final String CSR_BORROWER_SECOND_LEVEL_BRANCH = "second_level_branch"; //二级分行
     public static final String CSR_BORROWER_ID_NUMBER = "id_number"; //证件号
     public static final String CSR_BORROWER_REPORT = "report"; //报告关联附件
+    public static final String CSR_BORROWER_EXPORT = "export"; //导出附件
 
     //债权借款人合同
     public static final String CSR_CONTRACT_CONTRACT_NUMBER = "contract_number"; //合同编号
