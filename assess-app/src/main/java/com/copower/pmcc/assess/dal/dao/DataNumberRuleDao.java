@@ -24,7 +24,7 @@ public class DataNumberRuleDao {
         if (reportType != null) {
             criteria.andReportTypeEqualTo(reportType);
         }
-        example.setOrderByClause(" id desc");
+        example.setOrderByClause(" assess_class,report_type,same_report_type,recount ");
         List<DataNumberRule> dataNumberRules = dataNumberRuleMapper.selectByExample(example);
 
         return dataNumberRules;

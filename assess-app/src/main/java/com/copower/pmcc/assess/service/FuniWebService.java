@@ -2,6 +2,8 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.dao.funi.*;
 import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,7 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:
@@ -41,6 +44,8 @@ public class FuniWebService {
     private FuniPropertyManagementDao funiPropertyManagementDao;
     @Autowired
     private FuniHousesTypeDao funiHousesTypeDao;
+    @Autowired
+    private DdlMySqlAssist ddlMySqlAssist;
 
     public void getFuniHousesType(String urlString, Integer lpbh) {
         Elements elements = getContent(urlString + "/huxing.htm?page=1", ".hxlist", "");
@@ -71,7 +76,7 @@ public class FuniWebService {
             funiHousesType.setLpbh(lpbh);
 
             if (select.get(0).childNodes().size() > 0) {
-                funiHousesType.setFx(select.get(0).childNodes().get(0).toString());
+                funiHousesType.setHx(select.get(0).childNodes().get(0).toString());
             }
             if (select.get(1).childNodes().size() > 0) {
                 funiHousesType.setMj(select.get(1).childNodes().get(0).toString());
@@ -108,7 +113,7 @@ public class FuniWebService {
 
         funiHousesProperty.setKpsj(checkNull(select, 10));//开盘时间
         funiHousesProperty.setJfsj(checkNull(select, 11));//交房时间
-        funiHousesProperty.setFxqj(checkNull(select, 12));//户型区间
+        funiHousesProperty.setHxqj(checkNull(select, 12));//户型区间
         funiHousesProperty.setKts(checkNull(select, 13));//客梯数
         funiHousesProperty.setHts(checkNull(select, 14));//货梯数
         //客梯数
@@ -120,7 +125,7 @@ public class FuniWebService {
     private String checkNull(Elements select, Integer index) {
         String string = select.get(index).childNodes().get(0).toString();
         if (StringUtils.isBlank(string)) {
-            string = "暂无";
+            string = "";
         }
         return string;
     }
@@ -148,7 +153,7 @@ public class FuniWebService {
         funiHousesProperty.setJzmj(checkNull(select, 8));//建筑面积
         funiHousesProperty.setKpsj(checkNull(select, 9));//开盘时间
         funiHousesProperty.setJfsj(checkNull(select, 10));//交房时间
-        funiHousesProperty.setFxqj(checkNull(select, 11));//户型区间
+        funiHousesProperty.setHxqj(checkNull(select, 11));//户型区间
         funiHousesProperty.setLpbh(lpbh);
         funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
     }
@@ -179,7 +184,7 @@ public class FuniWebService {
         funiHousesProperty.setJzmj(checkNull(select, 9));//建筑面积
         funiHousesProperty.setKpsj(checkNull(select, 10));//开盘时间
         funiHousesProperty.setJfsj(checkNull(select, 11));//交房时间
-        funiHousesProperty.setFxqj(checkNull(select, 12));//户型区间
+        funiHousesProperty.setHxqj(checkNull(select, 12));//户型区间
         funiHousesProperty.setLpbh(lpbh);
         funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
     }
@@ -190,40 +195,25 @@ public class FuniWebService {
 
         if (!select.get(0).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setJzmj(select.get(0).childNodes().get(0).childNodes().get(0).toString());//建筑面积
-        } else {
-            funiHouses.setJzmj("暂无");
         }
         if (!select.get(1).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setZdmj(select.get(1).childNodes().get(0).childNodes().get(0).toString());//占地面积
-        } else {
-            funiHouses.setZdmj("暂无");
         }
         if (!select.get(2).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setRjl(select.get(2).childNodes().get(0).childNodes().get(0).toString());//容积率
-        } else {
-            funiHouses.setRjl("暂无");
         }
         if (!select.get(3).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLhl(select.get(3).childNodes().get(0).childNodes().get(0).toString());//绿化率
-        } else {
-            funiHouses.setLhl("暂无");//绿化率
         }
         if (!select.get(4).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setCwxx(select.get(4).childNodes().get(0).toString());//车位信息
-        } else {
-            funiHouses.setCwxx("暂无");
         }
         if (!select.get(5).childNodes().get(0).toString().equals("暂无")) {
-            funiHouses.setLpdz(select.get(5).childNodes().get(0).childNodes().get(0).toString());//项目地址
-        } else {
-            funiHouses.setLpdz("暂无");
+            funiHouses.setXmdz(select.get(5).childNodes().get(0).childNodes().get(0).toString());//项目地址
         }
         if (!select.get(6).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setSldz(select.get(6).childNodes().get(0).toString());//售楼地址
-        } else {
-            funiHouses.setSldz("暂无");
         }
-
         String string = select.get(7).childNodes().get(0).toString();
         if (StringUtils.isNotBlank(string)) {
             FuniDevelopers funiDevelopers = funiDevelopersDao.getFuniDevelopers(string);
@@ -236,15 +226,13 @@ public class FuniWebService {
             funiHouses.setKfs(string);
         }
 
-        funiHouses.setSsskzh(select.get(8).childNodes().get(0).toString());//销售许可证
+        funiHouses.setXsxkz(select.get(8).childNodes().get(0).toString());//销售许可证
         Elements p = select.get(9).select(".showDetail");
         if (p.size() > 0) {
             String string1 = p.toString();
 
             String s = StringUtils.replacePattern(string1, "<.*?>", "");
             funiHouses.setLpjs(s);//楼盘介绍
-        } else {
-            funiHouses.setLpjs("暂无");
         }
         funiHousesDao.editFuniHouses(funiHouses);
     }
@@ -310,16 +298,27 @@ public class FuniWebService {
                     funiHouses.setLpmc(string);
                     List<FuniHouses> funiHousesList = funiHousesDao.getFuniHousesList(funiHouses, "");
                     if (CollectionUtils.isNotEmpty(funiHousesList)) {
-                        continue;
+                         continue;
+                       // funiHouses = funiHousesList.get(0);
+                    } else {
+                        funiHouses = new FuniHouses();
+                        funiHouses.setId(0);
                     }
-                    funiHouses = new FuniHouses();
                     funiHouses.setLpmc(h2a.get(0).childNodes().get(0).toString());
                     String s = h2a.get(0).attributes().get("href");
                     funiHouses.setFuniweb("http://www.funi.com" + s.split(";")[0]);
-                    funiHouses.setLpdz(address.get(0).attributes().get("title"));
+                    String s2 = address.get(0).attributes().get("title");
+                    funiHouses.setXmdz(s2);
+                    funiHouses.setLpdz(s2.substring(1, s2.indexOf(']')));
                     funiHouses.setJd(item.attributes().get("lng"));
                     funiHouses.setWd(item.attributes().get("lat"));
-                    funiHousesDao.addFuniHouses(funiHouses);
+                    String s1 = item.select("img").get(0).attributes().get("src").toString().replaceAll(".160x120.jpg", "");
+                    funiHouses.setLptp(s1);
+                    if (funiHouses.getId() > 0) {
+                        funiHousesDao.editFuniHouses(funiHouses);
+                    } else {
+                        funiHousesDao.addFuniHouses(funiHouses);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -351,5 +350,36 @@ public class FuniWebService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateHousesData(Integer id, String xxType, String keys, String values) throws BusinessException {
+        switch (xxType) {
+            case "wyxx"://物业信息
+            {
+                String updateSql = String.format("update tb_funi_houses_property set %s='%s' where id=%s", keys, values, id);
+                ddlMySqlAssist.customTableDdlInsert(updateSql);
+                break;
+            }
+            case "lpxx"://楼盘信息
+            {
+                String updateSql = String.format("update tb_funi_houses set %s='%s' where id=%s", keys, values, id);
+                ddlMySqlAssist.customTableDdlInsert(updateSql);
+                break;
+            }
+            case "lppt"://楼盘配套
+            {
+                String sqlString = String.format("select * from  tb_funi_houses_mating  where lpbh=%s", id);
+                List<Map> maps = ddlMySqlAssist.customTableSelect(sqlString);
+                if (maps.size() > 0) {
+                    sqlString = String.format("update tb_funi_houses_mating set %s='%s' where lpbh=%s", keys, values, id);
+                    ddlMySqlAssist.customTableDdlInsert(sqlString);
+                } else {
+                    sqlString = String.format("insert into  tb_funi_houses_mating (lpbh,%s) value(%s,'%s')", keys, id, values);
+                    ddlMySqlAssist.customTableDdlInsert(sqlString);
+                }
+                break;
+            }
+        }
+
     }
 }

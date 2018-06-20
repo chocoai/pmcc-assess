@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectCsrInfo.jsp" %>
             <!--填写表单-->
             <form id="frm_content" class="form-horizontal">
                 <div class="x_panel">
@@ -54,6 +54,7 @@
                                 <tr>
                                     <td>
                                         <input type="hidden" name="id" value="${item.id}">
+                                        <input type="hidden" name="borrowerId" value="${item.borrowerId}">
                                         <input type="hidden" name="csrProjectId" value="${item.csrProjectId}">
                                         <input type="checkbox" name="checkboxItem"
                                                onclick="checkBoxItemClick(this);"></td>

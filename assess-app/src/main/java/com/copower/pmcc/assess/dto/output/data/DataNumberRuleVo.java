@@ -7,6 +7,8 @@ public class DataNumberRuleVo extends DataNumberRule {
 
     private String assessClassName;
     private String reportTypeName;
+    private String sameReportTypeName;
+    private String recountName;
 
     public String getAssessClassName() {
         return assessClassName;
@@ -22,5 +24,21 @@ public class DataNumberRuleVo extends DataNumberRule {
 
     public void setReportTypeName(String reportTypeName) {
         this.reportTypeName = reportTypeName;
+    }
+
+    public String getSameReportTypeName() {
+        return sameReportTypeName;
+    }
+
+    public void setSameReportTypeName(String sameReportTypeName) {
+        this.sameReportTypeName = sameReportTypeName;
+    }
+
+    public String getRecountName() {
+        return recountName;
+    }
+
+    public void setRecountName(String recountName) {
+        this.recountName = recountName;
     }
 }

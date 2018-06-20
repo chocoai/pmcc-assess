@@ -35,7 +35,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">委托目的</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                        <%--<label class="form-control">${projectInfo.entrustPurposeName}</label>--%>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目类别</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.projectTypeName}</label>
+                        <%--<label class="form-control">${projectInfo.projectTypeName}</label>--%>
                     </div>
                 </div>
             </div>

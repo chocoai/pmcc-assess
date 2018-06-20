@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.dal.dao.funi;
 
 import com.copower.pmcc.assess.dal.entity.FuniHousesMating;
 import com.copower.pmcc.assess.dal.entity.FuniHousesMatingExample;
+import com.copower.pmcc.assess.dal.entity.FuniHousesProperty;
+import com.copower.pmcc.assess.dal.entity.FuniHousesPropertyExample;
 import com.copower.pmcc.assess.dal.mapper.FuniHousesMatingMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +34,16 @@ public class FuniHousesMatingDao {
         List<FuniHousesMating> funiHousesMatings = funiHousesMatingMapper.selectByExample(example);
         return funiHousesMatings;
     }
-
+    public FuniHousesMating getFuniHousesMatingByLpbh(Integer lpbh) {
+        FuniHousesMatingExample example=new FuniHousesMatingExample();
+        example.createCriteria().andLpbhEqualTo(lpbh);
+        List<FuniHousesMating> funiHousesMatings = funiHousesMatingMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(funiHousesMatings))
+        {
+            return funiHousesMatings.get(0);
+        }
+        return  new FuniHousesMating();
+    }
     public boolean addFuniHousesMating(FuniHousesMating funiHousesMating) {
         int i = funiHousesMatingMapper.insert(funiHousesMating);
         return i > 0;

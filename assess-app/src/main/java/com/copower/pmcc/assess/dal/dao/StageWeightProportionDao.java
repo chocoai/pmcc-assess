@@ -21,7 +21,7 @@ public class StageWeightProportionDao {
             criteria.andEntrustPurposeEqualTo(entrustmentPurpose);
         }
 
-        example.setOrderByClause("entrust_purpose ASC,stage ASC");
+        example.setOrderByClause("entrust_purpose,stage");
         List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
 
         return stageWeightProportions;

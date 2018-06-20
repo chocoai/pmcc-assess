@@ -19,7 +19,7 @@ public class FuniHousesMating {
 
     private String yy;
 
-    private Integer yd;
+    private String yd;
 
     private String sc;
 
@@ -33,7 +33,7 @@ public class FuniHousesMating {
 
     private String ct;
 
-    private String khg;
+    private String kfg;
 
     private String gy;
 
@@ -115,12 +115,12 @@ public class FuniHousesMating {
         this.yy = yy == null ? null : yy.trim();
     }
 
-    public Integer getYd() {
+    public String getYd() {
         return yd;
     }
 
-    public void setYd(Integer yd) {
-        this.yd = yd;
+    public void setYd(String yd) {
+        this.yd = yd == null ? null : yd.trim();
     }
 
     public String getSc() {
@@ -171,12 +171,12 @@ public class FuniHousesMating {
         this.ct = ct == null ? null : ct.trim();
     }
 
-    public String getKhg() {
-        return khg;
+    public String getKfg() {
+        return kfg;
     }
 
-    public void setKhg(String khg) {
-        this.khg = khg == null ? null : khg.trim();
+    public void setKfg(String kfg) {
+        this.kfg = kfg == null ? null : kfg.trim();
     }
 
     public String getGy() {

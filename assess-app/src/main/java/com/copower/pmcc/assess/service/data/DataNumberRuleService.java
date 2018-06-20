@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.enums.NumberRuleEnum;
 import com.copower.pmcc.assess.dal.dao.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
@@ -57,15 +58,31 @@ public class DataNumberRuleService {
                     dataNumberRuleVo.setAssessClassName(baseDataDic.getName());
             }
             if(p.getReportType() != null){
-                BaseDataDic baseDataDic1 = baseDataDicService.getCacheDataDicById(p.getReportType());
-                if(baseDataDic1 != null){
-                    dataNumberRuleVo.setReportTypeName(baseDataDic1.getName());
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getReportType());
+                if(baseDataDic != null){
+                    dataNumberRuleVo.setReportTypeName(baseDataDic.getName());
+                }
+            }
+            if(p.getSameReportType() != null){
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(p.getSameReportType());
+                if(baseDataDic != null){
+                    dataNumberRuleVo.setSameReportTypeName(baseDataDic.getName());
+                }else{
+                    String name = NumberRuleEnum.getName(p.getSameReportType());
+                    if(name!=null){
+                        dataNumberRuleVo.setSameReportTypeName(name);
+                    }
+                }
+            }
+            if(p.getRecount()!=null){
+                String name = NumberRuleEnum.getName(p.getRecount());
+                if(name !=null){
+                    dataNumberRuleVo.setRecountName(name);
                 }
             }
             return dataNumberRuleVo;
         });
     }
-
 
     public boolean save(DataNumberRule dataNumberRule) throws BusinessException {
         if(dataNumberRule == null)

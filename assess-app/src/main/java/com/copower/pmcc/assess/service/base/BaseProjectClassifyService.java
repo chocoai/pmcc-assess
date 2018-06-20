@@ -62,14 +62,15 @@ public class BaseProjectClassifyService {
 
     /**
      * 根据项目详细获取具体的项目类别
+     *
      * @param projectInfo
      * @return
      */
-    public BaseProjectClassify getProjectInfoByClassify(ProjectInfo projectInfo){
-        if (ObjectUtils.isEmpty(projectInfo)){
+    public BaseProjectClassify getProjectInfoByClassify(ProjectInfo projectInfo) {
+        if (ObjectUtils.isEmpty(projectInfo)) {
             try {
-                throw  new Exception("exception =====>");
-            }catch (Exception e){
+                throw new Exception("exception =====>");
+            } catch (Exception e) {
 
             }
         }
@@ -79,24 +80,24 @@ public class BaseProjectClassifyService {
         Integer projectTypeId = projectInfo.getProjectTypeId();
         Integer projectClassId = projectInfo.getProjectClassId();
         //最先匹配 projectTypeId (此值最容易有值)
-        if (!ObjectUtils.isEmpty(projectTypeId)){
+        if (!ObjectUtils.isEmpty(projectTypeId)) {
             id = projectTypeId;
             baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
                 return baseProjectClassify;
             }
         }
-        if (!ObjectUtils.isEmpty(projectClassId)){
+        if (!ObjectUtils.isEmpty(projectClassId)) {
             id = projectClassId;
             baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
                 return baseProjectClassify;
             }
         }
-        if (!ObjectUtils.isEmpty(projectCategoryId)){
+        if (!ObjectUtils.isEmpty(projectCategoryId)) {
             id = projectCategoryId;
             baseProjectClassify = getCacheProjectClassifyById(id);
-            if (!ObjectUtils.isEmpty(baseProjectClassify)){
+            if (!ObjectUtils.isEmpty(baseProjectClassify)) {
                 return baseProjectClassify;
             }
         }
@@ -218,6 +219,17 @@ public class BaseProjectClassifyService {
      * @return
      */
     public List<BaseProjectClassify> getCacheProjectClassifyListByPid(Integer pid) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID, String.valueOf(pid));
+
+        try {
+            List<BaseProjectClassify> sysProjectClassifys = LangUtils.listCache(rdsKey, pid, BaseProjectClassify.class, input -> baseProjectClassifyDao.getEnableListByPid(input));
+            return sysProjectClassifys;
+        } catch (Exception e) {
+            return baseProjectClassifyDao.getEnableListByPid(pid);
+        }
+    }
+
+    public List<BaseProjectClassify> getCacheProjectClassifyList(Integer pid) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PROJECT_CLASSIFY_PID, String.valueOf(pid));
 
         try {
@@ -430,9 +442,14 @@ public class BaseProjectClassifyService {
      * @param pid
      * @return
      */
-    public List<ZtreeDto> getProjectClassifyTree(Integer pid) {
-        if (pid == null)
-            return Lists.newArrayList();
+    public List<ZtreeDto> getProjectClassifyTree(String name, String key, Integer pid, String filterKey) {
+        if(StringUtils.isBlank(name)){
+            //缓存获取
+
+        }else{
+            //数据库中查询
+
+        }
         List<BaseProjectClassify> baseProjectClassifyList = getCacheProjectClassifyListByPid(pid);
         if (CollectionUtils.isEmpty(baseProjectClassifyList))
             return Lists.newArrayList();

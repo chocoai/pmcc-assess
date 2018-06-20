@@ -7,7 +7,9 @@
     var AssessProjectClassify = function () {
         this.defaults = {
             modalName: "数据选择",
-            key: "",
+            key: "",//获取key值 以下的数据
+            pid: 0,//获取pid 以下的数据
+            filterKey: [],//过滤值
             multi: false,//是否允许多选
             onSelected: function (nodes) {
 
@@ -25,7 +27,10 @@
             async: {
                 enable: true,
                 url: getContextPath() + "/baseProjectClassify/getProjectClassifyTree",
-                autoParam: ["id=pid"]
+                autoParam: ["id=pid"],
+                otherParam: {
+                    "filterKey": "1"
+                }
             },
             // 回调函数
             callback: {
@@ -56,7 +61,7 @@
             html += '<div class="modal-content">';
             html += '<div class="modal-header">';
             html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><spanaria-hidden="true">&times;</span></button>';
-            html += '<h4 class="modal-title">' + that.defaults.modalName + '</h4>';
+            html += '<h3 class="modal-title">' + that.defaults.modalName + '</h3>';
             html += '</div>';
             html += '<div class="modal-body">';
             html += '<div class="row">';
@@ -96,7 +101,9 @@
                     url: getContextPath() + "/baseProjectClassify/queryProjectClassifyTree",
                     data: {
                         name: queryName,
-                        key: this.defaults.key
+                        key: this.defaults.key,
+                        pid: this.defaults.pid,
+                        filterKey: this.defaults.filterKey
                     },
                     type: "post",
                     dataType: "json",

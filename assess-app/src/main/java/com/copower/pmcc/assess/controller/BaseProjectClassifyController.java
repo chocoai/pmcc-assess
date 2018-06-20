@@ -33,6 +33,7 @@ public class BaseProjectClassifyController {
 
     /**
      * 基础数据项目分类配置页面视图
+     *
      * @return
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -186,19 +187,6 @@ public class BaseProjectClassifyController {
         }
     }
 
-
-    /**
-     * 查询数据信息树
-     *
-     * @param name
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/queryProjectClassifyTree", method = RequestMethod.POST)
-    public List<ZtreeDto> queryProjectClassifyTree(String name) {
-        return baseProjectClassifyService.queryProjectClassifyTree(name);
-    }
-
     /**
      * 获取数据信息树
      *
@@ -207,20 +195,9 @@ public class BaseProjectClassifyController {
      */
     @ResponseBody
     @RequestMapping(value = "/getProjectClassifyTree", method = RequestMethod.POST)
-    public List<ZtreeDto> getProjectClassifyTree(Integer pid) {
-        return baseProjectClassifyService.getProjectClassifyTree(pid);
+    public List<ZtreeDto> getProjectClassifyTree(String name, String key, Integer pid, String filterKey) {
+        return baseProjectClassifyService.getProjectClassifyTree(name, key, pid, filterKey);
     }
 
-    /**
-     * 获取数据信息树
-     *
-     * @param key
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getProjectClassifyByKey", method = RequestMethod.POST)
-    public List<ZtreeDto> getProjectClassifyByKey(String key) {
-        return baseProjectClassifyService.getProjectClassifyByKey(key);
-    }
 
 }

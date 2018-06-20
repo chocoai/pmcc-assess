@@ -23,7 +23,7 @@
     <result column="jfsj" property="jfsj" jdbcType="VARCHAR" />
     <result column="jd" property="jd" jdbcType="VARCHAR" />
     <result column="wd" property="wd" jdbcType="VARCHAR" />
-    <result column="fxqj" property="fxqj" jdbcType="VARCHAR" />
+    <result column="hxqj" property="hxqj" jdbcType="VARCHAR" />
     <result column="kts" property="kts" jdbcType="VARCHAR" />
     <result column="hts" property="hts" jdbcType="VARCHAR" />
     <result column="cg" property="cg" jdbcType="VARCHAR" />
@@ -88,7 +88,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, lpbh, jzmj, zdmj, glfs, gsfs, tx, wl, wylx, jzlb, zxqk, tdsynx, zhs, wyf, wygsbh, 
-    wygs, yxdl, kpsj, jfsj, jd, wd, fxqj, kts, hts, cg
+    wygs, yxdl, kpsj, jfsj, jd, wd, hxqj, kts, hts, cg
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesPropertyExample" >
     select
@@ -129,14 +129,14 @@
       wylx, jzlb, zxqk, tdsynx, 
       zhs, wyf, wygsbh, wygs, 
       yxdl, kpsj, jfsj, jd, 
-      wd, fxqj, kts, hts, 
+      wd, hxqj, kts, hts, 
       cg)
     values (#{lpbh,jdbcType=INTEGER}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
       #{glfs,jdbcType=VARCHAR}, #{gsfs,jdbcType=VARCHAR}, #{tx,jdbcType=VARCHAR}, #{wl,jdbcType=VARCHAR}, 
       #{wylx,jdbcType=VARCHAR}, #{jzlb,jdbcType=VARCHAR}, #{zxqk,jdbcType=VARCHAR}, #{tdsynx,jdbcType=VARCHAR}, 
       #{zhs,jdbcType=VARCHAR}, #{wyf,jdbcType=VARCHAR}, #{wygsbh,jdbcType=INTEGER}, #{wygs,jdbcType=VARCHAR}, 
       #{yxdl,jdbcType=VARCHAR}, #{kpsj,jdbcType=VARCHAR}, #{jfsj,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, 
-      #{wd,jdbcType=VARCHAR}, #{fxqj,jdbcType=VARCHAR}, #{kts,jdbcType=VARCHAR}, #{hts,jdbcType=VARCHAR}, 
+      #{wd,jdbcType=VARCHAR}, #{hxqj,jdbcType=VARCHAR}, #{kts,jdbcType=VARCHAR}, #{hts,jdbcType=VARCHAR}, 
       #{cg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesProperty" >
@@ -205,8 +205,8 @@
       <if test="wd != null" >
         wd,
       </if>
-      <if test="fxqj != null" >
-        fxqj,
+      <if test="hxqj != null" >
+        hxqj,
       </if>
       <if test="kts != null" >
         kts,
@@ -279,8 +279,8 @@
       <if test="wd != null" >
         #{wd,jdbcType=VARCHAR},
       </if>
-      <if test="fxqj != null" >
-        #{fxqj,jdbcType=VARCHAR},
+      <if test="hxqj != null" >
+        #{hxqj,jdbcType=VARCHAR},
       </if>
       <if test="kts != null" >
         #{kts,jdbcType=VARCHAR},
@@ -365,8 +365,8 @@
       <if test="record.wd != null" >
         wd = #{record.wd,jdbcType=VARCHAR},
       </if>
-      <if test="record.fxqj != null" >
-        fxqj = #{record.fxqj,jdbcType=VARCHAR},
+      <if test="record.hxqj != null" >
+        hxqj = #{record.hxqj,jdbcType=VARCHAR},
       </if>
       <if test="record.kts != null" >
         kts = #{record.kts,jdbcType=VARCHAR},
@@ -405,7 +405,7 @@
       jfsj = #{record.jfsj,jdbcType=VARCHAR},
       jd = #{record.jd,jdbcType=VARCHAR},
       wd = #{record.wd,jdbcType=VARCHAR},
-      fxqj = #{record.fxqj,jdbcType=VARCHAR},
+      hxqj = #{record.hxqj,jdbcType=VARCHAR},
       kts = #{record.kts,jdbcType=VARCHAR},
       hts = #{record.hts,jdbcType=VARCHAR},
       cg = #{record.cg,jdbcType=VARCHAR}
@@ -476,8 +476,8 @@
       <if test="wd != null" >
         wd = #{wd,jdbcType=VARCHAR},
       </if>
-      <if test="fxqj != null" >
-        fxqj = #{fxqj,jdbcType=VARCHAR},
+      <if test="hxqj != null" >
+        hxqj = #{hxqj,jdbcType=VARCHAR},
       </if>
       <if test="kts != null" >
         kts = #{kts,jdbcType=VARCHAR},
@@ -513,7 +513,7 @@
       jfsj = #{jfsj,jdbcType=VARCHAR},
       jd = #{jd,jdbcType=VARCHAR},
       wd = #{wd,jdbcType=VARCHAR},
-      fxqj = #{fxqj,jdbcType=VARCHAR},
+      hxqj = #{hxqj,jdbcType=VARCHAR},
       kts = #{kts,jdbcType=VARCHAR},
       hts = #{hts,jdbcType=VARCHAR},
       cg = #{cg,jdbcType=VARCHAR}
