@@ -29,6 +29,7 @@
     <result column="bis_edit" property="bisEdit" jdbcType="BIT" />
     <result column="xmdz" property="xmdz" jdbcType="VARCHAR" />
     <result column="lptp" property="lptp" jdbcType="VARCHAR" />
+    <result column="lpjj" property="lpjj" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -90,7 +91,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, lpmc, jzmj, zdmj, rjl, lhl, cwxx, lpdz, sldz, kfsbh, kfs, xsxkz, lpjs, jd, wd, 
-    funiweb, qybh, qy, sqbh, sq, sfbh, sf, csbh, csmc, bis_edit, xmdz, lptp
+    funiweb, qybh, qy, sqbh, sq, sfbh, sf, csbh, csmc, bis_edit, xmdz, lptp, lpjj
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.FuniHousesExample" >
     select
@@ -132,14 +133,16 @@
       lpjs, jd, wd, funiweb, 
       qybh, qy, sqbh, sq, 
       sfbh, sf, csbh, csmc, 
-      bis_edit, xmdz, lptp)
+      bis_edit, xmdz, lptp, lpjj
+      )
     values (#{lpmc,jdbcType=VARCHAR}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
       #{rjl,jdbcType=VARCHAR}, #{lhl,jdbcType=VARCHAR}, #{cwxx,jdbcType=VARCHAR}, #{lpdz,jdbcType=VARCHAR}, 
       #{sldz,jdbcType=VARCHAR}, #{kfsbh,jdbcType=INTEGER}, #{kfs,jdbcType=VARCHAR}, #{xsxkz,jdbcType=VARCHAR}, 
       #{lpjs,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, #{wd,jdbcType=VARCHAR}, #{funiweb,jdbcType=VARCHAR}, 
       #{qybh,jdbcType=INTEGER}, #{qy,jdbcType=VARCHAR}, #{sqbh,jdbcType=INTEGER}, #{sq,jdbcType=VARCHAR}, 
       #{sfbh,jdbcType=INTEGER}, #{sf,jdbcType=VARCHAR}, #{csbh,jdbcType=INTEGER}, #{csmc,jdbcType=VARCHAR}, 
-      #{bisEdit,jdbcType=BIT}, #{xmdz,jdbcType=VARCHAR}, #{lptp,jdbcType=VARCHAR})
+      #{bisEdit,jdbcType=BIT}, #{xmdz,jdbcType=VARCHAR}, #{lptp,jdbcType=VARCHAR}, #{lpjj,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.FuniHouses" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -225,6 +228,9 @@
       <if test="lptp != null" >
         lptp,
       </if>
+      <if test="lpjj != null" >
+        lpjj,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="lpmc != null" >
@@ -304,6 +310,9 @@
       </if>
       <if test="lptp != null" >
         #{lptp,jdbcType=VARCHAR},
+      </if>
+      <if test="lpjj != null" >
+        #{lpjj,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -397,6 +406,9 @@
       <if test="record.lptp != null" >
         lptp = #{record.lptp,jdbcType=VARCHAR},
       </if>
+      <if test="record.lpjj != null" >
+        lpjj = #{record.lpjj,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -430,7 +442,8 @@
       csmc = #{record.csmc,jdbcType=VARCHAR},
       bis_edit = #{record.bisEdit,jdbcType=BIT},
       xmdz = #{record.xmdz,jdbcType=VARCHAR},
-      lptp = #{record.lptp,jdbcType=VARCHAR}
+      lptp = #{record.lptp,jdbcType=VARCHAR},
+      lpjj = #{record.lpjj,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -516,6 +529,9 @@
       <if test="lptp != null" >
         lptp = #{lptp,jdbcType=VARCHAR},
       </if>
+      <if test="lpjj != null" >
+        lpjj = #{lpjj,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -546,7 +562,8 @@
       csmc = #{csmc,jdbcType=VARCHAR},
       bis_edit = #{bisEdit,jdbcType=BIT},
       xmdz = #{xmdz,jdbcType=VARCHAR},
-      lptp = #{lptp,jdbcType=VARCHAR}
+      lptp = #{lptp,jdbcType=VARCHAR},
+      lpjj = #{lpjj,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

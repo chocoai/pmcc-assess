@@ -55,6 +55,8 @@ public class FuniHouses {
 
     private String lptp;
 
+    private String lpjj;
+
     public Integer getId() {
         return id;
     }
@@ -269,5 +271,13 @@ public class FuniHouses {
 
     public void setLptp(String lptp) {
         this.lptp = lptp == null ? null : lptp.trim();
+    }
+
+    public String getLpjj() {
+        return lpjj;
+    }
+
+    public void setLpjj(String lpjj) {
+        this.lpjj = lpjj == null ? null : lpjj.trim();
     }
 }

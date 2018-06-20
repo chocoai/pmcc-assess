@@ -11,7 +11,7 @@
     <result column="zx" property="zx" jdbcType="VARCHAR" />
     <result column="dx" property="dx" jdbcType="VARCHAR" />
     <result column="yy" property="yy" jdbcType="VARCHAR" />
-    <result column="yd" property="yd" jdbcType="INTEGER" />
+    <result column="yd" property="yd" jdbcType="VARCHAR" />
     <result column="sc" property="sc" jdbcType="VARCHAR" />
     <result column="cs" property="cs" jdbcType="VARCHAR" />
     <result column="csc" property="csc" jdbcType="VARCHAR" />
@@ -128,7 +128,7 @@
       tyg)
     values (#{lpbh,jdbcType=INTEGER}, #{gj,jdbcType=VARCHAR}, #{dt,jdbcType=VARCHAR}, 
       #{yey,jdbcType=VARCHAR}, #{xx,jdbcType=VARCHAR}, #{zx,jdbcType=VARCHAR}, #{dx,jdbcType=VARCHAR}, 
-      #{yy,jdbcType=VARCHAR}, #{yd,jdbcType=INTEGER}, #{sc,jdbcType=VARCHAR}, #{cs,jdbcType=VARCHAR}, 
+      #{yy,jdbcType=VARCHAR}, #{yd,jdbcType=VARCHAR}, #{sc,jdbcType=VARCHAR}, #{cs,jdbcType=VARCHAR}, 
       #{csc,jdbcType=VARCHAR}, #{yh,jdbcType=VARCHAR}, #{atm,jdbcType=VARCHAR}, #{ct,jdbcType=VARCHAR}, 
       #{kfg,jdbcType=VARCHAR}, #{gy,jdbcType=VARCHAR}, #{dyy,jdbcType=VARCHAR}, #{jsf,jdbcType=VARCHAR}, 
       #{tyg,jdbcType=VARCHAR})
@@ -226,7 +226,7 @@
         #{yy,jdbcType=VARCHAR},
       </if>
       <if test="yd != null" >
-        #{yd,jdbcType=INTEGER},
+        #{yd,jdbcType=VARCHAR},
       </if>
       <if test="sc != null" >
         #{sc,jdbcType=VARCHAR},
@@ -300,7 +300,7 @@
         yy = #{record.yy,jdbcType=VARCHAR},
       </if>
       <if test="record.yd != null" >
-        yd = #{record.yd,jdbcType=INTEGER},
+        yd = #{record.yd,jdbcType=VARCHAR},
       </if>
       <if test="record.sc != null" >
         sc = #{record.sc,jdbcType=VARCHAR},
@@ -351,7 +351,7 @@
       zx = #{record.zx,jdbcType=VARCHAR},
       dx = #{record.dx,jdbcType=VARCHAR},
       yy = #{record.yy,jdbcType=VARCHAR},
-      yd = #{record.yd,jdbcType=INTEGER},
+      yd = #{record.yd,jdbcType=VARCHAR},
       sc = #{record.sc,jdbcType=VARCHAR},
       cs = #{record.cs,jdbcType=VARCHAR},
       csc = #{record.csc,jdbcType=VARCHAR},
@@ -395,7 +395,7 @@
         yy = #{yy,jdbcType=VARCHAR},
       </if>
       <if test="yd != null" >
-        yd = #{yd,jdbcType=INTEGER},
+        yd = #{yd,jdbcType=VARCHAR},
       </if>
       <if test="sc != null" >
         sc = #{sc,jdbcType=VARCHAR},
@@ -443,7 +443,7 @@
       zx = #{zx,jdbcType=VARCHAR},
       dx = #{dx,jdbcType=VARCHAR},
       yy = #{yy,jdbcType=VARCHAR},
-      yd = #{yd,jdbcType=INTEGER},
+      yd = #{yd,jdbcType=VARCHAR},
       sc = #{sc,jdbcType=VARCHAR},
       cs = #{cs,jdbcType=VARCHAR},
       csc = #{csc,jdbcType=VARCHAR},

@@ -42,19 +42,18 @@
                     <div class="x_panel">
                         <div class="x_content">
                             <p id="toolbar">
-                                <a class="btn btn-success" onclick="updateFuni()">
-                                    <i class="fa fa-plus"></i>
+                                <a class="btn btn-info" onclick="updateFuni()">
+                                    <i class="fa fa-refresh"></i>
                                     更新楼盘
                                 </a>
+                                <a class="btn btn-success" onclick="addHouse()">
+                                    <i class="fa fa-plus"></i>
+                                    新增楼盘
+                                </a>
+                                共有<label class="label label-warning" id="lab_total"></label>个案例
                             </p>
                             <div id="div_house_list" class="row">
 
-
-                                <%--<div id="div_house_list">--%>
-                                <%--<div class="col-md-4 col-sm-4 col-xs-12 profile_details"><div class="well profile_view"><div class="col-sm-12"><h4 class="brief"><i><i class="fa fa-cny"></i>0.00</i></h4><div class="left col-xs-8"><h2>源滩城1期</h2><p><i class="fa fa-bell-o"></i>成都市成华区圣灯街办事处乐华社区1组、人民塘社区2组 </p></div><div class="right col-xs-4 text-center"><img src="/assets/images/timg.jpg" alt="" class="img-circle img-responsive"></div></div><div class="col-xs-12 bottom text-center"><div class="col-xs-12 col-sm-8 emphasis"><p class="ratings"><a>0.0</a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star-o"></span></a></p></div><div class="col-xs-12 col-sm-4 emphasis"><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-info-circle"> </i> 查看详情</button></div></div></div></div>--%>
-                                <%--<div class="col-md-4 col-sm-4 col-xs-12 profile_details"><div class="well profile_view"><div class="col-sm-12"><h4 class="brief"><i><i class="fa fa-cny"></i>0.00</i></h4><div class="left col-xs-8"><h2>源滩城1期</h2><p><i class="fa fa-bell-o"></i>成都市成华区圣灯街办事处乐华社区1组、人民塘社区2组 </p></div><div class="right col-xs-4 text-center"><img src="/assets/images/timg.jpg" alt="" class="img-circle img-responsive"></div></div><div class="col-xs-12 bottom text-center"><div class="col-xs-12 col-sm-8 emphasis"><p class="ratings"><a>0.0</a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star-o"></span></a></p></div><div class="col-xs-12 col-sm-4 emphasis"><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-info-circle"> </i> 查看详情</button></div></div></div></div>--%>
-                                <%--<div class="col-md-4 col-sm-4 col-xs-12 profile_details"><div class="well profile_view"><div class="col-sm-12"><h4 class="brief"><i><i class="fa fa-cny"></i>0.00</i></h4><div class="left col-xs-8"><h2>源滩城1期</h2><p><i class="fa fa-bell-o"></i>成都市成华区圣灯街办事处乐华社区1组、人民塘社区2组 </p></div><div class="right col-xs-4 text-center"><img src="/assets/images/timg.jpg" alt="" class="img-circle img-responsive"></div></div><div class="col-xs-12 bottom text-center"><div class="col-xs-12 col-sm-8 emphasis"><p class="ratings"><a>0.0</a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star-o"></span></a></p></div><div class="col-xs-12 col-sm-4 emphasis"><button type="button" class="btn btn-primary btn-xs"><i class="fa fa-info-circle"> </i> 查看详情</button></div></div></div></div>--%>
-                                <%--</div>--%>
                             </div>
                             <div class="row" style="text-align: center">
                                 <ul id='bp-element' class="pagination pagination-lg  pagination-bricky"></ul>
@@ -63,53 +62,76 @@
                     </div>
                 </div>
             </div>
-            <%--<div class="x_panel">--%>
-            <%--<div class="x_content">--%>
 
-
-            <%--<div class="col-xs-3" id="container1">--%>
-
-            <%--<table id="tb_List" class="table table-striped jambo_table bulk_action">--%>
-
-            <%--</table>--%>
-            <%--</div>--%>
-            <%--<div class="col-xs-9">--%>
-            <%--<div class="x_title">--%>
-            <%--<h3 id="h3_houseName">--%>
-            <%--${baseViewDto.currentMenu.name} &lt;%&ndash;这是用来显示标题的，固定格式&ndash;%&gt;--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-            <%--</div>--%>
-            <%--<div class="" role="tabpanel" data-example-id="togglable-tabs">--%>
-            <%--<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">--%>
-            <%--<li role="presentation" class="active"><a href="#tab_content1" role="tab" data-toggle="tab" aria-expanded="true">楼盘</a>--%>
-            <%--</li>--%>
-            <%--<li role="presentation" class=""><a href="#tab_content2" role="tab" data-toggle="tab" aria-expanded="false">户型</a>--%>
-            <%--</li>--%>
-            <%--<li role="presentation" class=""><a href="#tab_content3" role="tab" data-toggle="tab" aria-expanded="false">物业</a>--%>
-            <%--</li>--%>
-            <%--</ul>--%>
-            <%--<div id="myTabContent" class="tab-content">--%>
-            <%--<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">--%>
-
-            <%--</div>--%>
-
-            <%--<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">--%>
-            <%--<h3>没有上传楼盘户型信息</h3>--%>
-            <%--</div>--%>
-            <%--<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">--%>
-            <%--<h3>物业信息未填写</h3>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
         </div>
 
     </div>
     <!-- end: MAIN CONTAINER -->
 </div>
+
+
+<div id="model_house" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增楼盘</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="x_content">
+                            <form id="frm_house" class="form-horizontal" onsubmit="return false;">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            楼盘名称
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="楼盘名称" name="lpmc" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            区域
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="区域" name="lpdz" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            楼盘地址
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="楼盘地址" name="xmdz" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" onclick="saveHouse()" class="btn btn-primary">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
@@ -118,11 +140,7 @@
 <script type="application/javascript">
     var element = $('#bp-element');
     $(function () {
-        // loadHouseList();
-//        lpxx();
-//        xEditChange();
         loadHouseListAjax(1);
-
     })
 
     function loadHouseListAjax(pages) {
@@ -148,7 +166,7 @@
                         html += "<div class='col-md-4 col-sm-4 col-xs-12 profile_details'>";
                         html += "<div class='well profile_view'>";
                         html += "<div class='col-sm-12'>";
-                        html += "<h4 class='brief'><i><i class='fa fa-cny'></i>0.00</i></h4>";
+                        html += "<h4 class='brief'><i><i class='fa fa-cny'></i>" + j.lpjj + "</i></h4>";
                         html += "<div class='left col-xs-8'>";
                         html += "<h2>" + j.lpmc + "</h2>";
                         html += "<p><i class='fa fa-bell-o'></i>" + j.lpdz + " </p>";
@@ -170,7 +188,7 @@
                         html += "</p>";
                         html += "</div>";
                         html += "<div class='col-xs-12 col-sm-4 emphasis'>";
-                        html += "<a  target='_blank'  class='btn btn-primary btn-xs' href='${pageContext.request.contextPath}/funiViewer/funiDetails?lpbh="+j.id+"'>";
+                        html += "<a  target='_blank'  class='btn btn-primary btn-xs' href='${pageContext.request.contextPath}/funiViewer/funiDetails?lpbh=" + j.id + "'>";
                         html += "<i class='fa fa-info-circle'> </i> 查看详情";
                         html += "</a>";
                         html += "</div>";
@@ -179,6 +197,7 @@
                         html += "</div>";
                     });
                     $("#div_house_list").html(html);
+                    $("#lab_total").html(result.total);
                     options = {
                         bootstrapMajorVersion: 3,
                         currentPage: pages, //当前页数，这里是用的EL表达式，获取从后台传过来的值
@@ -204,235 +223,9 @@
             }
         })
     }
-
-    function lpxx() {
-        var lpxxData = [];
-        lpxxData.push({table: "tb_funi_houses", cnName: "建筑面积", fieldName: "jzmj"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "占地面积", fieldName: "zdmj"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "容积率", fieldName: "rjl"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "绿化率", fieldName: "lhl"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "车位信息", fieldName: "cwxx"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "项目地址", fieldName: "lpdz"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "售楼地址", fieldName: "sldz"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "开发商", fieldName: "kfsbh"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "销售许可证", fieldName: "xsxkz"});
-        lpxxData.push({table: "tb_funi_houses", cnName: "楼盘介绍", fieldName: "lpjs"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "公交", fieldName: "gj"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "地铁", fieldName: "dt"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "幼儿园", fieldName: "yey"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "小学", fieldName: "xx"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "中学", fieldName: "zx"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "大学", fieldName: "dx"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "医院", fieldName: "yy"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "药店", fieldName: "yd"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "商场", fieldName: "sc"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "超市", fieldName: "cs"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "市场", fieldName: "csc"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "银行", fieldName: "yh"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "ATM", fieldName: "atm"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "餐厅", fieldName: "ct"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "咖啡馆", fieldName: "kfg"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "公园", fieldName: "gy"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "电影院", fieldName: "dyy"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "健身房", fieldName: "jsf"});
-        lpxxData.push({table: "tb_funi_houses_mating", cnName: "体育馆", fieldName: "tyg"});
-
-        var html = "<table class='table table-condensed table-hover'>";
-        html += "<input type='hidden' id='lpxx_id' name='id'>";
-        for (var k = 0; k < lpxxData.length; k++) {
-            html += "<tr>";
-            html += "<td class='col-sm-2'>" + lpxxData[k].cnName + "</td>";
-            if (lpxxData[k].table == "tb_funi_houses_mating") {
-                html += "<td><a href='#' id='lppt_'  name='" + lpxxData[k].fieldName + "'  data-type='textarea' data-pk='1' data-original-title='" + lpxxData[k].cnName + "' class='editable editable-click'></a></td>";
-            }
-            else {
-                html += "<td><a href='#'  name='" + lpxxData[k].fieldName + "'  data-type='textarea' data-pk='1' data-original-title='" + lpxxData[k].cnName + "' class='editable editable-click'></a></td>";
-            }
-            html += "</tr>";
-        }
-        html += "</table>";
-        $("#tab_content1").html(html);
-    }
-
-    function showImage(obj) {
-        var url = $(obj).attr("src");
-        url = url.replace(".240x1000.jpg", "");
-        window.open(url);
-    }
-
-    function xEditChange() {
-        $(".editable").editable({
-            url: function (params) {
-                var sName = $(this).attr("name");
-                var ids = $(this).attr("id");
-                if (ids) {
-                    var ids = $(this).attr("id").split('_');
-                    if (ids[0] == "wyxx") {
-                        updateFuniData(sName, params.value, ids[0], ids[1]);
-                    }
-                    else {
-                        updateFuniData(sName, params.value, ids[0], $("#lpxx_id").val());
-                    }
-                }
-                else {
-                    updateFuniData(sName, params.value, "lpxx", $("#lpxx_id").val());
-                }
-
-            }
-        });
-
-    }
-
-    //加载代理数据列表
-    function loadHouseList() {
-        var cols = [];
-        cols.push({field: 'lpmc', title: '楼盘名称'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = "<a target='_blank' href='" + row.funiweb + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-paper-plane-o fa-white'></i></a>";
-                return str;
-            }
-        });
-        TableInit("tb_List", "${pageContext.request.contextPath}/funiViewer/getHousesList", cols, {}, {
-            singleSelect: true,
-            clickToSelect: true,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            },
-            onClickRow: function (row) {
-                $("#tab_content1").initForm(row);
-
-                $("#h3_houseName").html(row.lpmc);
-                loadHousesTypeList(row.id);
-                loadHousesPropertyList(row.id);
-                var objs = $(".editable");
-                $.each(objs, function (i, j) {
-                    $(j).editable('setValue', $(j).html());
-                });
-            }
-        });
-    }
-
-    function loadHousesTypeList(lpbh) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/funiViewer/getHousesType",
-            type: "get",
-            dataType: "json",
-            data: {
-                lpbh: lpbh
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var html = "";
-                    $.each(data, function (i, j) {
-                        html += "<div class='col-md-55'>";
-                        html += "<div class='thumbnail'>";
-                        html += "<div class='image view view-first'>";
-                        html += "<img style='width: 100%; display: block;' onclick='showImage(this)' src='" + j.hxt + ".240x1000.jpg' alt='image'>";
-                        html += "</div>";
-                        html += "<div class='caption'>";
-                        html += "<p>" + j.fx + "</p>";
-                        html += "<p>" + j.mj + "</p>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                    });
-                    if (html == "") {
-                        html = "<h3>没有上传楼盘户型信息</h3>";
-                    }
-                    $("#tab_content2").html(html);
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
-
-    function loadHousesPropertyList(lpbh) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/funiViewer/getHousesProperty",
-            type: "get",
-            dataType: "json",
-            data: {
-                lpbh: lpbh
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var html = "";
-                    var wylx = [];
-                    wylx.push({cnName: "建筑类别", fieldName: "jzlb"});
-                    wylx.push({cnName: "装修情况", fieldName: "zxqk"});
-                    wylx.push({cnName: "土地使用年限", fieldName: "tdsynx"});
-                    wylx.push({cnName: "总户数", fieldName: "zhs"});
-                    wylx.push({cnName: "物业费", fieldName: "wyf"});
-                    wylx.push({cnName: "物业公司", fieldName: "wygs"});
-                    wylx.push({cnName: "营销代理", fieldName: "yxdl"});
-                    wylx.push({cnName: "占地面积", fieldName: "zdmj"});
-                    wylx.push({cnName: "建筑面积", fieldName: "jzmj"});
-                    wylx.push({cnName: "供暖方式", fieldName: "glfs"});
-                    wylx.push({cnName: "供水方式", fieldName: "gsfs"});
-                    wylx.push({cnName: "通讯", fieldName: "tx"});
-                    wylx.push({cnName: "网络", fieldName: "wl"});
-                    wylx.push({cnName: "层高", fieldName: "cg"});
-                    wylx.push({cnName: "开盘时间", fieldName: "kpsj"});
-                    wylx.push({cnName: "交房时间", fieldName: "jfsj"});
-                    wylx.push({cnName: "户型区间", fieldName: "hxqj"});
-                    wylx.push({cnName: "客梯数", fieldName: "kts"});
-                    wylx.push({cnName: "货梯数", fieldName: "hts"});
-                    html += "<table class='table table-condensed table-hover'>";
-                    $.each(data, function (i, j) {
-
-                        //html += "<thead>";
-                        html += "<tr>";
-                        html += "<th colspan='2'>" + j.wylx + "</th>";
-                        html += "</tr>";
-                        // html += "</thead>";
-                        // html += "<tbody>";
-                        for (var k = 0; k < wylx.length; k++) {
-                            html += "<tr>";
-                            html += "<td>" + wylx[k].cnName + "</td>";
-                            var values = j[wylx[k].fieldName];
-                            if (values == null) {
-                                values = "";
-                            }
-                            html += "<td><a href='#' id='wyxx_" + j.id + "' name='" + wylx[k].fieldName + "'  data-type='textarea' data-pk='1' data-original-title='" + wylx[k].cnName + "' class='editable editable-click'>" + values + "</a></td>";
-                            html += "</tr>";
-                        }
-                        //html += "</tbody>";
-
-                    });
-                    html += "</table>";
-                    if (data.length <= 0) {
-                        html = "<h3>物业信息未填写</h3>";
-                    }
-                    $("#tab_content3").html(html);
-                    xEditChange();
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
-
-    //刷新数据列表
-    function reloadFuniList() {
-        TableReload("tb_List");
-    }
     //保存数据
     function updateFuni() {
-        Loading.progressShow();
+        //Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/funiViewer/updateHouses",
             type: "post",
@@ -441,10 +234,39 @@
                 page: 1
             },
             success: function (result) {
-                Loading.progressHide();
+                //Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
-                    reloadFuniList();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                //Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    function addHouse() {
+        $("#frm_house").clearAll();
+        $('#model_house').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function saveHouse() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/funiViewer/newHouse",
+            type: "post",
+            dataType: "json",
+            data: formParams("frm_house"),
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $('#model_house').modal('hide');
+                    toastr.success('保存成功');
+                    loadHouseListAjax(1);
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -456,9 +278,6 @@
             }
         })
     }
-    //保存数据
-
-
 
 </script>
 

@@ -58,18 +58,20 @@ public class FuniViewerController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/funiIndex");
         return modelAndView;
     }
+
     @RequestMapping(value = "/funiDetails", method = RequestMethod.GET)
     public ModelAndView funiDetails(Integer lpbh) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/base/funiDetails");
 
         FuniHouses funiHouses = funiHousesDao.getFuniHouses(lpbh);
-        modelAndView.addObject("funiHouses",funiHouses);
+        modelAndView.addObject("funiHouses", funiHouses);
         List<FuniHousesProperty> funiHousesPropertyList = funiHousesPropertyDao.getFuniHousesPropertyList(lpbh);
-        modelAndView.addObject("funiHousesPropertyList",funiHousesPropertyList);
+        modelAndView.addObject("funiHousesPropertyList", funiHousesPropertyList);
         FuniHousesMating funiHousesMating = funiHousesMatingDao.getFuniHousesMatingByLpbh(lpbh);
-        modelAndView.addObject("funiHousesMating",funiHousesMating);
+        modelAndView.addObject("funiHousesMating", funiHousesMating);
         return modelAndView;
     }
+
     @ResponseBody
     @RequestMapping(value = "/getHousesList", name = "取得楼盘信息", method = RequestMethod.GET)
     public BootstrapTableVo getHousesList() {
@@ -128,6 +130,39 @@ public class FuniViewerController {
         try {
             funiWebService.updateHousesData(id, xxType, keys, values);
         } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/newHouse", name = "保存新增案例", method = RequestMethod.POST)
+    public HttpResult newHouse(FuniHouses funiHouses) {
+        try {
+            funiHouses.setLptp("/pmcc-assess/assets/lpt.jpg");
+            funiHousesDao.addFuniHouses(funiHouses);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/newHxxx", name = "保存新增户型", method = RequestMethod.POST)
+    public HttpResult newHxxx(FuniHousesType funiHousesType) {
+        try {
+            funiHousesType.setHxt("/pmcc-assess/assets/hxt.jpg");
+            funiHousesTypeDao.addFuniHousesType(funiHousesType);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/newWyxx", name = "保存新增物业", method = RequestMethod.POST)
+    public HttpResult newWyxx(FuniHousesProperty funiHousesProperty) {
+        try {
+            funiHousesPropertyDao.addFuniHousesProperty(funiHousesProperty);
+        } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();

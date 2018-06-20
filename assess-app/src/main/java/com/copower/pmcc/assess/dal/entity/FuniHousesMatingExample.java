@@ -724,52 +724,62 @@ public class FuniHousesMatingExample {
             return (Criteria) this;
         }
 
-        public Criteria andYdEqualTo(Integer value) {
+        public Criteria andYdEqualTo(String value) {
             addCriterion("yd =", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdNotEqualTo(Integer value) {
+        public Criteria andYdNotEqualTo(String value) {
             addCriterion("yd <>", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdGreaterThan(Integer value) {
+        public Criteria andYdGreaterThan(String value) {
             addCriterion("yd >", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andYdGreaterThanOrEqualTo(String value) {
             addCriterion("yd >=", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdLessThan(Integer value) {
+        public Criteria andYdLessThan(String value) {
             addCriterion("yd <", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdLessThanOrEqualTo(Integer value) {
+        public Criteria andYdLessThanOrEqualTo(String value) {
             addCriterion("yd <=", value, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdIn(List<Integer> values) {
+        public Criteria andYdLike(String value) {
+            addCriterion("yd like", value, "yd");
+            return (Criteria) this;
+        }
+
+        public Criteria andYdNotLike(String value) {
+            addCriterion("yd not like", value, "yd");
+            return (Criteria) this;
+        }
+
+        public Criteria andYdIn(List<String> values) {
             addCriterion("yd in", values, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdNotIn(List<Integer> values) {
+        public Criteria andYdNotIn(List<String> values) {
             addCriterion("yd not in", values, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdBetween(Integer value1, Integer value2) {
+        public Criteria andYdBetween(String value1, String value2) {
             addCriterion("yd between", value1, value2, "yd");
             return (Criteria) this;
         }
 
-        public Criteria andYdNotBetween(Integer value1, Integer value2) {
+        public Criteria andYdNotBetween(String value1, String value2) {
             addCriterion("yd not between", value1, value2, "yd");
             return (Criteria) this;
         }
