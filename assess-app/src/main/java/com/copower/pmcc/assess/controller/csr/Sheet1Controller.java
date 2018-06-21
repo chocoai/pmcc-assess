@@ -72,7 +72,7 @@ public class Sheet1Controller {
         if (StringUtils.isBlank(search)) {
             sql = String.format(sql, "");
         } else {
-            sql = String.format(sql, String.format(" where khxm like '%%s%' ", search));
+            sql = String.format(sql, String.format(" where khxm like '%%%s%%' ", search));
         }
         List<Map<String, Object>> mapList = formConfigureService.getObjectList(sql, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         for (Map<String, Object> map : mapList) {
