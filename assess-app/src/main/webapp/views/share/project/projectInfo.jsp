@@ -76,7 +76,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">价值类型备注</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.remarkValuetype}</label>
+                        <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">委托目的备注</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.remarkEntrustpurpose}</label>
+                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label>
                     </div>
                 </div>
 

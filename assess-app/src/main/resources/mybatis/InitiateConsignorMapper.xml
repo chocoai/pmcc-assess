@@ -14,7 +14,6 @@
     <result column="cs_address" property="csAddress" jdbcType="VARCHAR" />
     <result column="cs_scope_operation" property="csScopeOperation" jdbcType="VARCHAR" />
     <result column="cs_unit_properties" property="csUnitProperties" jdbcType="VARCHAR" />
-    <result column="cs_attachment_project_enclosure_id" property="csAttachmentProjectEnclosureId" jdbcType="VARCHAR" />
     <result column="cs_name" property="csName" jdbcType="VARCHAR" />
     <result column="cs_spare_field" property="csSpareField" jdbcType="VARCHAR" />
     <result column="cs_idcard" property="csIdcard" jdbcType="VARCHAR" />
@@ -80,7 +79,7 @@
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, project_id, cs_type, cs_entrustment_unit, 
     cs_legal_representative, cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, 
-    cs_attachment_project_enclosure_id, cs_name, cs_spare_field, cs_idcard
+    cs_name, cs_spare_field, cs_idcard
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" >
     select
@@ -120,14 +119,14 @@
       project_id, cs_type, cs_entrustment_unit, 
       cs_legal_representative, cs_sociology_code, 
       cs_address, cs_scope_operation, cs_unit_properties, 
-      cs_attachment_project_enclosure_id, cs_name, 
-      cs_spare_field, cs_idcard)
+      cs_name, cs_spare_field, cs_idcard
+      )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{projectId,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, #{csEntrustmentUnit,jdbcType=VARCHAR}, 
       #{csLegalRepresentative,jdbcType=VARCHAR}, #{csSociologyCode,jdbcType=VARCHAR}, 
       #{csAddress,jdbcType=VARCHAR}, #{csScopeOperation,jdbcType=VARCHAR}, #{csUnitProperties,jdbcType=VARCHAR}, 
-      #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR}, #{csName,jdbcType=VARCHAR}, 
-      #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR})
+      #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -167,9 +166,6 @@
       </if>
       <if test="csUnitProperties != null" >
         cs_unit_properties,
-      </if>
-      <if test="csAttachmentProjectEnclosureId != null" >
-        cs_attachment_project_enclosure_id,
       </if>
       <if test="csName != null" >
         cs_name,
@@ -214,9 +210,6 @@
       </if>
       <if test="csUnitProperties != null" >
         #{csUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="csAttachmentProjectEnclosureId != null" >
-        #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       </if>
       <if test="csName != null" >
         #{csName,jdbcType=VARCHAR},
@@ -274,9 +267,6 @@
       <if test="record.csUnitProperties != null" >
         cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
       </if>
-      <if test="record.csAttachmentProjectEnclosureId != null" >
-        cs_attachment_project_enclosure_id = #{record.csAttachmentProjectEnclosureId,jdbcType=VARCHAR},
-      </if>
       <if test="record.csName != null" >
         cs_name = #{record.csName,jdbcType=VARCHAR},
       </if>
@@ -305,7 +295,6 @@
       cs_address = #{record.csAddress,jdbcType=VARCHAR},
       cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
       cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
-      cs_attachment_project_enclosure_id = #{record.csAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       cs_name = #{record.csName,jdbcType=VARCHAR},
       cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
       cs_idcard = #{record.csIdcard,jdbcType=VARCHAR}
@@ -349,9 +338,6 @@
       <if test="csUnitProperties != null" >
         cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
       </if>
-      <if test="csAttachmentProjectEnclosureId != null" >
-        cs_attachment_project_enclosure_id = #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR},
-      </if>
       <if test="csName != null" >
         cs_name = #{csName,jdbcType=VARCHAR},
       </if>
@@ -377,7 +363,6 @@
       cs_address = #{csAddress,jdbcType=VARCHAR},
       cs_scope_operation = #{csScopeOperation,jdbcType=VARCHAR},
       cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
-      cs_attachment_project_enclosure_id = #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR},
       cs_name = #{csName,jdbcType=VARCHAR},
       cs_spare_field = #{csSpareField,jdbcType=VARCHAR},
       cs_idcard = #{csIdcard,jdbcType=VARCHAR}

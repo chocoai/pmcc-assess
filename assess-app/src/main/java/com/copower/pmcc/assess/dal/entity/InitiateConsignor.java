@@ -27,8 +27,6 @@ public class InitiateConsignor {
 
     private String csUnitProperties;
 
-    private String csAttachmentProjectEnclosureId;
-
     private String csName;
 
     private String csSpareField;
@@ -129,14 +127,6 @@ public class InitiateConsignor {
 
     public void setCsUnitProperties(String csUnitProperties) {
         this.csUnitProperties = csUnitProperties == null ? null : csUnitProperties.trim();
-    }
-
-    public String getCsAttachmentProjectEnclosureId() {
-        return csAttachmentProjectEnclosureId;
-    }
-
-    public void setCsAttachmentProjectEnclosureId(String csAttachmentProjectEnclosureId) {
-        this.csAttachmentProjectEnclosureId = csAttachmentProjectEnclosureId == null ? null : csAttachmentProjectEnclosureId.trim();
     }
 
     public String getCsName() {

@@ -55,7 +55,6 @@
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <%--<input type="hidden" value="${item.remark}">--%>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -63,11 +62,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input required="required" placeholder="评估基准日" id="completeDateStart"
-                                           name="completeDateStart" data-date-format="yyyy-mm-dd"
+                                    <input required="required" placeholder="评估基准日" id="valuationDate"
+                                           name="valuationDate" data-date-format="yyyy-mm-dd"
                                            class="form-control date-picker dbdate" readonly="readonly"
-                                           value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
-
+                                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
                         </div>
@@ -75,8 +73,9 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">委托目的描述</label>
                                 <div class="col-sm-11">
-                                     <textarea required="required" id="remarkEntrustPurpose" name="remarkEntrustPurpose"
-                                               class="form-control" placeholder="委托目的描述"></textarea>
+                                     <textarea  id="remarkEntrustPurpose" name="remarkEntrustPurpose"
+                                               class="form-control"
+                                               placeholder="委托目的描述">${projectInfo.remarkEntrustPurpose}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +125,7 @@
                                         <input type="hidden" id="departmentId" name="departmentId"
                                                value="${projectInfo.departmentId}">
                                         <input id='departmentName' class='form-control' required="required"
-                                               readonly="readonly" maxlength="200"
+                                               readonly="readonly" maxlength="200" onclick="selectDepartment();"
                                                value="${projectInfo.departmentName}">
                                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
@@ -149,8 +148,9 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">价值类型备注</label>
                                 <div class="col-sm-11">
-                                     <textarea required="required" id="remarkValueType" name="remarkValueType"
-                                               class="form-control" placeholder="委托目的描述"></textarea>
+                                     <textarea  id="remarkValueType" name="remarkValueType"
+                                               class="form-control"
+                                               placeholder="委托目的描述">${projectInfo.remarkValueType}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -221,12 +221,12 @@
                                                value="${projectInfo.projectMemberVo.userAccountManager}">
                                         <input type="text" class="form-control" readonly="readonly"
                                                value="${projectInfo.projectMemberVo.userAccountManagerName}"
-                                               required="required"
+                                               required="required" onclick="selectUserAccountManager();"
                                                id="userAccountManager" maxlength="200">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
-                                                    data-original-title="选择" onclick="selectUserAccountManager()">
+                                                    data-original-title="选择" onclick="selectUserAccountManager();">
                                             <i class="fa fa-search"></i>
                                             </button>
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -250,21 +250,22 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目说明</label>
                                 <div class="col-sm-11">
-                                    <textarea required="required" id="remarks" name="remarks"
+                                    <textarea  id="remarks" name="remarks"
                                               class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目成员<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目成员</label>
                                 <div class="col-sm-11">
                                     <input type="hidden" id="userAccountMember" name="userAccountMember"
                                            value="${projectInfo.projectMemberVo.userAccountMember}">
                                     <input type="text" id="userAccountMemberID" class="form-control" readonly="readonly"
-                                          onclick="selectUserAccountMember();" value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                                           onclick="selectUserAccountMember();"
+                                           value="${projectInfo.projectMemberVo.userAccountMemberName}">
                                 </div>
                             </div>
                         </div>
@@ -289,8 +290,10 @@
                 <div class="x_content">
                     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
                         <div id="changeType">
-                            法人<input type="radio" name="csType" value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
-                            自然人<input type="radio" name="csType" value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
+                            法人<input type="radio" name="csType"
+                                     value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
+                            自然人<input type="radio" name="csType"
+                                      value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
                         </div>
                         <div id="legal_person" class="panel-body">
                             <div class="form-group">
@@ -486,8 +489,10 @@
                 </div>
                 <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
                     <div id="changeType1">
-                        法人<input type="radio" name="pType" value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
-                        自然人<input type="radio" name="pType" value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
+                        法人<input type="radio" name="pType"
+                                 value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
+                        自然人<input type="radio" name="pType"
+                                  value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
                     </div>
                     <div id="legal_person1" class="panel-body">
 
@@ -749,12 +754,12 @@
                                         <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
                                                required="required" value="${projectInfo.unitInformationVo.uUseUnit}">
                                         <input type="text" id="uUseUnitX" readonly="readonly"
-                                               placeholder="单位" class="form-control"
+                                               placeholder="单位" class="form-control" onclick="selectCustomer();"
                                                value="${projectInfo.unitInformationVo.uUseUnitName}">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
-                                                    data-original-title="选择" id="btn_select_customer2">
+                                                    data-original-title="选择" onclick="selectCustomer();">
                                             <i class="fa fa-search"></i>
                                             </button>
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -909,14 +914,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">联系人</h4>
+                <h3 class="modal-title">联系人</h3>
             </div>
             <form id="frmContacts" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
+                                <input type="hidden" name="cType" id="cType">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -958,18 +963,6 @@
                                         <div class="col-sm-10">
                                             <input type="text" name="cEmail" id="cEmail" placeholder="邮箱"
                                                    class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            联系人类型
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <label class="form-control" id="cTypeShow">
-                                            </label>
-                                            <input type="hidden" name="cType" id="cType">
                                         </div>
                                     </div>
                                 </div>
@@ -1457,58 +1450,30 @@
         }
     }
 
-    if ($("#btn_select_customer1").length > 0) {
-        document.getElementById("btn_select_customer1").onclick = function () {
-            crmCustomer.select({
-                multi: false,//是否允许多选
-                onSelected: function (nodes) {
-                    if ($("#pEntrustmentUnit").length > 0) {
-                        $("#pEntrustmentUnit").val(nodes[0].id);
-                    }
-                    if ($("#pEntrustmentUnitX").length > 0) {
-                        $("#pEntrustmentUnitX").val(nodes[0].name);
-                    }
-                    var id = nodes[0].id;
-                    loadInitContactsListB(id);
-                    $.ajax({
-                        type: "POST",
-                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                        data: "crmId=" + id,
-                        success: function (msg) {
-                            console.log(msg);
-                            writeCRM(msg, "pLegalRepresentative", "pAddress", "pScopeOperation", "pSociologyCode");
-                        }
-                    });
+    //选择客户
+    function selectCustomer() {
+        crmCustomer.select({
+            multi: false,//是否允许多选
+            onSelected: function (nodes) {
+                if ($("#uUseUnitX").length > 0) {
+                    $("#uUseUnitX").val(nodes[0].name);
                 }
-            });
-        }
-    }
-
-    if ($("#btn_select_customer2").length > 0) {
-        document.getElementById("btn_select_customer2").onclick = function () {
-            crmCustomer.select({
-                multi: false,//是否允许多选
-                onSelected: function (nodes) {
-                    if ($("#uUseUnitX").length > 0) {
-                        $("#uUseUnitX").val(nodes[0].name);
-                    }
-                    if ($("#uUseUnit").length > 0) {
-                        $("#uUseUnit").val(nodes[0].id);
-                    }
-                    var id = nodes[0].id;
-                    loadInitContactsListC(id);
-                    $.ajax({
-                        type: "POST",
-                        url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
-                        data: "crmId=" + id,
-                        success: function (msg) {
-                            console.log(msg);
-                            writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
-                        }
-                    });
+                if ($("#uUseUnit").length > 0) {
+                    $("#uUseUnit").val(nodes[0].id);
                 }
-            });
-        }
+                var id = nodes[0].id;
+                loadInitContactsListC(id);
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/projectInfo/getCRMList",
+                    data: "crmId=" + id,
+                    success: function (msg) {
+                        console.log(msg);
+                        writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber");
+                    }
+                });
+            }
+        });
     }
 
     var flags = new Array();
@@ -1707,8 +1672,8 @@
     }
 
     // 修改 联系人 view
-    function updateContacts(id,tbList) {
-        
+    function updateContacts(id, tbList) {
+
     }
 
     //新增  联系人

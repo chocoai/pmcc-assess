@@ -74,6 +74,7 @@ public class InitiatePossessorService {
 
 
     private InitiatePossessorVo change(InitiatePossessor possessor) {
+        if(possessor==null) return null;
         InitiatePossessorVo vo = new InitiatePossessorVo();
         BeanUtils.copyProperties(possessor, vo);
         if (!StringUtils.isEmpty(possessor.getpUnitProperties())) {

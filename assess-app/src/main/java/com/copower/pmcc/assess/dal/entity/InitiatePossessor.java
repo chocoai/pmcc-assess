@@ -27,8 +27,6 @@ public class InitiatePossessor {
 
     private String pUnitProperties;
 
-    private String pAttachmentProjectEnclosureId;
-
     private String pName;
 
     private String spareField;
@@ -129,14 +127,6 @@ public class InitiatePossessor {
 
     public void setpUnitProperties(String pUnitProperties) {
         this.pUnitProperties = pUnitProperties == null ? null : pUnitProperties.trim();
-    }
-
-    public String getpAttachmentProjectEnclosureId() {
-        return pAttachmentProjectEnclosureId;
-    }
-
-    public void setpAttachmentProjectEnclosureId(String pAttachmentProjectEnclosureId) {
-        this.pAttachmentProjectEnclosureId = pAttachmentProjectEnclosureId == null ? null : pAttachmentProjectEnclosureId.trim();
     }
 
     public String getpName() {

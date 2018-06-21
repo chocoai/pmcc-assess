@@ -142,7 +142,7 @@ public class ProjectInfoService {
 
     /*项目立项修改*/
     @Transactional
-    public void projectUpdate(InitiateProjectDto projectDto, Integer projectinfoid, Integer consignorid, Integer possessorid, Integer unitInformationid) throws Exception {
+    public void projectUpdate(InitiateProjectDto projectDto, Integer projectinfoid) throws Exception {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
@@ -163,22 +163,14 @@ public class ProjectInfoService {
             BaseAttachment baseAttachment = baseAttachments.get(0);
             // 更新 存附件的主表
             if (flag == 0) {//项目信息 附件
-                ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
-                projectInfoDao.updateProjectInfo(projectInfo);//更新 委托人或者占有人或者项目信息中的附件id
                 //更新附件
                 baseAttachment.setTableId(pid);
                 baseAttachmentDao.updateAttachment(baseAttachment);
             } else if (flag == InitiateContactsEnum.ONE.getNum()) {// 委托人 附件
-                InitiateConsignorDto dto = consignorService.getById(pid);
-                dto.setCsAttachmentProjectEnclosureId("" + baseAttachment.getId());
-                consignorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
                 //更新附件
                 baseAttachment.setTableId(pid);
                 baseAttachmentDao.updateAttachment(baseAttachment);
             } else if (flag == InitiateContactsEnum.TWO.getNum()) {//占有人 附件
-                InitiatePossessorDto dto = possessorService.getById(pid);
-                dto.setpAttachmentProjectEnclosureId("" + baseAttachment.getId());
-                possessorService.update(dto);//更新 委托人或者占有人或者项目信息中的附件id
                 //更新附件
                 baseAttachment.setTableId(pid);
                 baseAttachmentDao.updateAttachment(baseAttachment);
@@ -209,8 +201,19 @@ public class ProjectInfoService {
     public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
         boolean flag = true;
         try {
+
+
+            ProjectInfo projectInfo = change(projectInfoDto);
+            if (projectInfo.getCreator() == null) projectInfo.setCreator(commonService.thisUserAccount());
+
+            int projectId = 0;
+            projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
+
+            consignorDto.setProjectId(projectId);
             int v = consignorService.add(consignorDto);
+            unitInformationDto.setProjectId(projectId);
             int j = unitInformationService.add(unitInformationDto);
+            possessorDto.setProjectId(projectId);
             int i = possessorService.add(possessorDto);
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
 
@@ -224,38 +227,22 @@ public class ProjectInfoService {
                 initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
                 initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
             }
+            //附件更新
+            update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+            update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
 
-            try {
-                //附件更新
-                update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
-                update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
-                projectMemberDto.setCreator(commonService.thisUserAccount());
-                int k = projectMemberService.saveReturnId(projectMemberDto);
-                ProjectInfo projectInfo = change(projectInfoDto);
-                if (projectInfo.getCreator() == null) projectInfo.setCreator(commonService.thisUserAccount());
+            projectMemberDto.setProjectId(projectId);
+            projectMemberDto.setCreator(commonService.thisUserAccount());
+            projectMemberService.saveReturnId(projectMemberDto);
 
-                int id = 0;
-                id = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
-                projectMemberDto.setProjectId(id);
-                projectMemberDto.setId(k);
-                //2018-06-08标记
-                projectMemberService.updateProjectMember(projectMemberDto);
-                update_BaseAttachment_(id, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
-                initProjectInfo(projectInfo);//初始化项目信息
-            } catch (Exception e) {
-                try {
-                    flag = false;
-                    logger.error("exception!" + e.getMessage());
-                    throw e;
-                } catch (Exception e2) {
-
-                }
-            }
+            update_BaseAttachment_(projectId, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+            initProjectInfo(projectInfo);//初始化项目信息
         } catch (Exception e) {
             try {
                 flag = false;
+                logger.error("exception!" + e.getMessage());
                 throw e;
-            } catch (Exception e1) {
+            } catch (Exception e2) {
 
             }
         }
