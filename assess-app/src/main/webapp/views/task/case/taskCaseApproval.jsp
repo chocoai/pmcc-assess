@@ -17,7 +17,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -33,7 +36,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -97,7 +103,11 @@
         cols.push({field: 'caseTypeName', title: '案例类型'});
         cols.push({field: 'price', title: '单价'});
         cols.push({field: 'dealCaondition', title: '交易情况'});
-        cols.push({field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {return formatDate(value, false);}});
+        cols.push({
+            field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
         cols.push({field: 'paymentMethod', title: '付款方式'});
         cols.push({field: 'informationSourceName', title: '信息来源'});
         cols.push({field: 'linkman', title: '联系人'});

@@ -15,7 +15,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -48,8 +51,8 @@
 
                     </form>
                     <table class="table table-bordered" id="tb_List">
-                    <!-- cerare document add ajax data-->
-                </table>
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
         </div>
@@ -98,10 +101,10 @@
                                     </div>
                                 </div>
 
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
@@ -268,8 +271,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

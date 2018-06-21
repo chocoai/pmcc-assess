@@ -15,7 +15,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -30,7 +33,7 @@
                                 </label>
 
                                 <div class="col-sm-2">
-                                    <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
+                                    <input type="text" data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
                                            placeholder="开始时间" id="startTime" name="startTime"
                                            class="form-control dbdate">
                                 </div>
@@ -39,7 +42,7 @@
                                         结束时间
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text"  data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
+                                        <input type="text" data-date-format="yyyy-mm" data-date-minView="3" data-date-startView="3"
                                                placeholder="结束时间" id="endTime" name="endTime"
                                                class="form-control dbdate">
                                     </div>
@@ -153,7 +156,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function(){
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
@@ -211,12 +214,12 @@
         data.yearMonthCalendar = $("#yearMonthCalendar").val();
         data.indexCalendar = $("#indexCalendar").val();
         //非空校验
-        if (isNot(data.yearMonthCalendar) && isNot(data.indexCalendar)){
+        if (isNot(data.yearMonthCalendar) && isNot(data.indexCalendar)) {
             flag = true;
-        }else {
+        } else {
             alert("存在没有填写的内容");
         }
-        if (flag){
+        if (flag) {
             console.log(data);
             $.ajax({
                 url: "${pageContext.request.contextPath}/housePriceIndex/save",
@@ -256,8 +259,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

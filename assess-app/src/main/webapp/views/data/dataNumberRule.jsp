@@ -15,7 +15,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -193,8 +196,8 @@
                                         <div class="col-sm-9">
                                             <select class="form-control" required id="recount" name="recount">
                                                 <option value="">-请选择-</option>
-                                                    <option value="0">一直连续</option>
-                                                    <option value="1">按年分断</option>
+                                                <option value="0">一直连续</option>
+                                                <option value="1">按年分断</option>
                                             </select>
                                         </div>
                                     </div>
@@ -266,7 +269,7 @@
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/numberRule/list", cols, {
             assessClass: $("#queryAssessClass").val(),
-            reportType:$("#queryReportType").val()
+            reportType: $("#queryReportType").val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -376,8 +379,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

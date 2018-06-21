@@ -16,7 +16,10 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}记录表</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -38,7 +41,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -53,7 +59,7 @@
                                     <input type="text" required
                                            placeholder="实际工时" data-rule-number='true'
                                            id="actualHours" name="actualHours" class="form-control" maxlength="3"
-                                    value="${projectPlanDetails.actualHours}">
+                                           value="${projectPlanDetails.actualHours}">
                                 </div>
                             </div>
                         </div>
@@ -119,8 +125,8 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadUploadFiles();
             }
         });
@@ -158,7 +164,11 @@
         cols.push({field: 'caseTypeName', title: '案例类型'});
         cols.push({field: 'price', title: '单价'});
         cols.push({field: 'dealCaondition', title: '交易情况'});
-        cols.push({field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {return formatDate(value, false);}});
+        cols.push({
+            field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
         cols.push({field: 'paymentMethod', title: '付款方式'});
         cols.push({field: 'informationSourceName', title: '信息来源'});
         cols.push({field: 'linkman', title: '联系人'});

@@ -12,7 +12,10 @@
             <%@include file="/views/share/form_head.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>
                         项目信息
                         <small>${csrProjectInfo.projectClassName}/${csrProjectInfo.projectTypeName}/${csrProjectInfo.projectCategoryName}</small>
@@ -170,7 +173,10 @@
                 </div>
 
 
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3> 无效数据规则</h3>
                     <div class="clearfix">
                     </div>

@@ -46,16 +46,16 @@
                             <input type="hidden" id="boxId" name="boxId" value="${boxId}">
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
 
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                附件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="apply_file" name="apply_file" type="file" multiple="false">
-                                <div id="_apply_file">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    附件
+                                </label>
+                                <div class="col-sm-11">
+                                    <input id="apply_file" name="apply_file" type="file" multiple="false">
+                                    <div id="_apply_file">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </form>
                         <%@include file="/views/share/form_apply.jsp" %>
                     </div>

@@ -9,7 +9,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="x_panel">
-    <div class="x_title">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
         <i class="fa fa-external-link-square"></i> 填表人信息
     </div>
     <div class="x_content">

@@ -12,7 +12,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -102,12 +105,12 @@
                                             评估方法
                                         </label>
                                         <div class="col-sm-10" id="method">
-                                                <c:forEach items="${useList}" var="item">
+                                            <c:forEach items="${useList}" var="item">
                                                     <span class="checkbox-inline">
                                                     <input type="checkbox" name="method" value="${item.id}" class="form-inline">
                                                     <label>${item.name}</label>
                                                     </span>
-                                                </c:forEach>
+                                            </c:forEach>
 
                                         </div>
                                     </div>
@@ -179,28 +182,28 @@
                 <h3 class="modal-title" id="titleContent2">字段</h3>
             </div>
             <form id="firSubA">
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-2 control-label">
-                            字段名称
-                        </label>
-                        <div class="col-sm-10">
-                            <input type="hidden" name="principleId" id="principleId">
-                            <input type="text" id="nameA" name="nameA" class="form-control" required="required">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                字段名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="principleId" id="principleId">
+                                <input type="text" id="nameA" name="nameA" class="form-control" required="required">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                    保存
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                        保存
+                    </button>
+                </div>
             </form>
 
         </div>
@@ -218,25 +221,25 @@
     var field = null;
     function fieldExtract(result) {
         var str = "";
-        for (var i = 0;i<result.length;i++){
-            if (i == result.length-1){
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
                 str += result[i];
-            }else {
-                str += result[i] +",";
+            } else {
+                str += result[i] + ",";
             }
         }
         return str;
     }
     //提取字段
     function extractTemplateField() {
-        var text=$("#template").val();
+        var text = $("#template").val();
         $('.template-field').empty();
         var fieldArray = AssessCommon.extractField(text);
-        if(fieldArray&&fieldArray.length>0){
-            var html='';
-            $.each(fieldArray,function (i,item) {
-                field  = fieldArray;
-                html+='<span class="label label-default">'+item+'</span> ';
+        if (fieldArray && fieldArray.length > 0) {
+            var html = '';
+            $.each(fieldArray, function (i, item) {
+                field = fieldArray;
+                html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.template-field').append(html);
         }
@@ -354,27 +357,27 @@
                 $("#id").val(result.id);
                 $("#name").val(result.name);
                 $("#template").val(result.template);
-                var methodstr = ""+ result.method +"";
+                var methodstr = "" + result.method + "";
                 var methodArr = methodstr.split(",");
-                for (var j = 0;j < methodArr.length; j++){
+                for (var j = 0; j < methodArr.length; j++) {
                     $("#method input[name='method']").each(function () {
                         var str = methodArr[j];
-                        if (str!=''){
-                            if (str == $(this).val()){
-                                $(this).attr("checked",true);
+                        if (str != '') {
+                            if (str == $(this).val()) {
+                                $(this).attr("checked", true);
                             }
                         }
                     });
 
                 }
-                var entrustmentPurposeStr = ""+result.entrustmentPurpose +"";
+                var entrustmentPurposeStr = "" + result.entrustmentPurpose + "";
                 var entrustmentPurposeArr = entrustmentPurposeStr.split(",");
-                for (var j = 0;j < entrustmentPurposeArr.length;j++){
+                for (var j = 0; j < entrustmentPurposeArr.length; j++) {
                     $("#entrustmentPurpose input[name='entrustmentPurpose']").each(function () {
                         var str = entrustmentPurposeArr[j];
-                        if (str!=''){
-                            if (str == $(this).val()){
-                                $(this).attr("checked",true);
+                        if (str != '') {
+                            if (str == $(this).val()) {
+                                $(this).attr("checked", true);
                             }
                         }
                     });
@@ -388,14 +391,14 @@
             }
         })
     }
-    
+
     //新增 子项 字段数据
     function addMethodField(id) {
         $("#firSub").clearAll();
         $('#firSub').modal();
         var principleId = document.getElementById("principleId");
         principleId.value = id;
-        if (id==null || id=='' || id==0 ){//说明是从选子项添加的
+        if (id == null || id == '' || id == 0) {//说明是从选子项添加的
             var principleIdN = document.getElementById("principleIdN");
             principleId.value = principleIdN.value
         }
@@ -406,20 +409,20 @@
         var data = formParams("firSubA");
         data.name = $("#nameA").val();
         data.principleId = $("#principleId").val();
-        if ($("#firSubA").valid()){
+        if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationPrincipleNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    if (result.ret){
+                    if (result.ret) {
                         console.info(result);
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var principleIdN = document.getElementById("principleIdN").value;
                         setSubDataDic(principleIdN);
-                    }else {
+                    } else {
                         toastr.success('调用服务端方法失败');
                     }
                 },
@@ -494,7 +497,7 @@
             })
         })
     }
-    
+
 
 </script>
 

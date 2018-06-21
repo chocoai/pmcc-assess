@@ -240,7 +240,7 @@
                 events: {
                     'click #item_edit': function (e, value, row, index) {
                         workPhaseObj.formWorkPhase.clearAll(); //清空一些状态
-                        workStageObj.renderWorkStageDropList($("#workStageId"),$("#typeId").val());
+                        workStageObj.renderWorkStageDropList($("#workStageId"), $("#typeId").val());
                         //编辑
                         workPhaseObj.formWorkPhase.initForm(row);
 

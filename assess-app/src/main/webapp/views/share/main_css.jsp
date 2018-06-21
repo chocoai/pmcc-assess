@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <!-- start: META -->
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <title>${thisTitle}</title>
 <meta charset="utf-8"/>
@@ -23,5 +23,5 @@
 <script src='${pageContext.request.contextPath}/js/assess-key.js'></script>
 <script src="/assets/js/comm/pmcc-css.js"></script>
 <script type="text/javascript">
-    jQuery.ajaxSetup({cache:false});//取消ajax中的缓存
+    jQuery.ajaxSetup({cache: false});//取消ajax中的缓存
 </script>

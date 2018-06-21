@@ -10,11 +10,11 @@
 <input type='hidden' id="phaseId" value="${primaryData.get("phaseId")}">
 <input type='hidden' id="primaryTableName" value="${primaryData.get("primaryTableName")}">
 <script type="text/javascript">
-    var beforeAddFunction={};//定义新增按钮触发前的全局变量
-    var beforeEditFunction={};//定义编辑按钮触发前的全局变量
+    var beforeAddFunction = {};//定义新增按钮触发前的全局变量
+    var beforeEditFunction = {};//定义编辑按钮触发前的全局变量
 </script>
 <%--<c:forEach var="item" items="${tableJsonData.entrySet()}">--%>
-    <%--<label id="lbl_json_table_${item.getKey()}" style="display: none;">${item.getValue().getValue()}</label>--%>
+<%--<label id="lbl_json_table_${item.getKey()}" style="display: none;">${item.getValue().getValue()}</label>--%>
 <%--</c:forEach>--%>
 <c:forEach var="item" items="${hrProcessForms}">
     <c:if test="${item.boxReActivityName!=null}">
@@ -26,7 +26,10 @@
                     <c:choose>
                         <c:when test="${item.bisConfigure eq true}">
                             <div class="x_panel">
-                                <div class="x_title">
+                                <div class="x_title collapse-link">
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                    </ul>
                                     <h2> ${item.formModuleName}</h2>
                                     <div class="clearfix"></div>
                                 </div>
@@ -89,12 +92,12 @@
                                             </div>
                                             <script type="text/javascript">
                                                 $(function () {
-                                                    beforeAddFunction["${item.tableName}"]=[];
-                                                    beforeEditFunction["${item.tableName}"]=[];
+                                                    beforeAddFunction["${item.tableName}"] = [];
+                                                    beforeEditFunction["${item.tableName}"] = [];
                                                     $("#btn_add_detail_info_${item.id}").click(function () {
                                                         var fns = beforeAddFunction["${item.tableName}"];
-                                                        if(fns){
-                                                            $.each(fns,function (i,item) {
+                                                        if (fns) {
+                                                            $.each(fns, function (i, item) {
                                                                 item();
                                                             });
                                                         }
@@ -131,10 +134,10 @@
                                                                 foreignKeyName: "${item.foreignKeyName}",
                                                                 foreignKeyValue: $("#primaryId").val(),
                                                                 tableName: "${item.tableName}",
-                                                                beforeEdit:function (row) {
+                                                                beforeEdit: function (row) {
                                                                     var fns = beforeEditFunction["${item.tableName}"];
-                                                                    if(fns){
-                                                                        $.each(fns,function (i,item) {
+                                                                    if (fns) {
+                                                                        $.each(fns, function (i, item) {
                                                                             item(row);
                                                                         });
                                                                     }

@@ -1,4 +1,3 @@
-
 <div class="x-valid">
     <label class="col-sm-1 control-label">
         #{curr_labelName}<span class="symbol required"></span>
@@ -24,7 +23,7 @@
         区县
     </label>
     <div class="col-sm-3">
-        <select id="district" name="district" class="form-control  search-select select2" >
+        <select id="district" name="district" class="form-control  search-select select2">
             <option selected="selected" value="">请选择</option>
         </select>
     </div>
@@ -37,7 +36,7 @@
             $("#" + areaSelect.provinceId).empty();
             $("#city,#district").empty();
             $.ajax({
-                url: getContextPath() +"/projectInfo/getAreaList",
+                url: getContextPath() + "/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {
@@ -62,7 +61,7 @@
         loadCityEdit: function (row) {
             $("#city").empty();
             $.ajax({
-                url: getContextPath() +"/projectInfo/getAreaList",
+                url: getContextPath() + "/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {
@@ -87,7 +86,7 @@
         loadDistrictEdit: function (row) {
             $("#district").empty();
             $.ajax({
-                url: getContextPath() +"/projectInfo/getAreaList",
+                url: getContextPath() + "/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {
@@ -125,7 +124,7 @@
             $("#city").val(null).trigger("change").empty();
             var that = $(this);
             $.ajax({
-                url: getContextPath() +"/projectInfo/getAreaList",
+                url: getContextPath() + "/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {
@@ -149,7 +148,7 @@
             $("#district").val(null).trigger("change").empty();
             var that = $(this);
             $.ajax({
-                url: getContextPath() +"/projectInfo/getAreaList",
+                url: getContextPath() + "/projectInfo/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: {

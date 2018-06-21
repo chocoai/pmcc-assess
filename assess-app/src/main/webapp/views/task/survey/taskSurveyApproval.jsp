@@ -16,7 +16,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}:${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -42,7 +45,10 @@
                         </div>
                     </form>
 
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>
                             <small><i class="fa fa-bars"></i>清查内容</small>
                         </h2>
@@ -67,7 +73,7 @@
                         <tbody>
                         <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
                             <tr>
-                                <%--<input type="hidden" id="id" name="id" value="${items.id}">--%>
+                                    <%--<input type="hidden" id="id" name="id" value="${items.id}">--%>
                                 <td>${s.index + 1}</td>
                                 <td>
                                     <label class="form-control">${items.inventoryContentName}</label>
@@ -104,10 +110,13 @@
                     </table>
 
                     <%--<table class="table table-bordered" id="tb_List">--%>
-                        <%--<!-- cerare document add ajax data-->--%>
+                    <%--<!-- cerare document add ajax data-->--%>
                     <%--</table>--%>
 
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>
                             <small><i class="fa fa-bars"></i>他项权利</small>
                         </h2>
@@ -118,111 +127,111 @@
                     </table>
 
                     <%--<form id="frm_checkbox" class="form-horizontal">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-sm-2 control-label" data-label="&lt;label&gt;">--%>
-                                <%--他项权利与实际情况--%>
-                            <%--</label>--%>
-                        <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                    <%--<label class="col-sm-2 control-label" data-label="&lt;label&gt;">--%>
+                    <%--他项权利与实际情况--%>
+                    <%--</label>--%>
+                    <%--</div>--%>
                     <%--</form>--%>
 
 
                     <%--<form id="frm_survey" class="form-horizontal">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--他权登记人--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.otherRightsRegistrar}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--他权登记人--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.otherRightsRegistrar}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--实际行权人--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.rightHander}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--实际行权人--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.rightHander}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--登记面积--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerArea}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--登记面积--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerArea}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--<div class="form-group">--%>
+                    <%--<div class="form-group">--%>
 
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--实际面积--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualArea}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--实际面积--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualArea}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--登记用途--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerPurpose}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--登记用途--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerPurpose}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<label class="col-sm-1 control-label">--%>
-                                <%--实际用途--%>
-                            <%--</label>--%>
-                            <%--<div class="x-valid">--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualPurpose}</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                    <%--实际用途--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualPurpose}</label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--<div class="form-group">--%>
+                    <%--<div class="form-group">--%>
 
-                            <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-1 control-label">登记日期</label>--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.registerDate}" pattern="yyyy-MM-dd"/></label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">登记日期</label>--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.registerDate}" pattern="yyyy-MM-dd"/></label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-1 control-label">到期日</label>--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.dueDate}" pattern="yyyy-MM-dd"/></label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">到期日</label>--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.dueDate}" pattern="yyyy-MM-dd"/></label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                            <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-1 control-label">实际行权人行权日期</label>--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.exerciseDate}" pattern="yyyy-MM-dd"/></label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">实际行权人行权日期</label>--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.exerciseDate}" pattern="yyyy-MM-dd"/></label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--<div class="form-group">--%>
+                    <%--<div class="form-group">--%>
 
-                            <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-1 control-label">预计到期日</label>--%>
-                                <%--<div class="col-sm-2">--%>
-                                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.predictDueDate}" pattern="yyyy-MM-dd"/></label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                    <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">预计到期日</label>--%>
+                    <%--<div class="col-sm-2">--%>
+                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.predictDueDate}" pattern="yyyy-MM-dd"/></label>--%>
+                    <%--</div>--%>
+                    <%--</div>--%>
 
-                        <%--</div>--%>
+                    <%--</div>--%>
                     <%--</form>--%>
 
                 </div>
@@ -230,7 +239,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -292,32 +304,32 @@
 
 
     <%--function loadDataDicList() {--%>
-        <%--var cols = [];--%>
-        <%--cols.push({field: 'inventoryContentName', title: '清查内容'});--%>
-        <%--cols.push({field: 'areConsistent', title: '是否一致'});--%>
-        <%--cols.push({field: 'registrationAddress', title: '登记面积'});--%>
-        <%--cols.push({field: 'actualAddress', title: '实际面积'});--%>
-        <%--cols.push({field: 'differenceReason', title: '差异原因'});--%>
-        <%--cols.push({field: 'credential', title: '证明文件'});--%>
-        <%--cols.push({field: 'credentialAccessory',--%>
-                   <%--title: '证明文件附件',--%>
-                   <%--});--%>
-        <%--cols.push({field: 'voucher', title: '证明人'});--%>
+    <%--var cols = [];--%>
+    <%--cols.push({field: 'inventoryContentName', title: '清查内容'});--%>
+    <%--cols.push({field: 'areConsistent', title: '是否一致'});--%>
+    <%--cols.push({field: 'registrationAddress', title: '登记面积'});--%>
+    <%--cols.push({field: 'actualAddress', title: '实际面积'});--%>
+    <%--cols.push({field: 'differenceReason', title: '差异原因'});--%>
+    <%--cols.push({field: 'credential', title: '证明文件'});--%>
+    <%--cols.push({field: 'credentialAccessory',--%>
+    <%--title: '证明文件附件',--%>
+    <%--});--%>
+    <%--cols.push({field: 'voucher', title: '证明人'});--%>
 
-        <%--cols.push({--%>
-            <%--field: 'surveyTime', title: '调查时间', formatter: function (value, row, index) {--%>
-                <%--return formatDate(value, false);--%>
-            <%--}--%>
-        <%--});--%>
+    <%--cols.push({--%>
+    <%--field: 'surveyTime', title: '调查时间', formatter: function (value, row, index) {--%>
+    <%--return formatDate(value, false);--%>
+    <%--}--%>
+    <%--});--%>
 
-        <%--$("#tb_List").bootstrapTable('destroy');--%>
-        <%--TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetTemplate/list", cols, {--%>
-            <%--pid: ${surveyAssetInventory.id}--%>
-        <%--}, {--%>
-            <%--showColumns: false,--%>
-            <%--showRefresh: false,--%>
-            <%--search: false--%>
-        <%--});--%>
+    <%--$("#tb_List").bootstrapTable('destroy');--%>
+    <%--TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetTemplate/list", cols, {--%>
+    <%--pid: ${surveyAssetInventory.id}--%>
+    <%--}, {--%>
+    <%--showColumns: false,--%>
+    <%--showRefresh: false,--%>
+    <%--search: false--%>
+    <%--});--%>
     <%--}--%>
 
     function loadDataList() {
@@ -362,22 +374,20 @@
         });
     }
 
-    function showFiles(){
+    function showFiles() {
         var temp = $("#tb_List").find('tbody tr');
-        $.each(temp,function(i,tr){
-                FileUtils.getFileShows({
-                    target: "credentialAccessory${surveyAssetTemplateVos.get(i).id}",
-                    formData: {
-                        tableName: "tb_survey_asset_template",
-                        tableId: ${surveyAssetTemplateVos.get(i).id},
-                        fieldsName: "credentialAccessory"
-                    },
-                    deleteFlag: false
-                })
+        $.each(temp, function (i, tr) {
+            FileUtils.getFileShows({
+                target: "credentialAccessory${surveyAssetTemplateVos.get(i).id}",
+                formData: {
+                    tableName: "tb_survey_asset_template",
+                    tableId: ${surveyAssetTemplateVos.get(i).id},
+                    fieldsName: "credentialAccessory"
+                },
+                deleteFlag: false
+            })
         })
     }
-
-
 
 
 </script>

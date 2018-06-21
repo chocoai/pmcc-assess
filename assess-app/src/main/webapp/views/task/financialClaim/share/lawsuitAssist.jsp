@@ -8,7 +8,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" required
-                       placeholder="诉讼保全" name="litigationPreservation" class="form-control" >
+                       placeholder="诉讼保全" name="litigationPreservation" class="form-control">
             </div>
         </div>
         <label class="col-sm-1 control-label">
@@ -94,7 +94,7 @@
             url: "${pageContext.request.contextPath}/csrLitigation/loadLoanLitigation",
             data: {
                 borrowerId: "${planDetailsParent.projectPhaseId}",//该项业务特殊，存储的内容为客户编号
-                detailsId:$("#lawsuitAssist_details_id").val()
+                detailsId: $("#lawsuitAssist_details_id").val()
             },
             type: "get",
             dataType: "json",
@@ -124,7 +124,7 @@
         var data = formParams("frm_lawsuitAssist");
         data["bisImport"] = false;
         data["borrowerId"] = "${planDetailsParent.projectPhaseId}";//该项业务特殊，存储的内容为客户编号
-        data["detailsId"]=$("#lawsuitAssist_details_id").val();
+        data["detailsId"] = $("#lawsuitAssist_details_id").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/csrLitigation/saveLoanLitigation",
             data: data,

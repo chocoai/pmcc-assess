@@ -12,7 +12,10 @@
             <%@include file="/views/share/form_head.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 项目信息</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -94,7 +97,10 @@
                     </form>
                 </div>
 
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3> 项目组分派</h3>
                     <div class="clearfix">
                     </div>
@@ -359,7 +365,7 @@
     });
 
     //加载 客户信息 数据列表
-    function loadBorrowerList(id,tableID) {
+    function loadBorrowerList(id, tableID) {
         var cols = [];
         cols.push({field: 'checkbox', checkbox: true});
         cols.push({field: 'secondLevelBranch', title: '二级分行'});
@@ -369,9 +375,9 @@
         // cols.push({field: 'maritalStatus', title: '婚否'});
         // cols.push({field: 'workUnit', title: '职务'});
         // cols.push({field: 'presentAddress', title: '地址'});
-        $("#"+tableID).bootstrapTable('destroy');
-        if (tableID=='csrBorrowerTableList'){//未分派的列表
-            TableInit(""+tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
+        $("#" + tableID).bootstrapTable('destroy');
+        if (tableID == 'csrBorrowerTableList') {//未分派的列表
+            TableInit("" + tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
                 secondLevelBranch: $("#secondLevelBranch").val(),
                 firstLevelBranch: $("#firstLevelBranch").val(),
                 csrProjectInfoID: '${csrProjectInfo.id}'
@@ -386,15 +392,15 @@
                     oneSubmitGroupProject(row);
                 }
             });
-        }else {// 编辑客户列表
-            if (id==''){
+        } else {// 编辑客户列表
+            if (id == '') {
                 id = $("#csrProjectInfoGroupID").val();
             }
-            TableInit(""+tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
+            TableInit("" + tableID, "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists", cols, {
                 secondLevelBranch: $("#secondLevelBranchEdit").val(),
                 firstLevelBranch: $("#firstLevelBranchEdit").val(),
                 csrProjectInfoID: '${csrProjectInfo.id}',
-                csrProjectInfoGroupID:id
+                csrProjectInfoGroupID: id
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -411,23 +417,23 @@
 
     //刷新客户列表
     function loadRefreshBorrower(tableID) {
-        if (tableID=='csrBorrowerTableList'){
+        if (tableID == 'csrBorrowerTableList') {
             var opt = {
                 url: "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists",
                 query: {
                     csrProjectInfoID: '${csrProjectInfo.id}'
                 }
             };
-            $("#"+tableID).bootstrapTable("refresh", opt);
-        }else {
+            $("#" + tableID).bootstrapTable("refresh", opt);
+        } else {
             var opt = {
                 url: "${pageContext.request.contextPath}/csrProjectInfo/borrowerLists",
                 query: {
                     csrProjectInfoID: '${csrProjectInfo.id}',
-                    csrProjectInfoGroupID:$("#csrProjectInfoGroupID").val()
+                    csrProjectInfoGroupID: $("#csrProjectInfoGroupID").val()
                 }
             };
-            $("#"+tableID).bootstrapTable("refresh", opt);
+            $("#" + tableID).bootstrapTable("refresh", opt);
         }
     }
 
@@ -436,8 +442,8 @@
         var result = $("#groupProjectTableList").bootstrapTable('getSelections');
         $("#csrProjectInfoGroupID").val(id);
         $("#csrProjectIdV").val('${csrProjectInfo.id}');
-        loadBorrowerList(id,'csrBorrowerTableListEdit');
-        loadBorrowerList('','csrBorrowerTableList');
+        loadBorrowerList(id, 'csrBorrowerTableListEdit');
+        loadBorrowerList('', 'csrBorrowerTableList');
         $('#divBoxCsrBorrowerSelect').modal();
     }
 
@@ -453,9 +459,9 @@
                 csrBorrowerIDS += result[i].id + ",";
             }
         }
-        var flag = (result.length>0);
+        var flag = (result.length > 0);
         data.csrBorrowerID = csrBorrowerIDS;
-        if (flag){
+        if (flag) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/csrProjectInfo/cancelCsrBorrower",
                 type: "post",
@@ -475,7 +481,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        }else {
+        } else {
             Alert("没有要取消分派的客户!");
         }
     }
@@ -483,9 +489,9 @@
     //项目组 客户信息 单个分派 取消
     function oneCancelCsrBorrower(row) {
         var data = {
-            csrProjectId:row.csrProjectId,
-            csrBorrowerID:row.id,
-            csrProjectInfoGroupID:row.groupId
+            csrProjectId: row.csrProjectId,
+            csrBorrowerID: row.id,
+            csrProjectInfoGroupID: row.groupId
         };
         $.ajax({
             url: "${pageContext.request.contextPath}/csrProjectInfo/cancelCsrBorrower",
@@ -546,8 +552,8 @@
             }
         }
         data.csrBorrowerIDS = csrBorrowerIDS;
-        var flag = (result.length>0);
-        if (flag){
+        var flag = (result.length > 0);
+        if (flag) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/csrProjectInfo/submitGroupProject",
                 type: "post",
@@ -567,7 +573,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        }else {
+        } else {
             Alert("没有要分派的数据!");
         }
 
@@ -702,7 +708,7 @@
             showRefresh: false,
             search: false,
             // undefinedText:"没有",
-            undefinedText:"",
+            undefinedText: "",
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }

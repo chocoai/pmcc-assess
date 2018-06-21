@@ -59,7 +59,10 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>项目分布</h2>
                             <div class="clearfix"></div>
                         </div>
@@ -74,7 +77,10 @@
 
                 <div class="col-md-5">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>项目公告</h2>
                             <div class="clearfix"></div>
                         </div>
@@ -143,7 +149,10 @@
                 </div>
                 <div class="col-md-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>关注项目</h2>
                             <div class="clearfix"></div>
                         </div>
@@ -211,11 +220,14 @@
                 </div>
                 <div class="col-md-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>材料价格分析表</h2>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="x_content" >
+                        <div class="x_content">
                             <div class="col-xs-3">
                                 <table class="table" style="width: auto">
                                     <thead>
@@ -244,7 +256,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-xs-8" >
+                            <div class="col-xs-8">
                                 <div id="container2">
 
                                 </div>
@@ -275,7 +287,7 @@
             text: '数据来源: 四川省工程造价信息网'
         },
         xAxis: {
-            categories: ['2017/09','2017/10','2017/11', '2017/12','2018/01']
+            categories: ['2017/09', '2017/10', '2017/11', '2017/12', '2018/01']
         },
         yAxis: {
             title: {
@@ -297,48 +309,48 @@
             marker: {
                 symbol: 'square'
             },
-            data: [3580,3550, 3670, 4150, 4100 ]
+            data: [3580, 3550, 3670, 4150, 4100]
         }, {
             name: '梓潼县',
             marker: {
                 symbol: 'diamond'
             },
-            data: [3600, 3570, 3690, 4170, 4120 ]
+            data: [3600, 3570, 3690, 4170, 4120]
         }
             , {
                 name: '三台县',
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [3595, 3565, 3685, 4165, 4115 ]
+                data: [3595, 3565, 3685, 4165, 4115]
             }
             , {
                 name: '盐亭县',
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [3600,3570, 3690, 4170, 4120 ]
+                data: [3600, 3570, 3690, 4170, 4120]
             }
             , {
                 name: '安州区',
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [3590, 3560, 3680, 4160, 4110 ]
+                data: [3590, 3560, 3680, 4160, 4110]
             }
             , {
                 name: '江油市',
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [3600, 3570, 3690, 4170, 4120 ]
+                data: [3600, 3570, 3690, 4170, 4120]
             }
             , {
                 name: '北川县',
                 marker: {
                     symbol: 'diamond'
                 },
-                data: [3595, 3565, 3685, 4165, 4115 ]
+                data: [3595, 3565, 3685, 4165, 4115]
             }]
     });
 
@@ -369,21 +381,20 @@
         series: [{
             type: 'pie',
             data: [
-                ['0-500万元',   45.0],
-                ['500-1000万元',       26.8],
+                ['0-500万元', 45.0],
+                ['500-1000万元', 26.8],
                 {
                     name: '1,000-3,000万元',
                     y: 12.8,
                     sliced: true,
                     selected: true
                 },
-                ['3,000-5,000万元',    8.5],
-                ['5,000-10,000万元',     6.2],
-                ['10,000万元以上',   0.7]
+                ['3,000-5,000万元', 8.5],
+                ['5,000-10,000万元', 6.2],
+                ['10,000万元以上', 0.7]
             ]
         }]
     });
-
 
 
     Highcharts.setOptions({
@@ -413,7 +424,7 @@
             'parent': '1.1',
             'name': '库存项目',
             'value': 20
-        },{
+        }, {
             'parent': '1.1',
             'name': '在审项目',
             'value': 10
@@ -437,7 +448,7 @@
             'parent': '1.2',
             'name': '库存项目',
             'value': 20
-        },{
+        }, {
             'parent': '1.2',
             'name': '在审项目',
             'value': 10
@@ -461,7 +472,7 @@
             'parent': '1.3',
             'name': '库存项目',
             'value': 10
-        },{
+        }, {
             'parent': '1.3',
             'name': '在审项目',
             'value': 20

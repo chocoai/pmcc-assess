@@ -16,7 +16,10 @@
             <!--填写表单-->
             <%@include file="/views/share/tools/dynamic_form_approval.jsp" %>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}工作成果</h2>
                     <div class="clearfix"></div>
                 </div>

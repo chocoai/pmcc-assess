@@ -118,11 +118,11 @@
             dataType: "json",
             data: {
                 boxId:${boxId},
-                processInsId:"${processInsId}",
-                taskId:"${taskId}",
-                activityName:"${activityName}",
-                activityCnName:"${activityCnName}",
-                agentUserAccount:"${agentUserAccount}",
+                processInsId: "${processInsId}",
+                taskId: "${taskId}",
+                activityName: "${activityName}",
+                activityCnName: "${activityCnName}",
+                agentUserAccount: "${agentUserAccount}",
                 projectId: "${projectId}",
                 planString: JSON.stringify(plans)
             },

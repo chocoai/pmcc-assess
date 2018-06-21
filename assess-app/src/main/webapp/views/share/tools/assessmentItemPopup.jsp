@@ -59,7 +59,7 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="hidden" value="true" name="itemValid" id="itemValid">
-                                        <div id="item_valid_" class="checkbox" >
+                                        <div id="item_valid_" class="checkbox">
                                             <input type="checkbox" class="flat" checked="checked"/>
                                         </div>
 

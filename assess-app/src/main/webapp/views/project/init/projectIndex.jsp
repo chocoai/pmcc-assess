@@ -12,7 +12,10 @@
             <%@include file="/views/share/form_head.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
@@ -283,7 +286,10 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 委托人</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -468,7 +474,10 @@
                             </div>
                         </div>
                     </form>
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h3> 联系人</h3>
                     </div>
                     <div class="x_content">
@@ -480,7 +489,10 @@
             </div>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 占有人</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -720,7 +732,10 @@
                     </div>
                 </form>
 
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3> 联系人</h3>
                     <div class="clearfix"></div>
                 </div>
@@ -733,7 +748,10 @@
             </div>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 报告使用单位</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -874,7 +892,10 @@
                     </div>
                 </form>
 
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h3> 联系人</h3>
                     <div class="clearfix">
                     </div>

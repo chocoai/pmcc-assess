@@ -134,7 +134,7 @@
             url: "${pageContext.request.contextPath}/csrContract/loadLoanContractAssist",
             data: {
                 borrowerId: "${planDetailsParent.projectPhaseId}",//该项业务特殊，存储的内容为客户编号
-                detailsId:$("#loanContractAssist_details_id").val()
+                detailsId: $("#loanContractAssist_details_id").val()
             },
             type: "get",
             dataType: "json",
@@ -164,7 +164,7 @@
         var data = formParams("frm_loanContractAssist");
         data["bisImport"] = false;
         data["borrowerId"] = "${planDetailsParent.projectPhaseId}";//该项业务特殊，存储的内容为客户编号
-        data["detailsId"]=$("#loanContractAssist_details_id").val();
+        data["detailsId"] = $("#loanContractAssist_details_id").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/csrContract/saveLoanContract",
             data: data,

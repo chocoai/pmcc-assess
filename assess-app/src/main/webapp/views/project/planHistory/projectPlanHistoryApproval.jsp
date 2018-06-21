@@ -17,7 +17,7 @@
                     <i class="fa fa-external-link-square"></i> 项目计划
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped table-bordered table-hover table-bordered"  >
+                    <table class="table table-striped table-bordered table-hover table-bordered">
                         <thead>
                         <tr>
                             <th class="hidden-xs">计划名称</th>

@@ -15,7 +15,10 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>案例调查明细</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -28,7 +31,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>案例信息</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -73,7 +79,7 @@
                                     <select class="form-control" id="caseType" name="caseType">
                                         <option value="">-请选择-</option>
                                         <c:forEach var="item" items="${caseType}">
-                                            <option ${item.id eq surveyCaseStudyDetail.caseType?"selected=\"selected\"":""}  value="${item.id}">${item.name}</option>
+                                            <option ${item.id eq surveyCaseStudyDetail.caseType?"selected=\"selected\"":""} value="${item.id}">${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

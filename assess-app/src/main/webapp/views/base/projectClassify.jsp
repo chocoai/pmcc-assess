@@ -14,7 +14,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -210,7 +213,7 @@
                                             字段名称
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="100" placeholder="字段名称"
+                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
                                                    id="subFieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
@@ -221,7 +224,7 @@
                                             申请url
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="100" placeholder="申请url"
+                                            <input type="text" data-rule-maxlength="100" placeholder="申请url"
                                                    id="applyUrl" name="applyUrl" class="form-control">
                                         </div>
                                     </div>
@@ -232,7 +235,7 @@
                                             详情url
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="100" placeholder="详情url"
+                                            <input type="text" data-rule-maxlength="100" placeholder="详情url"
                                                    id="detailUrl" name="detailUrl" class="form-control">
                                         </div>
                                     </div>
@@ -246,7 +249,7 @@
                                             <div class="input-group">
                                                 <input type="hidden" id="formModuleId" name="formModuleId" value="">
                                                 <input id='formModuleName' class='form-control' onclick="selectDynamicForm();"
-                                                       readonly="readonly" maxlength="200" >
+                                                       readonly="readonly" maxlength="200">
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="selectDynamicForm();" data-toggle="tooltip"

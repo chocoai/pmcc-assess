@@ -16,7 +16,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -248,13 +251,13 @@
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
                 <%--var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";--%>
-                var detailUrl = "" ;
-                if (row.baseProjectClassify !=null && row.baseProjectClassify!=''){
-                    detailUrl = "${pageContext.request.contextPath}/"+ row.baseProjectClassify.detailUrl+"?projectId="+row.id;
-                }else{
-                    detailUrl = "#" ;
+                var detailUrl = "";
+                if (row.baseProjectClassify != null && row.baseProjectClassify != '') {
+                    detailUrl = "${pageContext.request.contextPath}/" + row.baseProjectClassify.detailUrl + "?projectId=" + row.id;
+                } else {
+                    detailUrl = "#";
                 }
-                var url = "" +detailUrl+"" ;
+                var url = "" + detailUrl + "";
                 var str = "<a target='_blank' href='" + detailUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 return str;
             }

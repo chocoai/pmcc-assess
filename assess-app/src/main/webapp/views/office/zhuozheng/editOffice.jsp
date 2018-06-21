@@ -10,7 +10,7 @@
     //设置保存页面
     poCtrl.setSaveFilePage(String.format("/%s/zhuozheng/saveFile", request.getContextPath()));
     String url = String.format("/%s/attachment/downloadFileFromServer?id=%s", request.getContextPath(), request.getAttribute("attachmentId"));
-    OpenModeType openModeType = (OpenModeType)request.getAttribute("openModeType");
+    OpenModeType openModeType = (OpenModeType) request.getAttribute("openModeType");
     poCtrl.webOpen(url, openModeType, "admin");
 %>
 

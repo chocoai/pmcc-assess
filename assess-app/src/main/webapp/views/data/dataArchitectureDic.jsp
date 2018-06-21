@@ -16,7 +16,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -106,7 +109,7 @@
                                             经济耐用年限
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text"  data-rule-digits="true"
+                                            <input type="text" data-rule-digits="true"
                                                    placeholder="经济耐用年限(请输入数字)"
                                                    id="durableLife" name="durableLife" class="form-control">
                                         </div>
@@ -118,7 +121,7 @@
                                             残值率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text"   placeholder="残值率"
+                                            <input type="text" placeholder="残值率"
                                                    id="residualValue" name="residualValue" class="form-control">
                                         </div>
                                     </div>

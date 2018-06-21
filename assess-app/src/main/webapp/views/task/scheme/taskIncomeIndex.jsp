@@ -18,10 +18,12 @@
             <%@include file="/views/share/evaluationBasisPublic.jsp" %>
 
 
-
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -105,27 +107,27 @@
         var princiPleDataID = princiPle.dataID;
 
         var ids = basisDataID.split(",");
-        for(var i = 0;i < ids.length;i++){
-            if (i == ids.length-1){
-                basisContent += $("#templateBasisV"+ids[i]).val() +"";
-            }else {
-                basisContent += $("#templateBasisV"+ids[i]).val() +"<<";
+        for (var i = 0; i < ids.length; i++) {
+            if (i == ids.length - 1) {
+                basisContent += $("#templateBasisV" + ids[i]).val() + "";
+            } else {
+                basisContent += $("#templateBasisV" + ids[i]).val() + "<<";
             }
         }
         ids = princiPleDataID.split(",");
-        for(var i = 0;i < ids.length;i++){
-            if (i == ids.length-1){
-                principleContent += $("#templatePrincipleV"+ids[i]).val() +"";
-            }else {
-                principleContent += $("#templatePrincipleV"+ids[i]).val() +"<<";
+        for (var i = 0; i < ids.length; i++) {
+            if (i == ids.length - 1) {
+                principleContent += $("#templatePrincipleV" + ids[i]).val() + "";
+            } else {
+                principleContent += $("#templatePrincipleV" + ids[i]).val() + "<<";
             }
         }
         ids = hypothesisDataID.split(",");
-        for(var i = 0;i < ids.length;i++){
-            if (i == ids.length-1){
-                hypothesisContent += $("#templateHypothesisV"+ids[i]).val() +"";
-            }else {
-                hypothesisContent += $("#templateHypothesisV"+ids[i]).val() +"<<";
+        for (var i = 0; i < ids.length; i++) {
+            if (i == ids.length - 1) {
+                hypothesisContent += $("#templateHypothesisV" + ids[i]).val() + "";
+            } else {
+                hypothesisContent += $("#templateHypothesisV" + ids[i]).val() + "<<";
             }
         }
 
@@ -160,7 +162,7 @@
     }
 
     $(function () {
-        
+
         $("#frm_task").validate();
 
         loadUploadFiles();
@@ -176,8 +178,8 @@
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
-        },{
-            onUploadComplete:function () {
+        }, {
+            onUploadComplete: function () {
                 loadUploadFiles();
             }
         });
@@ -211,7 +213,7 @@
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("formData="+json, $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer("formData=" + json, $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 

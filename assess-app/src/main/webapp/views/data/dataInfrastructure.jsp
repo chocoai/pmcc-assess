@@ -14,7 +14,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -277,16 +280,16 @@
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
 
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                        保存
-                    </button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                    保存
+                </button>
+            </div>
             </form>
             <table class="table table-bordered" id="tb_List1">
                 <!-- cerare document add ajax data-->
@@ -380,18 +383,18 @@
         loadDataDicList();
     })
 
-   function fileUpload() {
-       FileUtils.uploadFiles({
-           target: "fileName",
-           disabledTarget: "btn_submit",
-           formData: {
-               tableName: "tb_data_infrastructure",
-               tableId: 0,
-               fieldsName: "file_name"
-           },
-           deleteFlag: true
-       });
-   }
+    function fileUpload() {
+        FileUtils.uploadFiles({
+            target: "fileName",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: "tb_data_infrastructure",
+                tableId: 0,
+                fieldsName: "file_name"
+            },
+            deleteFlag: true
+        });
+    }
     //加载基础设施费用列表
     function loadInfratructureCost() {
         var cols = [];
@@ -649,7 +652,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function () {
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
@@ -848,9 +851,9 @@
                 $("#projectType").val(result.projectType);
                 $("#number").val(result.number);
                 $("#id").val(result.id);
-                $("#province").append("<option selected='selected'"+ 'value='+result.province +">"+result.provinceName+"</option>");
-                $("#district").append("<option selected='selected'"+ 'value='+result.district +">"+result.districtName+"</option>");
-                $("#city").append("<option selected='selected'"+ 'value='+result.city +">"+result.cityName+"</option>");
+                $("#province").append("<option selected='selected'" + 'value=' + result.province + ">" + result.provinceName + "</option>");
+                $("#district").append("<option selected='selected'" + 'value=' + result.district + ">" + result.districtName + "</option>");
+                $("#city").append("<option selected='selected'" + 'value=' + result.city + ">" + result.cityName + "</option>");
                 FileUtils.uploadFiles({
                     target: "fileName",
                     disabledTarget: "btn_submit",
@@ -865,7 +868,7 @@
                     target: "fileName",
                     formData: {
                         tableName: "tb_data_infrastructure",
-                         tableId: id,
+                        tableId: id,
                         fieldsName: "file_name"
                     },
                     deleteFlag: true

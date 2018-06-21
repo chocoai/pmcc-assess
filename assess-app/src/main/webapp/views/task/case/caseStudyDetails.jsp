@@ -17,7 +17,10 @@
             <!--填写表单-->
             <input type="hidden" id="JsonValue" value='${JsonValue}'>
             <div class="x_panel" style="display: none;">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>查勘明细</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -29,7 +32,10 @@
             </div>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>案例调查详情</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -188,7 +194,7 @@
 <script type="text/javascript">
 
     $(function () {
-        if("${surveyCaseStudyDetail.dynamicFormId}"!="0"){
+        if ("${surveyCaseStudyDetail.dynamicFormId}" != "0") {
             showDynamicForm();
         }
 

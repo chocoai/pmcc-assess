@@ -25,7 +25,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -74,7 +77,10 @@
                         </div>
                     </div>
                     <div class="x_panel" id="panel_bookmark" style="display: none;">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <label id="span_template_name">当前模板</label>的书签设置
                             </h2>

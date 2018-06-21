@@ -25,7 +25,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -94,7 +97,7 @@
                                             class='col-sm-2 control-label'>报告类型<span
                                             class="symbol required"></span></label>
                                         <div class='col-sm-4'>
-                                            <select  name='reportType' required class='form-control'>
+                                            <select name='reportType' required class='form-control'>
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -113,7 +116,7 @@
                                                        readonly="readonly" maxlength="200">
                                                 <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="reportTeamplateSelect(this);"    data-toggle="tooltip" data-original-title="选择">
+                                                        onclick="reportTeamplateSelect(this);" data-toggle="tooltip" data-original-title="选择">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                                  <button type="button" class="btn btn-default docs-tooltip"
@@ -141,7 +144,7 @@
                                     <div class='x-valid'><label
                                             class='col-sm-2 control-label'>备注</label>
                                         <div class='col-sm-10'>
-                                         <textarea id="remark"  name="remark"
+                                         <textarea id="remark" name="remark"
                                                    placeholder="备注"
                                                    class="form-control"></textarea>
                                         </div>

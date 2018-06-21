@@ -16,7 +16,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -123,33 +126,33 @@
                                 </c:forEach>
 
                                 <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                        <%--<label class="col-sm-3 control-label">--%>
-                                            <%--阶段<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-9">--%>
-                                            <%--<select class="form-control" required id="stage" name="stage">--%>
-                                                <%--<option value="">-请选择-</option>--%>
-                                                <%--<c:forEach var="item" items="${stageList}">--%>
-                                                    <%--<option value="${item.id}">${item.name}</option>--%>
-                                                <%--</c:forEach>--%>
-                                            <%--</select>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div class="x-valid">--%>
+                                <%--<label class="col-sm-3 control-label">--%>
+                                <%--阶段<span class="symbol required"></span>--%>
+                                <%--</label>--%>
+                                <%--<div class="col-sm-9">--%>
+                                <%--<select class="form-control" required id="stage" name="stage">--%>
+                                <%--<option value="">-请选择-</option>--%>
+                                <%--<c:forEach var="item" items="${stageList}">--%>
+                                <%--<option value="${item.id}">${item.name}</option>--%>
+                                <%--</c:forEach>--%>
+                                <%--</select>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
 
                                 <%--<div class="form-group">--%>
-                                    <%--<div>--%>
-                                        <%--<label class="col-sm-3 control-label">--%>
-                                            <%--占比<span class="symbol required"></span>--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-9">--%>
-                                            <%--<input type="text" required data-rule-maxlength="50" placeholder="名称"--%>
-                                                   <%--id="proportion" name="proportion" class="form-control">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="col-sm-1">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                <%--<div>--%>
+                                <%--<label class="col-sm-3 control-label">--%>
+                                <%--占比<span class="symbol required"></span>--%>
+                                <%--</label>--%>
+                                <%--<div class="col-sm-9">--%>
+                                <%--<input type="text" required data-rule-maxlength="50" placeholder="名称"--%>
+                                <%--id="proportion" name="proportion" class="form-control">--%>
+                                <%--</div>--%>
+                                <%--<div class="col-sm-1">--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
                                 <%--</div>--%>
 
                             </div>
@@ -322,10 +325,10 @@
         var str = data.proportionList;
         var arr = str.split(",");
         var total = 0;
-        for(var i=0;i<arr.length;i++){
+        for (var i = 0; i < arr.length; i++) {
             total += parseInt(arr[i]);
         }
-        if(total != 100){
+        if (total != 100) {
             toastr.error('占比之和不为100!');
             return flag;
         }
@@ -359,10 +362,10 @@
         var str = data.proportionList;
         var arr = str.split(",");
         var total = 0;
-        for(var i=0;i<arr.length;i++){
+        for (var i = 0; i < arr.length; i++) {
             total += parseInt(arr[i]);
         }
-        if(total != 100){
+        if (total != 100) {
             toastr.error('占比之和不为100!');
             return flag;
         }

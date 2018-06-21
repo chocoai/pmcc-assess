@@ -36,14 +36,14 @@
         //解析定位结果
         function onComplete(data) {
 //            console.log(data.formattedAddress);
-            if(window.parent.onCompleteSuccess){
+            if (window.parent.onCompleteSuccess) {
                 window.parent.onCompleteSuccess(data);
             }
         }
 
         //解析定位错误信息
         function onError(data) {
-            if(window.parent.onCompleteFail){
+            if (window.parent.onCompleteFail) {
                 window.parent.onCompleteFail(data);
             }
         }
@@ -54,12 +54,12 @@
         });
 
         positionPicker.on('success', function (positionResult) {
-            if(window.parent.positionPickerSuccess){
+            if (window.parent.positionPickerSuccess) {
                 window.parent.positionPickerSuccess(positionResult);
             }
         });
         positionPicker.on('fail', function (positionResult) {
-            if(window.parent.positionPickerFail){
+            if (window.parent.positionPickerFail) {
                 window.parent.positionPickerFail(positionResult);
             }
         });

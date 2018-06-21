@@ -11,7 +11,7 @@
     poCtrl.setSaveFilePage(String.valueOf(request.getAttribute("saveUrl")));
     String url = String.valueOf(request.getAttribute("openUrl"));
     String userAccount = String.valueOf(request.getAttribute("userAccount"));
-    OpenModeType openModeType = (OpenModeType)request.getAttribute("openModeType");
+    OpenModeType openModeType = (OpenModeType) request.getAttribute("openModeType");
     poCtrl.webOpen(url, openModeType, userAccount);
 %>
 

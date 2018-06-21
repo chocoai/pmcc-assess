@@ -21,7 +21,10 @@
                 <div class="col-md-12 ">
                     <!-- start: DEFAULT TREE PANEL -->
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>${baseViewDto.currentMenu.name}</h2>
                             <div class="clearfix"></div>
                         </div>
@@ -479,7 +482,7 @@
             Loading.progressShow();
             var data = formParams("frm_processForm");
             data.processId = currProcessId;
-            data.formModuleName=$("#formModuleId").find("option:selected").text();
+            data.formModuleName = $("#formModuleId").find("option:selected").text();
             var activity = $("#boxReActivityName").val().split('_');
             data["boxReActivityName"] = activity[0];
             data["sorting"] = activity[1];
@@ -510,7 +513,7 @@
     //加载列表数据
     function loadSelectFormList() {
         assessForm.select(function (row) {
-            if(row){
+            if (row) {
                 $("#formId").val(row.id);
                 $("#formIdName").val(row.cnName);
                 loadFormModuleList(row.id);

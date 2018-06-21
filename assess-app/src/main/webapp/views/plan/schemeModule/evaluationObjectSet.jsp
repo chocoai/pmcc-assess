@@ -9,7 +9,10 @@
 
 <c:forEach items="${dataList}" var="item">
     <div class="x_panel">
-        <div class="x_title">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
             <h2>
                 <c:if test="${!empty item.provinceCityDistrictStr}">
                     ${item.provinceCityDistrictStr}
@@ -347,16 +350,16 @@
             type: "get",
             dataType: "json",
             success: function (result) {
-                if (result.ret&&result.data) {
-                    $.each(result.data,function (i,item) {
-                        var methodTypeEle = $("#myTabContent").find('.tab-pane').find('[name="methodType"][value="'+item.methodType+'"]')
+                if (result.ret && result.data) {
+                    $.each(result.data, function (i, item) {
+                        var methodTypeEle = $("#myTabContent").find('.tab-pane').find('[name="methodType"][value="' + item.methodType + '"]')
                         var tabPane = $(methodTypeEle).closest(".tab-pane");
                         tabPane.find('[name="id"]').val(item.id);
-                        if(item.bisApplicable){
-                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked',true).parent().get(0).click();
+                        if (item.bisApplicable) {
+                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked', true).parent().get(0).click();
                             tabPane.find('.applicable').show();
-                        }else{
-                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked',true).parent().get(0).click();
+                        } else {
+                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true).parent().get(0).click();
                             tabPane.find('.not-applicable').show();
                         }
                         tabPane.find('[name="applicableReason"]').val(item.applicableReason);
@@ -440,9 +443,9 @@
     //适用切换
     function applicableChange(_this, isApplicable) {
         var tabPane = $(_this).closest(".tab-pane");
-        var thisRadio=$(_this).find('input:radio');
-        thisRadio.attr('checked',true);
-        $(_this).closest('.btn-group').find('input:radio').not(thisRadio).attr('checked',false);
+        var thisRadio = $(_this).find('input:radio');
+        thisRadio.attr('checked', true);
+        $(_this).closest('.btn-group').find('input:radio').not(thisRadio).attr('checked', false);
         if (isApplicable) {
             tabPane.find('.applicable').show();
             tabPane.find('.not-applicable').hide();

@@ -48,11 +48,11 @@
             <tbody>
             <tr>
                 <td class="center hidden-xs">
-                   四川协合魔方
+                    四川协合魔方
                 </td>
                 <td>
                     王先生
-                   </td>
+                </td>
                 <td class="hidden-xs">10000</td>
                 <td>V925K-G5RS-4AC8-H3VHC</td>
                 <td class="hidden-xs"></td>

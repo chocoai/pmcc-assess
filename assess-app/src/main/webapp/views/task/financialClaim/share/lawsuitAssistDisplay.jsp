@@ -68,7 +68,7 @@
             url: "${pageContext.request.contextPath}/csrLitigation/loadLoanLitigation",
             data: {
                 borrowerId: "${planDetailsParent.projectPhaseId}",//该项业务特殊，存储的内容为客户编号
-                detailsId:$("#lawsuitAssist_details_id").val()
+                detailsId: $("#lawsuitAssist_details_id").val()
             },
             type: "get",
             dataType: "json",

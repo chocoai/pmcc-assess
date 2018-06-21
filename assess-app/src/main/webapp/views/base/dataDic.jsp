@@ -14,7 +14,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -213,7 +216,7 @@
                                             字段名称
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="100" placeholder="字段名称"
+                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
                                                    id="subFieldName" name="fieldName" class="form-control">
                                         </div>
                                     </div>
@@ -224,7 +227,7 @@
                                             关联项Key
                                         </label>
                                         <div class="col-sm-8">
-                                            <input type="text"  data-rule-maxlength="50" placeholder="关联项Key"
+                                            <input type="text" data-rule-maxlength="50" placeholder="关联项Key"
                                                    id="subItemKey" name="itemKey" class="form-control">
                                         </div>
                                     </div>
@@ -507,7 +510,7 @@
             data.sorting = $("#subSorting").val();
             data.bisEnable = $("#subBisEnable").prop("checked");
             data.remark = $("#subRemark").val();
-            if($("#subFieldName").val()){
+            if ($("#subFieldName").val()) {
                 data.fieldName = $("#subFieldName").val();
             }
             $.ajax({

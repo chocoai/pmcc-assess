@@ -4,20 +4,25 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER --><div class="container body">    <div class="main_container">        <%@include file="/views/share/main_navigation.jsp" %>        <%@include file="/views/share/main_head.jsp" %>        <div class="right_col" role="main">
-    <div class="row">
-        <div class="col-md-12 ">
-            <!-- start: DEFAULT TREE PANEL -->
-            <input type="hidden" id="currOrgId" value="${currOrgId}">
-            <input type="hidden" id="tableId" value="${tableId}">
-            <%--${tableColumns}--%>
-            <div class="x_panel">
-                ${html}
+<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER -->
+<div class="container body">
+    <div class="main_container">
+        <%@include file="/views/share/main_navigation.jsp" %>
+        <%@include file="/views/share/main_head.jsp" %>
+        <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <!-- start: DEFAULT TREE PANEL -->
+                    <input type="hidden" id="currOrgId" value="${currOrgId}">
+                    <input type="hidden" id="tableId" value="${tableId}">
+                    <%--${tableColumns}--%>
+                    <div class="x_panel">
+                        ${html}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
     <%@include file="/views/share/model_employee.jsp" %>
     <%@include file="/views/share/main_footer.jsp" %>
 </div>
@@ -130,11 +135,11 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        var  html = "";
+                        var html = "";
                         $.each(result.data, function (i, j) {
                             html += "<option value='" + j.key + "'>" + j.value + "</option>";
                         });
-                        $("#"+id).html(html);
+                        $("#" + id).html(html);
                     }
                 },
                 error: function (result) {

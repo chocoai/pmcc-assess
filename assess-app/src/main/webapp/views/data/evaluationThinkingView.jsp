@@ -12,7 +12,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -233,14 +236,14 @@
     var Nofield = null;
     //提取显示适用的字段
     function extractApplicableField() {
-        var text=$("#applicableReason").val();
+        var text = $("#applicableReason").val();
         $('.applicableReason-field').empty();
         var fieldArray = AssessCommon.extractField(text);
-        if(fieldArray&&fieldArray.length>0){
-            var html='';
-            $.each(fieldArray,function (i,item) {
-                field  = fieldArray;
-                html+='<span class="label label-default">'+item+'</span> ';
+        if (fieldArray && fieldArray.length > 0) {
+            var html = '';
+            $.each(fieldArray, function (i, item) {
+                field = fieldArray;
+                html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.applicableReason-field').append(html);
         }
@@ -248,14 +251,14 @@
 
     //提取显示不适用的字段
     function extractNotApplicableField() {
-        var text=$("#notApplicableReason").val();
+        var text = $("#notApplicableReason").val();
         $('.not-applicableReason-field').empty();
         var fieldArray = AssessCommon.extractField(text);
-        if(fieldArray&&fieldArray.length>0){
-            var html='';
-            $.each(fieldArray,function (i,item) {
-                Nofield  = fieldArray;
-                html+='<span class="label label-default">'+item+'</span> ';
+        if (fieldArray && fieldArray.length > 0) {
+            var html = '';
+            $.each(fieldArray, function (i, item) {
+                Nofield = fieldArray;
+                html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.not-applicableReason-field').append(html);
         }
@@ -263,11 +266,11 @@
 
     function fieldExtract(result) {
         var str = "";
-        for (var i = 0;i<result.length;i++){
-            if (i == result.length-1){
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
                 str += result[i];
-            }else {
-                str += result[i] +",";
+            } else {
+                str += result[i] + ",";
             }
         }
         return str;
@@ -381,14 +384,14 @@
             success: function (result) {
                 Loading.progressHide();
                 $('#divBox').modal();
-                var methodstr = ""+ result.method +"";
+                var methodstr = "" + result.method + "";
                 var methodArr = methodstr.split(",");
-                for (var j = 0;j<methodArr.length;j++){
+                for (var j = 0; j < methodArr.length; j++) {
                     $("#method input[name='method']").each(function () {
                         var str = methodArr[j];
-                        if (str!=''){
-                            if (str == $(this).val()){
-                                $(this).attr("checked",true);
+                        if (str != '') {
+                            if (str == $(this).val()) {
+                                $(this).attr("checked", true);
                             }
                         }
                     });

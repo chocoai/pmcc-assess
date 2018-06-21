@@ -20,7 +20,10 @@
             <div class="row">
                 <div class="col-md-4 ">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                             表单数据
                         </div>
@@ -37,7 +40,10 @@
                 </div>
                 <div class="col-md-8 ">
                     <div class="x_panel" id="panel_form_module" style="display: none;">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             表单内容panel
                         </div>
                         <div class="x_content">
@@ -55,7 +61,10 @@
                 </div>
             </div>
             <div class="x_panel" id="panel_form_module_field" style="display: none;">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     panel包含字段
                 </div>
                 <div class="x_content">

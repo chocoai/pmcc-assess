@@ -8,12 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
-    <div class="x_title">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
         <h2> 审批日志</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        <table id="tb_log" class="table table-bordered" ></table>
+        <table id="tb_log" class="table table-bordered"></table>
     </div>
 </div>
 
@@ -35,7 +38,7 @@
         cols.push({field: 'opinions', title: '审批意见', width: '35%'});
         cols.push({
             field: 'attachmentVos', title: '审批附件', width: '10%', formatter: function (value, row, index) {
-                if(value) {
+                if (value) {
                     var str = "";
                     $.each(value, function (i, j) {
                         str += "<a class='fileupload-preview'>" + j.fileName + "</a>";
@@ -50,7 +53,7 @@
         paramData["showRefresh"] = false;//不显示刷新按钮
         paramData["search"] = false;//不显示查询按钮
         TableInit("tb_log", "${pageContext.request.contextPath}/home/getApprovalLog", cols,
-            {processInsId:"${processInsId}"}, paramData);
+            {processInsId: "${processInsId}"}, paramData);
 
     }
 </script>

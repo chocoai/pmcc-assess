@@ -29,7 +29,10 @@
             <!--填写表单-->
             <form id="frm_content" class="form-horizontal">
                 <div class="x_panel">
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>报告选择</h2>
                         <div class="clearfix"></div>
                     </div>
@@ -55,7 +58,10 @@
                             </div>
                         </div>
                         <div class="x_panel">
-                            <div class="x_title">
+                            <div class="x_title collapse-link">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                </ul>
                                 <h2>
                                     <small>权证信息</small>
                                 </h2>
@@ -100,8 +106,8 @@
                                                            data-rule-digits="true"
                                                            style="width: 120px;height: 30px;"></div>
                                             </td>
-                                            <%--<td>${item.assessTotalPrince}</td>--%>
-                                            <%--<td>${item.reportTotalPrice}</td>--%>
+                                                <%--<td>${item.assessTotalPrince}</td>--%>
+                                                <%--<td>${item.reportTotalPrice}</td>--%>
                                             <td></td>
                                         </tr>
                                     </c:forEach>
@@ -113,7 +119,10 @@
                 </div>
             </form>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -167,9 +176,9 @@
         var reportTypeLength = $("#frm_content").find("[name=reportType]:checked").length;
         var checkboxItemLength = $("#frm_content").find("[name=checkboxItem]:checked").length;
         if (reportTypeLength > 0 && checkboxItemLength > 0) {
-            $("#lbl_report_count").find("span").text(reportTypeLength*checkboxItemLength);
+            $("#lbl_report_count").find("span").text(reportTypeLength * checkboxItemLength);
             $("#lbl_report_count").show();
-        }else{
+        } else {
             $("#lbl_report_count").find("span").text(0);
             $("#lbl_report_count").hide();
         }

@@ -13,7 +13,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -26,11 +29,11 @@
                                 <label class="col-sm-1 control-label">报告类别</label>
                                 <div class="col-sm-2">
                                     <select required class="form-control" id="queryName">
-                                    <option value="">请选择</option>
-                                    <c:forEach items="${categoryList}" var="item">
-                                        <option value="${item.id}">${item.name}</option>
-                                    </c:forEach>
-                                </select>
+                                        <option value="">请选择</option>
+                                        <c:forEach items="${categoryList}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
 
@@ -183,14 +186,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn btn-default">
-                                    取消
-                                </button>
-                                <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                                    保存
-                                </button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                                        取消
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
+                                        保存
+                                    </button>
+                                </div>
                         </form>
                     </div>
 
@@ -206,25 +209,25 @@
     var field = null;
     function fieldExtract(result) {
         var str = "";
-        for (var i = 0;i<result.length;i++){
-            if (i == result.length-1){
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
                 str += result[i];
-            }else {
-                str += result[i] +",";
+            } else {
+                str += result[i] + ",";
             }
         }
         return str;
     }
     //提取字段
     function extractTemplateField() {
-        var text=$("#template").val();
+        var text = $("#template").val();
         $('.template-field').empty();
         var fieldArray = AssessCommon.extractField(text);
-        if(fieldArray&&fieldArray.length>0){
-            var html='';
-            $.each(fieldArray,function (i,item) {
-                field  = fieldArray;
-                html+='<span class="label label-default">'+item+'</span> ';
+        if (fieldArray && fieldArray.length > 0) {
+            var html = '';
+            $.each(fieldArray, function (i, item) {
+                field = fieldArray;
+                html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.template-field').append(html);
         }
@@ -256,7 +259,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function(){
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
         });
@@ -353,9 +356,9 @@
     /**
      * 根据类别获取子项字段
      */
-    function getFieldByPid(id){
+    function getFieldByPid(id) {
         var pid = $("#category").val();
-        if(pid == null || pid == ""){
+        if (pid == null || pid == "") {
             pid = id;
         }
         $("#categoryField").html("");
@@ -363,10 +366,10 @@
             url: "${pageContext.request.contextPath}/reportAnalysis/getFieldByPid",
             type: "post",
             dataType: "json",
-            data:{pid:pid},
+            data: {pid: pid},
             success: function (result) {
-                for(var i =0;i<result.data.length;i++){
-                    $("#categoryField").append("<option value='"+result.data[i].id+"'>"+result.data[i].name+"</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    $("#categoryField").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
                 }
             },
             error: function (result) {
@@ -374,12 +377,6 @@
             }
         })
     }
-
-
-
-
-
-
 
 
     //新增 子项 字段数据
@@ -391,7 +388,7 @@
     function saveFileld() {
         var data = formParams("firSubA");//应该是自动form参数
         data.analysisId = $("#analysisNumber").val();
-        if ($("#firSubA").valid()){
+        if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/reportAnalysisField/addField",
                 type: "post",
@@ -399,12 +396,12 @@
                 data: data,
                 success: function (result) {
                     console.info(result);
-                    if (result.ret){
+                    if (result.ret) {
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var analysisId = $("#analysisNumber").val();
                         setSubDataDic(analysisId);
-                    }else {
+                    } else {
                         toastr.success('调用服务端方法失败');
                     }
                 },
@@ -479,8 +476,8 @@
     }
 
     function isNot(val) {
-        if (val!=null){
-            if (val!=''){
+        if (val != null) {
+            if (val != '') {
                 return true;
             }
         }

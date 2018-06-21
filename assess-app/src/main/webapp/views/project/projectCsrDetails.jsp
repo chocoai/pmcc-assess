@@ -17,7 +17,7 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                         ${csrProjectInfo.name}
+                        ${csrProjectInfo.name}
                         <small><label style="padding: 5px;" class="label label-danger">
                             ${csrProjectInfo.projectStatus}
                         </label></small>
@@ -99,7 +99,10 @@
             <div class="clearfix"></div>
             <c:if test="${not empty keyValueDtos}">
                 <div class="x_panel">
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>项目任务</h2>
                         <div class="clearfix"></div>
                     </div>
@@ -127,48 +130,54 @@
             <%@include file="/views/share/csr/projectInfoCsr.jsp" %>
             <div class="x_panel">
                 <c:forEach items="${csrProjectInfo.csrProjectInfoGroupVos}" var="data">
-                <div class="x_title">
-                    <h2>${data.projectName}</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="form-horizontal">
-                    <div class="x_content">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                项目经理
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control" id="lab_userAccountManagerName">${data.projectManagerName}</label>
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h2>${data.projectName}</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="x_content">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    项目经理
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control" id="lab_userAccountManagerName">${data.projectManagerName}</label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                项目成员
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control">${data.projectMemberName}</label>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    项目成员
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${data.projectMemberName}</label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                文号
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control">${data.number}</label>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    文号
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${data.number}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 </c:forEach>
             </div>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>客户列表</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -217,9 +226,11 @@
             </div>
 
 
-
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -263,14 +274,14 @@
 
     function loadBorrowerList(tableID) {
         var cols = [];
-        cols.push({field: 'checkbox', checkbox: true,title:"报表列表"});
+        cols.push({field: 'checkbox', checkbox: true, title: "报表列表"});
         cols.push({field: 'secondLevelBranch', title: '二级分行'});
         cols.push({field: 'firstLevelBranch', title: '一级分行'});
         cols.push({field: 'name', title: '名字'});
         cols.push({field: 'attachmentHtml', title: '报表'});
         cols.push({field: 'id', visible: false, title: "id"});
-        $("#"+tableID).bootstrapTable('destroy');
-        TableInit(""+tableID, "${pageContext.request.contextPath}/csrBorrower/listBorrowers", cols, {
+        $("#" + tableID).bootstrapTable('destroy');
+        TableInit("" + tableID, "${pageContext.request.contextPath}/csrBorrower/listBorrowers", cols, {
             csrProjectInfoID: '${csrProjectInfo.id}',
             secondLevelBranch: $("#secondLevelBranch").val(),
             firstLevelBranch: $("#firstLevelBranch").val()
@@ -290,7 +301,7 @@
 
     //文件 多个下载
     function downloadsBorrower(id) {
-        if (id==''){
+        if (id == '') {
             var result = $("#listBorrowersTable").bootstrapTable('getSelections');
             var csrBorrowerIDS = "";
             for (var i = 0; i < result.length; i++) {
@@ -300,16 +311,16 @@
                     csrBorrowerIDS += result[i].id + ",";
                 }
             }
-            var flag = (result.length>0);
+            var flag = (result.length > 0);
             var data = {};
             data.borrowerIds = csrBorrowerIDS;
-            if (flag){
-                window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds="+csrBorrowerIDS;
-            }else {
+            if (flag) {
+                window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds=" + csrBorrowerIDS;
+            } else {
                 Alert("没有要下载的客户数据!");
             }
-        }else {
-            window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds="+id;
+        } else {
+            window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds=" + id;
         }
     }
 
@@ -428,7 +439,7 @@
         <%--$("#projectNames").val("${csrProjectInfo.projectName}");--%>
         <%--$("#_file_upload").html("");--%>
         <%--$('#workLog').modal({--%>
-            <%--backdrop: 'static'--%>
+        <%--backdrop: 'static'--%>
         <%--});--%>
     }
 
@@ -495,7 +506,7 @@
                         if (row.url) {
                             s += "<a target='_blank' href='" + row.url + "'>提交</a> "
                         } else {
-                             s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                            s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
 
                         }
                     }

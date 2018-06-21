@@ -14,13 +14,16 @@
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
-        <div  style="min-height: 950px;">
+        <div style="min-height: 950px;">
             <div class="">
                 <div class="clearfix"></div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
-                            <div class="x_title">
+                            <div class="x_title collapse-link">
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                </ul>
                                 <h2>${title}</h2>
                                 <div class="clearfix"></div>
                             </div>

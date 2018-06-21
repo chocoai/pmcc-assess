@@ -14,7 +14,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -111,7 +114,7 @@
     projectWorkStagePhaseObj.loadType = function loadCategory(classId) {
         $("#categoryId").empty();
         if (classId) {
-            AssessCommon.getProjectClassifyList(classId,function (html,data) {
+            AssessCommon.getProjectClassifyList(classId, function (html, data) {
                 $("#typeId").html(html);
             })
         }
@@ -121,7 +124,7 @@
     projectWorkStagePhaseObj.loadCategory = function loadCategory(typeId) {
         $("#categoryId").empty();
         if (typeId) {
-            AssessCommon.getProjectClassifyList(typeId,function (html,data) {
+            AssessCommon.getProjectClassifyList(typeId, function (html, data) {
                 $("#categoryId").html(html);
             })
         }

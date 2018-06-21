@@ -12,7 +12,10 @@
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                     </h2>
@@ -217,25 +220,25 @@
     var field = null;
     function fieldExtract(result) {
         var str = "";
-        for (var i = 0;i<result.length;i++){
-            if (i == result.length-1){
+        for (var i = 0; i < result.length; i++) {
+            if (i == result.length - 1) {
                 str += result[i];
-            }else {
-                str += result[i] +",";
+            } else {
+                str += result[i] + ",";
             }
         }
         return str;
     }
     //提取字段
     function extractTemplateField() {
-        var text=$("#template").val();
+        var text = $("#template").val();
         $('.template-field').empty();
         var fieldArray = AssessCommon.extractField(text);
-        if(fieldArray&&fieldArray.length>0){
-            var html='';
-            $.each(fieldArray,function (i,item) {
-                field  = fieldArray;
-                html+='<span class="label label-default">'+item+'</span> ';
+        if (fieldArray && fieldArray.length > 0) {
+            var html = '';
+            $.each(fieldArray, function (i, item) {
+                field = fieldArray;
+                html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.template-field').append(html);
         }
@@ -267,7 +270,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            onLoadSuccess:function () {
+            onLoadSuccess: function () {
                 $('.tooltips').tooltip();
 
             }
@@ -354,27 +357,27 @@
                 $("#id").val(result.id);
                 $("#name").val(result.name);
                 $("#template").val(result.template);
-                var methodstr = ""+ result.method +"";
+                var methodstr = "" + result.method + "";
                 var methodArr = methodstr.split(",");
-                for (var j = 0;j < methodArr.length; j++){
+                for (var j = 0; j < methodArr.length; j++) {
                     $("#method input[name='method']").each(function () {
                         var str = methodArr[j];
-                        if (str!=''){
-                            if (str == $(this).val()){
-                                $(this).attr("checked",true);
+                        if (str != '') {
+                            if (str == $(this).val()) {
+                                $(this).attr("checked", true);
                             }
                         }
                     });
 
                 }
-                var entrustmentPurposeStr = ""+result.entrustmentPurpose +"";
+                var entrustmentPurposeStr = "" + result.entrustmentPurpose + "";
                 var entrustmentPurposeArr = entrustmentPurposeStr.split(",");
-                for (var j = 0;j < entrustmentPurposeArr.length;j++){
+                for (var j = 0; j < entrustmentPurposeArr.length; j++) {
                     $("#entrustmentPurpose input[name='entrustmentPurpose']").each(function () {
                         var str = entrustmentPurposeArr[j];
-                        if (str!=''){
-                            if (str == $(this).val()){
-                                $(this).attr("checked",true);
+                        if (str != '') {
+                            if (str == $(this).val()) {
+                                $(this).attr("checked", true);
                             }
                         }
                     });
@@ -395,7 +398,7 @@
         $('#firSub').modal();
         var hypothesisId = document.getElementById("hypothesisId");
         hypothesisId.value = id;
-        if (id==null || id=='' || id==0 ){//说明是从选子项添加的
+        if (id == null || id == '' || id == 0) {//说明是从选子项添加的
             var hypothesisIdN = document.getElementById("hypothesisIdN");
             hypothesisId.value = hypothesisIdN.value
         }
@@ -406,20 +409,20 @@
         var data = formParams("firSubA");
         data.name = $("#nameA").val();
         data.hypothesisId = $("#hypothesisId").val();
-        if ($("#firSubA").valid()){
+        if ($("#firSubA").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationHypothesisNG/addField",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    if (result.ret){
+                    if (result.ret) {
                         console.info(result);
                         toastr.success('保存成功');
                         $('#firSub').modal('hide');//隐藏
                         var hypothesisIdN = document.getElementById("hypothesisIdN").value;
                         setSubDataDic(hypothesisIdN);
-                    }else {
+                    } else {
                         toastr.success('调用服务端方法失败');
                     }
                 },

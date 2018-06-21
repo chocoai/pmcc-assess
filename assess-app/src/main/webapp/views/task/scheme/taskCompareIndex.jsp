@@ -15,7 +15,10 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -69,7 +72,7 @@
                                                     </th>
                                                 </c:forEach>
                                                 <%--<th class="gray">--%>
-                                                    <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
+                                                <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
                                                 <%--</th>--%>
                                             </tr>
                                             </thead>
@@ -514,7 +517,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -668,9 +674,9 @@
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     var value = item.value;
-                    if(value != "null"){
+                    if (value != "null") {
                         td.find('td:eq(' + i + ')').find('span').text(value).attr('name', item.key);   //第一张表
-                    }else{
+                    } else {
                         td.find('td:eq(' + i + ')').find('span').text("").attr('name', item.key);
                     }
                 })
@@ -822,7 +828,7 @@
                 var dataId = $(this).attr('data-id');
                 var name = $(this).attr('name');
                 var result = $(this).val();
-                if(i==0){
+                if (i == 0) {
                     $("#rightTable").find('[name="realEstateName"][data-id="' + dataId + '"]').text(result);  //显示右侧表数据
                 }
                 if (i <= 2) {
@@ -969,7 +975,7 @@
         }
     }
 
-    function rightTableBlur(){
+    function rightTableBlur() {
         var reg = /^[0-9]+.?[0-9]*$/;
         var allFill = true;
         $("#rightTable").find("input:text").each(function () {
@@ -1196,8 +1202,6 @@
             submitToServer(getData(), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
-
-
 
 
 </script>

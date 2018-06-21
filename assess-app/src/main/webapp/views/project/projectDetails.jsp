@@ -99,7 +99,10 @@
             <div class="clearfix"></div>
             <c:if test="${not empty keyValueDtos}">
                 <div class="x_panel">
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>项目任务</h2>
                         <div class="clearfix"></div>
                     </div>
@@ -148,48 +151,51 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="bs-glyphicons">
                     <%--<ul class="bs-glyphicons-list">--%>
-                        <%--<c:forEach var="item" items="${projectDetailsVo}">--%>
-                            <%--<c:if test="${item.bisLastLayer==true}">--%>
-                                <%--<c:if test="${item.taskSubmitTime==null}">--%>
-                                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;background-color: #eea236;color: #fcfcfc">--%>
-                                    <%--<p>--%>
-                                            <%--${item.projectPhaseName}${item.projectPhaseName}--%>
-                                    <%--</p>--%>
-                                    <%--<p>--%>
-                                        <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-info tooltips">--%>
-                                            <%--<i class="fa fa-user fa-white"></i>--%>
-                                        <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
-                                                                                    <%--pattern="yyyy-MM-dd"/>)--%>
-                                    <%--</p>--%>
-                                <%--</c:if>--%>
-                                <%--<c:if test="${item.taskSubmitTime!=null}">--%>
-                                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;">--%>
-                                    <%--<p>--%>
-                                            <%--${item.projectPhaseName}${item.projectPhaseName}--%>
-                                    <%--</p>--%>
-                                    <%--<p>--%>
-                                        <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-warning tooltips">--%>
-                                            <%--<i class="fa fa-user fa-white"></i>--%>
-                                        <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
-                                                                                    <%--pattern="yyyy-MM-dd"/>)--%>
-                                    <%--</p>--%>
-                                    <%--<p>--%>
-                                        <%--<a data-placement="top" data-original-title="提交时间" class="btn btn-xs btn-success tooltips">--%>
-                                            <%--<i class="fa fa-clock-o fa-white"></i>--%>
-                                        <%--</a><fmt:formatDate value="${item.taskSubmitTime}"--%>
-                                                            <%--pattern="yyyy-MM-dd"/>--%>
-                                    <%--</p>--%>
-                                <%--</c:if>--%>
-                                <%--</li>--%>
-                            <%--</c:if>--%>
+                    <%--<c:forEach var="item" items="${projectDetailsVo}">--%>
+                    <%--<c:if test="${item.bisLastLayer==true}">--%>
+                    <%--<c:if test="${item.taskSubmitTime==null}">--%>
+                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;background-color: #eea236;color: #fcfcfc">--%>
+                    <%--<p>--%>
+                    <%--${item.projectPhaseName}${item.projectPhaseName}--%>
+                    <%--</p>--%>
+                    <%--<p>--%>
+                    <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-info tooltips">--%>
+                    <%--<i class="fa fa-user fa-white"></i>--%>
+                    <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
+                    <%--pattern="yyyy-MM-dd"/>)--%>
+                    <%--</p>--%>
+                    <%--</c:if>--%>
+                    <%--<c:if test="${item.taskSubmitTime!=null}">--%>
+                    <%--<li onclick="loadpage('${item.url}',${item.id})" style="text-align: left;height: 130px;">--%>
+                    <%--<p>--%>
+                    <%--${item.projectPhaseName}${item.projectPhaseName}--%>
+                    <%--</p>--%>
+                    <%--<p>--%>
+                    <%--<a data-placement="top" data-original-title="责任人" class="btn btn-xs btn-warning tooltips">--%>
+                    <%--<i class="fa fa-user fa-white"></i>--%>
+                    <%--</a>${item.executeUserName}(<fmt:formatDate value="${item.planEndDate}"--%>
+                    <%--pattern="yyyy-MM-dd"/>)--%>
+                    <%--</p>--%>
+                    <%--<p>--%>
+                    <%--<a data-placement="top" data-original-title="提交时间" class="btn btn-xs btn-success tooltips">--%>
+                    <%--<i class="fa fa-clock-o fa-white"></i>--%>
+                    <%--</a><fmt:formatDate value="${item.taskSubmitTime}"--%>
+                    <%--pattern="yyyy-MM-dd"/>--%>
+                    <%--</p>--%>
+                    <%--</c:if>--%>
+                    <%--</li>--%>
+                    <%--</c:if>--%>
 
-                        <%--</c:forEach>--%>
+                    <%--</c:forEach>--%>
 
 
                     <%--</ul>--%>

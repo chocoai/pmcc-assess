@@ -29,7 +29,10 @@
             <!--填写表单-->
             <form id="frm_content" class="form-horizontal">
                 <div class="x_panel">
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2>客户信息</h2>
                         <div class="clearfix"></div>
                     </div>
@@ -73,7 +76,10 @@
                 </div>
             </form>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

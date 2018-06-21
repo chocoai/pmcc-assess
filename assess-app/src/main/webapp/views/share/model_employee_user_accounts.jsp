@@ -36,7 +36,7 @@
             width: "auto",
             interactive: false,
             autosize: false,
-            minheight:"50px",
+            minheight: "50px",
             height: 50
         });
         model_employee_useracount_talbes_load();
@@ -44,10 +44,10 @@
 
 
     //参数表示在哪个公司或部门下选择相关人员,若为全部则传入0
-    function loadAccountSelectEmployee(userList,currVlaue, single, callback) {
+    function loadAccountSelectEmployee(userList, currVlaue, single, callback) {
 
         $("#model_employee_useracount_single").val(single == true ? "1" : "0");
-        TableReload("model_employee_useracount_table",getContextPath()+"/RpcErpService/getOrgUserByUserAccounts",{userList:userList})
+        TableReload("model_employee_useracount_table", getContextPath() + "/RpcErpService/getOrgUserByUserAccounts", {userList: userList})
         model_employee_useracount_tags_firstLoadTag(currVlaue);
         //绑定模态窗口事件
         $('#btn_model_employee_useracount').unbind("click");
@@ -103,7 +103,7 @@
             pageList: [5],
             showColumns: false,
             toolbar: '',
-            showTotalPages:false,
+            showTotalPages: false,
             onClickRow: function (rows, $element) {
                 var tagText = rows.userName + "_" + rows.userAccount;
                 if ($("#model_employee_useracount_single").val() == "1") {
@@ -121,7 +121,7 @@
                 }
             }
         };
-        TableInit("model_employee_useracount_table", getContextPath()+"/RpcErpService/getOrgUserByUserAccounts", cols, data, parms);
+        TableInit("model_employee_useracount_table", getContextPath() + "/RpcErpService/getOrgUserByUserAccounts", cols, data, parms);
     }
 
 </script> 

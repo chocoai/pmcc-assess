@@ -16,7 +16,10 @@
 
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -278,7 +281,7 @@
                                         <%--时间指数表--%>
                                         <table class="table table-bordered leftfloat" style="width: 20%">
                                             <thead>
-                                            <tr >
+                                            <tr>
                                                 <th class="gray">年份</th>
                                                 <th class="gray">指数</th>
                                             </tr>
@@ -372,7 +375,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -444,42 +450,41 @@
 
 
     //显示数据
-    function showData(){
+    function showData() {
         //因素表
         $("#oneTable").find("thead tr").find("input:hidden").each(function () {
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#oneTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#oneTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
         //指数表
-        $("#twoTable").find("thead tr").find("input:hidden").each(function(){
+        $("#twoTable").find("thead tr").find("input:hidden").each(function () {
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#twoTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#twoTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
         //测算表
-        $("#threeTable").find("thead tr").find("input:hidden").each(function(){
+        $("#threeTable").find("thead tr").find("input:hidden").each(function () {
             var dataId = $(this).attr('data-id');
             var dataJson = $(this).attr('data-json');
             var json = JSON.parse(dataJson);
-            for(var i in json){
+            for (var i in json) {
                 var name = json[i].key;
                 var value = json[i].value;
-                $("#threeTable").find('[name='+name+'][data-id='+dataId+']').text(value);
+                $("#threeTable").find('[name=' + name + '][data-id=' + dataId + ']').text(value);
             }
         })
     }
-
 
 
     function getDynamic() {
@@ -495,7 +500,7 @@
                     var tr = $("#oneTable").find('tbody').find('tr:last');
                     $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
                     tr = $("#oneTable").find('tbody').find('tr:last');
-                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
                     tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第一张表
                 })
 
@@ -519,24 +524,24 @@
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
                     }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#twoTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j + 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第二张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('span').attr('name', item.key);
                     }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#threeTable").find('tbody').find('tr:eq(' + (-jsonArr.length + j - 1) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('span').attr('name', item.key);
                     }
                 })
 

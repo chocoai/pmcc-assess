@@ -22,7 +22,7 @@
         for (int i = 0; i < mergeFileList.size(); i++) {
             try {
                 DataRegion mydr = worddoc.openDataRegion("PO_" + i);
-                mydr.setValue(String.format("[word]/%s/attachment/downloadFileFromServer?id=%s[/word]",commonService.getCurrentSelectAppKey(), mergeFileList.get(i)));
+                mydr.setValue(String.format("[word]/%s/attachment/downloadFileFromServer?id=%s[/word]", commonService.getCurrentSelectAppKey(), mergeFileList.get(i)));
             } catch (Exception e) {
                 //
             }

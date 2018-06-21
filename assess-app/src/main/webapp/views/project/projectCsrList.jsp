@@ -16,7 +16,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
                             <h2>
                                 <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                                 ${baseViewDto.currentMenu.name}
@@ -60,7 +63,7 @@
             }
         });
         TableInit("tb_csr_projectList", "${pageContext.request.contextPath}/projectCenter/getCsrProjectInfoListA", cols, {
-            name:name
+            name: name
         }, {
             showColumns: false,
             showRefresh: true,
@@ -68,10 +71,10 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             },
-            onSearch:function () {
+            onSearch: function () {
                 //搜索
                 loadCsrProjectInfoList(this.searchText);
-                name = ""+this.searchText+"";
+                name = "" + this.searchText + "";
                 console.log(this.searchText);
             }
         });

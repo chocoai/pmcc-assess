@@ -15,7 +15,10 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -68,7 +71,7 @@
                                                     </th>
                                                 </c:forEach>
                                                 <%--<th class="gray">--%>
-                                                    <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
+                                                <%--<a class="btn btn-xs btn-success" onclick="addCase()">添加案例</a>--%>
                                                 <%--</th>--%>
                                             </tr>
                                             </thead>
@@ -250,9 +253,9 @@
                                                            data-json='${items.jsonContent}'>
                                                     <th class="gray data-th" name="project" data-id="${items.id}"
                                                         data-index="${items.compareIndexId}" data-type="${items.type}">
-                                                        ${items.name}
-                                                        <%--<span name="project" data-id="${items.id}"--%>
-                                                              <%--data-index="${items.compareIndexId}"></span>--%>
+                                                            ${items.name}
+                                                            <%--<span name="project" data-id="${items.id}"--%>
+                                                            <%--data-index="${items.compareIndexId}"></span>--%>
                                                     </th>
                                                 </c:forEach>
                                             </tr>
@@ -518,7 +521,10 @@
 
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -651,7 +657,7 @@
                     var tr = $("#oneTable").find('tbody').find('tr:last');
                     $("#oneTable").find('tbody').append('<tr>' + tr.html() + '</tr>');
                     tr = $("#oneTable").find('tbody').find('tr:last');
-                    tr.find('th:eq('+i+')').text(item.explain); //字段
+                    tr.find('th:eq(' + i + ')').text(item.explain); //字段
                     tr.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第一张表
                 })
 
@@ -675,8 +681,8 @@
                 $.each(array, function (j, item) {
                     var td = $("#oneTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);   //第一张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('span').attr('name', item.key);    //新增案例从后台json取不到,采用案例差给案例赋值name
                     }
                 })
 
@@ -685,16 +691,16 @@
 //                    console.log("i="+i);
                     var td = $("#twoTable").find('tbody').find('tr:eq(' + (-array.length + j) + ')');
                     td.find('td:eq(' + i + ')').find('input').attr('name', item.key);   //第二张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('input').attr('name', item.key);
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('input').attr('name', item.key);
                     }
                 })
 
                 $.each(array, function (j, item) {
                     var td = $("#threeTable").find('tbody').find('tr:eq(' + (-array.length + j - 2) + ')');
                     td.find('td:eq(' + i + ')').find('span').attr('name', item.key);    //第三张表
-                    for(var m = 1;m<=caseNum;m++){
-                        td.find('td:eq(' + (i+m) + ')').find('span').attr('name', item.key);
+                    for (var m = 1; m <= caseNum; m++) {
+                        td.find('td:eq(' + (i + m) + ')').find('span').attr('name', item.key);
                     }
                 })
 
@@ -834,7 +840,7 @@
                 var dataId = $(this).attr('data-id');
                 var name = $(this).attr('name');
                 var result = $(this).val();
-                if(i==0){
+                if (i == 0) {
                     $("#rightTable").find('[name="realEstateName"][data-id="' + dataId + '"]').text(result);  //显示右侧表数据
                 }
                 if (i <= 2) {
@@ -850,7 +856,6 @@
             })
         }
     }
-
 
 
     //处理第二三四张表业务
@@ -938,7 +943,7 @@
                 var correction = (Math.round(tempCorrection * 10000) / 100).toFixed(2) + '%';
                 $("#rightTable").find('[name="correctionDifference"][data-id="' + dataId + '"]').text(correction);    //显示第四张表修正差额
 
-                if(correctionMax < tempCorrection){
+                if (correctionMax < tempCorrection) {
                     correctionMax = tempCorrection;
                 }
                 if (max < affirmPrice) {
@@ -984,7 +989,7 @@
         }
     }
 
-    function rightTableBlur(){
+    function rightTableBlur() {
         var reg = /^[0-9]+.?[0-9]*$/;
         var allFill = true;
         $("#rightTable").find("input:text").each(function () {
@@ -1074,7 +1079,7 @@
                 $("#twoTable").find('[data-id=' + dataId + ']').each(function () {
                     var keyValue = {};
                     keyValue.key = $(this).attr('name');
-                    keyValue.value=$(this).val()?$(this).val():$(this).text();
+                    keyValue.value = $(this).val() ? $(this).val() : $(this).text();
                     keyValueArray.push(keyValue);
                 })
                 compareIndex.jsonContent = JSON.stringify(keyValueArray);

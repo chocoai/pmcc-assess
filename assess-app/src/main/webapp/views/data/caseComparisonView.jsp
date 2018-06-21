@@ -17,7 +17,10 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="x_panel">
-                    <div class="x_title">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
                         <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
                             ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
                         </h2>
@@ -36,7 +39,10 @@
                         <div class="col-md-9">
                             <!-- start: DYNAMIC TABLE PANEL -->
                             <div class="x_panel">
-                                <div class="x_title">
+                                <div class="x_title collapse-link">
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                                    </ul>
                                     案例配置
                                 </div>
 

@@ -4,32 +4,40 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER --><div class="container body">    <div class="main_container">        <%@include file="/views/share/main_navigation.jsp" %>        <%@include file="/views/share/main_head.jsp" %>        <div class="right_col" role="main">
-    <div class="row">
-        <div class="col-md-12 ">
-            <!-- start: DEFAULT TREE PANEL -->
+<body class="nav-md footer_fixed"><%--<%@include file="share/main_head.jsp" %>--%><!-- start: MAIN CONTAINER -->
+<div class="container body">
+    <div class="main_container">
+        <%@include file="/views/share/main_navigation.jsp" %>
+        <%@include file="/views/share/main_head.jsp" %>
+        <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <!-- start: DEFAULT TREE PANEL -->
 
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>${baseViewDto.currentMenu.name}</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <p id="toolbar">
-                        <button type="button" class="btn btn-success"
-                                onclick="addForm()"> 新增
-                        </button>
-                    </p>
-                    <table id="tb_reportTable" class="table table-bordered" >
+                    <div class="x_panel">
+                        <div class="x_title collapse-link">
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                            </ul>
+                            <h2>${baseViewDto.currentMenu.name}</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p id="toolbar">
+                                <button type="button" class="btn btn-success"
+                                        onclick="addForm()"> 新增
+                                </button>
+                            </p>
+                            <table id="tb_reportTable" class="table table-bordered">
 
-                    </table>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- end: DEFAULT TREE PANEL -->
                 </div>
             </div>
-            <!-- end: DEFAULT TREE PANEL -->
         </div>
     </div>
-</div>
-</div>
 </div>
 
 
@@ -450,11 +458,11 @@
             $("#projectTypeId,#projectCategoryId").empty();
         })
         setTimeout(function () {
-            $(".btn-edit-object").on("click",document,function () {
+            $(".btn-edit-object").on("click", document, function () {
                 alert(1);
                 setTimeout(initTypeAndCategory(), 300);
             })
-        },2000);
+        }, 2000);
         $("#tableName").select2();
     })
 

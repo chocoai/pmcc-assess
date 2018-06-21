@@ -27,8 +27,7 @@
 <script type="text/javascript">
     function managerSelect() {
         var currList = getCurrList("Manager");
-        if("${managerUserAccounts}"=="")
-        {
+        if ("${managerUserAccounts}" == "") {
             Alert("当前项目所属部门没有项目经理角色人员");
             return false;
         }

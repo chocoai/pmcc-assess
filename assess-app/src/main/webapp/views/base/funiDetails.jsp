@@ -40,7 +40,10 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>楼盘信息</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -50,9 +53,11 @@
                             <tbody>
                             <tr>
                                 <th style="width:7%">建筑面积:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='建筑面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='建筑面积' class='editable editable-click'>${funiHouses.jzmj}</a>
+                                </td>
                                 <th style="width:7%">占地面积:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='占地面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='占地面积' class='editable editable-click'>${funiHouses.jzmj}</a>
+                                </td>
                                 <th style="width:7%">容积率:</th>
                                 <td style="width:18%"><a href='#' data-type='text' name="rjl_lpxx_${funiHouses.id}" data-original-title='容积率' class='editable editable-click'>${funiHouses.rjl}</a></td>
                                 <th style="width:7%">绿化率:</th>
@@ -147,7 +152,10 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>物业信息</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -167,11 +175,12 @@
                                     <th style="width:7%">建筑类别:</th>
                                     <td style="width:18%"><a href='#' data-type='text' name="jzlb_wyxx_${item.id}" data-original-title='建筑类别' class='editable editable-click'>${item.jzlb}</a></td>
                                     <th style="width:7%">土地使用年限:</th>
-                                    <td  style="width:18%"><a href='#' data-type='text' name="tdsynx_wyxx_${item.id}" data-original-title='土地使用年限' class='editable editable-click'>${item.tdsynx}</a></td>
+                                    <td style="width:18%"><a href='#' data-type='text' name="tdsynx_wyxx_${item.id}" data-original-title='土地使用年限' class='editable editable-click'>${item.tdsynx}</a>
+                                    </td>
                                     <th style="width:7%">总户数:</th>
-                                    <td  style="width:18%">${item.zhs}</td>
+                                    <td style="width:18%">${item.zhs}</td>
                                     <th style="width:7%">物业费:</th>
-                                    <td  style="width:18%"><a href='#' data-type='text' name="wyf_wyxx_${item.id}" data-original-title='物业费' class='editable editable-click'>${item.wyf}</a></td>
+                                    <td style="width:18%"><a href='#' data-type='text' name="wyf_wyxx_${item.id}" data-original-title='物业费' class='editable editable-click'>${item.wyf}</a></td>
                                 </tr>
                                 <tr>
                                     <th>物业公司:</th>
@@ -220,7 +229,10 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2>户型</h2>
                     <div class="clearfix"></div>
                 </div>
@@ -287,7 +299,6 @@
         </div>
     </div>
 </div>
-
 
 
 <div id="model_hxxx" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
@@ -358,8 +369,8 @@
 
     function saveHxxx() {
         Loading.progressShow();
-        var data=formParams("frm_hxxx");
-        data["lpbh"]=${funiHouses.id};
+        var data = formParams("frm_hxxx");
+        data["lpbh"] =${funiHouses.id};
         $.ajax({
             url: "${pageContext.request.contextPath}/funiViewer/newHxxx",
             type: "post",
@@ -389,8 +400,8 @@
 
     function saveWyxx() {
         Loading.progressShow();
-        var data=formParams("frm_wyxx");
-        data["lpbh"]=${funiHouses.id};
+        var data = formParams("frm_wyxx");
+        data["lpbh"] =${funiHouses.id};
         $.ajax({
             url: "${pageContext.request.contextPath}/funiViewer/newWyxx",
             type: "post",
@@ -417,7 +428,7 @@
     function xEditChange() {
         $(".editable").editable({
             emptytext: '暂无',
-            placement:"bottom",
+            placement: "bottom",
             url: function (params) {
                 var aName = $(this).attr("name").split('_');
                 updateFuniData(aName[0], params.value, aName[1], aName[2]);

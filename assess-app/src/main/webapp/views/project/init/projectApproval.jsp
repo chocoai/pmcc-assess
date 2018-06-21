@@ -13,7 +13,10 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 委托人</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -21,114 +24,114 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form  class="form-horizontal">
-                    <div id="legal_person" class="panel-body">
+                    <form class="form-horizontal">
+                        <div id="legal_person" class="panel-body">
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    委托单位
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定代表
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csLegalRepresentative}</label></div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csSociologyCode}</label></div>
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    法定代表
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csLegalRepresentative}</label>                                </div>
-                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csScopeOperation}</label></div>
+                                </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    社会统一信用代码
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csSociologyCode}</label>                                </div>
-                            </div>
-                        </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csAddress}</label></div>
+                                </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    经营范围
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csScopeOperation}</label>                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csUnitPropertiesName}</label>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位地址
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csAddress}</label>                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位性质
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csUnitPropertiesName}</label>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div id="_csAttachmentProjectEnclosureId"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    附件
-                                </label>
-                                <div class="col-sm-3">
-                                    <div id="_csAttachmentProjectEnclosureId"></div>
+
+                        <div id="no_legal_person">
+                            <div class="form-group">
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托姓名
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csName}</label></div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csIdcard}</label></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委托住址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${projectInfo.consignorVo.csAddress}</label></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        附件
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div id="_csAttachmentProjectEnclosureId2"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div id="no_legal_person">
-                        <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    委托姓名
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csName}</label>                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    身份证号
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csIdcard}</label>                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    委托住址
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csAddress}</label>                                </div>
-                                </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    附件
-                                </label>
-                                <div class="col-sm-3">
-                                    <div id="_csAttachmentProjectEnclosureId2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     </form>
 
                 </div>
@@ -142,7 +145,10 @@
 
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 占有人</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -150,7 +156,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form  class="form-horizontal">
+                    <form class="form-horizontal">
                         <div id="legal_person1" class="panel-body">
 
                             <div class="form-group">
@@ -276,7 +282,10 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
                     <h2> 报告使用单位</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -284,7 +293,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form class="form-horizontal" >
+                    <form class="form-horizontal">
                         <div>
                             <div class="form-group">
                                 <div class="x-valid">
@@ -419,16 +428,17 @@
         //---------
     });
     var flags = new Array();
-    flags[0] = 1,flags[1] = 2,flags[2] = 3;
-    function loadInitContactsListC(id,tb_List,flag) {
+    flags[0] = 1, flags[1] = 2, flags[2] = 3;
+    function loadInitContactsListC(id, tb_List, flag) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'cPhone', title: '部门'});
 
-        TableInit(""+tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols,{
-            pid: id,flag:flag}, {
+        TableInit("" + tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
+            pid: id, flag: flag
+        }, {
             showColumns: false,
             showRefresh: false,
             search: false
@@ -439,59 +449,59 @@
         $("#no_legal_person").hide();
         var changeType = ${projectInfo.consignorVo.csType};
         console.log(changeType);
-        if (changeType==1){
+        if (changeType == 1) {
             $("#no_legal_person").hide();
             $("#legal_person").show();
             try {
                 var id = "${projectInfo.consignorVo.id}";
-                if (id!=null && id!=''){
-                    console.log("consignorID:"+id);
-                    loadInitContactsListC(id,"tb_ListA",flags[0]);
+                if (id != null && id != '') {
+                    console.log("consignorID:" + id);
+                    loadInitContactsListC(id, "tb_ListA", flags[0]);
                 }
-            }catch (e){
+            } catch (e) {
                 console.info(e);
             }
         }
-        if (changeType==0){
+        if (changeType == 0) {
             $("#no_legal_person").show();
             $("#legal_person").hide();
             try {
                 var val = "${projectInfo.consignorVo.id}";
-                if(val!='' && val!=null){
-                    loadInitContactsListC(val,"tb_ListA",flags[0]);
+                if (val != '' && val != null) {
+                    loadInitContactsListC(val, "tb_ListA", flags[0]);
                 }
-            }catch (e){
+            } catch (e) {
                 console.info(e);
             }
         }
 
         $("#no_legal_person1").hide();
         var changeTypeA = '${projectInfo.possessorVo.pType}';
-        if (changeTypeA==1){
+        if (changeTypeA == 1) {
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
             try {
                 var id = "${projectInfo.possessorVo.id}";
-                if (id!=null && id!=''){
-                    loadInitContactsListC(id,"tb_ListB",flags[1]);
+                if (id != null && id != '') {
+                    loadInitContactsListC(id, "tb_ListB", flags[1]);
                 }
-            }catch (e){
+            } catch (e) {
                 console.info(e);
             }
         }
-        if (changeTypeA==0){
+        if (changeTypeA == 0) {
             $("#no_legal_person1").show();
             $("#legal_person1").hide();
             try {
                 var val = "${projectInfo.possessorVo.id}";
-                if (val!='' && val!=null){
-                    loadInitContactsListC(val,"tb_ListB",flags[1]);
+                if (val != '' && val != null) {
+                    loadInitContactsListC(val, "tb_ListB", flags[1]);
                 }
-            }catch (e){
+            } catch (e) {
                 console.info(e);
             }
         }
-        loadInitContactsListC('${projectInfo.unitInformationVo.id}',"tb_ListC",flags[2]);
+        loadInitContactsListC('${projectInfo.unitInformationVo.id}', "tb_ListC", flags[2]);
     });
 </script>
 
