@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -43,6 +44,8 @@ public class ProjectMemberService {
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private PublicService publicService;
 
     public void saveProjectMemeber(ProjectMember projectMember) throws BusinessException {
         if (projectMember == null)
@@ -141,21 +144,14 @@ public class ProjectMemberService {
         ProjectMemberVo projectMemberVo = new ProjectMemberVo();
         BeanUtils.copyProperties(projectMember, projectMemberVo);
         if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
-
-            List<SysUserDto> sysUserList = erpRpcUserService.getSysUserList(FormatUtils.transformString2List(projectMember.getUserAccountMember()));
-            List<String> userAccountMemberName = LangUtils.transform(sysUserList, intput -> intput.getUserName());
-            projectMemberVo.setUserAccountMemberName(FormatUtils.transformListString(userAccountMemberName));
+            projectMemberVo.setUserAccountMemberName(publicService.getUserNameByAccount(projectMember.getUserAccountMember()));
         }
 
         if (StringUtils.isNotBlank(projectMember.getUserAccountManager())) {
-            List<SysUserDto> managerList = erpRpcUserService.getSysUserList(FormatUtils.transformString2List(projectMember.getUserAccountManager()));
-            List<String> userAccountManagerName = LangUtils.transform(managerList, intput -> intput.getUserName());
-            projectMemberVo.setUserAccountManagerName(FormatUtils.transformListString(userAccountManagerName));
+            projectMemberVo.setUserAccountManagerName(publicService.getUserNameByAccount(projectMember.getUserAccountManager()));
         }
         if (StringUtils.isNotBlank(projectMember.getUserAccountQuality())) {
-            List<SysUserDto> qualityList = erpRpcUserService.getSysUserList(FormatUtils.transformString2List(projectMember.getUserAccountQuality()));
-            List<String> userAccountQualityName = LangUtils.transform(qualityList, intput -> intput.getUserName());
-            projectMemberVo.setUserAccountQualityName(FormatUtils.transformListString(userAccountQualityName));
+            projectMemberVo.setUserAccountQualityName(publicService.getUserNameByAccount(projectMember.getUserAccountQuality()));
         }
         return projectMemberVo;
     }

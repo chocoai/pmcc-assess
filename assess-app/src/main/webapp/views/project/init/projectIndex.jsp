@@ -1292,7 +1292,7 @@
         for (var i = 0; i < len; i++) {
             var optionLen = $("#district option").size();
             var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value", item[i].id);
+            fieldElment.setAttribute("value", item[i].areaId);
             fieldElment.appendChild(document.createTextNode(item[i].name));
             TableFieldElement.appendChild(fieldElment);
 

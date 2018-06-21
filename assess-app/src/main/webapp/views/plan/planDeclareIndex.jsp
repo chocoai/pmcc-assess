@@ -181,23 +181,10 @@
                                             <input type="hidden" id="planDetailsId" name="id"/>
                                             <input type="hidden" id="pid" name="pid"/>
                                             <input type="hidden" id="firstPid" name="firstPid"/>
+                                            <input type="hidden" id="projectPhaseId" name="projectPhaseId" value="${projectPhases.get(0).id}"/>
                                             <input type="text" placeholder="计划名称" required maxlength="50"
                                                    id="projectPhaseName" name="projectPhaseName"
                                                    class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            所属工作内容
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="projectPhaseId" id="projectPhaseId" class="form-control">
-                                                <c:forEach var="item" items="${projectPhases}">
-                                                    <option value="${item.id}">${item.projectPhaseName}</option>
-                                                </c:forEach>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +197,7 @@
                                             <input type="hidden" id="declareFormId" name="declareFormId"/>
                                             <input type="text" placeholder="申报表" required maxlength="50"
                                                    id="declareFormName" name="declareFormName"
+                                                   onclick="selectDeclareForm(this)"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -477,10 +465,8 @@
 
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
-<%@include file="/views/share/model_employee.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/declare-form-select.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/datadic-select.project-classify-select.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/project-classify-select.js"></script>
 
 <script type="text/javascript">
     var treeGridJson = {};
@@ -491,16 +477,20 @@
         DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
         DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
 
-        $("#declareFormName").click(function () {
-            assessDataDic.select({
-                key:"assess.class",
-                onSelected:function (nodes) {
-                    $("#declareFormId").val(nodes[0].id);
-                    $("#declareFormName").val(nodes[0].name);
-                }
-            })
-        })
     });
+
+    //申报表选择
+    function selectDeclareForm(_this) {
+        assessProjectClassify.select({
+            modalName: "申报表选择",
+            pid: "${empty projectInfo.projectCategoryId?projectInfo.projectTypeId:projectInfo.projectCategoryId}",
+            filterKey: [AssessProjectClassifyKey.explore, AssessProjectClassifyKey.case],
+            onSelected: function (nodes) {
+                $("#declareFormId").val(nodes[0].id);
+                $("#declareFormName").val(nodes[0].name);
+            }
+        })
+    }
 
     function nextEmployee() {
         var thisUser = "";
@@ -510,8 +500,8 @@
             thisUser = userName + "_" + userAccount;
         }
         erpEmployee.select({
-            value:thisUser,
-            onSelected:function (data) {
+            value: thisUser,
+            onSelected: function (data) {
                 if (data.account) {
                     $("#nextApproval").val(data.account);
                     $("#nextApprovalName").val(data.name);
@@ -532,8 +522,8 @@
             thisUser = userName + "_" + userAccount;
         }
         erpEmployee.select({
-            value:thisUser,
-            onSelected:function (data) {
+            value: thisUser,
+            onSelected: function (data) {
                 if (data.account) {
                     $("#executeUserAccount").val(data.account);
                     $("#executeUserName").val(data.name);
@@ -574,7 +564,7 @@
 
     function selFastEmployee() {
         erpEmployee.select({
-            onSelected:function (data) {
+            onSelected: function (data) {
                 if (data.account) {
                     $("#fast_executeUserAccount").val(data.account);
                     $("#fast_executeUserName").val(data.name);

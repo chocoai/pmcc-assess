@@ -6,11 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
 <div class="x_panel">
     <div class="x_title">
-        <h2> 项目信息</h2>
+        <h2>
+            项目信息
+            <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
+        </h2>
+
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -26,9 +30,9 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目说明<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">项目说明</label>
                     <div class="col-sm-11">
-                        <label class="form-control">${projectInfo.remarks}</label>                                </div>
+                        <label class="form-control">${projectInfo.remarks}</label></div>
                 </div>
             </div>
             <div class="form-group">
@@ -40,7 +44,7 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">评估基准日</label>
                     <div class="col-sm-3">
                         <input placeholder="评估基准日" id="valuationDate"
                                name="valuationDate" data-date-format="yyyy-mm-dd"
@@ -59,21 +63,21 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">紧急程度</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.urgencyName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">价值类型</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.projectTypeName}</label>
+                        <label class="form-control">${projectInfo.valueTypeName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型备注<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">价值类型备注</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkValuetype}</label>
                     </div>
@@ -82,21 +86,21 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">省</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.provinceName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">市</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.cityName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">县<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">县</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.districtName}</label>
                     </div>
@@ -105,21 +109,21 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">执业部门</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.departmentName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的备注<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">委托目的备注</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkEntrustpurpose}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">接收任务时间<span class="symbol required"></span></label>
+                    <label class="col-sm-1 control-label">接收任务时间</label>
                     <div class="col-sm-3">
                         <input placeholder="接收任务时间"
                                name="completeDateStart" data-date-format="yyyy-mm-dd"

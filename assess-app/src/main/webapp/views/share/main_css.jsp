@@ -20,6 +20,7 @@
 <meta content="" name="author"/>
 
 <script src="/assets/js/jquery/2.0.3/jquery.min.js"></script>
+<script src='${pageContext.request.contextPath}/js/assess-key.js'></script>
 <script src="/assets/js/comm/pmcc-css.js"></script>
 <script type="text/javascript">
     jQuery.ajaxSetup({cache:false});//取消ajax中的缓存

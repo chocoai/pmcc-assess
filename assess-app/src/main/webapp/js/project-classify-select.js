@@ -59,7 +59,7 @@
             that.setting.async.otherParam = {
                 "filterKey": that.defaults.filterKey.join()
             };
-            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true" data-height="200">';
+            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true" data-height="400">';
             html += '<div class="modal-dialog">';
             html += '<div class="modal-content">';
             html += '<div class="modal-header">';

@@ -105,7 +105,7 @@ public class ProjectInfoController {
         projectInfo.setProjectClassId(projectClassId);
         projectInfo.setProjectTypeId(projectTypeId);
         projectInfo.setProjectCategoryId(projectCategoryId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
@@ -130,7 +130,7 @@ public class ProjectInfoController {
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
 
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
@@ -151,7 +151,7 @@ public class ProjectInfoController {
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo vo = projectInfoService.getVo(projectInfo);
+        ProjectInfoVo vo = projectInfoService.getProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", vo);
         return modelAndView;
     }
@@ -200,7 +200,7 @@ public class ProjectInfoController {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
-            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
         }catch (Exception e){
             logger.error("异常!");
@@ -245,7 +245,7 @@ public class ProjectInfoController {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
-            ProjectInfoVo projectInfoVo = projectInfoService.getVo(projectInfo);
+            ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
         }catch (Exception e){
             logger.error("异常!");
