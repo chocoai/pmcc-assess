@@ -1023,6 +1023,7 @@ public class CsrProjectInfoService {
                     try {
                         Map<String, String> stringMap = toMapString(mapList.get(0));
                         stringMap.put("${number}", String.valueOf(i));
+
                         AsposeUtils.replaceText(localFullPath, stringMap);
                     } catch (Exception e) {
                         e.printStackTrace();
