@@ -1916,196 +1916,6 @@ public class ProjectPlanDetailsExample {
             return (Criteria) this;
         }
 
-        public Criteria andBisNewIsNull() {
-            addCriterion("bis_new is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewIsNotNull() {
-            addCriterion("bis_new is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewEqualTo(Boolean value) {
-            addCriterion("bis_new =", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewNotEqualTo(Boolean value) {
-            addCriterion("bis_new <>", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewGreaterThan(Boolean value) {
-            addCriterion("bis_new >", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_new >=", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewLessThan(Boolean value) {
-            addCriterion("bis_new <", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_new <=", value, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewIn(List<Boolean> values) {
-            addCriterion("bis_new in", values, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewNotIn(List<Boolean> values) {
-            addCriterion("bis_new not in", values, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_new between", value1, value2, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_new not between", value1, value2, "bisNew");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledIsNull() {
-            addCriterion("sign_filed is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledIsNotNull() {
-            addCriterion("sign_filed is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledEqualTo(String value) {
-            addCriterion("sign_filed =", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledNotEqualTo(String value) {
-            addCriterion("sign_filed <>", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledGreaterThan(String value) {
-            addCriterion("sign_filed >", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledGreaterThanOrEqualTo(String value) {
-            addCriterion("sign_filed >=", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledLessThan(String value) {
-            addCriterion("sign_filed <", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledLessThanOrEqualTo(String value) {
-            addCriterion("sign_filed <=", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledLike(String value) {
-            addCriterion("sign_filed like", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledNotLike(String value) {
-            addCriterion("sign_filed not like", value, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledIn(List<String> values) {
-            addCriterion("sign_filed in", values, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledNotIn(List<String> values) {
-            addCriterion("sign_filed not in", values, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledBetween(String value1, String value2) {
-            addCriterion("sign_filed between", value1, value2, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andSignFiledNotBetween(String value1, String value2) {
-            addCriterion("sign_filed not between", value1, value2, "signFiled");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerIsNull() {
-            addCriterion("bis_last_layer is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerIsNotNull() {
-            addCriterion("bis_last_layer is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerEqualTo(Boolean value) {
-            addCriterion("bis_last_layer =", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerNotEqualTo(Boolean value) {
-            addCriterion("bis_last_layer <>", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerGreaterThan(Boolean value) {
-            addCriterion("bis_last_layer >", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_last_layer >=", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerLessThan(Boolean value) {
-            addCriterion("bis_last_layer <", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_last_layer <=", value, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerIn(List<Boolean> values) {
-            addCriterion("bis_last_layer in", values, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerNotIn(List<Boolean> values) {
-            addCriterion("bis_last_layer not in", values, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_last_layer between", value1, value2, "bisLastLayer");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisLastLayerNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_last_layer not between", value1, value2, "bisLastLayer");
-            return (Criteria) this;
-        }
-
         public Criteria andReturnDetailsReasonIsNull() {
             addCriterion("return_details_reason is null");
             return (Criteria) this;
@@ -2173,6 +1983,186 @@ public class ProjectPlanDetailsExample {
 
         public Criteria andReturnDetailsReasonNotBetween(String value1, String value2) {
             addCriterion("return_details_reason not between", value1, value2, "returnDetailsReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewIsNull() {
+            addCriterion("bis_new is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewIsNotNull() {
+            addCriterion("bis_new is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewEqualTo(Boolean value) {
+            addCriterion("bis_new =", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotEqualTo(Boolean value) {
+            addCriterion("bis_new <>", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewGreaterThan(Boolean value) {
+            addCriterion("bis_new >", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_new >=", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewLessThan(Boolean value) {
+            addCriterion("bis_new <", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_new <=", value, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewIn(List<Boolean> values) {
+            addCriterion("bis_new in", values, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotIn(List<Boolean> values) {
+            addCriterion("bis_new not in", values, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_new between", value1, value2, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_new not between", value1, value2, "bisNew");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerIsNull() {
+            addCriterion("bis_last_layer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerIsNotNull() {
+            addCriterion("bis_last_layer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerEqualTo(Boolean value) {
+            addCriterion("bis_last_layer =", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerNotEqualTo(Boolean value) {
+            addCriterion("bis_last_layer <>", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerGreaterThan(Boolean value) {
+            addCriterion("bis_last_layer >", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_last_layer >=", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerLessThan(Boolean value) {
+            addCriterion("bis_last_layer <", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_last_layer <=", value, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerIn(List<Boolean> values) {
+            addCriterion("bis_last_layer in", values, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerNotIn(List<Boolean> values) {
+            addCriterion("bis_last_layer not in", values, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_last_layer between", value1, value2, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisLastLayerNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_last_layer not between", value1, value2, "bisLastLayer");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureIsNull() {
+            addCriterion("company_nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureIsNotNull() {
+            addCriterion("company_nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureEqualTo(Integer value) {
+            addCriterion("company_nature =", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureNotEqualTo(Integer value) {
+            addCriterion("company_nature <>", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureGreaterThan(Integer value) {
+            addCriterion("company_nature >", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureGreaterThanOrEqualTo(Integer value) {
+            addCriterion("company_nature >=", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureLessThan(Integer value) {
+            addCriterion("company_nature <", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureLessThanOrEqualTo(Integer value) {
+            addCriterion("company_nature <=", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureIn(List<Integer> values) {
+            addCriterion("company_nature in", values, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureNotIn(List<Integer> values) {
+            addCriterion("company_nature not in", values, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureBetween(Integer value1, Integer value2) {
+            addCriterion("company_nature between", value1, value2, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureNotBetween(Integer value1, Integer value2) {
+            addCriterion("company_nature not between", value1, value2, "companyNature");
             return (Criteria) this;
         }
 

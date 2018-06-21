@@ -124,12 +124,7 @@
                 </div>
             </div>
             <!--招标信息-->
-            <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == defaultProjectDetails}">
-                <%@include file="/views/share/project/projectInfo.jsp" %>
-            </c:if>
-            <c:if test="${projectInfo.baseProjectClassify != null && projectInfo.baseProjectClassify.detailUrl == csrProjectDetails}">
-                <%@include file="/views/share/project/projectCsrInfo.jsp" %>
-            </c:if>
+            <%@include file="/views/share/project/projectInfo.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">

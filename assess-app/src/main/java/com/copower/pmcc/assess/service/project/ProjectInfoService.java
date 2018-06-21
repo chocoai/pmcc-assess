@@ -1,11 +1,13 @@
 package com.copower.pmcc.assess.service.project;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessParameterConstant;
+import com.copower.pmcc.assess.constant.AssessTableNameConstant;
+import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
@@ -16,7 +18,10 @@ import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.event.BaseProcessEvent;
+import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -25,6 +30,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
@@ -46,6 +52,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -126,18 +133,24 @@ public class ProjectInfoService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BaseParameterServcie baseParameterServcie;
+    @Autowired
+    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
+    @Autowired
+    private ProjectMemberDao projectMemberDao;
 
     /**
      * 项目立项申请
      *
      * @param projectDto
      */
-    public boolean projectApply(InitiateProjectDto projectDto) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto, String bisNextUser) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo(), bisNextUser);
     }
 
     /*项目立项修改*/
@@ -182,7 +195,8 @@ public class ProjectInfoService {
     }
 
     @Transactional
-    public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) throws Exception {
+    public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
+                                   ProjectInfoDto projectInfoDto) throws Exception {
         projectInfoDao.updateProjectInfo(change(projectInfoDto));
         projectInfoDto.setCreator(commonService.thisUserAccount());
         consignorDto.setProjectId(projectInfoDto.getId());
@@ -198,13 +212,14 @@ public class ProjectInfoService {
     }
 
     @Transactional
-    public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) {
+    public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
+                                      ProjectInfoDto projectInfoDto, String bisNextUser) {
         boolean flag = true;
         try {
 
-
             ProjectInfo projectInfo = change(projectInfoDto);
-            if (projectInfo.getCreator() == null) projectInfo.setCreator(commonService.thisUserAccount());
+            if (projectInfo.getCreator() == null)
+                projectInfo.setCreator(commonService.thisUserAccount());
 
             int projectId = 0;
             projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
@@ -234,9 +249,42 @@ public class ProjectInfoService {
             projectMemberDto.setProjectId(projectId);
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
-
             update_BaseAttachment_(projectId, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
-            initProjectInfo(projectInfo);//初始化项目信息
+
+            //判断是否需要下级再进行任务分派 //20180621 Calvin
+            if (bisNextUser.equals("1")) {
+                //发起流程
+                String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
+                Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+                ProcessInfo processInfo = new ProcessInfo();
+                processInfo.setProcessName(boxReDto.getProcessName());
+                processInfo.setGroupName(boxReDto.getGroupName());
+                processInfo.setFolio(projectInfo.getProjectName());//流程描述
+                processInfo.setTableName("tb_project_info");
+                processInfo.setBoxId(boxReDto.getId());
+                processInfo.setStartUser(commonService.thisUserAccount());
+                processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
+                processInfo.setTableId(projectInfo.getId());
+                //取审批人
+                if (StringUtils.isNotEmpty(projectMemberDto.getUserAccountManager())) {
+                    processInfo.setNextUser(Lists.newArrayList(projectMemberDto.getUserAccountManager()));
+                } else {
+                    Integer departmentId = projectInfo.getDepartmentId();
+                    List<String> departmentDA = bpmRpcBoxRoleUserService.getDepartmentDA(departmentId);
+                    processInfo.setNextUser(departmentDA);
+                }
+                try {
+                    String processInsId = processControllerComponent.processStartPending(processInfo);
+                    projectInfo.setAssignStatus(ProcessStatusEnum.RUN.getValue());
+                    projectInfo.setAssignProcessInsId(processInsId);
+                    projectInfoDao.updateProjectInfo(projectInfo);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            } else {
+                initProjectInfo(projectInfo);//初始化项目信息
+            }
         } catch (Exception e) {
             try {
                 flag = false;
@@ -282,7 +330,6 @@ public class ProjectInfoService {
             }
         }
 
-
         if (CollectionUtils.isEmpty(projectWorkStages))
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         int i = 1;
@@ -309,6 +356,7 @@ public class ProjectInfoService {
             ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
             //发起流程后更新项目的项目id
             projectInfo.setProcessInsId(processUserDto.getProcessInsId());
+            projectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
             projectInfoDao.updateProjectInfo(projectInfo);
         } else {//直接进入下一阶段
             projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getName());//更新流程状态
@@ -333,6 +381,7 @@ public class ProjectInfoService {
         Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectWorkStage.getReviewBoxName());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
         ProcessInfo processInfo = new ProcessInfo();
+        processInfo.setStartUser(projectInfo.getCreator());
         processInfo.setProjectId(projectInfo.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
@@ -344,7 +393,7 @@ public class ProjectInfoService {
         processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
         processInfo.setWorkStageId(projectWorkStage.getId());
         try {
-            processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);
+            processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
             logger.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -361,7 +410,31 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+
+
+
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void projectAssignApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+        if (StringUtils.isNotEmpty(approvalModelDto.getAppointUserAccount())) {
+            approvalModelDto.setNextApproval(Lists.newArrayList(approvalModelDto.getAppointUserAccount()));
+            ProjectMember projectMember = projectMemberService.get(approvalModelDto.getProjectId());
+            if(projectMember==null)
+            {
+                projectMember=new ProjectMember();
+                projectMember.setProjectId(approvalModelDto.getProjectId());
+                projectMember.setUserAccountManager(approvalModelDto.getAgentUserAccount());
+                projectMemberDao.saveProjectMember(projectMember);
+            }
+            else {
+                projectMember.setUserAccountManager(approvalModelDto.getAppointUserAccount());
+                projectMemberDao.updateProjectMember(projectMember);
+            }
+
+        }
+        processControllerComponent.processSubmitPendingTaskNodeArg(approvalModelDto);
     }
 
     /**
@@ -491,6 +564,9 @@ public class ProjectInfoService {
         return projectInfoVo;
     }
 
+    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo) {
+        return projectInfoDao.getProjectInfoList(projectInfo);
+    }
 
     public void updateProjectInfo(ProjectInfo projectInfo) {
         projectInfoDao.updateProjectInfo(projectInfo);
@@ -517,7 +593,6 @@ public class ProjectInfoService {
         return erpAreaService.getSysAreaDto(String.valueOf(id)).getName();
     }
 
-
     public SysDepartmentDto getDepartmentDto(Integer id) {
         return erpRpcDepartmentService.getDepartmentById(id);
     }
@@ -534,12 +609,10 @@ public class ProjectInfoService {
         return v;
     }
 
-
     /*获取城市*/
     public List<SysAreaDto> getAreaList(String pid) {
         return erpAreaService.getAreaList(pid);
     }
-
 
     /*大类*/
     public List<BaseDataDic> listClass_assess() {
@@ -592,7 +665,6 @@ public class ProjectInfoService {
         return vo;
     }
 
-
     /*联系人类型*/
     public Map<String, String> getTypeInitiateContactsMap() {
         return initiateContactsService.getTypeMap();
@@ -624,7 +696,6 @@ public class ProjectInfoService {
         BeanUtils.copyProperties(projectMember, dto);
         return dto;
     }
-
 
     public InitiateProjectDto format(String val) {
         InitiateProjectDto dto = null;
@@ -662,7 +733,8 @@ public class ProjectInfoService {
     public CrmBaseDataDicDto getBaseDataDic(String id) {
         if (!StringUtils.isEmpty(id)) {
             CrmBaseDataDicDto crmBaseDataDicDto = crmRpcBaseDataDicService.getBaseDataDic(Integer.parseInt(id));
-            if (!ObjectUtils.isEmpty(crmBaseDataDicDto)) return crmBaseDataDicDto;
+            if (!ObjectUtils.isEmpty(crmBaseDataDicDto))
+                return crmBaseDataDicDto;
         }
         return null;
     }

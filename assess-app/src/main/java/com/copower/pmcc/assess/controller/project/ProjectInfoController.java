@@ -82,7 +82,6 @@ public class ProjectInfoController {
     @Autowired
     private BaseProjectCategoryService baseProjectCategoryService;
 
-
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", "0", 0, "0", "");
@@ -112,13 +111,14 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Integer projectinfoid) {
+    public HttpResult projectApplySubmit(String formData, Integer projectinfoid, String bisNextUser) {
         try {
             if (projectinfoid != null && projectinfoid != 0) {
                 projectInfoService.projectUpdate(projectInfoService.format(formData), projectinfoid);
             } else {
-                boolean flag = projectInfoService.projectApply(projectInfoService.format(formData));
-                if (!flag) return HttpResult.newErrorResult("异常!");
+                boolean flag = projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
+                if (!flag)
+                    return HttpResult.newErrorResult("异常!");
             }
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -156,6 +156,17 @@ public class ProjectInfoController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/projectAssignApproval", name = "任务分派审批页面")
+    public ModelAndView projectAssignApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectAssignApproval", processInsId, boxId, taskId, agentUserAccount);
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setAssignProcessInsId(processInsId);
+        List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
+        ProjectInfoVo vo = projectInfoService.getProjectInfoVo(projectInfoList.get(0));
+        modelAndView.addObject("projectInfo", vo);
+        modelAndView.addObject("projectId", vo.getId());
+        return modelAndView;
+    }
 
     /**
      * 审批提交
@@ -167,6 +178,17 @@ public class ProjectInfoController {
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectApproval(approvalModelDto);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/projectApprovalAssignSubmit", method = RequestMethod.POST)
+    public HttpResult projectApprovalAssignSubmit(ApprovalModelDto approvalModelDto) {
+        try {
+            projectInfoService.projectAssignApproval(approvalModelDto);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -189,6 +211,21 @@ public class ProjectInfoController {
         return HttpResult.newCorrectResult();
     }
 
+    @RequestMapping(value = "/projectAssignDetails", name = "项目详情")
+    public ModelAndView projectAssignDetails(String processInsId) throws BusinessException {
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setAssignProcessInsId(processInsId);
+        List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
+        return projectDetails(projectInfoList.get(0).getId());
+    }
+
+    @RequestMapping(value = "/projectApprovalDetails", name = "项目详情")
+    public ModelAndView projectApprovalDetails(String processInsId) throws BusinessException {
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
+        return projectDetails(projectInfo.getId());
+    }
+
     @RequestMapping(value = "/projectDetails", name = "项目详情")
     public ModelAndView projectDetails(Integer projectId) throws BusinessException {
         ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
@@ -196,13 +233,13 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)){
+        if (!StringUtils.isEmpty(enumByName)) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
             ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("异常!");
             logger.error(e.getMessage());
             logger.error("可能报:Source must not be null");
@@ -241,13 +278,13 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
 
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)){
+        if (!StringUtils.isEmpty(enumByName)) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
         try {
             ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
             modelAndView.addObject("projectInfo", projectInfoVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("异常!");
             logger.error(e.getMessage());
             logger.error("可能报:Source must not be null");
@@ -337,7 +374,6 @@ public class ProjectInfoController {
         return vo;
     }
 
-
     @ResponseBody
     @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
     public HttpResult add(InitiateContactsDto dto) {
@@ -391,7 +427,8 @@ public class ProjectInfoController {
         try {
             if (pid != null) {
                 List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList("" + pid);
-                if (sysAreaDtos != null) return sysAreaDtos;
+                if (sysAreaDtos != null)
+                    return sysAreaDtos;
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -406,7 +443,8 @@ public class ProjectInfoController {
         if (crmId != null) {
             CrmCustomerDto crmCustomerDto = projectInfoService.getCRM(crmId);
             try {
-                if (crmCustomerDto != null) return crmCustomerDto;
+                if (crmCustomerDto != null)
+                    return crmCustomerDto;
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 return HttpResult.newErrorResult(e.getMessage());
@@ -471,6 +509,5 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
 }

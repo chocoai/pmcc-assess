@@ -1744,6 +1744,146 @@ public class ProjectInfoExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andAssignProcessInsIdIsNull() {
+            addCriterion("assign_process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdIsNotNull() {
+            addCriterion("assign_process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdEqualTo(String value) {
+            addCriterion("assign_process_ins_id =", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdNotEqualTo(String value) {
+            addCriterion("assign_process_ins_id <>", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdGreaterThan(String value) {
+            addCriterion("assign_process_ins_id >", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("assign_process_ins_id >=", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdLessThan(String value) {
+            addCriterion("assign_process_ins_id <", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("assign_process_ins_id <=", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdLike(String value) {
+            addCriterion("assign_process_ins_id like", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdNotLike(String value) {
+            addCriterion("assign_process_ins_id not like", value, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdIn(List<String> values) {
+            addCriterion("assign_process_ins_id in", values, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdNotIn(List<String> values) {
+            addCriterion("assign_process_ins_id not in", values, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdBetween(String value1, String value2) {
+            addCriterion("assign_process_ins_id between", value1, value2, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("assign_process_ins_id not between", value1, value2, "assignProcessInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusIsNull() {
+            addCriterion("assign_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusIsNotNull() {
+            addCriterion("assign_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusEqualTo(String value) {
+            addCriterion("assign_status =", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusNotEqualTo(String value) {
+            addCriterion("assign_status <>", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusGreaterThan(String value) {
+            addCriterion("assign_status >", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("assign_status >=", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusLessThan(String value) {
+            addCriterion("assign_status <", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusLessThanOrEqualTo(String value) {
+            addCriterion("assign_status <=", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusLike(String value) {
+            addCriterion("assign_status like", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusNotLike(String value) {
+            addCriterion("assign_status not like", value, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusIn(List<String> values) {
+            addCriterion("assign_status in", values, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusNotIn(List<String> values) {
+            addCriterion("assign_status not in", values, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusBetween(String value1, String value2) {
+            addCriterion("assign_status between", value1, value2, "assignStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignStatusNotBetween(String value1, String value2) {
+            addCriterion("assign_status not between", value1, value2, "assignStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

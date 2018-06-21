@@ -28,6 +28,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="assign_process_ins_id" property="assignProcessInsId" jdbcType="VARCHAR" />
+    <result column="assign_status" property="assignStatus" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -92,7 +94,7 @@
     province, city, valuation_date, district, entrust_purpose, value_type, department_id, 
     remarks, complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
     status, project_status, public_project_id, remark_entrust_purpose, remark_value_type, 
-    creator, gmt_created, gmt_modified
+    creator, gmt_created, gmt_modified, assign_process_ins_id, assign_status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -136,7 +138,8 @@
       complete_date_start, process_ins_id, status, 
       project_status, public_project_id, remark_entrust_purpose, 
       remark_value_type, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, assign_process_ins_id, assign_status
+      )
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{valuationDate,jdbcType=TIMESTAMP}, #{district,jdbcType=INTEGER}, 
@@ -145,7 +148,8 @@
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
       #{remarkValueType,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -228,6 +232,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="assignProcessInsId != null" >
+        assign_process_ins_id,
+      </if>
+      <if test="assignStatus != null" >
+        assign_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectClassId != null" >
@@ -304,6 +314,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="assignProcessInsId != null" >
+        #{assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="assignStatus != null" >
+        #{assignStatus,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -394,6 +410,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.assignProcessInsId != null" >
+        assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignStatus != null" >
+        assign_status = #{record.assignStatus,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -426,7 +448,9 @@
       remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
+      assign_status = #{record.assignStatus,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -509,6 +533,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="assignProcessInsId != null" >
+        assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="assignStatus != null" >
+        assign_status = #{assignStatus,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -538,7 +568,9 @@
       remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
+      assign_status = #{assignStatus,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
