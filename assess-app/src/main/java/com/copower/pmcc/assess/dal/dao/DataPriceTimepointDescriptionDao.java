@@ -27,8 +27,16 @@ public class DataPriceTimepointDescriptionDao {
     }
 
     public boolean addDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) {
-        int i = dataPriceTimepointDescriptionMapper.insert(dataPriceTimepointDescription);
-        return i > 0;
+        DataPriceTimepointDescriptionExample example = new DataPriceTimepointDescriptionExample();
+        example.createCriteria().andNameEqualTo(dataPriceTimepointDescription.getName()).andDescriptionEqualTo(dataPriceTimepointDescription.getDescription());
+        List<DataPriceTimepointDescription> dataPriceTimepointDescriptions = dataPriceTimepointDescriptionMapper.selectByExample(example);
+        if(dataPriceTimepointDescriptions.size()>0){
+            return  false;
+        }else{
+            int i = dataPriceTimepointDescriptionMapper.insert(dataPriceTimepointDescription);
+            return i > 0;
+        }
+
     }
 
     public boolean editDataPriceTimepointDescription(DataPriceTimepointDescription dataPriceTimepointDescription) {

@@ -55,6 +55,10 @@ public class ProjectInfo {
 
     private Date gmtModified;
 
+    private String assignProcessInsId;
+
+    private String assignStatus;
+
     public Integer getId() {
         return id;
     }
@@ -261,5 +265,21 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAssignProcessInsId() {
+        return assignProcessInsId;
+    }
+
+    public void setAssignProcessInsId(String assignProcessInsId) {
+        this.assignProcessInsId = assignProcessInsId == null ? null : assignProcessInsId.trim();
+    }
+
+    public String getAssignStatus() {
+        return assignStatus;
+    }
+
+    public void setAssignStatus(String assignStatus) {
+        this.assignStatus = assignStatus == null ? null : assignStatus.trim();
     }
 }

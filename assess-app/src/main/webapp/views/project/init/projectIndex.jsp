@@ -73,7 +73,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">委托目的描述</label>
                                 <div class="col-sm-11">
-                                     <textarea  id="remarkEntrustPurpose" name="remarkEntrustPurpose"
+                                     <textarea id="remarkEntrustPurpose" name="remarkEntrustPurpose"
                                                class="form-control"
                                                placeholder="委托目的描述">${projectInfo.remarkEntrustPurpose}</textarea>
                                 </div>
@@ -148,7 +148,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">价值类型备注</label>
                                 <div class="col-sm-11">
-                                     <textarea  id="remarkValueType" name="remarkValueType"
+                                     <textarea id="remarkValueType" name="remarkValueType"
                                                class="form-control"
                                                placeholder="委托目的描述">${projectInfo.remarkValueType}</textarea>
                                 </div>
@@ -252,7 +252,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">项目说明</label>
                                 <div class="col-sm-11">
-                                    <textarea  id="remarks" name="remarks"
+                                    <textarea id="remarks" name="remarks"
                                               class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
                                 </div>
                             </div>
@@ -1868,13 +1868,20 @@
         if (!$("#frm_unitinformation").valid()) {
             return false;
         }
+        var bisNextUser = "0";
+        if ($("#userAccountMemberCheckBox").is(':checked')) {
+            bisNextUser = "1";
+        }
         params();
         Loading.progressShow();
         $.ajax({
             type: "POST",
             url: getContextPath() + "/projectInfo/projectApplySubmit",
-            data: "formData=" + json + "&projectinfoid=" + $("#projectinfoid").val() + "&consignorid=" + $("#consignorid").val() + "&possessorid=" + $("#consignorid").val() + "&possessorid=" + $("#possessorid").val() + "&unitInformationid=" + $("#unitInformationid").val(),
-            success: function (result) {
+            data: {
+                formData: json,
+                projectinfoid: $("#projectinfoid").val(),
+                bisNextUser: bisNextUser
+            }, success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
                     Alert("提交数据成功!", 1, null, function () {

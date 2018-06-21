@@ -47,7 +47,9 @@ DataPriceTimepointDescriptionController {
             if (dataPriceTimepointDescription.getId() != null && dataPriceTimepointDescription.getId() != 0) {
                 dataPriceTimepointDescriptionService.editPriceTimepointDescription(dataPriceTimepointDescription);
             } else {
-                dataPriceTimepointDescriptionService.addPriceTimepointDescription(dataPriceTimepointDescription);
+                if(dataPriceTimepointDescriptionService.addPriceTimepointDescription(dataPriceTimepointDescription) == false){
+                    return HttpResult.newErrorResult("添加内容已存在!");
+                }
             }
         } catch (BusinessException e) {
             logger.error(e.getMessage());

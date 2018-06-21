@@ -141,7 +141,6 @@
                 </div>
 
             </div>
-
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 占有人</h2>
@@ -276,8 +275,6 @@
                     </table>
                 </div>
             </div>
-
-
             <div class="x_panel">
                 <div class="x_title">
                     <h2> 报告使用单位</h2>

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.dao;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectInfoExample;
 import com.copower.pmcc.assess.dal.mapper.ProjectInfoMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,12 @@ public class ProjectInfoDao {
         }
         return false;
     }
-
+    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo)
+    {
+        ProjectInfoExample example=new ProjectInfoExample();
+        MybatisUtils.convertObj2Example(projectInfo,example);
+        return projectInfoMapper.selectByExample(example);
+    }
     public List<ProjectInfo> getProjectInfoByProjectIds(List<Integer> integers)
     {
         ProjectInfoExample example=new ProjectInfoExample();
