@@ -46,7 +46,9 @@ public class DataBestUseDescriptionController {
             if (dataBestUseDescription.getId() != null && dataBestUseDescription.getId() != 0) {
                 dataBestUseDescriptionService.editDataBestUseDescription(dataBestUseDescription);
             } else {
-                dataBestUseDescriptionService.addDataBestUseDescription(dataBestUseDescription);
+                if(dataBestUseDescriptionService.addDataBestUseDescription(dataBestUseDescription) == false){
+                    return HttpResult.newErrorResult("添加内容已存在!");
+                }
             }
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

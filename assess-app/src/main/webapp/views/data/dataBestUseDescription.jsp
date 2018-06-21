@@ -218,7 +218,7 @@
                         $('#divBox').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        toastr.warning(result.errmsg);
                     }
                 },
                 error: function (result) {
