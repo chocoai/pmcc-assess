@@ -119,15 +119,6 @@
                     </div>
                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">接收任务时间</label>
-                    <div class="col-sm-3">
-                        <input placeholder="接收任务时间"
-                               name="completeDateStart" data-date-format="yyyy-mm-dd"
-                               class="form-control date-picker dbdate" readonly="readonly"
-                               value="<fmt:formatDate value='${projectInfo.completeDateStart}' pattern='yyyy-MM-dd'/>">
-                    </div>
-                </div>
             </div>
 
         </div>

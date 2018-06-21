@@ -9,4 +9,5 @@ package com.copower.pmcc.assess.constant;
  */
 public class AssessProjectClassifyConstant {
     public static final String SINGLE = "single";  //单项资产
+    public static final String COMPREHENSIVE  = "comprehensive";  //综合资产
 }

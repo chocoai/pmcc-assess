@@ -62,13 +62,13 @@ public class ProjectPlanDetails {
 
     private String returnProcessInsId;
 
-    private Boolean bisNew;
+    private String returnDetailsReason;
 
-    private String signFiled;
+    private Boolean bisNew;
 
     private Boolean bisLastLayer;
 
-    private String returnDetailsReason;
+    private Integer companyNature;
 
     private Integer declareFormId;
 
@@ -310,20 +310,20 @@ public class ProjectPlanDetails {
         this.returnProcessInsId = returnProcessInsId == null ? null : returnProcessInsId.trim();
     }
 
+    public String getReturnDetailsReason() {
+        return returnDetailsReason;
+    }
+
+    public void setReturnDetailsReason(String returnDetailsReason) {
+        this.returnDetailsReason = returnDetailsReason == null ? null : returnDetailsReason.trim();
+    }
+
     public Boolean getBisNew() {
         return bisNew;
     }
 
     public void setBisNew(Boolean bisNew) {
         this.bisNew = bisNew;
-    }
-
-    public String getSignFiled() {
-        return signFiled;
-    }
-
-    public void setSignFiled(String signFiled) {
-        this.signFiled = signFiled == null ? null : signFiled.trim();
     }
 
     public Boolean getBisLastLayer() {
@@ -334,12 +334,12 @@ public class ProjectPlanDetails {
         this.bisLastLayer = bisLastLayer;
     }
 
-    public String getReturnDetailsReason() {
-        return returnDetailsReason;
+    public Integer getCompanyNature() {
+        return companyNature;
     }
 
-    public void setReturnDetailsReason(String returnDetailsReason) {
-        this.returnDetailsReason = returnDetailsReason == null ? null : returnDetailsReason.trim();
+    public void setCompanyNature(Integer companyNature) {
+        this.companyNature = companyNature;
     }
 
     public Integer getDeclareFormId() {

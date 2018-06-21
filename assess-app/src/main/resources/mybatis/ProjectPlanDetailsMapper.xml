@@ -31,10 +31,10 @@
     <result column="bis_partake" property="bisPartake" jdbcType="BIT" />
     <result column="return_details_id" property="returnDetailsId" jdbcType="INTEGER" />
     <result column="return_process_ins_id" property="returnProcessInsId" jdbcType="VARCHAR" />
-    <result column="bis_new" property="bisNew" jdbcType="BIT" />
-    <result column="sign_filed" property="signFiled" jdbcType="VARCHAR" />
-    <result column="bis_last_layer" property="bisLastLayer" jdbcType="BIT" />
     <result column="return_details_reason" property="returnDetailsReason" jdbcType="VARCHAR" />
+    <result column="bis_new" property="bisNew" jdbcType="BIT" />
+    <result column="bis_last_layer" property="bisLastLayer" jdbcType="BIT" />
+    <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
     <result column="declare_form_id" property="declareFormId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="report_analysis_category" property="reportAnalysisCategory" jdbcType="INTEGER" />
@@ -103,8 +103,8 @@
     project_phase_name, plan_start_date, plan_end_date, plan_hours, plan_remarks, execute_user_account, 
     execute_department_id, bis_enable, proportion, sorting, pid, first_pid, bis_start, 
     process_ins_id, task_submit_time, task_remarks, actual_hours, bis_all_submit, bis_again_submit, 
-    status, bis_partake, return_details_id, return_process_ins_id, bis_new, sign_filed, 
-    bis_last_layer, return_details_reason, declare_form_id, declare_record_id, report_analysis_category, 
+    status, bis_partake, return_details_id, return_process_ins_id, return_details_reason, 
+    bis_new, bis_last_layer, company_nature, declare_form_id, declare_record_id, report_analysis_category, 
     evaluation_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectPlanDetailsExample" >
@@ -150,8 +150,8 @@
       bis_start, process_ins_id, task_submit_time, 
       task_remarks, actual_hours, bis_all_submit, 
       bis_again_submit, status, bis_partake, 
-      return_details_id, return_process_ins_id, bis_new, 
-      sign_filed, bis_last_layer, return_details_reason, 
+      return_details_id, return_process_ins_id, return_details_reason, 
+      bis_new, bis_last_layer, company_nature, 
       declare_form_id, declare_record_id, report_analysis_category, 
       evaluation_id)
     values (#{projectWorkStageId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
@@ -163,8 +163,8 @@
       #{bisStart,jdbcType=BIT}, #{processInsId,jdbcType=VARCHAR}, #{taskSubmitTime,jdbcType=TIMESTAMP}, 
       #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, #{bisAllSubmit,jdbcType=BIT}, 
       #{bisAgainSubmit,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{bisPartake,jdbcType=BIT}, 
-      #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{bisNew,jdbcType=BIT}, 
-      #{signFiled,jdbcType=VARCHAR}, #{bisLastLayer,jdbcType=BIT}, #{returnDetailsReason,jdbcType=VARCHAR}, 
+      #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{returnDetailsReason,jdbcType=VARCHAR}, 
+      #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, #{companyNature,jdbcType=INTEGER}, 
       #{declareFormId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{reportAnalysisCategory,jdbcType=INTEGER}, 
       #{evaluationId,jdbcType=INTEGER})
   </insert>
@@ -258,17 +258,17 @@
       <if test="returnProcessInsId != null" >
         return_process_ins_id,
       </if>
+      <if test="returnDetailsReason != null" >
+        return_details_reason,
+      </if>
       <if test="bisNew != null" >
         bis_new,
-      </if>
-      <if test="signFiled != null" >
-        sign_filed,
       </if>
       <if test="bisLastLayer != null" >
         bis_last_layer,
       </if>
-      <if test="returnDetailsReason != null" >
-        return_details_reason,
+      <if test="companyNature != null" >
+        company_nature,
       </if>
       <if test="declareFormId != null" >
         declare_form_id,
@@ -368,17 +368,17 @@
       <if test="returnProcessInsId != null" >
         #{returnProcessInsId,jdbcType=VARCHAR},
       </if>
+      <if test="returnDetailsReason != null" >
+        #{returnDetailsReason,jdbcType=VARCHAR},
+      </if>
       <if test="bisNew != null" >
         #{bisNew,jdbcType=BIT},
-      </if>
-      <if test="signFiled != null" >
-        #{signFiled,jdbcType=VARCHAR},
       </if>
       <if test="bisLastLayer != null" >
         #{bisLastLayer,jdbcType=BIT},
       </if>
-      <if test="returnDetailsReason != null" >
-        #{returnDetailsReason,jdbcType=VARCHAR},
+      <if test="companyNature != null" >
+        #{companyNature,jdbcType=INTEGER},
       </if>
       <if test="declareFormId != null" >
         #{declareFormId,jdbcType=INTEGER},
@@ -490,17 +490,17 @@
       <if test="record.returnProcessInsId != null" >
         return_process_ins_id = #{record.returnProcessInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.returnDetailsReason != null" >
+        return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisNew != null" >
         bis_new = #{record.bisNew,jdbcType=BIT},
-      </if>
-      <if test="record.signFiled != null" >
-        sign_filed = #{record.signFiled,jdbcType=VARCHAR},
       </if>
       <if test="record.bisLastLayer != null" >
         bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
       </if>
-      <if test="record.returnDetailsReason != null" >
-        return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
+      <if test="record.companyNature != null" >
+        company_nature = #{record.companyNature,jdbcType=INTEGER},
       </if>
       <if test="record.declareFormId != null" >
         declare_form_id = #{record.declareFormId,jdbcType=INTEGER},
@@ -550,10 +550,10 @@
       bis_partake = #{record.bisPartake,jdbcType=BIT},
       return_details_id = #{record.returnDetailsId,jdbcType=INTEGER},
       return_process_ins_id = #{record.returnProcessInsId,jdbcType=VARCHAR},
-      bis_new = #{record.bisNew,jdbcType=BIT},
-      sign_filed = #{record.signFiled,jdbcType=VARCHAR},
-      bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
       return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
+      bis_new = #{record.bisNew,jdbcType=BIT},
+      bis_last_layer = #{record.bisLastLayer,jdbcType=BIT},
+      company_nature = #{record.companyNature,jdbcType=INTEGER},
       declare_form_id = #{record.declareFormId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       report_analysis_category = #{record.reportAnalysisCategory,jdbcType=INTEGER},
@@ -649,17 +649,17 @@
       <if test="returnProcessInsId != null" >
         return_process_ins_id = #{returnProcessInsId,jdbcType=VARCHAR},
       </if>
+      <if test="returnDetailsReason != null" >
+        return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
+      </if>
       <if test="bisNew != null" >
         bis_new = #{bisNew,jdbcType=BIT},
-      </if>
-      <if test="signFiled != null" >
-        sign_filed = #{signFiled,jdbcType=VARCHAR},
       </if>
       <if test="bisLastLayer != null" >
         bis_last_layer = #{bisLastLayer,jdbcType=BIT},
       </if>
-      <if test="returnDetailsReason != null" >
-        return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
+      <if test="companyNature != null" >
+        company_nature = #{companyNature,jdbcType=INTEGER},
       </if>
       <if test="declareFormId != null" >
         declare_form_id = #{declareFormId,jdbcType=INTEGER},
@@ -706,10 +706,10 @@
       bis_partake = #{bisPartake,jdbcType=BIT},
       return_details_id = #{returnDetailsId,jdbcType=INTEGER},
       return_process_ins_id = #{returnProcessInsId,jdbcType=VARCHAR},
-      bis_new = #{bisNew,jdbcType=BIT},
-      sign_filed = #{signFiled,jdbcType=VARCHAR},
-      bis_last_layer = #{bisLastLayer,jdbcType=BIT},
       return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
+      bis_new = #{bisNew,jdbcType=BIT},
+      bis_last_layer = #{bisLastLayer,jdbcType=BIT},
+      company_nature = #{companyNature,jdbcType=INTEGER},
       declare_form_id = #{declareFormId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       report_analysis_category = #{reportAnalysisCategory,jdbcType=INTEGER},

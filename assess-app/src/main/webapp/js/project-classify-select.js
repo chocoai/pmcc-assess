@@ -8,7 +8,7 @@
         this.defaults = {
             modalName: "数据选择",
             key: AssessProjectClassifyKey.single,//获取key值 以下的数据
-            pid: 0,//获取pid 以下的数据
+            pid: undefined,//获取pid 以下的数据
             filterKey: [],//过滤值
             multi: false,//是否允许多选
             onSelected: function (nodes) {
