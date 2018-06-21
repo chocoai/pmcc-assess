@@ -1048,9 +1048,8 @@ public class CsrProjectInfoService {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
             String value = String.valueOf(stringObjectEntry.getValue());
-            if(StringUtils.isBlank(value) || value=="null")
-            {
-                value="";
+            if (StringUtils.isBlank(value) || value == "null") {
+                value = "";
             }
             switch (stringObjectEntry.getKey()) {
                 case "tdxz":
@@ -1067,15 +1066,19 @@ public class CsrProjectInfoService {
                 case "htqdr":
                 case "fxjzr":
                 case "bgyxq": {
-                    value = value.replaceAll("/", "-");
-                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
-                    value = format;
+                    if (StringUtils.isNotBlank(value)) {
+                        value = value.replaceAll("/", "-");
+                        String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
+                        value = format;
+                    }
                     break;
                 }
                 case "bgcjsj": {
-                    value = value.replaceAll("/", "-");
-                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_PATTERN);
-                    value = DateUtils.getUpperDate(format);
+                    if (StringUtils.isNotBlank(value)) {
+                        value = value.replaceAll("/", "-");
+                        String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_PATTERN);
+                        value = DateUtils.getUpperDate(format);
+                    }
                     break;
                 }
                 case "bjscbl":
@@ -1085,11 +1088,15 @@ public class CsrProjectInfoService {
                 case "ssfbl":
                 case "zxfbl":
                 case "sfjdfbl": {
-                    value = FormatUtils.numberToPercent(Double.parseDouble(value), 2);
+                    if (StringUtils.isNotBlank(value)) {
+                        value = FormatUtils.numberToPercent(Double.parseDouble(value), 2);
+                    }
                     break;
                 }
                 case "bzqxnmsxgnr": {
-                    value = String.valueOf(stringObjectEntry.getValue());
+                    if (StringUtils.isNotBlank(value)) {
+                        value = String.valueOf(stringObjectEntry.getValue());
+                    }
                     break;
                 }
             }
