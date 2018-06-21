@@ -19,10 +19,6 @@ public class BaseConstant {
     public static final String PMCC_ASSESS_BASE_ASSIST = "pmcc:assess:base:assist";
     public static final String PMCC_ASSESS_BASE_ASSIST_ID = "pmcc:assess:base:assist:id";
 
-    //阶段的类型
-    public static final String PMCC_ASSESS_STAGE_TYPE_DEFAULT = "default";//默认
-    public static final String PMCC_ASSESS_STAGE_TYPE_CSR = "csr";//债权
-
     //高德地图相关
     public static final String MPA_API_URL = "http://restapi.amap.com/v3/staticmap";//静态图的请求地址
     public static final String MAP_WEB_SERVICE_KEY = "0d3f1144352d7e2b683e37dd3757156a";//webservice的key
