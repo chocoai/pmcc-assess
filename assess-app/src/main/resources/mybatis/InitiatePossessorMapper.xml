@@ -6,6 +6,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="p_type" property="pType" jdbcType="INTEGER" />
     <result column="p_entrustment_unit" property="pEntrustmentUnit" jdbcType="VARCHAR" />
     <result column="p_legal_representative" property="pLegalRepresentative" jdbcType="VARCHAR" />
@@ -77,7 +78,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, p_type, p_entrustment_unit, p_legal_representative, 
+    id, creator, gmt_created, gmt_modified, project_id, p_type, p_entrustment_unit, p_legal_representative, 
     p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_attachment_project_enclosure_id, 
     p_name, spare_field, p_idcard
   </sql>
@@ -116,15 +117,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_possessor (creator, gmt_created, gmt_modified, 
-      p_type, p_entrustment_unit, p_legal_representative, 
-      p_sociology_code, p_address, p_scope_operation, 
-      p_unit_properties, p_attachment_project_enclosure_id, 
+      project_id, p_type, p_entrustment_unit, 
+      p_legal_representative, p_sociology_code, p_address, 
+      p_scope_operation, p_unit_properties, p_attachment_project_enclosure_id, 
       p_name, spare_field, p_idcard
       )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{pType,jdbcType=INTEGER}, #{pEntrustmentUnit,jdbcType=VARCHAR}, #{pLegalRepresentative,jdbcType=VARCHAR}, 
-      #{pSociologyCode,jdbcType=VARCHAR}, #{pAddress,jdbcType=VARCHAR}, #{pScopeOperation,jdbcType=VARCHAR}, 
-      #{pUnitProperties,jdbcType=VARCHAR}, #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=INTEGER}, #{pType,jdbcType=INTEGER}, #{pEntrustmentUnit,jdbcType=VARCHAR}, 
+      #{pLegalRepresentative,jdbcType=VARCHAR}, #{pSociologyCode,jdbcType=VARCHAR}, #{pAddress,jdbcType=VARCHAR}, 
+      #{pScopeOperation,jdbcType=VARCHAR}, #{pUnitProperties,jdbcType=VARCHAR}, #{pAttachmentProjectEnclosureId,jdbcType=VARCHAR}, 
       #{pName,jdbcType=VARCHAR}, #{spareField,jdbcType=VARCHAR}, #{pIdcard,jdbcType=VARCHAR}
       )
   </insert>
@@ -142,6 +143,9 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
+      </if>
+      <if test="projectId != null" >
+        project_id,
       </if>
       <if test="pType != null" >
         p_type,
@@ -186,6 +190,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
       </if>
       <if test="pType != null" >
         #{pType,jdbcType=INTEGER},
@@ -243,6 +250,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
       <if test="record.pType != null" >
         p_type = #{record.pType,jdbcType=INTEGER},
       </if>
@@ -287,6 +297,7 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      project_id = #{record.projectId,jdbcType=INTEGER},
       p_type = #{record.pType,jdbcType=INTEGER},
       p_entrustment_unit = #{record.pEntrustmentUnit,jdbcType=VARCHAR},
       p_legal_representative = #{record.pLegalRepresentative,jdbcType=VARCHAR},
@@ -313,6 +324,9 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="pType != null" >
         p_type = #{pType,jdbcType=INTEGER},
@@ -355,6 +369,7 @@
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      project_id = #{projectId,jdbcType=INTEGER},
       p_type = #{pType,jdbcType=INTEGER},
       p_entrustment_unit = #{pEntrustmentUnit,jdbcType=VARCHAR},
       p_legal_representative = #{pLegalRepresentative,jdbcType=VARCHAR},

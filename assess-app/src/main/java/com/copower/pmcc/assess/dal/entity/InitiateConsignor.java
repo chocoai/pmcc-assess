@@ -11,6 +11,8 @@ public class InitiateConsignor {
 
     private Date gmtModified;
 
+    private Integer projectId;
+
     private Integer csType;
 
     private String csEntrustmentUnit;
@@ -63,6 +65,14 @@ public class InitiateConsignor {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getCsType() {

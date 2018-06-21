@@ -40,30 +40,19 @@
 
         <!-- 具体表 -->
 
-        <!--<table tableName="tb_csr_borrower" domainObjectName="CsrBorrower">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_csr_borrower_entering" domainObjectName="CsrBorrowerEntering">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_csr_borrower_mortgage" domainObjectName="CsrBorrowerMortgage">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_csr_calculation" domainObjectName="CsrCalculation">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_csr_contract" domainObjectName="CsrContract">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <table tableName="sheet1" domainObjectName="Sheet1">
+        <table tableName="tb_project_info" domainObjectName="ProjectInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="tb_csr_litigation" domainObjectName="CsrLitigation">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_csr_principal_interest" domainObjectName="CsrPrincipalInterest">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_initiate_consignor" domainObjectName="InitiateConsignor">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_initiate_possessor" domainObjectName="InitiatePossessor">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_initiate_unit_information" domainObjectName="InitiateUnitInformation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
     </context>
 
 </generatorConfiguration>

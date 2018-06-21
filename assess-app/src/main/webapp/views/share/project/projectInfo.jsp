@@ -46,10 +46,7 @@
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">评估基准日</label>
                     <div class="col-sm-3">
-                        <input placeholder="评估基准日" id="valuationDate"
-                               name="valuationDate" data-date-format="yyyy-mm-dd"
-                               class="form-control date-picker dbdate" readonly="readonly"
-                               value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/></label>
                     </div>
                 </div>
 

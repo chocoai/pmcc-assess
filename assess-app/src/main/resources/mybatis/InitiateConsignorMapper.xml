@@ -6,6 +6,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="cs_type" property="csType" jdbcType="INTEGER" />
     <result column="cs_entrustment_unit" property="csEntrustmentUnit" jdbcType="VARCHAR" />
     <result column="cs_legal_representative" property="csLegalRepresentative" jdbcType="VARCHAR" />
@@ -77,9 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, cs_type, cs_entrustment_unit, cs_legal_representative, 
-    cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, cs_attachment_project_enclosure_id, 
-    cs_name, cs_spare_field, cs_idcard
+    id, creator, gmt_created, gmt_modified, project_id, cs_type, cs_entrustment_unit, 
+    cs_legal_representative, cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, 
+    cs_attachment_project_enclosure_id, cs_name, cs_spare_field, cs_idcard
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignorExample" >
     select
@@ -116,17 +117,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_consignor (creator, gmt_created, gmt_modified, 
-      cs_type, cs_entrustment_unit, cs_legal_representative, 
-      cs_sociology_code, cs_address, cs_scope_operation, 
-      cs_unit_properties, cs_attachment_project_enclosure_id, 
-      cs_name, cs_spare_field, cs_idcard
-      )
+      project_id, cs_type, cs_entrustment_unit, 
+      cs_legal_representative, cs_sociology_code, 
+      cs_address, cs_scope_operation, cs_unit_properties, 
+      cs_attachment_project_enclosure_id, cs_name, 
+      cs_spare_field, cs_idcard)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{csType,jdbcType=INTEGER}, #{csEntrustmentUnit,jdbcType=VARCHAR}, #{csLegalRepresentative,jdbcType=VARCHAR}, 
-      #{csSociologyCode,jdbcType=VARCHAR}, #{csAddress,jdbcType=VARCHAR}, #{csScopeOperation,jdbcType=VARCHAR}, 
-      #{csUnitProperties,jdbcType=VARCHAR}, #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR}, 
-      #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR}
-      )
+      #{projectId,jdbcType=INTEGER}, #{csType,jdbcType=INTEGER}, #{csEntrustmentUnit,jdbcType=VARCHAR}, 
+      #{csLegalRepresentative,jdbcType=VARCHAR}, #{csSociologyCode,jdbcType=VARCHAR}, 
+      #{csAddress,jdbcType=VARCHAR}, #{csScopeOperation,jdbcType=VARCHAR}, #{csUnitProperties,jdbcType=VARCHAR}, 
+      #{csAttachmentProjectEnclosureId,jdbcType=VARCHAR}, #{csName,jdbcType=VARCHAR}, 
+      #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.InitiateConsignor" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +143,9 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
+      </if>
+      <if test="projectId != null" >
+        project_id,
       </if>
       <if test="csType != null" >
         cs_type,
@@ -186,6 +190,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
       </if>
       <if test="csType != null" >
         #{csType,jdbcType=INTEGER},
@@ -243,6 +250,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
       <if test="record.csType != null" >
         cs_type = #{record.csType,jdbcType=INTEGER},
       </if>
@@ -287,6 +297,7 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      project_id = #{record.projectId,jdbcType=INTEGER},
       cs_type = #{record.csType,jdbcType=INTEGER},
       cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
       cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
@@ -313,6 +324,9 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="csType != null" >
         cs_type = #{csType,jdbcType=INTEGER},
@@ -355,6 +369,7 @@
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      project_id = #{projectId,jdbcType=INTEGER},
       cs_type = #{csType,jdbcType=INTEGER},
       cs_entrustment_unit = #{csEntrustmentUnit,jdbcType=VARCHAR},
       cs_legal_representative = #{csLegalRepresentative,jdbcType=VARCHAR},

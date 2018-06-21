@@ -11,6 +11,8 @@ public class InitiatePossessor {
 
     private Date gmtModified;
 
+    private Integer projectId;
+
     private Integer pType;
 
     private String pEntrustmentUnit;
@@ -63,6 +65,14 @@ public class InitiatePossessor {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getpType() {

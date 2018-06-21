@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dal.entity.InitiateConsignorExample;
+import com.copower.pmcc.assess.dal.entity.InitiateUnitInformation;
+import com.copower.pmcc.assess.dal.entity.InitiateUnitInformationExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateConsignorMapper;
 import com.copower.pmcc.assess.dto.input.project.InitiateConsignorDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,6 +28,15 @@ public class InitiateConsignorDao {
         InitiateConsignor consignor = change(dto);
         mapper.insertSelective(consignor);
         return consignor.getId();
+    }
+
+    public InitiateConsignor getDataByProjectId(Integer projectId){
+        InitiateConsignorExample example = new InitiateConsignorExample();
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
+        List<InitiateConsignor> consignors = mapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(consignors))
+            return consignors.get(0);
+        return null;
     }
 
     public boolean remove(Integer id){

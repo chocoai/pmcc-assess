@@ -182,7 +182,7 @@
                                             <input type="hidden" id="pid" name="pid"/>
                                             <input type="hidden" id="firstPid" name="firstPid"/>
                                             <input type="hidden" id="projectPhaseId" name="projectPhaseId" value="${projectPhases.get(0).id}"/>
-                                            <input type="text" placeholder="计划名称" required maxlength="50"
+                                            <input type="text" placeholder="工作内容" required maxlength="50"
                                                    id="projectPhaseName" name="projectPhaseName"
                                                    class="form-control">
                                         </div>

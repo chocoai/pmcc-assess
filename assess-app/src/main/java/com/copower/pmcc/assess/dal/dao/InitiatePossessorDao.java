@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.dal.dao;
 
 import com.copower.pmcc.assess.dal.entity.InitiatePossessor;
 import com.copower.pmcc.assess.dal.entity.InitiatePossessorExample;
+import com.copower.pmcc.assess.dal.entity.InitiatePossessor;
+import com.copower.pmcc.assess.dal.entity.InitiatePossessorExample;
 import com.copower.pmcc.assess.dal.mapper.InitiatePossessorMapper;
 import com.copower.pmcc.assess.dto.input.project.InitiatePossessorDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,6 +38,15 @@ public class InitiatePossessorDao {
         return mapper.updateByPrimaryKey(change(dto))==1;
     }
 
+    public InitiatePossessor getDataByProjectId(Integer projectId){
+        InitiatePossessorExample example = new InitiatePossessorExample();
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
+        List<InitiatePossessor> consignors = mapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(consignors))
+            return consignors.get(0);
+        return null;
+    }
+    
     public InitiatePossessorDto get(Integer id){
         return change(mapper.selectByPrimaryKey(id));
     }

@@ -416,7 +416,6 @@ public class CsrProjectInfoService {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
-                    projectInfo.setProjectMemberId(k);
                     projectInfoService.updateProjectInfo(projectInfo);
                     projectMemberDto.setProjectId(projectId);
                     projectMemberService.updateProjectMember(projectMemberDto);

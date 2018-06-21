@@ -149,11 +149,7 @@ public class ProjectInfoService {
         projectMember.setBisEnable(true);
         ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
         projectDto.getProjectInfo().setId(projectinfoid);
-        projectMember.setId(projectInfoID.getProjectMemberId());
         projectMember.setProjectId(projectinfoid);
-        projectDto.getConsignor().setId(projectInfoID.getConsignorId());
-        projectDto.getUnitinformation().setId(projectInfoID.getUnitInformationId());
-        projectDto.getPossessor().setId(projectInfoID.getPossessorId());
         projectApplyUpdate(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
     }
 
@@ -168,7 +164,6 @@ public class ProjectInfoService {
             // 更新 存附件的主表
             if (flag == 0) {//项目信息 附件
                 ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(pid);
-                projectInfo.setAttachmentProjectInfoId("" + baseAttachment.getId());
                 projectInfoDao.updateProjectInfo(projectInfo);//更新 委托人或者占有人或者项目信息中的附件id
                 //更新附件
                 baseAttachment.setTableId(pid);
@@ -198,9 +193,12 @@ public class ProjectInfoService {
     public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto, ProjectInfoDto projectInfoDto) throws Exception {
         projectInfoDao.updateProjectInfo(change(projectInfoDto));
         projectInfoDto.setCreator(commonService.thisUserAccount());
+        consignorDto.setProjectId(projectInfoDto.getId());
         consignorService.update(consignorDto);
+        possessorDto.setProjectId(projectInfoDto.getId());
         possessorService.update(possessorDto);
         projectMemberService.saveReturnId(projectMemberDto);
+        unitInformationDto.setProjectId(projectInfoDto.getId());
         unitInformationService.update(unitInformationDto);
         update_BaseAttachment_(consignorDto.getId(), InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
         update_BaseAttachment_(possessorDto.getId(), InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
@@ -234,10 +232,6 @@ public class ProjectInfoService {
                 projectMemberDto.setCreator(commonService.thisUserAccount());
                 int k = projectMemberService.saveReturnId(projectMemberDto);
                 ProjectInfo projectInfo = change(projectInfoDto);
-                projectInfo.setConsignorId(v);//设置 关联id
-                projectInfo.setPossessorId(i);
-                projectInfo.setUnitInformationId(j);
-                projectInfo.setProjectMemberId(k);
                 if (projectInfo.getCreator() == null) projectInfo.setCreator(commonService.thisUserAccount());
 
                 int id = 0;
@@ -356,7 +350,7 @@ public class ProjectInfoService {
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setFolio(folio);//流程描述
-        processInfo.setTableName("tb_project_info");
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
         processInfo.setTableId(projectInfo.getId());
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
@@ -498,60 +492,15 @@ public class ProjectInfoService {
             //价值类型
             projectInfoVo.setValueTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getValueType()).getName());
         }
-        if (!ObjectUtils.isEmpty(projectInfo.getConsignorId())) {
-            InitiateConsignorVo consignorVo = consignorService.get(projectInfo.getConsignorId());
-            if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsUnitProperties())) {
-                try {
-                    String csUnitPropertiesName = getBaseDataDic(consignorVo.getCsUnitProperties()).getName();
-                    consignorVo.setCsUnitPropertiesName(csUnitPropertiesName);
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(consignorVo.getCsEntrustmentUnit())) {
-                try {
-                    consignorVo.setCsEntrustmentUnitName(getCRM(Integer.parseInt(consignorVo.getCsEntrustmentUnit())).getName());
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-            projectInfoVo.setConsignorVo(consignorVo);
-        }
-        if (!ObjectUtils.isEmpty(projectInfo.getPossessorId())) {
-            InitiatePossessorVo possessorVo = possessorService.get(projectInfo.getPossessorId());
-            if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpUnitProperties())) {
-                try {
-                    String pUnitPropertiesName = getBaseDataDic(possessorVo.getpUnitProperties()).getName();
-                    possessorVo.setpUnitPropertiesName(pUnitPropertiesName);
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(possessorVo.getpEntrustmentUnit())) {
-                try {
-                    possessorVo.setpEntrustmentUnitName(getCRM(Integer.parseInt(possessorVo.getpEntrustmentUnit())).getName());
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-            projectInfoVo.setPossessorVo(possessorVo);
-        }
+        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
+        projectInfoVo.setConsignorVo(consignorVo);
 
-        if (!ObjectUtils.isEmpty(projectInfo.getUnitInformationId())) {
-            InitiateUnitInformationVo unitInformationVo = unitInformationService.get(projectInfo.getUnitInformationId());
-            if (StringUtils.isNotBlank(unitInformationVo.getuUnitProperties())) {
-                String uUnitPropertiesName = getBaseDataDic(unitInformationVo.getuUnitProperties()).getName();
-                unitInformationVo.setuUnitPropertiesName(uUnitPropertiesName);
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(unitInformationVo.getuUseUnit())) {
-                try {
-                    unitInformationVo.setuUseUnitName(getCRM(Integer.parseInt(unitInformationVo.getuUseUnit())).getName());
-                } catch (Exception e) {
-                    logger.error(e.getMessage());
-                }
-            }
-            projectInfoVo.setUnitInformationVo(unitInformationVo);
-        }
+        InitiatePossessorVo possessorVo = possessorService.getDataByProjectId(projectInfo.getId());
+        projectInfoVo.setPossessorVo(possessorVo);
+
+        InitiateUnitInformationVo informationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
+        projectInfoVo.setUnitInformationVo(informationVo);
+
         return projectInfoVo;
     }
 

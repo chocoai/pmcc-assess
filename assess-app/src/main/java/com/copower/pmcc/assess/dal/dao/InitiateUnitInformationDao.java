@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.entity.InitiateUnitInformation;
 import com.copower.pmcc.assess.dal.entity.InitiateUnitInformationExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateUnitInformationMapper;
 import com.copower.pmcc.assess.dto.input.project.InitiateUnitInformationDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,41 +21,34 @@ public class InitiateUnitInformationDao {
     @Autowired
     private InitiateUnitInformationMapper mapper;
 
-    public int add(InitiateUnitInformationDto dto){
-        InitiateUnitInformation initiateUnitInformation = change(dto);
-        mapper.insertSelective(initiateUnitInformation);
-        return initiateUnitInformation.getId();
+    public int add(InitiateUnitInformation dto){
+        mapper.insertSelective(dto);
+        return dto.getId();
     }
 
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }
 
-    public boolean update(InitiateUnitInformationDto dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+    public boolean update(InitiateUnitInformation dto){
+        return mapper.updateByPrimaryKey(dto)==1;
     }
 
-    public InitiateUnitInformationDto get(Integer id){
-        return change(mapper.selectByPrimaryKey(id));
+    public InitiateUnitInformation get(Integer id){
+        return mapper.selectByPrimaryKey(id);
     }
 
-    public List<InitiateUnitInformationDto> getList(){
-        List<InitiateUnitInformationDto> dtos = new ArrayList<>();
+    public InitiateUnitInformation getDataByProjectId(Integer projectId){
         InitiateUnitInformationExample example = new InitiateUnitInformationExample();
-        example.createCriteria().andIdIsNotNull();
-        mapper.selectByExample(example).parallelStream().forEach(oo -> dtos.add(change(oo)));
-        return dtos;
+        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectId);
+        List<InitiateUnitInformation> initiateUnitInformations = mapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(initiateUnitInformations))
+            return initiateUnitInformations.get(0);
+        return null;
     }
 
-    private InitiateUnitInformation change(InitiateUnitInformationDto dto){
-        InitiateUnitInformation data = new InitiateUnitInformation();
-        BeanUtils.copyProperties(dto,data);
-        return data;
-    }
-
-    private InitiateUnitInformationDto change(InitiateUnitInformation data){
-        InitiateUnitInformationDto dto = new InitiateUnitInformationDto();
-        BeanUtils.copyProperties(data,dto);
-        return dto;
+    public List<InitiateUnitInformation> getList(){
+        InitiateUnitInformationExample example = new InitiateUnitInformationExample();
+        return mapper.selectByExample(example);
     }
 }
