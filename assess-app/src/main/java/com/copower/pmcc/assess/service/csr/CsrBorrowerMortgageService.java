@@ -97,4 +97,8 @@ public class CsrBorrowerMortgageService {
         return csrBorrowerMortgageVos;
 
     }
+
+    public List<CsrBorrowerMortgage> getCsrProjectMortgages(Integer projectID){
+        return csrBorrowerMortgageDao.getCsrProjectMortgages(projectID);
+    }
 }

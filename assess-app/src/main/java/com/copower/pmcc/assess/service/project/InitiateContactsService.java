@@ -47,19 +47,20 @@ public class InitiateContactsService {
 
     /**
      * 从crm中输入数据
+     *
      * @param crmId
      * @param cType
      * @return
      */
     @Transactional
-    public void writeContacts(Integer crmId,Integer cType,Integer pid){
+    public void writeContacts(Integer crmId, Integer cType, Integer pid) {
         List<CrmCustomerLinkmanDto> writeCustomer = new ArrayList<>();
-        if (crmId!=null){
+        if (crmId != null) {
             List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
             InitiateContactsVo vo = null;
             try {
                 List<InitiateContactsDto> dtos = new ArrayList<>();
-                for (CrmCustomerLinkmanDto dto:linkmanDtos){
+                for (CrmCustomerLinkmanDto dto : linkmanDtos) {
                     InitiateContactsDto contactsDto = new InitiateContactsDto();
                     contactsDto.setcDept(dto.getDepartment());
                     contactsDto.setcEmail(dto.getEmail());
@@ -67,17 +68,17 @@ public class InitiateContactsService {
                     contactsDto.setcPhone(dto.getPhoneNumber());
                     contactsDto.setcPid(pid);
                     contactsDto.setcType(cType);
-                    contactsDto.setCrmId(dto.getId()+"");
+                    contactsDto.setCrmId(dto.getId() + "");
                     dtos.add(contactsDto);
                 }
 
                 //排序之后 取5个写入本地
-                Collections.sort(dtos,new Comparator<Object>(){
+                Collections.sort(dtos, new Comparator<Object>() {
                     @Override
                     public int compare(Object o1, Object o2) {
-                        InitiateContactsDto contactsA = (InitiateContactsDto)o1;
-                        InitiateContactsDto contactsB = (InitiateContactsDto)o2;
-                        if (contactsA.getGmtCreated()!=null && contactsB.getGmtCreated()!=null){
+                        InitiateContactsDto contactsA = (InitiateContactsDto) o1;
+                        InitiateContactsDto contactsB = (InitiateContactsDto) o2;
+                        if (contactsA.getGmtCreated() != null && contactsB.getGmtCreated() != null) {
                             return contactsA.getGmtCreated().compareTo(contactsB.getGmtCreated());
                         }
                         return 0;
@@ -87,7 +88,7 @@ public class InitiateContactsService {
                 for (int i = 0; i < temp; i++) {
                     CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
                     InitiateContactsDto contactsDto = dtos.get(i);
-                    if (contactsDto != null){
+                    if (contactsDto != null) {
                         crmCustomerLinkmanDto.setName(contactsDto.getcName());
                         crmCustomerLinkmanDto.setDepartment(contactsDto.getcDept());
                         crmCustomerLinkmanDto.setEmail(contactsDto.getcEmail());
@@ -98,30 +99,30 @@ public class InitiateContactsService {
                     }
 
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
             }
-        }else {
+        } else {
         }
     }
 
     /**
      * 回写到CRM中
+     *
      * @param projectID
      * @param cType
      */
-    public void writeCrmCustomerDto(Integer projectID,Integer cType){
-        if (!ObjectUtils.isEmpty(cType)){
-            if (cType.equals(InitiateContactsEnum.THREE.getNum())){//只有报告使用单位才能回写
+    public void writeCrmCustomerDto(Integer projectID, Integer cType) {
+        if (!ObjectUtils.isEmpty(cType)) {
+            if (cType.equals(InitiateContactsEnum.THREE.getNum())) {//只有报告使用单位才能回写
                 //CRM中暂时没有提供方法
-                Integer pid = projectInfoDao.getProjectInfoById(projectID).getUnitInformationId();
-                InitiateUnitInformationVo unitInformationVo = unitInformationService.get(pid);
-                if (!ObjectUtils.isEmpty(pid)){
-                    List<InitiateContactsVo> contactsVos = getVoList(pid,cType);
-                    for (InitiateContactsVo contacts:contactsVos){
+                InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
+                if (unitInformationVo != null) {
+                    List<InitiateContactsVo> contactsVos = getVoList(unitInformationVo.getId(), cType);
+                    for (InitiateContactsVo contacts : contactsVos) {
                         String tempString = contacts.getCrmId();
                         String uUseUnit = unitInformationVo.getuUseUnit();
-                        if (!StringUtils.isEmpty(uUseUnit)){
+                        if (!StringUtils.isEmpty(uUseUnit)) {
                             //标记一下这里容易出现问题 ==>  customerID
                             try {
                                 Integer customerID = Integer.parseInt(uUseUnit);
@@ -133,17 +134,17 @@ public class InitiateContactsService {
                                 crmCustomer.setCustomerId(customerID);
                                 crmCustomer.setCustomerManager(null);
                                 crmCustomer.setOtherContact(null);
-                                if (!StringUtils.isEmpty(tempString)){//需要更新的crm
+                                if (!StringUtils.isEmpty(tempString)) {//需要更新的crm
                                     Integer crmID = Integer.parseInt(tempString);
                                     crmCustomerService.updateCrmCustomer(crmCustomer);
-                                }else {//需要添加进去的crm
+                                } else {//需要添加进去的crm
                                     crmCustomerService.saveCrmCustomer(crmCustomer);
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 try {
-                                    logger.error("exception: ======> "+e.getMessage());
+                                    logger.error("exception: ======> " + e.getMessage());
                                     throw e;
-                                }catch (Exception e1){
+                                } catch (Exception e1) {
 
                                 }
                             }
@@ -158,24 +159,24 @@ public class InitiateContactsService {
 
     @Transactional
     public boolean add(InitiateContactsDto dto) {
-        if ((dto.getCreator()==null))dto.setCreator(commonService.thisUserAccount());
-        if (dto.getGmtCreated()==null)dto.setGmtCreated(new Date());
-        if (dto.getcPid()==null || dto.getcPid()==0){
+        if ((dto.getCreator() == null)) dto.setCreator(commonService.thisUserAccount());
+        if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
+        if (dto.getcPid() == null || dto.getcPid() == 0) {
             dto.setcPid(InitiateContactsDto.CPID);
         }
         return dao.add(dto);
     }
 
     /*更新主表的id值*/
-    public void update(int pid, int flag){
-        dao.update(pid,flag,commonService.thisUserAccount());
+    public void update(int pid, int flag) {
+        dao.update(pid, flag, commonService.thisUserAccount());
     }
 
     public InitiateContactsVo get(Integer id) {
         return change(dao.get(id));
     }
 
-    public InitiateContactsDto getById(Integer id){
+    public InitiateContactsDto getById(Integer id) {
         return dao.get(id);
     }
 
@@ -189,9 +190,9 @@ public class InitiateContactsService {
         return dao.update(dto);
     }
 
-    public List<InitiateContactsVo> getVoList(Integer cPid,Integer cType) {
+    public List<InitiateContactsVo> getVoList(Integer cPid, Integer cType) {
         List<InitiateContactsVo> vos = new ArrayList<>();
-        dao.getList(cPid,cType,commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
+        dao.getList(cPid, cType, commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
         return vos;
     }
 
@@ -209,23 +210,24 @@ public class InitiateContactsService {
 
     /**
      * 联系人 检查数量是否达到要求
+     *
      * @param initiateContactsEnum
      * @return
      */
-    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum){
+    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum) {
         boolean flag = false;
-        List<InitiateContactsDto> contactsDtos = dao.getList(InitiateContactsEnum.Zero.getNum(),initiateContactsEnum.getNum(),commonService.thisUserAccount());
-        if (contactsDtos.size()>=1){
+        List<InitiateContactsDto> contactsDtos = dao.getList(InitiateContactsEnum.Zero.getNum(), initiateContactsEnum.getNum(), commonService.thisUserAccount());
+        if (contactsDtos.size() >= 1) {
             flag = true;
         }
         return flag;
     }
 
-    public Map<String,String> getTypeMap(){
-        Map<String,String> map = new HashMap<>();
-        map.put(""+ InitiateContactsEnum.ONE.getNum(),InitiateContactsEnum.CONTACTS_ENUM_A.getVal());
-        map.put(""+ InitiateContactsEnum.TWO.getNum(),InitiateContactsEnum.CONTACTS_ENUM_B.getVal());
-        map.put(""+ InitiateContactsEnum.THREE.getNum(),InitiateContactsEnum.CONTACTS_ENUM_C.getVal());
+    public Map<String, String> getTypeMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("" + InitiateContactsEnum.ONE.getNum(), InitiateContactsEnum.CONTACTS_ENUM_A.getVal());
+        map.put("" + InitiateContactsEnum.TWO.getNum(), InitiateContactsEnum.CONTACTS_ENUM_B.getVal());
+        map.put("" + InitiateContactsEnum.THREE.getNum(), InitiateContactsEnum.CONTACTS_ENUM_C.getVal());
         return map;
     }
 }

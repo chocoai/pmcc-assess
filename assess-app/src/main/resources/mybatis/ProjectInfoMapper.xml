@@ -10,6 +10,7 @@
     <result column="urgency" property="urgency" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="INTEGER" />
     <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
     <result column="district" property="district" jdbcType="INTEGER" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
     <result column="value_type" property="valueType" jdbcType="INTEGER" />
@@ -22,17 +23,11 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
     <result column="public_project_id" property="publicProjectId" jdbcType="INTEGER" />
+    <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
+    <result column="remark_value_type" property="remarkValueType" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="attachment_project_info_id" property="attachmentProjectInfoId" jdbcType="VARCHAR" />
-    <result column="consignor_id" property="consignorId" jdbcType="INTEGER" />
-    <result column="unit_information_id" property="unitInformationId" jdbcType="INTEGER" />
-    <result column="possessor_id" property="possessorId" jdbcType="INTEGER" />
-    <result column="project_member_id" property="projectMemberId" jdbcType="INTEGER" />
-    <result column="remark_entrustPurpose" property="remarkEntrustpurpose" jdbcType="VARCHAR" />
-    <result column="remark_valueType" property="remarkValuetype" jdbcType="VARCHAR" />
-    <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -94,11 +89,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
-    province, city, district, entrust_purpose, value_type, department_id, remarks, complete_date_plan, 
-    complete_date_actual, complete_date_start, process_ins_id, status, project_status, 
-    public_project_id, creator, gmt_created, gmt_modified, attachment_project_info_id, 
-    consignor_id, unit_information_id, possessor_id, project_member_id, remark_entrustPurpose, 
-    remark_valueType, valuation_date
+    province, city, valuation_date, district, entrust_purpose, value_type, department_id, 
+    remarks, complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
+    status, project_status, public_project_id, remark_entrust_purpose, remark_value_type, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfoExample" >
     select
@@ -136,26 +130,22 @@
     </selectKey>
     insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
       project_name, urgency, province, 
-      city, district, entrust_purpose, 
-      value_type, department_id, remarks, 
-      complete_date_plan, complete_date_actual, 
+      city, valuation_date, district, 
+      entrust_purpose, value_type, department_id, 
+      remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, status, 
-      project_status, public_project_id, creator, 
-      gmt_created, gmt_modified, attachment_project_info_id, 
-      consignor_id, unit_information_id, possessor_id, 
-      project_member_id, remark_entrustPurpose, 
-      remark_valueType, valuation_date)
+      project_status, public_project_id, remark_entrust_purpose, 
+      remark_value_type, creator, gmt_created, 
+      gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
-      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{entrustPurpose,jdbcType=INTEGER}, 
-      #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
-      #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
+      #{city,jdbcType=INTEGER}, #{valuationDate,jdbcType=TIMESTAMP}, #{district,jdbcType=INTEGER}, 
+      #{entrustPurpose,jdbcType=INTEGER}, #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
+      #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{attachmentProjectInfoId,jdbcType=VARCHAR}, 
-      #{consignorId,jdbcType=INTEGER}, #{unitInformationId,jdbcType=INTEGER}, #{possessorId,jdbcType=INTEGER}, 
-      #{projectMemberId,jdbcType=INTEGER}, #{remarkEntrustpurpose,jdbcType=VARCHAR}, 
-      #{remarkValuetype,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP})
+      #{projectStatus,jdbcType=VARCHAR}, #{publicProjectId,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, 
+      #{remarkValueType,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.ProjectInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -183,6 +173,9 @@
       </if>
       <if test="city != null" >
         city,
+      </if>
+      <if test="valuationDate != null" >
+        valuation_date,
       </if>
       <if test="district != null" >
         district,
@@ -220,6 +213,12 @@
       <if test="publicProjectId != null" >
         public_project_id,
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose,
+      </if>
+      <if test="remarkValueType != null" >
+        remark_value_type,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -228,30 +227,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="attachmentProjectInfoId != null" >
-        attachment_project_info_id,
-      </if>
-      <if test="consignorId != null" >
-        consignor_id,
-      </if>
-      <if test="unitInformationId != null" >
-        unit_information_id,
-      </if>
-      <if test="possessorId != null" >
-        possessor_id,
-      </if>
-      <if test="projectMemberId != null" >
-        project_member_id,
-      </if>
-      <if test="remarkEntrustpurpose != null" >
-        remark_entrustPurpose,
-      </if>
-      <if test="remarkValuetype != null" >
-        remark_valueType,
-      </if>
-      <if test="valuationDate != null" >
-        valuation_date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -275,6 +250,9 @@
       </if>
       <if test="city != null" >
         #{city,jdbcType=INTEGER},
+      </if>
+      <if test="valuationDate != null" >
+        #{valuationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="district != null" >
         #{district,jdbcType=INTEGER},
@@ -312,6 +290,12 @@
       <if test="publicProjectId != null" >
         #{publicProjectId,jdbcType=INTEGER},
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkValueType != null" >
+        #{remarkValueType,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -320,30 +304,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="attachmentProjectInfoId != null" >
-        #{attachmentProjectInfoId,jdbcType=VARCHAR},
-      </if>
-      <if test="consignorId != null" >
-        #{consignorId,jdbcType=INTEGER},
-      </if>
-      <if test="unitInformationId != null" >
-        #{unitInformationId,jdbcType=INTEGER},
-      </if>
-      <if test="possessorId != null" >
-        #{possessorId,jdbcType=INTEGER},
-      </if>
-      <if test="projectMemberId != null" >
-        #{projectMemberId,jdbcType=INTEGER},
-      </if>
-      <if test="remarkEntrustpurpose != null" >
-        #{remarkEntrustpurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="remarkValuetype != null" >
-        #{remarkValuetype,jdbcType=VARCHAR},
-      </if>
-      <if test="valuationDate != null" >
-        #{valuationDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -379,6 +339,9 @@
       </if>
       <if test="record.city != null" >
         city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.valuationDate != null" >
+        valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.district != null" >
         district = #{record.district,jdbcType=INTEGER},
@@ -416,6 +379,12 @@
       <if test="record.publicProjectId != null" >
         public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
       </if>
+      <if test="record.remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarkValueType != null" >
+        remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -424,30 +393,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.attachmentProjectInfoId != null" >
-        attachment_project_info_id = #{record.attachmentProjectInfoId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.consignorId != null" >
-        consignor_id = #{record.consignorId,jdbcType=INTEGER},
-      </if>
-      <if test="record.unitInformationId != null" >
-        unit_information_id = #{record.unitInformationId,jdbcType=INTEGER},
-      </if>
-      <if test="record.possessorId != null" >
-        possessor_id = #{record.possessorId,jdbcType=INTEGER},
-      </if>
-      <if test="record.projectMemberId != null" >
-        project_member_id = #{record.projectMemberId,jdbcType=INTEGER},
-      </if>
-      <if test="record.remarkEntrustpurpose != null" >
-        remark_entrustPurpose = #{record.remarkEntrustpurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remarkValuetype != null" >
-        remark_valueType = #{record.remarkValuetype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.valuationDate != null" >
-        valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -464,6 +409,7 @@
       urgency = #{record.urgency,jdbcType=INTEGER},
       province = #{record.province,jdbcType=INTEGER},
       city = #{record.city,jdbcType=INTEGER},
+      valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
       district = #{record.district,jdbcType=INTEGER},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       value_type = #{record.valueType,jdbcType=INTEGER},
@@ -476,17 +422,11 @@
       status = #{record.status,jdbcType=VARCHAR},
       project_status = #{record.projectStatus,jdbcType=VARCHAR},
       public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      attachment_project_info_id = #{record.attachmentProjectInfoId,jdbcType=VARCHAR},
-      consignor_id = #{record.consignorId,jdbcType=INTEGER},
-      unit_information_id = #{record.unitInformationId,jdbcType=INTEGER},
-      possessor_id = #{record.possessorId,jdbcType=INTEGER},
-      project_member_id = #{record.projectMemberId,jdbcType=INTEGER},
-      remark_entrustPurpose = #{record.remarkEntrustpurpose,jdbcType=VARCHAR},
-      remark_valueType = #{record.remarkValuetype,jdbcType=VARCHAR},
-      valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -514,6 +454,9 @@
       </if>
       <if test="city != null" >
         city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="valuationDate != null" >
+        valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=INTEGER},
@@ -551,6 +494,12 @@
       <if test="publicProjectId != null" >
         public_project_id = #{publicProjectId,jdbcType=INTEGER},
       </if>
+      <if test="remarkEntrustPurpose != null" >
+        remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkValueType != null" >
+        remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -559,30 +508,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="attachmentProjectInfoId != null" >
-        attachment_project_info_id = #{attachmentProjectInfoId,jdbcType=VARCHAR},
-      </if>
-      <if test="consignorId != null" >
-        consignor_id = #{consignorId,jdbcType=INTEGER},
-      </if>
-      <if test="unitInformationId != null" >
-        unit_information_id = #{unitInformationId,jdbcType=INTEGER},
-      </if>
-      <if test="possessorId != null" >
-        possessor_id = #{possessorId,jdbcType=INTEGER},
-      </if>
-      <if test="projectMemberId != null" >
-        project_member_id = #{projectMemberId,jdbcType=INTEGER},
-      </if>
-      <if test="remarkEntrustpurpose != null" >
-        remark_entrustPurpose = #{remarkEntrustpurpose,jdbcType=VARCHAR},
-      </if>
-      <if test="remarkValuetype != null" >
-        remark_valueType = #{remarkValuetype,jdbcType=VARCHAR},
-      </if>
-      <if test="valuationDate != null" >
-        valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -596,6 +521,7 @@
       urgency = #{urgency,jdbcType=INTEGER},
       province = #{province,jdbcType=INTEGER},
       city = #{city,jdbcType=INTEGER},
+      valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
       district = #{district,jdbcType=INTEGER},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       value_type = #{valueType,jdbcType=INTEGER},
@@ -608,17 +534,11 @@
       status = #{status,jdbcType=VARCHAR},
       project_status = #{projectStatus,jdbcType=VARCHAR},
       public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      attachment_project_info_id = #{attachmentProjectInfoId,jdbcType=VARCHAR},
-      consignor_id = #{consignorId,jdbcType=INTEGER},
-      unit_information_id = #{unitInformationId,jdbcType=INTEGER},
-      possessor_id = #{possessorId,jdbcType=INTEGER},
-      project_member_id = #{projectMemberId,jdbcType=INTEGER},
-      remark_entrustPurpose = #{remarkEntrustpurpose,jdbcType=VARCHAR},
-      remark_valueType = #{remarkValuetype,jdbcType=VARCHAR},
-      valuation_date = #{valuationDate,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

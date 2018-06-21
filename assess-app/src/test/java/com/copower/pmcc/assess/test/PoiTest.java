@@ -8,16 +8,23 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import org.apache.poi.hssf.record.formula.functions.T;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.*;
 import org.junit.Test;
 
@@ -133,5 +140,86 @@ public class PoiTest {
         System.out.print(s);
 
         System.out.println(FormatUtils.camelToUnderline("borrowerId"));
+    }
+
+    @Test
+    public void exportTest(){
+        try {
+//            String str = "C:\\Users\\13426\\Documents\\test\\A1.xlsx";
+//            String str = "C:\\Users\\13426\\Documents\\test\\新客户数据.xlsx";
+            String str = "D:\\copower\\doc\\评估相关\\债权\\新客户数据-全.xlsx";
+            //str="D:\\IdeaProjects\\pmcc-assess\\assess-app\\target\\pmcc-assess\\pmcc-assess\\Temp\\20180620\\admin\\da3a7deda40243d69ed3c63e3afc18e620180620085617.xlsx";
+//            InputStream is = new FileInputStream(str);
+//            Workbook hssfWorkbook = PoiUtils.isExcel2003(str) ? new HSSFWorkbook(is) : new XSSFWorkbook(is);
+//            Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
+            getReportExcelOneKey(str);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+
+
+    private Map<String, Integer> getReportExcelOneKey(String filePath) throws Exception {
+        //列数以2003版为基准 最大是16384
+        final Integer MAX_COLUMN = 16384;
+        Map<String, Integer> integerMap = new HashMap<>();
+        InputStream inputStream = new FileInputStream(filePath);
+        Workbook workbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+//        Workbook workbook = null;
+        String suffix = filePath.substring(filePath.length() - 4, filePath.length());
+        try {
+            if (Objects.equal("xlsx", suffix)) {//07版
+                //XSSFWorkbook workbook = new XSSFWorkbook(inputStream) ;
+                //暂时只取第一个工作表
+                Sheet sheet = workbook.getSheetAt(0);
+                //因为是第一行作为key所以只取第一行
+                Row row = sheet.getRow(0);
+                Cell cell = null;
+                if (row != null) {
+                    for (int i = 0; i < MAX_COLUMN; i++) {
+                        cell = row.getCell(i);
+                        if (cell != null) {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            String cellValue = cell.getStringCellValue();
+                            if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
+                                //取key
+                                integerMap.put(cellValue, i);
+                            }
+                        }
+                    }
+                }
+            } else {
+                //HSSFWorkbook workbook = new HSSFWorkbook(inputStream) ;
+                //暂时只取第一个工作表
+                Sheet sheet = workbook.getSheetAt(0);
+                //因为是第一行作为key所以只取第一行
+                Row row = sheet.getRow(0);
+                Cell cell = null;
+                if (row != null) {
+                    for (int i = 0; i < MAX_COLUMN; i++) {
+                        cell = row.getCell(i);
+                        if (cell != null) {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            String cellValue = cell.getStringCellValue();
+                            if (!org.springframework.util.StringUtils.isEmpty(cellValue)) {
+                                //取key
+                                integerMap.put(cellValue, i);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            try {
+
+                throw e;
+            } catch (Exception e1) {
+
+            }
+        }
+
+        inputStream.close();
+        return integerMap;
     }
 }

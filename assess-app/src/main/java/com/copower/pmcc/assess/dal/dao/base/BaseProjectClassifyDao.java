@@ -29,30 +29,13 @@ public class BaseProjectClassifyDao {
      * @param name
      * @return
      */
-    public List<BaseProjectClassify> getListObject(String fieldName, String name) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
-                .andPidEqualTo(0)
-                .andBisDeleteEqualTo(false);
-        if (StringUtils.isNotBlank(fieldName)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
-        }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
-        return list;
-    }
-    //endregion
-
-    public List<BaseProjectClassify> getListObject(String name, String key, Integer pid, List<String> filterKey) {
+    public List<BaseProjectClassify> getListObject(String name, String fieldName, Integer pid) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();
         BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
                 .andBisEnableEqualTo(true)
                 .andBisDeleteEqualTo(false);
-        if (StringUtils.isNotBlank(key)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%", key));
+        if (StringUtils.isNotBlank(fieldName)) {
+            criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike("%" + name + "%");
@@ -64,6 +47,8 @@ public class BaseProjectClassifyDao {
         List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
         return list;
     }
+    //endregion
+
 
     public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify) {
         BaseProjectClassifyExample example = new BaseProjectClassifyExample();

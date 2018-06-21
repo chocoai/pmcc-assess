@@ -572,6 +572,18 @@ public class FormConfigureService {
     }
 
     /**
+     * 分页查询数据
+     *
+     * @param sql
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    public List<Map<String, Object>> getObjectList(String sql, Integer pageIndex, Integer pageSize) {
+        return formConfigureDao.getObjectList(sql,pageIndex,pageSize);
+    }
+
+    /**
      * 保存数据
      *
      * @param tableName

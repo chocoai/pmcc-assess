@@ -19,6 +19,8 @@ public class ProjectInfo {
 
     private Integer city;
 
+    private Date valuationDate;
+
     private Integer district;
 
     private Integer entrustPurpose;
@@ -43,27 +45,15 @@ public class ProjectInfo {
 
     private Integer publicProjectId;
 
+    private String remarkEntrustPurpose;
+
+    private String remarkValueType;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String attachmentProjectInfoId;
-
-    private Integer consignorId;
-
-    private Integer unitInformationId;
-
-    private Integer possessorId;
-
-    private Integer projectMemberId;
-
-    private String remarkEntrustpurpose;
-
-    private String remarkValuetype;
-
-    private Date valuationDate;
 
     public Integer getId() {
         return id;
@@ -127,6 +117,14 @@ public class ProjectInfo {
 
     public void setCity(Integer city) {
         this.city = city;
+    }
+
+    public Date getValuationDate() {
+        return valuationDate;
+    }
+
+    public void setValuationDate(Date valuationDate) {
+        this.valuationDate = valuationDate;
     }
 
     public Integer getDistrict() {
@@ -225,6 +223,22 @@ public class ProjectInfo {
         this.publicProjectId = publicProjectId;
     }
 
+    public String getRemarkEntrustPurpose() {
+        return remarkEntrustPurpose;
+    }
+
+    public void setRemarkEntrustPurpose(String remarkEntrustPurpose) {
+        this.remarkEntrustPurpose = remarkEntrustPurpose == null ? null : remarkEntrustPurpose.trim();
+    }
+
+    public String getRemarkValueType() {
+        return remarkValueType;
+    }
+
+    public void setRemarkValueType(String remarkValueType) {
+        this.remarkValueType = remarkValueType == null ? null : remarkValueType.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -247,69 +261,5 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getAttachmentProjectInfoId() {
-        return attachmentProjectInfoId;
-    }
-
-    public void setAttachmentProjectInfoId(String attachmentProjectInfoId) {
-        this.attachmentProjectInfoId = attachmentProjectInfoId == null ? null : attachmentProjectInfoId.trim();
-    }
-
-    public Integer getConsignorId() {
-        return consignorId;
-    }
-
-    public void setConsignorId(Integer consignorId) {
-        this.consignorId = consignorId;
-    }
-
-    public Integer getUnitInformationId() {
-        return unitInformationId;
-    }
-
-    public void setUnitInformationId(Integer unitInformationId) {
-        this.unitInformationId = unitInformationId;
-    }
-
-    public Integer getPossessorId() {
-        return possessorId;
-    }
-
-    public void setPossessorId(Integer possessorId) {
-        this.possessorId = possessorId;
-    }
-
-    public Integer getProjectMemberId() {
-        return projectMemberId;
-    }
-
-    public void setProjectMemberId(Integer projectMemberId) {
-        this.projectMemberId = projectMemberId;
-    }
-
-    public String getRemarkEntrustpurpose() {
-        return remarkEntrustpurpose;
-    }
-
-    public void setRemarkEntrustpurpose(String remarkEntrustpurpose) {
-        this.remarkEntrustpurpose = remarkEntrustpurpose == null ? null : remarkEntrustpurpose.trim();
-    }
-
-    public String getRemarkValuetype() {
-        return remarkValuetype;
-    }
-
-    public void setRemarkValuetype(String remarkValuetype) {
-        this.remarkValuetype = remarkValuetype == null ? null : remarkValuetype.trim();
-    }
-
-    public Date getValuationDate() {
-        return valuationDate;
-    }
-
-    public void setValuationDate(Date valuationDate) {
-        this.valuationDate = valuationDate;
     }
 }

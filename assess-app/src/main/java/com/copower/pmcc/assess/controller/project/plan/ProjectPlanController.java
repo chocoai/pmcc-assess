@@ -114,7 +114,7 @@ public class ProjectPlanController {
         modelAndView.addObject("projectPhases", projectPhases);
         modelAndView.addObject("projectId", projectPlan.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        modelAndView.addObject("projectInfo",projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId())));
 
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
         for (ProjectPlanSetEnum item : ProjectPlanSetEnum.values()) {

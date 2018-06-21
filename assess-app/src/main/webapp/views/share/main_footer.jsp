@@ -23,7 +23,6 @@
 </div>
 <script src='/assets/js/comm/pmcc.js'></script>
 <script src='/assets/js/comm/erp-footer.js'></script>
-<script src='${pageContext.request.contextPath}/js/assess-key.js'></script>
 <script src='${pageContext.request.contextPath}/js/datadic-utils.js'></script>
 <script src='${pageContext.request.contextPath}/js/common.js'></script>
 <script type="application/javascript">

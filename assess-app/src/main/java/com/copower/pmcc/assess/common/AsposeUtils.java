@@ -23,6 +23,7 @@ public class AsposeUtils {
      * @throws Exception
      */
     public static void replaceBookmark(String filePath, Map<String, String> map) throws Exception {
+        // Map<String, String> map == > 书签名称,需要替换的内容
         if (StringUtils.isBlank(filePath))
             throw new Exception("error: empty file path");
         if (map == null || map.isEmpty())

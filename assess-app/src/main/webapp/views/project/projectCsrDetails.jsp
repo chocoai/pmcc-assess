@@ -199,9 +199,8 @@
                                     <button type="button" class="btn btn-primary" onclick="downloadsBorrower('')">
                                         下载
                                     </button>
-                                    <button type="button" class="btn btn-primary" onclick="">
-                                        数据导出
-                                    </button>
+
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/csrBorrower/exportFormBorrowers?csrProjectInfoID=${csrProjectInfo.id}">数据导出</a>
                                 </div>
                             </div>
                         </div>
@@ -314,10 +313,7 @@
         }
     }
 
-    //数据导出
-    function exportWordForm() {
-        
-    }
+
 </script>
 <script type="application/javascript">
 
@@ -425,15 +421,15 @@
     }
 
     function addWorkLog() {
-        $("#id").val(0);
-        $("#title").val("");
-        $("#content").val("");
-        $("#projectIds").val("${csrProjectInfo.id}");
-        $("#projectNames").val("${csrProjectInfo.projectName}");
-        $("#_file_upload").html("");
-        $('#workLog').modal({
-            backdrop: 'static'
-        });
+        <%--$("#id").val(0);--%>
+        <%--$("#title").val("");--%>
+        <%--$("#content").val("");--%>
+        <%--$("#projectIds").val("${csrProjectInfo.id}");--%>
+        <%--$("#projectNames").val("${csrProjectInfo.projectName}");--%>
+        <%--$("#_file_upload").html("");--%>
+        <%--$('#workLog').modal({--%>
+            <%--backdrop: 'static'--%>
+        <%--});--%>
     }
 
     function treeGridload() {

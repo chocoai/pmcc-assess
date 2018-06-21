@@ -44,11 +44,12 @@
     //加载代理数据列表
     function loadList() {
         var cols = [];
-        cols.push({
-            field: 'chk', align: 'center', title: '', width: '3%', formatter: function (value, row) {
-                return "<input type='checkbox' class='backTask' id='chk_" + row.id + "'/>";
-            }
-        });
+//        cols.push({
+//            field: 'chk', align: 'center', title: '', width: '3%', formatter: function (value, row) {
+//                return "<input type='checkbox' class='backTask' id='chk_" + row.sjhth + "'/>";
+//            }
+//        });
+        cols.push({field: 'checkbox', checkbox: true});
         cols.push({field: 'khxm', title: '借款人'});
         cols.push({field: 'sfzhm', title: '身份证'});
         cols.push({field: 'ejfh', title: '分行'});
@@ -57,16 +58,17 @@
     }
 
     function bulidReport() {
+
+
+        var result = $("#tb_List").bootstrapTable('getSelections');
         var ids = "";
-        var objs = $('input:checkbox[class=backTask]:checked');
-        if (objs.length == 0) {
+        if (result.length == 0) {
             Alert("请至少选择一个客户");
             return false;
         }
         else {
-            $.each(objs, function (i, item) {
-                var id = $(item).attr("id").split('_')[1];
-                ids += id + ",";
+            $.each(result, function (i, item) {
+                ids += item.sjhth + ",";
             });
         }
         if (ids != "") {

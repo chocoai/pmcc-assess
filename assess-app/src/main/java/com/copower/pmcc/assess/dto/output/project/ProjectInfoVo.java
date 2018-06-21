@@ -30,6 +30,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private ProjectMemberVo projectMemberVo;
     private BaseProjectClassify baseProjectClassify;
     private String departmentName;
+    private String valueTypeName;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
     private List<ProjectResponsibilityDto> taskAllWorkStages;
@@ -144,6 +145,14 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setUserAccountMemberName(String userAccountMemberName) {
         this.userAccountMemberName = userAccountMemberName;
+    }
+
+    public String getValueTypeName() {
+        return valueTypeName;
+    }
+
+    public void setValueTypeName(String valueTypeName) {
+        this.valueTypeName = valueTypeName;
     }
 
     public InitiatePossessorVo getPossessorVo() {

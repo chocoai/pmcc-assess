@@ -2,6 +2,9 @@ package com.copower.pmcc.assess.service.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
+import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -413,7 +416,6 @@ public class CsrProjectInfoService {
                         csrBorrower.setProjectId(projectId);
                         csrBorrowerService.update(csrBorrower);
                     }
-                    projectInfo.setProjectMemberId(k);
                     projectInfoService.updateProjectInfo(projectInfo);
                     projectMemberDto.setProjectId(projectId);
                     projectMemberService.updateProjectMember(projectMemberDto);
@@ -647,8 +649,8 @@ public class CsrProjectInfoService {
      */
     private List<BaseReportTemplateVo> getReportTemplateList(CsrProjectInfo csrProjectInfo) {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
-                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
+                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
         return reportTemplateFileDto.getBaseReportTemplateVoList();
     }
 
@@ -679,8 +681,8 @@ public class CsrProjectInfoService {
         CsrProjectInfo csrProjectInfo = csrProjectInfoDao.getCsrProjectInfoById(csrProjectId);
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
 
-        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType()
-                , csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
+        BaseReportTemplateFilesDto reportTemplateFileDto = baseReportService.getReportTemplateFile(csrProjectInfo.getEntrustmentUnitId(), baseDataDic.getId(), csrProjectInfo.getCustomerType(),
+                csrProjectInfo.getProjectTypeId(), csrProjectInfo.getProjectCategoryId());
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 
@@ -754,14 +756,17 @@ public class CsrProjectInfoService {
                         //循环所有书签 依次找到书签或文本对应的值
 
                         Map<String, Object> stringObjectMap = map.get(baseReportTemplateVo.getTableName());
-                        if (stringObjectMap == null) continue;//不处理
+                        if (stringObjectMap == null)
+                            continue;//不处理
                         Object o = stringObjectMap.get(baseReportTemplateVo.getColumnName());
-                        if (o == null) continue;//不处理
-                        String value=String.valueOf(o);
-                        if(StringUtils.isEmpty(value))continue;//空值不处理
+                        if (o == null)
+                            continue;//不处理
+                        String value = String.valueOf(o);
+                        if (StringUtils.isEmpty(value))
+                            continue;//空值不处理
 
                         DataReplaceDto dataReplaceDto = new DataReplaceDto();
-                        dataReplaceDto.setKey(String.format("${%s}",baseReportTemplateVo.getBookmarkName()));
+                        dataReplaceDto.setKey(String.format("${%s}", baseReportTemplateVo.getBookmarkName()));
                         dataReplaceDto.setValue(value);
                         BaseReportMarkbookTypeEnum reportMarkbookTypeEnum = BaseReportMarkbookTypeEnum.getEnumByName(baseReportTemplateVo.getTemplateType());
                         switch (reportMarkbookTypeEnum) {
@@ -910,7 +915,6 @@ public class CsrProjectInfoService {
         }
     }
 
-
     /**
      * 债权人列表信息
      *
@@ -966,14 +970,14 @@ public class CsrProjectInfoService {
      * @param ids
      */
     public void generateTemp(String ids) {
-        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+        List<String> integerList = FormatUtils.transformString2List(ids);
         int i = 1;
-        for (Integer integer : integerList) {
+        for (String sjhth : integerList) {
             BaseAttachment attachment = new BaseAttachment();
             attachment.setTableName("sheet1");
             attachment.setFieldsName("report");
             try {
-                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where id=" + integer);
+                List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where sjhth='" + sjhth + "'");
                 attachment.setFileName(String.valueOf(mapList.get(0).get("khxm") + "报告"));
                 //templateSetService 取报告模板
 
@@ -981,24 +985,50 @@ public class CsrProjectInfoService {
 
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName("single.csr");
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
-                Integer templateId = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+
                 BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;
                 ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
-                if (CollectionUtils.isNotEmpty(mapList)) {
 
-                    for (Map<String, Object> map : mapList) {
-                        try {
-                            Map<String, String> stringMap = toMapString(map);
-                            stringMap.put("${number}", String.valueOf(i));
-                            AsposeUtils.replaceText(localFullPath, stringMap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                List<KeyValueDto> valueDtoList = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
+                int k = mapList.size();
+                for (Map<String, Object> map : mapList) {
+                    for (KeyValueDto keyValueDto : valueDtoList) {
+                        String local = baseAttachmentService.downloadFtpFileToLocal(Integer.valueOf(keyValueDto.getValue()));
+                        Map<String, String> stringMap = toMapString(map);
+                        if (mapList.size() > 1) {
+                            stringMap.put("${dywxh}", "抵押物" + k);
+                            stringMap.put("${jzfxdywxh}", "抵押物" + k);
+                        } else {
+                            stringMap.put("${dywxh}", "抵押物");
+                            stringMap.put("${jzfxdywxh}", "");
                         }
+                        AsposeUtils.replaceText(local, stringMap);
+
+                        Document doc = new Document(localFullPath);
+                        DocumentBuilder builder = new DocumentBuilder(doc);
+                        builder.moveToBookmark(keyValueDto.getKey());
+                        Document document = new Document(local);
+                        builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                        doc.save(localFullPath);
+                    }
+                    k--;
+                }
+
+                if (CollectionUtils.isNotEmpty(mapList)) {
+                    try {
+                        Map<String, String> stringMap = toMapString(mapList.get(0));
+                        stringMap.put("${number}", String.valueOf(i));
+
+                        AsposeUtils.replaceText(localFullPath, stringMap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
+
                 //再将附件上传到相同位置
                 try {
                     ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
@@ -1006,7 +1036,7 @@ public class CsrProjectInfoService {
                     logger.error(e.getMessage());
                 }
 
-                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where id=%s", ftpAttachment.getId(), integer));
+                jdbcTemplate.update(String.format("update sheet1 set attachment_id=%s where sjhth='%s'", ftpAttachment.getId(), sjhth));
                 i++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1018,20 +1048,37 @@ public class CsrProjectInfoService {
         Map<String, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
             String value = String.valueOf(stringObjectEntry.getValue());
+            if (StringUtils.isBlank(value) || value == "null") {
+                value = "";
+            }
             switch (stringObjectEntry.getKey()) {
+                case "tdxz":
+
+                {
+                    if (StringUtils.isNotBlank(value)) {
+                        value = String.format("土地性质%s，面积${tdmj}平方米;", value);
+                    } else {
+                        value = "土地证未提供;";
+                    }
+                    break;
+                }
                 case "dkffsj":
                 case "htqdr":
                 case "fxjzr":
                 case "bgyxq": {
-                    value = value.replaceAll("/", "-");
-                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
-                    value = format;
+                    if (StringUtils.isNotBlank(value)) {
+                        value = value.replaceAll("/", "-");
+                        String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
+                        value = format;
+                    }
                     break;
                 }
                 case "bgcjsj": {
-                    value = value.replaceAll("/", "-");
-                    String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_PATTERN);
-                    value = DateUtils.getUpperDate(format);
+                    if (StringUtils.isNotBlank(value)) {
+                        value = value.replaceAll("/", "-");
+                        String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_PATTERN);
+                        value = DateUtils.getUpperDate(format);
+                    }
                     break;
                 }
                 case "bjscbl":
@@ -1041,11 +1088,15 @@ public class CsrProjectInfoService {
                 case "ssfbl":
                 case "zxfbl":
                 case "sfjdfbl": {
-                    value = FormatUtils.numberToPercent(Double.parseDouble(value), 2);
+                    if (StringUtils.isNotBlank(value)) {
+                        value = FormatUtils.numberToPercent(Double.parseDouble(value), 2);
+                    }
                     break;
                 }
                 case "bzqxnmsxgnr": {
-                    value = String.valueOf(stringObjectEntry.getValue());
+                    if (StringUtils.isNotBlank(value)) {
+                        value = String.valueOf(stringObjectEntry.getValue());
+                    }
                     break;
                 }
             }

@@ -123,8 +123,10 @@ public class BaseReportService {
      * @return
      */
     public BaseReportTemplateVo getBaseReportTemplate(List<BaseReportTemplateVo> baseReportTemplates, String name) {
-        if (CollectionUtils.isEmpty(baseReportTemplates)) return null;
-        if (StringUtils.isBlank(name)) return null;
+        if (CollectionUtils.isEmpty(baseReportTemplates))
+            return null;
+        if (StringUtils.isBlank(name))
+            return null;
         for (BaseReportTemplateVo baseReportTemplateVo : baseReportTemplates) {
             if (StringUtils.equals(baseReportTemplateVo.getBookmarkName(), name))
                 return baseReportTemplateVo;
@@ -138,7 +140,8 @@ public class BaseReportService {
             BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
             if (baseReportTemplate.getTemplateType() == BaseReportMarkbookTypeEnum.TEMPLATE.getKey()) {
                 baseReportTemplateVo.setTypeName("");
-                List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class), Lists.newArrayList(baseReportTemplate.getId()));
+                List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class), Lists.newArrayList
+                        (baseReportTemplate.getId()));
                 if (CollectionUtils.isNotEmpty(baseAttachments)) {
                     List<KeyValueDto> transform = getKeyValueDtos(baseAttachments);
                     baseReportTemplateVo.setKeyValueDtos(transform);
@@ -248,7 +251,8 @@ public class BaseReportService {
             }
         }
 
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class), Lists.newArrayList(baseReportTemplateFiles.getId()));
+        List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class), Lists.newArrayList
+                (baseReportTemplateFiles.getId()));
 
         //取报告模板
         List<BaseAttachment> filter = LangUtils.filter(baseAttachments, o -> {
@@ -282,12 +286,13 @@ public class BaseReportService {
         });
     }
 
-    public Integer getReportTemplate(Integer customerId, Integer entrustId, Integer reportTypeId, Integer csTypeId, Integer classifyId) {
+    public Integer getReportTemplateFiles(Integer customerId, Integer entrustId, Integer reportTypeId, Integer csTypeId, Integer classifyId) {
         BaseReportTemplateFiles baseReportTemplateFiles = new BaseReportTemplateFiles();
         baseReportTemplateFiles.setCustomerId(customerId);
         baseReportTemplateFiles.setEntrustId(entrustId);
         baseReportTemplateFiles.setReportTypeId(reportTypeId);
         baseReportTemplateFiles.setCsType(csTypeId);
+        baseReportTemplateFiles.setBisEnable(true);
         baseReportTemplateFiles.setClassifyId(classifyId);
         List<BaseReportTemplateFiles> baseReportTemplateFilesList = baseReportDao.getBaseReportTemplateFilesByExample(baseReportTemplateFiles, "");
         if (CollectionUtils.isNotEmpty(baseReportTemplateFilesList)) {
@@ -303,6 +308,40 @@ public class BaseReportService {
 
         }
         return 0;
+
+    }
+
+    public List<KeyValueDto> getReportTemplate(Integer customerId, Integer entrustId, Integer reportTypeId, Integer csTypeId, Integer classifyId) {
+        BaseReportTemplate baseReportTemplate = new BaseReportTemplate();
+        baseReportTemplate.setCustomerId(customerId);
+        baseReportTemplate.setEntrustId(entrustId);
+        baseReportTemplate.setReportTypeId(reportTypeId);
+        baseReportTemplate.setCsType(csTypeId);
+        baseReportTemplate.setTemplateType(BaseReportMarkbookTypeEnum.TEMPLATE.getKey());
+        List<BaseReportTemplate> baseReportTemplateList = baseReportDao.getBaseReportTemplateByExample(baseReportTemplate, "");
+        if (CollectionUtils.isNotEmpty(baseReportTemplateList)) {
+
+            List<Integer> transform = LangUtils.transform(baseReportTemplateList, o -> o.getId());
+
+            BaseAttachment baseAttachment = new BaseAttachment();
+            baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
+            baseAttachment.setTableId(baseReportTemplate.getId());
+            List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(transform, baseAttachment);
+            if (CollectionUtils.isNotEmpty(attachmentList)) {
+                return LangUtils.transform(attachmentList, o -> {
+                    KeyValueDto keyValueDto = new KeyValueDto();
+                    List<BaseReportTemplate> filter = LangUtils.filter(baseReportTemplateList, p -> {
+                        return p.getId() == o.getTableId();
+                    });
+
+                    keyValueDto.setKey(filter.get(0).getBookmarkName());
+                    keyValueDto.setValue(o.getId().toString());
+                    return keyValueDto;
+                });
+            }
+
+        }
+        return new ArrayList<>();
 
     }
 
@@ -337,7 +376,8 @@ public class BaseReportService {
             baseReportTemplateFilesWhere.setCustomerId(customerId);
             baseReportTemplateFiles = getBaseReportTemplateFiles(baseReportTemplateFilesWhere);
         }
-        if (baseReportTemplateFiles == null) return null;
+        if (baseReportTemplateFiles == null)
+            return null;
         BaseReportTemplateFilesDto baseReportTemplateFilesDto = new BaseReportTemplateFilesDto();
         baseReportTemplateFilesDto.setBaseReportTemplateFiles(baseReportTemplateFiles);
         //取对应的书签

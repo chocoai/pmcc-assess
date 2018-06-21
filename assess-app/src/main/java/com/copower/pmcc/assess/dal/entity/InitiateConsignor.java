@@ -11,6 +11,8 @@ public class InitiateConsignor {
 
     private Date gmtModified;
 
+    private Integer projectId;
+
     private Integer csType;
 
     private String csEntrustmentUnit;
@@ -24,8 +26,6 @@ public class InitiateConsignor {
     private String csScopeOperation;
 
     private String csUnitProperties;
-
-    private String csAttachmentProjectEnclosureId;
 
     private String csName;
 
@@ -63,6 +63,14 @@ public class InitiateConsignor {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getCsType() {
@@ -119,14 +127,6 @@ public class InitiateConsignor {
 
     public void setCsUnitProperties(String csUnitProperties) {
         this.csUnitProperties = csUnitProperties == null ? null : csUnitProperties.trim();
-    }
-
-    public String getCsAttachmentProjectEnclosureId() {
-        return csAttachmentProjectEnclosureId;
-    }
-
-    public void setCsAttachmentProjectEnclosureId(String csAttachmentProjectEnclosureId) {
-        this.csAttachmentProjectEnclosureId = csAttachmentProjectEnclosureId == null ? null : csAttachmentProjectEnclosureId.trim();
     }
 
     public String getCsName() {

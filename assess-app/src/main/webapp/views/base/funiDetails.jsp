@@ -17,7 +17,9 @@
                     <div class="col-xs-12 invoice-header">
                         <h1>
                             <i class="fa fa-globe"></i> ${funiHouses.lpmc}
-                            <small class="pull-right"><i class="fa fa-cny"></i>0.00</small>
+                            <small class="pull-right"><i class="fa fa-cny"></i>
+                                <a href='#' data-type='text' name="lpjj_lpxx_${funiHouses.id}" data-original-title='楼盘均价' class='editable editable-click'>${funiHouses.lpjj}</a>
+                            </small>
                         </h1>
                     </div>
                     <div class="col-sm-4 invoice-col">
@@ -48,17 +50,17 @@
                             <tbody>
                             <tr>
                                 <th style="width:7%">建筑面积:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_wyxx_${funiHouses.id}" data-original-title='建筑面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='建筑面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
                                 <th style="width:7%">占地面积:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_wyxx_${funiHouses.id}" data-original-title='占地面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="jzmj_lpxx_${funiHouses.id}" data-original-title='占地面积' class='editable editable-click'>${funiHouses.jzmj}</a></td>
                                 <th style="width:7%">容积率:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="rjl_wyxx_${funiHouses.id}" data-original-title='容积率' class='editable editable-click'>${funiHouses.rjl}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="rjl_lpxx_${funiHouses.id}" data-original-title='容积率' class='editable editable-click'>${funiHouses.rjl}</a></td>
                                 <th style="width:7%">绿化率:</th>
-                                <td style="width:18%"><a href='#' data-type='text' name="lhl_wyxx_${funiHouses.id}" data-original-title='绿化率' class='editable editable-click'>${funiHouses.lhl}</a></td>
+                                <td style="width:18%"><a href='#' data-type='text' name="lhl_lpxx_${funiHouses.id}" data-original-title='绿化率' class='editable editable-click'>${funiHouses.lhl}</a></td>
                             </tr>
                             <tr>
                                 <th>车位信息:</th>
-                                <td><a href='#' data-type='text' name="cwxx_wyxx_${funiHouses.id}" data-original-title='车位信息' class='editable editable-click'>${funiHouses.cwxx}</a></td>
+                                <td><a href='#' data-type='text' name="cwxx_lpxx_${funiHouses.id}" data-original-title='车位信息' class='editable editable-click'>${funiHouses.cwxx}</a></td>
                                 <th>销售许可证:</th>
                                 <td colspan="5">${funiHouses.xsxkz}</td>
                             </tr>
@@ -150,6 +152,10 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <a class="btn btn-success" onclick="addWyxx()">
+                        <i class="fa fa-plus"></i>
+                        新增物业
+                    </a>
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
@@ -219,6 +225,10 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                    <a class="btn btn-success" onclick="addHxxx()">
+                        <i class="fa fa-plus"></i>
+                        新增户型
+                    </a>
                     <div class="table-responsive" id="tab_content2">
                     </div>
                 </div>
@@ -232,6 +242,104 @@
 
 </div>
 </body>
+
+
+<div id="model_wyxx" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">物业信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="x_content">
+                            <form id="frm_wyxx" class="form-horizontal" onsubmit="return false;">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            物业类型
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select name="wylb" class="form-control">
+                                                <option value="住宅">住宅</option>
+                                                <option value="商业">商业</option>
+                                                <option value="办公">办公</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" onclick="saveWyxx()" class="btn btn-primary">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="model_hxxx" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
+     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">户型信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="x_content">
+                            <form id="frm_hxxx" class="form-horizontal" onsubmit="return false;">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="户型" name="hx" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            面积
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" placeholder="面积" name="mj" class="form-control"
+                                                   maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" onclick="saveHxxx()" class="btn btn-primary">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
@@ -242,8 +350,74 @@
         loadHousesTypeList(${funiHouses.id});
         xEditChange();
     })
+
+    function addHxxx() {
+        $("#frm_hxxx").clearAll();
+        $('#model_hxxx').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function saveHxxx() {
+        Loading.progressShow();
+        var data=formParams("frm_hxxx");
+        data["lpbh"]=${funiHouses.id};
+        $.ajax({
+            url: "${pageContext.request.contextPath}/funiViewer/newHxxx",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $('#model_hxxx').modal('hide');
+                    toastr.success('保存成功');
+                    loadHousesTypeList(${funiHouses.id});
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+    function addWyxx() {
+        $("#frm_wyxx").clearAll();
+        $('#model_wyxx').modal({backdrop: 'static', keyboard: false});
+    }
+
+    function saveWyxx() {
+        Loading.progressShow();
+        var data=formParams("frm_wyxx");
+        data["lpbh"]=${funiHouses.id};
+        $.ajax({
+            url: "${pageContext.request.contextPath}/funiViewer/newWyxx",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $('#model_wyxx').modal('hide');
+                    toastr.success('保存成功');
+                    window.reload();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
     function xEditChange() {
         $(".editable").editable({
+            emptytext: '暂无',
+            placement:"bottom",
             url: function (params) {
                 var aName = $(this).attr("name").split('_');
                 updateFuniData(aName[0], params.value, aName[1], aName[2]);

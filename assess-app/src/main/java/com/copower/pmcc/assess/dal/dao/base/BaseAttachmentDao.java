@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -107,19 +108,29 @@ public class BaseAttachmentDao {
 
     }
 
+
     /**
-     *  @time zch 2018-05-09
      * @param table_id
      * @param fields_name
+     * @param tableName
      * @return
      */
-    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name){
-        BaseAttachmentExample example = new BaseAttachmentExample();
-        example.createCriteria().andTableIdEqualTo(table_id).andFieldsNameEqualTo(fields_name);
+    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name,String tableName){
+        BaseAttachmentExample example = new BaseAttachmentExample();//
+        BaseAttachmentExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (!ObjectUtils.isEmpty(table_id)){
+            criteria.andTableIdEqualTo(table_id);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(fields_name)){
+            criteria.andFieldsNameEqualTo(fields_name);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(tableName)){
+            criteria.andTableNameEqualTo(tableName);
+        }
         List<BaseAttachment> baseAttachments = sysAttachmentMapper.selectByExample(example);
         return baseAttachments;
     }
-
 
     /**
      * 添加附件表信息到数据库，并返回数据中对应的id

@@ -11,6 +11,8 @@ public class InitiatePossessor {
 
     private Date gmtModified;
 
+    private Integer projectId;
+
     private Integer pType;
 
     private String pEntrustmentUnit;
@@ -24,8 +26,6 @@ public class InitiatePossessor {
     private String pScopeOperation;
 
     private String pUnitProperties;
-
-    private String pAttachmentProjectEnclosureId;
 
     private String pName;
 
@@ -63,6 +63,14 @@ public class InitiatePossessor {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getpType() {
@@ -119,14 +127,6 @@ public class InitiatePossessor {
 
     public void setpUnitProperties(String pUnitProperties) {
         this.pUnitProperties = pUnitProperties == null ? null : pUnitProperties.trim();
-    }
-
-    public String getpAttachmentProjectEnclosureId() {
-        return pAttachmentProjectEnclosureId;
-    }
-
-    public void setpAttachmentProjectEnclosureId(String pAttachmentProjectEnclosureId) {
-        this.pAttachmentProjectEnclosureId = pAttachmentProjectEnclosureId == null ? null : pAttachmentProjectEnclosureId.trim();
     }
 
     public String getpName() {

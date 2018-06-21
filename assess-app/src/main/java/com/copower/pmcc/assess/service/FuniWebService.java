@@ -125,7 +125,7 @@ public class FuniWebService {
     private String checkNull(Elements select, Integer index) {
         String string = select.get(index).childNodes().get(0).toString();
         if (StringUtils.isBlank(string)) {
-            string = "暂无";
+            string = "";
         }
         return string;
     }
@@ -195,40 +195,25 @@ public class FuniWebService {
 
         if (!select.get(0).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setJzmj(select.get(0).childNodes().get(0).childNodes().get(0).toString());//建筑面积
-        } else {
-            funiHouses.setJzmj("暂无");
         }
         if (!select.get(1).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setZdmj(select.get(1).childNodes().get(0).childNodes().get(0).toString());//占地面积
-        } else {
-            funiHouses.setZdmj("暂无");
         }
         if (!select.get(2).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setRjl(select.get(2).childNodes().get(0).childNodes().get(0).toString());//容积率
-        } else {
-            funiHouses.setRjl("暂无");
         }
         if (!select.get(3).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setLhl(select.get(3).childNodes().get(0).childNodes().get(0).toString());//绿化率
-        } else {
-            funiHouses.setLhl("暂无");//绿化率
         }
         if (!select.get(4).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setCwxx(select.get(4).childNodes().get(0).toString());//车位信息
-        } else {
-            funiHouses.setCwxx("暂无");
         }
         if (!select.get(5).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setXmdz(select.get(5).childNodes().get(0).childNodes().get(0).toString());//项目地址
-        } else {
-            funiHouses.setLpdz("暂无");
         }
         if (!select.get(6).childNodes().get(0).toString().equals("暂无")) {
             funiHouses.setSldz(select.get(6).childNodes().get(0).toString());//售楼地址
-        } else {
-            funiHouses.setSldz("暂无");
         }
-
         String string = select.get(7).childNodes().get(0).toString();
         if (StringUtils.isNotBlank(string)) {
             FuniDevelopers funiDevelopers = funiDevelopersDao.getFuniDevelopers(string);
@@ -248,8 +233,6 @@ public class FuniWebService {
 
             String s = StringUtils.replacePattern(string1, "<.*?>", "");
             funiHouses.setLpjs(s);//楼盘介绍
-        } else {
-            funiHouses.setLpjs("暂无");
         }
         funiHousesDao.editFuniHouses(funiHouses);
     }

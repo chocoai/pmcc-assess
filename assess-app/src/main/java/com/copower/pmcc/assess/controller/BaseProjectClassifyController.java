@@ -95,7 +95,7 @@ public class BaseProjectClassifyController {
     @RequestMapping("/getProjectClassifyListByFieldName")
     public HttpResult getProjectClassifyListByFieldName(String fieldName) {
         try {
-            List<BaseProjectClassify> sysProjectClassifys = baseProjectClassifyService.getCacheProjectClassifyList(fieldName);
+            List<BaseProjectClassify> sysProjectClassifys = baseProjectClassifyService.getCacheProjectClassifyListByKey(fieldName);
             return HttpResult.newCorrectResult(sysProjectClassifys);
         } catch (Exception e) {
             LOGGER.error("获取数据项目分类异常", e);
@@ -133,7 +133,7 @@ public class BaseProjectClassifyController {
     @ResponseBody
     @RequestMapping(value = "/getListByFieldName", method = RequestMethod.GET)
     public HttpResult getListByFieldName(String fieldName) {
-        List<BaseProjectClassify> dataDicList = baseProjectClassifyService.getCacheProjectClassifyList(fieldName);
+        List<BaseProjectClassify> dataDicList = baseProjectClassifyService.getCacheProjectClassifyListByKey(fieldName);
         return HttpResult.newCorrectResult(dataDicList);
     }
 
@@ -188,15 +188,39 @@ public class BaseProjectClassifyController {
     }
 
     /**
+     * 查询数据信息树
+     *
+     * @param name
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryProjectClassifyTree", method = RequestMethod.POST)
+    public List<ZtreeDto> queryProjectClassifyTree(String name, Integer pid, String key, String filterKey) {
+        return baseProjectClassifyService.queryProjectClassifyTree(name, pid, key, filterKey);
+    }
+
+    /**
      * 获取数据信息树
      *
      * @param pid
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getProjectClassifyTree", method = RequestMethod.POST)
-    public List<ZtreeDto> getProjectClassifyTree(String name, String key, Integer pid, String filterKey) {
-        return baseProjectClassifyService.getProjectClassifyTree(name, key, pid, filterKey);
+    @RequestMapping(value = "/getProjectClassifyTreeByPid", method = RequestMethod.POST)
+    public List<ZtreeDto> getProjectClassifyTreeByPid(Integer pid, String filterKey) {
+        return baseProjectClassifyService.getProjectClassifyTreeByPid(pid, filterKey);
+    }
+
+    /**
+     * 获取数据信息树
+     *
+     * @param key
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getProjectClassifyTreeByKey", method = RequestMethod.POST)
+    public List<ZtreeDto> getProjectClassifyTreeByKey(String key, String filterKey) {
+        return baseProjectClassifyService.getProjectClassifyTreeByKey(key, filterKey);
     }
 
 

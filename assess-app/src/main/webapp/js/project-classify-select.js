@@ -7,7 +7,7 @@
     var AssessProjectClassify = function () {
         this.defaults = {
             modalName: "数据选择",
-            key: "",//获取key值 以下的数据
+            key: AssessProjectClassifyKey.single,//获取key值 以下的数据
             pid: 0,//获取pid 以下的数据
             filterKey: [],//过滤值
             multi: false,//是否允许多选
@@ -26,10 +26,10 @@
             },
             async: {
                 enable: true,
-                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTree",
+                url: getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByPid",
                 autoParam: ["id=pid"],
                 otherParam: {
-                    "filterKey": "1"
+                    "filterKey": this.defaults.filterKey.join()
                 }
             },
             // 回调函数
@@ -56,7 +56,10 @@
                     chkboxType: {"Y": "", "N": ""}
                 };
             }
-            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">';
+            that.setting.async.otherParam = {
+                "filterKey": that.defaults.filterKey.join()
+            };
+            var html = '<div id="assess_select_project_classify_modal" class="modal fade bs-example-modal-sm" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true" data-height="400">';
             html += '<div class="modal-dialog">';
             html += '<div class="modal-content">';
             html += '<div class="modal-header">';
@@ -88,7 +91,6 @@
             html += '</div>';
             html += '</div>';
             $(document.body).append(html);
-            //console.log(that);
 
             that.init();
         },
@@ -103,7 +105,7 @@
                         name: queryName,
                         key: this.defaults.key,
                         pid: this.defaults.pid,
-                        filterKey: this.defaults.filterKey
+                        filterKey: this.defaults.filterKey.join()
                     },
                     type: "post",
                     dataType: "json",
@@ -132,11 +134,16 @@
 
         init: function () {
             var that = this;
+            var url = getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByKey";
+            var data = {key: that.defaults.key};
+            if (that.defaults.pid != undefined) {
+                var url = getContextPath() + "/baseProjectClassify/getProjectClassifyTreeByPid";
+                var data = {pid: that.defaults.pid};
+            }
+            data.filterKey = this.defaults.filterKey.join();
             $.ajax({
-                url: getContextPath() + "/baseProjectClassify/getProjectClassifyByKey",
-                data: {
-                    key: that.defaults.key
-                },
+                url: url,
+                data: data,
                 type: "post",
                 dataType: "json",
                 success: function (result) {

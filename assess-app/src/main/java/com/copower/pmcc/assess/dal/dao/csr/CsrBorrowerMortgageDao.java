@@ -23,6 +23,12 @@ public class CsrBorrowerMortgageDao {
     @Autowired
     private CsrBorrowerMortgageMapper csrBorrowerMortgageMapper;
 
+    public List<CsrBorrowerMortgage> getCsrProjectMortgages(Integer projectID){
+        CsrBorrowerMortgageExample example = new CsrBorrowerMortgageExample();
+        example.createCriteria().andIdIsNotNull().andCsrProjectIdEqualTo(projectID);
+        return csrBorrowerMortgageMapper.selectByExample(example);
+    }
+
     /**
      * 获取数据信息
      *
