@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.output.BaseProcessFormVo;
+import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.*;
 import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
@@ -54,8 +55,17 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskIndex", "", 0, "0", "");
         //根据申报类型 确定申报表单
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
-        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareFormId);
-        BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
+        if (declareFormId != null && declareFormId > 0) {
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareFormId);
+            if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
+                BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
+                modelAndView.addObject("baseProjectClassify", baseProjectClassify);
+                modelAndView.addObject("baseFormModule", baseFormModule);
+                List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(baseFormModule.getId());
+                modelAndView.addObject("jsonValue", JSON.toJSONString(fieldVos));
+                modelAndView.addObject("fieldList", JSON.toJSONString(fieldVos));
+            }
+        }
         return modelAndView;
     }
 

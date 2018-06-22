@@ -18,6 +18,8 @@
             }
             return array;
         },
+
+        //获取动态表单html
         getDynamicFormHtml: function (options) {
             var defaluts = {
                 formModuleId: undefined,
@@ -45,6 +47,8 @@
                 }
             })
         },
+
+        //加载从表信息列表
         loadDetailInfoList: function (options) {
             var defaluts = {
                 readOnly: false,
@@ -135,21 +139,25 @@
                 search: false
             });
         },
+
+        //新增从表信息
         addDetailInfo: function (options) {
             var defaluts = {
                 targetForm: undefined,
+                excludeArray: undefined,
                 success: function () {
 
                 }
             };
             defaluts = $.extend({}, defaluts, options);
-            $("#" + defaluts.targetForm).clearAll();
-            $("#" + defaluts.targetForm).find("[name=id]").val("0");
+            defaluts.targetForm.clearAll(defaluts.excludeArray);
         },
+
+        //编辑从表信息
         editDetailInfo: function (options) {
             var defaluts = {
                 row: undefined,
-                targetList: undefined,
+                excludeArray: undefined,
                 targetForm: undefined,
                 targetModal: undefined,
                 beforeEdit: function () {
@@ -161,10 +169,12 @@
                 defaluts.beforeEdit(defaluts.row);
             }
             var row = defaluts.row;
-            $("#" + defaluts.targetForm).clearAll();
-            $("#" + defaluts.targetForm).initForm(row);
-            $('#' + defaluts.targetModal).modal();
+            defaluts.targetForm.clearAll(defaluts.excludeArray);
+            defaluts.targetForm.initForm(row);
+            defaluts.targetModal.modal();
         },
+
+        //查看从表信息
         viewDetailInfo: function (options) {
             var defaluts = {
                 row: undefined,
@@ -179,10 +189,12 @@
                 defaluts.beforeEdit(defaluts.row);
             }
             var row = defaluts.row;
-            $("#" + defaluts.targetForm).clearAll();
-            $("#" + defaluts.targetForm).initForm(row);
-            $('#' + defaluts.targetModal).modal();
+            defaluts.targetForm.clearAll();
+            defaluts.targetForm.initForm(row);
+            defaluts.targetModal.modal();
         },
+
+        //删除从表信息
         deleteDetailInfo: function (options) {
             var defaluts = {
                 targetList: undefined,
@@ -205,7 +217,7 @@
                             Loading.progressHide();
                             if (result.ret) {
                                 toastr.success('删除成功');
-                                $('#' + defaluts.targetList).bootstrapTable("refresh");
+                                defaluts.targetList.bootstrapTable("refresh");
                             }
                             else {
                                 Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -219,6 +231,8 @@
                 }
             });
         },
+
+        //保存从表信息
         saveDetailInfo: function (options) {
             var defaluts = {
                 targetList: undefined,
@@ -233,10 +247,10 @@
                 }
             };
             defaluts = $.extend({}, defaluts, options);
-            if ($("#" + defaluts.targetForm).valid()) {
+            if (defaluts.targetForm.valid()) {
                 Loading.progressShow();
                 var data = {};
-                var array = formSerializeArray($("#" + defaluts.targetForm));
+                var array = formSerializeArray(defaluts.targetForm);
                 array[defaluts.foreignKeyName] = defaluts.foreignKeyValue;
                 data.formData = JSON.stringify(array);
                 data.tableId = array.id;
@@ -251,8 +265,8 @@
                         Loading.progressHide();
                         if (result.ret) {
                             toastr.success('保存成功');
-                            $('#' + defaluts.targetList).bootstrapTable("refresh");
-                            $('#' + defaluts.targetModal).modal('hide');
+                            defaluts.targetList.bootstrapTable("refresh");
+                            defaluts.targetModal.modal('hide');
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -265,6 +279,8 @@
                 })
             }
         },
+
+        //循环展示数据
         getData: function () {
             var tables = $('div[data-name="singleTable"]');
             if (tables) {//循环验证
@@ -306,8 +322,8 @@
             return data;
         },
 
-        //获取字典的json数据
-        getFieldJson:function (options) {
+        //获取字段的json数据
+        getFieldJson: function (options) {
             var defaluts = {
                 formModuleId: undefined,
                 readOnly: false,

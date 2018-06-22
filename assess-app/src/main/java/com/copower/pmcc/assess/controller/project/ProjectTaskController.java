@@ -4,6 +4,7 @@ import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -88,7 +89,8 @@ public class ProjectTaskController {
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
 
         modelAndView.addObject("responsibilityId", responsibilityId);
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 
@@ -130,7 +132,8 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 
@@ -172,7 +175,8 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 
@@ -203,35 +207,8 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情", method = RequestMethod.GET)
-    public ModelAndView projectTaskDetailsById(Integer projectDetailsId) {
-        String viewUrl = "projectTaskAssist";
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
-            viewUrl = projectPhase.getPhaseForm();
-        }
-        ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
-        ModelAndView modelAndView = bean.detailsView(projectPlanDetails, 0);
-        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
-        modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
-        List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
-        modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
-        //显示数据
-        String boxCnName = modelAndView.getModel().get("boxCnName").toString();
-        if (StringUtils.isBlank(boxCnName)) {
-            modelAndView.addObject("boxCnName", String.format("%s-成果详情", projectPlanDetails.getProjectPhaseName()));
-        } else {
-            modelAndView.addObject("boxCnName", String.format("%s-成果详情", boxCnName));
-        }
-        modelAndView.addObject("viewUrl", viewUrl);
-        modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
-        modelAndView.addObject("projectFlog", "1");
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 

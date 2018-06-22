@@ -424,13 +424,6 @@
         });
     }
 
-    function loadpage(url, detailsId) {
-        if (url == null || url == "") {
-            url = "${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + detailsId;
-        }
-        window.open(url);
-    }
-
     function followProject() {
         Loading.progressShow();
         $.ajax({

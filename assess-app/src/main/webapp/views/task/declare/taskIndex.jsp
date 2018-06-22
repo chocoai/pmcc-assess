@@ -14,7 +14,6 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--动态表单-->
-            <input type="hidden" id="id" name="id" value="0">
             <%@include file="/views/task/declare/module/declareInfo.jsp" %>
 
             <div class="x_panel">

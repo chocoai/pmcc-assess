@@ -10,127 +10,189 @@
     var beforeAddFunction = {};//定义新增按钮触发前的全局变量
     var beforeEditFunction = {};//定义编辑按钮触发前的全局变量
 </script>
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h2>动态表单</h2>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content" id="panel_body">
-        <button type="button" data-toggle="modal" style="display: none;"
-                href="#modal_detail"
-                class="btn btn-success"
-                id="btn_add_detail_info"> 新增
-        </button>
-        <table id="tb_detail_list" class="table table-bordered">
-        </table>
-        <div id='modal_detail'
-             class="modal fade bs-example-modal-lg"
-             data-backdrop="static" aria-hidden="true"
-             role="dialog" data-keyboard="false" tabindex="1"
-             style="display: none;">
-            <div class="modal-dialog modal-lg" style="height: 800px;width: 1200px;">
-                <div class="modal-content">
-                    <div class='modal-header'>
-                        <button type='button' class='close'
-                                data-dismiss='modal'
-                                aria-label='Close'><span
-                                aria-hidden='true'>&times;</span>
-                        </button>
-                        <h4 class='modal-title'>{formModuleName}</h4>
-                    </div>
-                    <form class="form-horizontal"
-                          id='frm_detail'
-                          class='form-horizontal'>
-                        <input type='hidden' name='id' value="0">
-                        <div class='modal-body'>
-                            <div class='row'>
-                                <div class='col-md-12'>
-                                    <div class='x_content'>
-                                        <div id="detail_content">
+<button type="button"  class="btn btn-primary"
+        onclick='selectDeclareForm()'> 选择申报表
+</button>
+<div id="dyncmicContent"></div>
 
+<!--动态表单模板-->
+<script type="text/html" id="dynamicHtml">
+    <div class="x_panel" id="panel_{classifyId}">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>{title}</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <button type="button" data-toggle="modal" href="#modal_detail" class="btn btn-success"
+                    onclick='addDynamicData("{tableName}",$(this).find("form"),$(this).find(".modal"))'> 新增
+            </button>
+            <table class="table table-bordered">
+            </table>
+            <div class="modal fade bs-example-modal-lg"
+                 data-backdrop="static" aria-hidden="true" data-height="600"
+                 role="dialog" data-keyboard="false" tabindex="1"
+                 style="display: none;">
+                <div class="modal-dialog modal-lg" style="width: 1200px;">
+                    <div class="modal-content">
+                        <div class='modal-header'>
+                            <button type='button' class='close'
+                                    data-dismiss='modal'
+                                    aria-label='Close'><span
+                                    aria-hidden='true'>&times;</span>
+                            </button>
+                            <h4 class='modal-title'>{title}管理</h4>
+                        </div>
+                        <form class="form-horizontal">
+                            <input type='hidden' name='id' value="0">
+                            <div class='modal-body'>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <div class='x_content'>
+                                            <div class="detail-content">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                        <div class='modal-footer'>
+                            <button type='button' data-dismiss='modal'
+                                    class='btn btn-default'>取消
+                            </button>
+                            <button type='button' class='btn btn-primary save_custom_model'>
+                                保存
+                            </button>
                         </div>
-                    </form>
-                    <div class='modal-footer'>
-                        <button type='button' data-dismiss='modal'
-                                class='btn btn-default'>取消
-                        </button>
-                        <button type='button'
-                                id="btn_save_detail_info"
-                                class='btn btn-primary save_custom_model'>
-                            保存
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            $(function () {
-                beforeAddFunction["${item.tableName}"] = [];
-                beforeEditFunction["${item.tableName}"] = [];
-
-                //新增按钮触发事件
-                $("#btn_add_detail_info").click(function () {
-                    var fns = beforeAddFunction["${item.tableName}"];
-                    if (fns) {
-                        $.each(fns, function (i, item) {
-                            item();
-                        });
-                    }
-                    FormConfigureUtils.addDetailInfo({targetForm: "frm_detail"});
-                })
-
-                //保存按钮触发事件
-                $("#btn_save_detail_info").click(function () {
-                    FormConfigureUtils.saveDetailInfo({
-                        targetList: "tb_detail_list",
-                        targetForm: "frm_detail",
-                        targetModal: "modal_detail",
-                        tableName: "{item.tableName}",
-                        formModuleId: "{item.formModuleId}",
-                        foreignKeyName: "{item.foreignKeyName}",
-                        foreignKeyValue: $("#primaryId").val()
-                    });
-                })
-
-
-                //获取动态的html
-                FormConfigureUtils.getDynamicFormHtml({
-                    formModuleId: '{item.formModuleId}',
-                    readOnly: false,
-                    jsonValue: $("#lbl_json_table").text(),
-                    success: function (html) {
-                        $("#detail_content").append(html);
-                        $("#btn_add_detail_info").show();//显示对应的新增按钮
-                        //加载数据列表
-                        FormConfigureUtils.loadDetailInfoList({
-                            formModuleId: '{item.formModuleId}',
-                            fieldList: $("#lbl_json_field").text(),
-                            targetList: "tb_detail_list",
-                            targetForm: "frm_detail",
-                            targetModal: "modal_detail",
-                            foreignKeyName: "{item.foreignKeyName}",
-                            foreignKeyValue: $("#primaryId").val(),
-                            tableName: "{item.tableName}",
-                            beforeEdit: function (row) {
-                                var fns = beforeEditFunction["{item.tableName}"];
-                                if (fns) {
-                                    $.each(fns, function (i, item) {
-                                        item(row);
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            })
-
-        </script>
     </div>
-</div>
+</script>
+
+<script type="text/javascript">
+    var globalContainer = {};//全局容器
+    $(function () {
+        initDynamicData();
+    })
+
+    //选择申报表
+    function selectDeclareForm() {
+        var param = {
+            modalName: "申报表选择",
+            pid: "${empty projectInfo.projectCategoryId?projectInfo.projectTypeId:projectInfo.projectCategoryId}",
+            filterKey: [AssessProjectClassifyKey.explore, AssessProjectClassifyKey.case],
+            onSelected: function (nodes) {
+
+            }
+        };
+        //如果为综合资产则可选单项资产的任意申报表
+        if ('${bisComprehensiveAssets}' == 'true') {
+            param.pid = undefined;
+            param.key = AssessProjectClassifyKey.single;
+        }
+        assessProjectClassify.select(param);
+    }
+
+    //初始化动态数据
+    function initDynamicData() {
+        //如果计划设置了申报表 则自动加载
+        if ('${empty baseFormModule}' == 'false') {
+            //1.设置参数 2.调用初始化方法
+            var options={};
+            options.title='${baseProjectClassify.name}';
+            options.formModuleId = '${baseFormModule.id}';
+            options.foreignKeyName = '${baseFormModule.foreignKeyName}';
+            options.foreignKeyValue = '${projectPlanDetails.id}';
+            options.tableName = '${baseFormModule.tableName}';
+            options.jsonValue = '${jsonValue}';//需填写的表单字段
+            options.fieldList = '${fieldList}';//列表显示的字段
+            generateDynamicHtml(options);
+        }
+    }
+
+    //生成动态html
+    function generateDynamicHtml(options) {
+        //1.先将html加载到dyncmicContent
+        //2.再初始出列表
+        var panelElement = $("#panel_" + options.formModuleId);
+        if (panelElement.length > 0) {
+            return;//申报类型元素已存在
+        }
+        var html = $("#dynamicHtml").html();
+        html = html.replace(/{title}/g, options.title).replace(/{tableName}/g, options.title);
+        $("#dyncmicContent").append(html);
+        //初始化各后期需要的元素
+        options.targetList = panelElement.find('table');
+        options.targetForm = panelElement.find('form');
+        options.targetModal = panelElement.find('.modal');
+        getDynamicHtml(options);
+    }
+</script>
+
+<script type="text/javascript">
+    //添加动态数据
+    function addDynamicData(tableName, targetForm, targetModal) {
+        var fns = beforeAddFunction[tableName];
+        if (fns) {
+            $.each(fns, function (i, item) {
+                item();
+            });
+        }
+        FormConfigureUtils.addDetailInfo({targetForm: targetForm});
+        targetModal.modal();
+    }
+
+    //保存动态数据
+    function saveDynamicData(options) {
+        FormConfigureUtils.saveDetailInfo({
+            targetList: options.targetList,
+            targetForm: options.targetForm,
+            targetModal: options.targetModal,
+            tableName: options.tableName,
+            formModuleId: options.formModuleId,
+            foreignKeyName: options.foreignKeyName,
+            foreignKeyValue: options.foreignKeyValue
+        });
+    }
+
+    //获取动态html
+    function getDynamicHtml(options) {
+        FormConfigureUtils.getDynamicFormHtml({
+            formModuleId: options.formModuleId,
+            readOnly: false,
+            jsonValue: options.jsonValue,
+            success: function (html) {
+                $("#detail_content").append(html);
+                //加载数据列表
+                loadDynamicList(options);
+            }
+        });
+    }
+
+    //显示动态数据列表
+    function loadDynamicList(options) {
+        FormConfigureUtils.loadDetailInfoList({
+            formModuleId: options.formModuleId,
+            fieldList: options.fieldList,
+            targetList: options.targetList,
+            targetForm: options.targetForm,
+            targetModal: options.targetModal,
+            foreignKeyName: options.foreignKeyName,
+            foreignKeyValue: options.foreignKeyValue,
+            tableName: options.tableName,
+            beforeEdit: function (row) {
+                var fns = beforeEditFunction[options.tableName];
+                if (fns) {
+                    $.each(fns, function (i, item) {
+                        item(row);
+                    });
+                }
+            }
+        });
+    }
+</script>

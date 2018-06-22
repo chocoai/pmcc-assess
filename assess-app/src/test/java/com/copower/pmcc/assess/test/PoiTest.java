@@ -13,7 +13,9 @@ import com.copower.pmcc.assess.dal.entity.CsrBorrower;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import org.apache.poi.hssf.record.formula.functions.T;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -221,5 +223,18 @@ public class PoiTest {
 
         inputStream.close();
         return integerMap;
+    }
+
+    @Test
+    public void  test1(){
+        Ordering<Integer> orderingBig = new Ordering<Integer>() {
+            @Override
+            public int compare(Integer left, Integer right) {
+                return left - right;
+            }
+        };
+        List<Integer> list= Lists.newArrayList(3,5,2,1,6);
+        list = orderingBig.sortedCopy(list);
+        System.out.println(list);
     }
 }
