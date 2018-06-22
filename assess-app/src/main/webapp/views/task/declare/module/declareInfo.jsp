@@ -73,7 +73,8 @@
         </div>
     </div>
 </script>
-
+<input type="hidden" id="jsonValue" value='${jsonValue}'>
+<input type="hidden" id="jsonValue" value='${fieldList}'>
 <script type="text/javascript">
     var globalContainer = {};//全局容器
     $(function () {
@@ -109,8 +110,8 @@
             options.foreignKeyName = '${baseFormModule.foreignKeyName}';
             options.foreignKeyValue = '${projectPlanDetails.id}';
             options.tableName = '${baseFormModule.tableName}';
-            options.jsonValue = '${jsonValue}';//需填写的表单字段
-            options.fieldList = '${fieldList}';//列表显示的字段
+            options.jsonValue = $("#jsonValue").val();//需填写的表单字段
+            options.fieldList = $("#fieldList").val();//列表显示的字段
             generateDynamicHtml(options);
         }
     }

@@ -237,4 +237,10 @@ public class PoiTest {
         list = orderingBig.sortedCopy(list);
         System.out.println(list);
     }
+
+    @Test
+    public void test2(){
+        JSONObject jsonObject = JSONObject.parseObject("[{\"name\":\"province_name\",\"title\":\"省\"},{\"name\":\"city_name\",\"title\":\"市\"},{\"name\":\"district_name\",\"title\":\"区县\"},{\"name\":\"name\",\"title\":\"名称\"},{\"name\":\"public_situation\",\"title\":\"共有情况\"},{\"name\":\"street_number\",\"title\":\"街道号\"},{\"name\":\"floor_area\",\"title\":\"建筑面积\"}]");
+        System.out.println(jsonObject);
+    }
 }
