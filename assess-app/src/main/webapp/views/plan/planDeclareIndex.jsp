@@ -38,6 +38,7 @@
                                     <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
                                     <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
                                     <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
+                                    <input type="hidden" id="processInsId" value="${processInsId}">
                                     <label class="form-control">${projectPlan.planName}</label>
                                 </div>
                             </div>
@@ -164,19 +165,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel-body">
+
                             <form id="frm_planDetails" class="form-horizontal">
                                 <input type="hidden" id="planDetailsId" name="id"/>
                                 <input type="hidden" id="pid" name="pid"/>
                                 <input type="hidden" id="firstPid" name="firstPid"/>
-                                <input type="hidden" id="projectPhaseId" name="projectPhaseId"
-                                       value="${projectPhases.get(0).id}"/>
+                                <input type="hidden" id="projectPhaseId" name="projectPhaseId" value="${projectPhases.get(0).id}"/>
                                 <div id="plan_content"></div>
-                                <div id="singleAssets">
-
-                                </div>
-                                <div id="comprehensiveAssets" style="display:none;">
-
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -565,11 +560,10 @@
     }
 
     function fisrtLevelNodeAdd() {
-        $("#frm_planDetails").clearAll();
+        $("#frm_planDetails").clearAll(["projectPhaseId"]);
         $("#frm_planDetails").validate();
         $("#pid").val(0);
         $("#firstPid").val(0);
-        $("#projectPhaseId").find("option").first().attr("selected", true);
         $("#planDetailsId").val(0);
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
@@ -582,7 +576,6 @@
         var row = $('#PlanItemListed').treegrid('find', id);
         $("#pid").val(row["id"]);
         $("#firstPid").val(row["firstPid"]);
-        $("#projectPhaseId").val(row["projectPhaseId"]);
         $("#planDetailsId").val(0);
         $('#div_plan').modal({backdrop: 'static', keyboard: false});
     }
@@ -590,7 +583,7 @@
     //计划或公司编辑
     function editPlan(id) {
         var row = $('#PlanItemListed').treegrid('find', id);
-        if (row.firstPid == 0) {
+        if (row.firstPid == 0&&'${bisComprehensiveAssets}' == 'true') {
             companyStatus();
         } else {
             backStatus();

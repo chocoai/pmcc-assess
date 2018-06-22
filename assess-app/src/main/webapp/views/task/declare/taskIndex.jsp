@@ -15,7 +15,7 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--动态表单-->
             <input type="hidden" id="id" name="id" value="0">
-            <%@include file="/views/share/tools/dynamic_form_apply.jsp" %>
+            <%@include file="/views/task/declare/module/declareInfo.jsp" %>
 
             <div class="x_panel">
                 <div class="x_title collapse-link">

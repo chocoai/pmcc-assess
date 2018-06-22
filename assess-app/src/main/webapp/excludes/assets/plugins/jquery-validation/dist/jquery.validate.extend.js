@@ -79,11 +79,17 @@ $.validator.setDefaults({
         ///<summary>
         /// 清空验证消息
         ///</summary>
-        "clearAll": function () {
+        "clearAll": function (excludeArray) {
             this.clearValid();
-            //this[0].reset();
+            var excludeString='';
+			if(excludeArray){
+				$.each(excludeArray,function (i,item) {
+                    excludeString+='[name="'+item+'"]';
+                })
+			}
             this.find(':input')
                 .not(':button,:submit,:reset,:checkbox')   //将myform表单中input元素type为button、submit、reset、hidden排除
+				.not(excludeString)
                 .val('') ; //将input元素的value设为空值
 
             this.find(':checkbox') .removeAttr('checked');

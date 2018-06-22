@@ -42,6 +42,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -669,7 +670,8 @@ public class ProjectPlanService {
         ProjectPlan projectPlan = projectPlanDao.getProjectplanById(planId);
         projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getName());
         projectPlan.setFinishDate(new Date());
-        if (projectPlan.getStageSort() == 1) {
+        int currStageSort = projectPlan.getStageSort().intValue();
+        if (currStageSort == 1) {
             projectPlan.setProjectPlanStart(new Date());
             projectPlan.setProjectPlanEnd(new Date());
         }
@@ -689,16 +691,14 @@ public class ProjectPlanService {
         //取当前同级
 
         List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
-            return (o.getStageSort().equals(projectPlan.getStageSort()) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE
+            return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE
                     .getName()));
         });
         if (CollectionUtils.isEmpty(filter))//当前同级阶段都完成任务，则进入下一阶段
         {
-            List<ProjectPlan> filter1 = LangUtils.filter(projectPlans, o -> {
-                return o.getStageSort().intValue() == projectPlan.getStageSort().intValue() + 1;
-            });
-            if (CollectionUtils.isNotEmpty(filter1)) {
-                for (ProjectPlan item : filter1) {
+            List<ProjectPlan> nextProjectPlans = getNextProjectPlans(currStageSort, projectPlans);
+            if (CollectionUtils.isNotEmpty(nextProjectPlans)) {
+                for (ProjectPlan item : nextProjectPlans) {
                     item.setProjectStatus(ProjectStatusEnum.PLAN.getName());
                     projectPlanDao.updateProjectPlan(item);
                     //取相应计划的责任人，并分配计划任务
@@ -728,6 +728,37 @@ public class ProjectPlanService {
                 }
             }
         }
+    }
+
+    /**
+     * 获取下个阶段
+     * @param currStageSort
+     * @param projectPlans
+     * @return
+     */
+    private List<ProjectPlan> getNextProjectPlans(int currStageSort, List<ProjectPlan> projectPlans) {
+        Ordering<Integer> orderingBig = new Ordering<Integer>() {
+            @Override
+            public int compare(Integer left, Integer right) {
+                return left - right;
+            }
+        };
+        List<Integer> stageSortList = LangUtils.transform(projectPlans, p -> p.getStageSort());
+        stageSortList = orderingBig.sortedCopy(stageSortList);
+        Integer nextStageSort = 0;
+        for (Integer integer : stageSortList) {
+            if (integer.intValue() > currStageSort) {
+                nextStageSort = integer.intValue();
+                break;
+            }
+        }
+        List<ProjectPlan> nextStagePlanList = Lists.newArrayList();
+        for (ProjectPlan plan : projectPlans) {
+            if(nextStageSort.equals(plan.getStageSort().intValue())){
+                nextStagePlanList.add(plan);
+            }
+        }
+        return nextStagePlanList;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.project.*;
@@ -63,21 +64,14 @@ public class ProjectPlanController {
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId());
-        if (CollectionUtils.isNotEmpty(projectPhases)) {
-            projectPhases = LangUtils.filter(projectPhases, o -> {
-                return o.getWorkStageId() == projectPlan.getWorkStageId();
-            });
-        } else {
-            projectPhases = new ArrayList<>();
-        }
+
 
         String viewUrl = "projectPlanAssist";
         if (StringUtils.isNotBlank(projectWorkStage.getStageForm())) {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectPlanInterface bean = (ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.applyView(projectPlan);
         modelAndView.addObject("panelTitle", projectWorkStage.getWorkStageName());
         modelAndView.addObject("projectPlan", projectPlan);
@@ -111,11 +105,15 @@ public class ProjectPlanController {
         modelAndView.addObject("boxprocessIcon", "fa-list-alt");
         modelAndView.addObject("currentStepName", "计划编制");
         modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
-        modelAndView.addObject("projectPhases", projectPhases);
+
         modelAndView.addObject("projectId", projectPlan.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectInfo",projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId())));
 
+
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfoVo);
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("projectPhases", projectPhases);
         List<KeyValueDto> keyValueDtos = new ArrayList<>();
         for (ProjectPlanSetEnum item : ProjectPlanSetEnum.values()) {
             KeyValueDto keyValueDto = new KeyValueDto();
@@ -245,7 +243,7 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectPlanInterface bean = (ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.approvalView(projectPlan, taskId, boxId, agentUserAccount);
 
         modelAndView.addObject("projectPlan", projectPlan);
@@ -269,7 +267,7 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectPlanInterface bean = (ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
 
         ModelAndView modelAndView = bean.approvalEdit(projectPlan, taskId, boxId, agentUserAccount);
         modelAndView.addObject("detailsPlan", "0");//是否下级可以调整计划
@@ -280,18 +278,26 @@ public class ProjectPlanController {
         modelAndView.addObject("planId", projectPlan.getId());
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "返回修改");
+        ProjectInfoVo projectInfo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfo);
 
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfo);
+        modelAndView.addObject("projectPhases", projectPhases);
+        return modelAndView;
+    }
+
+    private List<ProjectPhase> getProjectPhases(ProjectPlan projectPlan, ProjectInfoVo projectInfo) {
         List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId());
         if (CollectionUtils.isNotEmpty(projectPhases)) {
             projectPhases = LangUtils.filter(projectPhases, o -> {
                 return o.getWorkStageId() == projectPlan.getWorkStageId();
             });
         } else {
-            projectPhases = new ArrayList<>();
+            //获取该类别的默认事项
+            projectPhases = projectPhaseService.getDefaultProjectPhaseByTypeId(projectInfo.getProjectTypeId());
+            projectPhases = CollectionUtils.isEmpty(projectPhases) ? new ArrayList<>() : projectPhases;
         }
-        modelAndView.addObject("projectPhases", projectPhases);
-        return modelAndView;
+        return projectPhases;
     }
 
     @RequestMapping(value = "/planDetails", name = "项目计划详情")
@@ -305,7 +311,7 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectPlanInterface bean = (ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.detailsView(projectPlan, boxId);
         modelAndView.addObject("projectPlan", projectPlan);
         modelAndView.addObject("projectId", projectPlan.getProjectId());
@@ -329,7 +335,7 @@ public class ProjectPlanController {
             //如果不为空，则进入相应的计划页面
             viewUrl = projectWorkStage.getStageForm();
         }
-        ProjectPlanInterface bean=(ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
+        ProjectPlanInterface bean = (ProjectPlanInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.detailsView(projectPlan, 0);
         modelAndView.addObject("projectPlan", projectPlan);
         modelAndView.addObject("projectId", projectPlan.getProjectId());
@@ -374,7 +380,7 @@ public class ProjectPlanController {
     @RequestMapping(value = "/copyPlanDetails", name = "拷贝计划详细内容", method = RequestMethod.POST)
     public HttpResult copyPlanDetails(Integer planDetailsId) {
         try {
-            projectPlanService.copyPlanDetails(planDetailsId,true);
+            projectPlanService.copyPlanDetails(planDetailsId, true);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

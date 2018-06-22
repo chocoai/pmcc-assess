@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.ProjectPhaseDao;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
@@ -35,6 +37,8 @@ public class ProjectPhaseService {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     public void updateProjectPhaseById(ProjectPhase projectPhase) {
         processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
@@ -122,5 +126,16 @@ public class ProjectPhaseService {
             logger.error("getCacheProjectPhaseByCategoryId error", e);
             return projectPhaseDao.getProjectPhaseByCategoryId(categoryId);
         }
+    }
+
+    /**
+     * 获取类别下的默认事项
+     * @param typeId
+     * @return
+     */
+    public List<ProjectPhase> getDefaultProjectPhaseByTypeId(Integer typeId) {
+        BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(typeId);
+        if(defaultCategory==null) return null;
+        return getCacheProjectPhaseByCategoryId(defaultCategory.getId());
     }
 }

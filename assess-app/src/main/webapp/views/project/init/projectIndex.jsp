@@ -217,15 +217,12 @@
                                 <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="hidden" id="userAccountManagerID" name="userAccountManager">
-                                        <input type="hidden" name="projectMemberId"
-                                               value="${projectInfo.projectMemberVo.id}">
                                         <input type="hidden" name="userAccountManager"
                                                value="${projectInfo.projectMemberVo.userAccountManager}">
                                         <input type="text" class="form-control" readonly="readonly"
                                                value="${projectInfo.projectMemberVo.userAccountManagerName}"
                                                required="required" onclick="selectUserAccountManager();"
-                                               id="userAccountManager" maxlength="200">
+                                               id="userAccountManagerName" maxlength="200">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
@@ -266,7 +263,8 @@
                                 <div class="col-sm-11">
                                     <input type="hidden" id="userAccountMember" name="userAccountMember"
                                            value="${projectInfo.projectMemberVo.userAccountMember}">
-                                    <input type="text" id="userAccountMemberID" class="form-control" readonly="readonly"
+                                    <input type="text" id="userAccountMemberName" class="form-control"
+                                           readonly="readonly"
                                            onclick="selectUserAccountMember();"
                                            value="${projectInfo.projectMemberVo.userAccountMemberName}">
                                 </div>
@@ -1328,41 +1326,45 @@
     function selectUserAccountManager() {
         erpEmployee.select({
             onSelected: function (data) {
-                $("#userAccountManager").val(data.name);
-                $("#userAccountManagerID").val(data.account);
+                $("#userAccountManagerName").val(data.name);
+                $("#userAccountManager").val(data.account);
             }
         });
     }
 
     // 项目成员
     function selectUserAccountMember() {
-        var userAccountManagerID = $("#userAccountManagerID").val();
-        if (userAccountManagerID != null && userAccountManagerID != '') {
-            erpEmployee.select({
-                onSelected: function (data) {
-                    var userAccountMemberID = $("#userAccountMemberID").val();
-                    if (userAccountMemberID == null && userAccountMemberID == '') {
-                        var v = data.account;
-                        var v1 = data.name;
-                        $("#userAccountMember").val(v);
-                        $("#userAccountMemberID").val(v1);
-                    } else {
-                        if ($("#userAccountMember").val() == '') {
-                            $("#userAccountMember").val(data.account);
-                            $("#userAccountMemberID").val(data.name);
-                        } else {
-                            var v = $("#userAccountMember").val() + ">" + data.account;
-                            var v1 = $("#userAccountMemberID").val() + ">" + data.name;
-                            $("#userAccountMember").val(v);
-                            $("#userAccountMemberID").val(v1);
-                        }
-                    }
-                },
-                multi: true
-            });
-        }
+        var value = formatToUnderline($("#userAccountMemberName").val(), $("#userAccountMember").val());
+        erpEmployee.select({
+            multi: true,
+            value: value,
+            onSelected: function (data) {
+                $("#userAccountMember").val(data.account);
+                $("#userAccountMemberName").val(data.name);
+            }
+        });
     }
 
+    /**
+     * 格式化字符串
+     * @param key
+     * @param value
+     */
+    function formatKeyValueString(key, value, separator) {
+        if (!key) return "";
+        if (!separator) {
+            separator = ',';
+        }
+        var keyArray = key.split(separator);
+        if (value) {
+            var valueArray = value.split(separator);
+        }
+        var resultStr = '';
+        $.each(keyArray, function (i, item) {
+            resultStr += item + '_' + valueArray[i]+',';
+        })
+        return resultStr.replace(/,$/,'');
+    }
 
     //选项框  自动校验并且填写
     $(document).ready(function () {

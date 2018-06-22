@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataDeclareFormService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -49,9 +47,9 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DataDeclareFormService dataDeclareFormService;
-    @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -153,13 +151,12 @@ public class ProjectPlanDetailsService {
                             return keyValueDto;
                         });
                         projectPlanDetailsVo.setTasks(transform);
-
                     }
                 }
                 if (item.getDeclareFormId() != null && item.getDeclareFormId() > 0) {
-                    DataDeclareForm declareForm = dataDeclareFormService.getCacheDataDeclareForm(item.getDeclareFormId());
-                    if (declareForm != null) {
-                        projectPlanDetailsVo.setDeclareFormName(declareForm.getName());
+                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getDeclareFormId());
+                    if (projectClassify != null) {
+                        projectPlanDetailsVo.setDeclareFormName(projectClassify.getName());
                     }
                 }
                 projectPlanDetailsVos.add(projectPlanDetailsVo);

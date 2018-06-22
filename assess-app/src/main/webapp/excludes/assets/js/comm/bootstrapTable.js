@@ -2,6 +2,12 @@
  * Created by Calvin on 2017/7/18.
  */
 function TableInit(table, url, cols, data, btParams, isCheck, isOrder) {
+    var tableObj;
+    if (table instanceof jQuery) /**我只想传一个table对象，不想传id(id太麻烦，一改到处需要改)**/{
+        tableObj = table;
+    } else {
+        tableObj = $("#" + table);
+    }
     data = (data === undefined) ? {} : data;
     if (cols) {
         if (isOrder != false) {
@@ -10,7 +16,9 @@ function TableInit(table, url, cols, data, btParams, isCheck, isOrder) {
                 title: '序号',
                 width: '50px',
                 formatter: function (value, row, index) {
-                    return index + 1;
+                    var page = tableObj.bootstrapTable("getPage");
+                    return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    // return index + 1;
                 }
             });
         }
@@ -37,7 +45,7 @@ function TableInit(table, url, cols, data, btParams, isCheck, isOrder) {
         contentType: "application/json;charset=UTF-8",
         toolbar: '#toolbar', //工具按钮用哪个容器
         searchOnEnterKey: true, //回车再出发搜索
-        icons:{
+        icons: {
             refresh: 'glyphicon-refresh clip-search-3'
         },
         queryParams: function (params) {
@@ -50,12 +58,8 @@ function TableInit(table, url, cols, data, btParams, isCheck, isOrder) {
     };
 
     defaluts = $.extend({}, defaluts, btParams);
+    tableObj.bootstrapTable(defaluts);
 
-    if (table instanceof jQuery) /**我只想传一个table对象，不想传id(id太麻烦，一改到处需要改)**/{
-        table.bootstrapTable(defaluts);
-    } else {
-        $("#" + table).bootstrapTable(defaluts);
-    }
 
 }
 
@@ -124,7 +128,10 @@ function TableClient(table, cols, rows, config, isCheck) {
         pagination: true,
         sidePagination: "client",
         search: true,
-        data: rows
+        data: rows,
+        formatLoadingMessage: function () {
+            return ""; //客户端分页不显示提示
+        }
     };
     defaluts = $.extend({}, defaluts, config);
 

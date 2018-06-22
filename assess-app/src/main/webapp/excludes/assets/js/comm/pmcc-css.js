@@ -14,6 +14,7 @@ document.write('<link href="/vendors/datatables.net-buttons-bs/css/buttons.boots
 document.write('<link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">');
 document.write('<link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">');
 document.write('<link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">');
+document.write('<link rel="stylesheet" href="/assets/plugins/viewer/viewer.css">');
 document.write('<link rel="stylesheet" href="/assets/plugins/Uploadifive/uploadifive.css">');
 document.write('<link href="/assets/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet">');
 document.write('<link rel="stylesheet" href="/assets/plugins/select2/select2.css">');
