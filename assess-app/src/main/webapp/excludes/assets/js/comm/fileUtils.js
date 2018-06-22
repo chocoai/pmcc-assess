@@ -64,7 +64,7 @@
             var defaluts = {
                 multi: true,
                 queueSizeLimit: 5,
-                fileSizeLimit: "50MB",
+                fileSizeLimit: "200MB",
                 buttonText: "上传附件",
                 auto: false,
                 fileObjName: 'filesData',

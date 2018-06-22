@@ -509,7 +509,7 @@ function commitApply() {
     data["projectId"] = $("#projectId").val();
     Loading.progressShow();
     var url = getContextPath() + "/ProjectPlan/saveProjectPlan";
-    if ("${processInsId}" != "0") {
+    if ($("#processInsId").val() != "0") {
         url = getContextPath() + "/ProjectPlan/submitPlanEdit";
     }
     $.ajax({

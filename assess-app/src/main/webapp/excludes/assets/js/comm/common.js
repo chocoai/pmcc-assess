@@ -44,10 +44,10 @@
                             } else {
                                 formField.val(value);
                             }
-                        } else if (fieldTagName == "label") {
+                        } else if (fieldTagName == "label" || fieldTagName == "a") {
                             formField.html(value);
                         } else {
-                            formField.html(value);
+                            formField.val(value);
                         }
                     }
                     //图片链接处理form.find("img[fieldata=img_url]")
@@ -75,7 +75,7 @@ function getContextPath() {
 
     var pathName = document.location.pathname;
     var index = pathName.substr(1).indexOf("/");
-    var result = pathName.substr(0,index+1);
+    var result = pathName.substr(0, index + 1);
     return result;
 }
 
@@ -192,7 +192,7 @@ function formSerializeArray(obj) {
     var queryParams = obj.serializeArray();
     $.each(queryParams, function (i, field) {
         if (field.value != undefined) {
-            if (ret[field.name] != undefined) {
+            if (ret[field.name] != undefined && ret[field.name] != '') {
                 ret[field.name] = ret[field.name] + "," + field.value;
             } else {
                 ret[field.name] = field.value;
@@ -217,20 +217,20 @@ function formAddParam(formId, params) {
 
 //loading
 var Loading = {
-    infoTextObj: $('#loading-progress-info-text'),
     progressShow: function (text) {
-        var progressModal = $('#loading-progress');
+        var progressModal = $('#loadingModal');
         if (text) {
-            Loading.infoTextObj.text(text);
+            $('#loading-progress-info-text').text(text);
         }
-        progressModal.modal({backdrop: 'static', keyboard: false});
+        progressModal.modal();
     },
     progressHide: function () {
-        var progressModal = $('#loading-progress');
-        Loading.infoTextObj.text("");
+        var progressModal = $('#loadingModal');
+        $('#loading-progress-info-text').text("");
         progressModal.modal('hide');
     }
-}
+};
+
 /**
  * 关闭面板
  * @param item
@@ -261,7 +261,6 @@ function getpinyin(cnWord) {
     })
     return enWord;
 }
-
 
 
 /**
@@ -489,7 +488,7 @@ function loadSelectOpationHtml(url, data, fn) {
 function loadDataDicByPid(pid, fn) {
     if (pid) {
         $.ajax({
-            url:getContextPath()+ "/sysdatadic/getCacheDataDicListByPid",
+            url: getContextPath() + "/sysdatadic/getCacheDataDicListByPid",
             type: "get",
             dataType: "json",
             data: {
@@ -512,8 +511,6 @@ function loadDataDicByPid(pid, fn) {
 }
 
 
-
-
 /**
  * 根据上级编号取得相应的下级基础数据列表,并返回组成的HTML以及返回的数据
  * @param pid
@@ -522,7 +519,7 @@ function loadDataDicByPid(pid, fn) {
 function loadDataDicByPidExtend(pid, subId, fn) {
     if (pid) {
         $.ajax({
-            url: getContextPath()+"/sysdatadic/getCacheDataDicListByPid",
+            url: getContextPath() + "/sysdatadic/getCacheDataDicListByPid",
             type: "get",
             dataType: "json",
             data: {
@@ -556,7 +553,7 @@ function loadDataDicByPidExtend(pid, subId, fn) {
 function loadDataDicByFieldNameExtend(fieldName, subId, fn) {
     if (fieldName) {
         $.ajax({
-            url: getContextPath()+"/BidBaseDataDic/getDataDicListByFieldName",
+            url: getContextPath() + "/BidBaseDataDic/getDataDicListByFieldName",
             type: "get",
             dataType: "json",
             data: {
@@ -618,7 +615,7 @@ function sortObjectArray(objArr, keyArr, type) {
             }
             if (objA[key] > objB[key]) {
                 return order;
-            } else if (objA[key] < objB[key]){
+            } else if (objA[key] < objB[key]) {
                 return 0 - order;
             } else {
                 return 0;
@@ -626,4 +623,25 @@ function sortObjectArray(objArr, keyArr, type) {
         })
     }
     return objArr;
+}
+
+/**
+ * 格式化下划线
+ * @param key
+ * @param value
+ */
+function formatToUnderline(var1, var2, separator) {
+    if (!var1) return "";
+    if (!separator) {
+        separator = ',';
+    }
+    var keyArray = var1.split(separator);
+    if (var2) {
+        var valueArray = var2.split(separator);
+    }
+    var resultStr = '';
+    $.each(keyArray, function (i, item) {
+        resultStr += item + '_' + valueArray[i]+',';
+    })
+    return resultStr.replace(/,$/,'');
 }

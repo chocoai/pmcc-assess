@@ -23,7 +23,7 @@
         html += '<div class="modal-dialog modal-lg">';
         html += '<div class="modal-content">';
         html += '<div class="modal-header">';
-        html += '<h4 class="modal-title">部门选择</h4>';
+        html += '<h3 class="modal-title">部门选择</h3>';
         html += '</div>';
         html += '<div class="modal-body">';
         html += '<div class="row">';
@@ -47,9 +47,6 @@
         $("#select_department_modal").find(".select_deparment_modal_ok").off('click').on('click', function () {
             if (that.defaults.onSelected) {
                 var nodes = $('#select_department_tree').treeview('getSelected');
-                if (!nodes) {
-                    Alert("请选择部门");
-                }
                 that.defaults.onSelected(nodes);
             }
             $("#select_department_modal").modal("hide");

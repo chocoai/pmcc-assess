@@ -1,16 +1,11 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.BaseProcess;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.output.BaseProcessFormVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseFormService;
-import com.copower.pmcc.assess.service.base.BaseProcessService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.assess.service.base.*;
 import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
 import com.copower.pmcc.assess.service.project.DeclareInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -49,6 +44,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private DeclareInfoService declareInfoService;
     @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
 
@@ -57,16 +54,8 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskIndex", "", 0, "0", "");
         //根据申报类型 确定申报表单
         Integer declareFormId = projectPlanDetails.getDeclareFormId();
-        BaseDataDic baseDataDic = baseDataDicService.getDataDicById(declareFormId);
-        BaseProcess baseProcess = baseProcessService.getProcessByName(baseDataDic.getItemKey());
-        List<BaseProcessFormVo> hrProcessForms = baseProcessService.getProcessFormVos(baseProcess.getName());
-        modelAndView.addObject("hrProcessForms", hrProcessForms);
-        Integer tableId = 0;
-
-        Map<String, Object> primaryData = Maps.newHashMap();
-        primaryData.put("primaryId", tableId);
-        primaryData.put("primaryTableName", baseProcess.getTableName());
-        modelAndView.addObject("primaryData", primaryData);
+        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareFormId);
+        BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
         return modelAndView;
     }
 

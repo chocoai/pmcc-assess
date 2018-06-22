@@ -1334,8 +1334,7 @@
 
     // 项目成员
     function selectUserAccountMember() {
-        var value = formatKeyValueString($("#userAccountMember").val(), $("#userAccountMemberName").val());
-        alert(value);
+        var value = formatToUnderline($("#userAccountMemberName").val(), $("#userAccountMember").val());
         erpEmployee.select({
             multi: true,
             value: value,
