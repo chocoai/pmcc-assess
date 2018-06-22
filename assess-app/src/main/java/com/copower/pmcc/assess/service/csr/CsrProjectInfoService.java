@@ -978,7 +978,8 @@ public class CsrProjectInfoService {
             attachment.setFieldsName("report");
             try {
                 List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1 where sjhth='" + sjhth + "'");
-                attachment.setFileName(String.valueOf(mapList.get(0).get("khxm") + "报告"));
+                attachment.setFileName(String.format("%s%s-%s号%s的报告", String.valueOf(mapList.get(0).get("role")), String.valueOf(mapList.get(0).get("version")), String.valueOf(mapList.get(0).get
+                        ("number")), String.valueOf(mapList.get(0).get("khxm"))));
                 //templateSetService 取报告模板
 
                 //
@@ -987,7 +988,7 @@ public class CsrProjectInfoService {
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
                 Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
 
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
+                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment, attachment.getFileName());
                 String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
                 String localFileDir = baseAttachmentService.createTempBasePath();
                 String localFullPath = localFileDir + File.separator + loaclFileName;
@@ -1004,7 +1005,7 @@ public class CsrProjectInfoService {
                             stringMap.put("${jzfxdywxh}", "抵押物" + k);
                         } else {
                             stringMap.put("${dywxh}", "抵押物");
-                            stringMap.put("${jzfxdywxh}", "");
+                            stringMap.put("${jzfxdywxh}", "抵押物");
                         }
                         AsposeUtils.replaceText(local, stringMap);
 
@@ -1021,8 +1022,6 @@ public class CsrProjectInfoService {
                 if (CollectionUtils.isNotEmpty(mapList)) {
                     try {
                         Map<String, String> stringMap = toMapString(mapList.get(0));
-                        stringMap.put("${number}", String.valueOf(i));
-
                         AsposeUtils.replaceText(localFullPath, stringMap);
                     } catch (Exception e) {
                         e.printStackTrace();

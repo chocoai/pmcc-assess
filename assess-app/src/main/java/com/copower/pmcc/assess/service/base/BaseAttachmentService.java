@@ -89,6 +89,10 @@ public class BaseAttachmentService {
         return UUID.randomUUID().toString().replace("-", "") + DateUtils.formatNowToYMDHMS() + "." + suffix.replaceAll("^\\.", "");
     }
 
+    public String createNoRepeatFileName(String newFielsName, String suffix) {
+        return newFielsName + DateUtils.formatNowToYMDHMS() + "." + suffix.replaceAll("^\\.", "");
+    }
+
     /**
      * 创建文件存放目录
      *
@@ -223,17 +227,17 @@ public class BaseAttachmentService {
     }
 
     /**
-     *  @time zch 2018-05-09
      * @param table_id
      * @param fields_name
      * @return
+     * @time zch 2018-05-09
      */
-    public List<BaseAttachment> getByField_tableId(int table_id,String fields_name,String tableName){
-        return baseAttachmentDao.getByField_tableId(table_id,fields_name,tableName);
+    public List<BaseAttachment> getByField_tableId(int table_id, String fields_name, String tableName) {
+        return baseAttachmentDao.getByField_tableId(table_id, fields_name, tableName);
     }
 
     public List<BaseAttachment> getAttachmentList(List<Integer> tableIds, BaseAttachment sysAttachment) {
-        return baseAttachmentDao.getAttachmentList(tableIds,sysAttachment);
+        return baseAttachmentDao.getAttachmentList(tableIds, sysAttachment);
     }
 
     public List<BaseAttachment> getAttachmentList(BaseAttachment sysAttachment) {
@@ -324,15 +328,14 @@ public class BaseAttachmentService {
     }
 
     /**
-     *
      * @param id
      * @param fileNameAndPath 传入临时地址和文件名的组合path
      * @throws Exception
      */
-    public void downloadFileFromServerV(Integer id, String fileNameAndPath) throws Exception{
+    public void downloadFileFromServerV(Integer id, String fileNameAndPath) throws Exception {
         BaseAttachment attachment = baseAttachmentDao.getAttachmentById(id);
-        String serverNameAndPath = attachment.getFilePath()+attachment.getFtpFilesName();
-        org.apache.commons.io.FileUtils.copyFile(new File(fileNameAndPath),new FileOutputStream(new File(serverNameAndPath)));
+        String serverNameAndPath = attachment.getFilePath() + attachment.getFtpFilesName();
+        org.apache.commons.io.FileUtils.copyFile(new File(fileNameAndPath), new FileOutputStream(new File(serverNameAndPath)));
         if (attachment == null) {
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
         }
@@ -488,7 +491,6 @@ public class BaseAttachmentService {
         return viewUrl;
     }
 
-
     /**
      * 原文件存档并更新文件编辑者
      *
@@ -597,6 +599,20 @@ public class BaseAttachmentService {
         return attachment;
     }
 
+    public BaseAttachment copyFtpAttachment(Integer attachmentId, BaseAttachment baseAttachment, String newFilesName) throws Exception {
+        BaseAttachment attachment = baseAttachmentDao.getAttachmentById(attachmentId);
+        if (attachment == null)
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        String filePath = createFTPBasePath(COPY_UPLOAD_PATH + "/" + DateUtils.formatNowToYMD() + "/" + commonService.thisUserAccount());
+        String fileName = createNoRepeatFileName(newFilesName, attachment.getFileExtension());
+        ftpUtilsExtense.copyFile(attachment.getFtpFilesName(), attachment.getFilePath(), fileName, filePath);
+        BeanUtils.copyProperties(baseAttachment, attachment, ReflectUtils.getNullPropertyNames(baseAttachment));
+        attachment.setFtpFilesName(fileName);
+        attachment.setFilePath(filePath);
+        baseAttachmentDao.addAttachment(attachment);
+        return attachment;
+    }
+
     /**
      * 获取附件显示html
      *
@@ -606,13 +622,14 @@ public class BaseAttachmentService {
     public String getViewHtml(BaseAttachment baseAttachment) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(String.format("<a><i class=\"fa fa-download\" onclick=\"FileUtils.downAttachments(%s)\" style=\"margin-left: 15px;font-size: 15px;\"></i></a> ", baseAttachment.getId()));
-        stringBuilder.append(String.format("<a onclick=\"FileUtils.showAttachment(%s,'%s')\" class=\"fileupload-preview\">%s(%s)</a><br>",
-                baseAttachment.getId(), baseAttachment.getFileExtension(), baseAttachment.getFileName(), baseAttachment.getFileSize()));
+        stringBuilder.append(String.format("<a onclick=\"FileUtils.showAttachment(%s,'%s')\" class=\"fileupload-preview\">%s(%s)</a><br>", baseAttachment.getId(), baseAttachment.getFileExtension(),
+                baseAttachment.getFileName(), baseAttachment.getFileSize()));
         return stringBuilder.toString();
     }
 
     /**
      * 下载ftp附件到本地
+     *
      * @param attachmentId
      * @return
      * @throws Exception
