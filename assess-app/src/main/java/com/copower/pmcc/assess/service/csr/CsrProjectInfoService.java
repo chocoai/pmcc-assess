@@ -1066,9 +1066,14 @@ public class CsrProjectInfoService {
                 case "fxjzr":
                 case "bgyxq": {
                     if (StringUtils.isNotBlank(value)) {
-                        value = value.replaceAll("/", "-");
-                        String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
-                        value = format;
+
+                        try {
+                            value = value.replaceAll("/", "-");
+                            String format = DateUtils.format(DateUtils.parse(value), DateUtils.DATE_CHINESE_PATTERN);
+                            value = format;
+                        } catch (Exception e) {
+
+                        }
                     }
                     break;
                 }
