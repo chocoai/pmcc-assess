@@ -100,8 +100,8 @@ public class FormConfigureService {
         return baseFormModule;
     }
 
-    public BaseFormModule getBaseFormModuleByName(String name) {
-        return hrBaseFormDao.getBaseFormModuleByName(name);
+    public BaseFormModule getBaseFormModuleById(Integer id) {
+        return hrBaseFormDao.getBaseFormModule(id);
     }
 
 
@@ -403,11 +403,11 @@ public class FormConfigureService {
                     //根据参数处理一下sql
                     String text = new String();
                     viewSql = getRegexSql(map, "#\\{(.*?)\\}", viewSql);
-                    if (StringUtils.isNotBlank(viewSql)){
+                    if (StringUtils.isNotBlank(viewSql)) {
                         try {
                             text = Boolean.TRUE == o.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
                         } catch (Exception e) {
-                           logger.error(e.getMessage());
+                            logger.error(e.getMessage());
                         }
                     }
 
@@ -457,6 +457,7 @@ public class FormConfigureService {
                     FormConfigureFieldVo fieldVo = new FormConfigureFieldVo();
                     fieldVo.setName(Boolean.TRUE == listField.getBisJson() ? listField.getJsonName() : listField.getName());
                     fieldVo.setTitle(listField.getDisplayName());
+                    fieldVo.setWidth(listField.getWidth() == null ? 3 : listField.getWidth());
                     if (StringUtils.isNotBlank(listField.getDataViewSql())) {
                         fieldVo.setName(fieldVo.getName() + "_name");
                     }
@@ -580,7 +581,7 @@ public class FormConfigureService {
      * @return
      */
     public List<Map<String, Object>> getObjectList(String sql, Integer pageIndex, Integer pageSize) {
-        return formConfigureDao.getObjectList(sql,pageIndex,pageSize);
+        return formConfigureDao.getObjectList(sql, pageIndex, pageSize);
     }
 
     /**
@@ -764,7 +765,7 @@ public class FormConfigureService {
                                 String viewSql = item.getDataViewSql();
                                 viewSql = getRegexSql(map, "#\\{(.*?)\\}", viewSql);
                                 String text = new String();
-                                if(StringUtils.isNotBlank(viewSql)){
+                                if (StringUtils.isNotBlank(viewSql)) {
                                     try {
                                         text = Boolean.TRUE == item.getBisCacheDataView() ? getCacheText(viewSql) : formConfigureDao.getText(viewSql);
                                     } catch (Exception e) {
@@ -1029,7 +1030,7 @@ public class FormConfigureService {
      */
     public String getModuleJsonString(Integer moduleId, Integer tableId) {
         BaseFormModule baseFormModule = hrBaseFormDao.getBaseFormModule(moduleId);
-        if(baseFormModule!=null){
+        if (baseFormModule != null) {
             Map<String, Object> objectMap = formConfigureDao.getObjectSingle(baseFormModule.getTableName(), tableId);//
             return mapToJsonString(objectMap);
         }

@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.CustomTableTypeDto;
@@ -15,6 +13,7 @@ import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class FormConfigureController {
     @Autowired
     private FormConfigureService formConfigureService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -237,7 +236,7 @@ public class FormConfigureController {
      */
     @ResponseBody
     @RequestMapping(value = "/getFieldJsonString", method = RequestMethod.POST)
-    public HttpResult getFieldJsonString(Integer formModuleId,Integer tableId,String tableName) {
+    public HttpResult getFieldJsonString(Integer formModuleId, Integer tableId, String tableName) {
         try {
             List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(formModuleId);
             return HttpResult.newCorrectResult(fieldVos);
@@ -298,21 +297,22 @@ public class FormConfigureController {
 
 
     /**
-     * 获取字典中的动态表单信息
+     * 获取项目分类中的动态表单信息
      *
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getDataDicFormInfo", method = RequestMethod.POST)
-    public HttpResult getDataDicFormInfo(Integer baseDataDicId,Integer tableId) {
+    @RequestMapping(value = "/getProjectClassifyFormInfo", method = RequestMethod.POST)
+    public HttpResult getProjectClassifyFormInfo(Integer id) {
         try {
-            BaseFormModuleVo baseFormModuleVo=new BaseFormModuleVo();
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(baseDataDicId);
-            BaseFormModule baseFormModule = formConfigureService.getBaseFormModuleByName(baseDataDic.getItemKey());
-            baseFormModuleVo.setId(baseFormModule.getId());
-            baseFormModuleVo.setTableId(0);
-            baseFormModuleVo.setTableName(baseFormModule.getTableName());
-            baseFormModuleVo.setFieldVos(formConfigureService.getListFieldsShow(baseFormModule.getId()));
+            BaseFormModuleVo baseFormModuleVo = new BaseFormModuleVo();
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(id);
+            if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
+                BaseFormModule baseFormModule = formConfigureService.getBaseFormModuleById(baseProjectClassify.getFormModuleId());
+                BeanUtils.copyProperties(baseFormModule,baseFormModuleVo);
+                baseFormModuleVo.setTableId(0);
+                baseFormModuleVo.setFieldVos(formConfigureService.getListFieldsShow(baseFormModule.getId()));
+            }
             return HttpResult.newCorrectResult(baseFormModuleVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

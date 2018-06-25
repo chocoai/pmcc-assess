@@ -10,7 +10,7 @@
     var beforeAddFunction = {};//定义新增按钮触发前的全局变量
     var beforeEditFunction = {};//定义编辑按钮触发前的全局变量
 </script>
-<button type="button"  class="btn btn-primary"
+<button type="button" class="btn btn-primary"
         onclick='selectDeclareForm()'> 选择申报表
 </button>
 <div id="dyncmicContent"></div>
@@ -20,14 +20,20 @@
     <div class="x_panel" id="panel_{classifyId}">
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                <li>
+                    <a class="close-link" onclick="delDeclareUserClassify(this,'{classifyId}');"><i class="fa fa-close"></i></a>
+                </li>
             </ul>
             <h2>{title}</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
-            <button type="button" data-toggle="modal" href="#modal_detail" class="btn btn-success"
-                    onclick='addDynamicData("{tableName}",$(this).find("form"),$(this).find(".modal"))'> 新增
+            <input type="hidden" name="tableName" value="{tableName}">
+            <input type="hidden" name="formModuleId" value="{formModuleId}">
+            <input type="hidden" name="foreignKeyName" value="{foreignKeyName}">
+            <input type="hidden" name="foreignKeyValue" value="{foreignKeyValue}">
+            <button type="button" data-toggle="modal" class="btn btn-success"
+                    onclick='addDynamicData(this,"{tableName}")'> 新增
             </button>
             <table class="table table-bordered">
             </table>
@@ -43,7 +49,7 @@
                                     aria-label='Close'><span
                                     aria-hidden='true'>&times;</span>
                             </button>
-                            <h4 class='modal-title'>{title}管理</h4>
+                            <h3 class='modal-title'>{title}管理</h3>
                         </div>
                         <form class="form-horizontal">
                             <input type='hidden' name='id' value="0">
@@ -63,7 +69,8 @@
                             <button type='button' data-dismiss='modal'
                                     class='btn btn-default'>取消
                             </button>
-                            <button type='button' class='btn btn-primary save_custom_model'>
+                            <button type='button' class='btn btn-primary' data-classifyId="{classifyId}"
+                                    onclick="saveDynamicData(this);">
                                 保存
                             </button>
                         </div>
@@ -73,10 +80,7 @@
         </div>
     </div>
 </script>
-<input type="hidden" id="jsonValue" value='${jsonValue}'>
-<input type="hidden" id="jsonValue" value='${fieldList}'>
 <script type="text/javascript">
-    var globalContainer = {};//全局容器
     $(function () {
         initDynamicData();
     })
@@ -88,7 +92,34 @@
             pid: "${empty projectInfo.projectCategoryId?projectInfo.projectTypeId:projectInfo.projectCategoryId}",
             filterKey: [AssessProjectClassifyKey.explore, AssessProjectClassifyKey.case],
             onSelected: function (nodes) {
-
+                //选中之后，如果该申报表单已存在不做处理，否则添加申报表单
+                var node = nodes[0];
+                var panelElement = $("#panel_" + node.id);
+                if (panelElement.length > 0) {
+                    return;//申报类型元素已存在
+                }
+                var options = {};
+                options.classifyId = node.id;
+                options.title = node.name;
+                //需从后台获取
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/formConfigure/getProjectClassifyFormInfo",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: node.id},
+                    success: function (result) {
+                        if (result.ret) {
+                            options.formModuleId = result.data.id;
+                            options.foreignKeyName = result.data.foreignKeyName;
+                            options.foreignKeyValue = '${projectPlanDetails.id}';
+                            options.tableName = result.data.tableName;
+                            options.jsonValue = '';//需填写的表单字段
+                            options.fieldList = JSON.stringify(result.data.fieldVos);//列表显示的字段
+                            generateDynamicHtml(options);
+                            addDeclareUserClassify(node.id);
+                        }
+                    }
+                })
             }
         };
         //如果为综合资产则可选单项资产的任意申报表
@@ -99,19 +130,65 @@
         assessProjectClassify.select(param);
     }
 
+    //添加申报项目分类
+    function addDeclareUserClassify(projectClassifyId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declare/addDeclareUserClassify",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: '${projectPlanDetails.projectId}',
+                planDetailsId: '${projectPlanDetails.id}',
+                projectClassifyId: projectClassifyId
+            },
+            success: function (result) {
+                if (!result.ret) {
+                    Alert("添加申报项目分类异常");
+                }
+            }
+        })
+    }
+
+    //删除申报项目分类
+    function delDeclareUserClassify(_this,projectClassifyId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declare/delDeclareUserClassify",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: '${projectPlanDetails.projectId}',
+                planDetailsId: '${projectPlanDetails.id}',
+                projectClassifyId: projectClassifyId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    $(_this).closest('.x_panel').remove();
+                } else {
+                    Alert("删除申报项目分类异常");
+                }
+            }
+        })
+    }
+
     //初始化动态数据
     function initDynamicData() {
         //如果计划设置了申报表 则自动加载
         if ('${empty baseFormModule}' == 'false') {
             //1.设置参数 2.调用初始化方法
-            var options={};
-            options.title='${baseProjectClassify.name}';
+            var options = {};
+            options.classifyId = '${baseProjectClassify.id}';
+            options.title = '${baseProjectClassify.name}';
             options.formModuleId = '${baseFormModule.id}';
             options.foreignKeyName = '${baseFormModule.foreignKeyName}';
             options.foreignKeyValue = '${projectPlanDetails.id}';
             options.tableName = '${baseFormModule.tableName}';
-            options.jsonValue = $("#jsonValue").val();//需填写的表单字段
+            options.jsonValue = '';//需填写的表单字段
             options.fieldList = $("#fieldList").val();//列表显示的字段
+
+            var panelElement = $("#panel_" + options.formModuleId);
+            if (panelElement.length > 0) {
+                return;//申报类型元素已存在
+            }
             generateDynamicHtml(options);
         }
     }
@@ -120,13 +197,13 @@
     function generateDynamicHtml(options) {
         //1.先将html加载到dyncmicContent
         //2.再初始出列表
-        var panelElement = $("#panel_" + options.formModuleId);
-        if (panelElement.length > 0) {
-            return;//申报类型元素已存在
-        }
+        beforeAddFunction[options.tableName] = [];
+        beforeEditFunction[options.tableName] = [];
         var html = $("#dynamicHtml").html();
-        html = html.replace(/{title}/g, options.title).replace(/{tableName}/g, options.title);
+        html = html.replace(/{classifyId}/g, options.classifyId).replace(/{title}/g, options.title).replace(/{tableName}/g, options.tableName);
+        html = html.replace(/{formModuleId}/g, options.formModuleId).replace(/{foreignKeyName}/g, options.foreignKeyName).replace(/{foreignKeyValue}/g, options.foreignKeyValue);
         $("#dyncmicContent").append(html);
+        panelElement = $("#panel_" + options.classifyId);
         //初始化各后期需要的元素
         options.targetList = panelElement.find('table');
         options.targetForm = panelElement.find('form');
@@ -137,19 +214,31 @@
 
 <script type="text/javascript">
     //添加动态数据
-    function addDynamicData(tableName, targetForm, targetModal) {
+    function addDynamicData(_this, tableName) {
         var fns = beforeAddFunction[tableName];
         if (fns) {
             $.each(fns, function (i, item) {
                 item();
             });
         }
-        FormConfigureUtils.addDetailInfo({targetForm: targetForm});
+        targetForm = $(_this).closest('.x_panel').find("form");
+        targetModal = $(_this).closest('.x_panel').find(".modal");
+        targetForm.clearAll();
         targetModal.modal();
     }
 
     //保存动态数据
-    function saveDynamicData(options) {
+    function saveDynamicData(_this) {
+        var classifyId = $(_this).attr("data-classifyId");
+        var panelElement = $("#panel_" + classifyId);
+        var options = {};
+        options.targetList = panelElement.find('table');
+        options.targetForm = $(_this).closest('.modal-content').find('form');
+        options.targetModal = $(_this).closest('.modal');
+        options.tableName = panelElement.find('[name="tableName"]').val();
+        options.formModuleId = panelElement.find('[name="formModuleId"]').val();
+        options.foreignKeyName = panelElement.find('[name="foreignKeyName"]').val();
+        options.foreignKeyValue = panelElement.find('[name="foreignKeyValue"]').val();
         FormConfigureUtils.saveDetailInfo({
             targetList: options.targetList,
             targetForm: options.targetForm,
@@ -168,7 +257,7 @@
             readOnly: false,
             jsonValue: options.jsonValue,
             success: function (html) {
-                $("#detail_content").append(html);
+                options.targetForm.find(".detail-content").append(html);
                 //加载数据列表
                 loadDynamicList(options);
             }

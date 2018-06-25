@@ -15,6 +15,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,23 +50,28 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
-
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/declare/taskIndex", "", 0, "0", "");
         //根据申报类型 确定申报表单
-        Integer declareFormId = projectPlanDetails.getDeclareFormId();
-        if (declareFormId != null && declareFormId > 0) {
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareFormId);
-            if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
-                BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
-                modelAndView.addObject("baseProjectClassify", baseProjectClassify);
-                modelAndView.addObject("baseFormModule", baseFormModule);
-                List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(baseFormModule.getId());
-                modelAndView.addObject("jsonValue", JSON.toJSONString(fieldVos));
-                modelAndView.addObject("fieldList", JSON.toJSONString(fieldVos));
+        //先读使用分类表 如果没有数据 则检查计划是否设置了范围 如果设置到了范围 则初始化数据
+
+        List<DeclareUseClassify> declareUseClassifyList = null;
+        if(CollectionUtils.isEmpty(declareUseClassifyList)){
+            Integer declareFormId = projectPlanDetails.getDeclareFormId();
+            if (declareFormId != null && declareFormId > 0) {
+                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareFormId);
+                if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
+                    BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
+                    modelAndView.addObject("baseProjectClassify", baseProjectClassify);
+                    modelAndView.addObject("baseFormModule", baseFormModule);
+                    List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(baseFormModule.getId());
+                    modelAndView.addObject("jsonValue", JSON.toJSONString(fieldVos));
+                    modelAndView.addObject("fieldList", JSON.toJSONString(fieldVos));
+                }
             }
         }
+
         return modelAndView;
     }
 

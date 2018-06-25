@@ -125,7 +125,7 @@
                     }
                 });
             }
-            $("#" + defaluts.targetList).bootstrapTable('destroy');
+            defaluts.targetList.bootstrapTable('destroy');
             TableInit(defaluts.targetList, getContextPath() + "/formConfigure/getDetailInfoList", cols, {
                 formModuleId: defaluts.formModuleId,
                 tableName: defaluts.tableName,
@@ -247,7 +247,7 @@
                 }
             };
             defaluts = $.extend({}, defaluts, options);
-            if (defaluts.targetForm.valid()) {
+            if (true||defaluts.targetForm.valid()) {
                 Loading.progressShow();
                 var data = {};
                 var array = formSerializeArray(defaluts.targetForm);
