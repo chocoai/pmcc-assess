@@ -59,9 +59,6 @@ public class ProjectCenterController {
         return modelAndView;
     }
 
-    /**
-     * @return
-     */
     @ResponseBody
     @RequestMapping(value = "/getProjectProgress", name = "取得项目进度", method = RequestMethod.GET)
     public BootstrapTableVo getProjectProgress() {
@@ -75,9 +72,9 @@ public class ProjectCenterController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCsrProjectInfoListA", name = "取得 债权人列表", method = RequestMethod.GET)
-    public BootstrapTableVo getCsrProjectInfoListA(String name) {
-        return projectCenterService.csrProjectInfoListA(name);
+    @RequestMapping(value = "/getCsrProjectInfoList", name = "取得 债权人列表", method = RequestMethod.GET)
+    public BootstrapTableVo getCsrProjectInfoList(String name) {
+        return projectCenterService.csrProjectInfoList(name);
     }
 
     @ResponseBody

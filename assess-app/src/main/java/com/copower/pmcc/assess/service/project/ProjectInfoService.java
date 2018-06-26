@@ -759,15 +759,6 @@ public class ProjectInfoService {
     }
 
     /**
-     * 第一次填写后留下的委托人 数据信息
-     *
-     * @return
-     */
-    public InitiateConsignorDto oneFirstConsignor() {
-        return consignorService.oneFirstConsignor();
-    }
-
-    /**
      * 回写到CRM中
      *
      * @param projectID

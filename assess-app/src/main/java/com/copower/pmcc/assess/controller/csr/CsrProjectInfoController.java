@@ -2,15 +2,12 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
 import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoGroupService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
@@ -31,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * Created by kings on 2018-5-31.
@@ -140,7 +135,7 @@ public class CsrProjectInfoController {
 
     @RequestMapping(value = "/projectDetails", name = "项目详情")
     public ModelAndView projectDetails(Integer csrProjectInfoID) throws BusinessException {
-        ModelAndView modelAndView = new ModelAndView("/project/projectCsrDetails");
+        ModelAndView modelAndView = new ModelAndView("project/csr/projectCsrDetails");
         CsrProjectInfoVo csrProjectInfo = csrProjectInfoService.getById(csrProjectInfoID);
         modelAndView.addObject("csrProjectInfo",csrProjectInfo);
         return modelAndView;

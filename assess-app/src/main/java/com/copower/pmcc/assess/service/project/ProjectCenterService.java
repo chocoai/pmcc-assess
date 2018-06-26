@@ -64,11 +64,9 @@ public class ProjectCenterService {
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    private ProjectInfoService projectInfoService;
     @Autowired
     private CsrProjectInfoService csrProjectInfoService;
-    @Autowired
-    private BaseProjectClassifyService projectClassifyService;
 
     public Integer getTodayTaskCount() {
         Date date = new Date();
@@ -78,11 +76,8 @@ public class ProjectCenterService {
         if (processControllerComponent.userIsAdmin(users)) {
             users = "";
         }
-
         return projectPlanDetailsDao.getProjectDetailsCount(users, dates, datee);
     }
-
-
 
     public Integer getTheWeekTaskCount() {
         Date date = new Date();
@@ -113,7 +108,6 @@ public class ProjectCenterService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectInfoList(ProcessStatusEnum.RUN.getValue(), requestBaseParam.getSearch());
-
         List<Integer> projectIds = LangUtils.transform(projectInfoList, projectInfo -> projectInfo.getId());//取得项目的项目编号列表
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setRows(getProjectProgressVOS(projectInfoList, projectIds));
@@ -185,6 +179,10 @@ public class ProjectCenterService {
         return projectProgressVOS;
     }
 
+    /**
+     * 获取项目列表
+     * @return
+     */
     public BootstrapTableVo getProjectList() {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
@@ -193,66 +191,11 @@ public class ProjectCenterService {
             page.setOrderBy(FormatUtils.camelToUnderline(requestBaseParam.getSort()) + " " + requestBaseParam.getOrder());
         }
         String projectName = requestBaseParam.getSearch();
-        //todo直接取数据信息，没有别的东西了
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectInfoList("", projectName);
-
-        List<Integer> projectIds = LangUtils.transform(projectInfoList, o -> o.getId());
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanByStatus(projectIds, ProjectStatusEnum.PLAN.getName());
-        //项目所有工作状态
-        List<ProjectResponsibilityDto> projectPlanResponsibilityList = bpmRpcProjectTaskService.getProjectTaskList(projectIds);
         List<ProjectInfoVo> projectInfoVos = new ArrayList<>();
-        ProjectInfoVo projectInfoVo = null;
-        String currUser = processControllerComponent.getThisUser();
-        //TASK(0, "责任人提交工作成果"), PLAN(1, "部门负责人细分计划"), ALLTASK(2, "整体复核工作成果"), NEWPLAN(3, "细分下级计划责任人");
         if (CollectionUtils.isNotEmpty(projectInfoList)) {
-            for (ProjectInfo item : projectInfoList) {
-                projectInfoVo = new ProjectInfoVo();
-                BeanUtils.copyProperties(item,projectInfoVo);
-                projectInfoVo.setId(item.getId());
-                projectInfoVo.setProjectName(item.getProjectName());
-                BaseProjectClassify baseProjectClassify = projectClassifyService.getProjectInfoByClassify(projectInfoVo);
-                projectInfoVo.setBaseProjectClassify(baseProjectClassify);
-
-//                BidProjectCategory bidProjectCategory = bidProjectCategoryService.getBidProjectCategoryById(item.getProjectCategoryId());
-//                if(bidProjectCategory!=null){
-//                    projectInfoVo.setProjectCategoryName(bidProjectCategory.getName());
-//                }
-
-                //取得成果工作项
-                List<ProjectResponsibilityDto> projectPlanResponsibilityTask = LangUtils.filter(projectPlanResponsibilityList, p -> {
-                    return p.getModel() == 0 && p.getUserAccount().equals(currUser) && p.getProjectId() == item.getId();
-                });
-                if (CollectionUtils.isNotEmpty(projectPlanResponsibilityTask)) {
-                    projectInfoVo.setTaskWorkStages(projectPlanResponsibilityTask);
-                }
-                //取得整体复核成果工作项
-                List<ProjectResponsibilityDto> projectPlanResponsibilityAllTask = LangUtils.filter(projectPlanResponsibilityList, p -> {
-                    return p.getModel() == 2 && p.getUserAccount().equals(currUser) && p.getProjectId() == item.getId();
-                });
-                if (CollectionUtils.isNotEmpty(projectPlanResponsibilityAllTask)) {
-                    projectInfoVo.setTaskAllWorkStages(projectPlanResponsibilityAllTask);
-                }
-                // 查看计划任务工作项
-                List<ProjectResponsibilityDto> projectPlanResponsibilityPlan = LangUtils.filter(projectPlanResponsibilityList, p -> {
-                    return p.getModel() == 3 && p.getUserAccount().equals(currUser) && p.getProjectId() == item.getId();
-                });
-                if (CollectionUtils.isEmpty(projectPlanResponsibilityPlan)) {
-                    projectPlanResponsibilityPlan = new ArrayList<>();
-                }
-                //取项
-                List<ProjectResponsibilityDto> filter1 = LangUtils.filter(projectPlanResponsibilityList, p -> {
-                    return p.getModel() == 1 && p.getUserAccount().equals(currUser) && p.getProjectId() == item.getId();
-                });
-                if (CollectionUtils.isNotEmpty(filter1)) {
-                    for (ProjectResponsibilityDto planItem : filter1) {
-                        projectPlanResponsibilityPlan.add(planItem);
-                    }
-                }
-                projectInfoVo.setPlanWorkStages(projectPlanResponsibilityPlan);
-                projectInfoVos.add(projectInfoVo);
-            }
+            projectInfoVos = LangUtils.transform(projectInfoList, p -> projectInfoService.getProjectInfoVo(p));
         }
-
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
         return bootstrapTableVo;
@@ -263,8 +206,8 @@ public class ProjectCenterService {
         return projectInfos;
     }
 
-    public BootstrapTableVo csrProjectInfoListA(String name){
-        return csrProjectInfoService.csrProjectInfoListA(name);
+    public BootstrapTableVo csrProjectInfoList(String name) {
+        return csrProjectInfoService.csrProjectInfoList(name);
     }
 
 }

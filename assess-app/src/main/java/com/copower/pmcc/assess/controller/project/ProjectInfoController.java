@@ -2,15 +2,15 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.entity.BaseProjectCategory;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
@@ -29,23 +29,24 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +81,9 @@ public class ProjectInfoController {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
-    private BaseProjectCategoryService baseProjectCategoryService;
+    private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private HttpServletRequest request;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -97,7 +100,6 @@ public class ProjectInfoController {
         modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
-        modelAndView.addObject("oneFirstConsignor", projectInfoService.oneFirstConsignor());//第一次填写后留下的委托人 数据信息
 
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setId(0);
@@ -142,8 +144,6 @@ public class ProjectInfoController {
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
 
-        List<BaseProjectCategory> projectTypeList = baseProjectCategoryService.getProjectCategoryListByPid(0);
-        modelAndView.addObject("projectTypeList", projectTypeList);
         return modelAndView;
     }
 
@@ -196,7 +196,7 @@ public class ProjectInfoController {
     }
 
     /**
-     * 返回修改
+     * 返回修改提交
      *
      * @return
      */
@@ -212,7 +212,7 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectAssignDetails", name = "项目详情")
-    public ModelAndView projectAssignDetails(String processInsId) throws BusinessException {
+    public Object projectAssignDetails(String processInsId) throws BusinessException {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setAssignProcessInsId(processInsId);
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
@@ -220,95 +220,68 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectApprovalDetails", name = "项目详情")
-    public ModelAndView projectApprovalDetails(String processInsId) throws BusinessException {
-
+    public Object projectApprovalDetails(String processInsId) throws BusinessException {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         return projectDetails(projectInfo.getId());
     }
 
+    /**
+     * 查看项目详情的地址入口统一，但根据不同的项目类别请求不同的地址
+     *
+     * @param projectId
+     * @return
+     * @throws BusinessException
+     */
     @RequestMapping(value = "/projectDetails", name = "项目详情")
-    public ModelAndView projectDetails(Integer projectId) throws BusinessException {
+    public Object projectDetails(Integer projectId) throws BusinessException {
         ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
-
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-
+        //获取请求地址，并确定最终请求的路径
+        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectTypeId());
+        String uri = request.getRequestURI().replace(request.getContextPath(), "").replaceAll("^/", "");
+        String detailUri = baseProjectClassify.getDetailUrl().replaceAll("^/", "");
+        if (!StringUtils.equals(detailUri, uri)) {
+            String forwardUrl = String.format("%s/%s?projectId=%s", request.getContextPath(), baseProjectClassify.getDetailUrl(), projectId);
+            return "forward:"+forwardUrl;//跳转到其它请求地址
+        }
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)) {
+        if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        try {
-            ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
-            modelAndView.addObject("projectInfo", projectInfoVo);
-        } catch (Exception e) {
-            logger.error("异常!");
-            logger.error(e.getMessage());
-            logger.error("可能报:Source must not be null");
-            modelAndView.addObject("projectInfo", projectInfo);
-        }
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        modelAndView.addObject("projectInfo", projectInfoVo);
 
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
-        //项目当前责任人信息
-        List<KeyValueDto> keyValueDtos = getKeyValueDtos(projectId);
-
-        modelAndView.addObject("keyValueDtos", keyValueDtos);
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
 
-        //变更项目成员的取值
-        if (projectInfo.getDepartmentId() != null) {
-            List<String> managerUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPM(projectInfo.getDepartmentId());
-            modelAndView.addObject("managerUserAccounts", FormatUtils.transformListString(managerUserAccounts));
-            List<String> memberUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPA(projectInfo.getDepartmentId());
-            modelAndView.addObject("memberUserAccounts", FormatUtils.transformListString(memberUserAccounts));
-        }
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
-
         return modelAndView;
     }
 
-    @RequestMapping(value = "/csrProjectDetails", name = "项目详情")
+    @RequestMapping(value = "/csrProjectDetails", name = "不良债权项目详情")
     public ModelAndView csrProjectDetails(Integer projectId) throws BusinessException {
-        ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
-
+        ModelAndView modelAndView = new ModelAndView("/project/projectCsrDetails");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (!StringUtils.isEmpty(enumByName)) {
+        if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        try {
-            ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
-            modelAndView.addObject("projectInfo", projectInfoVo);
-        } catch (Exception e) {
-            logger.error("异常!");
-            logger.error(e.getMessage());
-            logger.error("可能报:Source must not be null");
-            modelAndView.addObject("projectInfo", projectInfo);
-        }
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        modelAndView.addObject("projectInfo", projectInfoVo);
 
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
-        //项目当前责任人信息
-        List<KeyValueDto> keyValueDtos = getKeyValueDtos(projectId);
-
-        modelAndView.addObject("keyValueDtos", keyValueDtos);
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
 
-        //变更项目成员的取值
-        if (projectInfo.getDepartmentId() != null) {
-            List<String> managerUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPM(projectInfo.getDepartmentId());
-            modelAndView.addObject("managerUserAccounts", FormatUtils.transformListString(managerUserAccounts));
-            List<String> memberUserAccounts = bpmRpcBoxRoleUserService.getDepartmentPA(projectInfo.getDepartmentId());
-            modelAndView.addObject("memberUserAccounts", FormatUtils.transformListString(memberUserAccounts));
-        }
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
@@ -319,13 +292,11 @@ public class ProjectInfoController {
     @ResponseBody
     @RequestMapping(value = "/getProjectTaskByProjectId", name = "取得项目工作成果", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPlanByProjectId(Integer projecId) {
-
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectid(projecId);
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
-
     }
 
     private List<KeyValueDto> getKeyValueDtos(Integer projectId) {
@@ -334,7 +305,6 @@ public class ProjectInfoController {
         if (CollectionUtils.isNotEmpty(projectPlanResponsibilityList)) {
             keyValueDtos = LangUtils.transform(projectPlanResponsibilityList, o -> {
                 KeyValueDto keyValueDto = new KeyValueDto();
-                //TASK(0, "责任人提交工作成果"), PLAN(1, "部门负责人细分计划"), ALLTASK(2, "整体复核工作成果"), NEWPLAN(3, "细分下级计划责任人");
                 String modelName = "";
                 switch (o.getModel()) {
                     case 0: {

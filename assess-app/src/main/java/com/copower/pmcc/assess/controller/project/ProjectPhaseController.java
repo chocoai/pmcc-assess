@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
-import com.copower.pmcc.assess.service.base.BaseProjectCategoryService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
@@ -58,8 +57,6 @@ public class ProjectPhaseController {
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
     @Autowired
     private BaseAssistService baseAssistService;
-    @Autowired
-    private BaseProjectCategoryService baseProjectCategoryService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
@@ -253,14 +250,6 @@ public class ProjectPhaseController {
         Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectPhase.getBoxName());
         List<BoxReActivityDto> boxReActivityByBoxId = bpmRpcBoxService.getBoxReActivityByBoxId(boxIdByBoxName);
         return HttpResult.newCorrectResult(boxReActivityByBoxId);
-
-    }
-
-    @RequestMapping(value = "/getBidProjectCategoryListByPid", name = "取得项目类别", method = RequestMethod.GET)
-    @ResponseBody
-    public HttpResult getBidProjectCategoryListByPid(Integer pid) {
-        List<BaseProjectCategory> bidProjectCategories = baseProjectCategoryService.getProjectCategoryListByPid(pid);
-        return HttpResult.newCorrectResult(bidProjectCategories);
 
     }
 }

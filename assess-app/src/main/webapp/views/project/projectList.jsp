@@ -169,7 +169,7 @@
         var cols = [];
         cols.push({field: 'id', title: '项目编号'});
         cols.push({field: 'projectName', title: '项目名称'});
-        cols.push({field: 'projectClasssName', title: '项目类型'});
+        cols.push({field: 'projectClassName', title: '项目类型'});
         cols.push({field: 'projectTypeName', title: '项目类别'});
         cols.push({field: 'projectCategoryName', title: '项目范围'});
         cols.push({field: 'projectStatus', title: '项目状态'});

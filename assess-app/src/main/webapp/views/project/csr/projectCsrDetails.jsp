@@ -17,87 +17,111 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                        ${projectInfo.projectName}
+                        ${csrProjectInfo.name}
                         <small><label style="padding: 5px;" class="label label-danger">
-                            ${projectInfo.projectStatus}
+                            ${csrProjectInfo.projectStatus}
                         </label></small>
                     </h3>
 
                 </div>
-                <div class="title_right">
-                    <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
-                        <a id="btn_followProject" style="margin-left: 20px;display: none" class="btn btn-warning"
-                           onclick="followProject()">关注</a>
-                        <a id="btn_cancelFollowProject" style="margin-left: 20px;display: none" class="btn btn-warning"
-                           onclick="cancelFollowProject()">取消关注</a>
-                        <c:if test="${projectStatusEnum=='normal'}">
-                            <a class="btn btn-primary"
-                               href="${pageContext.request.contextPath}/projectClose/closeIndex?projectId=${projectInfo.id}"
-                               target="_blank">终止</a>
-                            <a class="btn btn-primary"
-                               href="${pageContext.request.contextPath}/ProjectSuspend/suspendIndex?projectId=${projectInfo.id}"
-                               target="_blank">暂停</a>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-danger">
-                                    项目变更
-                                </button>
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a onclick="changeMember()" target="_blank">成员变更</a>
-                                        <a href="${pageContext.request.contextPath}/ProjectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
-                                           target="_blank">阶段重启</a>
-                                        <a href="${pageContext.request.contextPath}/projectPlanHistory/projectPlanHistoryIndex?projectId=${projectInfo.id}"
-                                           target="_blank">总体时间</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </c:if>
-                        <c:if test="${projectStatusEnum=='pause'}">
-                            <a class="btn btn-success"
-                               onclick="restartProject()"
-                               target="_blank">重启</a>
-                        </c:if>
-
-                    </div>
-                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="panel panel-default" id="panel_project_suspend" style="display: none;">
-                <div class="panel-heading">
-                    <i class="fa fa-external-link-square"></i>项目暂停记录
-                </div>
-                <div class="panel-body">
-                    <table id="tb_projectSuspend" class="table table-bordered">
-                    </table>
-                </div>
+            <%@include file="/views/share/csr/projectCsrInfo.jsp" %>
+            <div class="x_panel">
+                <c:forEach items="${csrProjectInfo.csrProjectInfoGroupVos}" var="data">
+                    <div class="x_title collapse-link">
+                        <h2>${data.projectName}</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="x_content">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    项目经理
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control" id="lab_userAccountManagerName">${data.projectManagerName}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    项目成员
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${data.projectMemberName}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
+                                    文号
+                                </label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${data.number}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
 
-            <%@include file="/views/share/project/projectInfo.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>项目成员</h2>
+                    <h2>客户列表</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content collapse">
+                <div class="x_content">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                项目经理
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"
-                                       id="lab_userAccountManagerName">${projectMemberVo.userAccountManagerName}</label>
+                            <div>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="20" placeholder="二级分行"
+                                           id="secondLevelBranch" name="secondLevelBranch" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-number="true" data-rule-maxlength="20"
+                                           placeholder="一级分行" id="firstLevelBranch" name="firstLevelBranch" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="loadBorrowerList('listBorrowersTable');">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" onclick="downloadsBorrower('')">
+                                        下载
+                                    </button>
+
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/csrBorrower/exportFormBorrowers?csrProjectInfoID=${csrProjectInfo.id}">数据导出</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <div class="col-sm-12 treeGrid">
+                                    <table class="table table-bordered" id="listBorrowersTable">
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -139,7 +163,68 @@
 </div>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript">
+    $(function () {
+        loadBorrowerList("listBorrowersTable");
+    });
+
+    function loadBorrowerList(tableID) {
+        var cols = [];
+        cols.push({field: 'checkbox', checkbox: true, title: "报表列表"});
+        cols.push({field: 'secondLevelBranch', title: '二级分行'});
+        cols.push({field: 'firstLevelBranch', title: '一级分行'});
+        cols.push({field: 'name', title: '名字'});
+        cols.push({field: 'attachmentHtml', title: '报表'});
+        cols.push({field: 'id', visible: false, title: "id"});
+        $("#" + tableID).bootstrapTable('destroy');
+        TableInit("" + tableID, "${pageContext.request.contextPath}/csrBorrower/listBorrowers", cols, {
+            csrProjectInfoID: '${csrProjectInfo.id}',
+            secondLevelBranch: $("#secondLevelBranch").val(),
+            firstLevelBranch: $("#firstLevelBranch").val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            },
+            onDblClickRow: function (row) {
+                console.log(row);
+                downloadsBorrower(row.id);
+            }
+        });
+    }
+
+    //文件 多个下载
+    function downloadsBorrower(id) {
+        if (id == '') {
+            var result = $("#listBorrowersTable").bootstrapTable('getSelections');
+            var csrBorrowerIDS = "";
+            for (var i = 0; i < result.length; i++) {
+                if (i == result.length - 1) {
+                    csrBorrowerIDS += result[i].id;
+                } else {
+                    csrBorrowerIDS += result[i].id + ",";
+                }
+            }
+            var flag = (result.length > 0);
+            var data = {};
+            data.borrowerIds = csrBorrowerIDS;
+            if (flag) {
+                window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds=" + csrBorrowerIDS;
+            } else {
+                Alert("没有要下载的客户数据!");
+            }
+        } else {
+            window.location.href = "${pageContext.request.contextPath}/csrBorrower/downloadBorrowers?borrowerIds=" + id;
+        }
+    }
+
+
+</script>
 <script type="application/javascript">
+
+
     $(function () {
         if ("${projectFollowFlog}" == "0") {
             $("#btn_followProject").show();
@@ -185,7 +270,7 @@
             }
         });
         TableInit("tb_projectSuspend", "${pageContext.request.contextPath}/ProjectSuspend/getProjectSuspendHistory", cols, {
-            projectId: "${projectInfo.id}"
+            projectId: "${csrProjectInfo.id}"
         }, {
             showColumns: false,
             showRefresh: false,
@@ -219,7 +304,7 @@
                 userAccountManager: $("#userAccountManager").val(),
                 userAccountMember: $("#userAccountMember").val(),
                 userAccountQuality: $("#userAccountQuality").val(),
-                projectId: "${projectInfo.id}"
+                projectId: "${csrProjectInfo.id}"
             },
             success: function (result) {
                 if (result.ret) {
@@ -238,12 +323,26 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+
+
+    }
+
+    function addWorkLog() {
+        <%--$("#id").val(0);--%>
+        <%--$("#title").val("");--%>
+        <%--$("#content").val("");--%>
+        <%--$("#projectIds").val("${csrProjectInfo.id}");--%>
+        <%--$("#projectNames").val("${csrProjectInfo.projectName}");--%>
+        <%--$("#_file_upload").html("");--%>
+        <%--$('#workLog').modal({--%>
+        <%--backdrop: 'static'--%>
+        <%--});--%>
     }
 
     function treeGridload() {
         $("#PlanItemListed").treegrid({
-            url: "${pageContext.request.contextPath}/projectInfo/getProjectTaskByProjectId",
-            queryParams: {projecId: ${projectInfo.id}},
+            url: "${pageContext.request.contextPath}/csrProjectInfo/getProjectTaskByProjectId",
+            queryParams: {projecId: ${csrProjectInfo.id}},
             idField: 'id',
             treeField: 'projectPhaseName',
             datatype: 'json',
@@ -281,7 +380,22 @@
                 {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
                 {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
                 {
-                    field: 'processInsId', align: 'center', title: '查看成果', width: '10%', formatter: function (value, row) {
+                    field: 'tasks', align: 'center', title: '工作成果', width: '15%', formatter: function (value, row) {
+                    var s = "";
+                    if (value) {
+                        $.each(value, function (i, j) {
+                            s += "<a onclick='showAttachment(" + j.key + ",\"" + j.explain + "\")'  class='fileupload-preview'>" + j.value + "</a>";
+                            s += "<a>";
+                            s += "<i class='fa fa-download' onclick='downAttachments(" + j.key + ")'style='margin-left: 15px;font-size: 15px;'></i>";
+                            s += "<br/>";
+                            s += "</a>";
+                        })
+                    }
+                    return s;
+                }
+                },
+                {
+                    field: 'processInsId', align: 'center', title: '操作', width: '10%', formatter: function (value, row) {
 
                     var s = "";
                     if (row.bisLastLayer) {
@@ -304,7 +418,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/projectFollow/followProject",
             data: {
-                projectId: "${projectInfo.id}",
+                projectId: "${csrProjectInfo.id}",
             },
             type: "post",
             dataType: "json",
@@ -331,7 +445,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/projectFollow/cancelFollowProject",
             data: {
-                projectId: "${projectInfo.id}",
+                projectId: "${csrProjectInfo.id}",
             },
             type: "post",
             dataType: "json",
@@ -359,7 +473,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/ProjectSuspend/startProject",
                 data: {
-                    projectId: "${projectInfo.id}",
+                    projectId: "${csrProjectInfo.id}",
                 },
                 type: "post",
                 dataType: "json",

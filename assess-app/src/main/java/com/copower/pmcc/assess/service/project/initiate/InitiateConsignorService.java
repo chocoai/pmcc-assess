@@ -13,12 +13,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -96,32 +93,5 @@ public class InitiateConsignorService {
         return vo;
     }
 
-    /**
-     * 第一次填写后留下的委托人 数据信息
-     *
-     * @return
-     */
-    public InitiateConsignorDto oneFirstConsignor() {
-        List<InitiateConsignorDto> dtos = dao.getList();
-        Collections.sort(dtos, new Comparator<Object>() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                try {
-                    InitiateConsignorDto consignorA = (InitiateConsignorDto) o1;
-                    InitiateConsignorDto consignorB = (InitiateConsignorDto) o2;
-                    if (!ObjectUtils.isEmpty(consignorA.getGmtCreated()) && !ObjectUtils.isEmpty(consignorB.getGmtCreated())) {
-                        return consignorA.getGmtCreated().compareTo(consignorB.getGmtCreated());
-                    } else if (consignorA.getGmtCreated() == null) {
-                        return consignorA.getCsName().compareTo(consignorB.getCsName());
-                    }
-                } catch (Exception e) {
-                    logger.error("异常异常最好刷新  这里容易出异常!");
-                }
-                return 0;
-            }
-        });
-        InitiateConsignorDto consignorDto = dtos.get(dtos.size() - 1);
-        return consignorDto;
-    }
 
 }
