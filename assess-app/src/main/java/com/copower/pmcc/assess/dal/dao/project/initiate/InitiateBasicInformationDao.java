@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.initiate;
 import com.copower.pmcc.assess.dal.entity.InitiateBasicInformation;
 import com.copower.pmcc.assess.dal.entity.InitiateBasicInformationExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateBasicInformationMapper;
-import com.copower.pmcc.assess.dto.input.project.InitiateBasicInformationDto;
+import com.copower.pmcc.assess.dto.input.project.initiate.InitiateBasicInformationDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

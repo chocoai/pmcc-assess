@@ -2,10 +2,8 @@ package com.copower.pmcc.assess.dal.dao.project.initiate;
 
 import com.copower.pmcc.assess.dal.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dal.entity.InitiateConsignorExample;
-import com.copower.pmcc.assess.dal.entity.InitiateUnitInformation;
-import com.copower.pmcc.assess.dal.entity.InitiateUnitInformationExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateConsignorMapper;
-import com.copower.pmcc.assess.dto.input.project.InitiateConsignorDto;
+import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

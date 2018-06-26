@@ -1,4 +1,6 @@
-package com.copower.pmcc.assess.dto.input.project;
+package com.copower.pmcc.assess.dto.input.project.initiate;
+
+import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 
 /**
  * Created by 13426 on 2018/5/8.

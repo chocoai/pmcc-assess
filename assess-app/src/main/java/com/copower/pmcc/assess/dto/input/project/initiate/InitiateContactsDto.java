@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.input.project;
+package com.copower.pmcc.assess.dto.input.project.initiate;
 
 
 import com.copower.pmcc.assess.dal.entity.InitiateContacts;

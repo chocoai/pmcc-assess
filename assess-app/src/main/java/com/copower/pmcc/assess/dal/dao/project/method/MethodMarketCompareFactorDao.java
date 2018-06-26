@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.method;
 import com.copower.pmcc.assess.dal.entity.MethodMarketCompareFactor;
 import com.copower.pmcc.assess.dal.entity.MethodMarketCompareFactorExample;
 import com.copower.pmcc.assess.dal.mapper.MethodMarketCompareFactorMapper;
-import com.copower.pmcc.assess.dto.input.project.MethodMarketCompareFactorDto;
+import com.copower.pmcc.assess.dto.input.project.method.MethodMarketCompareFactorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

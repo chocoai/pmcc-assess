@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.entity.InitiateContactsExample;
 import com.copower.pmcc.assess.dal.mapper.InitiateContactsMapper;
-import com.copower.pmcc.assess.dto.input.project.InitiateContactsDto;
+import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.dal.dao.project.method.MethodMarketCompareCalcula
 import com.copower.pmcc.assess.dal.dao.project.method.MethodMarketCompareIndexDao;
 import com.copower.pmcc.assess.dal.entity.MethodMarketCompareCalculation;
 import com.copower.pmcc.assess.dal.entity.MethodMarketCompareIndex;
-import com.copower.pmcc.assess.dto.input.project.MethodMarketCompareCalculationDto;
+import com.copower.pmcc.assess.dto.input.project.method.MethodMarketCompareCalculationDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
