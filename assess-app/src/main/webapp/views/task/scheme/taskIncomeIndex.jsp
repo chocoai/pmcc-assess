@@ -13,9 +13,9 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <%@include file="/views/share/evaluationPrinciplePublic.jsp" %>
-            <%@include file="/views/share/evaluationHypothesisPublic.jsp" %>
-            <%@include file="/views/share/evaluationBasisPublic.jsp" %>
+            <%@include file="/views/share/project/evaluationPrinciplePublic.jsp" %>
+            <%@include file="/views/share/project/evaluationHypothesisPublic.jsp" %>
+            <%@include file="/views/share/project/evaluationBasisPublic.jsp" %>
 
 
             <!--填写表单-->

@@ -65,7 +65,7 @@ public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         DeclareInfo declareInfo = new DeclareInfo();
         declareInfo.setProjectId(projectPlanDetails.getProjectId());
-        declareInfo.setPlanDetailId(projectPlanDetails.getId());
+        declareInfo.setPlanDetailsId(projectPlanDetails.getId());
         declareInfo.setProcessInsId(processInsId);
         declareInfoService.saveDeclareInfo(declareInfo);
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRecordEvent.class.getSimpleName());//修改监听器

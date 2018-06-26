@@ -37,6 +37,7 @@
         $(".tooltips").tooltip();
         mainObj.fetchMessage;
 
+
     });
     mainObj.fetchMessage = function () {
         //先关闭之前的websocket

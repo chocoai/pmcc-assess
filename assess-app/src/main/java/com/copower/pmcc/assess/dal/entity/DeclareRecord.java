@@ -8,6 +8,8 @@ public class DeclareRecord {
 
     private Integer projectId;
 
+    private Integer projectClassifyId;
+
     private String name;
 
     private String ownership;
@@ -50,6 +52,14 @@ public class DeclareRecord {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getProjectClassifyId() {
+        return projectClassifyId;
+    }
+
+    public void setProjectClassifyId(Integer projectClassifyId) {
+        this.projectClassifyId = projectClassifyId;
     }
 
     public String getName() {

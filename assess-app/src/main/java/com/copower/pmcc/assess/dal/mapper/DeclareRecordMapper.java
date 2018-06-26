@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.DeclareRecordExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DeclareRecordMapper {
     int countByExample(DeclareRecordExample example);

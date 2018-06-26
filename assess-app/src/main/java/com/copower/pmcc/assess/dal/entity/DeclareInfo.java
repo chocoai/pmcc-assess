@@ -7,13 +7,11 @@ public class DeclareInfo {
 
     private Integer projectId;
 
-    private Integer planDetailId;
+    private Integer planDetailsId;
 
     private String processInsId;
 
     private String status;
-
-    private String dynamicTableName;
 
     private String creator;
 
@@ -37,12 +35,12 @@ public class DeclareInfo {
         this.projectId = projectId;
     }
 
-    public Integer getPlanDetailId() {
-        return planDetailId;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setPlanDetailId(Integer planDetailId) {
-        this.planDetailId = planDetailId;
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public String getProcessInsId() {
@@ -59,14 +57,6 @@ public class DeclareInfo {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
-    }
-
-    public String getDynamicTableName() {
-        return dynamicTableName;
-    }
-
-    public void setDynamicTableName(String dynamicTableName) {
-        this.dynamicTableName = dynamicTableName == null ? null : dynamicTableName.trim();
     }
 
     public String getCreator() {

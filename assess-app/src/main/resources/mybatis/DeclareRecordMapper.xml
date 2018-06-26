@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_classify_id" property="projectClassifyId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
@@ -78,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, name, ownership, province, city, district, area_group_id, floor_area, 
-    assess_area, assess_unit_price, already_out_area, bis_generate_all, creator, gmt_created, 
-    gmt_modified
+    id, project_id, project_classify_id, name, ownership, province, city, district, area_group_id, 
+    floor_area, assess_area, assess_unit_price, already_out_area, bis_generate_all, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecordExample" >
     select
@@ -116,18 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_record (project_id, name, ownership, 
-      province, city, district, 
-      area_group_id, floor_area, assess_area, 
-      assess_unit_price, already_out_area, bis_generate_all, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{projectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{areaGroupId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{assessArea,jdbcType=DECIMAL}, 
-      #{assessUnitPrice,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, #{bisGenerateAll,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_declare_record (project_id, project_classify_id, name, 
+      ownership, province, city, 
+      district, area_group_id, floor_area, 
+      assess_area, assess_unit_price, already_out_area, 
+      bis_generate_all, creator, gmt_created, 
+      gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{projectClassifyId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{ownership,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{assessArea,jdbcType=DECIMAL}, #{assessUnitPrice,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, 
+      #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +138,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="projectClassifyId != null" >
+        project_classify_id,
       </if>
       <if test="name != null" >
         name,
@@ -184,6 +188,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectClassifyId != null" >
+        #{projectClassifyId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -244,6 +251,9 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.projectClassifyId != null" >
+        project_classify_id = #{record.projectClassifyId,jdbcType=INTEGER},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -295,6 +305,7 @@
     update tb_declare_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      project_classify_id = #{record.projectClassifyId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
@@ -318,6 +329,9 @@
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectClassifyId != null" >
+        project_classify_id = #{projectClassifyId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -367,6 +381,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.DeclareRecord" >
     update tb_declare_record
     set project_id = #{projectId,jdbcType=INTEGER},
+      project_classify_id = #{projectClassifyId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},

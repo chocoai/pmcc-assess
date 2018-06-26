@@ -21,7 +21,8 @@
         <div class="x_title collapse-link">
             <ul class="nav navbar-right panel_toolbox">
                 <li>
-                    <a class="close-link" onclick="delDeclareUserClassify(this,'{classifyId}');"><i class="fa fa-close"></i></a>
+                    <a class="close-link" onclick="delDeclareUserClassify(this,'{classifyId}');"><i
+                            class="fa fa-close"></i></a>
                 </li>
             </ul>
             <h2>{title}</h2>
@@ -38,7 +39,7 @@
             <table class="table table-bordered">
             </table>
             <div class="modal fade bs-example-modal-lg"
-                 data-backdrop="static" aria-hidden="true" data-height="600"
+                 data-backdrop="static" aria-hidden="true"
                  role="dialog" data-keyboard="false" tabindex="1"
                  style="display: none;">
                 <div class="modal-dialog modal-lg" style="width: 1200px;">
@@ -128,6 +129,8 @@
             param.key = AssessProjectClassifyKey.single;
         }
         assessProjectClassify.select(param);
+
+
     }
 
     //添加申报项目分类
@@ -150,7 +153,7 @@
     }
 
     //删除申报项目分类
-    function delDeclareUserClassify(_this,projectClassifyId) {
+    function delDeclareUserClassify(_this, projectClassifyId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/declare/delDeclareUserClassify",
             type: "post",
@@ -183,7 +186,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    $.each(result.data,function (i,item) {
+                    $.each(result.data, function (i, item) {
                         var options = {};
                         options.classifyId = item.classifyId;
                         options.title = item.title;

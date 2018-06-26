@@ -247,7 +247,7 @@
                 }
             };
             defaluts = $.extend({}, defaluts, options);
-            if (true||defaluts.targetForm.valid()) {
+            if (defaluts.targetForm.valid()) {
                 Loading.progressShow();
                 var data = {};
                 var array = formSerializeArray(defaluts.targetForm);

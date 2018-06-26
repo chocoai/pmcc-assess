@@ -225,63 +225,63 @@ public class DeclareInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNull() {
-            addCriterion("plan_detail_id is null");
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNotNull() {
-            addCriterion("plan_detail_id is not null");
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdEqualTo(Integer value) {
-            addCriterion("plan_detail_id =", value, "planDetailId");
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotEqualTo(Integer value) {
-            addCriterion("plan_detail_id <>", value, "planDetailId");
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThan(Integer value) {
-            addCriterion("plan_detail_id >", value, "planDetailId");
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id >=", value, "planDetailId");
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThan(Integer value) {
-            addCriterion("plan_detail_id <", value, "planDetailId");
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id <=", value, "planDetailId");
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIn(List<Integer> values) {
-            addCriterion("plan_detail_id in", values, "planDetailId");
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotIn(List<Integer> values) {
-            addCriterion("plan_detail_id not in", values, "planDetailId");
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id between", value1, value2, "planDetailId");
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id not between", value1, value2, "planDetailId");
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
@@ -422,76 +422,6 @@ public class DeclareInfoExample {
 
         public Criteria andStatusNotBetween(String value1, String value2) {
             addCriterion("status not between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameIsNull() {
-            addCriterion("dynamic_table_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameIsNotNull() {
-            addCriterion("dynamic_table_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameEqualTo(String value) {
-            addCriterion("dynamic_table_name =", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameNotEqualTo(String value) {
-            addCriterion("dynamic_table_name <>", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameGreaterThan(String value) {
-            addCriterion("dynamic_table_name >", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameGreaterThanOrEqualTo(String value) {
-            addCriterion("dynamic_table_name >=", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameLessThan(String value) {
-            addCriterion("dynamic_table_name <", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameLessThanOrEqualTo(String value) {
-            addCriterion("dynamic_table_name <=", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameLike(String value) {
-            addCriterion("dynamic_table_name like", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameNotLike(String value) {
-            addCriterion("dynamic_table_name not like", value, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameIn(List<String> values) {
-            addCriterion("dynamic_table_name in", values, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameNotIn(List<String> values) {
-            addCriterion("dynamic_table_name not in", values, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameBetween(String value1, String value2) {
-            addCriterion("dynamic_table_name between", value1, value2, "dynamicTableName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDynamicTableNameNotBetween(String value1, String value2) {
-            addCriterion("dynamic_table_name not between", value1, value2, "dynamicTableName");
             return (Criteria) this;
         }
 

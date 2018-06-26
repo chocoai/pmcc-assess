@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.mapper;
 
 import com.copower.pmcc.assess.dal.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.entity.DeclareInfoExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DeclareInfoMapper {
     int countByExample(DeclareInfoExample example);

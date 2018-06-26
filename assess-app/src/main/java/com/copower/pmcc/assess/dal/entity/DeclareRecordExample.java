@@ -226,6 +226,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andProjectClassifyIdIsNull() {
+            addCriterion("project_classify_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdIsNotNull() {
+            addCriterion("project_classify_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdEqualTo(Integer value) {
+            addCriterion("project_classify_id =", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdNotEqualTo(Integer value) {
+            addCriterion("project_classify_id <>", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdGreaterThan(Integer value) {
+            addCriterion("project_classify_id >", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_classify_id >=", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdLessThan(Integer value) {
+            addCriterion("project_classify_id <", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_classify_id <=", value, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdIn(List<Integer> values) {
+            addCriterion("project_classify_id in", values, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdNotIn(List<Integer> values) {
+            addCriterion("project_classify_id not in", values, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_classify_id between", value1, value2, "projectClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectClassifyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_classify_id not between", value1, value2, "projectClassifyId");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
