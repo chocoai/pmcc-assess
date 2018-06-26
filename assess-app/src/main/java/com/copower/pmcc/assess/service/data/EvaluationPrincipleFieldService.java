@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.EvaluationPrincipleFieldDao;
+import com.copower.pmcc.assess.dal.dao.data.EvaluationPrincipleFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.dal.dao.CompileReportDao;
-import com.copower.pmcc.assess.dal.dao.CompileReportDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDao;
+import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;

@@ -1,18 +1,15 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.CompileReportDao;
-import com.copower.pmcc.assess.dal.dao.CompileReportDetailsDao;
-import com.copower.pmcc.assess.dal.dao.DataReportAnalysisFieldDao;
+import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDao;
+import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDetailsDao;
+import com.copower.pmcc.assess.dal.dao.data.DataReportAnalysisFieldDao;
 import com.copower.pmcc.assess.dal.entity.CompileReport;
 import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.CompileReportApplyDto;
-import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.data.DataReportAnalysisFieldService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.CompileReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;

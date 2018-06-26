@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanHistoryDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanHistoryDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanHistory;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;

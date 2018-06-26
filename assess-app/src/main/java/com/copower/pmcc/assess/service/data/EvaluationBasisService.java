@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.EvaluationBasisDao;
-import com.copower.pmcc.assess.dal.dao.EvaluationBasisFieldDao;
+import com.copower.pmcc.assess.dal.dao.data.EvaluationBasisDao;
+import com.copower.pmcc.assess.dal.dao.data.EvaluationBasisFieldDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisFieldDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

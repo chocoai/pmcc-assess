@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
-import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
+import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;

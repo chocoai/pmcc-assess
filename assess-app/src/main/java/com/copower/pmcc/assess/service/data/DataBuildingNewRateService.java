@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.DataBuildingNewRateEnum;
-import com.copower.pmcc.assess.dal.dao.DataBuildingNewRateDao;
+import com.copower.pmcc.assess.dal.dao.data.DataBuildingNewRateDao;
 import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;

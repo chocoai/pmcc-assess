@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.dao.DeclareUseClassifyDao;
-import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
+import com.copower.pmcc.assess.dal.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.dao.project.declare.DeclareUseClassifyDao;
+import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.DeclareInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.apache.commons.collections.CollectionUtils;

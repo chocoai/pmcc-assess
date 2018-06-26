@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 
-import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
@@ -9,21 +9,16 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 描述:项目成员信息

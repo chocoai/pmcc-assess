@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
-import com.copower.pmcc.assess.service.project.DeclareInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

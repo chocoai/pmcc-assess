@@ -1,18 +1,12 @@
 package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
 import com.copower.pmcc.assess.dto.input.project.SchemeInfoDetailVDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
-import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
-import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.EvaluationBasisService;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
-import com.copower.pmcc.assess.service.project.SchemeInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -22,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * 描述:

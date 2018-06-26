@@ -1,8 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.StageWeightProportionDao;
+import com.copower.pmcc.assess.dal.dao.data.StageWeightProportionDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
@@ -20,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service(value = "stageWeightProportionService")
 public class StageWeightProportionService {

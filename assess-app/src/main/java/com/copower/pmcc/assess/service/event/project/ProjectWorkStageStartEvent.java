@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.ProjectWorkStageRestartDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectWorkStageRestartDao;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStageRestart;

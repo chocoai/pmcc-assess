@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.DataCsrFieldRelationDao;
+import com.copower.pmcc.assess.dal.dao.data.DataCsrFieldRelationDao;
 import com.copower.pmcc.assess.dal.entity.DataCsrFieldRelation;
 import com.copower.pmcc.assess.dto.output.data.DataCsrFieldRelationVo;
 import com.copower.pmcc.assess.service.base.FormConfigureService;

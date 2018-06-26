@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.SchemeAreaGroupDao;
-import com.copower.pmcc.assess.dal.dao.SchemeEvaluationObjectDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeAreaGroupDao;
+import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeEvaluationObjectDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

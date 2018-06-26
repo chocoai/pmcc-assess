@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.ApprovalUser;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.ProjectWorkStageDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectWorkStageDao;
 import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

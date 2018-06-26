@@ -1,11 +1,10 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.data.DataDeclareFormService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;

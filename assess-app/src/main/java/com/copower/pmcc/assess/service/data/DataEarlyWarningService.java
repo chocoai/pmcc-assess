@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.DataEarlyWarningDao;
+import com.copower.pmcc.assess.dal.dao.data.DataEarlyWarningDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
 import com.copower.pmcc.assess.dto.output.data.DataEarlyWarningVo;

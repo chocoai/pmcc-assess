@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.NumberRuleEnum;
-import com.copower.pmcc.assess.dal.dao.DataNumberRuleDao;
+import com.copower.pmcc.assess.dal.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DataNumberRule;
 import com.copower.pmcc.assess.dto.output.data.DataNumberRuleVo;

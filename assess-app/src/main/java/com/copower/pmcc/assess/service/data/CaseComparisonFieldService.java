@@ -1,13 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.CaseComparisonTypeEnum;
-import com.copower.pmcc.assess.dal.dao.CaseComparisonFieldDao;
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.entity.DataCaseComparison;
+import com.copower.pmcc.assess.dal.dao.data.CaseComparisonFieldDao;
 import com.copower.pmcc.assess.dal.entity.DataCaseComparisonField;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonFieldDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonFieldVo;
-import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

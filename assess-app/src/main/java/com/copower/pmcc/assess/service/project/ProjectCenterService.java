@@ -2,10 +2,10 @@ package com.copower.pmcc.assess.service.project;
 
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.dao.ProjectInfoDao;
-import com.copower.pmcc.assess.dal.dao.ProjectMemberDao;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;

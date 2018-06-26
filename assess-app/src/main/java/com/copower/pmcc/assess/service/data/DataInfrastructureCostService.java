@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.DataInfrastructureCostDao;
+import com.copower.pmcc.assess.dal.dao.data.DataInfrastructureCostDao;
 import com.copower.pmcc.assess.dal.entity.InfrastructureCost;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;

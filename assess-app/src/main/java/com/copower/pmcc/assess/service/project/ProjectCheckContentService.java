@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

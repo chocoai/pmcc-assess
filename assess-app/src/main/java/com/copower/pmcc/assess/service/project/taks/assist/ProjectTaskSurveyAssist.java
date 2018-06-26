@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.SurveyAssetTemplateDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
@@ -10,8 +10,8 @@ import com.copower.pmcc.assess.dto.output.project.SurveyAssetTemplateVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectCheckContentService;
-import com.copower.pmcc.assess.service.project.SurveyAssetInventoryService;
-import com.copower.pmcc.assess.service.project.SurveyAssetTemplateService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetTemplateService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;

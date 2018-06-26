@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
-import com.copower.pmcc.assess.service.project.SchemeAssistService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAssistService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -169,96 +169,13 @@
         var cols = [];
         cols.push({field: 'id', title: '项目编号'});
         cols.push({field: 'projectName', title: '项目名称'});
+        cols.push({field: 'projectClasssName', title: '项目类型'});
+        cols.push({field: 'projectTypeName', title: '项目类别'});
+        cols.push({field: 'projectCategoryName', title: '项目范围'});
         cols.push({field: 'projectStatus', title: '项目状态'});
-        cols.push({field: 'projectCategoryName', title: '项目类别'});
-        cols.push({
-            field: 'planWorkStages', title: '项目计划', formatter: function (value, row, index) {
-                var s = "";
-                if (value) {
-
-
-                    var planData = [];
-                    $.each(value, function (i, j) {
-                        planData.push(j);
-                        if (i < 2) {
-                            s += bottonHtml(i, j.planId, j, "btn-info");
-                            s += "<br/>";
-                        }
-                        else {
-                            if (i == 2) {
-                                s += "<button type='button' style='margin-left: 5px;margin-bottom: 5px;' class='btn btn-info btn-sm' onclick='loadMoreTask(" + j.model + "," + index + ")'> 查看更多(" + (value.length - 2) + ")  </button>";
-                                s += "<br/>";
-                            }
-                        }
-                    });
-                    planDataList["rowIndex" + index] = planData;
-
-
-                }
-                return s;
-            }
-        });
-        cols.push({
-            field: 'taskWorkStages', wdith: '20%', title: '成果提交', formatter: function (value, row, index) {
-                var s = "";
-                if (value) {
-                    var taskData = [];
-                    $.each(value, function (i, j) {
-                        taskData.push(j);
-                        if (i < 2) {
-                            s += bottonHtml(i, j.id, j, "btn-warning");
-                            s += "<br/>";
-                        }
-                        else {
-                            if (i == 2) {
-                                s += "<button type='button' style='margin-left: 5px;margin-bottom: 5px;' class='btn btn-warning btn-sm' onclick='loadMoreTask(" + j.model + "," + index + ")'> 查看更多(" + (value.length - 2) + ")  </button>";
-                                s += "<br/>";
-                            }
-                        }
-                    });
-                    taskDataList["rowIndex" + index] = taskData;
-                }
-                return s;
-            }
-        });
-        cols.push({
-            field: 'taskAllWorkStages', title: '整体复核', formatter: function (value, row, index) {
-                var s = "";
-                if (value) {
-
-
-                    var taskData = [];
-                    $.each(value, function (i, j) {
-                        taskData.push(j);
-                        if (i < 2) {
-                            s += bottonHtml(i, j.planId, j, "btn-success");
-                            s += "<br/>";
-                        }
-                        else {
-                            if (i == 2) {
-                                s += "<button type='button' style='margin-left: 5px;margin-bottom: 5px;' class='btn btn-success btn-sm' onclick='loadMoreTask(" + j.model + "," + index + ")'> 查看更多(" + (value.length - 2) + ")  </button>";
-                                s += "<br/>";
-                            }
-                        }
-                    });
-                    allTaskDataList["rowIndex" + index] = taskData;
-
-
-                }
-                return s;
-            }
-        });
         cols.push({
             field: 'opation', title: '操作', formatter: function (value, row, index) {
-                <%--var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";--%>
-                var detailUrl = "";
-                if (row.baseProjectClassify != null && row.baseProjectClassify != '') {
-                    detailUrl = "${pageContext.request.contextPath}/" + row.baseProjectClassify.detailUrl + "?projectId=" + row.id;
-                } else {
-                    detailUrl = "#";
-                }
-                var url = "" + detailUrl + "";
-                var str = "<a target='_blank' href='" + detailUrl + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                var str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
                 return str;
             }
         });

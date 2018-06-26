@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.dao.DataInfrastructureDao;
+import com.copower.pmcc.assess.dal.dao.data.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;

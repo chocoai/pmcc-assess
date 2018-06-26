@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
-import com.copower.pmcc.assess.dal.dao.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.dao.ProjectPhaseDao;
-import com.copower.pmcc.assess.dal.dao.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPhaseDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
