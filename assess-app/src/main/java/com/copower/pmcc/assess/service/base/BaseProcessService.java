@@ -131,7 +131,7 @@ public class BaseProcessService {
                     baseProcessFormVo.setTableName(baseFormModule.getTableName());
                     if (Boolean.TRUE == baseFormModule.getBisMultiple()) {
                         List<FormConfigureFieldVo> fieldVos = Lists.newArrayList();
-                        fieldVos = formConfigureService.getListFieldsShow(baseFormModule.getId());
+                        fieldVos = formConfigureService.getListShowFields(baseFormModule.getId());
                         baseProcessFormVo.setFieldList(fieldVos);
                         if (CollectionUtils.isNotEmpty(fieldVos)) {
                             String s = JSONObject.toJSONString(fieldVos);

@@ -14,7 +14,7 @@
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-            <%@include file="/views/share/tools/dynamic_form_approval.jsp" %>
+            <%@include file="/views/task/declare/module/declareInfoView.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -62,14 +62,16 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="application/javascript">
     $(function () {
-        GetFileShows("file_upload_task",
-            {
-                tableName: "tb_project_plan_details",
+        FileUtils.getFileShows({
+            target: "file_upload_task",
+            formData: {
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}",
-                processInsId: "${processInsId}"
-            }, "0");
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: false
+        })
     })
     function saveform() {
         saveApprovalform("");

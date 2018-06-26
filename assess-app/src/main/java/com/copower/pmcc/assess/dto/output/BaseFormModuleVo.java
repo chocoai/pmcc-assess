@@ -9,7 +9,9 @@ import java.util.List;
  */
 public class BaseFormModuleVo extends BaseFormModule {
     private Integer tableId;
-    private List<FormConfigureFieldVo> fieldVos;
+    private Integer classifyId;
+    private String title;
+    private List<FormConfigureFieldVo> listShowFields;
 
     public Integer getTableId() {
         return tableId;
@@ -19,11 +21,27 @@ public class BaseFormModuleVo extends BaseFormModule {
         this.tableId = tableId;
     }
 
-    public List<FormConfigureFieldVo> getFieldVos() {
-        return fieldVos;
+    public Integer getClassifyId() {
+        return classifyId;
     }
 
-    public void setFieldVos(List<FormConfigureFieldVo> fieldVos) {
-        this.fieldVos = fieldVos;
+    public void setClassifyId(Integer classifyId) {
+        this.classifyId = classifyId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<FormConfigureFieldVo> getListShowFields() {
+        return listShowFields;
+    }
+
+    public void setListShowFields(List<FormConfigureFieldVo> listShowFields) {
+        this.listShowFields = listShowFields;
     }
 }

@@ -443,12 +443,12 @@ public class FormConfigureService {
     }
 
     /**
-     * 根据key获取列表显示字段数据
+     * 根据id获取列表显示字段数据
      *
      * @param formModuleId
      * @return
      */
-    public List<FormConfigureFieldVo> getListFieldsShow(Integer formModuleId) {
+    public List<FormConfigureFieldVo> getListShowFields(Integer formModuleId) {
         List<FormConfigureFieldVo> fieldVos = Lists.newArrayList();
         List<BaseFormModuleField> listFields = getListFields(formModuleId);
         if (CollectionUtils.isNotEmpty(listFields)) {
@@ -457,7 +457,6 @@ public class FormConfigureService {
                     FormConfigureFieldVo fieldVo = new FormConfigureFieldVo();
                     fieldVo.setName(Boolean.TRUE == listField.getBisJson() ? listField.getJsonName() : listField.getName());
                     fieldVo.setTitle(listField.getDisplayName());
-                    fieldVo.setWidth(listField.getWidth() == null ? 3 : listField.getWidth());
                     if (StringUtils.isNotBlank(listField.getDataViewSql())) {
                         fieldVo.setName(fieldVo.getName() + "_name");
                     }

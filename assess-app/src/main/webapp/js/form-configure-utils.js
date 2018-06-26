@@ -53,7 +53,7 @@
             var defaluts = {
                 readOnly: false,
                 formModuleId: undefined,
-                fieldList: undefined,
+                listShowFields: undefined,
                 targetList: undefined,
                 targetForm: undefined,
                 targetModal: undefined,
@@ -70,7 +70,7 @@
             };
             defaluts = $.extend({}, defaluts, options);
             var cols = [];
-            var array = FormConfigureUtils.parseShowField(defaluts.fieldList);
+            var array = FormConfigureUtils.parseShowField(defaluts.listShowFields);
             if (array && array.length > 0) {
                 $.each(array, function (i, item) {
                     cols.push(item);

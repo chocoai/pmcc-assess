@@ -61,14 +61,16 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-        GetFileShows("file_upload_task",
-            {
-                tableName: "tb_project_plan_details",
+        FileUtils.getFileShows({
+            target: "file_upload_task",
+            formData: {
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}",
-                processInsId: "${processInsId}"
-            }, "0");
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: false
+        })
     })
     function saveform() {
         saveApprovalform("");

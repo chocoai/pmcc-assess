@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseForm;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -238,7 +240,7 @@ public class FormConfigureController {
     @RequestMapping(value = "/getFieldJsonString", method = RequestMethod.POST)
     public HttpResult getFieldJsonString(Integer formModuleId, Integer tableId, String tableName) {
         try {
-            List<FormConfigureFieldVo> fieldVos = formConfigureService.getListFieldsShow(formModuleId);
+            List<FormConfigureFieldVo> fieldVos = formConfigureService.getListShowFields(formModuleId);
             return HttpResult.newCorrectResult(fieldVos);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -310,8 +312,7 @@ public class FormConfigureController {
             if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
                 BaseFormModule baseFormModule = formConfigureService.getBaseFormModuleById(baseProjectClassify.getFormModuleId());
                 BeanUtils.copyProperties(baseFormModule,baseFormModuleVo);
-                baseFormModuleVo.setTableId(0);
-                baseFormModuleVo.setFieldVos(formConfigureService.getListFieldsShow(baseFormModule.getId()));
+                baseFormModuleVo.setListShowFields(formConfigureService.getListShowFields(baseFormModule.getId()));
             }
             return HttpResult.newCorrectResult(baseFormModuleVo);
         } catch (Exception e) {

@@ -129,7 +129,6 @@
             </div>
         </div>
     </div>
-    <%@include file="/views/share/model_employee.jsp" %>
 </c:if>
 <c:if test="${flog=='details'}">
     <%@include file="/views/share/form_details.jsp" %>

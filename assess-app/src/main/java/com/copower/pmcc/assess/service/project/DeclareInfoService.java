@@ -3,19 +3,19 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.dao.DeclareInfoDao;
 import com.copower.pmcc.assess.dal.dao.DeclareUseClassifyDao;
 import com.copower.pmcc.assess.dal.dao.FormConfigureDao;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.entity.DeclareUseClassify;
+import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.DeclareInfoDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,8 @@ public class DeclareInfoService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseFormService baseFormService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     /**
      * 获取申报信息by processInsId
@@ -59,24 +61,14 @@ public class DeclareInfoService {
     /**
      * 保存申报数据
      *
-     * @param declareInfoDto
+     * @param declareInfo
      */
-    @Transactional(rollbackFor = Exception.class)
-    public void saveDeclareInfo(DeclareInfoDto declareInfoDto) throws BusinessException {
-        FormConfigureDto formConfigureDto = declareInfoDto.getFormConfigureDto();
-        Integer mainId = 0;
-        if (declareInfoDto.getId() != null && declareInfoDto.getId() > 0) {
-            //暂不处理
+    public void saveDeclareInfo(DeclareInfo declareInfo) throws BusinessException {
+        if (declareInfo.getId() != null && declareInfo.getId() > 0) {
+            declareInfoDao.updateDeclareInfo(declareInfo);
         } else {
-            mainId = formConfigureService.saveData(formConfigureDto);
-            DeclareInfo declareInfo = new DeclareInfo();
-            declareInfo.setId(mainId);
-            declareInfo.setProjectId(declareInfoDto.getProjectId());
-            declareInfo.setProcessInsId(declareInfoDto.getProcessInsId());
-            declareInfo.setPlanDetailId(declareInfoDto.getPlanDetailId());
-            declareInfo.setDynamicTableName(declareInfoDto.getFormConfigureDto().getMultipleFormList().get(0).getTableName());
             declareInfo.setCreator(commonService.thisUserAccount());
-            declareInfoDao.editDeclareInfo(declareInfo);
+            declareInfoDao.addDeclareInfo(declareInfo);
         }
     }
 
@@ -98,19 +90,20 @@ public class DeclareInfoService {
 
     /**
      * 删除使用的项目分类
+     *
      * @param projectId
      * @param planDetailsId
      * @param projectClassifyId
      */
-    public void delDeclareUserClassify(Integer projectId, Integer planDetailsId,Integer projectClassifyId) {
+    public void delDeclareUserClassify(Integer projectId, Integer planDetailsId, Integer projectClassifyId) {
         //先删除该分类下的申报信息
-        DeclareUseClassify declareUseClassify = declareUseClassifyDao.getDeclareUseClassify(projectId,planDetailsId,projectClassifyId);
+        DeclareUseClassify declareUseClassify = declareUseClassifyDao.getDeclareUseClassify(projectId, planDetailsId, projectClassifyId);
         if (declareUseClassify != null) {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareUseClassify.getProjectClassifyId());
-            if(projectClassify!=null&&projectClassify.getFormModuleId()!=null){
+            if (projectClassify != null && projectClassify.getFormModuleId() != null) {
                 BaseFormModule baseFormModule = baseFormService.getBaseFormModule(projectClassify.getFormModuleId());
-                if(baseFormModule!=null&&StringUtils.isNotBlank(baseFormModule.getForeignKeyName()) ){
-                    jdbcTemplate.execute(String.format("DELETE FROM %s WHERE %s=%s",baseFormModule.getTableName(),baseFormModule.getForeignKeyName(),declareUseClassify.getPlanDetailsId()));
+                if (baseFormModule != null && StringUtils.isNotBlank(baseFormModule.getForeignKeyName())) {
+                    jdbcTemplate.execute(String.format("DELETE FROM %s WHERE %s=%s", baseFormModule.getTableName(), baseFormModule.getForeignKeyName(), declareUseClassify.getPlanDetailsId()));
                 }
             }
             declareUseClassifyDao.deleteDeclareUseClassify(declareUseClassify.getId());
@@ -118,17 +111,43 @@ public class DeclareInfoService {
     }
 
     /**
-     * 获取
+     * 获取使用到的申报表数据
+     *
      * @param projectId
      * @param planDetailsId
      * @return
      */
-    public List<BaseFormModuleVo> getBaseFormModuleVos(Integer projectId,Integer planDetailsId){
+    public List<BaseFormModuleVo> getBaseFormModuleVos(Integer projectId, Integer planDetailsId) {
+        List<BaseFormModuleVo> baseFormModuleVos = Lists.newArrayList();
         List<DeclareUseClassify> useClassifyList = declareUseClassifyDao.getDeclareUseClassifyList(projectId, planDetailsId);
-        if(CollectionUtils.isEmpty(useClassifyList)){
+        if (CollectionUtils.isEmpty(useClassifyList)) {
             //查看计划是否设置到范围
-
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            if (projectPlanDetails != null && projectPlanDetails.getDeclareFormId() != null) {
+                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectPlanDetails.getDeclareFormId());
+                if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
+                    setBaseFormModuleVo(baseFormModuleVos, baseProjectClassify);
+                    addDeclareUserClassify(projectId,planDetailsId,baseProjectClassify.getId());
+                }
+            }
+        }else{
+            for (DeclareUseClassify declareUseClassify : useClassifyList) {
+                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareUseClassify.getProjectClassifyId());
+                if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
+                    setBaseFormModuleVo(baseFormModuleVos, baseProjectClassify);
+                }
+            }
         }
-        return null;
+        return baseFormModuleVos;
+    }
+
+    private void setBaseFormModuleVo(List<BaseFormModuleVo> baseFormModuleVos, BaseProjectClassify baseProjectClassify) {
+        BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
+        if (baseFormModule != null) {
+            BaseFormModuleVo baseFormModuleVo = baseFormService.getBaseFormModuleVo(baseFormModule);
+            baseFormModuleVo.setClassifyId(baseProjectClassify.getId());
+            baseFormModuleVo.setTitle(baseProjectClassify.getName());
+            baseFormModuleVos.add(baseFormModuleVo);
+        }
     }
 }

@@ -3,7 +3,7 @@
  */
 var AssessDBKey = {}
 AssessDBKey.ReportTemplate = "tb_report_template";
-
+AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
 
 
 

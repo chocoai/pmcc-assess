@@ -35,7 +35,7 @@ public class DeclareInfoDao {
         return i > 0;
     }
 
-    public boolean editDeclareInfo(DeclareInfo declareInfo) {
+    public boolean updateDeclareInfo(DeclareInfo declareInfo) {
         int i = declareInfoMapper.updateByPrimaryKeySelective(declareInfo);
         return i > 0;
     }

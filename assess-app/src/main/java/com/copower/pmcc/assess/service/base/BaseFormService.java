@@ -4,8 +4,11 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
+import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +25,18 @@ import java.util.List;
 public class BaseFormService {
     @Autowired
     private BaseFormDao baseFormDao;
+    @Autowired
+    private FormConfigureService formConfigureService;
+
     //BaseForm=========================================================
-    public BaseForm getBaseForm(Integer id){
+    public BaseForm getBaseForm(Integer id) {
         return baseFormDao.getBaseForm(id);
     }
-    public BaseForm getBaseForm(String name){
+
+    public BaseForm getBaseForm(String name) {
         return baseFormDao.getBaseFormByName(name);
     }
+
     public List<BaseForm> getBaseFormList() {
         return baseFormDao.getBaseForm("");
     }
@@ -42,16 +50,28 @@ public class BaseFormService {
         return baseFormDao.getBaseFormModuleList(ids);
     }
 
-    public BaseFormModule getBaseFormModule(Integer id){
+    public BaseFormModule getBaseFormModule(Integer id) {
         return baseFormDao.getBaseFormModule(id);
+    }
+
+    public BaseFormModuleVo getBaseFormModuleVo(BaseFormModule baseFormModule) {
+        if (baseFormModule == null) return null;
+        BaseFormModuleVo baseFormModuleVo = new BaseFormModuleVo();
+        BeanUtils.copyProperties(baseFormModule,baseFormModuleVo);
+        if(baseFormModule.getBisMultiple()){
+            List<FormConfigureFieldVo> listShowFields = formConfigureService.getListShowFields(baseFormModule.getId());
+            baseFormModuleVo.setListShowFields(listShowFields);
+        }
+        return baseFormModuleVo;
     }
 
     /**
      * 从缓存中获取动态表单信息
+     *
      * @param id
      * @return
      */
-    public BaseFormModule getCacheFormModuleById(Integer id){
+    public BaseFormModule getCacheFormModuleById(Integer id) {
         String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DYNAMIC_FORM_MODULE_ID, String.valueOf(id));
         try {
             BaseFormModule baseFormModule = LangUtils.singleCache(rdsKey, id, BaseFormModule.class, o -> baseFormDao.getBaseFormModule(o));
