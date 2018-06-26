@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
-import com.copower.pmcc.assess.dto.output.project.SchemeAreaGroupVo;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeAreaGroupDto;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.BeanUtils;

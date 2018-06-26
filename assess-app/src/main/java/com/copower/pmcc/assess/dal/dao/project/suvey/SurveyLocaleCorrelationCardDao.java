@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dal.dao.project.suvey;
 
 import com.copower.pmcc.assess.dal.mapper.SurveyLocaleCorrelationCardMapper;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleCorrelationCardDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleCorrelationCardDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

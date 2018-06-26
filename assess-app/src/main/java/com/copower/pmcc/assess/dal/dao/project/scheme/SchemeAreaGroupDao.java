@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.scheme;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.entity.SchemeAreaGroupExample;
 import com.copower.pmcc.assess.dal.mapper.SchemeAreaGroupMapper;
-import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

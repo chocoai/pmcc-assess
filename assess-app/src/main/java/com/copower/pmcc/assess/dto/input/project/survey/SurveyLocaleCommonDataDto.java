@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.input.project;
+package com.copower.pmcc.assess.dto.input.project.survey;
 
 /**
  * Created by zly on 2018/5/16.

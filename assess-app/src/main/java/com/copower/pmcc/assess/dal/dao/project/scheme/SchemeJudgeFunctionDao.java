@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.scheme;
 import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunctionExample;
 import com.copower.pmcc.assess.dal.mapper.SchemeJudgeFunctionMapper;
-import com.copower.pmcc.assess.dto.input.project.SchemeJudgeFunctionDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

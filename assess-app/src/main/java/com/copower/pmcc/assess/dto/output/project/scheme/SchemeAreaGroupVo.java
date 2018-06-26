@@ -1,6 +1,6 @@
-package com.copower.pmcc.assess.dto.output.project;
+package com.copower.pmcc.assess.dto.output.project.scheme;
 
-import com.copower.pmcc.assess.dto.input.project.SchemeAreaGroupDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeAreaGroupDto;
 
 import java.math.BigDecimal;
 

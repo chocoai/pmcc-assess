@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.suvey;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetInventoryExample;
 import com.copower.pmcc.assess.dal.mapper.SurveyAssetInventoryMapper;
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetInventoryDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetInventoryDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeEvaluationObjectDao;
 import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObject;
-import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;

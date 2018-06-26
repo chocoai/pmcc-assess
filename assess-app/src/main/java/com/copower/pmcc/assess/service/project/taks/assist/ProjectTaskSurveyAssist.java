@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
-import com.copower.pmcc.assess.dto.output.project.SurveyAssetTemplateVo;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetTemplateVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectCheckContentService;

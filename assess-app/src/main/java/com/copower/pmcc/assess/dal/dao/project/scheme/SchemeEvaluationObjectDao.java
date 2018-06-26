@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.dao.project.scheme;
 import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObject;
 import com.copower.pmcc.assess.dal.entity.SchemeEvaluationObjectExample;
 import com.copower.pmcc.assess.dal.mapper.SchemeEvaluationObjectMapper;
-import com.copower.pmcc.assess.dto.input.project.SchemeEvaluationObjectDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

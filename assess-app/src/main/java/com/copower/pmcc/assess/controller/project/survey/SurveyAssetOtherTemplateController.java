@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetOtherTemplateDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetOtherTemplateDto;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetOtherTemplateService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

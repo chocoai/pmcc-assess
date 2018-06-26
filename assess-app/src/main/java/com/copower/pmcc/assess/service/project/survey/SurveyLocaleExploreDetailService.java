@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyLocaleExploreDetailDa
 import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
-import com.copower.pmcc.assess.dto.input.project.SurveyLocaleExploreDetailDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleExploreDetailDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;

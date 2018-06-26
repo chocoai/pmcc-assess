@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.dao.project.suvey;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplateExample;
 import com.copower.pmcc.assess.dal.mapper.SurveyAssetTemplateMapper;
-import com.copower.pmcc.assess.dto.input.project.SurveyAssetTemplateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
