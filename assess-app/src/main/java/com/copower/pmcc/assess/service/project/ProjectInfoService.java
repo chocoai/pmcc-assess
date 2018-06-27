@@ -81,28 +81,19 @@ import java.util.*;
 @Service
 public class ProjectInfoService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Lazy
-    @Autowired
-    private ErpRpcUserService erpRpcUserService;
-
     @Autowired
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
-
     @Lazy
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
-
     @Lazy
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
-
     @Lazy
     @Autowired
     private CrmCustomerService crmCustomerService;
-
     @Autowired
     private ProjectInfoDao projectInfoDao;
     @Autowired
@@ -115,20 +106,17 @@ public class ProjectInfoService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
-
     @Autowired
     private BaseAttachmentDao baseAttachmentDao;
     @Lazy
     @Autowired
     private InitiateContactsService initiateContactsService;
-
     @Autowired
     private InitiateConsignorService consignorService;
     @Autowired
     private InitiateUnitInformationService unitInformationService;
     @Autowired
     private InitiatePossessorService possessorService;
-
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
@@ -292,13 +280,8 @@ public class ProjectInfoService {
                 initProjectInfo(projectInfo);//初始化项目信息
             }
         } catch (Exception e) {
-            try {
-                flag = false;
-                logger.error("exception!" + e.getMessage());
-                throw e;
-            } catch (Exception e2) {
-
-            }
+            flag = false;
+            logger.error("exception!" + e.getMessage());
         }
         return flag;
     }
@@ -416,9 +399,6 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
-
-
-
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
@@ -438,7 +418,6 @@ public class ProjectInfoService {
                 projectMember.setUserAccountManager(approvalModelDto.getAppointUserAccount());
                 projectMemberDao.updateProjectMember(projectMember);
             }
-
         }
         processControllerComponent.processSubmitPendingTaskNodeArg(approvalModelDto);
     }
@@ -512,13 +491,14 @@ public class ProjectInfoService {
     public ProjectInfoVo getProjectInfoVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
         if (projectInfo.getProvince() != null && projectInfo.getProvince() > 0) {
-            projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
+
+            projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()+""));//省
         }
         if (projectInfo.getCity() != null && projectInfo.getCity() > 0) {
-            projectInfoVo.setCityName(getSysArea(projectInfo.getCity()));//市或者县
+            projectInfoVo.setCityName(erpAreaService.getSysAreaName(projectInfo.getCity()+""));//市或者县
         }
         if (projectInfo.getDistrict() != null && projectInfo.getDistrict() > 0) {
-            projectInfoVo.setDistrictName(getSysArea(projectInfo.getDistrict()));//县
+            projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()+""));//县
         }
         //紧急程度
         if (projectInfo.getUrgency() != null) {
@@ -555,48 +535,8 @@ public class ProjectInfoService {
         return crmCustomerService.getCustomer(id);
     }
 
-    /*获取所有省*/
-    public List<SysAreaDto> getProvinceList() {
-        return erpAreaService.getProvinceList();
-    }
-
-    /*省名称*/
-    public String getProvinceName(int pid) {
-        List<SysAreaDto> provinceLists = erpAreaService.getProvinceList();
-        String s = provinceAndArea(pid, provinceLists);
-        return s;
-    }
-
-    /*城市名称*/
-    public String getSysArea(Integer id) {
-        return erpAreaService.getSysAreaDto(String.valueOf(id)).getName();
-    }
-
     public SysDepartmentDto getDepartmentDto(Integer id) {
         return erpRpcDepartmentService.getDepartmentById(id);
-    }
-
-    public String provinceAndArea(int id, List<SysAreaDto> sysAreaDtos) {
-        String v = "";
-        inner:
-        for (SysAreaDto s : sysAreaDtos) {
-            if (id == s.getId()) {
-                v = s.getName();
-                break inner;
-            }
-        }
-        return v;
-    }
-
-    /*获取城市*/
-    public List<SysAreaDto> getAreaList(String pid) {
-        return erpAreaService.getAreaList(pid);
-    }
-
-    /*大类*/
-    public List<BaseDataDic> listClass_assess() {
-        List<BaseDataDic> baseDataDics = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
-        return baseDataDics;
     }
 
     /*委托目的*/
@@ -709,26 +649,8 @@ public class ProjectInfoService {
         return crmBaseDataDicDtos;
     }
 
-    public CrmBaseDataDicDto getBaseDataDic(String id) {
-        if (!StringUtils.isEmpty(id)) {
-            CrmBaseDataDicDto crmBaseDataDicDto = crmRpcBaseDataDicService.getBaseDataDic(Integer.parseInt(id));
-            if (!ObjectUtils.isEmpty(crmBaseDataDicDto))
-                return crmBaseDataDicDto;
-        }
-        return null;
-    }
-
     public int saveProjectInfo_returnID(ProjectInfo projectInfo) {
         return projectInfoDao.saveProjectInfo_returnID(projectInfo);
-    }
-
-    /**
-     * 联系人 检查数量是否达到要求
-     *
-     * @return
-     */
-    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum) {
-        return initiateContactsService.checkContacts(initiateContactsEnum);
     }
 
     /**

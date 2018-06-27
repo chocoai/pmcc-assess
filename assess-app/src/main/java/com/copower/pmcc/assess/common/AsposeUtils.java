@@ -1,10 +1,8 @@
 package com.copower.pmcc.assess.common;
 
-import com.aspose.words.BookmarkCollection;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ImportFormatMode;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -74,11 +72,6 @@ public class AsposeUtils {
             builder.moveToBookmark(stringStringEntry.getKey());
             Document document = new Document(stringStringEntry.getValue());
             builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
-        }
-        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            //移除替换过的书签
-            BookmarkCollection bookmarks = doc.getRange().getBookmarks();
-            bookmarks.remove(stringStringEntry.getKey());
         }
         doc.save(filePath);
     }

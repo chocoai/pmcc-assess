@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;

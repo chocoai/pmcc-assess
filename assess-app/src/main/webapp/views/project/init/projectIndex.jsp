@@ -47,6 +47,7 @@
                                 <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="entrustPurpose" name="entrustPurpose" class="form-control"
+                                            onchange="entrustPurposeChange(this);"
                                             required="required">
                                         <option value="">请选择</option>
                                         <c:forEach items="${list_entrustment_purpose}" var="item">
@@ -86,7 +87,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="valueType" name="valueType" class="form-control" required="required">
+                                    <select id="valueType" name="valueType" class="form-control" required="required"
+                                            onchange="valueTypeChange(this);">
                                         <option selected="selected" value="">请选择</option>
                                         <c:forEach items="${value_type}" var="item">
                                             <c:choose>
@@ -163,14 +165,15 @@
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="province" name="province" class="form-control" required="required">
-                                        <option value="" name="province">请选择</option>
+                                        <option value="" name="province">-请选择-</option>
                                         <c:forEach items="${ProvinceList}" var="item">
                                             <c:choose>
-                                                <c:when test="${item.id == projectInfo.province}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
+                                                <c:when test="${item.areaId == projectInfo.province}">
+                                                    <option value="${item.areaId}"
+                                                            selected="selected">${item.name}</option>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
+                                                    <option value="${item.areaId}">${item.name}</option>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
@@ -182,15 +185,7 @@
                                 <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="city" name="city" class="form-control" required="required">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.city != null}">
-                                                <option selected="selected"
-                                                        value="${projectInfo.city}">${projectInfo.cityName}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="" name="city">请选择</option>
-                                            </c:otherwise>
-                                        </c:choose>
+
                                     </select>
                                 </div>
                             </div>
@@ -199,15 +194,7 @@
                                 <label class="col-sm-1 control-label">县</label>
                                 <div class="col-sm-3">
                                     <select id="district" name="district" class="form-control">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.city != null}">
-                                                <option selected="selected"
-                                                        value="${projectInfo.district}">${projectInfo.districtName}</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="" name="district">请选择</option>
-                                            </c:otherwise>
-                                        </c:choose>
+
                                     </select>
                                 </div>
                             </div>
@@ -309,7 +296,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位
+                                        单位<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" id="csEntrustmentUnit" name="csEntrustmentUnit"
@@ -320,7 +307,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        法定代表
+                                        法定代表<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="csLegalRepresentative"
@@ -332,7 +319,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        社会统一信用代码
+                                        社会统一信用代码<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="csSociologyCode" id="csSociologyCode"
@@ -344,7 +331,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        经营范围
+                                        经营范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="csScopeOperation" id="csScopeOperation"
@@ -355,7 +342,7 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位地址
+                                        单位地址<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="csAddress" id="csAddress" placeholder="单位地址"
@@ -366,10 +353,11 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位性质
+                                        单位性质<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <select class="form-control" id="csUnitProperties" name="csUnitProperties">
+                                        <select class="form-control" id="csUnitProperties" name="csUnitProperties"
+                                                required>
                                             <option value="">请选择</option>
                                             <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
@@ -391,38 +379,23 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        姓名
+                                        姓名<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csName != null}">
-                                                <input type="text" name="csName" id="csName"
-                                                       value="${projectInfo.consignorVo.csName}" class="form-control">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csName" id="csName" placeholder="姓名"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csName" id="csName" placeholder="姓名"
+                                               value="${projectInfo.consignorVo.csName}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证号
+                                        身份证号<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csName != null}">
-                                                <input type="text" name="csIdcard" id="csIdcard"
-                                                       value="${projectInfo.consignorVo.csIdcard}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csIdcard" id="csIdcard" placeholder="身份证号"
+                                               value="${projectInfo.consignorVo.csIdcard}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
                             </div>
@@ -433,17 +406,8 @@
                                         住址
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.consignorVo.csName != null}">
-                                                <input type="text" name="csAddress" id="csAddress2"
-                                                       value="${projectInfo.consignorVo.csAddress}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="csAddress" id="csAddress2" placeholder="住址"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="csAddress" id="csAddress2"
+                                               value="${projectInfo.consignorVo.csAddress}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -499,7 +463,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位
+                                        单位<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
@@ -529,39 +493,23 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        法定代表
+                                        法定代表<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pLegalRepresentative != null}">
-                                                <input type="text" name="pLegalRepresentative"
-                                                       value="${projectInfo.possessorVo.pLegalRepresentative}"
-                                                       id="pLegalRepresentative" class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pLegalRepresentative" id="pLegalRepresentative"
-                                                       placeholder="法定代表" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pLegalRepresentative"
+                                               value="${projectInfo.possessorVo.pLegalRepresentative}"
+                                               id="pLegalRepresentative" class="form-control" required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        社会统一信用代码
+                                        社会统一信用代码<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pSociologyCode != null}">
-                                                <input type="text" name="pSociologyCode" id="pSociologyCode"
-                                                       value="${projectInfo.possessorVo.pSociologyCode}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pSociologyCode" id="pSociologyCode"
-                                                       placeholder="社会统一信用代码" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pSociologyCode" id="pSociologyCode"
+                                               value="${projectInfo.possessorVo.pSociologyCode}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -569,53 +517,39 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        经营范围
+                                        经营范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pScopeOperation != null}">
-                                                <input type="text" name="pScopeOperation" id="pScopeOperation"
-                                                       value="${projectInfo.possessorVo.pScopeOperation}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pScopeOperation" id="pScopeOperation"
-                                                       placeholder="经营范围" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pScopeOperation" id="pScopeOperation"
+                                               value="${projectInfo.possessorVo.pScopeOperation}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位地址
+                                        单位地址<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pAddress != null}">
-                                                <input type="text" name="pAddress" id="pAddress"
-                                                       value="${projectInfo.possessorVo.pAddress}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pAddress" id="pAddress" placeholder="单位地址"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pAddress" id="pAddress"
+                                               value="${projectInfo.possessorVo.pAddress}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位性质
+                                        单位性质<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <select class="form-control" id="pUnitProperties" name="pUnitProperties">
+                                        <select class="form-control" id="pUnitProperties" name="pUnitProperties"
+                                                required>
                                             <option value="">请选择</option>
                                             <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
                                                     <c:when test="${item.id == projectInfo.possessorVo.pUnitProperties}">
-                                                        <option value="${item.id}" selected="selected">${item.name}</option>
+                                                        <option value="${item.id}"
+                                                                selected="selected">${item.name}</option>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <option value="${item.id}">${item.name}</option>
@@ -632,39 +566,23 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        姓名
+                                        姓名<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pName != null}">
-                                                <input type="text" name="pName" id="pName"
-                                                       value="${projectInfo.possessorVo.pName}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pName" id="pName" placeholder="姓名"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pName" id="pName"
+                                               value="${projectInfo.possessorVo.pName}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        身份证号
+                                        身份证号<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pIdcard != null}">
-                                                <input type="text" name="pIdcard" id="pIdcard"
-                                                       value="${projectInfo.possessorVo.pIdcard}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pIdcard" id="pIdcard"
+                                               value="${projectInfo.possessorVo.pIdcard}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
                             </div>
@@ -675,17 +593,9 @@
                                         住址
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.possessorVo.pAddress != null}">
-                                                <input type="text" name="pAddress" id="pAddress2"
-                                                       value="${projectInfo.possessorVo.pAddress}" class="form-control"
-                                                       required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="pAddress" id="pAddress2" placeholder="住址"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="pAddress" id="pAddress2"
+                                               value="${projectInfo.possessorVo.pAddress}" class="form-control"
+                                               required="required">
                                     </div>
                                 </div>
                             </div>
@@ -734,7 +644,7 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位
+                                        单位<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
                                         <div class="input-group">
@@ -762,39 +672,23 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        法定代表人
+                                        法定代表人<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.unitInformationVo.uLegalRepresentative != null}">
-                                                <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
-                                                       value="${projectInfo.unitInformationVo.uLegalRepresentative}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
-                                                       placeholder="法定代表人" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
+                                               value="${projectInfo.unitInformationVo.uLegalRepresentative}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        证照号
+                                        证照号<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.unitInformationVo.uCertificateNumber != null}">
-                                                <input type="text" name="uCertificateNumber" id="uCertificateNumber"
-                                                       value="${projectInfo.unitInformationVo.uCertificateNumber}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="uCertificateNumber" id="uCertificateNumber"
-                                                       placeholder="证照号" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="uCertificateNumber" id="uCertificateNumber"
+                                               value="${projectInfo.unitInformationVo.uCertificateNumber}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -802,10 +696,11 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        单位性质
+                                        单位性质<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <select name="uUnitProperties" id="uUnitProperties" class="form-control">
+                                        <select name="uUnitProperties" id="uUnitProperties" class="form-control"
+                                                required>
                                             <option value="" name="uUnitProperties">请选择</option>
                                             <c:forEach items="${ProjectAFFILIATED}" var="item">
                                                 <c:choose>
@@ -824,39 +719,23 @@
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        经营范围
+                                        经营范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.unitInformationVo.uScopeOperation != null}">
-                                                <input type="text" name="uScopeOperation" id="uScopeOperation"
-                                                       value="${projectInfo.unitInformationVo.uScopeOperation}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="uScopeOperation" id="uScopeOperation"
-                                                       placeholder="经营范围" class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="uScopeOperation" id="uScopeOperation"
+                                               value="${projectInfo.unitInformationVo.uScopeOperation}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
 
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        地址
+                                        地址<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-3">
-                                        <c:choose>
-                                            <c:when test="${projectInfo.unitInformationVo.uAddress != null}">
-                                                <input type="text" name="uAddress" id="uAddress"
-                                                       value="${projectInfo.unitInformationVo.uAddress}"
-                                                       class="form-control" required="required">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="uAddress" id="uAddress" placeholder="地址"
-                                                       class="form-control" required="required">
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="uAddress" id="uAddress"
+                                               value="${projectInfo.unitInformationVo.uAddress}"
+                                               class="form-control" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -974,93 +853,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
-<script>
-    $("#valueType").change(function () {
-        var selected = $(this).children('option:selected').val();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
-            type: "get",
-            dataType: "json",
-            data: {id: selected},
-            success: function (result) {
-                if (result.ret) {
-                    $("#remarkValueType").val(result.data.remark);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    });
-    $("#entrustPurpose").change(function () {
-        var selected = $(this).children('option:selected').val();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
-            type: "get",
-            dataType: "json",
-            data: {id: selected},
-            success: function (result) {
-                if (result.ret) {
-                    $("#remarkEntrustPurpose").val(result.data.remark);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    });
-    // oneFirstConsignor();
-    //第一次填写后留下的委托人 数据信息
-    function oneFirstConsignor() {
-        var oneFirstConsignor = "${oneFirstConsignor}";
-        if (oneFirstConsignor != null && oneFirstConsignor != '') {
-            var csType = "${oneFirstConsignor.csType}";
-            if (csType != '' && csType != null) {
-                if (csType == 1) {
-                    $("#changeType input[name='csType'][value='1']").attr("checked", true);
-                    $("#csAddress").val('${oneFirstConsignor.csAddress}');
-                    $("#csEntrustmentUnit").val('${oneFirstConsignor.csEntrustmentUnit}');
-                    $("#csLegalRepresentative").val('${oneFirstConsignor.csLegalRepresentative}');
-                    $("#csSociologyCode").val('${oneFirstConsignor.csSociologyCode}');
-                    $("#csScopeOperation").val('${oneFirstConsignor.csScopeOperation}');
-                    var csUnitProperties = '${oneFirstConsignor.csUnitProperties}';
-                    if (csUnitProperties != null && csUnitProperties != '') {
-                        $("#csUnitProperties").val(csUnitProperties);
-                    }
-                } else if (csType == 0) {
-                    $("#csAddress2").val('${oneFirstConsignor.csAddress}');
-                    $("#csIdcard").val('${oneFirstConsignor.csIdcard}');
-                    $("#csName").val('${oneFirstConsignor.csName}');
-                    $("#changeType input[name='csType'][value='0']").attr("checked", true);
-                }
-            }
-        }
-    }
-    //检查联系人是否达到要求
-    function checkContacts() {
-        var isAllDistribution = true;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
-            type: "post",
-            dataType: "json",
-            async: false,
-            success: function (result) {
-                if (result.ret) {
-                    // Alert("success!");
-                } else {
-                    Alert(result.errmsg);
-                }
-                isAllDistribution = result.ret;
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        })
-        return isAllDistribution;
-    }
+<script type="text/javascript">
     $(function () {
         //---------
         FileUtils.uploadFiles({
@@ -1130,25 +923,40 @@
         })
 
     })
-
 </script>
 <script type="text/javascript">
+    //加载价值类型描述
+    function valueTypeChange(_this) {
+        AssessCommon.getDataDicInfo($(_this).val(), function (data) {
+            if (data) {
+                $("#remarkValueType").val(data.remark);
+            }
+        })
+    }
+
+    //加载委托目的描述
+    function entrustPurposeChange(_this) {
+        AssessCommon.getDataDicInfo($(_this).val(), function (data) {
+            if (data) {
+                $("#remarkEntrustPurpose").val(data.remark);
+            }
+        })
+    }
 
     /*省 市 县 js*/
     function tableNameA() {
         $("#province").change(function () {//监听 选择的省份
             //检测  然后操作
-            removeChild();//删除市
-            removeChild_district();//删除县
+            $("#city,#district").empty();
             var selected = $(this).children('option:selected').val();//获取到省
             var data = "pid=" + selected;
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                url: "${pageContext.request.contextPath}/area/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    appendChildElement(result);
+                    appendChildElement(result.data);
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -1162,17 +970,16 @@
     function tableName_district() {
         $("#city").change(function () {//监听 选择的城市
             //检测  然后操作
-            removeChild_district();
+            $("#district").empty();
             var selected = $(this).children('option:selected').val();//获取到城市
             var data = "pid=" + selected;
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/getAreaList",
+                url: "${pageContext.request.contextPath}/area/getAreaList",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
-                    console.info(result);
-                    appendChildElement_district(result);
+                    appendChildElement_district(result.data);
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -1183,52 +990,21 @@
 
     tableName_district();
 
-    function removeChild() { //删除市
-        var optionLen = $("#city option").size();
-        if (optionLen > 2) {
-            $("#city option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
-        }
+
+    function appendChildElement(data) {//市添加
+        var html = '<option value="">-请选择-</option>';
+        $.each(data, function (i, item) {
+            html += '<option value="' + item.areaId + '">' + item.name + '</option>';
+        })
+        $("#city").append(html);
     }
 
-    function removeChild_district() {//删除县或者区
-        var optionLen = $("#district option").size();
-        if (optionLen > 2) {
-            $("#district option").remove();//当大于2时 应该是已经选择一次了 所以删除元素
-        }
-    }
-
-    function appendChildElement(item) {//市添加
-        var TableField = $("#city");
-        var TableFieldElement = document.getElementById("city");
-        var len = item.length;
-        for (var i = 0; i < len; i++) {
-            var optionLen = $("#city option").size();
-            var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value", item[i].areaId);
-            fieldElment.appendChild(document.createTextNode(item[i].name));
-            TableFieldElement.appendChild(fieldElment);
-            if (i == (len - 1)) {
-                var optionEle = document.createElement("option");
-                optionEle.setAttribute("value", "");
-                optionEle.setAttribute("name", "city");
-                optionEle.appendChild("请选择");
-                TableFieldElement.appendChild(optionEle);
-            }
-        }
-    }
-
-    function appendChildElement_district(item) {//县或者区域添加
-        var TableField = $("#district");
-        var TableFieldElement = document.getElementById("district");
-        var len = item.length;
-        for (var i = 0; i < len; i++) {
-            var optionLen = $("#district option").size();
-            var fieldElment = document.createElement("option");
-            fieldElment.setAttribute("value", item[i].areaId);
-            fieldElment.appendChild(document.createTextNode(item[i].name));
-            TableFieldElement.appendChild(fieldElment);
-
-        }
+    function appendChildElement_district(data) {//县或者区域添加
+        var html = '<option value="">-请选择-</option>';
+        $.each(data, function (i, item) {
+            html += '<option value="' + item.areaId + '">' + item.name + '</option>';
+        })
+        $("#district").append(html);
     }
 
 
@@ -1724,8 +1500,6 @@
         })
     }
 
-    var json = "";
-
     function params() {
         var data = {};
         var projectInfo = formParams("frm_project_info");//项目信息
@@ -1737,41 +1511,11 @@
         data.possessor = possessor;
         data.unitinformation = unitinformation;
         //合并json
-        json = JSON.stringify(data);
-    }
-
-    //检查联系人是否达到要求
-    function checkContacts() {
-        var isAllDistribution = true;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectInfo/Contacts/checkContacts",
-            type: "post",
-            dataType: "json",
-            async: false,
-            success: function (result) {
-                if (result.ret) {
-
-                } else {
-                    Alert(result.errmsg);
-                }
-                isAllDistribution = result.ret;
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        })
-        return isAllDistribution;
+        var json = JSON.stringify(data);
+        return json;
     }
 
     function projectApply() {
-        var projectinfoid = $("#projectinfoid").val();
-        if (projectinfoid == null || projectinfoid == '') {
-            //联系人校验
-            if (!checkContacts()) {
-                return false;
-            }
-        }
         //js校验
         if (!$("#frm_project_info").valid()) {
             return false;
@@ -1785,17 +1529,30 @@
         if (!$("#frm_unitinformation").valid()) {
             return false;
         }
+        if (!hasLinkman('tb_ListA')) {
+            Alert('还未填写委托人联系人信息');
+            return false;
+        }
+        if (!hasLinkman('tb_ListB')) {
+            Alert('还未填写占有人联系人信息');
+            return false;
+        }
+        if (!hasLinkman('tb_ListC')) {
+            Alert('还未填写报告使用单位联系人信息');
+            return false;
+        }
+
         var bisNextUser = "0";
         if ($("#userAccountMemberCheckBox").is(':checked')) {
             bisNextUser = "1";
         }
-        params();
+        var formData = params();
         Loading.progressShow();
         $.ajax({
             type: "POST",
             url: getContextPath() + "/projectInfo/projectApplySubmit",
             data: {
-                formData: json,
+                formData: formData,
                 projectinfoid: $("#projectinfoid").val(),
                 bisNextUser: bisNextUser
             }, success: function (result) {
@@ -1813,8 +1570,13 @@
                 Alert("调用服务端方法失败，失败原因:" + e);
             }
         });
+    }
 
-
+    //是否填写了联系人
+    function hasLinkman(tbListId) {
+        var rows = $("#" + tbListId).bootstrapTable('getData');
+        if (rows == null || rows.length <= 0) return false;
+        return true;
     }
 </script>
 

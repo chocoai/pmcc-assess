@@ -48,25 +48,6 @@
             return text.replace(eval(regex), value);
         },
 
-        //根据id获取单个数据字典信息
-        getDataDicInfo: function (id) {
-            if (id == undefined) return null;
-            var data = {};
-            $.ajax({
-                url: getContextPath() + '/baseDataDic/getDataDicInfo',
-                type: 'get',
-                async: false,//通用方法只提供同步的方法
-                data: {id: id},
-                dataType: 'json',
-                success: function (result) {
-                    if (result.ret) {
-                        data = result.data;
-                    }
-                }
-            })
-            return data;
-        },
-
         //根据项目类型获取项目类别
         getProjectClassifyList: function (typeId, callback) {
             if (typeId) {
@@ -98,6 +79,54 @@
         //找到key值对应的父节点
         getParentNodeByKey: function (node, key) {
             return getParentNodeByKey(node, key);
+        },
+
+        //根据id获取单个数据字典信息
+        getDataDicInfo: function (id, callback) {
+            if (id == undefined) return null;
+            $.ajax({
+                url: getContextPath() + '/baseDataDic/getDataDicInfo',
+                type: 'get',
+                data: {id: id},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret && callback) {
+                        callback(result.data);
+                    }
+                }
+            })
+        },
+
+        loadDataDicByPid: function (pid, value, callback) {
+            if (pid) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        pid: pid
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                if (item.id === value) {
+                                    retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
+                                } else {
+                                    retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                                }
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
         }
     };
 

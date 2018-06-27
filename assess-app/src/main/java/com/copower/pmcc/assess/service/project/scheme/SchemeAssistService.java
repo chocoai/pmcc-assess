@@ -142,12 +142,6 @@ public class SchemeAssistService {
             vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
             if (vos.size() >= 1) {
                 return vos;
-            } else {
-                try {
-                    throw new Exception();
-                } catch (Exception e) {
-
-                }
             }
         }
         return vos;

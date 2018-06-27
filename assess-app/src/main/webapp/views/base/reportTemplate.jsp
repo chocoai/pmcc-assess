@@ -282,14 +282,14 @@
 
         $("#queryType").change(function () {
             $("#queryCategory").empty();
-            baseDicUtils.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
+            AssessCommon.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
                 $("#queryCategory").html(retHtml);
             })
         })
 
         $("#type").change(function () {
             $("#category").empty();
-            baseDicUtils.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
+            AssessCommon.loadDataDicByPid($(this).val(), "", function (retHtml, data) {
                 $("#category").html(retHtml);
             })
         })
@@ -344,7 +344,7 @@
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $("#category").empty();
-        baseDicUtils.loadDataDicByPid(row.type, row.category, function (retHtml, data) {
+        AssessCommon.loadDataDicByPid(row.type, row.category, function (retHtml, data) {
             $("#category").html(retHtml);
         })
         loadTemplateAttachment(row.id);

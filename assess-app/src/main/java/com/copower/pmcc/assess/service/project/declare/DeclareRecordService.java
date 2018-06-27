@@ -40,13 +40,10 @@ public class DeclareRecordService {
     private DeclareRecordDao dao;
     @Autowired
     private ErpAreaService areaService;
-
     @Autowired
     private CommonService commonService;
-
     @Autowired
     private ProjectInfoService projectInfoService;
-
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
@@ -111,17 +108,7 @@ public class DeclareRecordService {
                                 groupDto.setProvince(id + "");
                                 groupDto.setDistrict(districtID);
                                 groupDto.setCreator(commonService.thisUserAccount());
-                                StringBuilder builder = new StringBuilder(1024);
-                                if (id != null) {
-                                    builder.append(projectInfoService.getProvinceName(id));
-                                }
-                                if (!StringUtils.isEmpty(areaId)) {
-                                    builder.append(projectInfoService.getSysArea(Integer.parseInt(areaId)));
-                                }
-                                if (!StringUtils.isEmpty(districtID)) {
-                                    builder.append(projectInfoService.getSysArea(Integer.parseInt(districtID)));
-                                }
-                                groupDto.setProvinceCityDistrictStr(builder.toString());
+                                groupDto.setProvinceCityDistrictStr(erpAreaService.getAreaFullName(id+"",areaId,districtID));
                                 schemeAreaGroupService.add(groupDto);
                             }
                         } catch (Exception e) {
@@ -159,14 +146,7 @@ public class DeclareRecordService {
                         groupDto.setCity(areaId);
                         groupDto.setProvince(id + "");
                         groupDto.setCreator(commonService.thisUserAccount());
-                        StringBuilder builder = new StringBuilder(1024);
-                        if (id != null) {
-                            builder.append(projectInfoService.getProvinceName(id));
-                        }
-                        if (!StringUtils.isEmpty(areaId)) {
-                            builder.append(projectInfoService.getSysArea(Integer.parseInt(areaId)));
-                        }
-                        groupDto.setProvinceCityDistrictStr(builder.toString());
+                        groupDto.setProvinceCityDistrictStr(erpAreaService.getAreaFullName(id+"",areaId,null));
                         schemeAreaGroupService.add(groupDto);
                     }
                 }
@@ -267,7 +247,6 @@ public class DeclareRecordService {
             }
         }
         voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
-
         return voList;
     }
 

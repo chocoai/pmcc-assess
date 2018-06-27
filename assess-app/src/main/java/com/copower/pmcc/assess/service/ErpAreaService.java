@@ -34,8 +34,24 @@ public class ErpAreaService {
         return erpRpcToolsService.getSysAreaDtoList(pid);
     }
 
-    public SysAreaDto getSysAreaDto(String id) {
-        return erpRpcToolsService.getSysAreaDto(id);
+    /**
+     * 获取单个区域数据信息
+     * @param areaId
+     * @return
+     */
+    public SysAreaDto getSysAreaDto(String areaId) {
+        return erpRpcToolsService.getSysAreaDto(areaId);
+    }
+
+    /**
+     * 获取区域名称
+     * @param areaId
+     * @return
+     */
+    public String getSysAreaName(String areaId){
+        SysAreaDto sysAreaDto = getSysAreaDto(areaId);
+        if(sysAreaDto==null) return "";
+        return sysAreaDto.getName();
     }
 
     /**

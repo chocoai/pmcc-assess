@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectFollow;
@@ -10,41 +9,32 @@ import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysAreaDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,21 +54,14 @@ public class ProjectInfoController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectMemberService projectMemberService;
-    @Lazy
-    @Autowired
-    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
-    @Lazy
-    @Autowired
-    private ErpRpcUserService erpRpcUserService;
     @Autowired
     private ProjectFollowService projectFollowService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-    @Lazy
-    @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ErpAreaService erpAreaService;
     @Autowired
     private HttpServletRequest request;
 
@@ -92,9 +75,8 @@ public class ProjectInfoController {
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
         modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
-        modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
-        modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
 
@@ -135,9 +117,8 @@ public class ProjectInfoController {
         modelAndView.addObject("InitiateAFFILIATEDMap", projectInfoService.getConsignorMap());//单位性质
         modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
         modelAndView.addObject("InitiateContactsMap", projectInfoService.getTypeInitiateContactsMap());//联系人类别
-        modelAndView.addObject("listClass_assess", projectInfoService.listClass_assess());//大类
         modelAndView.addObject("list_entrustment_purpose", projectInfoService.list_entrustment_purpose());//委托目的
-        modelAndView.addObject("ProvinceList", projectInfoService.getProvinceList());//所有省份
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
 
@@ -271,18 +252,15 @@ public class ProjectInfoController {
         }
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
-
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
-
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
         modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
-
         return modelAndView;
     }
 
@@ -294,43 +272,6 @@ public class ProjectInfoController {
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
-    }
-
-    private List<KeyValueDto> getKeyValueDtos(Integer projectId) {
-        List<ProjectResponsibilityDto> projectPlanResponsibilityList = bpmRpcProjectTaskService.getProjectTaskList(Lists.newArrayList(projectId));
-        List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(projectPlanResponsibilityList)) {
-            keyValueDtos = LangUtils.transform(projectPlanResponsibilityList, o -> {
-                KeyValueDto keyValueDto = new KeyValueDto();
-                String modelName = "";
-                switch (o.getModel()) {
-                    case 0: {
-                        keyValueDto.setExplain("label-warning");
-                        break;
-                    }
-                    case 1: {
-                        keyValueDto.setExplain("label-info");
-                        break;
-                    }
-                    case 2: {
-                        keyValueDto.setExplain("label-success");
-                        break;
-                    }
-                    case 3: {
-                        keyValueDto.setExplain("label-info");
-                        break;
-                    }
-                }
-                keyValueDto.setKey(o.getPlanDetailsName());
-                SysUserDto sysUser = erpRpcUserService.getSysUser(o.getUserAccount());
-                if (sysUser != null) {
-                    keyValueDto.setValue(sysUser.getUserName());
-                }
-                return keyValueDto;
-            });
-        }
-
-        return keyValueDtos;
     }
 
     @ResponseBody
@@ -362,41 +303,6 @@ public class ProjectInfoController {
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             projectInfoService.removeContacts(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/Contacts/checkContacts", name = "联系人 检测", method = RequestMethod.POST)
-    public HttpResult checkContacts() {
-        try {
-            if (projectInfoService.checkContacts(InitiateContactsEnum.ONE)) {
-                if (projectInfoService.checkContacts(InitiateContactsEnum.TWO)) {
-                    return HttpResult.newCorrectResult("联系人符合约束");
-                } else {
-                    return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_B.getVal() + "联系人不符合约束");
-                }
-            } else {
-                return HttpResult.newErrorResult(InitiateContactsEnum.CONTACTS_ENUM_A.getVal() + "联系人不符合约束");
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getAreaList", name = "城市 县 get", method = RequestMethod.POST)
-    public Object getAreaList(Integer pid) {
-        try {
-            if (pid != null) {
-                List<SysAreaDto> sysAreaDtos = projectInfoService.getAreaList("" + pid);
-                if (sysAreaDtos != null)
-                    return sysAreaDtos;
-            }
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

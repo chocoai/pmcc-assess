@@ -206,21 +206,6 @@ public class InitiateContactsService {
         return vo;
     }
 
-    /**
-     * 联系人 检查数量是否达到要求
-     *
-     * @param initiateContactsEnum
-     * @return
-     */
-    public boolean checkContacts(InitiateContactsEnum initiateContactsEnum) {
-        boolean flag = false;
-        List<InitiateContactsDto> contactsDtos = dao.getList(InitiateContactsEnum.Zero.getNum(), initiateContactsEnum.getNum(), commonService.thisUserAccount());
-        if (contactsDtos.size() >= 1) {
-            flag = true;
-        }
-        return flag;
-    }
-
     public Map<String, String> getTypeMap() {
         Map<String, String> map = new HashMap<>();
         map.put("" + InitiateContactsEnum.ONE.getNum(), InitiateContactsEnum.CONTACTS_ENUM_A.getVal());
