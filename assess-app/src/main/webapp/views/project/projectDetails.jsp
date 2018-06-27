@@ -74,12 +74,11 @@
                     </table>
                 </div>
             </div>
-
             <%@include file="/views/share/project/projectInfo.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
                     <h2>项目成员</h2>
                     <div class="clearfix"></div>
@@ -91,8 +90,15 @@
                                 项目经理
                             </label>
                             <div class="col-sm-3">
-                                <label class="form-control"
-                                       id="lab_userAccountManagerName">${projectMemberVo.userAccountManagerName}</label>
+                                <label class="form-control">${projectMemberVo.userAccountManagerName}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">
+                                项目成员
+                            </label>
+                            <div class="col-sm-11">
+                                <label class="form-control">${projectMemberVo.userAccountMemberName}</label>
                             </div>
                         </div>
                     </div>
@@ -101,7 +107,7 @@
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>工作成果</h2>
                     <div class="clearfix"></div>

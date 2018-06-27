@@ -474,27 +474,30 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
-    public ProjectInfoVo getVoCsr(ProjectInfo projectInfo) {
+    public ProjectInfoVo  getSimpleProjectInfoVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
+        if (!ObjectUtils.isEmpty(projectInfo.getId()) && projectInfo.getId() > 0) {
+            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+            projectInfoVo.setProjectMemberVo(projectMemberVo);
+        }
         //项目类型
         if (projectInfo.getProjectClassId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectClassId());
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectClassId());
             if (projectClassify != null) {
                 projectInfoVo.setProjectClassName(projectClassify.getName());
             }
         }
         //项目类别
         if (projectInfo.getProjectTypeId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectTypeId());
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectTypeId());
             if (projectClassify != null) {
                 projectInfoVo.setProjectTypeName(projectClassify.getName());
-                projectInfoVo.setBaseProjectClassify(projectClassify);
             }
         }
         //项目范围
         if (projectInfo.getProjectCategoryId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectCategoryId());
+            BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectCategoryId());
             if (projectClassify != null) {
                 projectInfoVo.setProjectCategoryName(projectClassify.getName());
             }
@@ -507,37 +510,7 @@ public class ProjectInfoService {
     }
 
     public ProjectInfoVo getProjectInfoVo(ProjectInfo projectInfo) {
-        ProjectInfoVo projectInfoVo = new ProjectInfoVo();
-        BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        if (!ObjectUtils.isEmpty(projectInfo.getId()) && projectInfo.getId() > 0) {
-            ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
-            projectInfoVo.setProjectMemberVo(projectMemberVo);
-        }
-        //项目类型
-        if (projectInfo.getProjectClassId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectClassId());
-            if (projectClassify != null) {
-                projectInfoVo.setProjectClassName(projectClassify.getName());
-            }
-        }
-        //项目类别
-        if (projectInfo.getProjectTypeId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectTypeId());
-            if (projectClassify != null) {
-                projectInfoVo.setProjectTypeName(projectClassify.getName());
-            }
-        }
-        //项目范围
-        if (projectInfo.getProjectCategoryId() != null) {
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getProjectClassifyById(projectInfo.getProjectCategoryId());
-            if (projectClassify != null) {
-                projectInfoVo.setProjectCategoryName(projectClassify.getName());
-            }
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
-            //委托目的
-            projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getName());
-        }
+        ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
         if (projectInfo.getProvince() != null && projectInfo.getProvince() > 0) {
             projectInfoVo.setProvinceName(getProvinceName(projectInfo.getProvince()));//省
         }

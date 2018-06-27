@@ -4,8 +4,9 @@
 var AssessDBKey = {}
 AssessDBKey.ReportTemplate = "tb_report_template";
 AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
-
-
+AssessDBKey.ProjectInfo = "tb_project_info";
+AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
+AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
 
 /**
  * 项目分类key

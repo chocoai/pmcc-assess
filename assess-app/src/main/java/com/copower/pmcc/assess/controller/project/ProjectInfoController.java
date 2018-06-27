@@ -39,10 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.RequestDispatcher;
@@ -241,7 +238,7 @@ public class ProjectInfoController {
         String uri = request.getRequestURI().replace(request.getContextPath(), "").replaceAll("^/", "");
         String detailUri = baseProjectClassify.getDetailUrl().replaceAll("^/", "");
         if (!StringUtils.equals(detailUri, uri)) {
-            String forwardUrl = String.format("%s/%s?projectId=%s", request.getContextPath(), baseProjectClassify.getDetailUrl(), projectId);
+            String forwardUrl = String.format("/%s?projectId=%s", baseProjectClassify.getDetailUrl(), projectId);
             return "forward:"+forwardUrl;//跳转到其它请求地址
         }
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());

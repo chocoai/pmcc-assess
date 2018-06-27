@@ -14,7 +14,7 @@
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>
                         项目信息
@@ -285,21 +285,27 @@
             </div>
             <div class="x_panel">
                 <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
                     <h2> 委托人</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
-                        <div id="changeType">
-                            法人<input type="radio" name="csType"
-                                     value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
-                            自然人<input type="radio" name="csType"
-                                      value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}>
+                        <div class="form-group">
+                            <div id="changeType" class="col-sm-3 col-sm-offset-1">
+                                <span class="radio-inline">
+                                    <input type="radio" required name="csType" id="csType0"
+                                           value="1" ${projectInfo.consignorVo.csType != 0?'checked="checked"':''}  >
+                                    <label for="csType0">法人</label></span>
+                                <span class="radio-inline">
+                                    <input type="radio" name="csType" id="csType1"
+                                           value="0" ${projectInfo.consignorVo.csType == 0?'checked="checked"':''}  >
+                                    <label for="csType1">自然人</label></span>
+                            </div>
                         </div>
-                        <div id="legal_person" class="panel-body">
+                        <div id="legal_person">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -335,7 +341,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -381,24 +386,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        附件
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="file" name="csAttachmentProjectEnclosureId"
-                                               id="csAttachmentProjectEnclosureId" placeholder="上传附件"
-                                               class="form-control" required="required">
-                                        <div id="_csAttachmentProjectEnclosureId"></div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                         <div id="no_legal_person">
                             <div class="form-group">
-
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
                                         姓名
@@ -457,25 +447,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        附件
-                                    </label>
-                                    <div class="col-sm-3">
-                                        <input type="file" name="csAttachmentProjectEnclosureId2"
-                                               id="csAttachmentProjectEnclosureId2" placeholder="上传附件"
-                                               class="form-control" required="required">
-                                        <div id="_csAttachmentProjectEnclosureId2"></div>
-                                    </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    附件
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="file" name="csAttachmentProjectEnclosureId"
+                                           id="csAttachmentProjectEnclosureId" placeholder="上传附件"
+                                           class="form-control" required="required">
+                                    <div id="_csAttachmentProjectEnclosureId"></div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
+                    <div class="x_title">
                         <h3> 联系人</h3>
                     </div>
                     <div class="x_content">
@@ -488,151 +475,218 @@
 
             <div class="x_panel">
                 <div class="x_title collapse-link">
+                    <h2> 占有人</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2> 占有人</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
-                </div>
-                <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
-                    <div id="changeType1">
-                        法人<input type="radio" name="pType"
-                                 value="1" ${projectInfo.possessorVo.csType == 1?'checked="checked"':''}  >
-                        自然人<input type="radio" name="pType"
-                                  value="0" ${projectInfo.possessorVo.csType == 0?'checked="checked"':''}>
-                    </div>
-                    <div id="legal_person1" class="panel-body">
-
+                    <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
                         <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
-                                           class="form-control" required="required" placeholder="单位"
-                                           value="${projectInfo.possessorVo.pEntrustmentUnitName}">
-                                    <%--<div class="input-group">--%>
-                                    <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
-                                    <%--class="form-control" required="required">--%>
-                                    <%--<input type="text" id="pEntrustmentUnitX"--%>
-                                    <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
-                                    <%--class="form-control" required="required" readonly="readonly">--%>
-                                    <%--<span class="input-group-btn">--%>
-                                    <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                    <%--data-toggle="tooltip"--%>
-                                    <%--data-original-title="选择" id="btn_select_customer1">--%>
-                                    <%--<i class="fa fa-search"></i>--%>
-                                    <%--</button>--%>
-                                    <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                    <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
-                                    <%--data-toggle="tooltip" data-original-title="清除">--%>
-                                    <%--<i class="fa fa-trash-o"></i>--%>
-                                    <%--</button>--%>
-                                    <%--</span>--%>
-                                    <%--</div>--%>
+                            <div id="changeType1" class="col-sm-3 col-sm-offset-1">
+                                <span class="radio-inline">
+                                    <input type="radio" required name="pType" id="pType1"
+                                           value="1" ${projectInfo.possessorVo.pType != 0?'checked="checked"':''}  >
+                                    <label for="pType1">法人</label></span>
+                                <span class="radio-inline">
+                                    <input type="radio" name="pType" id="pType0"
+                                           value="0" ${projectInfo.possessorVo.pType == 0?'checked="checked"':''}  >
+                                    <label for="pType0">自然人</label></span>
+                            </div>
+                        </div>
+                        <div id="legal_person1">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
+                                               class="form-control" required="required" placeholder="单位"
+                                               value="${projectInfo.possessorVo.pEntrustmentUnitName}">
+                                        <%--<div class="input-group">--%>
+                                        <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
+                                        <%--class="form-control" required="required">--%>
+                                        <%--<input type="text" id="pEntrustmentUnitX"--%>
+                                        <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
+                                        <%--class="form-control" required="required" readonly="readonly">--%>
+                                        <%--<span class="input-group-btn">--%>
+                                        <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                        <%--data-toggle="tooltip"--%>
+                                        <%--data-original-title="选择" id="btn_select_customer1">--%>
+                                        <%--<i class="fa fa-search"></i>--%>
+                                        <%--</button>--%>
+                                        <%--<button type="button" class="btn btn-default docs-tooltip"--%>
+                                        <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
+                                        <%--data-toggle="tooltip" data-original-title="清除">--%>
+                                        <%--<i class="fa fa-trash-o"></i>--%>
+                                        <%--</button>--%>
+                                        <%--</span>--%>
+                                        <%--</div>--%>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定代表
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pLegalRepresentative != null}">
+                                                <input type="text" name="pLegalRepresentative"
+                                                       value="${projectInfo.possessorVo.pLegalRepresentative}"
+                                                       id="pLegalRepresentative" class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pLegalRepresentative" id="pLegalRepresentative"
+                                                       placeholder="法定代表" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pSociologyCode != null}">
+                                                <input type="text" name="pSociologyCode" id="pSociologyCode"
+                                                       value="${projectInfo.possessorVo.pSociologyCode}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pSociologyCode" id="pSociologyCode"
+                                                       placeholder="社会统一信用代码" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    法定代表
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pLegalRepresentative != null}">
-                                            <input type="text" name="pLegalRepresentative"
-                                                   value="${projectInfo.possessorVo.pLegalRepresentative}"
-                                                   id="pLegalRepresentative" class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pLegalRepresentative" id="pLegalRepresentative"
-                                                   placeholder="法定代表" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pScopeOperation != null}">
+                                                <input type="text" name="pScopeOperation" id="pScopeOperation"
+                                                       value="${projectInfo.possessorVo.pScopeOperation}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pScopeOperation" id="pScopeOperation"
+                                                       placeholder="经营范围" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    社会统一信用代码
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pSociologyCode != null}">
-                                            <input type="text" name="pSociologyCode" id="pSociologyCode"
-                                                   value="${projectInfo.possessorVo.pSociologyCode}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pSociologyCode" id="pSociologyCode"
-                                                   placeholder="社会统一信用代码" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pAddress != null}">
+                                                <input type="text" name="pAddress" id="pAddress"
+                                                       value="${projectInfo.possessorVo.pAddress}" class="form-control"
+                                                       required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pAddress" id="pAddress" placeholder="单位地址"
+                                                       class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" id="pUnitProperties" name="pUnitProperties">
+                                            <option value="">请选择</option>
+                                            <c:forEach items="${ProjectAFFILIATED}" var="item">
+                                                <c:choose>
+                                                    <c:when test="${item.id == projectInfo.possessorVo.pUnitProperties}">
+                                                        <option value="${item.id}" selected="selected">${item.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    经营范围
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pScopeOperation != null}">
-                                            <input type="text" name="pScopeOperation" id="pScopeOperation"
-                                                   value="${projectInfo.possessorVo.pScopeOperation}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pScopeOperation" id="pScopeOperation"
-                                                   placeholder="经营范围" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                        <div id="no_legal_person1">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        姓名
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pName != null}">
+                                                <input type="text" name="pName" id="pName"
+                                                       value="${projectInfo.possessorVo.pName}" class="form-control"
+                                                       required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pName" id="pName" placeholder="姓名"
+                                                       class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        身份证号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pIdcard != null}">
+                                                <input type="text" name="pIdcard" id="pIdcard"
+                                                       value="${projectInfo.possessorVo.pIdcard}" class="form-control"
+                                                       required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号"
+                                                       class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位地址
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pAddress != null}">
-                                            <input type="text" name="pAddress" id="pAddress"
-                                                   value="${projectInfo.possessorVo.pAddress}" class="form-control"
-                                                   required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pAddress" id="pAddress" placeholder="单位地址"
-                                                   class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位性质
-                                </label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="pUnitProperties" name="pUnitProperties">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${ProjectAFFILIATED}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id == projectInfo.possessorVo.pUnitProperties}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        住址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.possessorVo.pAddress != null}">
+                                                <input type="text" name="pAddress" id="pAddress2"
+                                                       value="${projectInfo.possessorVo.pAddress}" class="form-control"
+                                                       required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="pAddress" id="pAddress2" placeholder="住址"
+                                                       class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -649,91 +703,11 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
+                </div>
 
-                    </div>
 
-                    <div id="no_legal_person1">
-                        <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    姓名
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pName != null}">
-                                            <input type="text" name="pName" id="pName"
-                                                   value="${projectInfo.possessorVo.pName}" class="form-control"
-                                                   required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pName" id="pName" placeholder="姓名"
-                                                   class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    身份证号
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pIdcard != null}">
-                                            <input type="text" name="pIdcard" id="pIdcard"
-                                                   value="${projectInfo.possessorVo.pIdcard}" class="form-control"
-                                                   required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pIdcard" id="pIdcard" placeholder="身份证号"
-                                                   class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    住址
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.possessorVo.pAddress != null}">
-                                            <input type="text" name="pAddress" id="pAddress2"
-                                                   value="${projectInfo.possessorVo.pAddress}" class="form-control"
-                                                   required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="pAddress" id="pAddress2" placeholder="住址"
-                                                   class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    附件
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="file" name="pAttachmentProjectEnclosureId2"
-                                           id="pAttachmentProjectEnclosureId2" placeholder="上传附件" class="form-control"
-                                           required="required">
-                                    <div id="_pAttachmentProjectEnclosureId2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
+                <div class="x_title">
                     <h3> 联系人</h3>
                     <div class="clearfix"></div>
                 </div>
@@ -754,25 +728,23 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
-                </div>
-
-                <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal"
-                      enctype="multipart/form-data">
-                    <div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位
-                                </label>
-                                <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
-                                               required="required" value="${projectInfo.unitInformationVo.uUseUnit}">
-                                        <input type="text" id="uUseUnitX" readonly="readonly"
-                                               placeholder="单位" class="form-control" onclick="selectCustomer();"
-                                               value="${projectInfo.unitInformationVo.uUseUnitName}">
-                                        <span class="input-group-btn">
+                    <form name="frm_unitinformation" id="frm_unitinformation" class="form-horizontal"
+                          enctype="multipart/form-data">
+                        <div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
+                                                   required="required"
+                                                   value="${projectInfo.unitInformationVo.uUseUnit}">
+                                            <input type="text" id="uUseUnitX" readonly="readonly"
+                                                   placeholder="单位" class="form-control" onclick="selectCustomer();"
+                                                   value="${projectInfo.unitInformationVo.uUseUnitName}">
+                                            <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
                                                     data-original-title="选择" onclick="selectCustomer();">
@@ -784,125 +756,123 @@
                                             <i class="fa fa-trash-o"></i>
                                             </button>
                                         </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定代表人
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.unitInformationVo.uLegalRepresentative != null}">
+                                                <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
+                                                       value="${projectInfo.unitInformationVo.uLegalRepresentative}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
+                                                       placeholder="法定代表人" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        证照号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.unitInformationVo.uCertificateNumber != null}">
+                                                <input type="text" name="uCertificateNumber" id="uCertificateNumber"
+                                                       value="${projectInfo.unitInformationVo.uCertificateNumber}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="uCertificateNumber" id="uCertificateNumber"
+                                                       placeholder="证照号" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    法定代表人
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.unitInformationVo.uLegalRepresentative != null}">
-                                            <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
-                                                   value="${projectInfo.unitInformationVo.uLegalRepresentative}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="uLegalRepresentative" id="uLegalRepresentative"
-                                                   placeholder="法定代表人" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <select name="uUnitProperties" id="uUnitProperties" class="form-control">
+                                            <option value="" name="uUnitProperties">请选择</option>
+                                            <c:forEach items="${ProjectAFFILIATED}" var="item">
+                                                <c:choose>
+                                                    <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
+                                                        <option value="${item.id}"
+                                                                selected="selected">${item.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    证照号
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.unitInformationVo.uCertificateNumber != null}">
-                                            <input type="text" name="uCertificateNumber" id="uCertificateNumber"
-                                                   value="${projectInfo.unitInformationVo.uCertificateNumber}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="uCertificateNumber" id="uCertificateNumber"
-                                                   placeholder="证照号" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.unitInformationVo.uScopeOperation != null}">
+                                                <input type="text" name="uScopeOperation" id="uScopeOperation"
+                                                       value="${projectInfo.unitInformationVo.uScopeOperation}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="uScopeOperation" id="uScopeOperation"
+                                                       placeholder="经营范围" class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    单位性质
-                                </label>
-                                <div class="col-sm-3">
-                                    <select name="uUnitProperties" id="uUnitProperties" class="form-control">
-                                        <option value="" name="uUnitProperties">请选择</option>
-                                        <c:forEach items="${ProjectAFFILIATED}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">
-                                                    <option value="${item.id}" selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    经营范围
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.unitInformationVo.uScopeOperation != null}">
-                                            <input type="text" name="uScopeOperation" id="uScopeOperation"
-                                                   value="${projectInfo.unitInformationVo.uScopeOperation}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="uScopeOperation" id="uScopeOperation"
-                                                   placeholder="经营范围" class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    地址
-                                </label>
-                                <div class="col-sm-3">
-                                    <c:choose>
-                                        <c:when test="${projectInfo.unitInformationVo.uAddress != null}">
-                                            <input type="text" name="uAddress" id="uAddress"
-                                                   value="${projectInfo.unitInformationVo.uAddress}"
-                                                   class="form-control" required="required">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="uAddress" id="uAddress" placeholder="地址"
-                                                   class="form-control" required="required">
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <c:choose>
+                                            <c:when test="${projectInfo.unitInformationVo.uAddress != null}">
+                                                <input type="text" name="uAddress" id="uAddress"
+                                                       value="${projectInfo.unitInformationVo.uAddress}"
+                                                       class="form-control" required="required">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="text" name="uAddress" id="uAddress" placeholder="地址"
+                                                       class="form-control" required="required">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    <div class="x_title">
+                        <h3> 联系人</h3>
+                        <div class="clearfix">
+                        </div>
                     </div>
-                </form>
-
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3> 联系人</h3>
-                    <div class="clearfix">
+                    <div class="x_content">
+                        <button class="btn btn-success" data-toggle="modal" onclick="addContacts(3)">新增联系人</button>
+                        <table class="table table-bordered" id="tb_ListC">
+                            <!-- cerare document add ajax data-->
+                        </table>
                     </div>
-                </div>
-                <div class="x_content">
-                    <button class="btn btn-success" data-toggle="modal" onclick="addContacts(3)">新增联系人</button>
-                    <table class="table table-bordered" id="tb_ListC">
-                        <!-- cerare document add ajax data-->
-                    </table>
                 </div>
             </div>
 
@@ -1097,7 +1067,7 @@
             target: "attachmentProjectInfoId",
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_project_info",
+                tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}"
@@ -1107,7 +1077,7 @@
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
-                tableName: "tb_project_info",
+                tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}"
@@ -1119,7 +1089,7 @@
             target: "pAttachmentProjectEnclosureId",
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_initiate_possessor",
+                tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}"
@@ -1129,43 +1099,19 @@
         FileUtils.getFileShows({
             target: "pAttachmentProjectEnclosureId",
             formData: {
-                tableName: "tb_initiate_possessor",
+                tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })
-        //---------
-        //---------
-        FileUtils.uploadFiles({
-            target: "pAttachmentProjectEnclosureId2",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
-                fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
-        FileUtils.getFileShows({
-            target: "pAttachmentProjectEnclosureId2",
-            formData: {
-                tableName: "tb_initiate_possessor",
-                tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
-                fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-        //---------
-        //---------
+        //----------
         FileUtils.uploadFiles({
             target: "csAttachmentProjectEnclosureId",
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_initiate_consignor",
+                tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}"
@@ -1175,44 +1121,18 @@
         FileUtils.getFileShows({
             target: "csAttachmentProjectEnclosureId",
             formData: {
-                tableName: "tb_initiate_consignor",
+                tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}"
             },
             deleteFlag: true
         })
-        //---------
-        //---------
-        FileUtils.uploadFiles({
-            target: "csAttachmentProjectEnclosureId2",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_initiate_consignor",
-                tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
-                fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
-        FileUtils.getFileShows({
-            target: "csAttachmentProjectEnclosureId2",
-            formData: {
-                tableName: "tb_initiate_consignor",
-                tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
-                fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-        //---------
+
     })
 
 </script>
 <script type="text/javascript">
-    $(function () {
-        <%--loadProjectCategoryList('${projectInfo.projectTypeId}','${projectInfo.projectCategoryId}');--%>
-    })
 
     /*省 市 县 js*/
     function tableNameA() {
@@ -1343,27 +1263,6 @@
                 $("#userAccountMemberName").val(data.name);
             }
         });
-    }
-
-    /**
-     * 格式化字符串
-     * @param key
-     * @param value
-     */
-    function formatKeyValueString(key, value, separator) {
-        if (!key) return "";
-        if (!separator) {
-            separator = ',';
-        }
-        var keyArray = key.split(separator);
-        if (value) {
-            var valueArray = value.split(separator);
-        }
-        var resultStr = '';
-        $.each(keyArray, function (i, item) {
-            resultStr += item + '_' + valueArray[i]+',';
-        })
-        return resultStr.replace(/,$/,'');
     }
 
     //选项框  自动校验并且填写
@@ -1692,11 +1591,6 @@
         $("#cType").val(contactsEnum);
         $("#cTypeShow").text(str);
         $('#divBoxContacts').modal("show");
-    }
-
-    // 修改 联系人 view
-    function updateContacts(id, tbList) {
-
     }
 
     //新增  联系人

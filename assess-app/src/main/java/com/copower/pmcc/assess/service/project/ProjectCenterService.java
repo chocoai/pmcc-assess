@@ -194,7 +194,7 @@ public class ProjectCenterService {
         List<ProjectInfo> projectInfoList = projectInfoDao.getProjectInfoList("", projectName);
         List<ProjectInfoVo> projectInfoVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(projectInfoList)) {
-            projectInfoVos = LangUtils.transform(projectInfoList, p -> projectInfoService.getProjectInfoVo(p));
+            projectInfoVos = LangUtils.transform(projectInfoList, p -> projectInfoService.getSimpleProjectInfoVo(p));
         }
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(projectInfoVos);
