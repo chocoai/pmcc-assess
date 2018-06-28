@@ -1,17 +1,10 @@
 package com.copower.pmcc.assess.test;
 
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.CreateInsertHelp;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by kings on 2018-6-7.
@@ -73,11 +63,11 @@ public class replaceTest {
 
 //        List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
 //        for (Integer integer : integerList) {
-//            BaseAttachment attachment = new BaseAttachment();
+//            SysAttachmentDto attachment = new SysAttachmentDto();
 //            attachment.setTableName("sheet1");
 //            attachment.setFieldsName("report");
 //            try {
-//                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
+//                SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(522, attachment);
 //                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
 //                String localFileDir = baseAttachmentService.createTempBasePath();
 //                String localFullPath = localFileDir + File.separator + loaclFileName;

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.project;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -10,11 +8,12 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
@@ -70,9 +69,9 @@ public class ProjectTaskController {
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.applyView(projectPlanDetails);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
-        List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
         Object boxCnName = modelAndView.getModel().get("boxCnName");
@@ -117,9 +116,9 @@ public class ProjectTaskController {
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.approvalView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
-        List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
         Object boxCnName = modelAndView.getModel().get("boxCnName");
@@ -160,9 +159,9 @@ public class ProjectTaskController {
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.returnEditView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
-        List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
         Object boxCnName = modelAndView.getModel().get("boxCnName");
@@ -192,9 +191,9 @@ public class ProjectTaskController {
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(viewUrl);
         ModelAndView modelAndView = bean.detailsView(projectPlanDetails, boxId);
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        List<BaseAttachment> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
-        List<BaseAttachment> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
+        List<SysAttachmentDto> projectPhaseWorkTemplate = baseAttachmentService.getProjectPhaseWorkTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseWorkTemplate", projectPhaseWorkTemplate);
         //显示数据
         Object boxCnName = modelAndView.getModel().get("boxCnName");

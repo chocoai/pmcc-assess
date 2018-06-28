@@ -7,12 +7,10 @@ import com.copower.pmcc.assess.common.enums.CsrBorrowerEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerEnteringDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
-import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
@@ -24,13 +22,13 @@ import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsSe
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -55,7 +53,10 @@ import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -69,10 +70,6 @@ public class CsrBorrowerService {
     @Autowired
     private CsrBorrowerDao csrBorrowerDao;
     @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
-    @Autowired
-    private BaseAttachmentService attachmentService;
-    @Autowired
     private CsrBorrowerEnteringDao csrBorrowerEnteringDao;
     @Autowired
     private ProjectPlanFinancialClaimService projectPlanFinancialClaimService;
@@ -85,8 +82,6 @@ public class CsrBorrowerService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CsrProjectInfoService csrProjectInfoService;
@@ -96,8 +91,6 @@ public class CsrBorrowerService {
     private CsrBorrowerMortgageService csrBorrowerMortgageService;
     @Autowired
     private FormConfigureService formConfigureService;
-    @Autowired
-    private DataCsrFieldRelationService csrFieldRelationService;
 
     public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -145,9 +138,9 @@ public class CsrBorrowerService {
     public ResponseEntity<byte[]> downloadBorrower(String borrowerIds, HttpServletRequest request, HttpServletResponse response) {
         ResponseEntity<byte[]> responseEntity = null;
         try {
-            List<String> filePaths = changeBaseAttachment(borrowerIds, request);
+            List<String> filePaths = changeSysAttachmentDto(borrowerIds, request);
             String zipName = UUID.randomUUID().toString().substring(0, 5) + ".zip";
-            responseEntity = appleDownloadBaseAttachment(filePaths, zipName, request);
+            responseEntity = appleDownloadSysAttachmentDto(filePaths, zipName, request);
         } catch (Exception e) {
             try {
                 logger.error("异常!" + e.getMessage());
@@ -167,7 +160,7 @@ public class CsrBorrowerService {
      * @param request
      * @return
      */
-    private ResponseEntity<byte[]> appleDownloadBaseAttachment(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
+    private ResponseEntity<byte[]> appleDownloadSysAttachmentDto(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
         ResponseEntity<byte[]> responseEntity = null;
         String localDirPath = baseAttachmentService.createTempBasePath();
         String zipPathAndName =  localDirPath + zipName;
@@ -188,18 +181,18 @@ public class CsrBorrowerService {
      * @return
      * @throws Exception
      */
-    private List<String> changeBaseAttachment(String borrowerIds, HttpServletRequest request) throws Exception {
+    private List<String> changeSysAttachmentDto(String borrowerIds, HttpServletRequest request) throws Exception {
         String report = AssessFieldNameConstant.CSR_BORROWER_REPORT;
         List<String> filePaths = new ArrayList<>();
         String[] ids = borrowerIds.split(",");
-        List<BaseAttachment> baseAttachments = new ArrayList<>();
+        List<SysAttachmentDto> baseAttachments = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             if (!org.springframework.util.StringUtils.isEmpty(ids[i])) {
-                List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(Integer.parseInt(ids[i]), report,null);
+                List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(Integer.parseInt(ids[i]), report,null);
                 baseAttachments.addAll(baseAttachmentList);
             }
         }
-        for (BaseAttachment baseAttachment : baseAttachments) {
+        for (SysAttachmentDto baseAttachment : baseAttachments) {
             String localDirPath = request.getSession().getServletContext().getRealPath("/") + CsrBorrowerEnum.CSR_BORROWER_ENUM.getFilePath();
             String localFileName = UUID.randomUUID().toString().substring(0, 7) + CsrBorrowerEnum.ZIP_NAME.getFilePath() + "." + baseAttachment.getFileExtension();
             //临时下载
@@ -216,12 +209,11 @@ public class CsrBorrowerService {
      * @param tableID
      * @return
      */
-    private List<String> changeBaseAttachment(Integer tableID){
+    private List<String> changeSysAttachmentDto(Integer tableID){
         List<String> filePaths = new ArrayList<>();
         String localDirPath = baseAttachmentService.createTempBasePath();
-//        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_REPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
-        List<BaseAttachment> baseAttachmentList = attachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
-        for (BaseAttachment baseAttachment:baseAttachmentList){
+        List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
+        for (SysAttachmentDto baseAttachment:baseAttachmentList){
             if (!ObjectUtils.isEmpty(baseAttachment)){
                 String fileSuffix = baseAttachment.getFileExtension();
                 String localFileName = UUID.randomUUID().toString().substring(0, 7)  + "." + fileSuffix;
@@ -244,7 +236,7 @@ public class CsrBorrowerService {
      * @param localFileName
      * @param baseAttachment
      */
-    private String readImportData(String localDirPath, String localFileName, BaseAttachment baseAttachment,String fileName) {
+    private String readImportData(String localDirPath, String localFileName, SysAttachmentDto baseAttachment,String fileName) {
         try {
             String s = baseAttachmentService.downloadFtpFileToLocal(baseAttachment.getId());
             if (!org.springframework.util.StringUtils.isEmpty(s)){
@@ -253,9 +245,9 @@ public class CsrBorrowerService {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        List<BaseAttachment> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName,null);
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getByField_tableId(baseAttachment.getTableId(), fileName,null);
         if (CollectionUtils.isNotEmpty(attachmentList)) {
-            BaseAttachment sysAttachment = attachmentList.get(0);
+            SysAttachmentDto sysAttachment = attachmentList.get(0);
             String fullPath = localDirPath + File.separator + localFileName;
             if (!com.copower.pmcc.erp.common.utils.FileUtils.checkFileExists(new File(fullPath))) {
                 try {
@@ -301,16 +293,16 @@ public class CsrBorrowerService {
         if (CollectionUtils.isEmpty(csrBorrowerList))
             return null;
         List<Integer> tableIds = LangUtils.transform(csrBorrowerList, p -> p.getId());
-        BaseAttachment queryParam = new BaseAttachment();
+        SysAttachmentDto queryParam = new SysAttachmentDto();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
         queryParam.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
-        List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(tableIds, queryParam);
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(tableIds, queryParam);
         return LangUtils.transform(csrBorrowerList, p -> {
             CsrBorrowerVo csrBorrowerVo = new CsrBorrowerVo();
             BeanUtils.copyProperties(p, csrBorrowerVo);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
                 StringBuilder html = new StringBuilder();
-                for (BaseAttachment baseAttachment : attachmentList) {
+                for (SysAttachmentDto baseAttachment : attachmentList) {
                     if (baseAttachment.getTableId().equals(p.getId())) {
                         html.append(baseAttachmentService.getViewHtml(baseAttachment));
                     }
@@ -330,15 +322,15 @@ public class CsrBorrowerService {
             if (csrBorrowerEntering.getId() == null || csrBorrowerEntering.getId() <= 0) {
                 csrBorrowerEnteringDao.addCsrBorrowerEntering(csrBorrowerEntering);
                 //更新附件信息
-                BaseAttachment baseAttachment = new BaseAttachment();
+                SysAttachmentDto baseAttachment = new SysAttachmentDto();
                 baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrowerEntering.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
-                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
                 baseAttachmentNew.setTableId(csrBorrowerEntering.getId());
 
-                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+                baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrBorrowerEnteringDao.update(csrBorrowerEntering);
             }
@@ -396,7 +388,7 @@ public class CsrBorrowerService {
         Integer dataIndex = null;
         List<CsrBorrowerMortgage> csrBorrowerMortgages = csrBorrowerMortgageService.getCsrProjectMortgages(csrProjectInfoID);
         //获取下载到临时目录的模型报表文件 这里可能是word 也可能是 excel
-        List<String> filePaths = changeBaseAttachment(templateFilesDto.getBaseReportTemplateFiles().getId());
+        List<String> filePaths = changeSysAttachmentDto(templateFilesDto.getBaseReportTemplateFiles().getId());
         Set<CsrBorrower> csrBorrowers = new HashSet<>();
         if(!ObjectUtils.isEmpty(csrBorrowerMortgages)){
             for (int i = 0; i < csrBorrowerMortgages.size(); i++) {

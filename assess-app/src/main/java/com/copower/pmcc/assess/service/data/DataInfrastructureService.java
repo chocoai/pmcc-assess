@@ -1,16 +1,15 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.data.DataInfrastructureDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -36,17 +35,12 @@ import java.util.List;
 @Service(value = "dataInfrastructureService")
 public class DataInfrastructureService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private DataInfrastructureDao dataInfrastructureDao;
-
     @Autowired
     private ErpAreaService erpAreaService;
-
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
-    @Autowired
-    private CommonService commonService;
+    private BaseAttachmentService baseAttachmentService;
 
     @Autowired
     private ProcessControllerComponent processControllerComponent;
@@ -76,19 +70,19 @@ public class DataInfrastructureService {
         infrastructureDto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(infrastructureDto, infrastructure);
         int id = dataInfrastructureDao.addInfrastructure(infrastructure);
-        update_BaseAttachment(id,InfrastructureVo.fileName);
+        update_SysAttachmentDto(id,InfrastructureVo.fileName);
         return id >0;
     }
     //修改附件中的table id 以及存附件的主表的附件id
-    public boolean update_BaseAttachment(int pid, String fields_name){
+    public boolean update_SysAttachmentDto(int pid, String fields_name){
         int TEMP = 0;
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name,null);
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name,null);
         //一般都只有一个
         if (baseAttachments.size()>0){
-            BaseAttachment baseAttachment = baseAttachments.get(0);
+            SysAttachmentDto baseAttachment = baseAttachments.get(0);
             // 更新 存附件的主表
             baseAttachment.setTableId(pid);
-            baseAttachmentDao.updateAttachment(baseAttachment);
+            baseAttachmentService.updateAttachment(baseAttachment);
             Infrastructure infrastructure = dataInfrastructureDao.get(pid);
             infrastructure.setFileName(baseAttachment.getFileName());
             dataInfrastructureDao.update(infrastructure);
@@ -103,7 +97,7 @@ public class DataInfrastructureService {
         Infrastructure infrastructure = new Infrastructure();
         dto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(dto, infrastructure);
-        boolean flag = update_BaseAttachment(infrastructure.getId(),InfrastructureVo.fileName);
+        boolean flag = update_SysAttachmentDto(infrastructure.getId(),InfrastructureVo.fileName);
        try {
            InfrastructureVo vo = get(dto.getId());
            infrastructure.setFileName(vo.getFileName());

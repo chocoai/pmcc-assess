@@ -1,13 +1,14 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrcalculationDao;
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerMortgageVo;
+import com.copower.pmcc.assess.dal.entity.CsrCalculation;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrCalculationVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -37,7 +38,8 @@ public class CsrCalculationService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
+
 
     public CsrCalculation saveCsrCalculation(CsrCalculation csrCalculation, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
         try {
@@ -45,15 +47,15 @@ public class CsrCalculationService {
                 csrcalculationDao.addCsrCalculation(csrCalculation);
 
                 //更新附件信息
-                BaseAttachment baseAttachment = new BaseAttachment();
+                SysAttachmentDto baseAttachment = new SysAttachmentDto();
                 baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrCalculation.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
-                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
                 baseAttachmentNew.setTableId(csrCalculation.getId());
 
-                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+                baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrcalculationDao.updateCsrCalculation(csrCalculation);
             }

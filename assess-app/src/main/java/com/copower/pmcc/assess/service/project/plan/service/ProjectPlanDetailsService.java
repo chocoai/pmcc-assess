@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -10,6 +12,7 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -36,7 +39,7 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
-    private BaseAttachmentService bidBaseAttachmentService;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
@@ -126,10 +129,10 @@ public class ProjectPlanDetailsService {
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsVos(List<ProjectPlanDetails> projectPlanDetails, Boolean bisAttachment) {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
-            List<BaseAttachment> bidBaseAttachments = new ArrayList<>();
+            List<SysAttachmentDto> bidSysAttachmentDtos = new ArrayList<>();
             if (bisAttachment) {
                 List<Integer> detailsIds = LangUtils.transform(projectPlanDetails, o -> o.getId());
-                bidBaseAttachments = bidBaseAttachmentService.getAttachmentListByTableName("tb_project_plan_details", detailsIds);
+                bidSysAttachmentDtos = baseAttachmentService.getAttachmentListByTableName("tb_project_plan_details", detailsIds);
             }
             for (ProjectPlanDetails item : projectPlanDetails) {
                 if(item.getBisEnable()==false)
@@ -137,8 +140,8 @@ public class ProjectPlanDetailsService {
                     continue;
                 }
                 ProjectPlanDetailsVo projectPlanDetailsVo = getProjectPlanDetailsVo(item);
-                if (bidBaseAttachments != null && bidBaseAttachments.size() > 0) {
-                    List<BaseAttachment> filter = LangUtils.filter(bidBaseAttachments, o -> {
+                if (bidSysAttachmentDtos != null && bidSysAttachmentDtos.size() > 0) {
+                    List<SysAttachmentDto> filter = LangUtils.filter(bidSysAttachmentDtos, o -> {
                         return o.getTableId().intValue() == item.getId().intValue();
                     });
                     if (CollectionUtils.isNotEmpty(filter)) {

@@ -3,10 +3,9 @@ package com.copower.pmcc.assess.service.base;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.dao.base.BaseReplaceRecordDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseReplaceRecord;
 import com.copower.pmcc.assess.dto.input.word.DataReplaceDto;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
@@ -77,11 +75,11 @@ public class BaseReplaceRecordService {
      */
     public void replaceRecordContent(BaseReplaceRecord baseReplaceRecord) throws Exception {
         Integer attachmentId = baseReplaceRecord.getAttachmentId();
-        BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(attachmentId);
+        SysAttachmentDto baseAttachment = baseAttachmentService.getSysAttachmentDto(attachmentId);
         String localFullPath = getReplaceFile(baseReplaceRecord);
         //再将附件上传到相同位置
         try {
-            ftpUtilsExtense.uploadFilesToFTP(baseAttachment.getFilePath(), new FileInputStream(localFullPath), baseAttachment.getFtpFilesName());
+            ftpUtilsExtense.uploadFilesToFTP(baseAttachment.getFilePath(), new FileInputStream(localFullPath), baseAttachment.getFtpFileName());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

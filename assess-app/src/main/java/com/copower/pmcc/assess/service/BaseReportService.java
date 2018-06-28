@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportMarkbookTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportTemplateTypeEnum;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseReportDao;
 import com.copower.pmcc.assess.dal.entity.*;
 import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
@@ -13,6 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -42,8 +42,7 @@ import java.util.List;
 public class BaseReportService {
     @Autowired
     private BaseReportDao baseReportDao;
-    @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -79,15 +78,15 @@ public class BaseReportService {
         baseReportTemplate.setCreator(processControllerComponent.getThisUser());
         baseReportDao.addBaseReportTemplate(baseReportTemplate);
         //更新附件信息
-        BaseAttachment baseAttachment = new BaseAttachment();
+        SysAttachmentDto baseAttachment = new SysAttachmentDto();
         baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         baseAttachment.setTableId(0);
         baseAttachment.setCreater(processControllerComponent.getThisUser());
 
-        BaseAttachment baseAttachmentNew = new BaseAttachment();
+        SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
         baseAttachmentNew.setTableId(baseReportTemplate.getId());
 
-        baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+        baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
     //根据条件取得设置的报告模板书签
@@ -140,7 +139,7 @@ public class BaseReportService {
             BeanUtils.copyProperties(baseReportTemplate, baseReportTemplateVo);
             if (baseReportTemplate.getTemplateType() == BaseReportMarkbookTypeEnum.TEMPLATE.getKey()) {
                 baseReportTemplateVo.setTypeName("");
-                List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class), Lists.newArrayList
+                List<SysAttachmentDto> baseAttachments = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class), Lists.newArrayList
                         (baseReportTemplate.getId()));
                 if (CollectionUtils.isNotEmpty(baseAttachments)) {
                     List<KeyValueDto> transform = getKeyValueDtos(baseAttachments);
@@ -206,13 +205,13 @@ public class BaseReportService {
         baseReportTemplateFiles.setBisEnable(false);
         baseReportDao.addBaseReportTemplateFiles(baseReportTemplateFiles);
         //更新附件信息
-        BaseAttachment baseAttachment = new BaseAttachment();
+        SysAttachmentDto baseAttachment = new SysAttachmentDto();
         baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
         baseAttachment.setTableId(0);
         baseAttachment.setCreater(processControllerComponent.getThisUser());
-        BaseAttachment baseAttachmentNew = new BaseAttachment();
+        SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
         baseAttachmentNew.setTableId(baseReportTemplateFiles.getId());
-        baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+        baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
     }
 
     public BaseReportTemplateFiles getBaseReportTemplateFiles(BaseReportTemplateFiles baseReportTemplateFiles) {
@@ -251,11 +250,11 @@ public class BaseReportService {
             }
         }
 
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class), Lists.newArrayList
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class), Lists.newArrayList
                 (baseReportTemplateFiles.getId()));
 
         //取报告模板
-        List<BaseAttachment> filter = LangUtils.filter(baseAttachments, o -> {
+        List<SysAttachmentDto> filter = LangUtils.filter(baseAttachments, o -> {
             return BaseReportTemplateTypeEnum.getEnumByName(o.getFieldsName()) == BaseReportTemplateTypeEnum.REPORT;
         });
 
@@ -276,7 +275,7 @@ public class BaseReportService {
         return baseReportTemplateFilesVo;
     }
 
-    private List<KeyValueDto> getKeyValueDtos(List<BaseAttachment> filter) {
+    private List<KeyValueDto> getKeyValueDtos(List<SysAttachmentDto> filter) {
         return LangUtils.transform(filter, o -> {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(o.getId()));
@@ -297,11 +296,11 @@ public class BaseReportService {
         List<BaseReportTemplateFiles> baseReportTemplateFilesList = baseReportDao.getBaseReportTemplateFilesByExample(baseReportTemplateFiles, "");
         if (CollectionUtils.isNotEmpty(baseReportTemplateFilesList)) {
             baseReportTemplateFiles = baseReportTemplateFilesList.get(0);
-            BaseAttachment baseAttachment = new BaseAttachment();
+            SysAttachmentDto baseAttachment = new SysAttachmentDto();
             baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
             baseAttachment.setTableId(baseReportTemplateFiles.getId());
             baseAttachment.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
-            List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(baseAttachment);
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(baseAttachment);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
                 return attachmentList.get(0).getId();
             }
@@ -323,10 +322,10 @@ public class BaseReportService {
 
             List<Integer> transform = LangUtils.transform(baseReportTemplateList, o -> o.getId());
 
-            BaseAttachment baseAttachment = new BaseAttachment();
+            SysAttachmentDto baseAttachment = new SysAttachmentDto();
             baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
             baseAttachment.setTableId(baseReportTemplate.getId());
-            List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(transform, baseAttachment);
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(transform, baseAttachment);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
                 return LangUtils.transform(attachmentList, o -> {
                     KeyValueDto keyValueDto = new KeyValueDto();

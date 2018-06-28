@@ -6,21 +6,22 @@ import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
-import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.input.project.*;
+import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
+import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.initiate.*;
-import com.copower.pmcc.assess.dto.output.project.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -43,12 +44,11 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
-import com.copower.pmcc.erp.api.dto.SysAreaDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
-import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -106,8 +106,7 @@ public class ProjectInfoService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
-    @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+
     @Lazy
     @Autowired
     private InitiateContactsService initiateContactsService;
@@ -126,7 +125,7 @@ public class ProjectInfoService {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private PublicService publicService;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseParameterServcie baseParameterServcie;
     @Autowired
@@ -161,26 +160,26 @@ public class ProjectInfoService {
     }
 
     //修改附件中的table id 以及存附件的主表的附件id
-    public void update_BaseAttachment_(int pid, String fields_name, int flag) throws Exception {
+    public void update_SysAttachmentDto_(int pid, String fields_name, int flag) throws Exception {
         int TEMP = 0;
         //默认位置为0
-        List<BaseAttachment> baseAttachments = baseAttachmentDao.getByField_tableId(TEMP, fields_name, null);
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name, null);
         if (baseAttachments.size() >= 1) {
             //一般都只有一个
-            BaseAttachment baseAttachment = baseAttachments.get(0);
+            SysAttachmentDto baseAttachment = baseAttachments.get(0);
             // 更新 存附件的主表
             if (flag == 0) {//项目信息 附件
                 //更新附件
                 baseAttachment.setTableId(pid);
-                baseAttachmentDao.updateAttachment(baseAttachment);
+                baseAttachmentService.updateAttachment(baseAttachment);
             } else if (flag == InitiateContactsEnum.ONE.getNum()) {// 委托人 附件
                 //更新附件
                 baseAttachment.setTableId(pid);
-                baseAttachmentDao.updateAttachment(baseAttachment);
+                baseAttachmentService.updateAttachment(baseAttachment);
             } else if (flag == InitiateContactsEnum.TWO.getNum()) {//占有人 附件
                 //更新附件
                 baseAttachment.setTableId(pid);
-                baseAttachmentDao.updateAttachment(baseAttachment);
+                baseAttachmentService.updateAttachment(baseAttachment);
             }
 
         } else {
@@ -200,9 +199,9 @@ public class ProjectInfoService {
         projectMemberService.saveReturnId(projectMemberDto);
         unitInformationDto.setProjectId(projectInfoDto.getId());
         unitInformationService.update(unitInformationDto);
-        update_BaseAttachment_(consignorDto.getId(), InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
-        update_BaseAttachment_(possessorDto.getId(), InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
-        update_BaseAttachment_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+        update_SysAttachmentDto_(consignorDto.getId(), InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+        update_SysAttachmentDto_(possessorDto.getId(), InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
+        update_SysAttachmentDto_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
     }
 
     @Transactional
@@ -237,13 +236,13 @@ public class ProjectInfoService {
                 initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
             }
             //附件更新
-            update_BaseAttachment_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
-            update_BaseAttachment_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
+            update_SysAttachmentDto_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
+            update_SysAttachmentDto_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
 
             projectMemberDto.setProjectId(projectId);
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
-            update_BaseAttachment_(projectId, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+            update_SysAttachmentDto_(projectId, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
 
             //判断是否需要下级再进行任务分派 //20180621 Calvin
             if (bisNextUser.equals("1")) {

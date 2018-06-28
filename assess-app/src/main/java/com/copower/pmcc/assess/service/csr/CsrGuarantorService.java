@@ -1,16 +1,16 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrGuarantorDao;
-import com.copower.pmcc.assess.dal.entity.*;
-import com.copower.pmcc.assess.dto.output.project.csr.CsrCalculationVo;
+import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrGuarantorVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,21 +35,22 @@ public class CsrGuarantorService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
+
     public CsrGuarantor saveCsrGuarantor(CsrGuarantor csrGuarantor, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
         try {
             if (csrGuarantor.getId() == null || csrGuarantor.getId() <= 0) {
                 csrGuarantorDao.addCsrGuarantor(csrGuarantor);
                 //更新附件信息
-                BaseAttachment baseAttachment = new BaseAttachment();
+                SysAttachmentDto baseAttachment = new SysAttachmentDto();
                 baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrGuarantor.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
-                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
                 baseAttachmentNew.setTableId(csrGuarantor.getId());
 
-                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+                baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrGuarantorDao.updateCsrGuarantor(csrGuarantor);
             }

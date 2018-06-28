@@ -2,11 +2,11 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.dao.csr.Sheet1Dao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -71,7 +71,7 @@ public class Sheet1Controller {
         List<Map<String, Object>> mapList = formConfigureService.getObjectList(sql, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         for (Map<String, Object> map : mapList) {
             if (map.get("attachment_id") != null) {
-                BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(Integer.parseInt(String.valueOf(map.get("attachment_id"))));
+                SysAttachmentDto baseAttachment = baseAttachmentService.getSysAttachmentDto(Integer.parseInt(String.valueOf(map.get("attachment_id"))));
                 map.put("attachmentHtml", baseAttachmentService.getViewHtml(baseAttachment));
             }
         }
@@ -87,7 +87,7 @@ public class Sheet1Controller {
 //            Sheet1Vo sheet1Vo = new Sheet1Vo();
 //            BeanUtils.copyProperties(o, sheet1Vo);
 //            if (o.getAttachmentId() != null && o.getAttachmentId() > 0) {
-//                BaseAttachment baseAttachment = baseAttachmentService.getBaseAttachment(o.getAttachmentId());
+//                SysAttachmentDto baseAttachment = baseAttachmentService.getSysAttachmentDto(o.getAttachmentId());
 //                sheet1Vo.setAttachmentHtml(baseAttachmentService.getViewHtml(baseAttachment));
 //            }
 //            return sheet1Vo;

@@ -2,17 +2,20 @@ package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyCaseStudyDetailDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyDetailService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
@@ -41,8 +44,6 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     private SurveyCaseStudyDetailDao surveyCaseStudyDetailDao;
     @Autowired
     private FormConfigureDao formConfigureDao;
-    @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -73,10 +74,10 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
                             objectMap.remove("id");
 
                             //找出附件信息
-                            BaseAttachment queryParam = new BaseAttachment();
+                            SysAttachmentDto queryParam = new SysAttachmentDto();
                             queryParam.setTableId(surveyCaseStudyDetail.getId());
                             queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
-                            List<BaseAttachment> attachmentList = baseAttachmentDao.getAttachmentList(queryParam);
+                            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
 
                             for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
                                 //先将动态表单数据复制
@@ -87,14 +88,14 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
                                 surveyCaseStudyDetailDao.save(surveyCaseStudyDetail);
 
                                 if (CollectionUtils.isNotEmpty(attachmentList)) {
-                                    for (BaseAttachment baseAttachment : attachmentList) {
+                                    for (SysAttachmentDto baseAttachment : attachmentList) {
                                         baseAttachment.setTableId(surveyCaseStudyDetail.getId());
                                         //拷贝真实文件
                                         String filePath = baseAttachmentService.createFTPBasePath(SurveyCaseStudyDetail.class.getSimpleName(),
                                                 DateUtils.formatNowToYMD(), processControllerComponent.getThisUser());
-                                        ftpUtilsExtense.copyFile(baseAttachment.getFtpFilesName(), baseAttachment.getFilePath(), baseAttachment.getFtpFilesName(), filePath);
+                                        ftpUtilsExtense.copyFile(baseAttachment.getFtpFileName(), baseAttachment.getFilePath(), baseAttachment.getFtpFileName(), filePath);
                                         baseAttachment.setFilePath(filePath);
-                                        baseAttachmentDao.addAttachment(baseAttachment);
+                                        baseAttachmentService.addAttachment(baseAttachment);
                                     }
                                 }
                             }

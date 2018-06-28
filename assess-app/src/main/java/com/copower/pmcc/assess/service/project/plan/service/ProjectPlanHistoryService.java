@@ -2,13 +2,12 @@ package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanHistoryDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanHistoryDto;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanHistoryEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -21,6 +20,7 @@ import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -53,7 +53,7 @@ public class ProjectPlanHistoryService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
@@ -165,15 +165,15 @@ projectPlanHistories=new ArrayList<>();
 
         }
         //更新附件
-        BaseAttachment sysAttachment = new BaseAttachment();
+        SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_plan_history");
-        BaseAttachment sysAttachmentNew = new BaseAttachment();
+        SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(0);
         sysAttachmentNew.setProjectId(projectId);
-        baseAttachmentDao.updateAttachementByExample(sysAttachment, sysAttachmentNew);
+        baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
 
     }
 

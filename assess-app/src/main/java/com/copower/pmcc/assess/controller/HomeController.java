@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.service.FuniWebService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
@@ -10,6 +8,7 @@ import com.copower.pmcc.bpm.api.dto.ProcessGroupDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysWorkPredictDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
@@ -48,7 +47,7 @@ public class HomeController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
@@ -89,10 +88,10 @@ public class HomeController {
         List<BoxApprovalLogVo> rows = (List<BoxApprovalLogVo>) approvalLog.getRows();
         List<String> transform = LangUtils.transform(rows, o -> o.getProcessTaskId());
 
-        List<BaseAttachment> approvalLogList = baseAttachmentDao.getApprovalLogList(processInsId, transform);
+        List<SysAttachmentDto> approvalLogList = baseAttachmentService.getApprovalLogList(processInsId, transform);
         if (CollectionUtils.isNotEmpty(approvalLogList)) {
             for (BoxApprovalLogVo item : rows) {
-                List<BaseAttachment> filter = LangUtils.filter(approvalLogList, o -> {
+                List<SysAttachmentDto> filter = LangUtils.filter(approvalLogList, o -> {
                     return o.getProcessTaskId().equals(item.getProcessTaskId());
                 });
                 if (CollectionUtils.isNotEmpty(filter)) {

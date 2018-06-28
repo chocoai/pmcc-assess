@@ -1,15 +1,14 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.csr.CsrContractDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
-import com.copower.pmcc.assess.dal.entity.CsrCalculation;
 import com.copower.pmcc.assess.dal.entity.CsrContract;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.shiro.util.CollectionUtils;
@@ -37,21 +36,22 @@ public class CsrContractService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
+
     public CsrContract saveCsrContract(CsrContract csrContract, Integer detailsId, String taskRemarks, String actualHours) throws BusinessException {
         try {
             if (csrContract.getId() == null || csrContract.getId() <= 0) {
                 csrContractDao.addCsrContract(csrContract);
                 //更新附件信息
-                BaseAttachment baseAttachment = new BaseAttachment();
+                SysAttachmentDto baseAttachment = new SysAttachmentDto();
                 baseAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrContract.class));
                 baseAttachment.setTableId(0);
                 baseAttachment.setCreater(processControllerComponent.getThisUser());
 
-                BaseAttachment baseAttachmentNew = new BaseAttachment();
+                SysAttachmentDto baseAttachmentNew = new SysAttachmentDto();
                 baseAttachmentNew.setTableId(csrContract.getId());
 
-                baseAttachmentDao.updateAttachementByExample(baseAttachment, baseAttachmentNew);
+                baseAttachmentService.updateAttachementByExample(baseAttachment, baseAttachmentNew);
             } else {
                 csrContractDao.updateCsrContract(csrContract);
             }

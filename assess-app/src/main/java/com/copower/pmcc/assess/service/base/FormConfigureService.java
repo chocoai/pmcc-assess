@@ -3,16 +3,18 @@ package com.copower.pmcc.assess.service.base;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.BaseForm;
+import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.DynamicFormField;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
@@ -63,7 +65,7 @@ public class FormConfigureService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
-    private BaseAttachmentDao hrBaseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
 
     /**
      * 获取表单信息列表
@@ -969,14 +971,14 @@ public class FormConfigureService {
      * @param tableId
      */
     private void updateAttachmentTableId(String tableName, Integer tableId) {
-        BaseAttachment hrBaseAttachment = new BaseAttachment();
-        hrBaseAttachment.setTableId(0);
-        hrBaseAttachment.setTableName(tableName);
-        hrBaseAttachment.setCreater(processControllerComponent.getThisUser());
+        SysAttachmentDto hrSysAttachmentDto = new SysAttachmentDto();
+        hrSysAttachmentDto.setTableId(0);
+        hrSysAttachmentDto.setTableName(tableName);
+        hrSysAttachmentDto.setCreater(processControllerComponent.getThisUser());
 
-        BaseAttachment attachment = new BaseAttachment();
+        SysAttachmentDto attachment = new SysAttachmentDto();
         attachment.setTableId(tableId);
-        hrBaseAttachmentDao.updateAttachementByExample(hrBaseAttachment, attachment);
+        baseAttachmentService.updateAttachementByExample(hrSysAttachmentDto, attachment);
     }
 
     /**

@@ -2,8 +2,6 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.entity.SurveyLocaleExploreDetail;
@@ -12,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -38,8 +37,7 @@ public class SurveyCommonService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
@@ -104,18 +102,18 @@ public class SurveyCommonService {
             logger.error(e.getMessage());
         }
         //数据库添加定位图片记录
-        BaseAttachment baseAttachment = new BaseAttachment();
+        SysAttachmentDto baseAttachment = new SysAttachmentDto();
         baseAttachment.setTableId(tableId);
         baseAttachment.setTableName(tableName);
         baseAttachment.setFieldsName("survey_localtion");
-        baseAttachment.setFtpFilesName(ftpFileName);
+        baseAttachment.setFtpFileName(ftpFileName);
         baseAttachment.setFileExtension("jpg");
         baseAttachment.setFilePath(ftpDirName);
         baseAttachment.setFileName("定位图.jpg");
         baseAttachment.setFileSize(FileUtils.getSize(new File(localDir + File.separator + imageName).length()));
         baseAttachment.setCreater(processControllerComponent.getThisUser());
-        baseAttachment.setModifier(processControllerComponent.getThisUser());
-        baseAttachmentDao.addAttachment(baseAttachment);
+        //baseAttachment.setModifier(processControllerComponent.getThisUser());
+        baseAttachmentService.addAttachment(baseAttachment);
     }
 
     /**

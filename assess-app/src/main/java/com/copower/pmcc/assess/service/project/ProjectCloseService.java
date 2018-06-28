@@ -3,13 +3,16 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectCloseDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanTaskAllDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.ProjectClose;
+import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanTaskAll;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectCloseEvent;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
@@ -26,12 +29,12 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -61,8 +64,7 @@ public class ProjectCloseService {
     private ProjectCloseDao projectCloseDao;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
-    @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+
     @Autowired
     private ProjectPauseService projectPauseService;
     @Autowired
@@ -84,7 +86,7 @@ public class ProjectCloseService {
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
-    private CommonService commonService;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ApplicationConstant applicationConstant;
 
@@ -159,15 +161,15 @@ public class ProjectCloseService {
             CloseProjectAndTask(projectInfo, projectPlans);
         }
         //更新附件
-        BaseAttachment sysAttachment = new BaseAttachment();
+        SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_close");
-        BaseAttachment sysAttachmentNew = new BaseAttachment();
+        SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(projectClose.getId());
         sysAttachmentNew.setProjectId(projectId);
-        baseAttachmentDao.updateAttachementByExample(sysAttachment, sysAttachmentNew);
+        baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
     }
 
     public void CloseProjectAndTask(ProjectInfo projectInfo, List<ProjectPlan> projectPlans) {

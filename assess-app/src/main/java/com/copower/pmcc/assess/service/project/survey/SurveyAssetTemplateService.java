@@ -1,15 +1,15 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetTemplateDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.SurveyAssetTemplate;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetTemplateDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetTemplateVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -37,7 +37,7 @@ public class SurveyAssetTemplateService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
 
     public BootstrapTableVo getList(Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -69,11 +69,11 @@ public class SurveyAssetTemplateService {
         if(surveyAssetTemplateDto.getId() != null && surveyAssetTemplateDto.getId() > 0){
             return surveyAssetTemplateDao.update(surveyAssetTemplateDto);
         }else{
-            BaseAttachment sysAttachment = new BaseAttachment();
+            SysAttachmentDto sysAttachment = new SysAttachmentDto();
             sysAttachment.setTableId(0);
             sysAttachment.setFieldsName(SurveyAssetTemplateDto.CREDENTIALACCESSORY);
-            List<BaseAttachment> baseAttachments = baseAttachmentDao.getAttachmentList(sysAttachment);
-            BaseAttachment baseAttachment = new BaseAttachment();
+            List<SysAttachmentDto> baseAttachments = baseAttachmentService.getAttachmentList(sysAttachment);
+            SysAttachmentDto baseAttachment = new SysAttachmentDto();
             if(baseAttachments != null){
                  baseAttachment = baseAttachments.get(0);
                 Integer credentialAccessory = baseAttachment.getId();
@@ -86,7 +86,7 @@ public class SurveyAssetTemplateService {
 
             int tableId = surveyAssetTemplateDto.getId();
             baseAttachment.setTableId(tableId);
-            baseAttachmentDao.updateAttachment(baseAttachment);
+            baseAttachmentService.updateAttachment(baseAttachment);
             return true;
         }
     }

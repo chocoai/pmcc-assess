@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -18,6 +21,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,7 +54,7 @@ public class ProjectTaskService {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -102,14 +106,14 @@ public class ProjectTaskService {
             }
 
             //更新附件
-            BaseAttachment sysAttachment = new BaseAttachment();
+            SysAttachmentDto sysAttachment = new SysAttachmentDto();
             sysAttachment.setProcessInsId("0");
             sysAttachment.setCreater(processControllerComponent.getThisUser());
             sysAttachment.setTableName("tb_project_plan_details");
             sysAttachment.setTableId(projectDetailsId);
-            BaseAttachment sysAttachmentNew = new BaseAttachment();
+            SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
             sysAttachmentNew.setProcessInsId(processUserDto.getProcessInsId());
-            baseAttachmentDao.updateAttachementByExample(sysAttachment, sysAttachmentNew);
+            baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
             //更新业务
             projectPlanDetails.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());

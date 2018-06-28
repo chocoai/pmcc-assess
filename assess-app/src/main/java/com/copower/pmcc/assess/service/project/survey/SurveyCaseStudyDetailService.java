@@ -1,17 +1,17 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyCaseStudyDetailDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyCaseStudyDetailVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -46,7 +46,7 @@ public class SurveyCaseStudyDetailService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private SurveyCommonService surveyCommonService;
 
@@ -133,14 +133,14 @@ public class SurveyCaseStudyDetailService {
             surveyCommonService.downLoadLocationImage(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL,detailDto.getId(),detailDto.getCaseLocaltion());
 
             //更新附件表id
-            BaseAttachment queryParam = new BaseAttachment();
+            SysAttachmentDto queryParam = new SysAttachmentDto();
             queryParam.setTableId(0);
             queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
             queryParam.setCreater(processControllerComponent.getThisUser());
 
-            BaseAttachment example = new BaseAttachment();
+            SysAttachmentDto example = new SysAttachmentDto();
             example.setTableId(detailDto.getId());
-            baseAttachmentDao.updateAttachementByExample(queryParam, example);
+            baseAttachmentService.updateAttachementByExample(queryParam, example);
             return flag;
         }
     }

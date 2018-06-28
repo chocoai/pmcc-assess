@@ -2,11 +2,9 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseAttachmentDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.dao.project.ProjectSuspendDao;
-import com.copower.pmcc.assess.dal.entity.BaseAttachment;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.entity.ProjectSuspend;
@@ -25,6 +23,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -62,9 +61,7 @@ public class ProjectPauseService {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private BaseAttachmentDao baseAttachmentDao;
-    @Autowired
-    private BaseAttachmentService bidBaseAttachmentService;
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
@@ -143,15 +140,15 @@ public class ProjectPauseService {
 
         }
         //更新附件
-        BaseAttachment sysAttachment = new BaseAttachment();
+        SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
         sysAttachment.setTableName("tb_project_suspend");
-        BaseAttachment sysAttachmentNew = new BaseAttachment();
+        SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(projectSuspend.getId());
         sysAttachmentNew.setProjectId(projectId);
-        baseAttachmentDao.updateAttachementByExample(sysAttachment, sysAttachmentNew);
+        baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
     }
 
     public void saveEditProjectSuspend(ApprovalModelDto approvalModelDto, String suspendReason) throws BusinessException {
@@ -213,7 +210,7 @@ public class ProjectPauseService {
             return new BootstrapTableVo();
         }
         List<Integer> integers = LangUtils.transform(projectSuspends, projectSuspend -> projectSuspend.getId());
-        List<BaseAttachment> sysAttachments = bidBaseAttachmentService.getAttachmentListByTableName("tb_project_suspend", integers);
+        List<SysAttachmentDto> sysAttachments = baseAttachmentService.getAttachmentListByTableName("tb_project_suspend", integers);
         List<ProjectSuspendVo> projectSuspendVos = LangUtils.transform(projectSuspends, projectSuspend -> {
 
             ProjectSuspendVo projectSuspendVo = new ProjectSuspendVo();
@@ -222,7 +219,7 @@ public class ProjectPauseService {
             projectSuspendVo.setSuspendUserName(sysUser.getUserName());
             projectSuspendVo.setStatus(ProcessStatusEnum.create(projectSuspend.getStatus()).getName());
             List<KeyValueDto> keyValueDtos = new ArrayList<>();
-            List<BaseAttachment> filter = LangUtils.filter(sysAttachments, input -> {
+            List<SysAttachmentDto> filter = LangUtils.filter(sysAttachments, input -> {
                 if (input.getTableId().equals(projectSuspend.getId())) {
                     return true;
                 } else {
@@ -230,7 +227,7 @@ public class ProjectPauseService {
                 }
             });
             if (CollectionUtils.isNotEmpty(filter)) {
-                for (BaseAttachment item : filter) {
+                for (SysAttachmentDto item : filter) {
                     KeyValueDto keyValueDto = new KeyValueDto();
                     keyValueDto.setKey(String.valueOf(item.getId()));
                     keyValueDto.setExplain(item.getFileExtension());

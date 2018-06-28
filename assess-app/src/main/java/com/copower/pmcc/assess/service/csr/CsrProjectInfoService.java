@@ -7,7 +7,6 @@ import com.aspose.words.ImportFormatMode;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.ReflectUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -39,6 +38,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -47,10 +47,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.erp.common.utils.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -305,18 +302,16 @@ public class CsrProjectInfoService {
     private void readImportData(CsrProjectInfo csrProjectInfo) {
         try {
             //将ftp的附件下载到本地
-            BaseAttachment queryParam = new BaseAttachment();
+            SysAttachmentDto queryParam = new SysAttachmentDto();
             queryParam.setTableName(AssessTableNameConstant.CSR_PROJECT_INFO);
             queryParam.setTableId(csrProjectInfo.getId());
-            List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
+            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
             if (CollectionUtils.isNotEmpty(attachmentList)) {
-                BaseAttachment sysAttachment = attachmentList.get(0);
-                String localDirPath = baseAttachmentService.createTempBasePath(commonService.thisUserAccount());
-                String localFileName = baseAttachmentService.createNoRepeatFileName(sysAttachment.getFileExtension());
-                String fullPath = localDirPath + File.separator + localFileName;
+                SysAttachmentDto sysAttachment = attachmentList.get(0);
+                String fullPath = "";
                 if (!FileUtils.checkFileExists(new File(fullPath))) {
                     try {
-                        ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFilesName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+                        fullPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachment.getId());
                     } catch (Exception e) {
                         //拷贝失败
                         logger.error(e.getMessage(), e);
@@ -546,7 +541,7 @@ public class CsrProjectInfoService {
                                         }
                                         csrBorrower = csrBorrower == null ? new CsrBorrower() : csrBorrower;
                                         try {
-                                            ReflectUtils.setProperty(csrBorrower, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrBorrower, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -554,7 +549,7 @@ public class CsrProjectInfoService {
                                     case AssessTableNameConstant.CSR_BORROWER_MORTGAGE:
                                         csrBorrowerMortgage = csrBorrowerMortgage == null ? new CsrBorrowerMortgage() : csrBorrowerMortgage;
                                         try {
-                                            ReflectUtils.setProperty(csrBorrowerMortgage, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrBorrowerMortgage, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -565,7 +560,7 @@ public class CsrProjectInfoService {
                                         }
                                         csrContract = csrContract == null ? new CsrContract() : csrContract;
                                         try {
-                                            ReflectUtils.setProperty(csrContract, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrContract, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -573,7 +568,7 @@ public class CsrProjectInfoService {
                                     case AssessTableNameConstant.CSR_GUARANTOR:
                                         csrGuarantor = csrGuarantor == null ? new CsrGuarantor() : csrGuarantor;
                                         try {
-                                            ReflectUtils.setProperty(csrGuarantor, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrGuarantor, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -581,7 +576,7 @@ public class CsrProjectInfoService {
                                     case AssessTableNameConstant.CSR_LITIGATION:
                                         csrLitigation = csrLitigation == null ? new CsrLitigation() : csrLitigation;
                                         try {
-                                            ReflectUtils.setProperty(csrLitigation, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrLitigation, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -589,7 +584,7 @@ public class CsrProjectInfoService {
                                     case AssessTableNameConstant.CSR_PRINCIPAL_INTEREST:
                                         csrPrincipalInterest = csrPrincipalInterest == null ? new CsrPrincipalInterest() : csrPrincipalInterest;
                                         try {
-                                            ReflectUtils.setProperty(csrPrincipalInterest, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
+                                            Reflections.setFieldValue(csrPrincipalInterest, dbFieldToBeanField(columnDto.getFieldName()), PoiUtils.getCellValue(cell));
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -677,24 +672,24 @@ public class CsrProjectInfoService {
         if (reportTemplateFileDto == null)
             throw new BusinessException("未找到对应的报告模板");
 
-        BaseAttachment queryParam = new BaseAttachment();
+        SysAttachmentDto queryParam = new SysAttachmentDto();
         queryParam.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplateFiles.class));
         queryParam.setTableId(reportTemplateFileDto.getBaseReportTemplateFiles().getId());
         queryParam.setFieldsName(BaseReportTemplateTypeEnum.REPORT.getKey());
-        List<BaseAttachment> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
         if (CollectionUtils.isEmpty(attachmentList))
             throw new BusinessException("未找到对应的报告模板附件");
-        BaseAttachment baseAttachment = attachmentList.get(0);//模板附件
+        SysAttachmentDto baseAttachment = attachmentList.get(0);//模板附件
         List<BaseReportTemplateVo> baseReportTemplateList = reportTemplateFileDto.getBaseReportTemplateVoList();
         List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(borrowerIds));
-        BaseAttachment attachment = new BaseAttachment();
+        SysAttachmentDto attachment = new SysAttachmentDto();
         attachment.setTableName(FormatUtils.entityNameConvertToTableName(CsrBorrower.class));
         attachment.setFieldsName(AssessFieldNameConstant.CSR_BORROWER_REPORT);
         for (Integer integer : list) {
             try {
                 //拷贝表数据及FTP附件
                 attachment.setTableId(integer);
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), attachment);
+                SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(baseAttachment.getId(), attachment);
                 //获取数据
                 if (CollectionUtils.isNotEmpty(baseReportTemplateList)) {
                     //1.检查配置的书签有几张表
@@ -964,7 +959,7 @@ public class CsrProjectInfoService {
         List<String> integerList = FormatUtils.transformString2List(ids);
         int i = 1;
         for (String sjhth : integerList) {
-            BaseAttachment attachment = new BaseAttachment();
+            SysAttachmentDto attachment = new SysAttachmentDto();
             attachment.setTableName("sheet1");
             attachment.setFieldsName("report");
             try {
@@ -979,11 +974,8 @@ public class CsrProjectInfoService {
                 BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName("report.type.preaudit");
                 Integer templateId = baseReportService.getReportTemplateFiles(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
 
-                BaseAttachment ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment, attachment.getFileName());
-                String loaclFileName = baseAttachmentService.createNoRepeatFileName(ftpAttachment.getFileExtension());
-                String localFileDir = baseAttachmentService.createTempBasePath();
-                String localFullPath = localFileDir + File.separator + loaclFileName;
-                ftpUtilsExtense.downloadFileToLocal(ftpAttachment.getFtpFilesName(), ftpAttachment.getFilePath(), loaclFileName, localFileDir);
+                SysAttachmentDto ftpAttachment = baseAttachmentService.copyFtpAttachment(templateId, attachment);
+                String localFullPath = baseAttachmentService.downloadFtpFileToLocal(ftpAttachment.getId());
 
                 List<KeyValueDto> valueDtoList = baseReportService.getReportTemplate(0, baseProjectClassify.getId(), baseDataDic.getId(), 0, 0);
                 int k = mapList.size();
@@ -1021,7 +1013,7 @@ public class CsrProjectInfoService {
 
                 //再将附件上传到相同位置
                 try {
-                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFilesName());
+                    ftpUtilsExtense.uploadFilesToFTP(ftpAttachment.getFilePath(), new FileInputStream(localFullPath), ftpAttachment.getFtpFileName());
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }
