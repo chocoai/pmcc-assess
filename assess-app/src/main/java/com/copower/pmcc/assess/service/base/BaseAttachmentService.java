@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.dal.entity.ProjectPhase;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -9,6 +10,7 @@ import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -70,9 +72,9 @@ public class BaseAttachmentService {
     }
 
     public List<SysAttachmentDto> getAttachmentListByTableName(String tableName, List<Integer> integers) {
-        SysAttachmentDto sysAttachmentDto=new SysAttachmentDto();
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableName(tableName);
-        return erpRpcAttachmentService.getAttachmentDtoListByIds(integers, sysAttachmentDto);
+        return erpRpcAttachmentService.getAttachmentListByIds(integers, sysAttachmentDto);
     }
 
     /**
@@ -82,7 +84,7 @@ public class BaseAttachmentService {
      * @time zch 2018-05-09
      */
     public List<SysAttachmentDto> getByField_tableId(int table_id, String fields_name, String tableName) {
-        SysAttachmentDto sysAttachment=new SysAttachmentDto();
+        SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setTableId(table_id);
         sysAttachment.setFieldsName(fields_name);
         sysAttachment.setTableName(tableName);
@@ -90,28 +92,29 @@ public class BaseAttachmentService {
     }
 
     public List<SysAttachmentDto> getAttachmentList(List<Integer> tableIds, SysAttachmentDto sysAttachment) {
-        return null;
-       // return baseAttachmentDao.getAttachmentList(tableIds, sysAttachment);
+        return erpRpcAttachmentService.getAttachmentListByTableIds(tableIds, sysAttachment);
     }
 
     public List<SysAttachmentDto> getAttachmentList(SysAttachmentDto sysAttachment) {
-        return erpRpcAttachmentService.getAttachmentDtoList(sysAttachment);
+        return erpRpcAttachmentService.getAttachmentList(sysAttachment);
     }
 
     public SysAttachmentDto getSysAttachmentDto(Integer attachmentId) {
         return erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
     }
 
-    public void addAttachment(SysAttachmentDto sysAttachment){
-
+    public void addAttachment(SysAttachmentDto sysAttachment) {
+        erpRpcAttachmentService.addAttachment(sysAttachment);
     }
 
-    public void updateAttachment(SysAttachmentDto sysAttachment){
-
+    public void updateAttachment(SysAttachmentDto sysAttachment) {
+        erpRpcAttachmentService.updateAttachment(sysAttachment);
     }
 
-    public List<SysAttachmentDto> getApprovalLogList(String processInsId,List<String> transform){
-        return null;
+    public List<SysAttachmentDto> getApprovalLogList(String processInsId, List<String> taskIds) {
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setProcessInsId(processInsId);
+        return erpRpcAttachmentService.getAttachmentListByTaskIds(taskIds, sysAttachmentDto);
     }
 
     /**
@@ -139,7 +142,7 @@ public class BaseAttachmentService {
 
     private List<SysAttachmentDto> getSysAttachmentDtos(Integer id, String fieldsName) {
         SysAttachmentDto bidSysAttachmentDto = new SysAttachmentDto();
-        bidSysAttachmentDto.setTableName("tb_project_phase");
+        bidSysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPhase.class));
         bidSysAttachmentDto.setFieldsName(fieldsName);
         bidSysAttachmentDto.setTableId(id);
         return getAttachmentList(bidSysAttachmentDto);
@@ -179,8 +182,13 @@ public class BaseAttachmentService {
         }
     }
 
-    public void updateAttachementByExample(SysAttachmentDto queryParam,SysAttachmentDto sysAttachmentDto){
-
+    /**
+     * 附件信息批量更新
+     * @param queryParam
+     * @param sysAttachmentDto
+     */
+    public void updateAttachementByExample(SysAttachmentDto queryParam, SysAttachmentDto sysAttachmentDto) {
+        erpRpcAttachmentService.updateAttachmentByParam(queryParam,sysAttachmentDto);
     }
 
     /**

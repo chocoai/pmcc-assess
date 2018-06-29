@@ -8,10 +8,10 @@
     <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="urgency" property="urgency" jdbcType="INTEGER" />
-    <result column="province" property="province" jdbcType="INTEGER" />
-    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP" />
-    <result column="district" property="district" jdbcType="INTEGER" />
     <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
     <result column="value_type" property="valueType" jdbcType="INTEGER" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
@@ -91,7 +91,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_class_id, project_type_id, project_category_id, project_name, urgency, 
-    province, city, valuation_date, district, entrust_purpose, value_type, department_id, 
+    province, city, district, valuation_date, entrust_purpose, value_type, department_id, 
     remarks, complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
     status, project_status, public_project_id, remark_entrust_purpose, remark_value_type, 
     creator, gmt_created, gmt_modified, assign_process_ins_id, assign_status
@@ -132,7 +132,7 @@
     </selectKey>
     insert into tb_project_info (project_class_id, project_type_id, project_category_id, 
       project_name, urgency, province, 
-      city, valuation_date, district, 
+      city, district, valuation_date, 
       entrust_purpose, value_type, department_id, 
       remarks, complete_date_plan, complete_date_actual, 
       complete_date_start, process_ins_id, status, 
@@ -141,8 +141,8 @@
       gmt_modified, assign_process_ins_id, assign_status
       )
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
-      #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
-      #{city,jdbcType=INTEGER}, #{valuationDate,jdbcType=TIMESTAMP}, #{district,jdbcType=INTEGER}, 
+      #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
       #{entrustPurpose,jdbcType=INTEGER}, #{valueType,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
       #{remarks,jdbcType=VARCHAR}, #{completeDatePlan,jdbcType=TIMESTAMP}, #{completeDateActual,jdbcType=TIMESTAMP}, 
       #{completeDateStart,jdbcType=TIMESTAMP}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
@@ -178,11 +178,11 @@
       <if test="city != null" >
         city,
       </if>
-      <if test="valuationDate != null" >
-        valuation_date,
-      </if>
       <if test="district != null" >
         district,
+      </if>
+      <if test="valuationDate != null" >
+        valuation_date,
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose,
@@ -256,16 +256,16 @@
         #{urgency,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
-        #{province,jdbcType=INTEGER},
+        #{province,jdbcType=VARCHAR},
       </if>
       <if test="city != null" >
-        #{city,jdbcType=INTEGER},
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
       </if>
       <if test="valuationDate != null" >
         #{valuationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="district != null" >
-        #{district,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
         #{entrustPurpose,jdbcType=INTEGER},
@@ -351,16 +351,16 @@
         urgency = #{record.urgency,jdbcType=INTEGER},
       </if>
       <if test="record.province != null" >
-        province = #{record.province,jdbcType=INTEGER},
+        province = #{record.province,jdbcType=VARCHAR},
       </if>
       <if test="record.city != null" >
-        city = #{record.city,jdbcType=INTEGER},
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
       </if>
       <if test="record.valuationDate != null" >
         valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.district != null" >
-        district = #{record.district,jdbcType=INTEGER},
       </if>
       <if test="record.entrustPurpose != null" >
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
@@ -429,10 +429,10 @@
       project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       urgency = #{record.urgency,jdbcType=INTEGER},
-      province = #{record.province,jdbcType=INTEGER},
-      city = #{record.city,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
       valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
-      district = #{record.district,jdbcType=INTEGER},
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       value_type = #{record.valueType,jdbcType=INTEGER},
       department_id = #{record.departmentId,jdbcType=INTEGER},
@@ -474,16 +474,16 @@
         urgency = #{urgency,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
-        province = #{province,jdbcType=INTEGER},
+        province = #{province,jdbcType=VARCHAR},
       </if>
       <if test="city != null" >
-        city = #{city,jdbcType=INTEGER},
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
       </if>
       <if test="valuationDate != null" >
         valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="district != null" >
-        district = #{district,jdbcType=INTEGER},
       </if>
       <if test="entrustPurpose != null" >
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
@@ -549,10 +549,10 @@
       project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
       urgency = #{urgency,jdbcType=INTEGER},
-      province = #{province,jdbcType=INTEGER},
-      city = #{city,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
       valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
-      district = #{district,jdbcType=INTEGER},
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       value_type = #{valueType,jdbcType=INTEGER},
       department_id = #{departmentId,jdbcType=INTEGER},

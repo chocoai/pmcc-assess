@@ -28,6 +28,23 @@ public class AreaController {
      * @return
      */
     @ResponseBody
+    @RequestMapping("/getProvinceList")
+    public HttpResult getProvinceList() {
+        try {
+            List<SysAreaDto> areaList = areaService.getProvinceList();
+            return HttpResult.newCorrectResult(areaList);
+        } catch (Exception e) {
+            LOGGER.error("获取区域数据异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 获取字典列表数据
+     *
+     * @return
+     */
+    @ResponseBody
     @RequestMapping("/getAreaList")
     public HttpResult getAreaList(String pid) {
         try {

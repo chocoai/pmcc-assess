@@ -489,15 +489,15 @@ public class ProjectInfoService {
 
     public ProjectInfoVo getProjectInfoVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
-        if (projectInfo.getProvince() != null && projectInfo.getProvince() > 0) {
+        if (StringUtils.isNotBlank(projectInfo.getProvince())) {
 
-            projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()+""));//省
+            projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));//省
         }
-        if (projectInfo.getCity() != null && projectInfo.getCity() > 0) {
-            projectInfoVo.setCityName(erpAreaService.getSysAreaName(projectInfo.getCity()+""));//市或者县
+        if (StringUtils.isNotBlank(projectInfo.getCity())) {
+            projectInfoVo.setCityName(erpAreaService.getSysAreaName(projectInfo.getCity()));//市或者县
         }
-        if (projectInfo.getDistrict() != null && projectInfo.getDistrict() > 0) {
-            projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()+""));//县
+        if (StringUtils.isNotBlank(projectInfo.getDistrict())) {
+            projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()));//县
         }
         //紧急程度
         if (projectInfo.getUrgency() != null) {

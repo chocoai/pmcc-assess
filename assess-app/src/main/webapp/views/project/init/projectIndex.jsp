@@ -164,7 +164,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="province" name="province" class="form-control" required="required">
+                                    <select id="province" name="province" class="form-control search-select select2" required="required">
                                         <option value="" name="province">-请选择-</option>
                                         <c:forEach items="${ProvinceList}" var="item">
                                             <c:choose>
@@ -184,7 +184,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="city" name="city" class="form-control" required="required">
+                                    <select id="city" name="city" class="form-control search-select select2" required="required">
 
                                     </select>
                                 </div>
@@ -193,7 +193,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">县</label>
                                 <div class="col-sm-3">
-                                    <select id="district" name="district" class="form-control">
+                                    <select id="district" name="district" class="form-control search-select select2">
 
                                     </select>
                                 </div>
@@ -755,7 +755,6 @@
                 </div>
             </div>
 
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -853,6 +852,20 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
+
+<script type="text/javascript">
+    $(function () {
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district"),
+            provinceValue: '${projectInfo.province}',
+            cityValue: '${projectInfo.city}',
+            districtValue: '${projectInfo.district}'
+        })
+    })
+</script>
+
 <script type="text/javascript">
     $(function () {
         //---------
@@ -863,7 +876,8 @@
                 tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -873,7 +887,8 @@
                 tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -885,7 +900,8 @@
                 tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -895,7 +911,8 @@
                 tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -907,7 +924,8 @@
                 tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -917,7 +935,8 @@
                 tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
-                projectId: "${projectPlanDetails.projectId}"
+                projectId: "${projectPlanDetails.projectId}",
+                creater:"${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -943,69 +962,69 @@
         })
     }
 
-    /*省 市 县 js*/
-    function tableNameA() {
-        $("#province").change(function () {//监听 选择的省份
-            //检测  然后操作
-            $("#city,#district").empty();
-            var selected = $(this).children('option:selected').val();//获取到省
-            var data = "pid=" + selected;
-            $.ajax({
-                url: "${pageContext.request.contextPath}/area/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    appendChildElement(result.data);
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
-    }
+    <%--/*省 市 县 js*/--%>
+    <%--function tableNameA() {--%>
+        <%--$("#province").change(function () {//监听 选择的省份--%>
+            <%--//检测  然后操作--%>
+            <%--$("#city,#district").empty();--%>
+            <%--var selected = $(this).children('option:selected').val();//获取到省--%>
+            <%--var data = "pid=" + selected;--%>
+            <%--$.ajax({--%>
+                <%--url: "${pageContext.request.contextPath}/area/getAreaList",--%>
+                <%--type: "post",--%>
+                <%--dataType: "json",--%>
+                <%--data: data,--%>
+                <%--success: function (result) {--%>
+                    <%--appendChildElement(result.data);--%>
+                <%--},--%>
+                <%--error: function (result) {--%>
+                    <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+                <%--}--%>
+            <%--})--%>
+        <%--});--%>
+    <%--}--%>
 
-    tableNameA();
+    <%--tableNameA();--%>
 
-    function tableName_district() {
-        $("#city").change(function () {//监听 选择的城市
-            //检测  然后操作
-            $("#district").empty();
-            var selected = $(this).children('option:selected').val();//获取到城市
-            var data = "pid=" + selected;
-            $.ajax({
-                url: "${pageContext.request.contextPath}/area/getAreaList",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    appendChildElement_district(result.data);
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
-    }
+    <%--function tableName_district() {--%>
+        <%--$("#city").change(function () {//监听 选择的城市--%>
+            <%--//检测  然后操作--%>
+            <%--$("#district").empty();--%>
+            <%--var selected = $(this).children('option:selected').val();//获取到城市--%>
+            <%--var data = "pid=" + selected;--%>
+            <%--$.ajax({--%>
+                <%--url: "${pageContext.request.contextPath}/area/getAreaList",--%>
+                <%--type: "post",--%>
+                <%--dataType: "json",--%>
+                <%--data: data,--%>
+                <%--success: function (result) {--%>
+                    <%--appendChildElement_district(result.data);--%>
+                <%--},--%>
+                <%--error: function (result) {--%>
+                    <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+                <%--}--%>
+            <%--})--%>
+        <%--});--%>
+    <%--}--%>
 
-    tableName_district();
+    <%--tableName_district();--%>
 
 
-    function appendChildElement(data) {//市添加
-        var html = '<option value="">-请选择-</option>';
-        $.each(data, function (i, item) {
-            html += '<option value="' + item.areaId + '">' + item.name + '</option>';
-        })
-        $("#city").append(html);
-    }
+    <%--function appendChildElement(data) {//市添加--%>
+        <%--var html = '<option value="">-请选择-</option>';--%>
+        <%--$.each(data, function (i, item) {--%>
+            <%--html += '<option value="' + item.areaId + '">' + item.name + '</option>';--%>
+        <%--})--%>
+        <%--$("#city").append(html);--%>
+    <%--}--%>
 
-    function appendChildElement_district(data) {//县或者区域添加
-        var html = '<option value="">-请选择-</option>';
-        $.each(data, function (i, item) {
-            html += '<option value="' + item.areaId + '">' + item.name + '</option>';
-        })
-        $("#district").append(html);
-    }
+    <%--function appendChildElement_district(data) {//县或者区域添加--%>
+        <%--var html = '<option value="">-请选择-</option>';--%>
+        <%--$.each(data, function (i, item) {--%>
+            <%--html += '<option value="' + item.areaId + '">' + item.name + '</option>';--%>
+        <%--})--%>
+        <%--$("#district").append(html);--%>
+    <%--}--%>
 
 
     //执业部门

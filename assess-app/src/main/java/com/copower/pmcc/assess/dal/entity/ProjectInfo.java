@@ -15,13 +15,13 @@ public class ProjectInfo {
 
     private Integer urgency;
 
-    private Integer province;
+    private String province;
 
-    private Integer city;
+    private String city;
+
+    private String district;
 
     private Date valuationDate;
-
-    private Integer district;
 
     private Integer entrustPurpose;
 
@@ -107,20 +107,28 @@ public class ProjectInfo {
         this.urgency = urgency;
     }
 
-    public Integer getProvince() {
+    public String getProvince() {
         return province;
     }
 
-    public void setProvince(Integer province) {
-        this.province = province;
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
     }
 
-    public Integer getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Integer city) {
-        this.city = city;
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
     }
 
     public Date getValuationDate() {
@@ -129,14 +137,6 @@ public class ProjectInfo {
 
     public void setValuationDate(Date valuationDate) {
         this.valuationDate = valuationDate;
-    }
-
-    public Integer getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(Integer district) {
-        this.district = district;
     }
 
     public Integer getEntrustPurpose() {
