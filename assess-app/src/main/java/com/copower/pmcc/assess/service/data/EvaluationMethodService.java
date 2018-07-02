@@ -76,11 +76,11 @@ public class EvaluationMethodService {
                 // 因为是修改所以可能所有的数据数据库中都已经有相关信息了
                 String[] fields = field.split(",");
                 int type = FieldEnum.APPLICABLE.getNum();//有可能增加一些字段,有可能删去一些字段
-                for (String f:fields){
-                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type,f,evaluationMethodDto.getId());
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type, f, evaluationMethodDto.getId());
                 }
-                for (String f:fields){
-                    if (!StringUtils.isEmpty(f)){
+                for (String f : fields) {
+                    if (!StringUtils.isEmpty(f)) {
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(type);
                         fieldDto.setName(f);
@@ -88,24 +88,24 @@ public class EvaluationMethodService {
                         fieldDto.setMethodId(evaluationMethodDto.getId());
                         try {
                             evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             try {
-                                logger.error("错误打印!"+e.getMessage());
-                            }catch (Exception e1){
-                                throw  e;
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
                             }
                         }
                     }
                 }
             }
-            if (!StringUtils.isEmpty(Nofield)){//不适用
+            if (!StringUtils.isEmpty(Nofield)) {//不适用
                 String[] noFields = Nofield.split(",");
                 int type = FieldEnum.NO_APPLICABLE.getNum();
-                for (String f:noFields){
-                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type,f,evaluationMethodDto.getId());
+                for (String f : noFields) {
+                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type, f, evaluationMethodDto.getId());
                 }
-                for (String f:noFields){
-                    if (!StringUtils.isEmpty(f)){
+                for (String f : noFields) {
+                    if (!StringUtils.isEmpty(f)) {
                         EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
                         fieldDto.setType(type);
                         fieldDto.setName(f);
@@ -113,11 +113,11 @@ public class EvaluationMethodService {
                         fieldDto.setMethodId(evaluationMethodDto.getId());
                         try {
                             evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             try {
-                                logger.error("错误打印!"+e.getMessage());
-                            }catch (Exception e1){
-                                throw  e;
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
                             }
                         }
                     }
@@ -137,11 +137,11 @@ public class EvaluationMethodService {
                         fieldDto.setMethodId(id);
                         try {
                             evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             try {
-                                logger.error("错误打印!"+e.getMessage());
-                            }catch (Exception e1){
-                                throw  e;
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
                             }
                         }
                     }
@@ -159,11 +159,11 @@ public class EvaluationMethodService {
                         fieldDto.setMethodId(id);
                         try {
                             evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             try {
-                                logger.error("错误打印!"+e.getMessage());
-                            }catch (Exception e1){
-                                throw  e;
+                                logger.error("错误打印!" + e.getMessage());
+                            } catch (Exception e1) {
+                                throw e;
                             }
                         }
                     }
@@ -290,19 +290,11 @@ public class EvaluationMethodService {
     private EvaluationMethodFieldVo change(EvaluationMethodField evaluationMethodField) {
         EvaluationMethodFieldVo vo = new EvaluationMethodFieldVo();
         BeanUtils.copyProperties(evaluationMethodField, vo);
-        if (vo.getType() == EvaluationThinkingFieldVoEnum.ONE.getNum()) {
-            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR1.getVar());
-        } else if (vo.getType() == EvaluationThinkingFieldVoEnum.ZERO.getNum()) {
-            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR2.getVar());
+        if (vo.getType() != null) {
+            vo.setTypeStr(EvaluationThinkingFieldVoEnum.getName(vo.getType()));
         }
         return vo;
     }
-
-    public List<EvaluationMethod> getEvaluationMethodByMethod(Integer method) {
-
-        return null;
-    }
-
 
     private List<EvaluationMethodVo> change(List<EvaluationMethodDto> evaluationMethodDtos) {
         List<EvaluationMethodVo> evaluationMethodVos = new ArrayList<>();

@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.assist;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dto.input.FormConfigureDto;
-import com.copower.pmcc.assess.dto.output.BaseBussinessVo;
+import com.copower.pmcc.assess.dto.output.base.BaseBussinessVo;
 import com.copower.pmcc.assess.proxy.face.BaseInterface;
 import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;

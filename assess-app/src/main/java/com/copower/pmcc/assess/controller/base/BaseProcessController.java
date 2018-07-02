@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 import com.copower.pmcc.assess.dal.entity.BaseProcessForm;
-import com.copower.pmcc.assess.dto.output.BaseProcessFormModelVo;
+import com.copower.pmcc.assess.dto.output.base.BaseProcessFormModelVo;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProcessService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;

@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.dto.input.data;
 
 
-import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
 
 /**
  * Created by zly on 2018/6/13.
  */
-public class StageWeightProportionDto extends StageWeightProportion {
+public class StageWeightProportionDto extends DataStageWeightProportion {
     private String proportionList;
 
     public String getProportionList() {

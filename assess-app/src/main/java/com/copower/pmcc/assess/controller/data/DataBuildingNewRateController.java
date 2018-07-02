@@ -39,55 +39,47 @@ public class DataBuildingNewRateController {
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataArchitectureDic");
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.BUILDING_NEW_RATE_USE);
-        modelAndView.addObject("useList",baseDataDics);
+        modelAndView.addObject("useList", baseDataDics);
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "/getArchitectureListA",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo listA(@RequestParam(value = "buildingStructure",defaultValue = "")String buildingStructure){
-        BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();
-        if (buildingStructure != null && buildingStructure!="")return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructure);
-        System.out.println("buildingStructure "+buildingStructure);
-        return vo;
-    }
-
-    @RequestMapping(value = "/getArchitectureList",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody BootstrapTableVo list(@RequestParam(value = "buildingStructureA")String buildingStructureA){
-        if (buildingStructureA!=null&&buildingStructureA!=""){
-            logger.debug("-------------> "+buildingStructureA);
-            return dataBuildingNewRateService.getDataBuildingNewRateVo(buildingStructureA);
-        }
-        BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateVo();
+    @RequestMapping(value = "/getArchitectureList", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    BootstrapTableVo list(@RequestParam(value = "buildingStructureA") String buildingStructureA) {
+        BootstrapTableVo vo = dataBuildingNewRateService.getDataBuildingNewRateList(buildingStructureA);
         return vo;
     }
 
 
     /**
      * remove
+     *
      * @param id
      * @return
      */
-    @RequestMapping(value = "/removeDataBuildingNewRate",method = RequestMethod.POST)
-    public @ResponseBody HttpResult removeDataBuildingNewRate(@RequestParam(value = "id")Integer id){
+    @RequestMapping(value = "/removeDataBuildingNewRate", method = RequestMethod.POST)
+    public @ResponseBody
+    HttpResult removeDataBuildingNewRate(@RequestParam(value = "id") Integer id) {
         try {
             dataBuildingNewRateService.deleteDataBuildingNewRate(id);
-        }catch (BusinessException e){
+        } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
 
-    @RequestMapping(value = "/addDataBuildingNewRate",method = RequestMethod.POST)
-    public @ResponseBody HttpResult addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate){
+    @RequestMapping(value = "/addDataBuildingNewRate", method = RequestMethod.POST)
+    public @ResponseBody
+    HttpResult addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate) {
         try {
-            if (dataBuildingNewRate.getId()!=null&&dataBuildingNewRate.getId()!=0){//不再使用专门的 update controller
+            if (dataBuildingNewRate.getId() != null && dataBuildingNewRate.getId() != 0) {//不再使用专门的 update controller
                 dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
-            }else {
+            } else {
                 dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
             }
-        }catch (BusinessException e){
-            logger.info(""+e.getMessage());
+        } catch (BusinessException e) {
+            logger.info("" + e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -95,14 +87,16 @@ public class DataBuildingNewRateController {
 
     /**
      * update
+     *
      * @param dataBuildingNewRate
      * @return
      */
-    @RequestMapping(value = "/updateDataBuildingNewRate",method = RequestMethod.POST)
-    public @ResponseBody HttpResult updateDataBuildingNewRate(@RequestParam(value = "dataBuildingNewRate")DataBuildingNewRate dataBuildingNewRate){
+    @RequestMapping(value = "/updateDataBuildingNewRate", method = RequestMethod.POST)
+    public @ResponseBody
+    HttpResult updateDataBuildingNewRate(@RequestParam(value = "dataBuildingNewRate") DataBuildingNewRate dataBuildingNewRate) {
         try {
             dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
-        }catch (BusinessException e){
+        } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -110,16 +104,17 @@ public class DataBuildingNewRateController {
 
     /**
      * get
+     *
      * @param id
      * @return
      */
-    @RequestMapping(value = "/getDataBuildingNewRate",method = {RequestMethod.POST,RequestMethod.GET})
-    public @ResponseBody Object getDataBuildingNewRate(@RequestParam(value = "id")Integer id){
+    @RequestMapping(value = "/getDataBuildingNewRate", method = {RequestMethod.POST, RequestMethod.GET})
+    public @ResponseBody
+    Object getDataBuildingNewRate(@RequestParam(value = "id") Integer id) {
         DataBuildingNewRate dataBuildingNewRate = null;
-        if (id!=null){
+        if (id != null) {
             dataBuildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(id);
-            dataBuildingNewRate.setUseChange(dataBuildingNewRateService.change(dataBuildingNewRate.getBuildingUse()));
         }
-        return dataBuildingNewRateService.change(dataBuildingNewRate);
+        return dataBuildingNewRateService.getDataBuildingNewRateVo(dataBuildingNewRate);
     }
 }

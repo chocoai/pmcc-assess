@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
+import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;

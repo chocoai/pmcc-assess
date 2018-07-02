@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.InitiateConsignorEnum;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -106,7 +105,6 @@ public class ProjectInfoService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDao projectPlanDao;
-
     @Lazy
     @Autowired
     private InitiateContactsService initiateContactsService;
@@ -129,9 +127,9 @@ public class ProjectInfoService {
     @Autowired
     private BaseParameterServcie baseParameterServcie;
     @Autowired
-    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
-    @Autowired
     private ProjectMemberDao projectMemberDao;
+    @Autowired
+    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
 
     /**
      * 项目立项申请
@@ -170,13 +168,12 @@ public class ProjectInfoService {
             // 更新 存附件的主表
             if (flag == 0) {//项目信息 附件
                 //更新附件
-                baseAttachment.setTableId(pid);
-                baseAttachmentService.updateAttachment(baseAttachment);
-            } else if (flag == InitiateContactsEnum.ONE.getNum()) {// 委托人 附件
+
+            } else if (flag == InitiateContactsEnum.CONSIGNOR.getId()) {// 委托人 附件
                 //更新附件
                 baseAttachment.setTableId(pid);
                 baseAttachmentService.updateAttachment(baseAttachment);
-            } else if (flag == InitiateContactsEnum.TWO.getNum()) {//占有人 附件
+            } else if (flag == InitiateContactsEnum.POSSESSOR.getId()) {//占有人 附件
                 //更新附件
                 baseAttachment.setTableId(pid);
                 baseAttachmentService.updateAttachment(baseAttachment);
@@ -199,9 +196,9 @@ public class ProjectInfoService {
         projectMemberService.saveReturnId(projectMemberDto);
         unitInformationDto.setProjectId(projectInfoDto.getId());
         unitInformationService.update(unitInformationDto);
-        update_SysAttachmentDto_(consignorDto.getId(), InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
-        update_SysAttachmentDto_(possessorDto.getId(), InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
-        update_SysAttachmentDto_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+        update_SysAttachmentDto_(consignorDto.getId(), InitiateConsignorDto.CS_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.CONSIGNOR.getId());
+        update_SysAttachmentDto_(possessorDto.getId(), InitiatePossessorDto.P_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.POSSESSOR.getId());
+        update_SysAttachmentDto_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENT_PROJECTINFO_ID, 0);
     }
 
     @Transactional
@@ -227,24 +224,25 @@ public class ProjectInfoService {
 
             if (consignorDto.getCsType() == 1 && possessorDto.getpType() == 1) {//说明是法人 则不需要更新
                 //修改之后法人的联系人被添加进本地数据库  因此也可以修改了
-                initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
-                initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
-                initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
+                initiateContactsService.update(v, InitiateContactsEnum.CONSIGNOR.getId());
+                initiateContactsService.update(i, InitiateContactsEnum.POSSESSOR.getId());
+                initiateContactsService.update(j, InitiateContactsEnum.UNIT_INFORMATION.getId());
             } else {
-                initiateContactsService.update(v, InitiateContactsEnum.ONE.getNum());
-                initiateContactsService.update(i, InitiateContactsEnum.TWO.getNum());
-                initiateContactsService.update(j, InitiateContactsEnum.THREE.getNum());
+                initiateContactsService.update(v, InitiateContactsEnum.CONSIGNOR.getId());
+                initiateContactsService.update(i, InitiateContactsEnum.POSSESSOR.getId());
+                initiateContactsService.update(j, InitiateContactsEnum.UNIT_INFORMATION.getId());
             }
             //附件更新
-            update_SysAttachmentDto_(v, InitiateConsignorDto.CSATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.ONE.getNum());
-            update_SysAttachmentDto_(i, InitiatePossessorDto.PATTACHMENTPROJECTENCLOSUREID, InitiateContactsEnum.TWO.getNum());
+            update_SysAttachmentDto_(v, InitiateConsignorDto.CS_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.CONSIGNOR.getId());
+            update_SysAttachmentDto_(i, InitiatePossessorDto.P_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.POSSESSOR.getId());
 
             projectMemberDto.setProjectId(projectId);
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
-            update_SysAttachmentDto_(projectId, ProjectInfoDto.ATTACHMENTPROJECTINFOID, 0);
+            update_SysAttachmentDto_(projectId, ProjectInfoDto.ATTACHMENT_PROJECTINFO_ID, 0);
 
             //判断是否需要下级再进行任务分派 //20180621 Calvin
+            //如果可以下级分派，则先走任务分派流程
             if (bisNextUser.equals("1")) {
                 //发起流程
                 String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
@@ -254,7 +252,7 @@ public class ProjectInfoService {
                 processInfo.setProcessName(boxReDto.getProcessName());
                 processInfo.setGroupName(boxReDto.getGroupName());
                 processInfo.setFolio(projectInfo.getProjectName());//流程描述
-                processInfo.setTableName("tb_project_info");
+                processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
                 processInfo.setBoxId(boxReDto.getId());
                 processInfo.setStartUser(commonService.thisUserAccount());
                 processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
@@ -264,8 +262,9 @@ public class ProjectInfoService {
                     processInfo.setNextUser(Lists.newArrayList(projectMemberDto.getUserAccountManager()));
                 } else {
                     Integer departmentId = projectInfo.getDepartmentId();
-                    List<String> departmentDA = bpmRpcBoxRoleUserService.getDepartmentDA(departmentId);
-                    processInfo.setNextUser(departmentDA);
+                    //取部门领导
+                    List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentCE(departmentId);
+                    processInfo.setNextUser(departmentCE);
                 }
                 try {
                     String processInsId = processControllerComponent.processStartPending(processInfo);
@@ -380,6 +379,8 @@ public class ProjectInfoService {
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
         processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
         processInfo.setWorkStageId(projectWorkStage.getId());
+        processInfo.setAppKey(commonService.getCurrentSelectAppKey());
+
         try {
             processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
         } catch (BpmException e) {
@@ -556,15 +557,6 @@ public class ProjectInfoService {
         return baseDataDics;
     }
 
-    /*单位性质 非CRM*/
-    public Map<String, Object> getConsignorMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(InitiateConsignorEnum.ONE.getValue() + "", InitiateConsignorEnum.BANK.getDec());
-        map.put(InitiateConsignorEnum.THREE.getValue() + "", InitiateConsignorEnum.OTHER.getDec());
-        map.put(InitiateConsignorEnum.TWO.getValue() + "", InitiateConsignorEnum.GOVERNMENT_AFFILIATED_INSTITUTIONS.getDec());
-        return map;
-    }
-
     /*联系人 vo crm*/
     public BootstrapTableVo listContactsVo(Integer crmId, Integer cType, Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -572,7 +564,7 @@ public class ProjectInfoService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<InitiateContactsVo> vos = null;
         if (ObjectUtils.isEmpty(pid)) {
-            pid = InitiateContactsDto.CPID;
+            pid = InitiateContactsDto.C_PID;
         }
         if (!ObjectUtils.isEmpty(crmId)) {
             initiateContactsService.writeContacts(crmId, cType, pid);//写入本地

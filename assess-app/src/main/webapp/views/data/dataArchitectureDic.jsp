@@ -153,7 +153,7 @@
     function loadArchitectureList() {
         var cols = [];
         cols.push({field: 'buildingStructure', title: '建筑结构'});
-        cols.push({field: 'useChange', title: '用途'});
+        cols.push({field: 'buildingUseName', title: '用途'});
         cols.push({field: 'durableLife', title: '经济耐用年限'});
         cols.push({field: 'residualValue', title: '残值率'});
 

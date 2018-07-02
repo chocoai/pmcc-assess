@@ -58,7 +58,7 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempBasePath(String... params) {
-        return erpRpcAttachmentService.createTempPath(params);
+        return erpRpcAttachmentService.createTempPath(commonService.getCurrentSelectAppKey(),params);
     }
 
     /**
@@ -68,7 +68,7 @@ public class BaseAttachmentService {
      * @return
      */
     public String createFTPBasePath(String... params) {
-        return erpRpcAttachmentService.createFTPPath(params);
+        return erpRpcAttachmentService.createFTPPath(commonService.getCurrentSelectAppKey(),params);
     }
 
     public List<SysAttachmentDto> getAttachmentListByTableName(String tableName, List<Integer> integers) {

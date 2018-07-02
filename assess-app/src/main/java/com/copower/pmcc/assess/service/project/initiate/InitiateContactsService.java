@@ -112,7 +112,7 @@ public class InitiateContactsService {
      */
     public void writeCrmCustomerDto(Integer projectID, Integer cType) {
         if (!ObjectUtils.isEmpty(cType)) {
-            if (cType.equals(InitiateContactsEnum.THREE.getNum())) {//只有报告使用单位才能回写
+            if (cType.equals(InitiateContactsEnum.UNIT_INFORMATION.getId())) {//只有报告使用单位才能回写
                 //CRM中暂时没有提供方法
                 InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
                 if (unitInformationVo != null) {
@@ -160,7 +160,7 @@ public class InitiateContactsService {
         if ((dto.getCreator() == null)) dto.setCreator(commonService.thisUserAccount());
         if (dto.getGmtCreated() == null) dto.setGmtCreated(new Date());
         if (dto.getcPid() == null || dto.getcPid() == 0) {
-            dto.setcPid(InitiateContactsDto.CPID);
+            dto.setcPid(InitiateContactsDto.C_PID);
         }
         return dao.add(dto);
     }
@@ -208,9 +208,9 @@ public class InitiateContactsService {
 
     public Map<String, String> getTypeMap() {
         Map<String, String> map = new HashMap<>();
-        map.put("" + InitiateContactsEnum.ONE.getNum(), InitiateContactsEnum.CONTACTS_ENUM_A.getVal());
-        map.put("" + InitiateContactsEnum.TWO.getNum(), InitiateContactsEnum.CONTACTS_ENUM_B.getVal());
-        map.put("" + InitiateContactsEnum.THREE.getNum(), InitiateContactsEnum.CONTACTS_ENUM_C.getVal());
+        map.put("" + InitiateContactsEnum.CONSIGNOR.getId(), InitiateContactsEnum.CONSIGNOR.getName());
+        map.put("" + InitiateContactsEnum.POSSESSOR.getId(), InitiateContactsEnum.POSSESSOR.getName());
+        map.put("" + InitiateContactsEnum.UNIT_INFORMATION.getId(), InitiateContactsEnum.UNIT_INFORMATION.getName());
         return map;
     }
 }

@@ -78,10 +78,10 @@ public class EvaluationThinkingFieldService {
         EvaluationThinkingFieldDaoVo vo = new EvaluationThinkingFieldDaoVo();
         BeanUtils.copyProperties(evaluationThinkingFieldDto, vo);
 
-        if (vo.getType() == EvaluationThinkingFieldVoEnum.ONE.getNum()) {
-            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR1.getVar());
-        } else if (vo.getType() == EvaluationThinkingFieldVoEnum.ZERO.getNum()){
-            vo.setTypeStr(EvaluationThinkingFieldVoEnum.STR2.getVar());
+        if (vo.getType() == EvaluationThinkingFieldVoEnum.APPLICABLE.getId()) {
+            vo.setTypeStr(EvaluationThinkingFieldVoEnum.APPLICABLE.getName());
+        } else if (vo.getType() == EvaluationThinkingFieldVoEnum.NOT_APPLICABLE.getId()){
+            vo.setTypeStr(EvaluationThinkingFieldVoEnum.NOT_APPLICABLE.getName());
         }
         return vo;
     }

@@ -6,13 +6,13 @@ import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
  * Created by 13426 on 2018/4/24.
  */
 public class DataBuildingNewRateVo extends DataBuildingNewRate {
-    private String useChange;
+    private String buildingUseName;
 
-    public String getUseChange() {
-        return useChange;
+    public String getBuildingUseName() {
+        return buildingUseName;
     }
 
-    public void setUseChange(String useChange) {
-        this.useChange = useChange;
+    public void setBuildingUseName(String buildingUseName) {
+        this.buildingUseName = buildingUseName;
     }
 }

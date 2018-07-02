@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.StageWeightProportionService;
@@ -74,8 +74,8 @@ public class StageWeightProportionController {
 
     @RequestMapping(value="/edit", name="点编辑请求的数据",method = RequestMethod.POST)
     @ResponseBody
-    public List<StageWeightProportion> edit(StageWeightProportion stageWeightProportion){
-        List<StageWeightProportion> stageWeightProportions = stageWeightProportionService.edit(stageWeightProportion);
+    public List<DataStageWeightProportion> edit(DataStageWeightProportion stageWeightProportion){
+        List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionService.edit(stageWeightProportion);
         return stageWeightProportions;
     }
 

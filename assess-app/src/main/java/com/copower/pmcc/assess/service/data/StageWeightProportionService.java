@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.dao.data.StageWeightProportionDao;
 import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.dto.output.data.ProportionTempVo;
 import com.copower.pmcc.assess.dto.output.data.StageWeightProportionVo;
@@ -34,9 +34,7 @@ public class StageWeightProportionService {
 
     public BootstrapTableVo getList(Integer entrustmentPurpose) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        //RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        //Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<StageWeightProportion> list = stageWeightProportionDao.getList(entrustmentPurpose);
+        List<DataStageWeightProportion> list = stageWeightProportionDao.getList(entrustmentPurpose);
         List<StageWeightProportionVo> stageWeightProportionVos = getVoList(list);
         List<ProportionTempVo> proportionTempVos = getStageProportion(stageWeightProportionVos);    //把相同委托目的拼接到一起
         //page.setTotal();
@@ -45,7 +43,7 @@ public class StageWeightProportionService {
         return vo;
     }
 
-    private List<StageWeightProportionVo> getVoList(List<StageWeightProportion> list) {
+    private List<StageWeightProportionVo> getVoList(List<DataStageWeightProportion> list) {
         if (CollectionUtils.isEmpty(list)) return null;
         return LangUtils.transform(list, p -> {
             StageWeightProportionVo stageWeightProportionVo = new StageWeightProportionVo();
@@ -73,7 +71,7 @@ public class StageWeightProportionService {
         String[] strings = proportionList.split(",");
         if (stageWeightProportionDto.getId() != null && stageWeightProportionDto.getId() > 0) {
             Integer entrustPurpose = stageWeightProportionDto.getId();
-            List<StageWeightProportion> stageWeightProportions = stageWeightProportionDao.getList(entrustPurpose);
+            List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionDao.getList(entrustPurpose);
             boolean flag = false;
             for(int i = 0;i<stageWeightProportions.size();i++){
                 stageWeightProportions.get(i).setProportion(Integer.valueOf(strings[i]));
@@ -135,8 +133,8 @@ public class StageWeightProportionService {
         return proportionTempVos;
     }
 
-    public List<StageWeightProportion> edit(StageWeightProportion stageWeightProportion) {
-        List<StageWeightProportion> stageWeightProportions = stageWeightProportionDao.edit(stageWeightProportion);
+    public List<DataStageWeightProportion> edit(DataStageWeightProportion stageWeightProportion) {
+        List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionDao.edit(stageWeightProportion);
         return stageWeightProportions;
     }
 }

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.output;
+package com.copower.pmcc.assess.dto.output.base;
 
 import com.copower.pmcc.assess.dal.entity.BaseProcess;
 

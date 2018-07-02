@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.proxy.face;
 
-import com.copower.pmcc.assess.dto.output.BaseBussinessVo;
+import com.copower.pmcc.assess.dto.output.base.BaseBussinessVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.common.exception.BusinessException;

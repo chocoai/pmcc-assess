@@ -6,9 +6,9 @@ package com.copower.pmcc.assess.common.enums;
 public enum SchemeInfoDetailEnum {
     HYPOTHESIS(0),//假设
     PRINCIPLE(1),//原则
-    Basis(2),//依据
-    BestUse(3),//利用描述
-    Timepoint(4)//价值时点
+    BASIS(2),//依据
+    BEST_USE(3),//利用描述
+    TIME_POINT(4)//价值时点
     ;
     private int dataType;
 

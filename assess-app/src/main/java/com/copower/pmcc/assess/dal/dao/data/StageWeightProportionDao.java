@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.dal.dao.data;
 
-import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
-import com.copower.pmcc.assess.dal.entity.StageWeightProportionExample;
-import com.copower.pmcc.assess.dal.mapper.StageWeightProportionMapper;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportionExample;
+import com.copower.pmcc.assess.dal.mapper.DataStageWeightProportionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,31 +11,31 @@ import java.util.List;
 @Repository
 public class StageWeightProportionDao {
     @Autowired
-    private StageWeightProportionMapper stageWeightProportionMapper;
+    private DataStageWeightProportionMapper stageWeightProportionMapper;
 
-    public List<StageWeightProportion> getList(Integer entrustmentPurpose) {
-        StageWeightProportionExample example = new StageWeightProportionExample();
-        StageWeightProportionExample.Criteria criteria = example.createCriteria();
+    public List<DataStageWeightProportion> getList(Integer entrustmentPurpose) {
+        DataStageWeightProportionExample example = new DataStageWeightProportionExample();
+        DataStageWeightProportionExample.Criteria criteria = example.createCriteria();
 
         if (entrustmentPurpose != null) {
             criteria.andEntrustPurposeEqualTo(entrustmentPurpose);
         }
 
         example.setOrderByClause("entrust_purpose,stage");
-        List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
+        List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
 
         return stageWeightProportions;
     }
 
-    public boolean update(StageWeightProportion stageWeightProportion) {
+    public boolean update(DataStageWeightProportion stageWeightProportion) {
         int i = stageWeightProportionMapper.updateByPrimaryKeySelective(stageWeightProportion);
         return i > 0;
     }
 
-    public boolean save(StageWeightProportion stageWeightProportion) {
-        StageWeightProportionExample example = new StageWeightProportionExample();
+    public boolean save(DataStageWeightProportion stageWeightProportion) {
+        DataStageWeightProportionExample example = new DataStageWeightProportionExample();
         example.createCriteria().andEntrustPurposeEqualTo(stageWeightProportion.getEntrustPurpose()).andStageEqualTo(stageWeightProportion.getStage());
-        List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
+        List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
         if (stageWeightProportions != null && stageWeightProportions.size() > 0) {
             return false;
         }else {
@@ -45,21 +45,21 @@ public class StageWeightProportionDao {
     }
 
     public boolean delete(Integer entrustPurpose) {
-        StageWeightProportionExample example = new StageWeightProportionExample();
+        DataStageWeightProportionExample example = new DataStageWeightProportionExample();
         example.createCriteria().andEntrustPurposeEqualTo(entrustPurpose);
         int i = stageWeightProportionMapper.deleteByExample(example);
         return i > 0;
     }
 
-    public StageWeightProportion getSingleObject(Integer id) {
-        StageWeightProportion stageWeightProportion = stageWeightProportionMapper.selectByPrimaryKey(id);
+    public DataStageWeightProportion getSingleObject(Integer id) {
+        DataStageWeightProportion stageWeightProportion = stageWeightProportionMapper.selectByPrimaryKey(id);
         return stageWeightProportion;
     }
 
-    public List<StageWeightProportion> edit(StageWeightProportion stageWeightProportion) {
-        StageWeightProportionExample example = new StageWeightProportionExample();
+    public List<DataStageWeightProportion> edit(DataStageWeightProportion stageWeightProportion) {
+        DataStageWeightProportionExample example = new DataStageWeightProportionExample();
         example.createCriteria().andEntrustPurposeEqualTo(stageWeightProportion.getEntrustPurpose());
-        List<StageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
+        List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionMapper.selectByExample(example);
         return stageWeightProportions;
     }
 }

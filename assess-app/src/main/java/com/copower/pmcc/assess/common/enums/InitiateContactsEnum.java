@@ -4,29 +4,39 @@ package com.copower.pmcc.assess.common.enums;
  * Created by 13426 on 2018/5/7.
  */
 public enum InitiateContactsEnum {
-    Zero(0),
-    ONE(1),
-    TWO(2),
-    THREE(3),
-    CONTACTS_ENUM_A("委托人"),//1
-    CONTACTS_ENUM_B("占有人"),//2
-    CONTACTS_ENUM_C("报告使用单位");//3
-    private String val;
-    private int num;
+    CONSIGNOR(1,"委托人"),POSSESSOR(2, "占有人"), UNIT_INFORMATION(3, "报告使用单位");
+    private String name;
+    private Integer id;
 
-    InitiateContactsEnum(String val) {
-        this.val = val;
+    private InitiateContactsEnum(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    InitiateContactsEnum(int num) {
-        this.num = num;
+    // name替换id
+    public static String getName(int id) {
+        for (InitiateContactsEnum c : InitiateContactsEnum.values()) {
+            if (c.getId() == id) {
+                return c.name;
+            }
+        }
+        return null;
     }
 
-    public int getNum() {
-        return num;
+    public Integer getId() {
+        return id;
     }
 
-    public String getVal() {
-        return val;
+    public void setId(Integer id) {
+        this.id = id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

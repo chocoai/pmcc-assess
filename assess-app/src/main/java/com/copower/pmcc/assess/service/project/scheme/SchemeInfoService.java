@@ -54,7 +54,7 @@ public class SchemeInfoService {
         schemeInfo.setPlanDetailsId(detailVDto.getPlanDetailsId());
         schemeInfo.setProjectId(Integer.parseInt(detailVDto.getProjectID()));
         int id = addReturnID(schemeInfo);
-        save(detailVDto.getBasisContent(), detailVDto.getBasisDataID(), SchemeInfoDetailEnum.Basis.getDataType(), id);
+        save(detailVDto.getBasisContent(), detailVDto.getBasisDataID(), SchemeInfoDetailEnum.BASIS.getDataType(), id);
         save(detailVDto.getHypothesisContent(), detailVDto.getHypothesisDataID(), SchemeInfoDetailEnum.HYPOTHESIS.getDataType(), id);
         save(detailVDto.getPrinciPleContent(), detailVDto.getPrinciPleDataID(), SchemeInfoDetailEnum.PRINCIPLE.getDataType(), id);
     }

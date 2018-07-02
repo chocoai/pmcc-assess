@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -132,7 +133,7 @@ public class ProjectPlanDetailsService {
             List<SysAttachmentDto> bidSysAttachmentDtos = new ArrayList<>();
             if (bisAttachment) {
                 List<Integer> detailsIds = LangUtils.transform(projectPlanDetails, o -> o.getId());
-                bidSysAttachmentDtos = baseAttachmentService.getAttachmentListByTableName("tb_project_plan_details", detailsIds);
+                bidSysAttachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class), detailsIds);
             }
             for (ProjectPlanDetails item : projectPlanDetails) {
                 if(item.getBisEnable()==false)

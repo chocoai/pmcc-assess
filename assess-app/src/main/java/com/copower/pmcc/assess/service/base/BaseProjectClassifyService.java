@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
-import com.copower.pmcc.assess.dto.output.BaseProjectClassifyVo;
+import com.copower.pmcc.assess.dto.output.base.BaseProjectClassifyVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

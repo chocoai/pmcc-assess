@@ -14,7 +14,7 @@ import java.util.Date;
  * 2018-05-09 进行过一次添加修改
  */
 public class ProjectInfoDto extends ProjectInfo {
-    public static String ATTACHMENTPROJECTINFOID = "attachmentProjectInfoId"; //附件字段
+    public static String ATTACHMENT_PROJECTINFO_ID = "attachmentProjectInfoId"; //附件字段
     private String userAccountManager;//项目经理
     private String userAccountMember;//项目成员 或者说下级成员
     private Integer urgency;

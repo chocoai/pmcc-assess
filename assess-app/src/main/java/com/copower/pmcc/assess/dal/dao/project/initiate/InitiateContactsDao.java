@@ -50,7 +50,7 @@ public class InitiateContactsDao {
     }
 
     public void update(int pid, int cType, String createPeople){
-        List<InitiateContactsDto> dtos = getList(InitiateContactsEnum.Zero.getNum(), cType,createPeople);
+        List<InitiateContactsDto> dtos = getList(pid, cType,createPeople);
         if (!ObjectUtils.isEmpty(dtos)){
             for (InitiateContactsDto dto:dtos){
                 dto.setcPid(pid);

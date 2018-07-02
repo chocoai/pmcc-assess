@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
 import com.copower.pmcc.assess.dal.entity.BaseForm;
 import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dto.output.BaseFormModuleVo;
+import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;

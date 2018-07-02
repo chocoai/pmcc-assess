@@ -142,8 +142,8 @@
                         pid: pid
                     },
                     success: function (result) {
-                        if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
+                        if (result.ret && result.data) {
+                            var retHtml = '<option value="" >-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 if (item.areaId === value) {
                                     retHtml += ' <option value="' + item.areaId + '" selected="selected">' + item.name + '</option>';
@@ -186,42 +186,47 @@
             if ($.type(defaluts.provinceTarget) === "string") {
                 defaluts.provinceTarget = $("#" + defaluts.provinceTarget);
             }
+            if ($.type(defaluts.cityTarget) === "string") {
+                defaluts.cityTarget = $("#" + defaluts.cityTarget);
+            }
             defaluts.provinceTarget.select2();
+            defaluts.cityTarget.select2();
+
+            //省切换
             defaluts.provinceTarget.bind('change', function () {
                 isProvinceFirstChange = false;
                 defaluts.cityTarget.select2('val', '').empty();
                 if (defaluts.districtTarget) {
-                    defaluts.districtTarget.empty().select2('val', '');
+                    defaluts.districtTarget.select2('val', '').empty();
                 }
 
-
+                //加载市
                 AssessCommon.loadAreaInfoByPid($(this).val(), defaluts.cityValue, function (html) {
                     defaluts.cityTarget.append(html);
-                    if (!defaluts.cityValue && isProvinceFirstChange && defaluts.useDefaultText && defaluts.cityDefaultText) {
+                    //初始化设置默认选中项
+                    if (!defaluts.cityValue && isCityFirstChange && defaluts.useDefaultText && defaluts.cityDefaultText) {
                         defaluts.cityTarget.select2('val', defaluts.cityTarget.find("option:contains(" + defaluts.cityDefaultText + ")").val()).trigger('change');
                     }
                 });
             })
 
 
-            if ($.type(defaluts.cityTarget) === "string") {
-                defaluts.cityTarget = $("#" + defaluts.cityTarget);
-            }
-            defaluts.cityTarget.select2();
             //有区域元素才做处理
             if (defaluts.districtTarget) {
-                defaluts.cityTarget.bind('change', function () {
-                    isCityFirstChange = false;
-                    defaluts.districtTarget.empty().select2('val', '');
-                    AssessCommon.loadAreaInfoByPid($(this).val(), defaluts.districtValue, function (html) {
-                        defaluts.districtTarget.append(html);
-                    });
-                })
-
                 if ($.type(defaluts.districtTarget) === "string") {
                     defaluts.districtTarget = $("#" + defaluts.districtTarget);
                 }
                 defaluts.districtTarget.select2();
+
+                //市切换
+                defaluts.cityTarget.bind('change', function () {
+                    isCityFirstChange = false;
+                    defaluts.districtTarget.select2('val', '').empty();
+                    //加载区县
+                    AssessCommon.loadAreaInfoByPid($(this).val(), defaluts.districtValue, function (html) {
+                        defaluts.districtTarget.append(html);
+                    });
+                })
             }
 
 
@@ -232,7 +237,7 @@
                 dataType: "json",
                 data: {},
                 success: function (result) {
-                    if (result.ret) {
+                    if (result.ret&&result.data) {
                         defaluts.provinceTarget.append("<option value=''>-请选择-</option>");
                         $.each(result.data, function (i, item) {
                             defaluts.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
@@ -241,7 +246,10 @@
                             defaluts.provinceTarget.val(defaluts.provinceValue);
                             //触发一次change事件
                             defaluts.provinceTarget.trigger('change');
-                        } else if (defaluts.useDefaultText && defaluts.provinceDefaultText) {
+                        }
+
+                        //初始化设置默认选中项
+                        if (!defaluts.provinceValue && isProvinceFirstChange && defaluts.useDefaultText && defaluts.provinceDefaultText) {
                             defaluts.provinceTarget.select2('val', defaluts.provinceTarget.find("option:contains(" + defaluts.provinceDefaultText + ")").val()).trigger('change');
                         }
 

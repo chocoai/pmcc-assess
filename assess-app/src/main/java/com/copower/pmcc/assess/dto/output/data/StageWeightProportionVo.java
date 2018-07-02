@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.StageWeightProportion;
+import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
 
-public class StageWeightProportionVo extends StageWeightProportion{
+public class StageWeightProportionVo extends DataStageWeightProportion {
     private String entrustPurposeName;
     private String stageName;
 

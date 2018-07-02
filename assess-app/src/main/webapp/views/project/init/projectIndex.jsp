@@ -164,7 +164,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="province" name="province" class="form-control search-select select2" required="required">
+                                    <select id="province" name="province" class="form-control search-select select2"
+                                            required="required">
                                         <option value="" name="province">-请选择-</option>
                                         <c:forEach items="${ProvinceList}" var="item">
                                             <c:choose>
@@ -184,7 +185,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select id="city" name="city" class="form-control search-select select2" required="required">
+                                    <select id="city" name="city" class="form-control search-select select2"
+                                            required="required">
 
                                     </select>
                                 </div>
@@ -201,14 +203,14 @@
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">项目经理<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">项目经理</label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="hidden" name="userAccountManager"
+                                        <input type="hidden" id="userAccountManager" name="userAccountManager"
                                                value="${projectInfo.projectMemberVo.userAccountManager}">
                                         <input type="text" class="form-control" readonly="readonly"
                                                value="${projectInfo.projectMemberVo.userAccountManagerName}"
-                                               required="required" onclick="selectUserAccountManager();"
+                                               onclick="selectUserAccountManager();"
                                                id="userAccountManagerName" maxlength="200">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -375,7 +377,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="no_legal_person">
+                        <div id="no_legal_person" style="display: none;">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -441,7 +443,7 @@
                 <div class="x_title collapse-link">
                     <h2> 占有人</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -469,25 +471,6 @@
                                         <input type="text" name="pEntrustmentUnit" id="pEntrustmentUnit"
                                                class="form-control" required="required" placeholder="单位"
                                                value="${projectInfo.possessorVo.pEntrustmentUnitName}">
-                                        <%--<div class="input-group">--%>
-                                        <%--<input type="hidden" name="pEntrustmentUnit" id="pEntrustmentUnit"--%>
-                                        <%--class="form-control" required="required">--%>
-                                        <%--<input type="text" id="pEntrustmentUnitX"--%>
-                                        <%--value="${projectInfo.possessorVo.pEntrustmentUnitName}" placeholder="单位"--%>
-                                        <%--class="form-control" required="required" readonly="readonly">--%>
-                                        <%--<span class="input-group-btn">--%>
-                                        <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                        <%--data-toggle="tooltip"--%>
-                                        <%--data-original-title="选择" id="btn_select_customer1">--%>
-                                        <%--<i class="fa fa-search"></i>--%>
-                                        <%--</button>--%>
-                                        <%--<button type="button" class="btn btn-default docs-tooltip"--%>
-                                        <%--onclick="$(this).closest('.input-group').find('input').val('');"--%>
-                                        <%--data-toggle="tooltip" data-original-title="清除">--%>
-                                        <%--<i class="fa fa-trash-o"></i>--%>
-                                        <%--</button>--%>
-                                        <%--</span>--%>
-                                        <%--</div>--%>
                                     </div>
                                 </div>
 
@@ -562,7 +545,7 @@
                             </div>
                         </div>
 
-                        <div id="no_legal_person1">
+                        <div id="no_legal_person1" style="display: none;">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -594,8 +577,7 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <input type="text" name="pAddress" id="pAddress2"
-                                               value="${projectInfo.possessorVo.pAddress}" class="form-control"
-                                               required="required">
+                                               value="${projectInfo.possessorVo.pAddress}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -632,7 +614,7 @@
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2> 报告使用单位</h2>
                     <div class="clearfix"></div>
@@ -792,7 +774,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            姓名
+                                            姓名<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cName" id="cName" placeholder="姓名"
@@ -803,7 +785,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            部门
+                                            部门<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cDept" id="cDept" placeholder="部门"
@@ -814,7 +796,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            号码
+                                            号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cPhone" id="cPhone" placeholder="号码"
@@ -829,7 +811,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cEmail" id="cEmail" placeholder="邮箱"
-                                                   class="form-control" required="required">
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -855,19 +837,6 @@
 
 <script type="text/javascript">
     $(function () {
-        AssessCommon.initAreaInfo({
-            provinceTarget: $("#province"),
-            cityTarget: $("#city"),
-            districtTarget: $("#district"),
-            provinceValue: '${projectInfo.province}',
-            cityValue: '${projectInfo.city}',
-            districtValue: '${projectInfo.district}'
-        })
-    })
-</script>
-
-<script type="text/javascript">
-    $(function () {
         //---------
         FileUtils.uploadFiles({
             target: "attachmentProjectInfoId",
@@ -877,7 +846,7 @@
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -888,7 +857,7 @@
                 tableId: ${empty projectInfo?0:projectInfo.id},
                 fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -901,7 +870,7 @@
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -912,7 +881,7 @@
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
                 fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -925,7 +894,7 @@
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -936,7 +905,7 @@
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
                 fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
-                creater:"${currUserAccount}"
+                creater: "${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -961,71 +930,6 @@
             }
         })
     }
-
-    <%--/*省 市 县 js*/--%>
-    <%--function tableNameA() {--%>
-        <%--$("#province").change(function () {//监听 选择的省份--%>
-            <%--//检测  然后操作--%>
-            <%--$("#city,#district").empty();--%>
-            <%--var selected = $(this).children('option:selected').val();//获取到省--%>
-            <%--var data = "pid=" + selected;--%>
-            <%--$.ajax({--%>
-                <%--url: "${pageContext.request.contextPath}/area/getAreaList",--%>
-                <%--type: "post",--%>
-                <%--dataType: "json",--%>
-                <%--data: data,--%>
-                <%--success: function (result) {--%>
-                    <%--appendChildElement(result.data);--%>
-                <%--},--%>
-                <%--error: function (result) {--%>
-                    <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
-                <%--}--%>
-            <%--})--%>
-        <%--});--%>
-    <%--}--%>
-
-    <%--tableNameA();--%>
-
-    <%--function tableName_district() {--%>
-        <%--$("#city").change(function () {//监听 选择的城市--%>
-            <%--//检测  然后操作--%>
-            <%--$("#district").empty();--%>
-            <%--var selected = $(this).children('option:selected').val();//获取到城市--%>
-            <%--var data = "pid=" + selected;--%>
-            <%--$.ajax({--%>
-                <%--url: "${pageContext.request.contextPath}/area/getAreaList",--%>
-                <%--type: "post",--%>
-                <%--dataType: "json",--%>
-                <%--data: data,--%>
-                <%--success: function (result) {--%>
-                    <%--appendChildElement_district(result.data);--%>
-                <%--},--%>
-                <%--error: function (result) {--%>
-                    <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
-                <%--}--%>
-            <%--})--%>
-        <%--});--%>
-    <%--}--%>
-
-    <%--tableName_district();--%>
-
-
-    <%--function appendChildElement(data) {//市添加--%>
-        <%--var html = '<option value="">-请选择-</option>';--%>
-        <%--$.each(data, function (i, item) {--%>
-            <%--html += '<option value="' + item.areaId + '">' + item.name + '</option>';--%>
-        <%--})--%>
-        <%--$("#city").append(html);--%>
-    <%--}--%>
-
-    <%--function appendChildElement_district(data) {//县或者区域添加--%>
-        <%--var html = '<option value="">-请选择-</option>';--%>
-        <%--$.each(data, function (i, item) {--%>
-            <%--html += '<option value="' + item.areaId + '">' + item.name + '</option>';--%>
-        <%--})--%>
-        <%--$("#district").append(html);--%>
-    <%--}--%>
-
 
     //执业部门
     function selectDepartment() {
@@ -1062,7 +966,15 @@
 
     //选项框  自动校验并且填写
     $(document).ready(function () {
-        $("#no_legal_person").hide();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district"),
+            provinceValue: '${projectInfo.province}',
+            cityValue: '${projectInfo.city}',
+            districtValue: '${projectInfo.district}'
+        })
+
         $("#changeType input[type='radio'][name='csType']").change(function () {
             if ($(this).val() == 1) {
                 $("#changeType input[type='radio'][name='csType'][value='0']").removeAttr("checked");
@@ -1077,7 +989,7 @@
                 $("#legal_person").hide();
             }
         });
-        $("#no_legal_person1").hide();
+
         $("#changeType1 input[type='radio'][name='pType']").change(function () {
             var value = $("#changeType :radio:checked").val();
             if ($(this).val() == 1) {
@@ -1317,8 +1229,8 @@
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cPhone', title: '电话'});
         cols.push({field: 'cEmail', title: '邮箱'});
-        cols.push({field: 'cPhone', title: '部门'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -1562,7 +1474,8 @@
         }
 
         var bisNextUser = "0";
-        if ($("#userAccountMemberCheckBox").is(':checked')) {
+        //如果没有设置项目经理则必须先进行下级分派
+        if ($("#userAccountMemberCheckBox").is(':checked') || !$("#userAccountManager").val()) {
             bisNextUser = "1";
         }
         var formData = params();

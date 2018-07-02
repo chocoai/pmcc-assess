@@ -10,7 +10,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel-body">
-
                     <c:forEach items="${stageWeightProportions}" var="item">
                         <div class="form-group">
                             <div class="x-valid">
