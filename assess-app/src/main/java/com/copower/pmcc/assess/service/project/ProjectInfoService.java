@@ -157,33 +157,6 @@ public class ProjectInfoService {
         projectApplyUpdate(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
     }
 
-    //修改附件中的table id 以及存附件的主表的附件id
-    public void update_SysAttachmentDto_(int pid, String fields_name, int flag) throws Exception {
-        int TEMP = 0;
-        //默认位置为0
-        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name, null);
-        if (baseAttachments.size() >= 1) {
-            //一般都只有一个
-            SysAttachmentDto baseAttachment = baseAttachments.get(0);
-            // 更新 存附件的主表
-            if (flag == 0) {//项目信息 附件
-                //更新附件
-
-            } else if (flag == InitiateContactsEnum.CONSIGNOR.getId()) {// 委托人 附件
-                //更新附件
-                baseAttachment.setTableId(pid);
-                baseAttachmentService.updateAttachment(baseAttachment);
-            } else if (flag == InitiateContactsEnum.POSSESSOR.getId()) {//占有人 附件
-                //更新附件
-                baseAttachment.setTableId(pid);
-                baseAttachmentService.updateAttachment(baseAttachment);
-            }
-
-        } else {
-            logger.info("没有上传附件!");
-        }
-    }
-
     @Transactional
     public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
                                    ProjectInfoDto projectInfoDto) throws Exception {
@@ -196,9 +169,6 @@ public class ProjectInfoService {
         projectMemberService.saveReturnId(projectMemberDto);
         unitInformationDto.setProjectId(projectInfoDto.getId());
         unitInformationService.update(unitInformationDto);
-        update_SysAttachmentDto_(consignorDto.getId(), InitiateConsignorDto.CS_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.CONSIGNOR.getId());
-        update_SysAttachmentDto_(possessorDto.getId(), InitiatePossessorDto.P_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.POSSESSOR.getId());
-        update_SysAttachmentDto_(projectInfoDto.getId(), ProjectInfoDto.ATTACHMENT_PROJECTINFO_ID, 0);
     }
 
     @Transactional
@@ -215,31 +185,27 @@ public class ProjectInfoService {
             projectId = projectInfoDao.saveProjectInfo_returnID(projectInfo);// save
 
             consignorDto.setProjectId(projectId);
-            int v = consignorService.add(consignorDto);
+            int consignorId = consignorService.add(consignorDto);
             unitInformationDto.setProjectId(projectId);
-            int j = unitInformationService.add(unitInformationDto);
+            int unitInformationId = unitInformationService.add(unitInformationDto);
             possessorDto.setProjectId(projectId);
-            int i = possessorService.add(possessorDto);
+            int possessorId = possessorService.add(possessorDto);
             //更新联系人中的主表id (这根据联系人的标识符(flag)来确定联系人类型)
 
-            if (consignorDto.getCsType() == 1 && possessorDto.getpType() == 1) {//说明是法人 则不需要更新
-                //修改之后法人的联系人被添加进本地数据库  因此也可以修改了
-                initiateContactsService.update(v, InitiateContactsEnum.CONSIGNOR.getId());
-                initiateContactsService.update(i, InitiateContactsEnum.POSSESSOR.getId());
-                initiateContactsService.update(j, InitiateContactsEnum.UNIT_INFORMATION.getId());
-            } else {
-                initiateContactsService.update(v, InitiateContactsEnum.CONSIGNOR.getId());
-                initiateContactsService.update(i, InitiateContactsEnum.POSSESSOR.getId());
-                initiateContactsService.update(j, InitiateContactsEnum.UNIT_INFORMATION.getId());
-            }
+            initiateContactsService.update(consignorId, InitiateContactsEnum.CONSIGNOR.getId());
+            initiateContactsService.update(possessorId, InitiateContactsEnum.POSSESSOR.getId());
+            initiateContactsService.update(unitInformationId, InitiateContactsEnum.UNIT_INFORMATION.getId());
+
             //附件更新
-            update_SysAttachmentDto_(v, InitiateConsignorDto.CS_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.CONSIGNOR.getId());
-            update_SysAttachmentDto_(i, InitiatePossessorDto.P_ATTACHMENT_PROJECT_ENCLOSURE_ID, InitiateContactsEnum.POSSESSOR.getId());
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), projectId);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), projectId);
+
+            //保存项目成员
 
             projectMemberDto.setProjectId(projectId);
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
-            update_SysAttachmentDto_(projectId, ProjectInfoDto.ATTACHMENT_PROJECTINFO_ID, 0);
 
             //判断是否需要下级再进行任务分派 //20180621 Calvin
             //如果可以下级分派，则先走任务分派流程
@@ -404,18 +370,20 @@ public class ProjectInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     public void projectAssignApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+        //如果选择了项目经理，则更新项目经理，如果没有选择项目经理并且该项目还为设置项目经理则取该部门领导作为项目经理
+        ProjectMember projectMember = projectMemberService.get(approvalModelDto.getProjectId());
         if (StringUtils.isNotEmpty(approvalModelDto.getAppointUserAccount())) {
             approvalModelDto.setNextApproval(Lists.newArrayList(approvalModelDto.getAppointUserAccount()));
-            ProjectMember projectMember = projectMemberService.get(approvalModelDto.getProjectId());
-            if(projectMember==null)
-            {
-                projectMember=new ProjectMember();
-                projectMember.setProjectId(approvalModelDto.getProjectId());
-                projectMember.setUserAccountManager(approvalModelDto.getAgentUserAccount());
-                projectMemberDao.saveProjectMember(projectMember);
-            }
-            else {
-                projectMember.setUserAccountManager(approvalModelDto.getAppointUserAccount());
+            projectMember.setUserAccountManager(approvalModelDto.getAppointUserAccount());
+            projectMemberDao.updateProjectMember(projectMember);
+        } else {
+            if(StringUtils.isBlank(projectMember.getUserAccountManager())){
+                ProjectInfo projectInfo = getProjectInfoById(approvalModelDto.getProjectId());
+                Integer departmentId = projectInfo.getDepartmentId();
+                List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentCE(departmentId);
+                if(CollectionUtils.isEmpty(departmentCE))
+                    throw new BusinessException("未找到对应的部门领导");
+                projectMember.setUserAccountManager(departmentCE.get(0));
                 projectMemberDao.updateProjectMember(projectMember);
             }
         }
@@ -453,7 +421,7 @@ public class ProjectInfoService {
         return projectInfoDao.getProjectInfoByProjectIds(projectIds);
     }
 
-    public ProjectInfoVo  getSimpleProjectInfoVo(ProjectInfo projectInfo) {
+    public ProjectInfoVo getSimpleProjectInfoVo(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = new ProjectInfoVo();
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
         if (!ObjectUtils.isEmpty(projectInfo.getId()) && projectInfo.getId() > 0) {

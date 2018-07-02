@@ -175,19 +175,18 @@
         if ("${flog}" == "approval") {
             $("#frm_approval").validate();
             $("#opinions").attr("required", false);//审批意见不必填
-            uploadFiles("file_upload", "btn_submit", {},
-                {
-                    tableName: "tb_box_approval_log",
+            FileUtils.uploadFiles({
+                target: "file_upload",
+                disabledTarget: "btn_submit",
+                formData: {
+                    tableName: AssessDBKey.BoxApprovalLog,
                     processInsId: "${processInsId}",
-                    tableId: 0,
                     reActivityName: "${activityReName}",
                     fieldsName: "log",
-                    projectId: 0,
                     processTaskId:${taskId}
-                }
-                , function (data) {
-                    //alert(data);
-                });
+                },
+                deleteFlag: true
+            });
         }
     })
 

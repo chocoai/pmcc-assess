@@ -7,6 +7,8 @@ AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
 AssessDBKey.ProjectInfo = "tb_project_info";
 AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
 AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
+AssessDBKey.BoxApprovalLog = "tb_box_approval_log";
+
 
 /**
  * 项目分类key

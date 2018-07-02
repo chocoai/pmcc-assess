@@ -58,7 +58,7 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempBasePath(String... params) {
-        return erpRpcAttachmentService.createTempPath(commonService.getCurrentSelectAppKey(),params);
+        return erpRpcAttachmentService.createTempPath(commonService.getCurrentSelectAppKey(), params);
     }
 
     /**
@@ -68,12 +68,13 @@ public class BaseAttachmentService {
      * @return
      */
     public String createFTPBasePath(String... params) {
-        return erpRpcAttachmentService.createFTPPath(commonService.getCurrentSelectAppKey(),params);
+        return erpRpcAttachmentService.createFTPPath(commonService.getCurrentSelectAppKey(), params);
     }
 
     public List<SysAttachmentDto> getAttachmentListByTableName(String tableName, List<Integer> integers) {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableName(tableName);
+        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
         return erpRpcAttachmentService.getAttachmentListByIds(integers, sysAttachmentDto);
     }
 
@@ -91,53 +92,50 @@ public class BaseAttachmentService {
         return getAttachmentList(sysAttachment);
     }
 
-    public List<SysAttachmentDto> getAttachmentList(List<Integer> tableIds, SysAttachmentDto sysAttachment) {
-        return erpRpcAttachmentService.getAttachmentListByTableIds(tableIds, sysAttachment);
+    public List<SysAttachmentDto> getAttachmentList(List<Integer> tableIds, SysAttachmentDto sysAttachmentDto) {
+        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        return erpRpcAttachmentService.getAttachmentListByTableIds(tableIds, sysAttachmentDto);
     }
 
-    public List<SysAttachmentDto> getAttachmentList(SysAttachmentDto sysAttachment) {
-        return erpRpcAttachmentService.getAttachmentList(sysAttachment);
+    public List<SysAttachmentDto> getAttachmentList(SysAttachmentDto sysAttachmentDto) {
+        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        return erpRpcAttachmentService.getAttachmentList(sysAttachmentDto);
     }
 
     public SysAttachmentDto getSysAttachmentDto(Integer attachmentId) {
         return erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
     }
 
-    public void addAttachment(SysAttachmentDto sysAttachment) {
-        erpRpcAttachmentService.addAttachment(sysAttachment);
+    public void addAttachment(SysAttachmentDto sysAttachmentDto) {
+        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        erpRpcAttachmentService.addAttachment(sysAttachmentDto);
     }
 
     public void updateAttachment(SysAttachmentDto sysAttachment) {
         erpRpcAttachmentService.updateAttachment(sysAttachment);
     }
 
-    public List<SysAttachmentDto> getApprovalLogList(String processInsId, List<String> taskIds) {
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setProcessInsId(processInsId);
-        return erpRpcAttachmentService.getAttachmentListByTaskIds(taskIds, sysAttachmentDto);
-    }
-
     /**
-     * 附件关联到业务表
-     *
+     * 更新附件表业务id
      * @param tableName
-     * @param fieldName
-     * @param relationTableId
+     * @param tableId
      */
-    public void relationToTable(String tableName, String fieldName, Integer relationTableId) {
+    public void updateTableIdByTableName(String tableName, Integer tableId) {
         SysAttachmentDto queryParam = new SysAttachmentDto();
         queryParam.setTableName(tableName);
         queryParam.setTableId(0);
-        if (StringUtils.isNotBlank(fieldName))
-            queryParam.setFieldsName(fieldName);
         queryParam.setCreater(commonService.thisUserAccount());
-        List<SysAttachmentDto> attachmentList = getAttachmentList(queryParam);
-        if (CollectionUtils.isNotEmpty(attachmentList)) {
-            for (SysAttachmentDto baseAttachment : attachmentList) {
-                baseAttachment.setTableId(relationTableId);
-                erpRpcAttachmentService.updateAttachment(baseAttachment);
-            }
-        }
+        queryParam.setAppKey(commonService.getCurrentSelectAppKey());
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(tableId);
+        erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
+    }
+
+    public List<SysAttachmentDto> getApprovalLogList(String processInsId, List<String> taskIds) {
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setProcessInsId(processInsId);
+        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        return erpRpcAttachmentService.getAttachmentListByTaskIds(taskIds, sysAttachmentDto);
     }
 
     private List<SysAttachmentDto> getSysAttachmentDtos(Integer id, String fieldsName) {
@@ -145,6 +143,7 @@ public class BaseAttachmentService {
         bidSysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPhase.class));
         bidSysAttachmentDto.setFieldsName(fieldsName);
         bidSysAttachmentDto.setTableId(id);
+        bidSysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
         return getAttachmentList(bidSysAttachmentDto);
     }
 
@@ -184,11 +183,13 @@ public class BaseAttachmentService {
 
     /**
      * 附件信息批量更新
+     *
      * @param queryParam
      * @param sysAttachmentDto
      */
     public void updateAttachementByExample(SysAttachmentDto queryParam, SysAttachmentDto sysAttachmentDto) {
-        erpRpcAttachmentService.updateAttachmentByParam(queryParam,sysAttachmentDto);
+        queryParam.setAppKey(commonService.getCurrentSelectAppKey());
+        erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
     }
 
     /**

@@ -22,12 +22,12 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_approval" class="form-horizontal">
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="col-sm-1 control-label">
                                 审批结论
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-5">
+                                <div class="col-sm-4">
                                     <label class="radio-inline">
                                         <input type="radio" value="Approval" required name="conclusion" checked="checked"
                                                class="grey"
@@ -36,21 +36,13 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-sm-5" id="div_bisNext">
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="chk_bisNext" checked="checked">
-                                    下级分派
-                                </label>
-
-                            </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
                                 项目经理
                             </label>
                             <div class="x-valid">
-                                <div class="col-sm-11">
+                                <div class="col-sm-3">
                                     <input type="hidden" id="appointUserAccount" name="appointUserAccount">
                                     <input type="text" required
                                            placeholder="项目经理"
@@ -58,6 +50,12 @@
                                            class="form-control" readonly="readonly"
                                            maxlength="200" onclick="selectUserAccountManager()">
                                 </div>
+                            </div>
+                            <div class="col-sm-5" id="div_bisNext">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="chk_bisNext" ><label for="chk_bisNext">下级分派</label>
+                                </label>
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -129,19 +127,18 @@
     $(function () {
         $("#frm_approval").validate();
         $("#opinions").attr("required", false);//审批意见不必填
-        uploadFiles("file_upload", "btn_submit", {},
-            {
-                tableName: "tb_box_approval_log",
+        FileUtils.uploadFiles({
+            target: "file_upload",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: AssessDBKey.BoxApprovalLog,
                 processInsId: "${processInsId}",
-                tableId: 0,
                 reActivityName: "${activityReName}",
                 fieldsName: "log",
-                projectId: 0,
                 processTaskId:${taskId}
-            }
-            , function (data) {
-                //alert(data);
-            });
+            },
+            deleteFlag: true
+        });
     })
     // 项目经理
     function selectUserAccountManager() {

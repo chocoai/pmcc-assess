@@ -844,7 +844,6 @@
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
-                fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },
@@ -855,7 +854,6 @@
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
                 tableId: ${empty projectInfo?0:projectInfo.id},
-                fieldsName: "attachmentProjectInfoId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },
@@ -868,7 +866,6 @@
             formData: {
                 tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
-                fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },
@@ -879,7 +876,6 @@
             formData: {
                 tableName: AssessDBKey.InitiatePossessor,
                 tableId: ${empty projectInfo.possessorVo?0:projectInfo.possessorVo.id},
-                fieldsName: "pAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },
@@ -892,7 +888,6 @@
             formData: {
                 tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
-                fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },
@@ -903,7 +898,6 @@
             formData: {
                 tableName: AssessDBKey.InitiateConsignor,
                 tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
-                fieldsName: "csAttachmentProjectEnclosureId",
                 projectId: "${projectPlanDetails.projectId}",
                 creater: "${currUserAccount}"
             },

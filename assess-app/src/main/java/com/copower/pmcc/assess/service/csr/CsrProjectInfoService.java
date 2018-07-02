@@ -246,7 +246,7 @@ public class CsrProjectInfoService {
         csrInvalidRuleService.updateCsrProjectId(csrProjectInfo.getId());
 
         //更新附件表tableId
-        baseAttachmentService.relationToTable(AssessTableNameConstant.CSR_PROJECT_INFO, null, csrProjectInfo.getId());
+        baseAttachmentService.updateTableIdByTableName(AssessTableNameConstant.CSR_PROJECT_INFO, csrProjectInfo.getId());
 
         //清空原数据
         cleanImportData(csrProjectInfo);
