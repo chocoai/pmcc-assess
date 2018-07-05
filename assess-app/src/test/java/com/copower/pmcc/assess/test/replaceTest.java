@@ -26,6 +26,11 @@ public class replaceTest {
 
 
     @org.junit.Test
+    public void dbCaseTest() {
+        System.out.print(123);
+    }
+
+    @org.junit.Test
     public void replaceWord() {
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT  * from sheet1");
         if (CollectionUtils.isNotEmpty(mapList)) {
