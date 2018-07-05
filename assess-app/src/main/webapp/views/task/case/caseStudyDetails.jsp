@@ -188,8 +188,6 @@
 </body>
 <script src='/assets/js/comm/pmcc.js'></script>
 <script src='/assets/js/comm/erp-footer.js'></script>
-<script src='${pageContext.request.contextPath}/js/common.js'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/form-configure-utils.js"></script>
 <script type="text/javascript">
 
     $(function () {

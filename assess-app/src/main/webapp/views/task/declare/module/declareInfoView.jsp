@@ -119,7 +119,8 @@
         beforeEditFunction[options.tableName] = [];
         var html = $("#dynamicHtml").html();
         html = html.replace(/{classifyId}/g, options.classifyId).replace(/{title}/g, options.title).replace(/{tableName}/g, options.tableName);
-        html = html.replace(/{formModuleId}/g, options.formModuleId).replace(/{foreignKeyName}/g, options.foreignKeyName).replace(/{foreignKeyValue}/g, options.foreignKeyValue);
+        html = html.replace(/{formModuleId}/g, options.formModuleId).replace(/{foreignKeyName}/g, options.foreignKeyName)
+            .replace(/{foreignKeyValue}/g, options.foreignKeyValue);
         $("#dyncmicContent").append(html);
         panelElement = $("#panel_" + options.classifyId);
         //初始化各后期需要的元素
