@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.mapper.cases.CaseBlockMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.entity.cases.CaseBlock" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseBlockMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBlock" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@
   <sql id="Base_Column_List" >
     id, name, position, regional_nature, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlockExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlockExample" >
     select
     <if test="distinct" >
       distinct
@@ -95,13 +95,13 @@
     delete from tb_case_block
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlockExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlockExample" >
     delete from tb_case_block
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlock" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlock" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -112,7 +112,7 @@
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlock" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlock" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -158,7 +158,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlockExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlockExample" resultType="java.lang.Integer" >
     select count(*) from tb_case_block
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -206,7 +206,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlock" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlock" >
     update tb_case_block
     <set >
       <if test="name != null" >
@@ -230,7 +230,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.entity.cases.CaseBlock" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBlock" >
     update tb_case_block
     set name = #{name,jdbcType=VARCHAR},
       position = #{position,jdbcType=VARCHAR},

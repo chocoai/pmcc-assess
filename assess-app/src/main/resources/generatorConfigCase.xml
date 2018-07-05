@@ -21,7 +21,7 @@
         </javaTypeResolver>
 
         <!-- entity 位置-->
-        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.entity.cases"
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.cases.entity"
                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
@@ -33,7 +33,7 @@
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.mapper.cases"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.cases.mapper"
                              targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>

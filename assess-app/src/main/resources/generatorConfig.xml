@@ -21,19 +21,19 @@
         </javaTypeResolver>
 
         <!-- entity 位置-->
-        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.entity"
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basis.entity"
                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- mapper xml 位置 -->
-        <sqlMapGenerator targetPackage="mybatis"
+        <sqlMapGenerator targetPackage="mybatis.basis"
                          targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basis.mapper"
                              targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
