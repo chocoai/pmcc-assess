@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.DataBuildingNewRateDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataBuildingNewRateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project;
 
-import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
+import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
 
 /**
  * Created by kings on 2018-5-29.

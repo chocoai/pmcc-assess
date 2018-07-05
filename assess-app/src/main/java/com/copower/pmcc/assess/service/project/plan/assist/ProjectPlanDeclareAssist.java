@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.plan.assist;
 
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;

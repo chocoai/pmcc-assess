@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.EvaluationBasisFieldDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationBasisFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationBasisFieldVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

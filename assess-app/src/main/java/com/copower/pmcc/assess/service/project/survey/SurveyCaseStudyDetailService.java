@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyCaseStudyDetailDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.SurveyCaseStudyDetail;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyCaseStudyDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyCaseStudyDetailVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;

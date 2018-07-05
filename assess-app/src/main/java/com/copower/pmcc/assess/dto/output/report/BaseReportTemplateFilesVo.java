@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.report;
 
-import com.copower.pmcc.assess.dal.entity.BaseReportTemplateFiles;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplateFiles;
 
 import java.util.List;
 

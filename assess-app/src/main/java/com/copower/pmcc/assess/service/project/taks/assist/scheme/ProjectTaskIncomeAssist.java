@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.EvaluationBasisService;

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
-import com.copower.pmcc.assess.dal.dao.project.initiate.InitiateContactsDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;

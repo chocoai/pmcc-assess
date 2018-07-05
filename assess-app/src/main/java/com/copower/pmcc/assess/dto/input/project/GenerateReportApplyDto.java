@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project;
 
-import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportRecord;
 
 import java.util.List;
 

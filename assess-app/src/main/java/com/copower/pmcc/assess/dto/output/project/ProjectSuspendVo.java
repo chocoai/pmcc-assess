@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project;
 
-import com.copower.pmcc.assess.dal.entity.ProjectSuspend;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectSuspend;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
 import java.util.List;

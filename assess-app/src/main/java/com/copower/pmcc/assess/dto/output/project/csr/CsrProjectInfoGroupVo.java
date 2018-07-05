@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
+import com.copower.pmcc.assess.dal.basis.entity.CsrProjectInfoGroup;
 
 public class CsrProjectInfoGroupVo extends CsrProjectInfoGroup {
     private String projectManagerName;

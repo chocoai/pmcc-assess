@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.common;
 
-import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
-import com.copower.pmcc.assess.dal.entity.ProjectMember;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.bpm.core.process.support.ApprovalUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

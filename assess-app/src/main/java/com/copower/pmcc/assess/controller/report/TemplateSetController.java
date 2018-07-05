@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.controller.report;
 import com.copower.pmcc.assess.common.enums.BaseReportDataPoolTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseReportMarkbookTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.CrmTreeDto;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.TemplateSetService;

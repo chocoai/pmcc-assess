@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisFieldService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

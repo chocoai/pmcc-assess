@@ -10,7 +10,7 @@ package com.copower.pmcc.assess.constant;
 public class AssessDataDicKeyConstant {
     public static final String BOX_GROUP = "box.group";//模型分组
     public static final String BUILDING_NEW_RATE_USE = "building.new.rate.use";//建筑成新率用途
-    public static final String ASSESS_CLASS = "assess.class";//大类
+    public static final String ASSESS_CLASS = "basis.class";//大类
     public static final String EVALUATION_METHOD = "evaluation.method";//评估方法
     public static final String EVALUATION_THINKING = "evaluation.think";//评估假设
     public static final String EVALUATION_PRINCIPLE = "evaluation.principle";//评估原则

@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;

@@ -1,15 +1,10 @@
 package com.copower.pmcc.assess.service.project.plan.assist;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
-import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
-import com.copower.pmcc.assess.service.project.GenerateReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.springframework.beans.factory.annotation.Autowired;

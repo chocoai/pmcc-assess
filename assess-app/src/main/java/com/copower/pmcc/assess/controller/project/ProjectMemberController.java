@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.dal.entity.ProjectMember;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

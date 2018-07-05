@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.controller.base;
 
-import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
-import com.copower.pmcc.assess.dal.entity.BaseFormModuleField;
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.BaseForm;
+import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.basis.entity.BaseFormModuleField;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;

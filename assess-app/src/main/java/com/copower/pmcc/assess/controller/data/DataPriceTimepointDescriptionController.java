@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dal.entity.DataPriceTimepointDescription;
+import com.copower.pmcc.assess.dal.basis.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.service.data.DataPriceTimepointDescriptionService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project;
 
 
-import com.copower.pmcc.assess.dal.dao.project.ProjectMemberDao;
-import com.copower.pmcc.assess.dal.entity.ProjectMember;
-import com.copower.pmcc.assess.dal.entity.ProjectMemberHistory;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;

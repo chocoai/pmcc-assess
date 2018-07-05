@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
-import com.copower.pmcc.assess.dal.dao.project.ProjectPhaseDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeJudgeObjectDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectApplyDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;

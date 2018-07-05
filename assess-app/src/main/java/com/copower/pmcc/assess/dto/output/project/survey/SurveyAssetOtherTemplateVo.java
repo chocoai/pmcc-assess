@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.survey;
 
-import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetOtherTemplate;
 
 /**
  * Created by zly on 2018/6/12.

@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.dao.funi.FuniHousesDao;
-import com.copower.pmcc.assess.dal.dao.funi.FuniHousesMatingDao;
-import com.copower.pmcc.assess.dal.dao.funi.FuniHousesPropertyDao;
-import com.copower.pmcc.assess.dal.dao.funi.FuniHousesTypeDao;
-import com.copower.pmcc.assess.dal.entity.FuniHouses;
-import com.copower.pmcc.assess.dal.entity.FuniHousesMating;
-import com.copower.pmcc.assess.dal.entity.FuniHousesProperty;
-import com.copower.pmcc.assess.dal.entity.FuniHousesType;
+import com.copower.pmcc.assess.dal.basis.dao.funi.FuniHousesDao;
+import com.copower.pmcc.assess.dal.basis.dao.funi.FuniHousesMatingDao;
+import com.copower.pmcc.assess.dal.basis.dao.funi.FuniHousesPropertyDao;
+import com.copower.pmcc.assess.dal.basis.dao.funi.FuniHousesTypeDao;
+import com.copower.pmcc.assess.dal.basis.entity.FuniHouses;
+import com.copower.pmcc.assess.dal.basis.entity.FuniHousesMating;
+import com.copower.pmcc.assess.dal.basis.entity.FuniHousesProperty;
+import com.copower.pmcc.assess.dal.basis.entity.FuniHousesType;
 import com.copower.pmcc.assess.service.FuniWebService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -139,7 +139,7 @@ public class FuniViewerController {
     @RequestMapping(value = "/newHouse", name = "保存新增案例", method = RequestMethod.POST)
     public HttpResult newHouse(FuniHouses funiHouses) {
         try {
-            funiHouses.setLptp("/pmcc-assess/assets/lpt.jpg");
+            funiHouses.setLptp("/pmcc-basis/assets/lpt.jpg");
             funiHousesDao.addFuniHouses(funiHouses);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -150,7 +150,7 @@ public class FuniViewerController {
     @RequestMapping(value = "/newHxxx", name = "保存新增户型", method = RequestMethod.POST)
     public HttpResult newHxxx(FuniHousesType funiHousesType) {
         try {
-            funiHousesType.setHxt("/pmcc-assess/assets/hxt.jpg");
+            funiHousesType.setHxt("/pmcc-basis/assets/hxt.jpg");
             funiHousesTypeDao.addFuniHousesType(funiHousesType);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

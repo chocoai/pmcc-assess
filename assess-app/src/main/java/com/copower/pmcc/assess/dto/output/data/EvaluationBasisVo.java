@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.EvaluationBasis;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasis;
 
 import java.util.ArrayList;
 import java.util.List;

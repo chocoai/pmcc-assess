@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.data.StageWeightProportionDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
+import com.copower.pmcc.assess.dal.basis.dao.data.StageWeightProportionDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataStageWeightProportion;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.dto.output.data.ProportionTempVo;
 import com.copower.pmcc.assess.dto.output.data.StageWeightProportionVo;

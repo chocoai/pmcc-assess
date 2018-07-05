@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDao;
-import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDetailsDao;
-import com.copower.pmcc.assess.dal.dao.data.DataReportAnalysisFieldDao;
-import com.copower.pmcc.assess.dal.entity.CompileReport;
-import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisFieldDao;
+import com.copower.pmcc.assess.dal.basis.entity.CompileReport;
+import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.CompileReportApplyDto;
 import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;

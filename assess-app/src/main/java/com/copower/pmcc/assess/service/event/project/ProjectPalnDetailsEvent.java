@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.event.project;
 
 
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import org.springframework.beans.factory.annotation.Autowired;

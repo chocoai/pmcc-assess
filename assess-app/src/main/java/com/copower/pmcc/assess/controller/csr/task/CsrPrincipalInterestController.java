@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
-import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest;
-import com.copower.pmcc.assess.dto.output.project.csr.CsrLitigationVo;
+import com.copower.pmcc.assess.dal.basis.entity.CsrPrincipalInterest;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrPrincipalInterestVo;
 import com.copower.pmcc.assess.service.csr.CsrPrincipalInterestService;
 import com.copower.pmcc.erp.common.exception.BusinessException;

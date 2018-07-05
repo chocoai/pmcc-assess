@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex;
 import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import com.copower.pmcc.assess.service.data.HousePriceIndexService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

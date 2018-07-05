@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.CsrProjectInfo;
 
 import java.util.ArrayList;
 import java.util.List;

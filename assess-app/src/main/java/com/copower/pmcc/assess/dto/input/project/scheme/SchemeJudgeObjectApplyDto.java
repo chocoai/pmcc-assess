@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.input.project.scheme;
 
 
-import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

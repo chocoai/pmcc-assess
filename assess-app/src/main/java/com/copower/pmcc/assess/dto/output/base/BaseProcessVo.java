@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.base;
 
-import com.copower.pmcc.assess.dal.entity.BaseProcess;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProcess;
 
 /**
  * Created by kings on 2018-5-9.

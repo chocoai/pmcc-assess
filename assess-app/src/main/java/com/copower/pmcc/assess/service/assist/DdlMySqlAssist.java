@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.assist;
 
-import com.copower.pmcc.assess.dal.custom.entity.CustomDdlTable;
-import com.copower.pmcc.assess.dal.custom.mapper.CustomDdlTableMapper;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomDdlTable;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

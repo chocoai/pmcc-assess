@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.base;
 
-import com.copower.pmcc.assess.dal.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 
 /**
  * Created by kings on 2018-6-13.

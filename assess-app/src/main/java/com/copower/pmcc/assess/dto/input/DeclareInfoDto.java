@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input;
 
-import com.copower.pmcc.assess.dal.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 
 /**
  * Created by kings on 2018-5-10.

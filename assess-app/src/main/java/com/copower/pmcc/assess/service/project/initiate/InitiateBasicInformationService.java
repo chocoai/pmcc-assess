@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
-import com.copower.pmcc.assess.dal.dao.project.initiate.InitiateBasicInformationDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateBasicInformationDao;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateBasicInformationDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateBasicInformationVo;
 import org.springframework.beans.BeanUtils;

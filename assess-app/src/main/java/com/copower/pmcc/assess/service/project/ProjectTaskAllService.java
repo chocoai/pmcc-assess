@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanTaskAllDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanTaskAllEvent;

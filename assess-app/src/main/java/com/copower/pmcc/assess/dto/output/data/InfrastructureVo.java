@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.Infrastructure;
+import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 
 public class InfrastructureVo extends Infrastructure {
     public final static String fileName = "file_name";

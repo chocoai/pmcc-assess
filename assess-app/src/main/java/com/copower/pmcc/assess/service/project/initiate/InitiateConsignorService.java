@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
-import com.copower.pmcc.assess.dal.dao.project.initiate.InitiateConsignorDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.InitiateConsignor;
+import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateConsignorDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

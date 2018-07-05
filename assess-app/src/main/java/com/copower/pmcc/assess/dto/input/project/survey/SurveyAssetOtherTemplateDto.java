@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.survey;
 
-import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetOtherTemplate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

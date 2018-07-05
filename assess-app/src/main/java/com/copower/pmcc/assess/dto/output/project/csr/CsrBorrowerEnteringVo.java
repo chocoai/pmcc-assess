@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering;
+import com.copower.pmcc.assess.dal.basis.entity.CsrBorrowerEntering;
 
 /**
  * 描述:

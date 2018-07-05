@@ -1,15 +1,15 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeEvaluationObjectDao;
-import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeJudgeObjectDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyCaseStudyDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyCaseStudyDetailDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyLocaleExploreDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyLocaleExploreDetailDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeEvaluationObjectDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyCaseStudyDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyCaseStudyDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dto.input.project.method.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyCaseStudyDetailVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.scheme;
 
-import com.copower.pmcc.assess.dal.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 
 /**
  * Created by 13426 on 2018/5/14.

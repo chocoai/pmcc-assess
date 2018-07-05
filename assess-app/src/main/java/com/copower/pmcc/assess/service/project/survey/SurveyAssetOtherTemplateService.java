@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetOtherTemplateDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.SurveyAssetOtherTemplate;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyAssetOtherTemplateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetOtherTemplate;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetOtherTemplateDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetOtherTemplateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

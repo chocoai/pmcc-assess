@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareUseClassifyDao;
-import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareUseClassifyDao;
+import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;

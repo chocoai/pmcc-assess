@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
-import com.copower.pmcc.assess.dal.dao.project.initiate.InitiateUnitInformationDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.InitiateUnitInformation;
+import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateUnitInformationDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateUnitInformation;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateUnitInformationDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

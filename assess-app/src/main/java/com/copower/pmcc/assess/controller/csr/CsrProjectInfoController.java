@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.controller.csr;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.entity.CsrProjectInfo;
-import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
+import com.copower.pmcc.assess.dal.basis.entity.CsrProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;

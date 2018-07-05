@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 
 import java.util.List;
 

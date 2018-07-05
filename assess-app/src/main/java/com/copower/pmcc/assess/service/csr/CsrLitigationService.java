@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.csr.CsrLitigationDao;
-import com.copower.pmcc.assess.dal.entity.CsrLitigation;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.dao.csr.CsrLitigationDao;
+import com.copower.pmcc.assess.dal.basis.entity.CsrLitigation;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrLitigationVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;

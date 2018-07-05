@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerMortgage;
-import com.copower.pmcc.assess.dal.entity.CsrGuarantor;
+import com.copower.pmcc.assess.dal.basis.entity.CsrGuarantor;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrGuarantorVo;
 import com.copower.pmcc.assess.service.csr.CsrGuarantorService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

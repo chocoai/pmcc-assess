@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.input.data;
 
 
-import com.copower.pmcc.assess.dal.entity.DataStageWeightProportion;
+import com.copower.pmcc.assess.dal.basis.entity.DataStageWeightProportion;
 
 /**
  * Created by zly on 2018/6/13.

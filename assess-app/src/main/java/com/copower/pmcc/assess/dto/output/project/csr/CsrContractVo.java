@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.CsrContract;
-import org.apache.commons.lang3.StringUtils;
+import com.copower.pmcc.assess.dal.basis.entity.CsrContract;
 
 /**
  * 描述:

@@ -2,10 +2,10 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.SchemeInfoDetailEnum;
-import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeInfoDao;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.entity.SchemeInfo;
-import com.copower.pmcc.assess.dal.entity.SchemeInfoDetail;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfoDetail;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeInfoDetailVDto;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.CommonService;

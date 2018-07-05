@@ -309,7 +309,7 @@
     //选择动态表单模板
     function selectDynamicForm() {
         assessDataDic.select({
-            key: "assess.class",
+            key: "basis.class",
             onSelected: function (nodes) {
                 if (nodes) {
                     var node = nodes[0];

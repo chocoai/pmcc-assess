@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
-import com.copower.pmcc.assess.dal.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;

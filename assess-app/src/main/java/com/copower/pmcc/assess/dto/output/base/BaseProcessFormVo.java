@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.base;
 
-import com.copower.pmcc.assess.dal.entity.BaseProcessForm;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 
 import java.util.List;

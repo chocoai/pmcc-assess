@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
+import com.copower.pmcc.assess.dal.basis.entity.DataDeclareForm;
 
 /**
  * Created by kings on 2018-4-24.

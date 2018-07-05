@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.data;
 
-import com.copower.pmcc.assess.dal.entity.DataCaseComparisonField;
+import com.copower.pmcc.assess.dal.basis.entity.DataCaseComparisonField;
 
 /**
  * Created by 13426 on 2018/5/3.

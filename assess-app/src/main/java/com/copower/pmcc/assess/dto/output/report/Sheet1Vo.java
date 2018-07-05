@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.report;
 
-import com.copower.pmcc.assess.dal.entity.Sheet1;
+import com.copower.pmcc.assess.dal.basis.entity.Sheet1;
 
 /**
  * 描述:

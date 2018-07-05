@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 
 public class DataReportAnalysisVo extends DataReportAnalysis {
 

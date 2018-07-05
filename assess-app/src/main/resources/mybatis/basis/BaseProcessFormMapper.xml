@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BaseProcessFormMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="process_id" property="processId" jdbcType="INTEGER" />
+    <result column="form_id" property="formId" jdbcType="INTEGER" />
+    <result column="form_module_id" property="formModuleId" jdbcType="INTEGER" />
+    <result column="form_module_name" property="formModuleName" jdbcType="VARCHAR" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
+    <result column="box_re_activity_name" property="boxReActivityName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, process_id, form_id, form_module_id, form_module_name, bis_enable, sorting, box_re_activity_name
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessFormExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_base_process_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_base_process_form
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_base_process_form
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessFormExample" >
+    delete from tb_base_process_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_process_form (process_id, form_id, form_module_id, 
+      form_module_name, bis_enable, sorting, 
+      box_re_activity_name)
+    values (#{processId,jdbcType=INTEGER}, #{formId,jdbcType=INTEGER}, #{formModuleId,jdbcType=INTEGER}, 
+      #{formModuleName,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+      #{boxReActivityName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_base_process_form
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="formId != null" >
+        form_id,
+      </if>
+      <if test="formModuleId != null" >
+        form_module_id,
+      </if>
+      <if test="formModuleName != null" >
+        form_module_name,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
+      <if test="sorting != null" >
+        sorting,
+      </if>
+      <if test="boxReActivityName != null" >
+        box_re_activity_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processId != null" >
+        #{processId,jdbcType=INTEGER},
+      </if>
+      <if test="formId != null" >
+        #{formId,jdbcType=INTEGER},
+      </if>
+      <if test="formModuleId != null" >
+        #{formModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="formModuleName != null" >
+        #{formModuleName,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="boxReActivityName != null" >
+        #{boxReActivityName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessFormExample" resultType="java.lang.Integer" >
+    select count(*) from tb_base_process_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_base_process_form
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.processId != null" >
+        process_id = #{record.processId,jdbcType=INTEGER},
+      </if>
+      <if test="record.formId != null" >
+        form_id = #{record.formId,jdbcType=INTEGER},
+      </if>
+      <if test="record.formModuleId != null" >
+        form_module_id = #{record.formModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.formModuleName != null" >
+        form_module_name = #{record.formModuleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
+      <if test="record.boxReActivityName != null" >
+        box_re_activity_name = #{record.boxReActivityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_base_process_form
+    set id = #{record.id,jdbcType=INTEGER},
+      process_id = #{record.processId,jdbcType=INTEGER},
+      form_id = #{record.formId,jdbcType=INTEGER},
+      form_module_id = #{record.formModuleId,jdbcType=INTEGER},
+      form_module_name = #{record.formModuleName,jdbcType=VARCHAR},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      sorting = #{record.sorting,jdbcType=INTEGER},
+      box_re_activity_name = #{record.boxReActivityName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm" >
+    update tb_base_process_form
+    <set >
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=INTEGER},
+      </if>
+      <if test="formId != null" >
+        form_id = #{formId,jdbcType=INTEGER},
+      </if>
+      <if test="formModuleId != null" >
+        form_module_id = #{formModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="formModuleName != null" >
+        form_module_name = #{formModuleName,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="boxReActivityName != null" >
+        box_re_activity_name = #{boxReActivityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProcessForm" >
+    update tb_base_process_form
+    set process_id = #{processId,jdbcType=INTEGER},
+      form_id = #{formId,jdbcType=INTEGER},
+      form_module_id = #{formModuleId,jdbcType=INTEGER},
+      form_module_name = #{formModuleName,jdbcType=VARCHAR},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      sorting = #{sorting,jdbcType=INTEGER},
+      box_re_activity_name = #{boxReActivityName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

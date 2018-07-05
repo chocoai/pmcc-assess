@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.csr;
 
-import com.copower.pmcc.assess.dal.entity.DataCsrFieldRelation;
+import com.copower.pmcc.assess.dal.basis.entity.DataCsrFieldRelation;
 import com.copower.pmcc.assess.dto.output.data.DataCsrFieldRelationVo;
 import com.copower.pmcc.assess.service.csr.DataCsrFieldRelationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

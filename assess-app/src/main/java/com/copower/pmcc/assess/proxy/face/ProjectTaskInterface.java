@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.proxy.face;
 
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.web.servlet.ModelAndView;

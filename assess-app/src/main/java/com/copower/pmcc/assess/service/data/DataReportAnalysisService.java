@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.DataReportAnalysisDao;
-import com.copower.pmcc.assess.dal.dao.data.DataReportAnalysisFieldDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysis;
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisFieldDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

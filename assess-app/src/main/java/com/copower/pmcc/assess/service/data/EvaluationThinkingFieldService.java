@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldVoEnum;
-import com.copower.pmcc.assess.dal.dao.data.EvaluationThinkingFieldDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingFieldDaoVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

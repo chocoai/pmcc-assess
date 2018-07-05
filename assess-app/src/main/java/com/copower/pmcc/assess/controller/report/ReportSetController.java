@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.report;
 
-import com.copower.pmcc.assess.dal.dao.VwDbInfoDao;
-import com.copower.pmcc.assess.dal.entity.VwDbColumnsInfo;
-import com.copower.pmcc.assess.dal.entity.VwDbTableInfo;
+import com.copower.pmcc.assess.dal.basis.dao.VwDbInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.VwDbColumnsInfo;
+import com.copower.pmcc.assess.dal.basis.entity.VwDbTableInfo;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.DataBestUseDescriptionDao;
-import com.copower.pmcc.assess.dal.entity.DataBestUseDescription;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataBestUseDescriptionDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataBestUseDescription;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;

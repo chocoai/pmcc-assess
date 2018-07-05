@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.dal.dao.project.generate.GenerateReportDao;
-import com.copower.pmcc.assess.dal.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.entity.GenerateReportRecord;
+import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportRecord;
 import com.copower.pmcc.assess.dto.input.project.GenerateReportApplyDto;
 import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;

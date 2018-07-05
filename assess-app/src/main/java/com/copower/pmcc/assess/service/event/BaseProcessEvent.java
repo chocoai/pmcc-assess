@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.event;
 
-import com.copower.pmcc.assess.dal.custom.mapper.CustomDdlTableMapper;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.proxy.face;
 
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import org.springframework.web.servlet.ModelAndView;
 
 /**

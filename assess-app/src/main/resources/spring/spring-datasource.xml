@@ -53,14 +53,14 @@
             <value>classpath:mybatis-config.xml</value>
         </property>
         <property name="dataSource" ref="masterDataSource"/>
-        <property name="mapperLocations" value="classpath:mybatis/assess/**/*.xml"/>
+        <property name="mapperLocations" value="classpath:mybatis/basis/**/*.xml"/>
     </bean>
 
     <!-- =========================================== -->
     <!-- 通过@Mapper注解的形式使用Mapper Interface -->
     <!-- =========================================== -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.copower.pmcc.assess.dal"/>
+        <property name="basePackage" value="com.copower.pmcc.assess.dal.basis"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

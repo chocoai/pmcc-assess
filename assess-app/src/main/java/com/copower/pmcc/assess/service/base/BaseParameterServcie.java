@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseParameterDao;
-import com.copower.pmcc.assess.dal.entity.BaseParameter;
+import com.copower.pmcc.assess.dal.basis.dao.base.BaseParameterDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseParameter;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.slf4j.Logger;

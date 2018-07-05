@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.data.EvaluationMethodFieldDao;
-import com.copower.pmcc.assess.dal.dao.data.EvaluationThinkingFieldDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodFieldDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingFieldDao;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;

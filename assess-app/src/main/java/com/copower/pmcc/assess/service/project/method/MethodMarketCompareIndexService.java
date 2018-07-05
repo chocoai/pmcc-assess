@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.method;
 
-import com.copower.pmcc.assess.dal.dao.project.method.MethodMarketCompareIndexDao;
-import com.copower.pmcc.assess.dal.entity.MethodMarketCompareIndex;
+import com.copower.pmcc.assess.dal.basis.dao.project.method.MethodMarketCompareIndexDao;
+import com.copower.pmcc.assess.dal.basis.entity.MethodMarketCompareIndex;
 import com.copower.pmcc.assess.dto.input.project.method.MethodMarketCompareIndexDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;

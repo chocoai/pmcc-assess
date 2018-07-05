@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.copower.pmcc.assess.dal.dao.project.scheme.SchemeInfoDetailDao;
-import com.copower.pmcc.assess.dal.entity.SchemeInfoDetail;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfoDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

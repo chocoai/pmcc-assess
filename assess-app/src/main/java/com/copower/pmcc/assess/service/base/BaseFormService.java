@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.base.BaseFormDao;
-import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.basis.dao.base.BaseFormDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseForm;
+import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
 import com.copower.pmcc.erp.common.utils.LangUtils;

@@ -2,10 +2,10 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetInventoryDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetOtherTemplateDao;
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyAssetTemplateDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyAssetInventoryDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyAssetOtherTemplateDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetInventoryDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetTemplateDto;

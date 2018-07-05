@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.DataEarlyWarning;
+import com.copower.pmcc.assess.dal.basis.entity.DataEarlyWarning;
 
 public class DataEarlyWarningVo extends DataEarlyWarning {
     private String entrustPurposeName;

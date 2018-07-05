@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.output.project.scheme;
 
 
-import com.copower.pmcc.assess.dal.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 
 /**
  * Created by 13426 on 2018/5/21.

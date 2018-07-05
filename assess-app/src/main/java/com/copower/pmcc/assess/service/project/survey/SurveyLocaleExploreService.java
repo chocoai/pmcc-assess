@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.dao.project.suvey.SurveyLocaleExploreDao;
-import com.copower.pmcc.assess.dal.entity.SurveyLocaleExplore;
+import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDao;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;

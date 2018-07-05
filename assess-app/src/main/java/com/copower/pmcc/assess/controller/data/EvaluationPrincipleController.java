@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.input.data.EvaluationPrincipleDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

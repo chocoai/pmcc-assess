@@ -2,10 +2,10 @@ package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanHistoryDao;
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanHistory;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanHistoryDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanHistoryDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project;
 
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

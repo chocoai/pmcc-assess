@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.data.DataDeclareFormDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.BaseForm;
-import com.copower.pmcc.assess.dal.entity.DataDeclareForm;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataDeclareFormDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseForm;
+import com.copower.pmcc.assess.dal.basis.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dto.output.data.DataDeclareFormVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseFormService;

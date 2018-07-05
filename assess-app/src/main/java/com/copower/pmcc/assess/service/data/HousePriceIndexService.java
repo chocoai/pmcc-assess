@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.HousePriceIndexDao;
-import com.copower.pmcc.assess.dal.entity.HousePriceIndex;
+import com.copower.pmcc.assess.dal.basis.dao.data.HousePriceIndexDao;
+import com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex;
 import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
 import com.copower.pmcc.assess.dto.output.data.HousePriceIndexVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.controller.project.plan;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.entity.EvaluationMethodField;
-import com.copower.pmcc.assess.dal.entity.EvaluationThinkingField;
-import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationMethodField;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinkingField;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionDto;

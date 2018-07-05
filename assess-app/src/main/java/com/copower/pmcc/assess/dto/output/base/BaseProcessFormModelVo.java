@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.base;
 
-import com.copower.pmcc.assess.dal.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 
 import java.util.List;

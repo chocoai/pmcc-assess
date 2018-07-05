@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.CsrContractMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.CsrContract" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="csr_project_id" property="csrProjectId" jdbcType="INTEGER" />
+    <result column="borrower_id" property="borrowerId" jdbcType="VARCHAR" />
+    <result column="contract_number" property="contractNumber" jdbcType="VARCHAR" />
+    <result column="loan_time" property="loanTime" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="VARCHAR" />
+    <result column="variety" property="variety" jdbcType="VARCHAR" />
+    <result column="term" property="term" jdbcType="VARCHAR" />
+    <result column="guarantee_method" property="guaranteeMethod" jdbcType="VARCHAR" />
+    <result column="bis_import" property="bisImport" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, csr_project_id, borrower_id, contract_number, loan_time, amount, variety, term, 
+    guarantee_method, bis_import, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContractExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_csr_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_csr_contract
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_csr_contract
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContractExample" >
+    delete from tb_csr_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContract" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_csr_contract (csr_project_id, borrower_id, contract_number, 
+      loan_time, amount, variety, 
+      term, guarantee_method, bis_import, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{csrProjectId,jdbcType=INTEGER}, #{borrowerId,jdbcType=VARCHAR}, #{contractNumber,jdbcType=VARCHAR}, 
+      #{loanTime,jdbcType=VARCHAR}, #{amount,jdbcType=VARCHAR}, #{variety,jdbcType=VARCHAR}, 
+      #{term,jdbcType=VARCHAR}, #{guaranteeMethod,jdbcType=VARCHAR}, #{bisImport,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContract" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_csr_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        csr_project_id,
+      </if>
+      <if test="borrowerId != null" >
+        borrower_id,
+      </if>
+      <if test="contractNumber != null" >
+        contract_number,
+      </if>
+      <if test="loanTime != null" >
+        loan_time,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="variety != null" >
+        variety,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="guaranteeMethod != null" >
+        guarantee_method,
+      </if>
+      <if test="bisImport != null" >
+        bis_import,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="csrProjectId != null" >
+        #{csrProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="borrowerId != null" >
+        #{borrowerId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNumber != null" >
+        #{contractNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTime != null" >
+        #{loanTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="variety != null" >
+        #{variety,jdbcType=VARCHAR},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeMethod != null" >
+        #{guaranteeMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bisImport != null" >
+        #{bisImport,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContractExample" resultType="java.lang.Integer" >
+    select count(*) from tb_csr_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_csr_contract
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.csrProjectId != null" >
+        csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.borrowerId != null" >
+        borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractNumber != null" >
+        contract_number = #{record.contractNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanTime != null" >
+        loan_time = #{record.loanTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.variety != null" >
+        variety = #{record.variety,jdbcType=VARCHAR},
+      </if>
+      <if test="record.term != null" >
+        term = #{record.term,jdbcType=VARCHAR},
+      </if>
+      <if test="record.guaranteeMethod != null" >
+        guarantee_method = #{record.guaranteeMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisImport != null" >
+        bis_import = #{record.bisImport,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_csr_contract
+    set id = #{record.id,jdbcType=INTEGER},
+      csr_project_id = #{record.csrProjectId,jdbcType=INTEGER},
+      borrower_id = #{record.borrowerId,jdbcType=VARCHAR},
+      contract_number = #{record.contractNumber,jdbcType=VARCHAR},
+      loan_time = #{record.loanTime,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=VARCHAR},
+      variety = #{record.variety,jdbcType=VARCHAR},
+      term = #{record.term,jdbcType=VARCHAR},
+      guarantee_method = #{record.guaranteeMethod,jdbcType=VARCHAR},
+      bis_import = #{record.bisImport,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContract" >
+    update tb_csr_contract
+    <set >
+      <if test="csrProjectId != null" >
+        csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="borrowerId != null" >
+        borrower_id = #{borrowerId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNumber != null" >
+        contract_number = #{contractNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTime != null" >
+        loan_time = #{loanTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="variety != null" >
+        variety = #{variety,jdbcType=VARCHAR},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeMethod != null" >
+        guarantee_method = #{guaranteeMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="bisImport != null" >
+        bis_import = #{bisImport,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.CsrContract" >
+    update tb_csr_contract
+    set csr_project_id = #{csrProjectId,jdbcType=INTEGER},
+      borrower_id = #{borrowerId,jdbcType=VARCHAR},
+      contract_number = #{contractNumber,jdbcType=VARCHAR},
+      loan_time = #{loanTime,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=VARCHAR},
+      variety = #{variety,jdbcType=VARCHAR},
+      term = #{term,jdbcType=VARCHAR},
+      guarantee_method = #{guaranteeMethod,jdbcType=VARCHAR},
+      bis_import = #{bisImport,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

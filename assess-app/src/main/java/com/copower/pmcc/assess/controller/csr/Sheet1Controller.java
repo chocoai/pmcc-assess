@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.csr;
 
-import com.copower.pmcc.assess.dal.dao.base.FormConfigureDao;
-import com.copower.pmcc.assess.dal.dao.csr.Sheet1Dao;
+import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
+import com.copower.pmcc.assess.dal.basis.dao.csr.Sheet1Dao;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;

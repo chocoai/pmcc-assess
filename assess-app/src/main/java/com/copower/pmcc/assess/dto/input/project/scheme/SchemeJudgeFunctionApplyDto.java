@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.scheme;
 
-import com.copower.pmcc.assess.dal.entity.SchemeJudgeFunction;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.project.csr;
 
-import com.copower.pmcc.assess.dal.entity.CsrPrincipalInterest;
+import com.copower.pmcc.assess.dal.basis.entity.CsrPrincipalInterest;
 
 /**
  * 描述:

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.output.data;
 
-import com.copower.pmcc.assess.dal.entity.DataBuildingNewRate;
+import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
 
 /**
  * Created by 13426 on 2018/4/24.

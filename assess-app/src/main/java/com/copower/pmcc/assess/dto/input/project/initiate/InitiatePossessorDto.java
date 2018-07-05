@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.initiate;
 
-import com.copower.pmcc.assess.dal.entity.InitiatePossessor;
+import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
 
 /**
  * Created by 13426 on 2018/5/4.

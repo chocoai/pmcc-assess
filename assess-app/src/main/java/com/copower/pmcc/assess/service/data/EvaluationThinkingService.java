@@ -2,10 +2,10 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.dao.data.EvaluationThinkingDao;
-import com.copower.pmcc.assess.dal.dao.data.EvaluationThinkingFieldDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.EvaluationThinking;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
+import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingFieldDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingVo;

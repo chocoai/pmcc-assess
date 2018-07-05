@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project;
 
-import com.copower.pmcc.assess.dal.entity.ProjectMember;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 
 /**
  * Created by 13426 on 2018/5/8.

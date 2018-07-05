@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.csr;
 
-import com.copower.pmcc.assess.dal.dao.csr.CsrBorrowerDao;
-import com.copower.pmcc.assess.dal.dao.csr.CsrProjectInfoGroupDao;
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.dal.entity.CsrProjectInfoGroup;
+import com.copower.pmcc.assess.dal.basis.dao.csr.CsrBorrowerDao;
+import com.copower.pmcc.assess.dal.basis.dao.csr.CsrProjectInfoGroupDao;
+import com.copower.pmcc.assess.dal.basis.entity.CsrBorrower;
+import com.copower.pmcc.assess.dal.basis.entity.CsrProjectInfoGroup;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrProjectInfoGroupSubmitDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

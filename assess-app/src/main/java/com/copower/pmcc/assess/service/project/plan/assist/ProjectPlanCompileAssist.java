@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.plan.assist;
 
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanCompileService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;

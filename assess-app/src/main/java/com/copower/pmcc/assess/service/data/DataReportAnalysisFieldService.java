@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.DataReportAnalysisFieldDao;
-import com.copower.pmcc.assess.dal.entity.DataReportAnalysisField;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisFieldDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisField;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

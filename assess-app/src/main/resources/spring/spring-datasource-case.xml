@@ -60,21 +60,10 @@
     <!-- 通过@Mapper注解的形式使用Mapper Interface -->
     <!-- =========================================== -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.copower.pmcc.assess.dal"/>
+        <property name="basePackage" value="com.copower.pmcc.assess.dal.cases"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryCase"/>
     </bean>
 
-    <!-- ======================================= -->
-    <!-- sqlSession For Mybatis -->
-    <!-- ======================================= -->
-    <bean id="sqlSessionCase" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactoryCase"/>
-    </bean>
-    <!-- ======================================= -->
 
-    <!-- ======================================= -->
-    <!--启动spring注解功能 -->
-    <!-- ======================================= -->
-    <tx:annotation-driven transaction-manager="transactionManagerCase" proxy-target-class="true"/>
 
 </beans>

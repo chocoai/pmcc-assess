@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.controller.csr.task;
 
-import com.copower.pmcc.assess.dal.entity.CsrBorrower;
-import com.copower.pmcc.assess.dal.entity.CsrBorrowerEntering;
+import com.copower.pmcc.assess.dal.basis.entity.CsrBorrowerEntering;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerEnteringVo;
-import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
 import com.copower.pmcc.assess.service.csr.CsrBorrowerService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;

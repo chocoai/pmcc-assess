@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.output.project;
 
 
-import com.copower.pmcc.assess.dal.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 
 /**
  * 描述:

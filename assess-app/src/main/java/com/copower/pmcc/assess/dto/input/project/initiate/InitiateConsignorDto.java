@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.input.project.initiate;
 
 
-import com.copower.pmcc.assess.dal.entity.InitiateConsignor;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 
 /**
  * Created by 13426 on 2018/5/4.

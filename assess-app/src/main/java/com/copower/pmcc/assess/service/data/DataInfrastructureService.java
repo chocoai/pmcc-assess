@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.dal.dao.data.DataInfrastructureDao;
-import com.copower.pmcc.assess.dal.entity.Infrastructure;
+import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
+import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.ErpAreaService;

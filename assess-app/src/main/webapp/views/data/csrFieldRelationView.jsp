@@ -170,7 +170,7 @@
     //选择对应的表单类型
     function selectFormType() {
         assessDataDic.select({
-            key: "assess.class",
+            key: "basis.class",
             onSelected: function (nodes) {
                 $("#formTypeId").val(nodes[0].id);
                 $("#formTypeName").val(nodes[0].name);

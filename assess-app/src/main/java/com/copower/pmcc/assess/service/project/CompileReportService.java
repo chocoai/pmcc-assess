@@ -1,10 +1,10 @@
 package com.copower.pmcc.assess.service.project;
 
-import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDao;
-import com.copower.pmcc.assess.dal.dao.project.compile.CompileReportDetailsDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.CompileReportDetails;
-import com.copower.pmcc.assess.dal.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailsDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

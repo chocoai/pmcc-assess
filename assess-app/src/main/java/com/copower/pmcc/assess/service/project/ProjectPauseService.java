@@ -2,12 +2,12 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.dao.project.ProjectInfoDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectPlanDao;
-import com.copower.pmcc.assess.dal.dao.project.ProjectSuspendDao;
-import com.copower.pmcc.assess.dal.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.entity.ProjectSuspend;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectSuspendDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectSuspend;
 import com.copower.pmcc.assess.dto.output.project.ProjectSuspendVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;

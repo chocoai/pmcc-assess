@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
-import com.copower.pmcc.assess.dal.dao.project.initiate.InitiatePossessorDao;
-import com.copower.pmcc.assess.dal.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.entity.InitiatePossessor;
+import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiatePossessorDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiatePossessorDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;

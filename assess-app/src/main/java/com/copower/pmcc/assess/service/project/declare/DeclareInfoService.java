@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareInfoDao;
-import com.copower.pmcc.assess.dal.dao.project.declare.DeclareUseClassifyDao;
-import com.copower.pmcc.assess.dal.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareInfoDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareUseClassifyDao;
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dto.input.project.initiate;
 
 
-import com.copower.pmcc.assess.dal.entity.InitiateContacts;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 
 import java.io.Serializable;
 
