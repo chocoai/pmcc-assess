@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
-            <version>1.0.81</version>
+            <version>1.0.82</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
