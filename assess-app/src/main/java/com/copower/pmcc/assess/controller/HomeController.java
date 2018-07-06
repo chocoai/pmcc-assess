@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.cases.entity.CaseBlock;
-import com.copower.pmcc.assess.dal.cases.mapper.CaseBlockMapper;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
