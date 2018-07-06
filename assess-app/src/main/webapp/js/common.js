@@ -131,6 +131,39 @@
             }
         },
 
+        //根据key获取字典信息
+        loadDataDicByKey: function (key, value, callback) {
+            if (key) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        fieldName: key
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                if (item.id === value) {
+                                    retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
+                                } else {
+                                    retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                                }
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+        },
+
         //根据pid获取区域信息
         loadAreaInfoByPid: function (pid, value, callback) {
             if (pid) {
@@ -185,6 +218,8 @@
             defaluts = $.extend({}, defaluts, options);
             if ($.type(defaluts.provinceTarget) === "string") {
                 defaluts.provinceTarget = $("#" + defaluts.provinceTarget);
+            }else{
+                defaluts.provinceTarget=$(defaluts.provinceTarget);
             }
             if ($.type(defaluts.cityTarget) === "string") {
                 defaluts.cityTarget = $("#" + defaluts.cityTarget);

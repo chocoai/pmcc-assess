@@ -37,6 +37,12 @@
                 </div>
 
                 <div class="x_content">
+                    <%@include file="/views/share/examine/residence/residenceInfo.jsp"%>
+
+                    <div class="x_title">
+                        <h3>其它信息</h3>
+                        <div class="clearfix"></div>
+                    </div>
                     <form id="frm_survey" class="form-horizontal">
                         <input type="hidden" name="id" value="${surveyLocaleExploreDetail.id}">
                         <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
@@ -103,9 +109,9 @@
                         </div>
                     </form>
                 </div>
-                <%@include file="/views/share/examine/examineInfo.jsp"%>
+
             </div>
-            <div class="x_panel">
+            <div class="x_panel saveAllPanel" style="display: none">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -122,12 +128,24 @@
 </div>
 
 </body>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js"></script>
 <script src='/assets/js/comm/pmcc.js'></script>
 <script src='/assets/js/comm/erp-footer.js'></script>
 <script type="text/javascript">
     $(function () {
 
+        canSaveAllData();
     })
+
+    //是否可以保存所有数据
+    function canSaveAllData() {
+        if(ExamineInfo.config.houseId){
+            $(".saveAllPanel").show();
+        }else{
+            $(".saveAllPanel").hide();
+        }
+    }
 
     //保存数据
     function saveData() {

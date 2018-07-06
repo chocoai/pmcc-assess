@@ -20,3 +20,10 @@ AssessProjectClassifyKey.case = "case";//案例表
 AssessProjectClassifyKey.single = "single";//单项资产
 AssessProjectClassifyKey.singleCsr = "single.csr";//不良债权评估
 AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
+
+
+/**
+ * 数据字典key
+ */
+var AssessDicKey = {}
+AssessDicKey.ReportTemplate = "tb_report_template";

@@ -16,8 +16,8 @@ public class BaseConstant {
     public static final String ASSESS_BASE_ASSIST_STAGE = "stage";//阶段信息表单分组
     public static final String ASSESS_BASE_ASSIST_MATTER = "matter";//工作事项表单分组信息
 
-    public static final String PMCC_ASSESS_BASE_ASSIST = "pmcc:basis:base:assist";
-    public static final String PMCC_ASSESS_BASE_ASSIST_ID = "pmcc:basis:base:assist:id";
+    public static final String PMCC_ASSESS_BASE_ASSIST = "pmcc:assess:base:assist";
+    public static final String PMCC_ASSESS_BASE_ASSIST_ID = "pmcc:assess:base:assist:id";
 
     //高德地图相关
     public static final String MPA_API_URL = "http://restapi.amap.com/v3/staticmap";//静态图的请求地址
