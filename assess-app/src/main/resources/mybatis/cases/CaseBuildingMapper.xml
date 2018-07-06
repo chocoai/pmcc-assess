@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="builder_id" property="builderId" jdbcType="INTEGER" />
+    <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="property_type" property="propertyType" jdbcType="INTEGER" />
+    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
+    <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
+    <result column="facilities_use_fee" property="facilitiesUseFee" jdbcType="DECIMAL" />
+    <result column="floor_start" property="floorStart" jdbcType="INTEGER" />
+    <result column="floor_end" property="floorEnd" jdbcType="INTEGER" />
+    <result column="building_height" property="buildingHeight" jdbcType="DECIMAL" />
+    <result column="building area" property="buildingArea" jdbcType="DECIMAL" />
+    <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
+    <result column="building_category" property="buildingCategory" jdbcType="INTEGER" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+    <result column="room_time" property="roomTime" jdbcType="TIMESTAMP" />
+    <result column="floor_height" property="floorHeight" jdbcType="DECIMAL" />
+    <result column="diameter_depth" property="diameterDepth" jdbcType="DECIMAL" />
+    <result column="land_use_year" property="landUseYear" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
+    <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, estate_id, builder_id, property_Id, building_number, property_type, floor_count, 
+    unit_interval, property_fee, facilities_use_fee, floor_start, floor_end, building_height, 
+    "building area", cover_an_area, building_category, open_time, room_time, floor_height, 
+    diameter_depth, land_use_year, location, net_height, building_structure, creator, 
+    gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_case_building
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_case_building
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_case_building
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
+    delete from tb_case_building
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_building (estate_id, builder_id, property_Id, 
+      building_number, property_type, floor_count, 
+      unit_interval, property_fee, facilities_use_fee, 
+      floor_start, floor_end, building_height, 
+      "building area", cover_an_area, building_category, 
+      open_time, room_time, floor_height, 
+      diameter_depth, land_use_year, location, 
+      net_height, building_structure, creator, 
+      gmt_created, gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, 
+      #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
+      #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, 
+      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
+      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_building
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="estateId != null" >
+        estate_id,
+      </if>
+      <if test="builderId != null" >
+        builder_id,
+      </if>
+      <if test="propertyId != null" >
+        property_Id,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="propertyType != null" >
+        property_type,
+      </if>
+      <if test="floorCount != null" >
+        floor_count,
+      </if>
+      <if test="unitInterval != null" >
+        unit_interval,
+      </if>
+      <if test="propertyFee != null" >
+        property_fee,
+      </if>
+      <if test="facilitiesUseFee != null" >
+        facilities_use_fee,
+      </if>
+      <if test="floorStart != null" >
+        floor_start,
+      </if>
+      <if test="floorEnd != null" >
+        floor_end,
+      </if>
+      <if test="buildingHeight != null" >
+        building_height,
+      </if>
+      <if test="buildingArea != null" >
+        "building area",
+      </if>
+      <if test="coverAnArea != null" >
+        cover_an_area,
+      </if>
+      <if test="buildingCategory != null" >
+        building_category,
+      </if>
+      <if test="openTime != null" >
+        open_time,
+      </if>
+      <if test="roomTime != null" >
+        room_time,
+      </if>
+      <if test="floorHeight != null" >
+        floor_height,
+      </if>
+      <if test="diameterDepth != null" >
+        diameter_depth,
+      </if>
+      <if test="landUseYear != null" >
+        land_use_year,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="netHeight != null" >
+        net_height,
+      </if>
+      <if test="buildingStructure != null" >
+        building_structure,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="estateId != null" >
+        #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="builderId != null" >
+        #{builderId,jdbcType=INTEGER},
+      </if>
+      <if test="propertyId != null" >
+        #{propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyType != null" >
+        #{propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="floorCount != null" >
+        #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="unitInterval != null" >
+        #{unitInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyFee != null" >
+        #{propertyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="facilitiesUseFee != null" >
+        #{facilitiesUseFee,jdbcType=DECIMAL},
+      </if>
+      <if test="floorStart != null" >
+        #{floorStart,jdbcType=INTEGER},
+      </if>
+      <if test="floorEnd != null" >
+        #{floorEnd,jdbcType=INTEGER},
+      </if>
+      <if test="buildingHeight != null" >
+        #{buildingHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingArea != null" >
+        #{buildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="coverAnArea != null" >
+        #{coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingCategory != null" >
+        #{buildingCategory,jdbcType=INTEGER},
+      </if>
+      <if test="openTime != null" >
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomTime != null" >
+        #{roomTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="floorHeight != null" >
+        #{floorHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="diameterDepth != null" >
+        #{diameterDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="landUseYear != null" >
+        #{landUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="netHeight != null" >
+        #{netHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingStructure != null" >
+        #{buildingStructure,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_building
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_case_building
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateId != null" >
+        estate_id = #{record.estateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.builderId != null" >
+        builder_id = #{record.builderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertyId != null" >
+        property_Id = #{record.propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyType != null" >
+        property_type = #{record.propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorCount != null" >
+        floor_count = #{record.floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitInterval != null" >
+        unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyFee != null" >
+        property_fee = #{record.propertyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.facilitiesUseFee != null" >
+        facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.floorStart != null" >
+        floor_start = #{record.floorStart,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorEnd != null" >
+        floor_end = #{record.floorEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.buildingHeight != null" >
+        building_height = #{record.buildingHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildingArea != null" >
+        "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.coverAnArea != null" >
+        cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildingCategory != null" >
+        building_category = #{record.buildingCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.openTime != null" >
+        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.roomTime != null" >
+        room_time = #{record.roomTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.floorHeight != null" >
+        floor_height = #{record.floorHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.diameterDepth != null" >
+        diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landUseYear != null" >
+        land_use_year = #{record.landUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.netHeight != null" >
+        net_height = #{record.netHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildingStructure != null" >
+        building_structure = #{record.buildingStructure,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_case_building
+    set id = #{record.id,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
+      builder_id = #{record.builderId,jdbcType=INTEGER},
+      property_Id = #{record.propertyId,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      property_type = #{record.propertyType,jdbcType=INTEGER},
+      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
+      property_fee = #{record.propertyFee,jdbcType=DECIMAL},
+      facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
+      floor_start = #{record.floorStart,jdbcType=INTEGER},
+      floor_end = #{record.floorEnd,jdbcType=INTEGER},
+      building_height = #{record.buildingHeight,jdbcType=DECIMAL},
+      "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+      cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
+      building_category = #{record.buildingCategory,jdbcType=INTEGER},
+      open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      room_time = #{record.roomTime,jdbcType=TIMESTAMP},
+      floor_height = #{record.floorHeight,jdbcType=DECIMAL},
+      diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
+      land_use_year = #{record.landUseYear,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
+      net_height = #{record.netHeight,jdbcType=DECIMAL},
+      building_structure = #{record.buildingStructure,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
+    update tb_case_building
+    <set >
+      <if test="estateId != null" >
+        estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="builderId != null" >
+        builder_id = #{builderId,jdbcType=INTEGER},
+      </if>
+      <if test="propertyId != null" >
+        property_Id = #{propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyType != null" >
+        property_type = #{propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="floorCount != null" >
+        floor_count = #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="unitInterval != null" >
+        unit_interval = #{unitInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyFee != null" >
+        property_fee = #{propertyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="facilitiesUseFee != null" >
+        facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
+      </if>
+      <if test="floorStart != null" >
+        floor_start = #{floorStart,jdbcType=INTEGER},
+      </if>
+      <if test="floorEnd != null" >
+        floor_end = #{floorEnd,jdbcType=INTEGER},
+      </if>
+      <if test="buildingHeight != null" >
+        building_height = #{buildingHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingArea != null" >
+        "building area" = #{buildingArea,jdbcType=DECIMAL},
+      </if>
+      <if test="coverAnArea != null" >
+        cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingCategory != null" >
+        building_category = #{buildingCategory,jdbcType=INTEGER},
+      </if>
+      <if test="openTime != null" >
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomTime != null" >
+        room_time = #{roomTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="floorHeight != null" >
+        floor_height = #{floorHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="diameterDepth != null" >
+        diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="landUseYear != null" >
+        land_use_year = #{landUseYear,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="netHeight != null" >
+        net_height = #{netHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingStructure != null" >
+        building_structure = #{buildingStructure,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
+    update tb_case_building
+    set estate_id = #{estateId,jdbcType=INTEGER},
+      builder_id = #{builderId,jdbcType=INTEGER},
+      property_Id = #{propertyId,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      property_type = #{propertyType,jdbcType=INTEGER},
+      floor_count = #{floorCount,jdbcType=INTEGER},
+      unit_interval = #{unitInterval,jdbcType=VARCHAR},
+      property_fee = #{propertyFee,jdbcType=DECIMAL},
+      facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
+      floor_start = #{floorStart,jdbcType=INTEGER},
+      floor_end = #{floorEnd,jdbcType=INTEGER},
+      building_height = #{buildingHeight,jdbcType=DECIMAL},
+      "building area" = #{buildingArea,jdbcType=DECIMAL},
+      cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
+      building_category = #{buildingCategory,jdbcType=INTEGER},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      room_time = #{roomTime,jdbcType=TIMESTAMP},
+      floor_height = #{floorHeight,jdbcType=DECIMAL},
+      diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
+      land_use_year = #{landUseYear,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      net_height = #{netHeight,jdbcType=DECIMAL},
+      building_structure = #{buildingStructure,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

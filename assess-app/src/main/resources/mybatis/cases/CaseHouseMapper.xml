@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
+    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
+    <result column="right_interests_restriction" property="rightInterestsRestriction" jdbcType="VARCHAR" />
+    <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, unit_id, floor, house_number, huxing_id, cert_use, practical_use, right_interests_restriction, 
+    use_environment, description, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_case_house
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_case_house
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_case_house
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
+    delete from tb_case_house
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_house (unit_id, floor, house_number, 
+      huxing_id, cert_use, practical_use, 
+      right_interests_restriction, use_environment, 
+      description, creator, gmt_created, 
+      gmt_modified)
+    values (#{unitId,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
+      #{huxingId,jdbcType=INTEGER}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
+      #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_house
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="houseNumber != null" >
+        house_number,
+      </if>
+      <if test="huxingId != null" >
+        huxing_id,
+      </if>
+      <if test="certUse != null" >
+        cert_use,
+      </if>
+      <if test="practicalUse != null" >
+        practical_use,
+      </if>
+      <if test="rightInterestsRestriction != null" >
+        right_interests_restriction,
+      </if>
+      <if test="useEnvironment != null" >
+        use_environment,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="houseNumber != null" >
+        #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="huxingId != null" >
+        #{huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="certUse != null" >
+        #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="practicalUse != null" >
+        #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="rightInterestsRestriction != null" >
+        #{rightInterestsRestriction,jdbcType=VARCHAR},
+      </if>
+      <if test="useEnvironment != null" >
+        #{useEnvironment,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_house
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_case_house
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitId != null" >
+        unit_id = #{record.unitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseNumber != null" >
+        house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.huxingId != null" >
+        huxing_id = #{record.huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.certUse != null" >
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.practicalUse != null" >
+        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rightInterestsRestriction != null" >
+        right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useEnvironment != null" >
+        use_environment = #{record.useEnvironment,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_case_house
+    set id = #{record.id,jdbcType=INTEGER},
+      unit_id = #{record.unitId,jdbcType=INTEGER},
+      floor = #{record.floor,jdbcType=INTEGER},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      huxing_id = #{record.huxingId,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=VARCHAR},
+      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
+      use_environment = #{record.useEnvironment,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
+    update tb_case_house
+    <set >
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="houseNumber != null" >
+        house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="huxingId != null" >
+        huxing_id = #{huxingId,jdbcType=INTEGER},
+      </if>
+      <if test="certUse != null" >
+        cert_use = #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="practicalUse != null" >
+        practical_use = #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="rightInterestsRestriction != null" >
+        right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
+      </if>
+      <if test="useEnvironment != null" >
+        use_environment = #{useEnvironment,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
+    update tb_case_house
+    set unit_id = #{unitId,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=INTEGER},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
+      huxing_id = #{huxingId,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=VARCHAR},
+      practical_use = #{practicalUse,jdbcType=VARCHAR},
+      right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
+      use_environment = #{useEnvironment,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

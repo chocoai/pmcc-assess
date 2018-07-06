@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseTradingInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
+    <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
+    <result column="trading_price" property="tradingPrice" jdbcType="DECIMAL" />
+    <result column="instalment_period" property="instalmentPeriod" jdbcType="VARCHAR" />
+    <result column="instalment_interest" property="instalmentInterest" jdbcType="VARCHAR" />
+    <result column="buyer_extra_tax_fee" property="buyerExtraTaxFee" jdbcType="VARCHAR" />
+    <result column="renting_extra_tax_fee" property="rentingExtraTaxFee" jdbcType="VARCHAR" />
+    <result column="rent_payment_time" property="rentPaymentTime" jdbcType="VARCHAR" />
+    <result column="rent_growth_rate" property="rentGrowthRate" jdbcType="VARCHAR" />
+    <result column="description_type" property="descriptionType" jdbcType="INTEGER" />
+    <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, house_id, trading_time, trading_type, trading_price, instalment_period, instalment_interest, 
+    buyer_extra_tax_fee, renting_extra_tax_fee, rent_payment_time, rent_growth_rate, 
+    description_type, description_content, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_case_house_trading_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_case_house_trading_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_case_house_trading_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfoExample" >
+    delete from tb_case_house_trading_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_house_trading_info (house_id, trading_time, trading_type, 
+      trading_price, instalment_period, instalment_interest, 
+      buyer_extra_tax_fee, renting_extra_tax_fee, rent_payment_time, 
+      rent_growth_rate, description_type, description_content, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, 
+      #{tradingPrice,jdbcType=DECIMAL}, #{instalmentPeriod,jdbcType=VARCHAR}, #{instalmentInterest,jdbcType=VARCHAR}, 
+      #{buyerExtraTaxFee,jdbcType=VARCHAR}, #{rentingExtraTaxFee,jdbcType=VARCHAR}, #{rentPaymentTime,jdbcType=VARCHAR}, 
+      #{rentGrowthRate,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_house_trading_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="tradingTime != null" >
+        trading_time,
+      </if>
+      <if test="tradingType != null" >
+        trading_type,
+      </if>
+      <if test="tradingPrice != null" >
+        trading_price,
+      </if>
+      <if test="instalmentPeriod != null" >
+        instalment_period,
+      </if>
+      <if test="instalmentInterest != null" >
+        instalment_interest,
+      </if>
+      <if test="buyerExtraTaxFee != null" >
+        buyer_extra_tax_fee,
+      </if>
+      <if test="rentingExtraTaxFee != null" >
+        renting_extra_tax_fee,
+      </if>
+      <if test="rentPaymentTime != null" >
+        rent_payment_time,
+      </if>
+      <if test="rentGrowthRate != null" >
+        rent_growth_rate,
+      </if>
+      <if test="descriptionType != null" >
+        description_type,
+      </if>
+      <if test="descriptionContent != null" >
+        description_content,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="tradingTime != null" >
+        #{tradingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradingType != null" >
+        #{tradingType,jdbcType=INTEGER},
+      </if>
+      <if test="tradingPrice != null" >
+        #{tradingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="instalmentPeriod != null" >
+        #{instalmentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="instalmentInterest != null" >
+        #{instalmentInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerExtraTaxFee != null" >
+        #{buyerExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="rentingExtraTaxFee != null" >
+        #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="rentPaymentTime != null" >
+        #{rentPaymentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="rentGrowthRate != null" >
+        #{rentGrowthRate,jdbcType=VARCHAR},
+      </if>
+      <if test="descriptionType != null" >
+        #{descriptionType,jdbcType=INTEGER},
+      </if>
+      <if test="descriptionContent != null" >
+        #{descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfoExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_house_trading_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_case_house_trading_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tradingTime != null" >
+        trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.tradingType != null" >
+        trading_type = #{record.tradingType,jdbcType=INTEGER},
+      </if>
+      <if test="record.tradingPrice != null" >
+        trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.instalmentPeriod != null" >
+        instalment_period = #{record.instalmentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.instalmentInterest != null" >
+        instalment_interest = #{record.instalmentInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyerExtraTaxFee != null" >
+        buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rentingExtraTaxFee != null" >
+        renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rentPaymentTime != null" >
+        rent_payment_time = #{record.rentPaymentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rentGrowthRate != null" >
+        rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.descriptionType != null" >
+        description_type = #{record.descriptionType,jdbcType=INTEGER},
+      </if>
+      <if test="record.descriptionContent != null" >
+        description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_case_house_trading_info
+    set id = #{record.id,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
+      trading_type = #{record.tradingType,jdbcType=INTEGER},
+      trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
+      instalment_period = #{record.instalmentPeriod,jdbcType=VARCHAR},
+      instalment_interest = #{record.instalmentInterest,jdbcType=VARCHAR},
+      buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
+      renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
+      rent_payment_time = #{record.rentPaymentTime,jdbcType=VARCHAR},
+      rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
+      description_type = #{record.descriptionType,jdbcType=INTEGER},
+      description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfo" >
+    update tb_case_house_trading_info
+    <set >
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="tradingTime != null" >
+        trading_time = #{tradingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradingType != null" >
+        trading_type = #{tradingType,jdbcType=INTEGER},
+      </if>
+      <if test="tradingPrice != null" >
+        trading_price = #{tradingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="instalmentPeriod != null" >
+        instalment_period = #{instalmentPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="instalmentInterest != null" >
+        instalment_interest = #{instalmentInterest,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerExtraTaxFee != null" >
+        buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="rentingExtraTaxFee != null" >
+        renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      </if>
+      <if test="rentPaymentTime != null" >
+        rent_payment_time = #{rentPaymentTime,jdbcType=VARCHAR},
+      </if>
+      <if test="rentGrowthRate != null" >
+        rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
+      </if>
+      <if test="descriptionType != null" >
+        description_type = #{descriptionType,jdbcType=INTEGER},
+      </if>
+      <if test="descriptionContent != null" >
+        description_content = #{descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingInfo" >
+    update tb_case_house_trading_info
+    set house_id = #{houseId,jdbcType=INTEGER},
+      trading_time = #{tradingTime,jdbcType=TIMESTAMP},
+      trading_type = #{tradingType,jdbcType=INTEGER},
+      trading_price = #{tradingPrice,jdbcType=DECIMAL},
+      instalment_period = #{instalmentPeriod,jdbcType=VARCHAR},
+      instalment_interest = #{instalmentInterest,jdbcType=VARCHAR},
+      buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
+      renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
+      rent_payment_time = #{rentPaymentTime,jdbcType=VARCHAR},
+      rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
+      description_type = #{descriptionType,jdbcType=INTEGER},
+      description_content = #{descriptionContent,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
