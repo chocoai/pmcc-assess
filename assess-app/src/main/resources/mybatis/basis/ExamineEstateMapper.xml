@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineEstateMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
+    <result column="developer_id" property="developerId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="street" property="street" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="attach_number" property="attachNumber" jdbcType="VARCHAR" />
+    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
+    <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
+    <result column="volumetric_rate" property="volumetricRate" jdbcType="VARCHAR" />
+    <result column="greening_rate" property="greeningRate" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, block_id, developer_id, name, street, number, attach_number, floor_area, cover_an_area, 
+    volumetric_rate, greening_rate, description, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_examine_estate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_examine_estate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_examine_estate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateExample" >
+    delete from tb_examine_estate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_examine_estate (block_id, developer_id, name, 
+      street, number, attach_number, 
+      floor_area, cover_an_area, volumetric_rate, 
+      greening_rate, description, creator, 
+      gmt_created, gmt_modified)
+    values (#{blockId,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{street,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{attachNumber,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_examine_estate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blockId != null" >
+        block_id,
+      </if>
+      <if test="developerId != null" >
+        developer_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="street != null" >
+        street,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="attachNumber != null" >
+        attach_number,
+      </if>
+      <if test="floorArea != null" >
+        floor_area,
+      </if>
+      <if test="coverAnArea != null" >
+        cover_an_area,
+      </if>
+      <if test="volumetricRate != null" >
+        volumetric_rate,
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="developerId != null" >
+        #{developerId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        #{street,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="attachNumber != null" >
+        #{attachNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="floorArea != null" >
+        #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="coverAnArea != null" >
+        #{coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="volumetricRate != null" >
+        #{volumetricRate,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        #{greeningRate,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateExample" resultType="java.lang.Integer" >
+    select count(*) from tb_examine_estate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_examine_estate
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.blockId != null" >
+        block_id = #{record.blockId,jdbcType=INTEGER},
+      </if>
+      <if test="record.developerId != null" >
+        developer_id = #{record.developerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.street != null" >
+        street = #{record.street,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachNumber != null" >
+        attach_number = #{record.attachNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floorArea != null" >
+        floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.coverAnArea != null" >
+        cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumetricRate != null" >
+        volumetric_rate = #{record.volumetricRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greeningRate != null" >
+        greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_examine_estate
+    set id = #{record.id,jdbcType=INTEGER},
+      block_id = #{record.blockId,jdbcType=INTEGER},
+      developer_id = #{record.developerId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      street = #{record.street,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=VARCHAR},
+      attach_number = #{record.attachNumber,jdbcType=VARCHAR},
+      floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
+      volumetric_rate = #{record.volumetricRate,jdbcType=VARCHAR},
+      greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
+    update tb_examine_estate
+    <set >
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
+      </if>
+      <if test="developerId != null" >
+        developer_id = #{developerId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        street = #{street,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="attachNumber != null" >
+        attach_number = #{attachNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="floorArea != null" >
+        floor_area = #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="coverAnArea != null" >
+        cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
+      </if>
+      <if test="volumetricRate != null" >
+        volumetric_rate = #{volumetricRate,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate = #{greeningRate,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
+    update tb_examine_estate
+    set block_id = #{blockId,jdbcType=INTEGER},
+      developer_id = #{developerId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      street = #{street,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
+      attach_number = #{attachNumber,jdbcType=VARCHAR},
+      floor_area = #{floorArea,jdbcType=DECIMAL},
+      cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
+      volumetric_rate = #{volumetricRate,jdbcType=VARCHAR},
+      greening_rate = #{greeningRate,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
