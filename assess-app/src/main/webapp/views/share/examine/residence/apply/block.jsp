@@ -135,7 +135,7 @@
                 var blockData = {};
                 if (id) {//获取版块数据
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/case/autoCompleteBlock",
+                        url: "${pageContext.request.contextPath}/examineBlock/getBlockById",
                         data: {id: id},
                         type: "get",
                         dataType: "json",
@@ -169,11 +169,28 @@
 
             //保存 将需要保存的数据统一传递到后台
             save: function () {
-
                 var data = formParams("frm_block");
                 data.id = ExamineInfo.config.blockId;
-
-                $.ajax({})
+                Loading.progressShow();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBlock/saveBlock",
+                    data: data,
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('保存版块成功');
+                            ExamineInfo.initTab();//重新加载tab
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (e) {
+                        Alert("调用服务端方法失败，失败原因:" + e);
+                    }
+                })
             },
 
             //加载区域性质

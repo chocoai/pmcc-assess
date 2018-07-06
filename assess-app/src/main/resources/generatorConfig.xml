@@ -39,8 +39,9 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <table tableName="tb_examine_block_area" domainObjectName="ExamineBlockArea"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_examine_block" domainObjectName="ExamineBlock">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
     </context>
 

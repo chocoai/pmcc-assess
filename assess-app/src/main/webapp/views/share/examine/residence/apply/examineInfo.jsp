@@ -27,19 +27,19 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_content_block">
-            <%@include file="/views/share/examine/residence/block.jsp" %>
+            <%@include file="/views/share/examine/residence/apply/block.jsp" %>
         </div>
         <div class="tab-pane tab_estate" id="tab_content_estate" style="display: none">
-            <%@include file="/views/share/examine/residence/estate.jsp" %>
+            <%@include file="/views/share/examine/residence/apply/estate.jsp" %>
         </div>
         <div class="tab-pane tab_building" id="tab_content_building" style="display: none">
-            <%@include file="/views/share/examine/residence/building.jsp" %>
+            <%@include file="/views/share/examine/residence/apply/building.jsp" %>
         </div>
         <div class="tab-pane tab_unit" id="tab_content_unit" style="display: none">
-            <%@include file="/views/share/examine/residence/unit.jsp" %>
+            <%@include file="/views/share/examine/residence/apply/unit.jsp" %>
         </div>
         <div class="tab-pane tab_house" id="tab_content_house" style="display: none">
-            <%@include file="/views/share/examine/residence/house.jsp" %>
+            <%@include file="/views/share/examine/residence/apply/house.jsp" %>
         </div>
     </div>
     <div class="clearfix"></div>
