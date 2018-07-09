@@ -52,14 +52,13 @@
 </script>
 
 <script type="text/javascript">
-
     (function ($) {
         //判断是否为空
         function isNotEmpty(ele) {
             if (ele) {
                 return true;
             } else {
-                return false;
+                return false;unde
             }
         }
 
@@ -67,11 +66,11 @@
         var examineInfo = {
             //初始化tab头部所需参数
             config: {
-                blockId: 1,
-                estateId: 1,
-                buildingId: 1,
-                unitId: 1,
-                houseId: 1
+                blockId: undefined,
+                estateId: undefined,
+                buildingId: undefined,
+                unitId: undefined,
+                houseId: undefined
             },
 
             //初始化tab
