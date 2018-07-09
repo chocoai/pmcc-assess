@@ -87,31 +87,34 @@
 </form>
 
 <script type="text/javascript">
-    $(function () {
 
+
+    $(function () {
+        Block.init(0);
 
         //版块信息自动补全
         $("#frm_block").find("[name='name']").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/case/autoCompleteBlock",
-                    dataType: "json",
-                    data: {
-                        featureClass: "P",
-                        style: "full",
-                        maxRows: 12,
-                        name_startsWith: request.term
-                    },
-                    success: function (data) {
-                        response($.map(data.geonames, function (item) {
-                            return {
-                                label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-                                value: item.name
-                            }
-                        }));
-                    }
-                });
-            },
+            source:[],
+            <%--source: function (request, response) {--%>
+                <%--$.ajax({--%>
+                    <%--url: "${pageContext.request.contextPath}/case/autoCompleteBlock",--%>
+                    <%--dataType: "json",--%>
+                    <%--data: {--%>
+                        <%--featureClass: "P",--%>
+                        <%--style: "full",--%>
+                        <%--maxRows: 12,--%>
+                        <%--name_startsWith: request.term--%>
+                    <%--},--%>
+                    <%--success: function (data) {--%>
+                        <%--response($.map(data.geonames, function (item) {--%>
+                            <%--return {--%>
+                                <%--label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,--%>
+                                <%--value: item.name--%>
+                            <%--}--%>
+                        <%--}));--%>
+                    <%--}--%>
+                <%--});--%>
+            <%--},--%>
             minLength: 2,
             select: function (event, ui) {
                 log(ui.item ?
@@ -127,6 +130,9 @@
         });
     })
 
+
+</script>
+<script type="text/javascript">
     (function ($) {
         //避免方法重复，定义全局变量
         var block = {

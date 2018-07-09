@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+
 <script type="text/javascript">
     (function ($) {
         //避免方法重复，定义全局变量

@@ -44,6 +44,13 @@
     </div>
     <div class="clearfix"></div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        ExamineInfo.initTab();
+    })
+</script>
+
 <script type="text/javascript">
 
     (function ($) {
@@ -60,11 +67,11 @@
         var examineInfo = {
             //初始化tab头部所需参数
             config: {
-                blockId: undefined,
-                estateId: undefined,
-                buildingId: undefined,
-                unitId: undefined,
-                houseId: undefined
+                blockId: 1,
+                estateId: 1,
+                buildingId: 1,
+                unitId: 1,
+                houseId: 1
             },
 
             //初始化tab

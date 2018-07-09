@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="x_content">
-                    <%@include file="/views/share/examine/residence/residenceInfo.jsp"%>
+                    <%@include file="/views/share/examine/residence/apply/examineInfo.jsp"%>
 
                     <div class="x_title">
                         <h3>其它信息</h3>
