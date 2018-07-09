@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class BaseAttachmentService {
     private CommonService commonService;
     @Autowired
     private ErpRpcAttachmentService erpRpcAttachmentService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     /**
      * 创建不重复的文件名
@@ -47,7 +50,7 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempBasePath(String... params) {
-        return erpRpcAttachmentService.createTempPath(commonService.getCurrentSelectAppKey(), params);
+        return erpRpcAttachmentService.createTempPath(applicationConstant.getAppKey(), params);
     }
 
     /**
@@ -57,13 +60,13 @@ public class BaseAttachmentService {
      * @return
      */
     public String createFTPBasePath(String... params) {
-        return erpRpcAttachmentService.createFTPPath(commonService.getCurrentSelectAppKey(), params);
+        return erpRpcAttachmentService.createFTPPath(applicationConstant.getAppKey(), params);
     }
 
     public List<SysAttachmentDto> getAttachmentListByTableName(String tableName, List<Integer> integers) {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableName(tableName);
-        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return erpRpcAttachmentService.getAttachmentListByIds(integers, sysAttachmentDto);
     }
 
@@ -82,12 +85,12 @@ public class BaseAttachmentService {
     }
 
     public List<SysAttachmentDto> getAttachmentList(List<Integer> tableIds, SysAttachmentDto sysAttachmentDto) {
-        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return erpRpcAttachmentService.getAttachmentListByTableIds(tableIds, sysAttachmentDto);
     }
 
     public List<SysAttachmentDto> getAttachmentList(SysAttachmentDto sysAttachmentDto) {
-        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return erpRpcAttachmentService.getAttachmentList(sysAttachmentDto);
     }
 
@@ -96,7 +99,7 @@ public class BaseAttachmentService {
     }
 
     public void addAttachment(SysAttachmentDto sysAttachmentDto) {
-        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         erpRpcAttachmentService.addAttachment(sysAttachmentDto);
     }
 
@@ -114,7 +117,7 @@ public class BaseAttachmentService {
         queryParam.setTableName(tableName);
         queryParam.setTableId(0);
         queryParam.setCreater(commonService.thisUserAccount());
-        queryParam.setAppKey(commonService.getCurrentSelectAppKey());
+        queryParam.setAppKey(applicationConstant.getAppKey());
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
@@ -123,7 +126,7 @@ public class BaseAttachmentService {
     public List<SysAttachmentDto> getApprovalLogList(String processInsId, List<String> taskIds) {
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setProcessInsId(processInsId);
-        sysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return erpRpcAttachmentService.getAttachmentListByTaskIds(taskIds, sysAttachmentDto);
     }
 
@@ -132,7 +135,7 @@ public class BaseAttachmentService {
         bidSysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPhase.class));
         bidSysAttachmentDto.setFieldsName(fieldsName);
         bidSysAttachmentDto.setTableId(id);
-        bidSysAttachmentDto.setAppKey(commonService.getCurrentSelectAppKey());
+        bidSysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         return getAttachmentList(bidSysAttachmentDto);
     }
 
@@ -177,7 +180,7 @@ public class BaseAttachmentService {
      * @param sysAttachmentDto
      */
     public void updateAttachementByExample(SysAttachmentDto queryParam, SysAttachmentDto sysAttachmentDto) {
-        queryParam.setAppKey(commonService.getCurrentSelectAppKey());
+        queryParam.setAppKey(applicationConstant.getAppKey());
         erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
     }
 

@@ -5,10 +5,10 @@ import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.initiate.*;
@@ -53,6 +53,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -67,7 +68,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:项目基础信息
@@ -129,6 +133,8 @@ public class ProjectInfoService {
     private ProjectMemberDao projectMemberDao;
     @Autowired
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     /**
      * 项目立项申请
@@ -344,7 +350,7 @@ public class ProjectInfoService {
         processInfo.setWorkStage(projectWorkStage.getWorkStageName());
         processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
         processInfo.setWorkStageId(projectWorkStage.getId());
-        processInfo.setAppKey(commonService.getCurrentSelectAppKey());
+        processInfo.setAppKey(applicationConstant.getAppKey());
 
         try {
             processUserDto = processControllerComponent.processStart(processInfo, projectInfo.getCreator(), false);
