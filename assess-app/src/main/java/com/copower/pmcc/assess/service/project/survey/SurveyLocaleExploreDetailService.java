@@ -65,11 +65,10 @@ public class SurveyLocaleExploreDetailService {
         if (detailDto == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (detailDto.getId() != null && detailDto.getId() > 0) {
-            surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
+
             return surveyLocaleExploreDetailDao.update(detailDto);
         } else {
-            Integer dynamicTableId = surveyCommonService.saveDynamicForm(detailDto.getDynamicFormId(),detailDto.getDynamicFormData(), detailDto.getDynamicTableName(),detailDto.getDynamicTableId());
-            detailDto.setDynamicTableId(dynamicTableId);
+
             detailDto.setCreator(processControllerComponent.getThisUser());
             boolean flag = surveyLocaleExploreDetailDao.save(detailDto);
             //下载定位图
@@ -91,7 +90,6 @@ public class SurveyLocaleExploreDetailService {
 
     public boolean delete(Integer id) throws BusinessException {
         if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ;
         return surveyLocaleExploreDetailDao.delete(id);
     }
 

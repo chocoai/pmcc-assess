@@ -8,7 +8,7 @@
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
-    <result column="regional_nature" property="regionalNature" jdbcType="VARCHAR" />
+    <result column="regional_nature" property="regionalNature" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -114,7 +114,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{regionalNature,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{regionalNature,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -169,7 +169,7 @@
         #{position,jdbcType=VARCHAR},
       </if>
       <if test="regionalNature != null" >
-        #{regionalNature,jdbcType=VARCHAR},
+        #{regionalNature,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -210,7 +210,7 @@
         position = #{record.position,jdbcType=VARCHAR},
       </if>
       <if test="record.regionalNature != null" >
-        regional_nature = #{record.regionalNature,jdbcType=VARCHAR},
+        regional_nature = #{record.regionalNature,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -234,7 +234,7 @@
       district = #{record.district,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       position = #{record.position,jdbcType=VARCHAR},
-      regional_nature = #{record.regionalNature,jdbcType=VARCHAR},
+      regional_nature = #{record.regionalNature,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -261,7 +261,7 @@
         position = #{position,jdbcType=VARCHAR},
       </if>
       <if test="regionalNature != null" >
-        regional_nature = #{regionalNature,jdbcType=VARCHAR},
+        regional_nature = #{regionalNature,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -282,7 +282,7 @@
       district = #{district,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       position = #{position,jdbcType=VARCHAR},
-      regional_nature = #{regionalNature,jdbcType=VARCHAR},
+      regional_nature = #{regionalNature,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

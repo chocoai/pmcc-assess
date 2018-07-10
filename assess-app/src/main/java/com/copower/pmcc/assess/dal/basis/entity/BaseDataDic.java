@@ -9,7 +9,7 @@ public class BaseDataDic {
 
     private String name;
 
-    private String itemKey;
+    private String fieldName;
 
     private Boolean bisEnable;
 
@@ -24,12 +24,6 @@ public class BaseDataDic {
     private Date mdified;
 
     private String creator;
-
-    private String fieldName;
-
-    private String url;
-
-    private Boolean forbidModify;
 
     public Integer getId() {
         return id;
@@ -55,12 +49,12 @@ public class BaseDataDic {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getItemKey() {
-        return itemKey;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setItemKey(String itemKey) {
-        this.itemKey = itemKey == null ? null : itemKey.trim();
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public Boolean getBisEnable() {
@@ -117,29 +111,5 @@ public class BaseDataDic {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName == null ? null : fieldName.trim();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
-    public Boolean getForbidModify() {
-        return forbidModify;
-    }
-
-    public void setForbidModify(Boolean forbidModify) {
-        this.forbidModify = forbidModify;
     }
 }

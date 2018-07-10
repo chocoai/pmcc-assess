@@ -15,7 +15,7 @@ public class ExamineBlock {
 
     private String position;
 
-    private String regionalNature;
+    private Integer regionalNature;
 
     private String creator;
 
@@ -71,12 +71,12 @@ public class ExamineBlock {
         this.position = position == null ? null : position.trim();
     }
 
-    public String getRegionalNature() {
+    public Integer getRegionalNature() {
         return regionalNature;
     }
 
-    public void setRegionalNature(String regionalNature) {
-        this.regionalNature = regionalNature == null ? null : regionalNature.trim();
+    public void setRegionalNature(Integer regionalNature) {
+        this.regionalNature = regionalNature;
     }
 
     public String getCreator() {

@@ -35,7 +35,7 @@ public class ExamineBlockService {
      * @param examineBlock
      */
     @Transactional
-    public void saveBlock(ExamineBlock examineBlock) throws BusinessException {
+    public Integer saveBlock(ExamineBlock examineBlock) throws BusinessException {
         if (examineBlock == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         if (examineBlock.getId() != null && examineBlock.getId() > 0) {
@@ -44,5 +44,6 @@ public class ExamineBlockService {
             examineBlock.setCreator(commonService.thisUserAccount());
             examineBlockDao.addBlock(examineBlock);
         }
+        return examineBlock.getId();
     }
 }

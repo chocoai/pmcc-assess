@@ -222,17 +222,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            关联项Key
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="50" placeholder="关联项Key"
-                                                   id="subItemKey" name="itemKey" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div>
                                         <label class="col-sm-3 control-label">
                                             是否启用<span class="symbol required"></span>

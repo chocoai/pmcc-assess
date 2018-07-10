@@ -8,6 +8,7 @@ AssessDBKey.ProjectInfo = "tb_project_info";
 AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
 AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
 AssessDBKey.BoxApprovalLog = "tb_box_approval_log";
+AssessDBKey.SurveyLocaleExploreDetail = "tb_survey_locale_explore_detail";
 
 
 /**
@@ -26,4 +27,4 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
  * 数据字典key
  */
 var AssessDicKey = {}
-AssessDicKey.ReportTemplate = "tb_report_template";
+AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";

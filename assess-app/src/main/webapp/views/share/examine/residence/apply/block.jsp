@@ -54,7 +54,7 @@
             <label class="col-sm-1 control-label">版块名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="版块名称" required
-                       name="name" value=""
+                       name="name"
                        class="form-control">
             </div>
         </div>
@@ -62,75 +62,57 @@
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="方位" required
-                       name="name" value=""
-                       class="form-control">
+                       name="position" class="form-control">
             </div>
         </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">区域性质<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="区域性质" required
-                       name="name" value=""
-                       class="form-control">
+                <select name="regionalNature" class="form-control" required></select>
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-5">
-            <button id="saveFrm" type="button" class="btn btn-primary" onclick="saveData()">
+            <button id="saveFrm" type="button" class="btn btn-primary" onclick="Block.save()">
                 保存版块
             </button>
         </div>
     </div>
-
     <div class="ln_solid"></div>
 </form>
 
 <script type="text/javascript">
 
-
     $(function () {
         Block.init(0);
-
         //版块信息自动补全
         $("#frm_block").find("[name='name']").autocomplete({
-            source:[],
-            <%--source: function (request, response) {--%>
-                <%--$.ajax({--%>
-                    <%--url: "${pageContext.request.contextPath}/case/autoCompleteBlock",--%>
-                    <%--dataType: "json",--%>
-                    <%--data: {--%>
-                        <%--featureClass: "P",--%>
-                        <%--style: "full",--%>
-                        <%--maxRows: 12,--%>
-                        <%--name_startsWith: request.term--%>
-                    <%--},--%>
-                    <%--success: function (data) {--%>
-                        <%--response($.map(data.geonames, function (item) {--%>
-                            <%--return {--%>
-                                <%--label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,--%>
-                                <%--value: item.name--%>
-                            <%--}--%>
-                        <%--}));--%>
-                    <%--}--%>
-                <%--});--%>
-            <%--},--%>
+            source: function (request, response) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/case/autoCompleteBlock",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        maxRows: 10,
+                        term: request.term
+                    },
+                    success: function (result) {
+                        response($.each(result.data, function (i, item) {
+                            return {
+                                label: item.value,
+                                value: item.key
+                            }
+                        }));
+                    }
+                });
+            },
             minLength: 2,
-            select: function (event, ui) {
-                log(ui.item ?
-                    "Selected: " + ui.item.label :
-                    "Nothing selected, input was " + this.value);
-            },
-            open: function () {
-                $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-            },
-            close: function () {
-                $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+            select: function (event, ele) {
+                console.log(ele.item);//直接读取案例中对应数据内容
             }
         });
     })
-
-
 </script>
 <script type="text/javascript">
     (function ($) {
@@ -138,27 +120,12 @@
         var block = {
             //初始化
             init: function (id) {
+                $("#frm_block").clearAll();
                 var blockData = {};
-                if (id) {//获取版块数据
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/examineBlock/getBlockById",
-                        data: {id: id},
-                        type: "get",
-                        dataType: "json",
-                        success: function (result) {
-                            if (result.ret) {
-                                blockData = result.data;
-                            }
-                            else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    })
+                var block = Block.getBlockById(id)
+                if (block) {
+                    blockData = block;
                 }
-
                 $("#frm_block").initForm(blockData);
                 Block.loadRegionalNature(blockData.regionalNature);
 
@@ -173,8 +140,37 @@
                 })
             },
 
-            //保存 将需要保存的数据统一传递到后台
+            //获取版块信息
+            getBlockById: function (id) {
+                var data = undefined;
+                if (id) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/examineBlock/getBlockById",
+                        data: {id: id},
+                        type: "get",
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            if (result.ret) {
+                                data = result.data;
+                            }
+                            else {
+                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    })
+                }
+                return data;
+            },
+
+            //保存
             save: function () {
+                if (!$("#frm_block").valid()) {
+                    return false;
+                }
                 var data = formParams("frm_block");
                 data.id = ExamineInfo.config.blockId;
                 Loading.progressShow();
@@ -187,6 +183,7 @@
                         Loading.progressHide();
                         if (result.ret) {
                             toastr.success('保存版块成功');
+                            ExamineInfo.config.blockId = result.data;
                             ExamineInfo.initTab();//重新加载tab
                         }
                         else {
@@ -201,8 +198,8 @@
 
             //加载区域性质
             loadRegionalNature: function (value) {
-                AssessCommon.loadDataDicByKey("", value, function (html, data) {
-                    $("#frm_block").find("[name='province']").append(html);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineBlockRegionalNature, value, function (html, data) {
+                    $("#frm_block").find("[name='regionalNature']").append(html);
                 })
             }
         };

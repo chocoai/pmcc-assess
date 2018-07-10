@@ -525,62 +525,52 @@ public class ExamineBlockExample {
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureEqualTo(String value) {
+        public Criteria andRegionalNatureEqualTo(Integer value) {
             addCriterion("regional_nature =", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureNotEqualTo(String value) {
+        public Criteria andRegionalNatureNotEqualTo(Integer value) {
             addCriterion("regional_nature <>", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureGreaterThan(String value) {
+        public Criteria andRegionalNatureGreaterThan(Integer value) {
             addCriterion("regional_nature >", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureGreaterThanOrEqualTo(String value) {
+        public Criteria andRegionalNatureGreaterThanOrEqualTo(Integer value) {
             addCriterion("regional_nature >=", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureLessThan(String value) {
+        public Criteria andRegionalNatureLessThan(Integer value) {
             addCriterion("regional_nature <", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureLessThanOrEqualTo(String value) {
+        public Criteria andRegionalNatureLessThanOrEqualTo(Integer value) {
             addCriterion("regional_nature <=", value, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureLike(String value) {
-            addCriterion("regional_nature like", value, "regionalNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegionalNatureNotLike(String value) {
-            addCriterion("regional_nature not like", value, "regionalNature");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegionalNatureIn(List<String> values) {
+        public Criteria andRegionalNatureIn(List<Integer> values) {
             addCriterion("regional_nature in", values, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureNotIn(List<String> values) {
+        public Criteria andRegionalNatureNotIn(List<Integer> values) {
             addCriterion("regional_nature not in", values, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureBetween(String value1, String value2) {
+        public Criteria andRegionalNatureBetween(Integer value1, Integer value2) {
             addCriterion("regional_nature between", value1, value2, "regionalNature");
             return (Criteria) this;
         }
 
-        public Criteria andRegionalNatureNotBetween(String value1, String value2) {
+        public Criteria andRegionalNatureNotBetween(Integer value1, Integer value2) {
             addCriterion("regional_nature not between", value1, value2, "regionalNature");
             return (Criteria) this;
         }

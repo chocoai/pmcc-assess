@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.basis.mapper;
 
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDicExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface BaseDataDicMapper {
     int countByExample(BaseDataDicExample example);

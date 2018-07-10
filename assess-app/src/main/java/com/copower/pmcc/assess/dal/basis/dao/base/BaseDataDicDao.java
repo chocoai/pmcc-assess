@@ -30,17 +30,15 @@ public class BaseDataDicDao {
      */
     public List<BaseDataDic> getListObject(String fieldName, String name) {
         BaseDataDicExample example = new BaseDataDicExample();
-        BaseDataDicExample.Criteria criteria = example.createCriteria()
-                .andPidEqualTo(0)
-                .andBisDeleteEqualTo(false);
+        BaseDataDicExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if(StringUtils.isBlank(fieldName)&&StringUtils.isBlank(name)){
+            criteria.andPidEqualTo(0);
+        }
         if (StringUtils.isNotBlank(fieldName)) {
             criteria.andFieldNameLike(MessageFormat.format("%{0}%",fieldName));
         }
         if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike("%"+name+"%");
-        }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike("%"+name+"%");
+            criteria.andNameLike(String.format("%%%s%%",name));
         }
         example.setOrderByClause("sorting");
         List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);

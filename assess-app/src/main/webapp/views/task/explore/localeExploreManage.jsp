@@ -17,11 +17,6 @@
                     <h3>
                         <i class="fa " style="margin-right: 20px;"></i>
                         住宅商业办公评估调查表单
-                        <small>
-                            <label></label>
-                            <label class="label label-success"><i class="fa fa-flag" style="margin-right: 8px"></i>成果提交</label>
-                            <label class="label label-primary"><i class="fa fa-user" style="margin-right: 8px"></i>管理员</label>
-                        </small>
                     </h3>
                 </div>
             </div>
@@ -111,14 +106,14 @@
                 </div>
 
             </div>
-            <div class="x_panel saveAllPanel" style="display: none">
+            <div class="x_panel saveAllPanel" >
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="saveFrm" type="button" class="btn btn-primary" onclick="saveData()">
-                            保存
+                        <button id="saveFrm" type="button" class="btn btn-success" onclick="saveData()">
+                            全部保存
                         </button>
                     </div>
                 </div>
@@ -135,17 +130,8 @@
 <script type="text/javascript">
     $(function () {
 
-        canSaveAllData();
     })
 
-    //是否可以保存所有数据
-    function canSaveAllData() {
-        if(ExamineInfo.config.houseId){
-            $(".saveAllPanel").show();
-        }else{
-            $(".saveAllPanel").hide();
-        }
-    }
 
     //保存数据
     function saveData() {
@@ -207,13 +193,12 @@
             showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_survey_locale_explore_detail",
+                tableName: AssessDBKey.SurveyLocaleExploreDetail,
                 tableId: ${surveyLocaleExploreDetail.id},
                 fieldsName: "survey_image"
             },
-            deleteFlag: true
-        }, {
-            onUploadComplete: function () {
+            deleteFlag: true,
+            success:function () {
                 loadSurveyImageFiles();
             }
         });
@@ -223,13 +208,12 @@
             showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_survey_locale_explore_detail",
+                tableName: AssessDBKey.SurveyLocaleExploreDetail,
                 tableId: ${surveyLocaleExploreDetail.id},
                 fieldsName: "survey_video"
             },
-            deleteFlag: true
-        }, {
-            onUploadComplete: function () {
+            deleteFlag: true,
+            success:function () {
                 loadSurveyVideoFiles();
             }
         });

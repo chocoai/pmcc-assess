@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ import java.util.List;
 @RequestMapping("/case")
 public class CaseController {
 
+    @ResponseBody
     @GetMapping(name = "版块信息自动补全",value = "/autoCompleteBlock")
-    public HttpResult autoCompleteBlock(){
+    public HttpResult autoCompleteBlock(String term,Integer maxRows){
         List<KeyValueDto> keyValueDtos= Lists.newArrayList();
         KeyValueDto keyValueDto=new KeyValueDto();
         keyValueDto.setKey("1");

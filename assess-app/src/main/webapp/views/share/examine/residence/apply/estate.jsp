@@ -9,7 +9,6 @@
 
 
 <script type="text/javascript">
-
     (function ($) {
         //避免方法重复，定义全局变量
         var estate = {
@@ -18,7 +17,7 @@
 
             },
 
-            //保存 将需要保存的数据统一传递到后台
+            //保存
             save: function () {
 
             }
