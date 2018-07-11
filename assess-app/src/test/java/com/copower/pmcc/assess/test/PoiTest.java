@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
@@ -24,11 +25,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-31.
@@ -236,5 +240,27 @@ public class PoiTest {
     public void test2(){
         JSONObject jsonObject = JSONObject.parseObject("[{\"name\":\"province_name\",\"title\":\"省\"},{\"name\":\"city_name\",\"title\":\"市\"},{\"name\":\"district_name\",\"title\":\"区县\"},{\"name\":\"name\",\"title\":\"名称\"},{\"name\":\"public_situation\",\"title\":\"共有情况\"},{\"name\":\"street_number\",\"title\":\"街道号\"},{\"name\":\"floor_area\",\"title\":\"建筑面积\"}]");
         System.out.println(jsonObject);
+    }
+
+    @Test
+    public void replaceTextToFile(){
+        try {
+            String filePath="C:\\Users\\kings\\Desktop\\新建 Microsoft Word 文档.docx";
+            Document doc = new Document(filePath);
+            doc.getRange().replace(Pattern.compile("任务安排"), new IReplacingCallback() {
+                @Override
+                public int replacing(ReplacingArgs e) throws Exception {
+                    DocumentBuilder builder = new DocumentBuilder((Document)e.getMatchNode().getDocument());
+                    builder.moveTo(e.getMatchNode());
+                    Document document = new Document("C:\\Users\\kings\\Desktop\\评估项目bug记录.docx");
+                    builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
+                    return ReplaceAction.REPLACE;
+                }
+            }, false);
+
+            doc.save("C:\\Users\\kings\\Desktop\\1.docx");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -43,20 +43,24 @@
                                 <input type="hidden" id="tree_value" value="0">
                                 <div class="row">
                                     <div class="col-xs-4">
-                                        <select id='entrust' name='entrust' class='form-control search-select select2' onchange="getProjectClassify()">
+                                        <select id='entrust' name='entrust' class='form-control search-select select2'
+                                                onchange="getProjectClassify()">
                                             <c:forEach var="item" items="${entrust}">
                                                 <option value="${item.id}">${item.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
                                     <div class="col-xs-4">
-                                        <select id='csType' name='csType' class='form-control  search-select select2' onchange="reloadTableList()">
+                                        <select id='csType' name='csType' class='form-control  search-select select2'
+                                                onchange="reloadTableList()">
                                             <option value="0">自然人</option>
                                             <option value="1">法人</option>
                                         </select>
                                     </div>
                                     <div class="col-xs-4">
-                                        <select id='reportTypeId' name='reportTypeId' class='form-control  search-select select2' onchange="reloadTableList()">
+                                        <select id='reportTypeId' name='reportTypeId'
+                                                class='form-control  search-select select2'
+                                                onchange="reloadTableList()">
                                             <c:forEach var="item" items="${reportType}">
                                                 <option value="${item.id}">${item.name}</option>
                                             </c:forEach>
@@ -66,13 +70,18 @@
                                 <div class="tab-content">
                                     <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                            <li role="presentation" class="active"><a href="#tab_bookmark" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">书签</a>
+                                            <li role="presentation" class="active"><a href="#tab_bookmark" id="home-tab"
+                                                                                      role="tab" data-toggle="tab"
+                                                                                      aria-expanded="true">书签</a>
                                             </li>
-                                            <li role="presentation" class=""><a href="#tab_template" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">模板</a>
+                                            <li role="presentation" class=""><a href="#tab_template" role="tab"
+                                                                                id="profile-tab" data-toggle="tab"
+                                                                                aria-expanded="false">模板</a>
                                             </li>
                                         </ul>
                                         <div id="myTabContent" class="tab-content">
-                                            <div class="tab-pane fade active in" id="tab_bookmark" aria-labelledby="home-tab">
+                                            <div class="tab-pane fade active in" id="tab_bookmark"
+                                                 aria-labelledby="home-tab">
                                                 <p id="toolbar">
                                                     <a class="btn btn-success" onclick="addBookmark(0)">
                                                         新增书签
@@ -177,7 +186,8 @@
                                     <div class='x-valid'><label
                                             class='col-sm-2 control-label'>数据来源</label>
                                         <div class='col-sm-10'>
-                                            <select id='dataPoolType' name='dataPoolType' class='form-control' onclick="changePool()">
+                                            <select id='dataPoolType' name='dataPoolType' class='form-control'
+                                                    onclick="changePool()">
                                                 <c:forEach var="item" items="${baseReportDataPoolTypeEnumList}">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
@@ -190,17 +200,21 @@
                                         <label
                                                 class='col-sm-2 control-label'></label>
                                         <div class='col-sm-5' id="div_dataPoolTableId" style="display: none;">
-                                            <select id='dataPoolTableId' name='dataPoolTableId' onclick="loadTableCloumns()" class='form-control  search-select select2'>
+                                            <select id='dataPoolTableId' name='dataPoolTableId'
+                                                    onclick="loadTableCloumns()"
+                                                    class='form-control  search-select select2'>
                                                 <option value="">--请选择--</option>
                                             </select>
                                         </div>
                                         <div class='col-sm-5' id="div_dataPoolColumnsId" style="display: none;">
-                                            <select id='dataPoolColumnsId' name='dataPoolColumnsId' class='form-control  search-select select2'>
+                                            <select id='dataPoolColumnsId' name='dataPoolColumnsId'
+                                                    class='form-control  search-select select2'>
                                                 <option value="">--请选择--</option>
                                             </select>
                                         </div>
                                         <div class='col-sm-10' id="div_dataPoolTemplateId" style="display: none;">
-                                            <select id='dataPoolTemplateId' name='dataPoolTemplateId' class='form-control  search-select select2'>
+                                            <select id='dataPoolTemplateId' name='dataPoolTemplateId'
+                                                    class='form-control  search-select select2'>
                                                 <option value="">--请选择--</option>
                                             </select>
                                         </div>
@@ -262,7 +276,8 @@
                                             报告适用范围<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id='classifyId' name='classifyId' required class='form-control  search-select select2'>
+                                            <select id='classifyId' name='classifyId' required
+                                                    class='form-control  search-select select2'>
                                                 <option value="0">全部实用</option>
                                             </select>
                                         </div>
@@ -273,7 +288,8 @@
                                         <label
                                                 class='col-sm-2 control-label'>报告模板</label>
                                         <div class='col-sm-10'>
-                                            <input id="uploadTemplateFileReport" name="uploadTemplateFileReport" type="file" multiple="false">
+                                            <input id="uploadTemplateFileReport" name="uploadTemplateFileReport"
+                                                   type="file" multiple="false">
                                             <div id="_uploadTemplateFileReport">
                                             </div>
                                         </div>
@@ -284,7 +300,8 @@
                                         <label
                                                 class='col-sm-2 control-label'>汇总模板</label>
                                         <div class='col-sm-10'>
-                                            <input id="uploadTemplateFileExport" name="uploadTemplateFileExport" type="file" multiple="false">
+                                            <input id="uploadTemplateFileExport" name="uploadTemplateFileExport"
+                                                   type="file" multiple="false">
                                             <div id="_uploadTemplateFileExport">
                                             </div>
                                         </div>
@@ -327,8 +344,7 @@
         FileUtils.uploadFiles({
             target: "uploadFile",
             showFileList: false,
-            fileExtArray: ["doc", "docx"]
-        }, {
+            fileExtArray: ["doc", "docx"],
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_base_report_template",
@@ -345,8 +361,7 @@
         FileUtils.uploadFiles({
             target: "uploadTemplateFileReport",
             showFileList: false,
-            fileExtArray: ["doc", "docx"]
-        }, {
+            fileExtArray: ["doc", "docx"],
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_base_report_template_files",
@@ -363,8 +378,7 @@
         FileUtils.uploadFiles({
             target: "uploadTemplateFileExport",
             showFileList: false,
-            fileExtArray: ["xls", "xlsx"]
-        }, {
+            fileExtArray: ["xls", "xlsx"],
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_base_report_template_files",
