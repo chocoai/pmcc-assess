@@ -114,22 +114,6 @@ public class BaseDataDicDao {
     }
     //endregion
 
-    /**
-     * 获取可用数据根据groupName
-     *
-     * @return
-     */
-    public List<BaseDataDic> getEnableListByGroupName(String groupKey) {
-        if(StringUtils.isBlank(groupKey))return null;
-        BaseDataDicExample example = new BaseDataDicExample();
-        example.createCriteria()
-                .andBisEnableEqualTo(true)
-                .andBisDeleteEqualTo(false);
-        example.setOrderByClause("sorting");
-        List<BaseDataDic> list = sysDataDicMapper.selectByExample(example);
-        return list;
-    }
-    //endregion
 
     //region 获取单条数据
 

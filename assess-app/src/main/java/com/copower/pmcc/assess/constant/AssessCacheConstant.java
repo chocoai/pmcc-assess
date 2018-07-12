@@ -8,16 +8,17 @@ package com.copower.pmcc.assess.constant;
  * @time: 15:23
  */
 public class AssessCacheConstant {
-    //项目类型
-    public static final String PMCC_ASSESS_BASE_CATEGORY_ID = "pmcc:assess:base:category:id";
-    public static final String PMCC_ASSESS_BASE_CATEGORY_PID = "pmcc:assess:base:category:pid";
-    public static final String PMCC_ASSESS_BASE_CATEGORY_KEY = "pmcc:assess:base:category:key";
-
     //项目分类
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY = "pmcc:assess:project:classify";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_ID = "pmcc:assess:project:classify:id";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_PID = "pmcc:assess:project:classify:pid";
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY_FIELD = "pmcc:assess:project:classify:field";
+
+    //调查任务
+    public static final String PMCC_ASSESS_EXAMINE_TASK = "pmcc:assess:examine:task";
+    public static final String PMCC_ASSESS_EXAMINE_TASK_ID = "pmcc:assess:examine:task:id";
+    public static final String PMCC_ASSESS_EXAMINE_TASK_PID = "pmcc:assess:examine:task:pid";
+    public static final String PMCC_ASSESS_EXAMINE_TASK_FIELD = "pmcc:assess:examine:task:field";
 
     //项目阶段
     public static final String PMCC_ASSESS_WORK_STAGE = "pmcc:assess:work:stage";

@@ -1,8 +1,8 @@
-package com.copower.pmcc.assess.dal.basis.dao.base;
+package com.copower.pmcc.assess.dal.basis.dao.data;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassifyExample;
-import com.copower.pmcc.assess.dal.basis.mapper.BaseProjectClassifyMapper;
+import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
+import com.copower.pmcc.assess.dal.basis.entity.DataExamineTaskExample;
+import com.copower.pmcc.assess.dal.basis.mapper.DataExamineTaskMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,9 +16,9 @@ import java.util.List;
  * Created by wangpc on 2017/8/16.
  */
 @Repository
-public class BaseProjectClassifyDao {
+public class DataExamineTaskDao {
     @Autowired
-    private BaseProjectClassifyMapper baseProjectClassifyMapper;
+    private DataExamineTaskMapper dataExamineTaskMapper;
 
     //region 获取所有项目分类列表
 
@@ -29,9 +29,9 @@ public class BaseProjectClassifyDao {
      * @param name
      * @return
      */
-    public List<BaseProjectClassify> getListObject(String name, String fieldName, Integer pid) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria()
+    public List<DataExamineTask> getListObject(String name, String fieldName, Integer pid) {
+        DataExamineTaskExample example = new DataExamineTaskExample();
+        DataExamineTaskExample.Criteria criteria = example.createCriteria()
                 .andBisEnableEqualTo(true)
                 .andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(fieldName)) {
@@ -44,16 +44,16 @@ public class BaseProjectClassifyDao {
             criteria.andPidEqualTo(pid);
         }
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
+        List<DataExamineTask> list = dataExamineTaskMapper.selectByExample(example);
         return list;
     }
     //endregion
 
 
-    public List<BaseProjectClassify> getProjectClassifyList(BaseProjectClassify baseProjectClassify) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+    public List<DataExamineTask> getProjectClassifyList(DataExamineTask baseProjectClassify) {
+        DataExamineTaskExample example = new DataExamineTaskExample();
         MybatisUtils.convertObj2Example(baseProjectClassify, example);
-        return baseProjectClassifyMapper.selectByExample(example);
+        return dataExamineTaskMapper.selectByExample(example);
     }
 
     //region 获取数据根据pid
@@ -63,15 +63,15 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public List<BaseProjectClassify> getListByPid(Integer pid, String search) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria();
+    public List<DataExamineTask> getListByPid(Integer pid, String search) {
+        DataExamineTaskExample example = new DataExamineTaskExample();
+        DataExamineTaskExample.Criteria criteria = example.createCriteria();
         criteria.andPidEqualTo(pid).andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(search)) {
             criteria.andNameLike(search);
         }
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
+        List<DataExamineTask> list = dataExamineTaskMapper.selectByExample(example);
         return list;
     }
     //endregion
@@ -83,22 +83,22 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public List<BaseProjectClassify> getEnableListByPid(Integer pid) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+    public List<DataExamineTask> getEnableListByPid(Integer pid) {
+        DataExamineTaskExample example = new DataExamineTaskExample();
         example.createCriteria()
                 .andBisEnableEqualTo(true)
                 .andPidEqualTo(pid)
                 .andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
+        List<DataExamineTask> list = dataExamineTaskMapper.selectByExample(example);
         return list;
     }
     //endregion
 
-    public List<BaseProjectClassify> getEnableListByPids(List<Integer> integers) {
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+    public List<DataExamineTask> getEnableListByPids(List<Integer> integers) {
+        DataExamineTaskExample example = new DataExamineTaskExample();
         example.createCriteria().andPidIn(integers);
-        return baseProjectClassifyMapper.selectByExample(example);
+        return dataExamineTaskMapper.selectByExample(example);
     }
 
     /**
@@ -106,8 +106,8 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public List<BaseProjectClassify> getEnableList(String fieldName) {
-        BaseProjectClassify sysProjectClassify = getSingleObject(fieldName);
+    public List<DataExamineTask> getEnableList(String fieldName) {
+        DataExamineTask sysProjectClassify = getSingleObject(fieldName);
         if (sysProjectClassify == null) return null;
         return getEnableListByPid(sysProjectClassify.getId());
     }
@@ -118,12 +118,12 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public BaseProjectClassify getSingleObject(String fieldName) {
+    public DataExamineTask getSingleObject(String fieldName) {
         if (StringUtils.isBlank(fieldName)) return null;
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
+        DataExamineTaskExample example = new DataExamineTaskExample();
         example.createCriteria().andFieldNameEqualTo(fieldName);
         example.setOrderByClause("sorting");
-        List<BaseProjectClassify> list = baseProjectClassifyMapper.selectByExample(example);
+        List<DataExamineTask> list = dataExamineTaskMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(list))
             return null;
         return list.get(0);
@@ -137,8 +137,8 @@ public class BaseProjectClassifyDao {
      *
      * @return
      */
-    public BaseProjectClassify getSingleObject(Integer id) {
-        BaseProjectClassify sysProjectClassify = baseProjectClassifyMapper.selectByPrimaryKey(id);
+    public DataExamineTask getSingleObject(Integer id) {
+        DataExamineTask sysProjectClassify = dataExamineTaskMapper.selectByPrimaryKey(id);
         return sysProjectClassify;
     }
     //endregion
@@ -151,9 +151,9 @@ public class BaseProjectClassifyDao {
      * @param sysProjectClassify
      * @return
      */
-    public boolean addObject(BaseProjectClassify sysProjectClassify) {
+    public boolean addObject(DataExamineTask sysProjectClassify) {
         if (sysProjectClassify == null) return false;
-        return baseProjectClassifyMapper.insertSelective(sysProjectClassify) > 0;
+        return dataExamineTaskMapper.insertSelective(sysProjectClassify) > 0;
     }
     //endregion
 
@@ -165,9 +165,9 @@ public class BaseProjectClassifyDao {
      * @param sysProjectClassify
      * @return
      */
-    public boolean updateObject(BaseProjectClassify sysProjectClassify) {
+    public boolean updateObject(DataExamineTask sysProjectClassify) {
         if (sysProjectClassify == null) return false;
-        return baseProjectClassifyMapper.updateByPrimaryKeySelective(sysProjectClassify) > 0;
+        return dataExamineTaskMapper.updateByPrimaryKeySelective(sysProjectClassify) > 0;
     }
     //endregion
 
@@ -180,13 +180,13 @@ public class BaseProjectClassifyDao {
      */
     public boolean isExist(String filedName, Integer id) {
         if (StringUtils.isBlank(filedName)) return false;
-        BaseProjectClassifyExample example = new BaseProjectClassifyExample();
-        BaseProjectClassifyExample.Criteria criteria = example.createCriteria();
+        DataExamineTaskExample example = new DataExamineTaskExample();
+        DataExamineTaskExample.Criteria criteria = example.createCriteria();
         criteria.andFieldNameEqualTo(filedName);
         if (id != null) {
             criteria.andIdNotEqualTo(id);
         }
-        return baseProjectClassifyMapper.countByExample(example) > 0;
+        return dataExamineTaskMapper.countByExample(example) > 0;
     }
 
 
