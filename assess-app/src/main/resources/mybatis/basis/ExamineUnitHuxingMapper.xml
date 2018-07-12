@@ -3,8 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineUnitHuxingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="house_layout" property="houseLayout" jdbcType="VARCHAR" />
+    <result column="house_layout" property="houseLayout" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="span_length" property="spanLength" jdbcType="DECIMAL" />
     <result column="span_width" property="spanWidth" jdbcType="INTEGER" />
@@ -73,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, house_layout, area, span_length, span_width, span_number, description, 
-    creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, unit_id, house_layout, area, span_length, span_width, 
+    span_number, description, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxingExample" >
     select
@@ -110,14 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_unit_huxing (unit_id, house_layout, area, 
-      span_length, span_width, span_number, 
-      description, creator, gmt_created, 
-      gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{houseLayout,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
-      #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_unit_huxing (declare_id, examine_type, unit_id, 
+      house_layout, area, span_length, 
+      span_width, span_number, description, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
+      #{houseLayout,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{spanLength,jdbcType=DECIMAL}, 
+      #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,6 +129,12 @@
     </selectKey>
     insert into tb_examine_unit_huxing
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="unitId != null" >
         unit_id,
       </if>
@@ -157,11 +167,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
       <if test="houseLayout != null" >
-        #{houseLayout,jdbcType=VARCHAR},
+        #{houseLayout,jdbcType=INTEGER},
       </if>
       <if test="area != null" >
         #{area,jdbcType=DECIMAL},
@@ -201,11 +217,17 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
       <if test="record.houseLayout != null" >
-        house_layout = #{record.houseLayout,jdbcType=VARCHAR},
+        house_layout = #{record.houseLayout,jdbcType=INTEGER},
       </if>
       <if test="record.area != null" >
         area = #{record.area,jdbcType=DECIMAL},
@@ -239,8 +261,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_unit_huxing
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      house_layout = #{record.houseLayout,jdbcType=VARCHAR},
+      house_layout = #{record.houseLayout,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
       span_length = #{record.spanLength,jdbcType=DECIMAL},
       span_width = #{record.spanWidth,jdbcType=INTEGER},
@@ -256,11 +280,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     update tb_examine_unit_huxing
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
       <if test="houseLayout != null" >
-        house_layout = #{houseLayout,jdbcType=VARCHAR},
+        house_layout = #{houseLayout,jdbcType=INTEGER},
       </if>
       <if test="area != null" >
         area = #{area,jdbcType=DECIMAL},
@@ -291,8 +321,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     update tb_examine_unit_huxing
-    set unit_id = #{unitId,jdbcType=INTEGER},
-      house_layout = #{houseLayout,jdbcType=VARCHAR},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      house_layout = #{houseLayout,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
       span_length = #{spanLength,jdbcType=DECIMAL},
       span_width = #{spanWidth,jdbcType=INTEGER},

@@ -438,7 +438,6 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'fieldName', title: '字段名称'});
-        cols.push({field: 'itemKey', title: '关联项Key'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);

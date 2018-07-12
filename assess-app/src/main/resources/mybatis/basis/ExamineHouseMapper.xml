@@ -3,12 +3,15 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="floor" property="floor" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
     <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
-    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
-    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
+    <result column="news_huxing" property="newsHuxing" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
+    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
     <result column="right_interests_restriction" property="rightInterestsRestriction" jdbcType="VARCHAR" />
     <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
@@ -75,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, floor, house_number, huxing_id, cert_use, practical_use, right_interests_restriction, 
-    use_environment, description, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, unit_id, house_number, floor, huxing_id, news_huxing, 
+    cert_use, practical_use, right_interests_restriction, use_environment, description, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseExample" >
     select
@@ -112,13 +116,15 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house (unit_id, floor, house_number, 
-      huxing_id, cert_use, practical_use, 
+    insert into tb_examine_house (declare_id, examine_type, unit_id, 
+      house_number, floor, huxing_id, 
+      news_huxing, cert_use, practical_use, 
       right_interests_restriction, use_environment, 
       description, creator, gmt_created, 
       gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{huxingId,jdbcType=INTEGER}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
+      #{houseNumber,jdbcType=VARCHAR}, #{floor,jdbcType=INTEGER}, #{huxingId,jdbcType=INTEGER}, 
+      #{newsHuxing,jdbcType=INTEGER}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
       #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
       #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
@@ -129,17 +135,26 @@
     </selectKey>
     insert into tb_examine_house
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="unitId != null" >
         unit_id,
-      </if>
-      <if test="floor != null" >
-        floor,
       </if>
       <if test="houseNumber != null" >
         house_number,
       </if>
+      <if test="floor != null" >
+        floor,
+      </if>
       <if test="huxingId != null" >
         huxing_id,
+      </if>
+      <if test="newsHuxing != null" >
+        news_huxing,
       </if>
       <if test="certUse != null" >
         cert_use,
@@ -167,23 +182,32 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
-      </if>
-      <if test="floor != null" >
-        #{floor,jdbcType=INTEGER},
       </if>
       <if test="houseNumber != null" >
         #{houseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
       <if test="huxingId != null" >
         #{huxingId,jdbcType=INTEGER},
       </if>
+      <if test="newsHuxing != null" >
+        #{newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="certUse != null" >
-        #{certUse,jdbcType=VARCHAR},
+        #{certUse,jdbcType=INTEGER},
       </if>
       <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=VARCHAR},
+        #{practicalUse,jdbcType=INTEGER},
       </if>
       <if test="rightInterestsRestriction != null" >
         #{rightInterestsRestriction,jdbcType=VARCHAR},
@@ -217,23 +241,32 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=INTEGER},
       </if>
       <if test="record.houseNumber != null" >
         house_number = #{record.houseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
       <if test="record.huxingId != null" >
         huxing_id = #{record.huxingId,jdbcType=INTEGER},
       </if>
+      <if test="record.newsHuxing != null" >
+        news_huxing = #{record.newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=VARCHAR},
+        cert_use = #{record.certUse,jdbcType=INTEGER},
       </if>
       <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+        practical_use = #{record.practicalUse,jdbcType=INTEGER},
       </if>
       <if test="record.rightInterestsRestriction != null" >
         right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
@@ -261,12 +294,15 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_house
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      floor = #{record.floor,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
-      cert_use = #{record.certUse,jdbcType=VARCHAR},
-      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      news_huxing = #{record.newsHuxing,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=INTEGER},
+      practical_use = #{record.practicalUse,jdbcType=INTEGER},
       right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{record.useEnvironment,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
@@ -280,23 +316,32 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouse" >
     update tb_examine_house
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
-      </if>
-      <if test="floor != null" >
-        floor = #{floor,jdbcType=INTEGER},
       </if>
       <if test="houseNumber != null" >
         house_number = #{houseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
       <if test="huxingId != null" >
         huxing_id = #{huxingId,jdbcType=INTEGER},
       </if>
+      <if test="newsHuxing != null" >
+        news_huxing = #{newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=VARCHAR},
+        cert_use = #{certUse,jdbcType=INTEGER},
       </if>
       <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=VARCHAR},
+        practical_use = #{practicalUse,jdbcType=INTEGER},
       </if>
       <if test="rightInterestsRestriction != null" >
         right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
@@ -321,12 +366,15 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouse" >
     update tb_examine_house
-    set unit_id = #{unitId,jdbcType=INTEGER},
-      floor = #{floor,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=INTEGER},
       huxing_id = #{huxingId,jdbcType=INTEGER},
-      cert_use = #{certUse,jdbcType=VARCHAR},
-      practical_use = #{practicalUse,jdbcType=VARCHAR},
+      news_huxing = #{newsHuxing,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=INTEGER},
+      practical_use = #{practicalUse,jdbcType=INTEGER},
       right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{useEnvironment,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},

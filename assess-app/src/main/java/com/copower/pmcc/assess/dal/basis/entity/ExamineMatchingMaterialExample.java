@@ -165,6 +165,126 @@ public class ExamineMatchingMaterialExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNull() {
+            addCriterion("examine_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNotNull() {
+            addCriterion("examine_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeEqualTo(Integer value) {
+            addCriterion("examine_type =", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotEqualTo(Integer value) {
+            addCriterion("examine_type <>", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThan(Integer value) {
+            addCriterion("examine_type >", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("examine_type >=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThan(Integer value) {
+            addCriterion("examine_type <", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("examine_type <=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIn(List<Integer> values) {
+            addCriterion("examine_type in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotIn(List<Integer> values) {
+            addCriterion("examine_type not in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type not between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
         public Criteria andEstateIdIsNull() {
             addCriterion("estate_id is null");
             return (Criteria) this;

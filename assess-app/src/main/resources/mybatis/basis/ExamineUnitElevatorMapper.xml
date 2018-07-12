@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineUnitElevatorMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevator" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="brand" property="brand" jdbcType="VARCHAR" />
@@ -74,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, type, brand, number, quasi_load_number, quasi_load_weight, running_speed, 
-    maintenance, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, unit_id, type, brand, number, quasi_load_number, quasi_load_weight, 
+    running_speed, maintenance, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevatorExample" >
     select
@@ -111,14 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_unit_elevator (unit_id, type, brand, 
-      number, quasi_load_number, quasi_load_weight, 
-      running_speed, maintenance, creator, 
-      gmt_created, gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
-      #{number,jdbcType=INTEGER}, #{quasiLoadNumber,jdbcType=INTEGER}, #{quasiLoadWeight,jdbcType=VARCHAR}, 
-      #{runningSpeed,jdbcType=VARCHAR}, #{maintenance,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_unit_elevator (declare_id, examine_type, unit_id, 
+      type, brand, number, 
+      quasi_load_number, quasi_load_weight, running_speed, 
+      maintenance, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{quasiLoadNumber,jdbcType=INTEGER}, #{quasiLoadWeight,jdbcType=VARCHAR}, #{runningSpeed,jdbcType=VARCHAR}, 
+      #{maintenance,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevator" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +130,12 @@
     </selectKey>
     insert into tb_examine_unit_elevator
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="unitId != null" >
         unit_id,
       </if>
@@ -161,6 +171,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
@@ -208,6 +224,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
@@ -249,6 +271,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_unit_elevator
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       brand = #{record.brand,jdbcType=VARCHAR},
@@ -267,6 +291,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevator" >
     update tb_examine_unit_elevator
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
@@ -305,7 +335,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevator" >
     update tb_examine_unit_elevator
-    set unit_id = #{unitId,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       brand = #{brand,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},

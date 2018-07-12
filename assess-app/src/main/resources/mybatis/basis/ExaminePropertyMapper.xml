@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExaminePropertyMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineProperty" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
     <result column="social_prestige" property="socialPrestige" jdbcType="VARCHAR" />
@@ -69,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, company_nature, social_prestige, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, name, company_nature, social_prestige, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExaminePropertyExample" >
     select
@@ -105,12 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_property (name, company_nature, social_prestige, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_examine_property (declare_id, examine_type, name, 
+      company_nature, social_prestige, creator, 
+      gmt_created, gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineProperty" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -118,6 +121,12 @@
     </selectKey>
     insert into tb_examine_property
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="name != null" >
         name,
       </if>
@@ -138,6 +147,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -170,6 +185,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -196,6 +217,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_property
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       company_nature = #{record.companyNature,jdbcType=INTEGER},
       social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
@@ -209,6 +232,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineProperty" >
     update tb_examine_property
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -232,7 +261,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineProperty" >
     update tb_examine_property
-    set name = #{name,jdbcType=VARCHAR},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       company_nature = #{companyNature,jdbcType=INTEGER},
       social_prestige = #{socialPrestige,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

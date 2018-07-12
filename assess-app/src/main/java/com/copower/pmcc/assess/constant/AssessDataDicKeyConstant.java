@@ -8,37 +8,40 @@ package com.copower.pmcc.assess.constant;
  * @time: 13:45
  */
 public class AssessDataDicKeyConstant {
-    public static final String BOX_GROUP = "box.group";//模型分组
-    public static final String BUILDING_NEW_RATE_USE = "building.new.rate.use";//建筑成新率用途
-    public static final String ASSESS_CLASS = "basis.class";//大类
-    public static final String EVALUATION_METHOD = "evaluation.method";//评估方法
-    public static final String EVALUATION_THINKING = "evaluation.think";//评估假设
-    public static final String EVALUATION_PRINCIPLE = "evaluation.principle";//评估原则
-    public static final String VALUATION_BASIS = "evaluation.basis";//评估依据
+    /*
+     * 基础数据
+     */
+    public static final String ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
+    public static final String EVALUATION_METHOD = "data.evaluation.method";//评估方法
+    public static final String BUILDING_NEW_RATE_USE = "databuilding.new.rate.use";//建筑成新率用途
+    public static final String EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
+    public static final String EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
 
-    //报告相关
+    /*
+     * 报告配置
+     */
     public static final String REPORT_TYPE = "report.type"; //报告类型
     public static final String REPORT_TYPE_PREAUDIT = "report.type.preaudit"; //预评报告
     public static final String REPORT_TYPE_TECHNOLOGY = "report.type.technology"; //技术报告
     public static final String REPORT_TYPE_RESULT = "report.type.result"; //结果报告
     public static final String REPORT_ANALYSIS_CATEGORY = "report.analysis.category";  //报告分析类别
 
-    public static final String ENTRUSTMENT_PURPOSE = "entrustment.purpose";//委托目的
-    public static final String PROJECT_WORK_STAGE = "project.work.stage";  //阶段权重占比
-    public static final String EARLYWARNING_TYPE = "earlywarning.type";  //预警类型
-    public static final String EARLYWARNING_MODE = "earlywarning.mode";  //预警方式
+    /*
+     * 项目立项
+     */
     public static final String PROJECT_INITIATE_URGENCY = "project.initiate.urgency";  //紧急程度
     public static final String VALUE_TYPE = "value.type";  //价值类型
 
-    //清查相关
+    /*
+     * 项目查勘
+     */
     public static final String CHECK_CONTENT = "check.content"; //清查内容
     public static final String OTHER_RIGHT_TYPE = "other.right.type";   //他权类型
-
-    //案例相关
     public static final String CASE_TYPE = "case.type";  //案例类型
     public static final String CASE_INFO_SOURCE = "case.info.source";  //案例来源
-
-    //房产查勘案例
-
+    
+    /*
+     * 房产查勘案例
+     */
 
 }

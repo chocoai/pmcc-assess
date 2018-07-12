@@ -3,11 +3,15 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.StageWeightProportionDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataStageWeightProportion;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.data.StageWeightProportionDto;
 import com.copower.pmcc.assess.dto.output.data.ProportionTempVo;
 import com.copower.pmcc.assess.dto.output.data.StageWeightProportionVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -17,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,11 @@ public class StageWeightProportionService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+
 
     public BootstrapTableVo getList(Integer entrustmentPurpose) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -63,7 +73,8 @@ public class StageWeightProportionService {
         });
     }
 
-    public boolean save(StageWeightProportionDto stageWeightProportionDto) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void save(StageWeightProportionDto stageWeightProportionDto) throws BusinessException {
         if (stageWeightProportionDto == null) {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         }
@@ -72,34 +83,21 @@ public class StageWeightProportionService {
         if (stageWeightProportionDto.getId() != null && stageWeightProportionDto.getId() > 0) {
             Integer entrustPurpose = stageWeightProportionDto.getId();
             List<DataStageWeightProportion> stageWeightProportions = stageWeightProportionDao.getList(entrustPurpose);
-            boolean flag = false;
             for(int i = 0;i<stageWeightProportions.size();i++){
                 stageWeightProportions.get(i).setProportion(Integer.valueOf(strings[i]));
-                flag = stageWeightProportionDao.update(stageWeightProportions.get(i));
-                if(flag){
-                    continue;
-                }else{
-                    break;
-                }
+                stageWeightProportionDao.update(stageWeightProportions.get(i));
             }
-            return flag;
         } else {
-            List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_WORK_STAGE);
-            boolean flag = false;
-            for(int i = 0;i<baseDataDics.size();i++){
+            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDefaultType();
+            List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(baseProjectClassify.getId(), true);
+            for(int i = 0;i<projectWorkStages.size();i++){
                 StageWeightProportionDto stageWeightProportionDto1 = new StageWeightProportionDto();
                 stageWeightProportionDto1.setEntrustPurpose(stageWeightProportionDto.getEntrustPurpose());
-                stageWeightProportionDto1.setStage(baseDataDics.get(i).getId());
+                stageWeightProportionDto1.setStage(projectWorkStages.get(i).getId());
                 stageWeightProportionDto1.setProportion(Integer.valueOf(strings[i]));
                 stageWeightProportionDto1.setCreator(processControllerComponent.getThisUser());
-                flag = stageWeightProportionDao.save(stageWeightProportionDto1);
-                if(flag){
-                    continue;
-                }else{
-                    break;
-                }
+                stageWeightProportionDao.save(stageWeightProportionDto1);
             }
-            return flag;
         }
     }
 

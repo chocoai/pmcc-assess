@@ -5,6 +5,10 @@ import java.util.Date;
 public class ExamineBlock {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private String province;
 
     private String city;
@@ -29,6 +33,22 @@ public class ExamineBlock {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public String getProvince() {

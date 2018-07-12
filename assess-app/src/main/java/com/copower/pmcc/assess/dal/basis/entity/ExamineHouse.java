@@ -5,17 +5,23 @@ import java.util.Date;
 public class ExamineHouse {
     private Integer id;
 
-    private Integer unitId;
+    private Integer declareId;
 
-    private Integer floor;
+    private Integer examineType;
+
+    private Integer unitId;
 
     private String houseNumber;
 
+    private Integer floor;
+
     private Integer huxingId;
 
-    private String certUse;
+    private Integer newsHuxing;
 
-    private String practicalUse;
+    private Integer certUse;
+
+    private Integer practicalUse;
 
     private String rightInterestsRestriction;
 
@@ -37,20 +43,28 @@ public class ExamineHouse {
         this.id = id;
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
+    }
+
     public Integer getUnitId() {
         return unitId;
     }
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
-    }
-
-    public Integer getFloor() {
-        return floor;
-    }
-
-    public void setFloor(Integer floor) {
-        this.floor = floor;
     }
 
     public String getHouseNumber() {
@@ -61,6 +75,14 @@ public class ExamineHouse {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
     }
 
+    public Integer getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Integer floor) {
+        this.floor = floor;
+    }
+
     public Integer getHuxingId() {
         return huxingId;
     }
@@ -69,20 +91,28 @@ public class ExamineHouse {
         this.huxingId = huxingId;
     }
 
-    public String getCertUse() {
+    public Integer getNewsHuxing() {
+        return newsHuxing;
+    }
+
+    public void setNewsHuxing(Integer newsHuxing) {
+        this.newsHuxing = newsHuxing;
+    }
+
+    public Integer getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(String certUse) {
-        this.certUse = certUse == null ? null : certUse.trim();
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
     }
 
-    public String getPracticalUse() {
+    public Integer getPracticalUse() {
         return practicalUse;
     }
 
-    public void setPracticalUse(String practicalUse) {
-        this.practicalUse = practicalUse == null ? null : practicalUse.trim();
+    public void setPracticalUse(Integer practicalUse) {
+        this.practicalUse = practicalUse;
     }
 
     public String getRightInterestsRestriction() {

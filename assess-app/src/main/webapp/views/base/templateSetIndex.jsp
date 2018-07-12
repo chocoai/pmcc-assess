@@ -351,7 +351,7 @@
                     creater: "${currUserAccount}",
                     tableId: $("#id").val()
                 };
-                $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+                return formData;
             },
             onUploadComplete: function () {
                 loadTemplateAttachment($("#id").val());
@@ -369,7 +369,7 @@
                     tableId: $("#files_id").val(),
                     fieldsName: "report"
                 };
-                $("#uploadTemplateFileReport").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+                return formData;
             },
             onUploadComplete: function () {
                 loadTemplateFilesAttachment($("#files_id").val(), "report");
@@ -386,7 +386,7 @@
                     tableId: $("#files_id").val(),
                     fieldsName: "export"
                 };
-                $("#uploadTemplateFileExport").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+                return formData;
             },
             onUploadComplete: function () {
                 loadTemplateFilesAttachment($("#files_id").val(), "export");

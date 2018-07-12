@@ -3,10 +3,12 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineMatchingEnvironmentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingEnvironment" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="Influence_degree" property="influenceDegree" jdbcType="VARCHAR" />
+    <result column="Influence_degree" property="influenceDegree" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, type, category, Influence_degree, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, estate_id, type, category, Influence_degree, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingEnvironmentExample" >
     select
@@ -106,12 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_matching_environment (estate_id, type, category, 
-      Influence_degree, creator, gmt_created, 
-      gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{influenceDegree,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_matching_environment (declare_id, examine_type, estate_id, 
+      type, category, Influence_degree, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{influenceDegree,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingEnvironment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -119,6 +124,12 @@
     </selectKey>
     insert into tb_examine_matching_environment
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -142,17 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
       </if>
       <if test="influenceDegree != null" >
-        #{influenceDegree,jdbcType=VARCHAR},
+        #{influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -177,17 +194,23 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
       <if test="record.influenceDegree != null" >
-        Influence_degree = #{record.influenceDegree,jdbcType=VARCHAR},
+        Influence_degree = #{record.influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -206,10 +229,12 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_matching_environment
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
-      Influence_degree = #{record.influenceDegree,jdbcType=VARCHAR},
+      Influence_degree = #{record.influenceDegree,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -220,17 +245,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingEnvironment" >
     update tb_examine_matching_environment
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
       </if>
       <if test="influenceDegree != null" >
-        Influence_degree = #{influenceDegree,jdbcType=VARCHAR},
+        Influence_degree = #{influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -246,10 +277,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingEnvironment" >
     update tb_examine_matching_environment
-    set estate_id = #{estateId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
-      Influence_degree = #{influenceDegree,jdbcType=VARCHAR},
+      Influence_degree = #{influenceDegree,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

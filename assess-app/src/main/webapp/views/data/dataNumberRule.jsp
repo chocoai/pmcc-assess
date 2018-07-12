@@ -88,155 +88,136 @@
             <form id="frm" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
+                    <div class="col-md-12">
+                        <div class="panel-body">
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            大类<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="assessClass" name="assessClass">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${assessClassList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        大类<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" required id="assessClass" name="assessClass">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="item" items="${assessClassList}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            报告类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="reportType" name="reportType">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${reportTypeList}">
-                                                    <option value="${items.id}">${items.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            前缀<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="前缀"
-                                                   id="prefix" name="prefix" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            文号规则<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" required data-rule-digits="true" placeholder="文号规则"
-                                                   id="dateRule" name="dateRule" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            位数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-digits="true" placeholder="位数"
-                                                   id="figures" name="figures" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            起始编号<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" data-rule-digits="true" placeholder="起始编号"
-                                                   id="startNumber" name="startNumber" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            同号的报告类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="sameReportType" name="sameReportType">
-                                                <option value="">-请选择-</option>
-                                                <option value="-1">新号</option>
-                                                <c:forEach var="items" items="${reportTypeList}">
-                                                    <option value="${items.id}">${items.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            文号重新计算方式<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" required id="recount" name="recount">
-                                                <option value="">-请选择-</option>
-                                                <option value="0">一直连续</option>
-                                                <option value="1">按年分断</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        报告类型<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" required id="reportType" name="reportType">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="items" items="${reportTypeList}">
+                                                <option value="${items.id}">${items.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        前缀<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" required data-rule-maxlength="50" placeholder="前缀"
+                                               id="prefix" name="prefix" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        文号规则<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" required data-rule-digits="true" placeholder="文号规则"
+                                               id="dateRule" name="dateRule" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        位数<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" data-rule-digits="true" placeholder="位数"
+                                               id="figures" name="figures" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        起始编号<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" data-rule-digits="true" placeholder="起始编号"
+                                               id="startNumber" name="startNumber" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        同号的报告类型<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" required id="sameReportType" name="sameReportType">
+                                            <option value="">-请选择-</option>
+                                            <option value="-1">新号</option>
+                                            <c:forEach var="items" items="${reportTypeList}">
+                                                <option value="${items.id}">${items.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-3 control-label">
+                                        文号重新计算方式<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" required id="recount" name="recount">
+                                            <option value="">-请选择-</option>
+                                            <option value="0">一直连续</option>
+                                            <option value="1">按年分断</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">
-                            取消
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="saveData()">
-                            保存
-                        </button>
-                    </div>
+
+                </div>
             </form>
-        </div>
-    </div>
-</div>
-
-
-<!--文号规则数据子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">文号规则数据</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveData()">
+                    保存
+                </button>
             </div>
         </div>
     </div>
 </div>
-
 
 <%@include file="/views/share/main_footer.jsp" %>
 

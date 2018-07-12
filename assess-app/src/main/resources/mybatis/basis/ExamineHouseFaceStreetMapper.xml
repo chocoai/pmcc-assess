@@ -3,11 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseFaceStreetMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseFaceStreet" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="street_name" property="streetName" jdbcType="VARCHAR" />
     <result column="street_level" property="streetLevel" jdbcType="INTEGER" />
-    <result column="traffic_flow" property="trafficFlow" jdbcType="VARCHAR" />
-    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="VARCHAR" />
+    <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
+    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, street_name, street_level, traffic_flow, visitors_flowrate, creator, 
-    gmt_created, gmt_modified
+    id, declare_id, examine_type, house_id, street_name, street_level, traffic_flow, 
+    visitors_flowrate, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseFaceStreetExample" >
     select
@@ -108,12 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_face_street (house_id, street_name, street_level, 
-      traffic_flow, visitors_flowrate, creator, 
-      gmt_created, gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{streetName,jdbcType=VARCHAR}, #{streetLevel,jdbcType=INTEGER}, 
-      #{trafficFlow,jdbcType=VARCHAR}, #{visitorsFlowrate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_house_face_street (declare_id, examine_type, house_id, 
+      street_name, street_level, traffic_flow, 
+      visitors_flowrate, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
+      #{streetName,jdbcType=VARCHAR}, #{streetLevel,jdbcType=INTEGER}, #{trafficFlow,jdbcType=INTEGER}, 
+      #{visitorsFlowrate,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseFaceStreet" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,6 +125,12 @@
     </selectKey>
     insert into tb_examine_house_face_street
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -147,6 +157,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -157,10 +173,10 @@
         #{streetLevel,jdbcType=INTEGER},
       </if>
       <if test="trafficFlow != null" >
-        #{trafficFlow,jdbcType=VARCHAR},
+        #{trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="visitorsFlowrate != null" >
-        #{visitorsFlowrate,jdbcType=VARCHAR},
+        #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -185,6 +201,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -195,10 +217,10 @@
         street_level = #{record.streetLevel,jdbcType=INTEGER},
       </if>
       <if test="record.trafficFlow != null" >
-        traffic_flow = #{record.trafficFlow,jdbcType=VARCHAR},
+        traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="record.visitorsFlowrate != null" >
-        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=VARCHAR},
+        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -217,11 +239,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_house_face_street
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       street_name = #{record.streetName,jdbcType=VARCHAR},
       street_level = #{record.streetLevel,jdbcType=INTEGER},
-      traffic_flow = #{record.trafficFlow,jdbcType=VARCHAR},
-      visitors_flowrate = #{record.visitorsFlowrate,jdbcType=VARCHAR},
+      traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -232,6 +256,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseFaceStreet" >
     update tb_examine_house_face_street
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -242,10 +272,10 @@
         street_level = #{streetLevel,jdbcType=INTEGER},
       </if>
       <if test="trafficFlow != null" >
-        traffic_flow = #{trafficFlow,jdbcType=VARCHAR},
+        traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="visitorsFlowrate != null" >
-        visitors_flowrate = #{visitorsFlowrate,jdbcType=VARCHAR},
+        visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -261,11 +291,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseFaceStreet" >
     update tb_examine_house_face_street
-    set house_id = #{houseId,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
       street_name = #{streetName,jdbcType=VARCHAR},
       street_level = #{streetLevel,jdbcType=INTEGER},
-      traffic_flow = #{trafficFlow,jdbcType=VARCHAR},
-      visitors_flowrate = #{visitorsFlowrate,jdbcType=VARCHAR},
+      traffic_flow = #{trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

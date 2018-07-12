@@ -3,13 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseEquipmentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseEquipment" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="use" property="use" jdbcType="VARCHAR" />
-    <result column="parameter_index" property="parameterIndex" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="equipment" property="equipment" jdbcType="VARCHAR" />
+    <result column="equipment_price" property="equipmentPrice" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, category, name, use, parameter_index, price, creator, gmt_created, 
-    gmt_modified
+    id, declare_id, examine_type, house_id, type, category, equipment, equipment_price, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseEquipmentExample" >
     select
@@ -110,13 +110,13 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_equipment (house_id, type, category, 
-      name, use, parameter_index, 
-      price, creator, gmt_created, 
+    insert into tb_examine_house_equipment (declare_id, examine_type, house_id, 
+      type, category, equipment, 
+      equipment_price, creator, gmt_created, 
       gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{use,jdbcType=VARCHAR}, #{parameterIndex,jdbcType=VARCHAR}, 
-      #{price,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{equipment,jdbcType=VARCHAR}, 
+      #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseEquipment" >
@@ -125,6 +125,12 @@
     </selectKey>
     insert into tb_examine_house_equipment
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
+      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -134,17 +140,11 @@
       <if test="category != null" >
         category,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="equipment != null" >
+        equipment,
       </if>
-      <if test="use != null" >
-        use,
-      </if>
-      <if test="parameterIndex != null" >
-        parameter_index,
-      </if>
-      <if test="price != null" >
-        price,
+      <if test="equipmentPrice != null" >
+        equipment_price,
       </if>
       <if test="creator != null" >
         creator,
@@ -157,26 +157,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="equipment != null" >
+        #{equipment,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        #{use,jdbcType=VARCHAR},
-      </if>
-      <if test="parameterIndex != null" >
-        #{parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=INTEGER},
+      <if test="equipmentPrice != null" >
+        #{equipmentPrice,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -201,26 +201,26 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
+      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.equipment != null" >
+        equipment = #{record.equipment,jdbcType=VARCHAR},
       </if>
-      <if test="record.use != null" >
-        use = #{record.use,jdbcType=VARCHAR},
-      </if>
-      <if test="record.parameterIndex != null" >
-        parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="record.price != null" >
-        price = #{record.price,jdbcType=INTEGER},
+      <if test="record.equipmentPrice != null" >
+        equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -239,13 +239,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_house_equipment
     set id = #{record.id,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      use = #{record.use,jdbcType=VARCHAR},
-      parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=INTEGER},
+      equipment = #{record.equipment,jdbcType=VARCHAR},
+      equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -256,26 +256,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseEquipment" >
     update tb_examine_house_equipment
     <set >
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="equipment != null" >
+        equipment = #{equipment,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        use = #{use,jdbcType=VARCHAR},
-      </if>
-      <if test="parameterIndex != null" >
-        parameter_index = #{parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=INTEGER},
+      <if test="equipmentPrice != null" >
+        equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -291,13 +291,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseEquipment" >
     update tb_examine_house_equipment
-    set house_id = #{houseId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      use = #{use,jdbcType=VARCHAR},
-      parameter_index = #{parameterIndex,jdbcType=VARCHAR},
-      price = #{price,jdbcType=INTEGER},
+      equipment = #{equipment,jdbcType=VARCHAR},
+      equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

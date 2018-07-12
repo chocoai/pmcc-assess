@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeclareForm;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -36,7 +35,7 @@ public class DataDeclareFormController {
     @RequestMapping(value = "/view")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataDeclareForm");
-        List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
+        List<BaseDataDic> baseDataDicList = null;
         modelAndView.addObject("assessClassList",baseDataDicList);
         return modelAndView;
     }

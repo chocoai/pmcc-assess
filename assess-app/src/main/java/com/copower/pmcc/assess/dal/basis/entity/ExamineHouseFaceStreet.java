@@ -5,15 +5,19 @@ import java.util.Date;
 public class ExamineHouseFaceStreet {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer houseId;
 
     private String streetName;
 
     private Integer streetLevel;
 
-    private String trafficFlow;
+    private Integer trafficFlow;
 
-    private String visitorsFlowrate;
+    private Integer visitorsFlowrate;
 
     private String creator;
 
@@ -27,6 +31,22 @@ public class ExamineHouseFaceStreet {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Integer getHouseId() {
@@ -53,20 +73,20 @@ public class ExamineHouseFaceStreet {
         this.streetLevel = streetLevel;
     }
 
-    public String getTrafficFlow() {
+    public Integer getTrafficFlow() {
         return trafficFlow;
     }
 
-    public void setTrafficFlow(String trafficFlow) {
-        this.trafficFlow = trafficFlow == null ? null : trafficFlow.trim();
+    public void setTrafficFlow(Integer trafficFlow) {
+        this.trafficFlow = trafficFlow;
     }
 
-    public String getVisitorsFlowrate() {
+    public Integer getVisitorsFlowrate() {
         return visitorsFlowrate;
     }
 
-    public void setVisitorsFlowrate(String visitorsFlowrate) {
-        this.visitorsFlowrate = visitorsFlowrate == null ? null : visitorsFlowrate.trim();
+    public void setVisitorsFlowrate(Integer visitorsFlowrate) {
+        this.visitorsFlowrate = visitorsFlowrate;
     }
 
     public String getCreator() {

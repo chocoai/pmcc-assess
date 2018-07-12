@@ -165,6 +165,126 @@ public class ExamineMatchingEnvironmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNull() {
+            addCriterion("examine_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNotNull() {
+            addCriterion("examine_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeEqualTo(Integer value) {
+            addCriterion("examine_type =", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotEqualTo(Integer value) {
+            addCriterion("examine_type <>", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThan(Integer value) {
+            addCriterion("examine_type >", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("examine_type >=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThan(Integer value) {
+            addCriterion("examine_type <", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("examine_type <=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIn(List<Integer> values) {
+            addCriterion("examine_type in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotIn(List<Integer> values) {
+            addCriterion("examine_type not in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type not between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
         public Criteria andEstateIdIsNull() {
             addCriterion("estate_id is null");
             return (Criteria) this;
@@ -235,52 +355,62 @@ public class ExamineMatchingEnvironmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
+        public Criteria andTypeEqualTo(String value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
+        public Criteria andTypeNotEqualTo(String value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
+        public Criteria andTypeGreaterThan(String value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
+        public Criteria andTypeLessThan(String value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andTypeLessThanOrEqualTo(String value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
+        public Criteria andTypeNotIn(List<String> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
+        public Criteria andTypeBetween(String value1, String value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
@@ -355,62 +485,52 @@ public class ExamineMatchingEnvironmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeEqualTo(String value) {
+        public Criteria andInfluenceDegreeEqualTo(Integer value) {
             addCriterion("Influence_degree =", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeNotEqualTo(String value) {
+        public Criteria andInfluenceDegreeNotEqualTo(Integer value) {
             addCriterion("Influence_degree <>", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeGreaterThan(String value) {
+        public Criteria andInfluenceDegreeGreaterThan(Integer value) {
             addCriterion("Influence_degree >", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeGreaterThanOrEqualTo(String value) {
+        public Criteria andInfluenceDegreeGreaterThanOrEqualTo(Integer value) {
             addCriterion("Influence_degree >=", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeLessThan(String value) {
+        public Criteria andInfluenceDegreeLessThan(Integer value) {
             addCriterion("Influence_degree <", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeLessThanOrEqualTo(String value) {
+        public Criteria andInfluenceDegreeLessThanOrEqualTo(Integer value) {
             addCriterion("Influence_degree <=", value, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeLike(String value) {
-            addCriterion("Influence_degree like", value, "influenceDegree");
-            return (Criteria) this;
-        }
-
-        public Criteria andInfluenceDegreeNotLike(String value) {
-            addCriterion("Influence_degree not like", value, "influenceDegree");
-            return (Criteria) this;
-        }
-
-        public Criteria andInfluenceDegreeIn(List<String> values) {
+        public Criteria andInfluenceDegreeIn(List<Integer> values) {
             addCriterion("Influence_degree in", values, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeNotIn(List<String> values) {
+        public Criteria andInfluenceDegreeNotIn(List<Integer> values) {
             addCriterion("Influence_degree not in", values, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeBetween(String value1, String value2) {
+        public Criteria andInfluenceDegreeBetween(Integer value1, Integer value2) {
             addCriterion("Influence_degree between", value1, value2, "influenceDegree");
             return (Criteria) this;
         }
 
-        public Criteria andInfluenceDegreeNotBetween(String value1, String value2) {
+        public Criteria andInfluenceDegreeNotBetween(Integer value1, Integer value2) {
             addCriterion("Influence_degree not between", value1, value2, "influenceDegree");
             return (Criteria) this;
         }

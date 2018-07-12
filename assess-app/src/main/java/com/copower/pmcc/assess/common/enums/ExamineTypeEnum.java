@@ -1,18 +1,18 @@
 package com.copower.pmcc.assess.common.enums;
 
-public enum CaseComparisonTypeEnum {
+public enum ExamineTypeEnum {
     EXPLORE(0, "查勘"), CASE(1, "案例");
     private String name;
     private Integer id;
 
-    private CaseComparisonTypeEnum(Integer id, String name) {
+    private ExamineTypeEnum(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
     // 普通方法
     public static String getName(int id) {
-        for (CaseComparisonTypeEnum c : CaseComparisonTypeEnum.values()) {
+        for (ExamineTypeEnum c : ExamineTypeEnum.values()) {
             if (c.getId() == id) {
                 return c.name;
             }

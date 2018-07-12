@@ -6,6 +6,10 @@ import java.util.Date;
 public class ExamineEstate {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer blockId;
 
     private Integer developerId;
@@ -26,6 +30,8 @@ public class ExamineEstate {
 
     private String greeningRate;
 
+    private Integer totalBuildingType;
+
     private String description;
 
     private String creator;
@@ -40,6 +46,22 @@ public class ExamineEstate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Integer getBlockId() {
@@ -120,6 +142,14 @@ public class ExamineEstate {
 
     public void setGreeningRate(String greeningRate) {
         this.greeningRate = greeningRate == null ? null : greeningRate.trim();
+    }
+
+    public Integer getTotalBuildingType() {
+        return totalBuildingType;
+    }
+
+    public void setTotalBuildingType(Integer totalBuildingType) {
+        this.totalBuildingType = totalBuildingType;
     }
 
     public String getDescription() {

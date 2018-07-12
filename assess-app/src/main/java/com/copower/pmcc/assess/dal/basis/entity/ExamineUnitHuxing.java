@@ -6,9 +6,13 @@ import java.util.Date;
 public class ExamineUnitHuxing {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer unitId;
 
-    private String houseLayout;
+    private Integer houseLayout;
 
     private BigDecimal area;
 
@@ -34,6 +38,22 @@ public class ExamineUnitHuxing {
         this.id = id;
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
+    }
+
     public Integer getUnitId() {
         return unitId;
     }
@@ -42,12 +62,12 @@ public class ExamineUnitHuxing {
         this.unitId = unitId;
     }
 
-    public String getHouseLayout() {
+    public Integer getHouseLayout() {
         return houseLayout;
     }
 
-    public void setHouseLayout(String houseLayout) {
-        this.houseLayout = houseLayout == null ? null : houseLayout.trim();
+    public void setHouseLayout(Integer houseLayout) {
+        this.houseLayout = houseLayout;
     }
 
     public BigDecimal getArea() {

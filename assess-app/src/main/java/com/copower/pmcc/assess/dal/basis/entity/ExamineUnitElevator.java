@@ -5,6 +5,10 @@ import java.util.Date;
 public class ExamineUnitElevator {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer unitId;
 
     private String type;
@@ -33,6 +37,22 @@ public class ExamineUnitElevator {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Integer getUnitId() {

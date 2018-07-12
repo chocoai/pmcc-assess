@@ -5,6 +5,10 @@ import java.util.Date;
 public class ExamineHouseRoomDecorate {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer roomId;
 
     private Integer part;
@@ -27,6 +31,22 @@ public class ExamineHouseRoomDecorate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Integer getRoomId() {

@@ -5,9 +5,13 @@ import java.util.Date;
 public class ExamineMatchingTraffic {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer estateId;
 
-    private Integer type;
+    private String type;
 
     private String name;
 
@@ -31,6 +35,22 @@ public class ExamineMatchingTraffic {
         this.id = id;
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
+    }
+
     public Integer getEstateId() {
         return estateId;
     }
@@ -39,12 +59,12 @@ public class ExamineMatchingTraffic {
         this.estateId = estateId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getName() {

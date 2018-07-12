@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.CaseComparisonTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.CaseComparisonFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataCaseComparisonField;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonFieldDto;
@@ -66,7 +66,7 @@ public class CaseComparisonFieldService {
 //        for(DataCaseComparisonField dataCaseComparisonField:vos){
 //            CaseComparisonFieldVo caseComparisonFieldVo = new CaseComparisonFieldVo();
 //            Integer type = dataCaseComparisonField.getType();
-//            String typeName = CaseComparisonTypeEnum.getName(type);
+//            String typeName = ExamineTypeEnum.getName(type);
 //            caseComparisonFieldVo.setuName(dataCaseComparisonField.getuName());
 //            caseComparisonFieldVo.setTypeName(typeName);
 //            caseComparisonFieldVo.setTableName(dataCaseComparisonField.getTableName());
@@ -85,7 +85,7 @@ public class CaseComparisonFieldService {
             BeanUtils.copyProperties(p, caseComparisonFieldVo);
 
             if (p.getType() != null) {
-                String name = CaseComparisonTypeEnum.getName(p.getType());
+                String name = ExamineTypeEnum.getName(p.getType());
                 if (name != null)
                     caseComparisonFieldVo.setTypeName(name);
             }

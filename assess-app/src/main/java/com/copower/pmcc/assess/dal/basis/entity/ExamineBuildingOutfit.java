@@ -5,15 +5,19 @@ import java.util.Date;
 public class ExamineBuildingOutfit {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer buildingId;
 
-    private String decorationPart;
+    private Integer decorationPart;
 
-    private String decoratingMaterial;
+    private Integer decoratingMaterial;
 
-    private String materialPrice;
+    private Integer materialPrice;
 
-    private String constructionTechnology;
+    private Integer constructionTechnology;
 
     private String creator;
 
@@ -29,6 +33,22 @@ public class ExamineBuildingOutfit {
         this.id = id;
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
+    }
+
     public Integer getBuildingId() {
         return buildingId;
     }
@@ -37,36 +57,36 @@ public class ExamineBuildingOutfit {
         this.buildingId = buildingId;
     }
 
-    public String getDecorationPart() {
+    public Integer getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(String decorationPart) {
-        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
+    public void setDecorationPart(Integer decorationPart) {
+        this.decorationPart = decorationPart;
     }
 
-    public String getDecoratingMaterial() {
+    public Integer getDecoratingMaterial() {
         return decoratingMaterial;
     }
 
-    public void setDecoratingMaterial(String decoratingMaterial) {
-        this.decoratingMaterial = decoratingMaterial == null ? null : decoratingMaterial.trim();
+    public void setDecoratingMaterial(Integer decoratingMaterial) {
+        this.decoratingMaterial = decoratingMaterial;
     }
 
-    public String getMaterialPrice() {
+    public Integer getMaterialPrice() {
         return materialPrice;
     }
 
-    public void setMaterialPrice(String materialPrice) {
-        this.materialPrice = materialPrice == null ? null : materialPrice.trim();
+    public void setMaterialPrice(Integer materialPrice) {
+        this.materialPrice = materialPrice;
     }
 
-    public String getConstructionTechnology() {
+    public Integer getConstructionTechnology() {
         return constructionTechnology;
     }
 
-    public void setConstructionTechnology(String constructionTechnology) {
-        this.constructionTechnology = constructionTechnology == null ? null : constructionTechnology.trim();
+    public void setConstructionTechnology(Integer constructionTechnology) {
+        this.constructionTechnology = constructionTechnology;
     }
 
     public String getCreator() {

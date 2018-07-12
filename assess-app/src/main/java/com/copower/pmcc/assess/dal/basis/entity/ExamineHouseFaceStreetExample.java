@@ -165,6 +165,126 @@ public class ExamineHouseFaceStreetExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNull() {
+            addCriterion("examine_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNotNull() {
+            addCriterion("examine_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeEqualTo(Integer value) {
+            addCriterion("examine_type =", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotEqualTo(Integer value) {
+            addCriterion("examine_type <>", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThan(Integer value) {
+            addCriterion("examine_type >", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("examine_type >=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThan(Integer value) {
+            addCriterion("examine_type <", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("examine_type <=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIn(List<Integer> values) {
+            addCriterion("examine_type in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotIn(List<Integer> values) {
+            addCriterion("examine_type not in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type not between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
         public Criteria andHouseIdIsNull() {
             addCriterion("house_id is null");
             return (Criteria) this;
@@ -365,62 +485,52 @@ public class ExamineHouseFaceStreetExample {
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowEqualTo(String value) {
+        public Criteria andTrafficFlowEqualTo(Integer value) {
             addCriterion("traffic_flow =", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowNotEqualTo(String value) {
+        public Criteria andTrafficFlowNotEqualTo(Integer value) {
             addCriterion("traffic_flow <>", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowGreaterThan(String value) {
+        public Criteria andTrafficFlowGreaterThan(Integer value) {
             addCriterion("traffic_flow >", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowGreaterThanOrEqualTo(String value) {
+        public Criteria andTrafficFlowGreaterThanOrEqualTo(Integer value) {
             addCriterion("traffic_flow >=", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowLessThan(String value) {
+        public Criteria andTrafficFlowLessThan(Integer value) {
             addCriterion("traffic_flow <", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowLessThanOrEqualTo(String value) {
+        public Criteria andTrafficFlowLessThanOrEqualTo(Integer value) {
             addCriterion("traffic_flow <=", value, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowLike(String value) {
-            addCriterion("traffic_flow like", value, "trafficFlow");
-            return (Criteria) this;
-        }
-
-        public Criteria andTrafficFlowNotLike(String value) {
-            addCriterion("traffic_flow not like", value, "trafficFlow");
-            return (Criteria) this;
-        }
-
-        public Criteria andTrafficFlowIn(List<String> values) {
+        public Criteria andTrafficFlowIn(List<Integer> values) {
             addCriterion("traffic_flow in", values, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowNotIn(List<String> values) {
+        public Criteria andTrafficFlowNotIn(List<Integer> values) {
             addCriterion("traffic_flow not in", values, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowBetween(String value1, String value2) {
+        public Criteria andTrafficFlowBetween(Integer value1, Integer value2) {
             addCriterion("traffic_flow between", value1, value2, "trafficFlow");
             return (Criteria) this;
         }
 
-        public Criteria andTrafficFlowNotBetween(String value1, String value2) {
+        public Criteria andTrafficFlowNotBetween(Integer value1, Integer value2) {
             addCriterion("traffic_flow not between", value1, value2, "trafficFlow");
             return (Criteria) this;
         }
@@ -435,62 +545,52 @@ public class ExamineHouseFaceStreetExample {
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateEqualTo(String value) {
+        public Criteria andVisitorsFlowrateEqualTo(Integer value) {
             addCriterion("visitors_flowrate =", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateNotEqualTo(String value) {
+        public Criteria andVisitorsFlowrateNotEqualTo(Integer value) {
             addCriterion("visitors_flowrate <>", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateGreaterThan(String value) {
+        public Criteria andVisitorsFlowrateGreaterThan(Integer value) {
             addCriterion("visitors_flowrate >", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateGreaterThanOrEqualTo(String value) {
+        public Criteria andVisitorsFlowrateGreaterThanOrEqualTo(Integer value) {
             addCriterion("visitors_flowrate >=", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateLessThan(String value) {
+        public Criteria andVisitorsFlowrateLessThan(Integer value) {
             addCriterion("visitors_flowrate <", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateLessThanOrEqualTo(String value) {
+        public Criteria andVisitorsFlowrateLessThanOrEqualTo(Integer value) {
             addCriterion("visitors_flowrate <=", value, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateLike(String value) {
-            addCriterion("visitors_flowrate like", value, "visitorsFlowrate");
-            return (Criteria) this;
-        }
-
-        public Criteria andVisitorsFlowrateNotLike(String value) {
-            addCriterion("visitors_flowrate not like", value, "visitorsFlowrate");
-            return (Criteria) this;
-        }
-
-        public Criteria andVisitorsFlowrateIn(List<String> values) {
+        public Criteria andVisitorsFlowrateIn(List<Integer> values) {
             addCriterion("visitors_flowrate in", values, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateNotIn(List<String> values) {
+        public Criteria andVisitorsFlowrateNotIn(List<Integer> values) {
             addCriterion("visitors_flowrate not in", values, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateBetween(String value1, String value2) {
+        public Criteria andVisitorsFlowrateBetween(Integer value1, Integer value2) {
             addCriterion("visitors_flowrate between", value1, value2, "visitorsFlowrate");
             return (Criteria) this;
         }
 
-        public Criteria andVisitorsFlowrateNotBetween(String value1, String value2) {
+        public Criteria andVisitorsFlowrateNotBetween(Integer value1, Integer value2) {
             addCriterion("visitors_flowrate not between", value1, value2, "visitorsFlowrate");
             return (Criteria) this;
         }

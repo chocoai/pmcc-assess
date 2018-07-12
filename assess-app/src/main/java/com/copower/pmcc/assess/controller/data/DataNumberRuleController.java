@@ -36,10 +36,10 @@ public class DataNumberRuleController {
     public ModelAndView index() {
 
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataNumberRule");
-        List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ASSESS_CLASS);
-        List<BaseDataDic> baseDataDicList1 = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
-        modelAndView.addObject("assessClassList", baseDataDicList);
-        modelAndView.addObject("reportTypeList", baseDataDicList1);
+
+        List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
+        modelAndView.addObject("assessClassList", null);
+        modelAndView.addObject("reportTypeList", reportTypeList);
         return modelAndView;
     }
 

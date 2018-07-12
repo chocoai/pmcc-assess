@@ -5,13 +5,17 @@ import java.util.Date;
 public class ExamineMatchingEnvironment {
     private Integer id;
 
+    private Integer declareId;
+
+    private Integer examineType;
+
     private Integer estateId;
 
-    private Integer type;
+    private String type;
 
     private Integer category;
 
-    private String influenceDegree;
+    private Integer influenceDegree;
 
     private String creator;
 
@@ -27,6 +31,22 @@ public class ExamineMatchingEnvironment {
         this.id = id;
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
+    }
+
     public Integer getEstateId() {
         return estateId;
     }
@@ -35,12 +55,12 @@ public class ExamineMatchingEnvironment {
         this.estateId = estateId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getCategory() {
@@ -51,12 +71,12 @@ public class ExamineMatchingEnvironment {
         this.category = category;
     }
 
-    public String getInfluenceDegree() {
+    public Integer getInfluenceDegree() {
         return influenceDegree;
     }
 
-    public void setInfluenceDegree(String influenceDegree) {
-        this.influenceDegree = influenceDegree == null ? null : influenceDegree.trim();
+    public void setInfluenceDegree(Integer influenceDegree) {
+        this.influenceDegree = influenceDegree;
     }
 
     public String getCreator() {
