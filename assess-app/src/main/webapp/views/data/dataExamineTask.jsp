@@ -179,7 +179,7 @@
     </div>
 </div>
 <div id="divSubDataExamineTaskManage" class="modal fade bs-example-modal-lg" data-height="300"
-     data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+     data-backdrop="static" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

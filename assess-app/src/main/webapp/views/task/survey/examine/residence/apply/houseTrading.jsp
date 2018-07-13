@@ -1,5 +1,5 @@
 <%--
-  房屋基本新信息
+ 房屋交易信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
