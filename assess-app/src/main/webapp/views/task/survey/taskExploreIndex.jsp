@@ -2,11 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
-
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -20,211 +23,238 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}记录表</h2>
+                    <h2>${parentPlan.projectPhaseName}-任务分派</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="form-group">
-                        <div class="col-sm-3">
-                            <a class="btn btn-success" onclick="addData();" href="javascript://">
-                                新增
-                            </a>
+                    <div class="col-sm-12">
+                        <span class="col-sm-2"> <input type="radio" id="examineFormType_residence"
+                                                       name="examineFormType"
+                                                       value="residence"><label for="examineFormType_residence">&nbsp;住宅商业办公</label></span>
+                        <span class="col-sm-2"> <input type="radio" id="examineFormType_industry" name="examineFormType"
+                                                       value="industry"><label
+                                for="examineFormType_industry">&nbsp;工业仓储</label></span>
+                    </div>
+                    <table id="survey_examine_task_list" class="easyui-datagrid" style="max-height: auto;"></table>
+                    <div id="survey_examine_task_list_tb" style="padding:5px;height:auto;display: none;">
+                        <div style=" margin-bottom:5px">
+                            <button type="button" onclick="keySet()" class="btn btn-warning btn-xs">
+                                <i class='fa fa-fire fa-white'></i> 快速设置
+                            </button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <table class="table table-bordered" id="tb_List">
-                    <!-- cerare document add ajax data-->
-                </table>
-            </div>
-
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}成果提交</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                实际工时
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果描述
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-11">
-                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果文件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="apply_file" name="apply_file" type="file" multiple="false">
-                                <div id="_apply_file">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        <button id="commit_btn" class="btn btn-primary" onclick="commitApply();">
+                            确认分派<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </div>
             </div>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+
     </div>
+</div>
 </div>
 </body>
 
+<div id="div_fastSet" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">快速设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <form id="frm_fastset" class="form-horizontal">
+                                <table class="table table-striped table-bordered table-hover table-bordered"
+                                       id="sample-table-2">
+                                    <thead>
+                                    <tr>
+                                        <th class="hidden-xs">设置内容</th>
+                                        <th class="hidden-xs">值</th>
+                                        <th class="hidden-xs">范围</th>
+                                        <th class="hidden-xs">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="fast_tr">
+                                        <td class="hidden-xs">责任人</td>
+                                        <td class="hidden-xs">
+                                            <input type="hidden" class="fast_fileds" value="executeUserAccount">
+                                            <input type="hidden" id="fast_executeUserAccount" class="fast_value">
+                                            <input type="text" id="fast_executeUserName" class="form-control"
+                                                   readonly="readonly"
+                                                   onclick="selFastEmployee()">
+                                        <td class="hidden-xs">
+                                            <select class="form-control fast_range">
+                                                <c:forEach var="item" items="${fastSet}">
+                                                    <option value="${item.key}">${item.value}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" id="btn_user"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveFastset()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="application/javascript">
 
+<script type="text/javascript">
     $(function () {
-        loadSurveyList();
-        $("#frm_task").validate();
+        explore.loadTreeGrid();
+    })
 
-        loadUploadFiles();
-        //上传附件
-        FileUtils.uploadFiles({
-            target: "apply_file",
-            showFileList: false,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_project_plan_details",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        }, {
-            onUploadComplete: function () {
-                loadUploadFiles();
-            }
-        });
-    });
+    var explore = {
+        treeGridJson: {},
 
-    //显示附件
-    function loadUploadFiles() {
-        FileUtils.getFileShows({
-            target: "apply_file",
-            formData: {
-                tableName: "tb_project_plan_details",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
-    }
+        //加载treegrid
+        loadTreeGrid: function () {
+            $("#survey_examine_task_list").treegrid({
+                data: explore.treeGridJson,
+                idField: 'id',
+                treeField: 'name',
+                datatype: 'json',
+                lines: true,
+                width: 'auto',
+                toolbar: "#survey_examine_task_list_tb",
+                rownumbers: true,
+                onDblClickRow: function (row) {
+                    editPlan(row.id);
+                },
+                onLoadSuccess: function () {
+                    $(".tooltips").tooltip();
+                },
 
-    function submit() {
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
-        if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
-        else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
-    }
+                columns: [[
+                    {field: "projectPhaseName", title: "工作内容", width: "30%", align: "left"},
+                    {
+                        field: "executeUserName",
+                        title: "责任人",
+                        width: "20%",
+                        align: "center"
+                    },
+                    {
+                        field: 'workStages', title: '操作', width: '20%', formatter: function (value, row) {
+                        if (row.bisEnable) {
+                            var s = "";
+                            if ($("#planDetailsIds").val()) {
+                                //如果不为空则说明是子计划，如果为子计划，则只允许新增项或编辑当前项
+                                var planDetailsId = $("#planDetailsIds").val();
+                                var aPlanDetailsId = planDetailsId.split(",");
+                                if ($.inArray(row.id + "", aPlanDetailsId) >= 0) {
+                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
+                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+                                }
+                                else {
+                                    if ($.inArray(row.firstPid + "", aPlanDetailsId) >= 0) {
+                                        s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
+                                        s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+                                        if (row.bisLastLayer) {
+                                            s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank' onclick='deletePlan(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
+                                        }
 
-    function loadSurveyList() {
-        var cols = [];
-        cols.push({field: 'surveyPeople', title: '查勘人'});
-        cols.push({
-            field: 'surveyTime', title: '查勘时间', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({field: 'ledLuminousPeople', title: '领勘人'});
-        cols.push({field: 'houseName', title: '楼盘名称'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editData(' + row.id + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/surveyLocale/list", cols, {
-            planDetailsId: ${projectPlanDetails.id}
+                                    }
+                                }
+                            }
+                            else {
+                                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips' target='_blank' onclick='addPlan(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
+                                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+                                if (row.bisLastLayer) {
+                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='deletePlan(" + row.id + ")'><i class='fa fa-minus fa-white'></i></a>";
+                                }
 
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
-    }
+                            }
 
-    function addData() {
-        window.open("${pageContext.request.contextPath}/surveyLocale/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}");
-    }
+                            return s;
+                        }
 
-    function editData(id) {
-        window.open("${pageContext.request.contextPath}/surveyLocale/index?planDetailsId=${projectPlanDetails.id}&projectId=${projectId}&id=" + id);
-    }
+                    }
+                    }
+                ]]
+            });
+        },
 
-    function delData(id, tbId) {
-        Alert("确认要删除么？", 2, null, function () {
+        //快速设置
+        keySet: function () {
+            //        $("#frm_fastset").clearAll();
+            $("#frm_fastset").validate();
+            $('#div_fastSet').modal({backdrop: 'static', keyboard: false});
+        },
+
+        //快速设置选择人员
+        selFastEmployee: function () {
+            erpEmployee.select({
+                onSelected: function (data) {
+                    if (data.account) {
+                        $("#fast_executeUserAccount").val(data.account);
+                        $("#fast_executeUserName").val(data.name);
+                    }
+                    else {
+                        $("#fast_executeUserAccount").val("");
+                        $("#fast_executeUserName").val("");
+                    }
+                }
+            });
+        },
+
+        //初始化该调查表下的所有任务
+        initExamineTask: function (_this, examineType) {
+            var examineFormType = $(_this).find("input:radio").val();
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyLocale/delete",
+                url: getContextPath() + "/surveyExamine/initExamineTask",
+                data: {
+                    planDetailsId: "${projectPlanDetails.id}",
+                    examineFormType: examineFormType,
+                    declareRecordId: "${parentPlan.declareRecordId}",
+                    examineType: examineType
+                },
                 type: "post",
                 dataType: "json",
-                data: {id: id},
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
-                        loadSurveyList();//重载 (刷新)
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        //保存完后其他动作
+                        toastr.success("保存成功");
+
+                        $('#div_plan').modal('hide');
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
-            })
-        })
+            });
+        }
     }
 
 </script>
-
 </html>
 

@@ -9,6 +9,7 @@
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
+    <result column="bis_finish" property="bisFinish" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, data_task_id, declare_id, examine_type, user_account, sorting, creator, 
-    gmt_created, gmt_modified
+    id, pid, data_task_id, declare_id, examine_type, user_account, sorting, bis_finish, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTaskExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_survey_examine_task (pid, data_task_id, declare_id, 
       examine_type, user_account, sorting, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_finish, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{dataTaskId,jdbcType=INTEGER}, #{declareId,jdbcType=INTEGER}, 
       #{examineType,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisFinish,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="sorting != null" >
         sorting,
+      </if>
+      <if test="bisFinish != null" >
+        bis_finish,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="bisFinish != null" >
+        #{bisFinish,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
+      <if test="record.bisFinish != null" >
+        bis_finish = #{record.bisFinish,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       examine_type = #{record.examineType,jdbcType=INTEGER},
       user_account = #{record.userAccount,jdbcType=VARCHAR},
       sorting = #{record.sorting,jdbcType=INTEGER},
+      bis_finish = #{record.bisFinish,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
       </if>
+      <if test="bisFinish != null" >
+        bis_finish = #{bisFinish,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       examine_type = #{examineType,jdbcType=INTEGER},
       user_account = #{userAccount,jdbcType=VARCHAR},
       sorting = #{sorting,jdbcType=INTEGER},
+      bis_finish = #{bisFinish,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

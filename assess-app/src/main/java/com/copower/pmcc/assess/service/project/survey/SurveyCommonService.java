@@ -2,13 +2,16 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
+import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
+import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
@@ -37,7 +40,6 @@ public class SurveyCommonService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseAttachmentService baseAttachmentService;
-
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
@@ -46,6 +48,8 @@ public class SurveyCommonService {
     private FormConfigureService formConfigureService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private DataExamineTaskService dataExamineTaskService;
 
 
     /**
@@ -135,5 +139,19 @@ public class SurveyCommonService {
         return formConfigureService.saveSimpleData(configureDetailDto);
     }
 
+    /**
+     * 初始化该调查表下的所有任务
+     * @param surveyExamineTaskDto
+     */
+    public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto){
+        List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
+        if(CollectionUtils.isNotEmpty(examineTaskList)){
+            //第一层级
+            for (DataExamineTask dataExamineTask : examineTaskList) {
 
+                List<DataExamineTask> taskList = dataExamineTaskService.getCacheDataExamineTaskListByPid(dataExamineTask.getId());
+                //第二层级
+            }
+        }
+    }
 }

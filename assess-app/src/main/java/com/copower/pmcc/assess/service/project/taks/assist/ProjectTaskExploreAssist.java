@@ -39,16 +39,18 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreIndex", "", 0, "0", "");
         Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentProject",parentProject);
+        ProjectPlanDetails parentPlan = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        modelAndView.addObject("parentPlan",parentPlan);
+        //初始化查勘任务
+
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
         //审批走这里
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -58,7 +60,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
         modelAndView.addObject("parentProject",parentProject);
@@ -72,7 +74,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/explore/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
         modelAndView.addObject("parentProject",parentProject);

@@ -17,6 +17,8 @@ public class SurveyExamineTask {
 
     private Integer sorting;
 
+    private Boolean bisFinish;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class SurveyExamineTask {
 
     public void setSorting(Integer sorting) {
         this.sorting = sorting;
+    }
+
+    public Boolean getBisFinish() {
+        return bisFinish;
+    }
+
+    public void setBisFinish(Boolean bisFinish) {
+        this.bisFinish = bisFinish;
     }
 
     public String getCreator() {

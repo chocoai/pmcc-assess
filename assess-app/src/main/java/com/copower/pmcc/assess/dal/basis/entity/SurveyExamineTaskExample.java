@@ -535,6 +535,66 @@ public class SurveyExamineTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisFinishIsNull() {
+            addCriterion("bis_finish is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishIsNotNull() {
+            addCriterion("bis_finish is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishEqualTo(Boolean value) {
+            addCriterion("bis_finish =", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishNotEqualTo(Boolean value) {
+            addCriterion("bis_finish <>", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishGreaterThan(Boolean value) {
+            addCriterion("bis_finish >", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish >=", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishLessThan(Boolean value) {
+            addCriterion("bis_finish <", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish <=", value, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishIn(List<Boolean> values) {
+            addCriterion("bis_finish in", values, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishNotIn(List<Boolean> values) {
+            addCriterion("bis_finish not in", values, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish between", value1, value2, "bisFinish");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish not between", value1, value2, "bisFinish");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
