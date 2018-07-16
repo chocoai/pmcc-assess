@@ -245,13 +245,20 @@
                                         <label class="col-sm-3 control-label">
                                             是否启用<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-1">
                                             <label class="radio-inline">
                                                 <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
                                                        checked="checked">
                                             </label>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <label class="col-sm-3 control-label">
+                                            是否必填项
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" id="subBisMust" name="bisMust" value="true"
+                                                       checked="checked">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -452,6 +459,11 @@
                 return getBoolChs(value);
             }
         });
+        cols.push({
+            field: 'bisMust', title: '是否必填', formatter: function (value) {
+                return getBoolChs(value);
+            }
+        });
         cols.push({field: 'sorting', title: '排序'});
         cols.push({field: 'remark', title: '备注'});
         cols.push({
@@ -482,6 +494,7 @@
         $("#frmSub").clearAll();
         $("#subId").val("0");
         $("#subBisEnable").prop("checked", true);
+        $("#subBisMust").prop("checked", false);
     }
 
     //编辑子项
@@ -491,6 +504,7 @@
         if (row) {
             $("#frmSub").initForm(row);
             $("#subBisEnable").prop("checked", row.bisEnable);
+            $("#subBisMust").prop("checked", row.bisMust);
         }
         $('#divSubDataExamineTaskManage').modal();
     }
@@ -502,6 +516,7 @@
             var data = formParams("frmSub");
             data.pid = $("#mainId").val();
             data.bisEnable = $("#subBisEnable").prop("checked");
+            data.bisMust = $("#subBisMust").prop("checked");
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataExamineTask/saveDataExamineTask",
                 type: "post",

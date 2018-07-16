@@ -15,6 +15,8 @@ public class DataExamineTask {
 
     private String detailUrl;
 
+    private Boolean bisMust;
+
     private Boolean bisEnable;
 
     private Boolean bisDelete;
@@ -75,6 +77,14 @@ public class DataExamineTask {
 
     public void setDetailUrl(String detailUrl) {
         this.detailUrl = detailUrl == null ? null : detailUrl.trim();
+    }
+
+    public Boolean getBisMust() {
+        return bisMust;
+    }
+
+    public void setBisMust(Boolean bisMust) {
+        this.bisMust = bisMust;
     }
 
     public Boolean getBisEnable() {
