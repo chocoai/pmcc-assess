@@ -39,13 +39,13 @@ public class InitiateContactsDao {
 
     public boolean update(InitiateContactsDto dto){
         InitiateContacts initiateContacts = change(dto);
-        InitiateContactsDto dto1 = get(initiateContacts.getId());
-        String crmTemp = dto1.getCrmId();
-        if (!StringUtils.isEmpty(crmTemp)){
-            initiateContacts.setCrmId(crmTemp);
-        }
-        dto.setCreator(dto1.getCreator());
-        return mapper.updateByPrimaryKey(initiateContacts)==1;
+//        InitiateContactsDto dto1 = get(initiateContacts.getId());
+//        String crmTemp = dto1.getCrmId();
+//        if (!StringUtils.isEmpty(crmTemp)){
+//            initiateContacts.setCrmId(crmTemp);
+//        }
+//        dto.setCreator(dto1.getCreator());
+        return mapper.updateByPrimaryKeySelective(initiateContacts)==1;
     }
 
     public void update(int pid, int cType, String createPeople){

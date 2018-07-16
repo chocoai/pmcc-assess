@@ -568,6 +568,10 @@ public class ProjectInfoService {
         return initiateContactsService.update(dto);
     }
 
+    public InitiateContactsVo getInitiateContacts(Integer id){
+        return  initiateContactsService.get(id);
+    }
+
     public ProjectInfo change(ProjectInfoDto dto) {
         ProjectInfo projectInfo = new ProjectInfo();
         BeanUtils.copyProperties(dto, projectInfo);

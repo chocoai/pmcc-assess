@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectFollowService;
@@ -274,15 +275,15 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer flag, Integer pid) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid) {
         BootstrapTableVo vo = null;
-        vo = projectInfoService.listContactsVo(crmId, flag, pid);
+        vo = projectInfoService.listContactsVo(crmId, type, pid);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
-    public HttpResult add(InitiateContactsDto dto) {
+    public HttpResult addContacts(InitiateContactsDto dto) {
         try {
             if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
                 projectInfoService.updateContacts(dto);
@@ -298,7 +299,7 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/Contacts/delete", name = "联系人 删除", method = RequestMethod.POST)
-    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+    public HttpResult deleteContacts(@RequestParam(value = "id") Integer id) {
         try {
             projectInfoService.removeContacts(id);
         } catch (Exception e) {
@@ -306,6 +307,18 @@ public class ProjectInfoController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Contacts/get", name = "联系人 获取", method = RequestMethod.GET)
+    public HttpResult getContacts(@RequestParam(value = "id") Integer id) {
+        try {
+            InitiateContactsVo contactsVo = projectInfoService.getInitiateContacts(id);
+            return HttpResult.newCorrectResult(contactsVo);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
     @ResponseBody
