@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyAssetTemplateDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetTemplateDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetTemplate;

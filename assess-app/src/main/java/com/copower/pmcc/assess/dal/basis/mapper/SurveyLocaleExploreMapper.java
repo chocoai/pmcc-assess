@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.basis.mapper;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SurveyLocaleExploreMapper {
     int countByExample(SurveyLocaleExploreExample example);

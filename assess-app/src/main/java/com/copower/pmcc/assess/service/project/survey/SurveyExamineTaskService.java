@@ -1,17 +1,24 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyExamineTaskDao;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -35,6 +43,12 @@ public class SurveyExamineTaskService {
     private PublicService publicService;
     @Autowired
     private DataExamineTaskService dataExamineTaskService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
 
     /**
@@ -75,6 +89,14 @@ public class SurveyExamineTaskService {
             if (StringUtils.isNotBlank(p.getUserAccount())) {
                 surveyExamineTaskVo.setUserName(publicService.getUserNameByAccount(p.getUserAccount()));
             }
+            if (StringUtils.isNotBlank(p.getTaskStatus())) {
+                surveyExamineTaskVo.setTaskStatusName(ProjectStatusEnum.getNameByKey(p.getTaskStatus()));
+            }
+            DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(p.getDataTaskId());
+            if(dataExamineTask!=null){
+                surveyExamineTaskVo.setApplyUrl(dataExamineTask.getApplyUrl());
+                surveyExamineTaskVo.setDetailUrl(dataExamineTask.getDetailUrl());
+            }
             return surveyExamineTaskVo;
         });
     }
@@ -93,6 +115,7 @@ public class SurveyExamineTaskService {
 
     /**
      * 保存选择的调查任务
+     *
      * @param surveyExamineTaskDto
      * @throws BusinessException
      */
@@ -113,7 +136,7 @@ public class SurveyExamineTaskService {
                     surveyExamineTask.setExamineType(surveyExamineTaskDto.getExamineType());
                     surveyExamineTask.setDeclareId(surveyExamineTaskDto.getDeclareRecordId());
                     surveyExamineTask.setDataTaskId(id);
-                    surveyExamineTask.setBisFinish(false);
+                    surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
                     surveyExamineTask.setCreator(commonService.thisUserAccount());
                     surveyExamineTaskDao.addSurveyExamineTask(surveyExamineTask);
                 }
@@ -198,5 +221,59 @@ public class SurveyExamineTaskService {
         return dataExamineTasks;
     }
 
+    /**
+     * 确认分派
+     *
+     * @param planDetailsId
+     */
+    public void confirmAssignment(Integer planDetailsId) {
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+        projectResponsibilityDto.setProjectId(planDetails.getProjectId());
+        projectResponsibilityDto.setPlanDetailsId(planDetailsId);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+        ProjectResponsibilityDto projectTask = null;
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            //找出最基础的任务数据
+            for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                if (responsibilityDto.getUserAccount().equals(planDetails.getExecuteUserAccount()))
+                    projectTask = responsibilityDto;
+            }
+        }
+
+        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+        surveyExamineTask.setPlanDetailsId(planDetailsId);
+        surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
+        List<SurveyExamineTask> examineTaskList = surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
+        if (CollectionUtils.isNotEmpty(examineTaskList)) {
+            HashSet<String> hashSet = Sets.newHashSet(planDetails.getExecuteUserAccount());
+            for (SurveyExamineTask examineTask : examineTaskList) {
+                if (StringUtils.isNotBlank(examineTask.getUserAccount()))
+                    hashSet.add(examineTask.getUserAccount());
+            }
+            //该人员已有任务，则不处理；该人员没有任务，则复制添加任务；存在任务但不属于目前参与人员，则删除任务
+            if (!hashSet.isEmpty() && CollectionUtils.isNotEmpty(projectTaskList)) {
+                HashSet<String> taskUserAccount = Sets.newHashSet();
+                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                    if (!hashSet.contains(responsibilityDto.getUserAccount())) {
+                        //删除此任务
+                        bpmRpcProjectTaskService.deleteProjectTask(responsibilityDto.getId());
+                        continue;
+                    }
+                    if (StringUtils.isNotBlank(responsibilityDto.getUserAccount()))
+                        taskUserAccount.add(responsibilityDto.getUserAccount());
+                }
+                for (String userAccount : hashSet) {
+                    if (!taskUserAccount.contains(userAccount)) {
+                        //添加任务
+                        projectTask.setId(null);
+                        projectTask.setUserAccount(userAccount);
+                        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+                    }
+                }
+            }
+        }
+
+    }
 
 }

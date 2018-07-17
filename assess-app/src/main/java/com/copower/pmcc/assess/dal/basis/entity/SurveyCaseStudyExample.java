@@ -355,6 +355,76 @@ public class SurveyCaseStudyExample {
             return (Criteria) this;
         }
 
+        public Criteria andExamineFormTypeIsNull() {
+            addCriterion("examine_form_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeIsNotNull() {
+            addCriterion("examine_form_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeEqualTo(String value) {
+            addCriterion("examine_form_type =", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeNotEqualTo(String value) {
+            addCriterion("examine_form_type <>", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeGreaterThan(String value) {
+            addCriterion("examine_form_type >", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("examine_form_type >=", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeLessThan(String value) {
+            addCriterion("examine_form_type <", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeLessThanOrEqualTo(String value) {
+            addCriterion("examine_form_type <=", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeLike(String value) {
+            addCriterion("examine_form_type like", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeNotLike(String value) {
+            addCriterion("examine_form_type not like", value, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeIn(List<String> values) {
+            addCriterion("examine_form_type in", values, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeNotIn(List<String> values) {
+            addCriterion("examine_form_type not in", values, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeBetween(String value1, String value2) {
+            addCriterion("examine_form_type between", value1, value2, "examineFormType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineFormTypeNotBetween(String value1, String value2) {
+            addCriterion("examine_form_type not between", value1, value2, "examineFormType");
+            return (Criteria) this;
+        }
+
         public Criteria andDeclareRecordIdIsNull() {
             addCriterion("declare_record_id is null");
             return (Criteria) this;

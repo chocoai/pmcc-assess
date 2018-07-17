@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.basis.dao.project.suvey;
+package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTaskExample;
@@ -40,6 +40,7 @@ public class SurveyExamineTaskDao {
     public List<SurveyExamineTask> getSurveyExamineTaskList(SurveyExamineTask surveyExamineTask) {
         SurveyExamineTaskExample example = new SurveyExamineTaskExample();
         MybatisUtils.convertObj2Example(surveyExamineTask, example);
+        example.setOrderByClause("sorting");
         return surveyExamineTaskMapper.selectByExample(example);
     }
 

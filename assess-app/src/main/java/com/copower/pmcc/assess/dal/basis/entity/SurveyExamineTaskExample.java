@@ -725,63 +725,73 @@ public class SurveyExamineTaskExample {
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishIsNull() {
-            addCriterion("bis_finish is null");
+        public Criteria andTaskStatusIsNull() {
+            addCriterion("task_status is null");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishIsNotNull() {
-            addCriterion("bis_finish is not null");
+        public Criteria andTaskStatusIsNotNull() {
+            addCriterion("task_status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishEqualTo(Boolean value) {
-            addCriterion("bis_finish =", value, "bisFinish");
+        public Criteria andTaskStatusEqualTo(String value) {
+            addCriterion("task_status =", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishNotEqualTo(Boolean value) {
-            addCriterion("bis_finish <>", value, "bisFinish");
+        public Criteria andTaskStatusNotEqualTo(String value) {
+            addCriterion("task_status <>", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishGreaterThan(Boolean value) {
-            addCriterion("bis_finish >", value, "bisFinish");
+        public Criteria andTaskStatusGreaterThan(String value) {
+            addCriterion("task_status >", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_finish >=", value, "bisFinish");
+        public Criteria andTaskStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("task_status >=", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishLessThan(Boolean value) {
-            addCriterion("bis_finish <", value, "bisFinish");
+        public Criteria andTaskStatusLessThan(String value) {
+            addCriterion("task_status <", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_finish <=", value, "bisFinish");
+        public Criteria andTaskStatusLessThanOrEqualTo(String value) {
+            addCriterion("task_status <=", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishIn(List<Boolean> values) {
-            addCriterion("bis_finish in", values, "bisFinish");
+        public Criteria andTaskStatusLike(String value) {
+            addCriterion("task_status like", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishNotIn(List<Boolean> values) {
-            addCriterion("bis_finish not in", values, "bisFinish");
+        public Criteria andTaskStatusNotLike(String value) {
+            addCriterion("task_status not like", value, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_finish between", value1, value2, "bisFinish");
+        public Criteria andTaskStatusIn(List<String> values) {
+            addCriterion("task_status in", values, "taskStatus");
             return (Criteria) this;
         }
 
-        public Criteria andBisFinishNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_finish not between", value1, value2, "bisFinish");
+        public Criteria andTaskStatusNotIn(List<String> values) {
+            addCriterion("task_status not in", values, "taskStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStatusBetween(String value1, String value2) {
+            addCriterion("task_status between", value1, value2, "taskStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStatusNotBetween(String value1, String value2) {
+            addCriterion("task_status not between", value1, value2, "taskStatus");
             return (Criteria) this;
         }
 

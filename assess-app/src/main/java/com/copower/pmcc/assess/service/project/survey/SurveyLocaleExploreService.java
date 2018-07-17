@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyLocaleExploreDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -40,6 +40,11 @@ public class SurveyLocaleExploreService {
 
     public SurveyLocaleExplore getSurveyLocaleExplore(String processInsId) {
         SurveyLocaleExplore surveyLocaleExplore= surveyLocaleExploreDao.getSurveyLocaleExplore(processInsId);
+        return surveyLocaleExplore;
+    }
+
+    public SurveyLocaleExplore getExploreByPlanDetailsId(Integer planDetailsId) {
+        SurveyLocaleExplore surveyLocaleExplore= surveyLocaleExploreDao.getExploreByPlanDetailsId(planDetailsId);
         return surveyLocaleExplore;
     }
 }

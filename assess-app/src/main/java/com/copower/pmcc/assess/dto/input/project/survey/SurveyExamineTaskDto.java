@@ -4,6 +4,8 @@ package com.copower.pmcc.assess.dto.input.project.survey;
  * Created by kings on 2018-7-13.
  */
 public class SurveyExamineTaskDto {
+    private Integer tableId;
+    private Integer projectId;
     private Integer planDetailsId;
     private String examineFormType;
     private Integer declareRecordId;
@@ -11,6 +13,22 @@ public class SurveyExamineTaskDto {
     private String userAccount;
     private Integer pid;
     private String dataTaskIds;
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public Integer getPlanDetailsId() {
         return planDetailsId;

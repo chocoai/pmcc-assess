@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
@@ -10,6 +13,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -50,6 +54,10 @@ public class SurveyCommonService {
     private DataExamineTaskService dataExamineTaskService;
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
+    @Autowired
+    private SurveyLocaleExploreService surveyLocaleExploreService;
+    @Autowired
+    private SurveyCaseStudyService surveyCaseStudyService;
 
 
     /**
@@ -80,6 +88,7 @@ public class SurveyCommonService {
         }
         return surveyCorrelationCardVos;
     }
+
 
     /**
      * 下载定位图片
@@ -143,6 +152,25 @@ public class SurveyCommonService {
     }
 
     /**
+     * 获取房产所有调查表单
+     *
+     * @return
+     */
+    public List<KeyValueDto> getExamineFormTypeList() {
+        List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
+        KeyValueDto keyValueDto = new KeyValueDto();
+        keyValueDto.setKey(AssessExamineTaskConstant.FC_RESIDENCE);
+        keyValueDto.setValue("住宅商业办公");
+        keyValueDtoList.add(keyValueDto);
+
+        keyValueDto = new KeyValueDto();
+        keyValueDto.setKey(AssessExamineTaskConstant.FC_INDUSTRY);
+        keyValueDto.setValue("工业仓储");
+        keyValueDtoList.add(keyValueDto);
+        return keyValueDtoList;
+    }
+
+    /**
      * 初始化该调查表下的所有任务
      *
      * @param surveyExamineTaskDto
@@ -151,6 +179,27 @@ public class SurveyCommonService {
     public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
         //清除原有数据
         surveyExamineTaskService.deleteTaskByPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+        //保存主表信息
+        if (surveyExamineTaskDto.getExamineType().equals(ExamineTypeEnum.EXPLORE.getId())) {//查勘
+            SurveyLocaleExplore surveyLocaleExplore = new SurveyLocaleExplore();
+            surveyLocaleExplore.setId(surveyExamineTaskDto.getTableId());
+            surveyLocaleExplore.setProjectId(surveyExamineTaskDto.getProjectId());
+            surveyLocaleExplore.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+            surveyLocaleExplore.setExamineFormType(surveyExamineTaskDto.getExamineFormType());
+            surveyLocaleExplore.setDeclareRecordId(surveyExamineTaskDto.getDeclareRecordId());
+            surveyLocaleExplore.setCreator(commonService.thisUserAccount());
+            surveyLocaleExploreService.save(surveyLocaleExplore);
+        } else {//案例
+            SurveyCaseStudy surveyCaseStudy = new SurveyCaseStudy();
+            surveyCaseStudy.setId(surveyExamineTaskDto.getTableId());
+            surveyCaseStudy.setProjectId(surveyExamineTaskDto.getProjectId());
+            surveyCaseStudy.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+            surveyCaseStudy.setExamineFormType(surveyExamineTaskDto.getExamineFormType());
+            surveyCaseStudy.setDeclareRecordId(surveyExamineTaskDto.getDeclareRecordId());
+            surveyCaseStudy.setCreator(commonService.thisUserAccount());
+            surveyCaseStudyService.save(surveyCaseStudy);
+        }
+
 
         List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
 
@@ -159,7 +208,7 @@ public class SurveyCommonService {
             surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
             surveyExamineTask.setDeclareId(surveyExamineTaskDto.getDeclareRecordId());
             surveyExamineTask.setExamineType(surveyExamineTaskDto.getExamineType());
-            surveyExamineTask.setBisFinish(false);
+            surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
             surveyExamineTask.setCreator(commonService.thisUserAccount());
             //第一层级
             for (DataExamineTask dataExamineTask : examineTaskList) {
@@ -181,7 +230,7 @@ public class SurveyCommonService {
                         surveyExamineTask.setUserAccount(surveyExamineTaskDto.getUserAccount());
                         surveyExamineTask.setDataTaskId(examineTask.getId());
                         surveyExamineTask.setSorting(examineTask.getSorting());
-                        surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
+                        surveyExamineTask.setBisMust(examineTask.getBisMust());
                         surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
                     }
                 }

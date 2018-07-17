@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.basis.dao.project.suvey;
+package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreExample;
@@ -17,19 +17,30 @@ public class SurveyLocaleExploreDao {
     @Autowired
     private SurveyLocaleExploreMapper surveyLocaleExploreMapper;
 
-    public boolean update(SurveyLocaleExplore surveyLocaleExploreDto) {
-        int i = surveyLocaleExploreMapper.updateByPrimaryKeySelective(surveyLocaleExploreDto);
+    public boolean update(SurveyLocaleExplore surveyLocaleExplore) {
+        int i = surveyLocaleExploreMapper.updateByPrimaryKeySelective(surveyLocaleExplore);
         return i > 0;
     }
 
-    public boolean save(SurveyLocaleExplore surveyLocaleExploreDto) {
-        int i = surveyLocaleExploreMapper.insertSelective(surveyLocaleExploreDto);
+    public boolean save(SurveyLocaleExplore surveyLocaleExplore) {
+        int i = surveyLocaleExploreMapper.insertSelective(surveyLocaleExplore);
         return i > 0;
     }
 
     public boolean delete(Integer id) {
         int i = surveyLocaleExploreMapper.deleteByPrimaryKey(id);
         return i > 0;
+    }
+
+    public SurveyLocaleExplore getExploreByPlanDetailsId(Integer planDetailsId){
+        SurveyLocaleExploreExample example = new SurveyLocaleExploreExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        example.setOrderByClause(" id ASC");
+        List<SurveyLocaleExplore> surveyLocaleExplores = surveyLocaleExploreMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(surveyLocaleExplores)){
+            return surveyLocaleExplores.get(0);
+        }
+        return null;
     }
 
     public SurveyLocaleExplore getSurveyLocaleExplore(String processInsId) {
