@@ -461,7 +461,7 @@ public class ProjectInfoService {
         return projectInfoVo;
     }
 
-    public ProjectInfoVo getProjectInfoVo(ProjectInfo projectInfo) {
+    public ProjectInfoVo getProjectInfoVoView(ProjectInfo projectInfo) {
         ProjectInfoVo projectInfoVo = getSimpleProjectInfoVo(projectInfo);
         if (StringUtils.isNotBlank(projectInfo.getProvince())) {
 
@@ -492,7 +492,8 @@ public class ProjectInfoService {
 
         InitiateUnitInformationVo informationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
         projectInfoVo.setUnitInformationVo(informationVo);
-
+        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
+        projectInfoVo.setProjectMemberVo(projectMemberVo);
         return projectInfoVo;
     }
 

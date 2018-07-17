@@ -6,11 +6,16 @@ import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiatePossessorDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.base.Objects;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -28,6 +33,9 @@ public class InitiatePossessorService {
     private InitiatePossessorDao dao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Lazy
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
 
     public int add(InitiatePossessorDto dto) {
         if (dto.getpType() == InitiatePossessorDto.PTYPEa) {//对资产占有人信息 进行单独处理
@@ -81,11 +89,32 @@ public class InitiatePossessorService {
             if (baseDataDic != null)
                 vo.setpUnitPropertiesName(baseDataDic.getName());
         }
-        if (!StringUtils.isEmpty(possessor.getpEntrustmentUnit())) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpEntrustmentUnit()));
-            if (baseDataDic != null)
-                vo.setpEntrustmentUnitName(baseDataDic.getName());
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
+        if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
+            for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
+                if (!StringUtils.isEmpty(possessor.getpUnitProperties())){
+                    if (Objects.equal(Integer.parseInt(possessor.getpUnitProperties()),dicDto.getId())){
+                        vo.setpUnitPropertiesName(dicDto.getName());
+                        break;
+                    }
+                }
+            }
         }
+//        if (!StringUtils.isEmpty(possessor.getpEntrustmentUnit())) {
+//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpEntrustmentUnit()));
+//            if (baseDataDic != null)
+//                vo.setpEntrustmentUnitName(baseDataDic.getName());
+//        }
         return vo;
+    }
+
+    /**
+     * 单位性质 crm
+     *
+     * @return
+     */
+    private List<CrmBaseDataDicDto> getUnitPropertiesList() {
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        return crmBaseDataDicDtos;
     }
 }

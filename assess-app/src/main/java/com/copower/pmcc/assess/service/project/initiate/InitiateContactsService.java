@@ -3,12 +3,14 @@ package com.copower.pmcc.assess.service.project.initiate;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,54 +48,38 @@ public class InitiateContactsService {
     /**
      * 从crm中输入数据
      *
-     * @param crmId
+     * @param customerId
      * @param cType
      * @return
      */
     @Transactional
-    public void writeContacts(Integer crmId, Integer cType, Integer pid) {
+    public void writeContacts(Integer customerId, Integer cType, Integer pid) {
         List<CrmCustomerLinkmanDto> writeCustomer = new ArrayList<>();
-        if (crmId != null) {
-            List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(crmId);
-            InitiateContactsVo vo = null;
+        if (customerId != null) {
+            List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(customerId);
             try {
-                List<InitiateContactsDto> dtos = new ArrayList<>();
-                for (CrmCustomerLinkmanDto dto : linkmanDtos) {
-                    InitiateContactsDto contactsDto = new InitiateContactsDto();
-                    contactsDto.setcDept(dto.getDepartment());
-                    contactsDto.setcEmail(dto.getEmail());
-                    contactsDto.setcName(dto.getName());
-                    contactsDto.setcPhone(dto.getPhoneNumber());
-                    contactsDto.setcPid(pid);
-                    contactsDto.setcType(cType);
-                    contactsDto.setCrmId(dto.getId() + "");
-                    dtos.add(contactsDto);
-                }
-
-                //排序之后 取5个写入本地
-                Collections.sort(dtos, new Comparator<Object>() {
+                Ordering<CrmCustomerLinkmanDto> firstOrdering  = Ordering.from(new Comparator<CrmCustomerLinkmanDto>() {
                     @Override
-                    public int compare(Object o1, Object o2) {
-                        InitiateContactsDto contactsA = (InitiateContactsDto) o1;
-                        InitiateContactsDto contactsB = (InitiateContactsDto) o2;
-                        if (contactsA.getGmtCreated() != null && contactsB.getGmtCreated() != null) {
-                            return contactsA.getGmtCreated().compareTo(contactsB.getGmtCreated());
-                        }
-                        return 0;
+                    public int compare(CrmCustomerLinkmanDto o1, CrmCustomerLinkmanDto o2) {
+                        return o1.getId().compareTo(o2.getId());
                     }
-                });//暂时不处理
+                }).reverse();//排序 并且反转
+                //排序之后 取5个写入本地
+                Collections.sort(linkmanDtos, firstOrdering);
                 int temp = 5;
                 for (int i = 0; i < temp; i++) {
-                    CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
-                    InitiateContactsDto contactsDto = dtos.get(i);
+                    CrmCustomerLinkmanDto crmCustomerLinkmanDto = linkmanDtos.get(i);
+                    InitiateContactsDto contactsDto = new InitiateContactsDto();
                     if (contactsDto != null) {
-                        crmCustomerLinkmanDto.setName(contactsDto.getcName());
-                        crmCustomerLinkmanDto.setDepartment(contactsDto.getcDept());
-                        crmCustomerLinkmanDto.setEmail(contactsDto.getcEmail());
-                        crmCustomerLinkmanDto.setPhoneNumber(contactsDto.getcPhone());
+                        contactsDto.setcPid(pid);
+                        contactsDto.setcDept(crmCustomerLinkmanDto.getDepartment());
+                        contactsDto.setCrmId(String.valueOf(crmCustomerLinkmanDto.getId()));
+                        contactsDto.setcName(crmCustomerLinkmanDto.getName());
+                        contactsDto.setcEmail(crmCustomerLinkmanDto.getEmail());
+                        contactsDto.setcPhone(crmCustomerLinkmanDto.getPhoneNumber());
+                        contactsDto.setcType(cType);
                         contactsDto.setCreator(commonService.thisUserAccount());
-                        int id = dao.save(contactsDto);
-                        writeCustomer.add(crmCustomerLinkmanDto);
+                        dao.save(contactsDto);
                     }
 
                 }
@@ -171,11 +157,17 @@ public class InitiateContactsService {
     }
 
     public InitiateContactsVo get(Integer id) {
-        return change(dao.get(id));
+        InitiateContacts initiateContacts = dao.get(id);
+        InitiateContactsVo vo = new InitiateContactsVo();
+        BeanUtils.copyProperties(initiateContacts,vo);
+        return vo;
     }
 
     public InitiateContactsDto getById(Integer id) {
-        return dao.get(id);
+        InitiateContacts initiateContacts = dao.get(id);
+        InitiateContactsDto vo = new InitiateContactsDto();
+        BeanUtils.copyProperties(initiateContacts,vo);
+        return vo;
     }
 
     @Transactional
@@ -190,7 +182,7 @@ public class InitiateContactsService {
 
     public List<InitiateContactsVo> getVoList(Integer cPid, Integer cType) {
         List<InitiateContactsVo> vos = new ArrayList<>();
-        dao.getList(cPid, cType, commonService.thisUserAccount()).parallelStream().forEach(oo -> vos.add(change(oo)));
+        dao.getList(cPid, cType, null).parallelStream().forEach(oo -> vos.add(change(oo)));
         return vos;
     }
 
@@ -200,9 +192,9 @@ public class InitiateContactsService {
         return dto;
     }
 
-    private InitiateContactsVo change(InitiateContactsDto dto) {
+    private InitiateContactsVo change(InitiateContacts initiateContacts) {
         InitiateContactsVo vo = new InitiateContactsVo();
-        BeanUtils.copyProperties(dto, vo);
+        BeanUtils.copyProperties(initiateContacts, vo);
         return vo;
     }
 

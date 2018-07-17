@@ -54,7 +54,7 @@
                     <div class="col-sm-3">
                         <input type="text" name="csSociologyCode" id="csSociologyCode"
                                value="${projectInfo.consignorVo.csSociologyCode}"
-                               placeholder="社会统一信用代码" class="form-control" required="required">
+                               placeholder="社会统一信用代码" class="form-control" data-rule-number='true' name="number" required="required">
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">联系人</h3>
             </div>
-            <form id="frmConsignorContacts" class="form-horizontal">
+            <form name="frmConsignorContacts" id="frmConsignorContacts" class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="pid">
                 <div class="modal-body">
@@ -211,7 +211,7 @@
                                             号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="cPhone" placeholder="号码"
+                                            <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>

@@ -85,7 +85,7 @@ public class ProjectInfoController {
         projectInfo.setProjectClassId(projectClassId);
         projectInfo.setProjectTypeId(projectTypeId);
         projectInfo.setProjectCategoryId(projectCategoryId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
@@ -111,7 +111,7 @@ public class ProjectInfoController {
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
 
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("ProjectAFFILIATED", projectInfoService.getUnitPropertiesList());//单位性质 crm中获取
@@ -128,7 +128,7 @@ public class ProjectInfoController {
     public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        ProjectInfoVo vo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo vo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", vo);
         return modelAndView;
     }
@@ -139,7 +139,7 @@ public class ProjectInfoController {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setAssignProcessInsId(processInsId);
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
-        ProjectInfoVo vo = projectInfoService.getProjectInfoVo(projectInfoList.get(0));
+        ProjectInfoVo vo = projectInfoService.getProjectInfoVoView(projectInfoList.get(0));
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         return modelAndView;
@@ -225,7 +225,7 @@ public class ProjectInfoController {
         if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
 
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
@@ -249,7 +249,7 @@ public class ProjectInfoController {
         if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
         }
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         modelAndView.addObject("projectFlog", "1");

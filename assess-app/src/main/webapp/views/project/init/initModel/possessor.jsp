@@ -55,7 +55,7 @@
                     <div class="col-sm-3">
                         <input type="text" name="pSociologyCode" id="pSociologyCode"
                                value="${projectInfo.possessorVo.pSociologyCode}"
-                               class="form-control" required="required">
+                               class="form-control" data-rule-number='true' name="number" required="required">
                     </div>
                 </div>
             </div>
@@ -218,7 +218,7 @@
                                             号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="cPhone" placeholder="号码"
+                                            <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>

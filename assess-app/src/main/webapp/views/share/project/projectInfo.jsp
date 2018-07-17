@@ -32,13 +32,6 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目说明</label>
-                    <div class="col-sm-11">
-                        <label class="form-control">${projectInfo.remarks}</label></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
                     <label class="col-sm-1 control-label">委托目的</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.entrustPurposeName}</label>
@@ -60,6 +53,13 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的备注</label>
+                    <div class="col-sm-11">
+                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="x-valid">
@@ -77,8 +77,16 @@
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型备注</label>
+                    <label class="col-sm-1 control-label">执业部门</label>
                     <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.departmentName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">价值类型备注</label>
+                    <div class="col-sm-11">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
@@ -109,16 +117,32 @@
 
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">执业部门</label>
+                    <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.departmentName}</label>
+                        <label class="form-control">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                     </div>
                 </div>
 
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的备注</label>
+                    <label class="col-sm-1 control-label">项目成员</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label>
+                        <label class="form-control">${projectInfo.projectMemberVo.userAccountMemberName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">项目说明</label>
+                    <div class="col-sm-11">
+                        <label class="form-control">${projectInfo.remarks}</label></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">附件</label>
+                    <div class="col-sm-3">
+                        <div id="_attachmentProjectInfoId"></div>
                     </div>
                 </div>
             </div>
@@ -144,7 +168,7 @@
                                     委托单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnitName}</label>
                                 </div>
                             </div>
 
@@ -237,10 +261,8 @@
         <div class="x_title">
             <h3>联系人</h3>
         </div>
-        <div class="x_content">
-            <table class="table table-bordered" id="tb_ListA">
-            </table>
-        </div>
+        <table class="table table-bordered" id="CONSIGNOR_TableList">
+        </table>
     </div>
 </div>
 <div class="x_panel">
@@ -362,7 +384,7 @@
         <div class="x_title">
             <h3>联系人</h3>
         </div>
-        <table class="table table-bordered" id="tb_ListB">
+        <table class="table table-bordered" id="POSSESSOR_TableList">
         </table>
     </div>
 </div>
@@ -439,7 +461,7 @@
         <div class="x_title">
             <h3>联系人</h3>
         </div>
-        <table class="table table-bordered" id="tb_ListC">
+        <table class="table table-bordered" id="UNIT_INFORMATION_TableList">
         </table>
     </div>
 </div>
@@ -484,17 +506,31 @@
 
         TableInit(tb_List, "${pageContext.request.contextPath}/projectInfo/getProjectContactsVos", cols, {
             pid: id,
-            flag: flag
+            type: flag
         }, {
             showColumns: false,
             showRefresh: false,
             search: false
         });
+        console.log("id:"+id +" "+tb_List +" "+flag);
     }
+    function Contacts() {
+    };
+    Contacts.prototype.config = function () {
+        var Contacts = {};
+        /**
+         * 根据此处约定设置
+         * com.copower.pmcc.assess.common.enums.InitiateContactsEnum
+         */
+        Contacts.CONSIGNOR = {key: "CONSIGNOR", name: "委托人", nodeKey: 1,table:"CONSIGNOR_TableList"};
+        Contacts.POSSESSOR = {key: "POSSESSOR", name: "占有人", nodeKey: 2,table:"POSSESSOR_TableList"};
+        Contacts.UNIT_INFORMATION = {key: "UNIT_INFORMATION", name: "报告使用单位", nodeKey: 3,table:"UNIT_INFORMATION_TableList"};
+        return Contacts;
+    };
     //选项框
     $(document).ready(function () {
-        loadInitContactsList("${projectInfo.consignorVo.id}", "tb_ListA", 1)
-        loadInitContactsList("${projectInfo.possessorVo.id}", "tb_ListB", 2);
-        loadInitContactsList('${projectInfo.unitInformationVo.id}', "tb_ListC", 3);
+        loadInitContactsList("${projectInfo.consignorVo.id}", Contacts.prototype.config().CONSIGNOR.table, Contacts.prototype.config().CONSIGNOR.nodeKey)
+        loadInitContactsList("${projectInfo.possessorVo.id}", Contacts.prototype.config().POSSESSOR.table, Contacts.prototype.config().POSSESSOR.nodeKey);
+        loadInitContactsList('${projectInfo.unitInformationVo.id}', Contacts.prototype.config().UNIT_INFORMATION.table, Contacts.prototype.config().UNIT_INFORMATION.nodeKey);
     });
 </script>

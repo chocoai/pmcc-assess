@@ -88,7 +88,7 @@ public class ProjectTaskController {
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
 
         modelAndView.addObject("responsibilityId", responsibilityId);
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
@@ -131,7 +131,7 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
@@ -174,7 +174,7 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
@@ -206,7 +206,7 @@ public class ProjectTaskController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }

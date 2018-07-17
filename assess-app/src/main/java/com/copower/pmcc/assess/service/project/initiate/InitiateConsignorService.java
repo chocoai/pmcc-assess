@@ -6,13 +6,18 @@ import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateConsignorDto;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -31,6 +36,9 @@ public class InitiateConsignorService {
     private InitiateConsignorDao dao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Lazy
+    @Autowired
+    private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
 
     public int add(InitiateConsignorDto dto) {
         //对 委托人进行单独处理
@@ -80,10 +88,20 @@ public class InitiateConsignorService {
         if (initiateConsignor == null) return null;
         InitiateConsignorVo vo = new InitiateConsignorVo();
         BeanUtils.copyProperties(initiateConsignor, vo);
-        if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsUnitProperties()));
-            if (baseDataDic != null)
-                vo.setCsUnitPropertiesName(baseDataDic.getName());
+//        if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
+//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsUnitProperties()));
+//            if (baseDataDic != null)
+//                vo.setCsUnitPropertiesName(baseDataDic.getName());
+//        }
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
+        if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)){
+            for (CrmBaseDataDicDto dicDto:crmBaseDataDicDtos){
+                if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())){
+                    if (dicDto.getId().equals(Integer.parseInt(initiateConsignor.getCsUnitProperties()))){
+                        vo.setCsUnitPropertiesName(dicDto.getName());
+                    }
+                }
+            }
         }
         if (!StringUtils.isEmpty(initiateConsignor.getCsEntrustmentUnit())) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit()));
@@ -91,6 +109,16 @@ public class InitiateConsignorService {
                 vo.setCsEntrustmentUnitName(baseDataDic.getName());
         }
         return vo;
+    }
+
+    /**
+     * 单位性质 crm
+     *
+     * @return
+     */
+    private List<CrmBaseDataDicDto> getUnitPropertiesList() {
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        return crmBaseDataDicDtos;
     }
 
 

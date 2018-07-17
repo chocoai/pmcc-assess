@@ -224,9 +224,9 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var data = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm);
         var pid = data.pid;
         data.cType = Contacts.prototype.config().UNIT_INFORMATION.nodeKey;
-        // if ($("#"+Contacts.prototype.POSSESSOR().getData().frm).valid()){
-        //     return false;
-        // }
+        if (!$("#"+Contacts.prototype.UNIT_INFORMATION().getData().frm).valid()){
+            return false;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",
@@ -377,9 +377,9 @@ Contacts.prototype.POSSESSOR = function () {
         var data = formParams(Contacts.prototype.POSSESSOR().getData().frm);
         var pid = data.pid;
         data.cType = Contacts.prototype.config().POSSESSOR.nodeKey;
-        // if ($("#"+Contacts.prototype.POSSESSOR().getData().frm).valid()){
-        //     return false;
-        // }
+        if (!$("#"+Contacts.prototype.POSSESSOR().getData().frm).valid()){
+            return false;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",
@@ -530,9 +530,9 @@ Contacts.prototype.CONSIGNOR = function () {
         var data = formParams(Contacts.prototype.CONSIGNOR().getData().frm);
         var pid = data.pid;
         data.cType = Contacts.prototype.config().CONSIGNOR.nodeKey;
-        // if ($("#"+Contacts.prototype.CONSIGNOR().getData().frm).valid()) {
-        //     return false;
-        // }
+        if (!$("#"+Contacts.prototype.CONSIGNOR().getData().frm).valid()) {
+            return false;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",

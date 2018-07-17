@@ -110,7 +110,7 @@ public class ProjectPlanController {
         modelAndView.addObject("projectFlog", "1");
 
 
-        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVo(projectInfo);
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfoVo);
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("projectPhases", projectPhases);
@@ -278,7 +278,7 @@ public class ProjectPlanController {
         modelAndView.addObject("planId", projectPlan.getId());
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "返回修改");
-        ProjectInfoVo projectInfo = projectInfoService.getProjectInfoVo(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
+        ProjectInfoVo projectInfo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlan.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfo);
 
         List<ProjectPhase> projectPhases = getProjectPhases(projectPlan, projectInfo);

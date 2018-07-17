@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.dal.basis.dao.project.initiate;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContactsExample;
 import com.copower.pmcc.assess.dal.basis.mapper.InitiateContactsMapper;
-import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
@@ -23,35 +21,27 @@ public class InitiateContactsDao {
     @Autowired
     private InitiateContactsMapper mapper;
 
-    public int save(InitiateContactsDto dto){
-        InitiateContacts contacts = change(dto);
+    public int save(InitiateContacts contacts){
         mapper.insertSelective(contacts);
         return contacts.getId();
     }
 
-    public boolean add(InitiateContactsDto dto){
-        return mapper.insertSelective(change(dto))==1;
+    public boolean add(InitiateContacts contacts){
+        return mapper.insertSelective(contacts)==1;
     }
 
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }
 
-    public boolean update(InitiateContactsDto dto){
-        InitiateContacts initiateContacts = change(dto);
-//        InitiateContactsDto dto1 = get(initiateContacts.getId());
-//        String crmTemp = dto1.getCrmId();
-//        if (!StringUtils.isEmpty(crmTemp)){
-//            initiateContacts.setCrmId(crmTemp);
-//        }
-//        dto.setCreator(dto1.getCreator());
-        return mapper.updateByPrimaryKeySelective(initiateContacts)==1;
+    public boolean update(InitiateContacts contacts){
+        return mapper.updateByPrimaryKeySelective(contacts)==1;
     }
 
     public void update(int pid, int cType, String createPeople){
-        List<InitiateContactsDto> dtos = getList(pid, cType,createPeople);
-        if (!ObjectUtils.isEmpty(dtos)){
-            for (InitiateContactsDto dto:dtos){
+        List<InitiateContacts> contacts = getList(pid,cType,createPeople);
+        if (!ObjectUtils.isEmpty(contacts)){
+            for (InitiateContacts dto:contacts){
                 dto.setcPid(pid);
                 update(dto);
             }
@@ -59,13 +49,12 @@ public class InitiateContactsDao {
         }
     }
 
-    public InitiateContactsDto get(Integer id){
-        return change(mapper.selectByPrimaryKey(id));
+    public InitiateContacts get(Integer id){
+        return mapper.selectByPrimaryKey(id);
     }
 
 
-    public List<InitiateContactsDto> getList(Integer cPid,Integer cType,String createPeople){
-        List<InitiateContactsDto> dtos = new ArrayList<>();
+    public List<InitiateContacts> getList(Integer cPid,Integer cType,String createPeople){
         InitiateContactsExample example = new InitiateContactsExample();
         InitiateContactsExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -79,20 +68,7 @@ public class InitiateContactsDao {
             criteria.andCreatorEqualTo(createPeople);
         }
         List<InitiateContacts> contacts = mapper.selectByExample(example);
-        contacts.parallelStream().forEach(oo -> dtos.add(change(oo)));
-        return dtos;
+        return contacts;
     }
 
-
-    private InitiateContacts change(InitiateContactsDto dto){
-        InitiateContacts data = new InitiateContacts();
-        BeanUtils.copyProperties(dto,data);
-        return data;
-    }
-
-    private InitiateContactsDto change(InitiateContacts data){
-        InitiateContactsDto dto = new InitiateContactsDto();
-        BeanUtils.copyProperties(data,dto);
-        return dto;
-    }
 }
