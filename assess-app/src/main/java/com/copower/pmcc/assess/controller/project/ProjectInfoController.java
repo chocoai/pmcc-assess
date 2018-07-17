@@ -92,10 +92,10 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Integer projectinfoid, String bisNextUser) {
+    public HttpResult projectApplySubmit(String formData, Integer projectInfoId, String bisNextUser) {
         try {
-            if (projectinfoid != null && projectinfoid != 0) {
-                projectInfoService.projectUpdate(projectInfoService.format(formData), projectinfoid);
+            if (!ObjectUtils.isEmpty(projectInfoId)) {
+                projectInfoService.projectUpdate(projectInfoService.format(formData), projectInfoId);
             } else {
                 boolean flag = projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
                 if (!flag)

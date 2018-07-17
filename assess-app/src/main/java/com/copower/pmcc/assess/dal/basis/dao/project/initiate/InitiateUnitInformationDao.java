@@ -28,7 +28,7 @@ public class InitiateUnitInformationDao {
     }
 
     public boolean update(InitiateUnitInformation dto){
-        return mapper.updateByPrimaryKey(dto)==1;
+        return mapper.updateByPrimaryKeySelective(dto)==1;
     }
 
     public InitiateUnitInformation get(Integer id){

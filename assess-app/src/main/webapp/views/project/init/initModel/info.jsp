@@ -258,6 +258,10 @@
 </body>
 <script>
     $(document).ready(function () {
+        var projectInfo = "${projectInfo}" ;
+        if (projectInfo == null){// 有值的情况下  为修改
+            ProjectInfoInit.prototype.updateInit();
+        }
         ProjectInfoInit.prototype.init();
         FileUtils.uploadFiles({
             target: "attachmentProjectInfoId",
@@ -296,6 +300,12 @@
             cityValue: '${projectInfo.city}',
             districtValue: '${projectInfo.district}'
         })
+    };
+    //修改页面对 特殊值赋值
+    ProjectInfoInit.prototype.updateInit = function () {
+        //select2
+        $("#district").val(${projectInfo.district}).trigger("change");
+        $("#city").val(${projectInfo.city}).trigger("change");
     };
     //加载价值类型描述
     ProjectInfoInit.prototype.valueTypeChange = function (_this) {

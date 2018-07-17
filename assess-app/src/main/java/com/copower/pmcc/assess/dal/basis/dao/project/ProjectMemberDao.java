@@ -60,7 +60,7 @@ public class ProjectMemberDao {
     }
 
     public Boolean updateProjectMember(ProjectMember projectMember) {
-        int i = projectMemberMapper.updateByPrimaryKey(projectMember);
+        int i = projectMemberMapper.updateByPrimaryKeySelective(projectMember);
         return i >= 0;
     }
 

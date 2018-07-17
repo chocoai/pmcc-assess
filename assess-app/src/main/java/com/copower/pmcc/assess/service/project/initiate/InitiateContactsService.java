@@ -79,7 +79,12 @@ public class InitiateContactsService {
                         contactsDto.setcPhone(crmCustomerLinkmanDto.getPhoneNumber());
                         contactsDto.setcType(cType);
                         contactsDto.setCreator(commonService.thisUserAccount());
-                        dao.save(contactsDto);
+                        contactsDto.setCustomerId(String.valueOf(customerId));
+                        //为了使得页面刷新不至于再次写入数据,因此需要校验 已经写入的数据不再写入了
+                        List<InitiateContacts> contactsList = dao.getList(pid,cType,null,customerId,crmCustomerLinkmanDto.getId());
+                        if (contactsList.size() == 0){
+                            dao.save(contactsDto);
+                        }
                     }
 
                 }
@@ -102,7 +107,7 @@ public class InitiateContactsService {
                 //CRM中暂时没有提供方法
                 InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectID);
                 if (unitInformationVo != null) {
-                    List<InitiateContactsVo> contactsVos = getVoList(unitInformationVo.getId(), cType);
+                    List<InitiateContactsVo> contactsVos = getVoList(unitInformationVo.getId(), cType,null);
                     for (InitiateContactsVo contacts : contactsVos) {
                         String tempString = contacts.getCrmId();
                         String uUseUnit = unitInformationVo.getuUseUnit();
@@ -126,7 +131,7 @@ public class InitiateContactsService {
                                 }
                             } catch (Exception e) {
                                 try {
-                                    logger.error("exception: ======> " + e.getMessage());
+                                    logger.error(String.format("exception: ======> ",e.getMessage()),e);
                                     throw e;
                                 } catch (Exception e1) {
 
@@ -153,7 +158,13 @@ public class InitiateContactsService {
 
     /*更新主表的id值*/
     public void update(int pid, int flag) {
-        dao.update(pid, flag, commonService.thisUserAccount());
+        List<InitiateContacts> contactsList = dao.getList(0,flag,commonService.thisUserAccount(),null,null);
+        if (!ObjectUtils.isEmpty(contactsList)){
+            for (InitiateContacts contact:contactsList){
+                contact.setcPid(pid);
+                dao.update(contact);
+            }
+        }
     }
 
     public InitiateContactsVo get(Integer id) {
@@ -180,9 +191,9 @@ public class InitiateContactsService {
         return dao.update(dto);
     }
 
-    public List<InitiateContactsVo> getVoList(Integer cPid, Integer cType) {
+    public List<InitiateContactsVo> getVoList(Integer cPid, Integer cType,Integer customerId) {
         List<InitiateContactsVo> vos = new ArrayList<>();
-        dao.getList(cPid, cType, null).parallelStream().forEach(oo -> vos.add(change(oo)));
+        dao.getList(cPid, cType, null,customerId,null).parallelStream().forEach(oo -> vos.add(change(oo)));
         return vos;
     }
 

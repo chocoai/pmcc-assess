@@ -168,7 +168,14 @@
                                     委托单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnitName}</label>
+                                    <c:choose>
+                                        <c:when test="${projectInfo.consignorVo.csEntrustmentUnitName != null}">
+                                            <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnitName}</label>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <label class="form-control">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
 
@@ -284,7 +291,14 @@
                                     占有单位
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
+                                    <c:choose>
+                                        <c:when test="${projectInfo.possessorVo.pEntrustmentUnitName != null}">
+                                            <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnitName}</label>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <label class="form-control">${projectInfo.possessorVo.pEntrustmentUnit}</label>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
 
@@ -405,7 +419,14 @@
                             报告使用单位
                         </label>
                         <div class="col-sm-3">
-                            <label class="form-control">${projectInfo.unitInformationVo.uUseUnitName}</label>
+                            <c:choose>
+                                <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
+                                    <label class="form-control">${projectInfo.unitInformationVo.uUseUnitName}</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="form-control">${projectInfo.unitInformationVo.uUseUnit}</label>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
 

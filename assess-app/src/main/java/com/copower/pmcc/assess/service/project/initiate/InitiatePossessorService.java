@@ -69,7 +69,6 @@ public class InitiatePossessorService {
 
     @Transactional
     public boolean update(InitiatePossessorDto dto) {
-        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 
@@ -84,11 +83,11 @@ public class InitiatePossessorService {
         if(possessor==null) return null;
         InitiatePossessorVo vo = new InitiatePossessorVo();
         BeanUtils.copyProperties(possessor, vo);
-        if (!StringUtils.isEmpty(possessor.getpUnitProperties())) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpUnitProperties()));
-            if (baseDataDic != null)
-                vo.setpUnitPropertiesName(baseDataDic.getName());
-        }
+//        if (!StringUtils.isEmpty(possessor.getpUnitProperties())) {
+//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpUnitProperties()));
+//            if (baseDataDic != null)
+//                vo.setpUnitPropertiesName(baseDataDic.getName());
+//        }
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
         if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
             for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
@@ -100,11 +99,14 @@ public class InitiatePossessorService {
                 }
             }
         }
-//        if (!StringUtils.isEmpty(possessor.getpEntrustmentUnit())) {
-//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpEntrustmentUnit()));
-//            if (baseDataDic != null)
-//                vo.setpEntrustmentUnitName(baseDataDic.getName());
-//        }
+        if (!StringUtils.isEmpty(possessor.getpEntrustmentUnit())){
+            if (isNumeric(possessor.getpEntrustmentUnit())){
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(possessor.getpEntrustmentUnit()));
+                if (!ObjectUtils.isEmpty(baseDataDic)){
+                    vo.setpEntrustmentUnitName(baseDataDic.getName());
+                }
+            }
+        }
         return vo;
     }
 
@@ -116,5 +118,19 @@ public class InitiatePossessorService {
     private List<CrmBaseDataDicDto> getUnitPropertiesList() {
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
         return crmBaseDataDicDtos;
+    }
+
+    /**
+     * 判断是否为数字
+     * @param str
+     * @return
+     */
+    public boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

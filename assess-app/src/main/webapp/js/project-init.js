@@ -35,6 +35,17 @@ CONSIGNOR.prototype = {
                 $("#legal_person").hide();
             }
         });
+    },
+    //选项卡 修改页面强制执行
+    tabControlUpdate:function (type) {
+        if (type == 0){
+            $("#no_legal_person").show();
+            $("#legal_person").hide();
+        }
+        if (type == 1){
+            $("#no_legal_person").hide();
+            $("#legal_person").show();
+        }
     }
 };
 
@@ -79,6 +90,18 @@ POSSESSOR.prototype = {
                 $("#pAddress2").val($("#csAddress2").val());
             }
         });
+    }
+    ,
+    //选项卡 修改页面强制执行
+    tabControlUpdate:function (type) {
+        if (type == 0){
+            $("#no_legal_person1").show();
+            $("#legal_person1").hide();
+        }
+        if (type == 1){
+            $("#no_legal_person1").hide();
+            $("#legal_person1").show();
+        }
     }
 };
 
@@ -146,9 +169,9 @@ Contacts.prototype.UNIT_INFORMATION = function () {
      * 显示模态框
      */
     Fun.showModel = function () {
+        var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).clearAll();
         $('#' + Contacts.prototype.UNIT_INFORMATION().getData().box).modal("show");
-        var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         if (!Contacts.prototype.isEmpty(pid)) {
             $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).initForm({pid: pid});
         }
@@ -192,6 +215,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             pid = Contacts.prototype.UNIT_INFORMATION().getData().pid;
         } else {//修改
             $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).initForm({pid: pid});
+            console.log($("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).val());
         }
         data.pid = pid;
         data.crmId = crmId;
@@ -227,6 +251,9 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         if (!$("#"+Contacts.prototype.UNIT_INFORMATION().getData().frm).valid()){
             return false;
         }
+        if (!Contacts.prototype.isEmpty(pid)) {//修改页面时候的 新增
+            data.cPid = pid ;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",
@@ -253,8 +280,8 @@ Contacts.prototype.UNIT_INFORMATION = function () {
     };
 
     Fun.get = function (id) {
-        $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).clearAll();
         var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
+        $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).clearAll();
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
             type: "get",
@@ -300,9 +327,9 @@ Contacts.prototype.POSSESSOR = function () {
      * 显示模态框
      */
     Fun.showModel = function () {
+        var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         $("#" + Contacts.prototype.POSSESSOR().getData().frm).clearAll();
         $('#' + Contacts.prototype.POSSESSOR().getData().box).modal("show");
-        var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         if (!Contacts.prototype.isEmpty(pid)) {
             $("#" + Contacts.prototype.POSSESSOR().getData().frm).initForm({pid: pid});
         }
@@ -380,6 +407,9 @@ Contacts.prototype.POSSESSOR = function () {
         if (!$("#"+Contacts.prototype.POSSESSOR().getData().frm).valid()){
             return false;
         }
+        if (!Contacts.prototype.isEmpty(pid)) {//修改页面时候的 新增
+            data.cPid = pid ;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",
@@ -406,8 +436,8 @@ Contacts.prototype.POSSESSOR = function () {
     };
 
     Fun.get = function (id) {
-        $("#" + Contacts.prototype.POSSESSOR().getData().frm).clearAll();
         var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
+        $("#" + Contacts.prototype.POSSESSOR().getData().frm).clearAll();
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
             type: "get",
@@ -452,9 +482,9 @@ Contacts.prototype.CONSIGNOR = function () {
      * 显示模态框
      */
     CONSIGNORFun.showModel = function () {
+        var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         $("#" + Contacts.prototype.CONSIGNOR().getData().frm).clearAll();
         $('#' + Contacts.prototype.CONSIGNOR().getData().box).modal("show");
-        var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         if (!Contacts.prototype.isEmpty(pid)) {
             $("#" + Contacts.prototype.CONSIGNOR().getData().frm).initForm({pid: pid});
         }
@@ -489,7 +519,6 @@ Contacts.prototype.CONSIGNOR = function () {
                 }
             })
         })
-        console.log("delete()");
     };
 
     CONSIGNORFun.loadDataList = function (pid) {
@@ -533,6 +562,9 @@ Contacts.prototype.CONSIGNOR = function () {
         if (!$("#"+Contacts.prototype.CONSIGNOR().getData().frm).valid()) {
             return false;
         }
+        if (!Contacts.prototype.isEmpty(pid)) {//修改页面时候的 新增
+            data.cPid = pid ;
+        }
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
             type: "post",
@@ -559,8 +591,8 @@ Contacts.prototype.CONSIGNOR = function () {
     };
 
     CONSIGNORFun.get = function (id) {
-        $("#" + Contacts.prototype.CONSIGNOR().getData().frm).clearAll();
         var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
+        $("#" + Contacts.prototype.CONSIGNOR().getData().frm).clearAll();
         $.ajax({
             url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
             type: "get",

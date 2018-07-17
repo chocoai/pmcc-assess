@@ -33,7 +33,7 @@ public class InitiatePossessorDao {
     }
 
     public boolean update(InitiatePossessorDto dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+        return mapper.updateByPrimaryKeySelective(change(dto))==1;
     }
 
     public InitiatePossessor getDataByProjectId(Integer projectId){

@@ -38,23 +38,13 @@ public class InitiateContactsDao {
         return mapper.updateByPrimaryKeySelective(contacts)==1;
     }
 
-    public void update(int pid, int cType, String createPeople){
-        List<InitiateContacts> contacts = getList(pid,cType,createPeople);
-        if (!ObjectUtils.isEmpty(contacts)){
-            for (InitiateContacts dto:contacts){
-                dto.setcPid(pid);
-                update(dto);
-            }
-
-        }
-    }
 
     public InitiateContacts get(Integer id){
         return mapper.selectByPrimaryKey(id);
     }
 
 
-    public List<InitiateContacts> getList(Integer cPid,Integer cType,String createPeople){
+    public List<InitiateContacts> getList(Integer cPid,Integer cType,String createPeople,Integer customerId,Integer crmID){
         InitiateContactsExample example = new InitiateContactsExample();
         InitiateContactsExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -66,6 +56,12 @@ public class InitiateContactsDao {
         }
         if (!StringUtils.isEmpty(createPeople)){//当前用户
             criteria.andCreatorEqualTo(createPeople);
+        }
+        if (!ObjectUtils.isEmpty(customerId)){
+            criteria.andCustomerIdEqualTo(String.valueOf(customerId));
+        }
+        if (!ObjectUtils.isEmpty(crmID)){
+            criteria.andCrmIdEqualTo(String.valueOf(crmID));
         }
         List<InitiateContacts> contacts = mapper.selectByExample(example);
         return contacts;

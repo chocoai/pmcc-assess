@@ -57,7 +57,6 @@ public class InitiateUnitInformationService {
 
     @Transactional
     public boolean update(InitiateUnitInformationDto dto) {
-        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 
@@ -66,18 +65,15 @@ public class InitiateUnitInformationService {
         InitiateUnitInformationVo vo = new InitiateUnitInformationVo();
         BeanUtils.copyProperties(unitInformation, vo);
 
-        if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(unitInformation.getuUnitProperties()));
-            if (baseDataDic != null)
-                vo.setuUnitPropertiesName(baseDataDic.getName());
-        }
-//        if (!StringUtils.isEmpty(unitInformation.getuUseUnit())) {
-//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(unitInformation.getuUseUnit()));
-//            if (baseDataDic != null)
-//                vo.setuUseUnitName(baseDataDic.getName());
-//        }
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
         if (!StringUtils.isEmpty(unitInformation.getuUseUnit())) {
+            if (isNumeric(unitInformation.getuUseUnit())){
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(unitInformation.getuUseUnit()));
+                if (baseDataDic != null)
+                    vo.setuUseUnitName(baseDataDic.getName());
+            }
+        }
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
+        if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
             if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
                 for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
                     if (Objects.equal(dicDto.getId(),Integer.parseInt(unitInformation.getuUnitProperties()))){
@@ -98,5 +94,19 @@ public class InitiateUnitInformationService {
     private List<CrmBaseDataDicDto> getUnitPropertiesList() {
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
         return crmBaseDataDicDtos;
+    }
+
+    /**
+     * 判断是否为数字
+     * @param str
+     * @return
+     */
+    public boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

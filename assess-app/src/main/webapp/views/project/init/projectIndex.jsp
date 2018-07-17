@@ -21,10 +21,7 @@
                         项目信息
                         <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
                     </h2>
-                    <input type="hidden" value="${projectInfo.id}" id="projectinfoid">
-                    <input type="hidden" value="${projectInfo.consignorVo.id}" id="consignorid">
-                    <input type="hidden" value="${projectInfo.possessorVo.id}" id="possessorid">
-                    <input type="hidden" value="${projectInfo.unitInformationVo.id}" id="unitInformationid">
+                    <input type="hidden" value="${projectInfo.id}" id="projectInfoId">
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -152,7 +149,7 @@
             url: getContextPath() + "/projectInfo/projectApplySubmit",
             data: {
                 formData: formData,
-                projectinfoid: $("#projectinfoid").val(),
+                projectInfoId: $("#projectInfoId").val(),
                 bisNextUser: bisNextUser
             }, success: function (result) {
                 if (result.ret) {
@@ -182,7 +179,19 @@
         Contacts.prototype.getUrl = function () {
             return "${pageContext.request.contextPath}" ;
         };
+        //载入选项框
         POSSESSOR.prototype.tabControl();
         CONSIGNOR.prototype.tabControl();
+
+        /**返回修改页面**/
+        var projectInfo = "${projectInfo}" ;
+        if (projectInfo != null){//返回修改页面自动带出联系人 加载联系人列表
+            Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}",null);
+            Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
+            Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
+
+            POSSESSOR.prototype.tabControlUpdate("${projectInfo.possessorVo.pType}");
+            CONSIGNOR.prototype.tabControlUpdate("${projectInfo.consignorVo.csType}")
+        }
     });
 </script>

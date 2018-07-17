@@ -151,29 +151,40 @@ public class ProjectInfoService {
 
     /*项目立项修改*/
     @Transactional
-    public void projectUpdate(InitiateProjectDto projectDto, Integer projectinfoid) throws Exception {
-        ProjectMember projectMember = new ProjectMember();
-        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
-        projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
-        projectMember.setBisEnable(true);
-        ProjectInfo projectInfoID = projectInfoDao.getProjectInfoById(projectinfoid);
-        projectDto.getProjectInfo().setId(projectinfoid);
-        projectMember.setProjectId(projectinfoid);
-        projectApplyUpdate(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo());
+    public void projectUpdate(InitiateProjectDto initiateProjectDto, Integer projectInfoId) throws Exception {
+        ProjectInfoDto projectInfo = initiateProjectDto.getProjectInfo();
+        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfoId);
+        projectInfo.setId(projectInfoId);
+        String userAccountManager = projectInfo.getUserAccountManager();
+        String userAccountMember = projectInfo.getUserAccountMember();
+        if (!org.springframework.util.StringUtils.isEmpty(userAccountManager)){
+            projectMemberVo.setUserAccountManager(userAccountManager);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(userAccountMember)){
+            projectMemberVo.setUserAccountMember(userAccountMember);
+        }
+        projectApplyUpdate(projectInfo,initiateProjectDto.getUnitinformation(),initiateProjectDto.getConsignor(),initiateProjectDto.getPossessor(),projectMemberVo);
     }
 
-    @Transactional
-    public void projectApplyUpdate(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
-                                   ProjectInfoDto projectInfoDto) throws Exception {
-        projectInfoDao.updateProjectInfo(change(projectInfoDto));
-        projectInfoDto.setCreator(commonService.thisUserAccount());
-        consignorDto.setProjectId(projectInfoDto.getId());
-        consignorService.update(consignorDto);
-        possessorDto.setProjectId(projectInfoDto.getId());
-        possessorService.update(possessorDto);
-        projectMemberService.saveReturnId(projectMemberDto);
-        unitInformationDto.setProjectId(projectInfoDto.getId());
-        unitInformationService.update(unitInformationDto);
+    public void projectApplyUpdate(ProjectInfoDto projectInfo,InitiateUnitInformationDto unitinformation,
+         InitiateConsignorDto consignor,InitiatePossessorDto possessor,ProjectMember projectMember) throws Exception {
+        projectInfoDao.updateProjectInfo(change(projectInfo));
+        consignorService.update(consignor);
+        possessorService.update(possessor);
+        projectMemberService.updateProjectMember(projectMember);
+        unitInformationService.update(unitinformation);
+        //联系人在修改或者新增时已经更新的主id（pid）
+        //附件更新
+        //region Description
+        try {
+            //由于页面已经更新 故在此不做更新
+//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectInfo.getId());
+//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), consignor.getId());
+//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), possessor.getId());
+        }catch (Exception e){
+            logger.error(String.format("附件更新异常!",e.getMessage()),e);
+        }
+        //endregion
     }
 
     @Transactional
@@ -181,7 +192,6 @@ public class ProjectInfoService {
                                       ProjectInfoDto projectInfoDto, String bisNextUser) {
         boolean flag = true;
         try {
-
             ProjectInfo projectInfo = change(projectInfoDto);
             if (projectInfo.getCreator() == null)
                 projectInfo.setCreator(commonService.thisUserAccount());
@@ -203,8 +213,8 @@ public class ProjectInfoService {
 
             //附件更新
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), projectId);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), projectId);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), consignorId);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), possessorId);
 
             //保存项目成员
 
@@ -532,7 +542,7 @@ public class ProjectInfoService {
     }
 
     /*联系人 vo crm*/
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer cType, Integer pid) {
+    public BootstrapTableVo listContactsVo(Integer customerId, Integer cType, Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -540,10 +550,10 @@ public class ProjectInfoService {
         if (ObjectUtils.isEmpty(pid)) {
             pid = InitiateContactsDto.C_PID;
         }
-        if (!ObjectUtils.isEmpty(crmId)) {
-            initiateContactsService.writeContacts(crmId, cType, pid);//写入本地
+        if (!ObjectUtils.isEmpty(customerId)) {
+            initiateContactsService.writeContacts(customerId, cType, pid);//写入本地
         }
-        vos = initiateContactsService.getVoList(pid, cType);//从本地获取
+        vos = initiateContactsService.getVoList(pid, cType,customerId);//从本地获取
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;

@@ -55,8 +55,8 @@ public class ProjectMemberService {
     }
 
     @Transactional
-    public boolean updateProjectMember(ProjectMemberDto projectMemberDto){
-        return projectMemberDao.updateProjectMember(change(projectMemberDto));
+    public boolean updateProjectMember(ProjectMember projectMember){
+        return projectMemberDao.updateProjectMember(projectMember);
     }
 
     public ProjectMember get(Integer id){

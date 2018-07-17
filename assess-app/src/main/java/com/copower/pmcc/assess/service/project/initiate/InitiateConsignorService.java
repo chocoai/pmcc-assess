@@ -72,7 +72,6 @@ public class InitiateConsignorService {
 
     @Transactional
     public boolean update(InitiateConsignorDto dto) {
-        if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
         return dao.update(dto);
     }
 
@@ -88,11 +87,6 @@ public class InitiateConsignorService {
         if (initiateConsignor == null) return null;
         InitiateConsignorVo vo = new InitiateConsignorVo();
         BeanUtils.copyProperties(initiateConsignor, vo);
-//        if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
-//            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsUnitProperties()));
-//            if (baseDataDic != null)
-//                vo.setCsUnitPropertiesName(baseDataDic.getName());
-//        }
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
         if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)){
             for (CrmBaseDataDicDto dicDto:crmBaseDataDicDtos){
@@ -104,9 +98,11 @@ public class InitiateConsignorService {
             }
         }
         if (!StringUtils.isEmpty(initiateConsignor.getCsEntrustmentUnit())) {
+            if (isNumeric(initiateConsignor.getCsEntrustmentUnit())){
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit()));
             if (baseDataDic != null)
                 vo.setCsEntrustmentUnitName(baseDataDic.getName());
+            }
         }
         return vo;
     }
@@ -119,6 +115,20 @@ public class InitiateConsignorService {
     private List<CrmBaseDataDicDto> getUnitPropertiesList() {
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
         return crmBaseDataDicDtos;
+    }
+
+    /**
+     * 判断是否为数字
+     * @param str
+     * @return
+     */
+    public boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

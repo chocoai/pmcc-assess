@@ -42,7 +42,7 @@ public class InitiateConsignorDao {
     }
 
     public boolean update(InitiateConsignorDto dto){
-        return mapper.updateByPrimaryKey(change(dto))==1;
+        return mapper.updateByPrimaryKeySelective(change(dto))==1;
     }
 
 
