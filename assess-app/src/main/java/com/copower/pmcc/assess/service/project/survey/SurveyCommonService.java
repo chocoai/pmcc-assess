@@ -2,10 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreDetail;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
@@ -27,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,10 +48,13 @@ public class SurveyCommonService {
     private CommonService commonService;
     @Autowired
     private DataExamineTaskService dataExamineTaskService;
+    @Autowired
+    private SurveyExamineTaskService surveyExamineTaskService;
 
 
     /**
      * 获取所属权证信息
+     *
      * @param correlationCard
      * @param projectPlanDetails
      * @param declareRecords
@@ -67,7 +68,7 @@ public class SurveyCommonService {
             List<String> list = FormatUtils.transformString2List(correlationCard);
             correlationCardIds = FormatUtils.ListStringToListInteger(list);
         }
-        if(CollectionUtils.isNotEmpty(declareRecords)){
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
             for (DeclareRecord declareRecord : declareRecords) {
                 if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
                 SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
@@ -82,11 +83,12 @@ public class SurveyCommonService {
 
     /**
      * 下载定位图片
+     *
      * @param tableName
      * @param tableId
      * @param surveyLocaltion
      */
-    public void downLoadLocationImage(String tableName,Integer tableId,String surveyLocaltion){
+    public void downLoadLocationImage(String tableName, Integer tableId, String surveyLocaltion) {
         String localDir = baseAttachmentService.createTempBasePath(commonService.thisUserAccount());
         String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
         String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
@@ -122,6 +124,7 @@ public class SurveyCommonService {
 
     /**
      * 保存动态表单数据
+     *
      * @param formId
      * @param formData
      * @param tableName
@@ -129,7 +132,7 @@ public class SurveyCommonService {
      * @return
      * @throws BusinessException
      */
-    public Integer saveDynamicForm(Integer formId,String formData,String tableName,Integer tableId ) throws BusinessException {
+    public Integer saveDynamicForm(Integer formId, String formData, String tableName, Integer tableId) throws BusinessException {
         if (formId == null) return 0;
         FormConfigureDetailDto configureDetailDto = new FormConfigureDetailDto();
         configureDetailDto.setFormData(formData);
@@ -141,16 +144,47 @@ public class SurveyCommonService {
 
     /**
      * 初始化该调查表下的所有任务
+     *
      * @param surveyExamineTaskDto
      */
-    public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto){
+    @Transactional(rollbackFor = Exception.class)
+    public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
+        //清除原有数据
+        surveyExamineTaskService.deleteTaskByPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+
         List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
-        if(CollectionUtils.isNotEmpty(examineTaskList)){
+
+        if (CollectionUtils.isNotEmpty(examineTaskList)) {
+            SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+            surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+            surveyExamineTask.setDeclareId(surveyExamineTaskDto.getDeclareRecordId());
+            surveyExamineTask.setExamineType(surveyExamineTaskDto.getExamineType());
+            surveyExamineTask.setBisFinish(false);
+            surveyExamineTask.setCreator(commonService.thisUserAccount());
             //第一层级
             for (DataExamineTask dataExamineTask : examineTaskList) {
-
+                surveyExamineTask.setId(0);
+                surveyExamineTask.setPid(0);
+                surveyExamineTask.setName(dataExamineTask.getName());
+                surveyExamineTask.setDataTaskId(dataExamineTask.getId());
+                surveyExamineTask.setSorting(dataExamineTask.getSorting());
+                surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
+                surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
+                Integer pid = surveyExamineTask.getId();
                 List<DataExamineTask> taskList = dataExamineTaskService.getCacheDataExamineTaskListByPid(dataExamineTask.getId());
                 //第二层级
+                if (CollectionUtils.isNotEmpty(taskList)) {
+                    for (DataExamineTask examineTask : taskList) {
+                        surveyExamineTask.setId(0);
+                        surveyExamineTask.setPid(pid);
+                        surveyExamineTask.setName(examineTask.getName());
+                        surveyExamineTask.setUserAccount(surveyExamineTaskDto.getUserAccount());
+                        surveyExamineTask.setDataTaskId(examineTask.getId());
+                        surveyExamineTask.setSorting(examineTask.getSorting());
+                        surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
+                        surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
+                    }
+                }
             }
         }
     }

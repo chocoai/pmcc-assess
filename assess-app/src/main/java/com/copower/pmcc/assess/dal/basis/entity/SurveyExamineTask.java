@@ -9,13 +9,19 @@ public class SurveyExamineTask {
 
     private Integer dataTaskId;
 
+    private Integer planDetailsId;
+
     private Integer declareId;
 
     private Integer examineType;
 
+    private String name;
+
     private String userAccount;
 
     private Integer sorting;
+
+    private Boolean bisMust;
 
     private Boolean bisFinish;
 
@@ -49,6 +55,14 @@ public class SurveyExamineTask {
         this.dataTaskId = dataTaskId;
     }
 
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
     public Integer getDeclareId() {
         return declareId;
     }
@@ -65,6 +79,14 @@ public class SurveyExamineTask {
         this.examineType = examineType;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
     public String getUserAccount() {
         return userAccount;
     }
@@ -79,6 +101,14 @@ public class SurveyExamineTask {
 
     public void setSorting(Integer sorting) {
         this.sorting = sorting;
+    }
+
+    public Boolean getBisMust() {
+        return bisMust;
+    }
+
+    public void setBisMust(Boolean bisMust) {
+        this.bisMust = bisMust;
     }
 
     public Boolean getBisFinish() {

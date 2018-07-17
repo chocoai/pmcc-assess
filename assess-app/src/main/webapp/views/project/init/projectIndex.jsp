@@ -83,7 +83,6 @@
                             <button id="commit_btn" class="btn btn-success" onclick="projectApply();">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
-
                         </div>
                     </div>
                 </div>

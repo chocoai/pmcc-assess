@@ -505,6 +505,66 @@ public class DataExamineTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisMustIsNull() {
+            addCriterion("bis_must is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustIsNotNull() {
+            addCriterion("bis_must is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustEqualTo(Boolean value) {
+            addCriterion("bis_must =", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotEqualTo(Boolean value) {
+            addCriterion("bis_must <>", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustGreaterThan(Boolean value) {
+            addCriterion("bis_must >", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_must >=", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustLessThan(Boolean value) {
+            addCriterion("bis_must <", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_must <=", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustIn(List<Boolean> values) {
+            addCriterion("bis_must in", values, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotIn(List<Boolean> values) {
+            addCriterion("bis_must not in", values, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_must between", value1, value2, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_must not between", value1, value2, "bisMust");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

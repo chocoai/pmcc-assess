@@ -23,6 +23,7 @@ public class SurveyExamineTaskDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class SurveyExamineTaskDao {
 
     /**
      * 获取数据列表
+     *
      * @param surveyExamineTask
      * @return
      */
@@ -43,29 +45,38 @@ public class SurveyExamineTaskDao {
 
     /**
      * 新增
+     *
      * @param surveyExamineTask
      * @return
      */
-    public boolean addEstate(SurveyExamineTask surveyExamineTask) {
+    public boolean addSurveyExamineTask(SurveyExamineTask surveyExamineTask) {
         return surveyExamineTaskMapper.insertSelective(surveyExamineTask) > 0;
     }
 
     /**
      * 编辑
+     *
      * @param surveyExamineTask
      * @return
      */
-    public boolean updateEstate(SurveyExamineTask surveyExamineTask) {
+    public boolean updateSurveyExamineTask(SurveyExamineTask surveyExamineTask) {
         return surveyExamineTaskMapper.updateByPrimaryKeySelective(surveyExamineTask) > 0;
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteEstate(Integer id){
+    public boolean deleteSurveyExamineTask(Integer id) {
         return surveyExamineTaskMapper.deleteByPrimaryKey(id) > 0;
     }
 
+
+    public boolean deleteSurveyExamineTask(SurveyExamineTask surveyExamineTask) {
+        SurveyExamineTaskExample example = new SurveyExamineTaskExample();
+        MybatisUtils.convertObj2Example(surveyExamineTask, example);
+        return surveyExamineTaskMapper.deleteByExample(example) > 0;
+    }
 }

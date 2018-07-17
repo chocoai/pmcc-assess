@@ -285,6 +285,66 @@ public class SurveyExamineTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andDeclareIdIsNull() {
             addCriterion("declare_id is null");
             return (Criteria) this;
@@ -402,6 +462,76 @@ public class SurveyExamineTaskExample {
 
         public Criteria andExamineTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("examine_type not between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
             return (Criteria) this;
         }
 
@@ -532,6 +662,66 @@ public class SurveyExamineTaskExample {
 
         public Criteria andSortingNotBetween(Integer value1, Integer value2) {
             addCriterion("sorting not between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustIsNull() {
+            addCriterion("bis_must is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustIsNotNull() {
+            addCriterion("bis_must is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustEqualTo(Boolean value) {
+            addCriterion("bis_must =", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotEqualTo(Boolean value) {
+            addCriterion("bis_must <>", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustGreaterThan(Boolean value) {
+            addCriterion("bis_must >", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_must >=", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustLessThan(Boolean value) {
+            addCriterion("bis_must <", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_must <=", value, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustIn(List<Boolean> values) {
+            addCriterion("bis_must in", values, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotIn(List<Boolean> values) {
+            addCriterion("bis_must not in", values, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_must between", value1, value2, "bisMust");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMustNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_must not between", value1, value2, "bisMust");
             return (Criteria) this;
         }
 
