@@ -68,13 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-4 col-sm-offset-5">
-            <button id="saveFrm" type="button" class="btn btn-primary" onclick="Block.save()">
-                保存版块
-            </button>
-        </div>
-    </div>
+
     <div class="ln_solid"></div>
 </form>
 

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyCaseStudyDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;

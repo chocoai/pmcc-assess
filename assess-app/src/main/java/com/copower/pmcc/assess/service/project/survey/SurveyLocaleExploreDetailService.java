@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataPriceTimepointDescription;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleExploreDetailDto;

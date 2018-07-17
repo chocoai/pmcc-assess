@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleCorrelationCardDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyLocaleCorrelationCardDao;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleCorrelationCardDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;

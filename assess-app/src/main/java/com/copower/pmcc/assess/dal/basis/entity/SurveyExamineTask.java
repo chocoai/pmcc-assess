@@ -23,7 +23,7 @@ public class SurveyExamineTask {
 
     private Boolean bisMust;
 
-    private Boolean bisFinish;
+    private String taskStatus;
 
     private String creator;
 
@@ -111,12 +111,12 @@ public class SurveyExamineTask {
         this.bisMust = bisMust;
     }
 
-    public Boolean getBisFinish() {
-        return bisFinish;
+    public String getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setBisFinish(Boolean bisFinish) {
-        this.bisFinish = bisFinish;
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus == null ? null : taskStatus.trim();
     }
 
     public String getCreator() {

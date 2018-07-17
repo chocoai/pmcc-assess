@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.suvey.SurveyLocaleExploreDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyLocaleExploreDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;

@@ -117,6 +117,18 @@ public class SurveyExamineController {
     }
 
     @ResponseBody
+    @PostMapping(name = "确认分派", value = "/confirmAssignment")
+    public HttpResult confirmAssignment(Integer planDetailsId) {
+        try {
+            surveyExamineTaskService.confirmAssignment(planDetailsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("确认分派", e);
+            return HttpResult.newErrorResult("确认分派异常");
+        }
+    }
+
+    @ResponseBody
     @GetMapping(name = "获取版块信息", value = "/getBlockById")
     public HttpResult getBlockById() {
 

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.basis.dao.project.suvey;
+package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyLocaleCorrelationCardMapper;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyLocaleCorrelationCardDto;

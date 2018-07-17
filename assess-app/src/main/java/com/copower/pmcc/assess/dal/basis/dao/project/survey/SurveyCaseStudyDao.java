@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.basis.dao.project.suvey;
+package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample;
