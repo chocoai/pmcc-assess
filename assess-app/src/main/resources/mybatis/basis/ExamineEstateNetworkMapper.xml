@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
     <result column="index_parameter" property="indexParameter" jdbcType="VARCHAR" />
@@ -72,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, estate_id, name, service_content, index_parameter, 
-    creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, name, service_content, index_parameter, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateNetworkExample" >
     select
@@ -109,14 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_estate_network (declare_id, examine_type, estate_id, 
-      name, service_content, index_parameter, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{serviceContent,jdbcType=VARCHAR}, #{indexParameter,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_examine_estate_network (declare_id, examine_type, name, 
+      service_content, index_parameter, creator, 
+      gmt_created, gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{serviceContent,jdbcType=VARCHAR}, #{indexParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateNetwork" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,9 +126,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="estateId != null" >
-        estate_id,
       </if>
       <if test="name != null" >
         name,
@@ -158,9 +152,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -200,9 +191,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
-      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -231,7 +219,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       service_content = #{record.serviceContent,jdbcType=VARCHAR},
       index_parameter = #{record.indexParameter,jdbcType=VARCHAR},
@@ -250,9 +237,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -279,7 +263,6 @@
     update tb_examine_estate_network
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       service_content = #{serviceContent,jdbcType=VARCHAR},
       index_parameter = #{indexParameter,jdbcType=VARCHAR},

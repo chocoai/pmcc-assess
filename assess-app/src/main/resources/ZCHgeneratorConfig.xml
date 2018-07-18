@@ -41,7 +41,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_initiate_contacts" domainObjectName="InitiateContacts">
+        <table tableName="tb_examine_estate_network" domainObjectName="ExamineEstateNetwork">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
