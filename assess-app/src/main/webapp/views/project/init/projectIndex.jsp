@@ -184,8 +184,8 @@
         CONSIGNOR.prototype.tabControl();
 
         /**返回修改页面**/
-        var projectInfo = "${projectInfo}" ;
-        if (projectInfo != null){//返回修改页面自动带出联系人 加载联系人列表
+        var projectInfo = "${projectInfo.consignorVo}" ;
+        if (projectInfo != null && projectInfo!=''){//返回修改页面自动带出联系人 加载联系人列表
             Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}",null);
             Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
             Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
