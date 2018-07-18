@@ -25,4 +25,6 @@ public class AssessExamineTaskConstant {
     public static final String BUILDING = "building";//楼栋
     public static final String UNIT = "unit";//单元
     public static final String HOUSE = "house";//房间
+
+    public static final String ESTATE_DISTANCE = "estate.distance";//交通距离
 }

@@ -11,11 +11,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 通信网络
  * @Auther: zch
  * @Date: 2018/7/18 14:13
  * @Description:
@@ -37,11 +40,16 @@ public class ExamineEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:31
      */
+    @Transactional
     public boolean saveExamineEstateNetwork(ExamineEstateNetwork examineEstateNetwork) {
         examineEstateNetwork.setCreator(commonService.thisUserAccount());
         //以后需要删除掉
-        examineEstateNetwork.setDeclareId(1);
-        examineEstateNetwork.setExamineType(1);
+        if (ObjectUtils.isEmpty(examineEstateNetwork.getDeclareId())){
+            examineEstateNetwork.setDeclareId(0);
+        }
+        if (ObjectUtils.isEmpty(examineEstateNetwork.getExamineType())){
+            examineEstateNetwork.setExamineType(0);
+        }
         return examineEstateNetworkDao.addEstateNetwork(examineEstateNetwork);
     }
 
@@ -72,6 +80,7 @@ public class ExamineEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:33
      */
+    @Transactional
     public boolean updateEstateNetwork(ExamineEstateNetwork examineEstateNetwork) {
         return examineEstateNetworkDao.updateEstateNetwork(examineEstateNetwork);
     }
@@ -84,6 +93,7 @@ public class ExamineEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:34
      */
+    @Transactional
     public boolean deleteEstateNetwork(Integer id) {
         return examineEstateNetworkDao.deleteEstateNetwork(id);
     }
