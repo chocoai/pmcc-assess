@@ -2,18 +2,14 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class ExamineEstateNetwork {
+public class DataDeveloper {
     private Integer id;
-
-    private Integer declareId;
-
-    private Integer examineType;
 
     private String name;
 
-    private String serviceContent;
+    private Integer companyNature;
 
-    private String indexParameter;
+    private String socialPrestige;
 
     private String creator;
 
@@ -29,22 +25,6 @@ public class ExamineEstateNetwork {
         this.id = id;
     }
 
-    public Integer getDeclareId() {
-        return declareId;
-    }
-
-    public void setDeclareId(Integer declareId) {
-        this.declareId = declareId;
-    }
-
-    public Integer getExamineType() {
-        return examineType;
-    }
-
-    public void setExamineType(Integer examineType) {
-        this.examineType = examineType;
-    }
-
     public String getName() {
         return name;
     }
@@ -53,20 +33,20 @@ public class ExamineEstateNetwork {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getServiceContent() {
-        return serviceContent;
+    public Integer getCompanyNature() {
+        return companyNature;
     }
 
-    public void setServiceContent(String serviceContent) {
-        this.serviceContent = serviceContent == null ? null : serviceContent.trim();
+    public void setCompanyNature(Integer companyNature) {
+        this.companyNature = companyNature;
     }
 
-    public String getIndexParameter() {
-        return indexParameter;
+    public String getSocialPrestige() {
+        return socialPrestige;
     }
 
-    public void setIndexParameter(String indexParameter) {
-        this.indexParameter = indexParameter == null ? null : indexParameter.trim();
+    public void setSocialPrestige(String socialPrestige) {
+        this.socialPrestige = socialPrestige == null ? null : socialPrestige.trim();
     }
 
     public String getCreator() {

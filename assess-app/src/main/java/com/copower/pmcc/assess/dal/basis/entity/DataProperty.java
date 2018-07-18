@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class ExamineEstateNetwork {
+public class DataProperty {
     private Integer id;
 
     private Integer declareId;
@@ -11,9 +11,9 @@ public class ExamineEstateNetwork {
 
     private String name;
 
-    private String serviceContent;
+    private Integer companyNature;
 
-    private String indexParameter;
+    private String socialPrestige;
 
     private String creator;
 
@@ -53,20 +53,20 @@ public class ExamineEstateNetwork {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getServiceContent() {
-        return serviceContent;
+    public Integer getCompanyNature() {
+        return companyNature;
     }
 
-    public void setServiceContent(String serviceContent) {
-        this.serviceContent = serviceContent == null ? null : serviceContent.trim();
+    public void setCompanyNature(Integer companyNature) {
+        this.companyNature = companyNature;
     }
 
-    public String getIndexParameter() {
-        return indexParameter;
+    public String getSocialPrestige() {
+        return socialPrestige;
     }
 
-    public void setIndexParameter(String indexParameter) {
-        this.indexParameter = indexParameter == null ? null : indexParameter.trim();
+    public void setSocialPrestige(String socialPrestige) {
+        this.socialPrestige = socialPrestige == null ? null : socialPrestige.trim();
     }
 
     public String getCreator() {
