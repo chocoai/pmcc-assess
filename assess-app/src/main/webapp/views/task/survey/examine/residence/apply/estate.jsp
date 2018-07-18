@@ -6,7 +6,7 @@
 
 <form id="frm_estate" class="form-horizontal">
     <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
-    <input type="hidden" name="id">
+    <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineEstateVo.id}">
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>

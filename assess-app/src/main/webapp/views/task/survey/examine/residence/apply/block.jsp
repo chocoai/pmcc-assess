@@ -5,7 +5,7 @@
 
 <form id="frm_block" class="form-horizontal">
     <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
-    <input type="hidden" name="id">
+    <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineBlockVo.id}">
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
@@ -48,7 +48,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="方位" required value="${surveyExamineDataInfoVo.examineBlockVo.position}"
+                <input type="text" data-rule-maxlength="100" placeholder="方位" required
+                       value="${surveyExamineDataInfoVo.examineBlockVo.position}"
                        name="position" class="form-control">
             </div>
         </div>
@@ -59,7 +60,14 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">区域描述</label>
+            <div class="col-sm-11">
+                <textarea name="remark" class="form-control" placeholder="区域描述">${surveyExamineDataInfoVo.examineBlockVo.remark}</textarea>
+            </div>
+        </div>
+    </div>
     <div class="ln_solid"></div>
 </form>
 
@@ -76,7 +84,7 @@
             districtTarget: $("#frm_block").find("[name='district']"),
             provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
             cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
-            districtValue: "${surveyExamineDataInfoVo.examineBlockVo.city}"
+            districtValue: "${surveyExamineDataInfoVo.examineBlockVo.district}"
         })
         //版块信息自动补全
         <%--$("#frm_block").find("[name='name']").autocomplete({--%>
@@ -118,8 +126,8 @@
                     }
                 }
                 var data = formParams("frm_block");
-                data.declareId=$("#declareId").val();
-                data.examineType=$("#examineType").val();
+                data.declareId = $("#declareId").val();
+                data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#frm_block").find('[data-name="fieldName"]').val();
                 keyValueDto.value = data;

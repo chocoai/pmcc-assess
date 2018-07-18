@@ -43,7 +43,7 @@
                     <%@include file="/views/task/survey/common/examineTask.jsp" %>
                 </div>
             </div>
-            <div class="x_panel">
+            <div class="x_panel examine">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -148,12 +148,21 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-
+<script type="text/javascript">
+    $(function () {
+        taskExploreIndex.selectFirstTab();
+    })
+</script>
 <script type="text/javascript">
     var ContainerFunForGetData = [];//获取数据方法容器
 
     var taskExploreIndex = {
+        //选择第一个tab
+        selectFirstTab:function () {
+            $(".examine .nav-tabs").find('a:first').tab('show');
+        },
 
+        //获取表单数据
         getFormData:function (isValid) {
             //读取到各个子表单提供的数据
             if (ContainerFunForGetData.length <= 0) {

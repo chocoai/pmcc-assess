@@ -9,8 +9,6 @@ public class ExamineUnit {
 
     private Integer examineType;
 
-    private Integer buildingId;
-
     private String unitNumber;
 
     private String elevatorHouseholdRatio;
@@ -43,14 +41,6 @@ public class ExamineUnit {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
     }
 
     public String getUnitNumber() {

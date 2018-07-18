@@ -145,7 +145,7 @@
                         if (result.ret) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
-                                if (item.id === value) {
+                                if (item.id == value) {
                                     retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
                                 } else {
                                     retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
@@ -165,7 +165,7 @@
         },
 
         //根据pid获取区域信息
-        loadAreaInfoByPid: function (pid, value, callback) {
+        loadAreaInfoByPid: function (pid, callback) {
             if (pid) {
                 $.ajax({
                     url: getContextPath() + "/area/getAreaList",
@@ -178,11 +178,7 @@
                         if (result.ret && result.data) {
                             var retHtml = '<option value="" >-请选择-</option>';
                             $.each(result.data, function (i, item) {
-                                if (item.areaId === value) {
-                                    retHtml += ' <option value="' + item.areaId + '" selected="selected">' + item.name + '</option>';
-                                } else {
-                                    retHtml += ' <option value="' + item.areaId + '">' + item.name + '</option>';
-                                }
+                                retHtml += ' <option value="' + item.areaId + '">' + item.name + '</option>';
                             });
                             if (callback) {
                                 callback(retHtml, result.data);
@@ -200,7 +196,7 @@
         initAreaInfo: function (options) {
             var isProvinceFirstChange = true;
             var isCityFirstChange = true;
-            var defaluts = {
+            var defaults = {
                 useDefaultText: true,
                 provinceTarget: undefined,
                 cityTarget: undefined,
@@ -215,51 +211,58 @@
 
                 }
             };
-            defaluts = $.extend({}, defaluts, options);
-            if ($.type(defaluts.provinceTarget) === "string") {
-                defaluts.provinceTarget = $("#" + defaluts.provinceTarget);
+            defaults = $.extend({}, defaults, options);
+            if ($.type(defaults.provinceTarget) === "string") {
+                defaults.provinceTarget = $("#" + defaults.provinceTarget);
             }else{
-                defaluts.provinceTarget=$(defaluts.provinceTarget);
+                defaults.provinceTarget=$(defaults.provinceTarget);
             }
-            if ($.type(defaluts.cityTarget) === "string") {
-                defaluts.cityTarget = $("#" + defaluts.cityTarget);
+            if ($.type(defaults.cityTarget) === "string") {
+                defaults.cityTarget = $("#" + defaults.cityTarget);
             }
-            defaluts.provinceTarget.select2();
-            defaluts.cityTarget.select2();
+            defaults.provinceTarget.select2();
+            defaults.cityTarget.select2();
 
             //省切换
-            defaluts.provinceTarget.bind('change', function () {
+            defaults.provinceTarget.bind('change', function () {
                 isProvinceFirstChange = false;
-                defaluts.cityTarget.select2('val', '').empty();
-                if (defaluts.districtTarget) {
-                    defaluts.districtTarget.select2('val', '').empty();
+                defaults.cityTarget.select2('val', '').empty();
+                if (defaults.districtTarget) {
+                    defaults.districtTarget.select2('val', '').empty();
                 }
 
                 //加载市
-                AssessCommon.loadAreaInfoByPid($(this).val(), defaluts.cityValue, function (html) {
-                    defaluts.cityTarget.append(html);
+                AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
+                    defaults.cityTarget.append(html);
                     //初始化设置默认选中项
-                    if (!defaluts.cityValue && isCityFirstChange && defaluts.useDefaultText && defaluts.cityDefaultText) {
-                        defaluts.cityTarget.select2('val', defaluts.cityTarget.find("option:contains(" + defaluts.cityDefaultText + ")").val()).trigger('change');
+                    if (!defaults.cityValue && isCityFirstChange && defaults.useDefaultText && defaults.cityDefaultText) {
+                        defaults.cityTarget.select2('val', defaults.cityTarget.find("option:contains(" + defaults.cityDefaultText + ")").val()).trigger('change');
+                    }else{
+                        if(defaults.cityValue){
+                            defaults.cityTarget.select2('val',defaults.cityValue).trigger('change');
+                        }
                     }
                 });
             })
 
 
             //有区域元素才做处理
-            if (defaluts.districtTarget) {
-                if ($.type(defaluts.districtTarget) === "string") {
-                    defaluts.districtTarget = $("#" + defaluts.districtTarget);
+            if (defaults.districtTarget) {
+                if ($.type(defaults.districtTarget) === "string") {
+                    defaults.districtTarget = $("#" + defaults.districtTarget);
                 }
-                defaluts.districtTarget.select2();
+                defaults.districtTarget.select2();
 
                 //市切换
-                defaluts.cityTarget.bind('change', function () {
+                defaults.cityTarget.bind('change', function () {
                     isCityFirstChange = false;
-                    defaluts.districtTarget.select2('val', '').empty();
+                    defaults.districtTarget.select2('val', '').empty();
                     //加载区县
-                    AssessCommon.loadAreaInfoByPid($(this).val(), defaluts.districtValue, function (html) {
-                        defaluts.districtTarget.append(html);
+                    AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
+                        defaults.districtTarget.append(html);
+                        if(defaults.districtValue){
+                            defaults.districtTarget.select2('val',defaults.districtValue);
+                        }
                     });
                 })
             }
@@ -273,23 +276,23 @@
                 data: {},
                 success: function (result) {
                     if (result.ret&&result.data) {
-                        defaluts.provinceTarget.append("<option value=''>-请选择-</option>");
+                        defaults.provinceTarget.append("<option value=''>-请选择-</option>");
                         $.each(result.data, function (i, item) {
-                            defaluts.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
+                            defaults.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
                         });
-                        if (defaluts.provinceValue) {
-                            defaluts.provinceTarget.val(defaluts.provinceValue);
+                        if (defaults.provinceValue) {
+                            defaults.provinceTarget.val(defaults.provinceValue);
                             //触发一次change事件
-                            defaluts.provinceTarget.trigger('change');
+                            defaults.provinceTarget.trigger('change');
                         }
 
                         //初始化设置默认选中项
-                        if (!defaluts.provinceValue && isProvinceFirstChange && defaluts.useDefaultText && defaluts.provinceDefaultText) {
-                            defaluts.provinceTarget.select2('val', defaluts.provinceTarget.find("option:contains(" + defaluts.provinceDefaultText + ")").val()).trigger('change');
+                        if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
+                            defaults.provinceTarget.select2('val', defaults.provinceTarget.find("option:contains(" + defaults.provinceDefaultText + ")").val()).trigger('change');
                         }
 
-                        if (defaluts.success) {
-                            defaluts.success();
+                        if (defaults.success) {
+                            defaults.success();
                         }
                     }
                 },

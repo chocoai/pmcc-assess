@@ -11,6 +11,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="position" property="position" jdbcType="VARCHAR" />
     <result column="regional_nature" property="regionalNature" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, declare_id, examine_type, province, city, district, name, position, regional_nature, 
-    creator, gmt_created, gmt_modified
+    remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBlockExample" >
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into tb_examine_block (declare_id, examine_type, province, 
       city, district, name, 
-      position, regional_nature, creator, 
-      gmt_created, gmt_modified)
+      position, regional_nature, remark, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{position,jdbcType=VARCHAR}, #{regionalNature,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{position,jdbcType=VARCHAR}, #{regionalNature,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBlock" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -149,6 +152,9 @@
       </if>
       <if test="regionalNature != null" >
         regional_nature,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="creator != null" >
         creator,
@@ -184,6 +190,9 @@
       </if>
       <if test="regionalNature != null" >
         #{regionalNature,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -232,6 +241,9 @@
       <if test="record.regionalNature != null" >
         regional_nature = #{record.regionalNature,jdbcType=INTEGER},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -257,6 +269,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       position = #{record.position,jdbcType=VARCHAR},
       regional_nature = #{record.regionalNature,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -291,6 +304,9 @@
       <if test="regionalNature != null" >
         regional_nature = #{regionalNature,jdbcType=INTEGER},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -313,6 +329,7 @@
       name = #{name,jdbcType=VARCHAR},
       position = #{position,jdbcType=VARCHAR},
       regional_nature = #{regionalNature,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

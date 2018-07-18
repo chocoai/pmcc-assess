@@ -21,6 +21,8 @@ public class ExamineBlock {
 
     private Integer regionalNature;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -97,6 +99,14 @@ public class ExamineBlock {
 
     public void setRegionalNature(Integer regionalNature) {
         this.regionalNature = regionalNature;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

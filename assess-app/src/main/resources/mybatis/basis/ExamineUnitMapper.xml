@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="elevator_household_ratio" property="elevatorHouseholdRatio" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,8 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, building_id, unit_number, elevator_household_ratio, 
-    creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, unit_number, elevator_household_ratio, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitExample" >
     select
@@ -108,12 +107,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_unit (declare_id, examine_type, building_id, 
-      unit_number, elevator_household_ratio, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, 
-      #{unitNumber,jdbcType=VARCHAR}, #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_unit (declare_id, examine_type, unit_number, 
+      elevator_household_ratio, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, 
+      #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,9 +125,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="buildingId != null" >
-        building_id,
       </if>
       <if test="unitNumber != null" >
         unit_number,
@@ -152,9 +148,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="buildingId != null" >
-        #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
@@ -191,9 +184,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingId != null" >
-        building_id = #{record.buildingId,jdbcType=INTEGER},
-      </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       </if>
@@ -219,7 +209,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      building_id = #{record.buildingId,jdbcType=INTEGER},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -237,9 +226,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="buildingId != null" >
-        building_id = #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
@@ -263,7 +249,6 @@
     update tb_examine_unit
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      building_id = #{buildingId,jdbcType=INTEGER},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
