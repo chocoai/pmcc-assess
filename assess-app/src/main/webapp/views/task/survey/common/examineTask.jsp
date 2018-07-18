@@ -14,7 +14,7 @@
         </button>
     </div>
 </div>
-<div class="col-sm-4 col-sm-offset-5">
+<div class="col-sm-12" style="text-align: center;">
     <button id="commit_btn" class="btn btn-primary" onclick="examineTask.confirmAssignment();">
         确认分派<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
     </button>

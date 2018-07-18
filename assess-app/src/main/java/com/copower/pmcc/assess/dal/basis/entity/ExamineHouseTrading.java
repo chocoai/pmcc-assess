@@ -10,8 +10,6 @@ public class ExamineHouseTrading {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private Date tradingTime;
 
     private Integer tradingType;
@@ -54,14 +52,6 @@ public class ExamineHouseTrading {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
     }
 
     public Date getTradingTime() {

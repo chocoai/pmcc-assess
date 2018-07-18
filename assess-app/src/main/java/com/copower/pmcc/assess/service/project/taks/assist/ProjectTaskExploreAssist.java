@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.event.project.SurveyLocaleExploreEvent;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:
@@ -55,6 +57,12 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         SurveyLocaleExplore surveyLocaleExplore = surveyLocaleExploreService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyLocaleExplore", surveyLocaleExplore);
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskByUserAccount(projectPlanDetails.getId(), commonService.thisUserAccount());
+        modelAndView.addObject("blockTaskList", mapTaskList.get(AssessExamineTaskConstant.BLOCK));
+        modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
+        modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
+        modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
+        modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
         return modelAndView;
     }
 

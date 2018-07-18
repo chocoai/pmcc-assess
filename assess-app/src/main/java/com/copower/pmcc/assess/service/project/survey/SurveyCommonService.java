@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -8,13 +9,16 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -22,6 +26,7 @@ import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zly on 2018/5/15.
@@ -58,6 +64,18 @@ public class SurveyCommonService {
     private SurveyLocaleExploreService surveyLocaleExploreService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
+    @Autowired
+    private ExamineBlockService examineBlockService;
+    @Autowired
+    private ExamineEstateLandStateService examineEstateLandStateService;
+    @Autowired
+    private ExamineEstateService examineEstateService;
+    @Autowired
+    private ExamineHouseService examineHouseService;
+    @Autowired
+    private ExamineHouseTradingService examineHouseTradingService;
+    @Autowired
+    private ExamineUnitService examineUnitService;
 
 
     /**
@@ -233,6 +251,88 @@ public class SurveyCommonService {
                         surveyExamineTask.setBisMust(examineTask.getBisMust());
                         surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取需处理的任务集合
+     * @param planDetailsId
+     * @param userAccount
+     * @return
+     */
+    public Map<String, List<SurveyExamineTaskVo>> getExamineTaskByUserAccount(Integer planDetailsId, String userAccount) {
+        Map<String, List<SurveyExamineTaskVo>> map = Maps.newHashMap();
+        List<SurveyExamineTaskVo> blockTaskList=Lists.newArrayList();
+        List<SurveyExamineTaskVo> estateTaskList=Lists.newArrayList();
+        List<SurveyExamineTaskVo> buildingTaskList=Lists.newArrayList();
+        List<SurveyExamineTaskVo> unitTaskList=Lists.newArrayList();
+        List<SurveyExamineTaskVo> houseTaskList=Lists.newArrayList();
+        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+        surveyExamineTask.setPlanDetailsId(planDetailsId);
+        surveyExamineTask.setUserAccount(userAccount);
+        List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(surveyExamineTask);
+        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList,true);
+        if(CollectionUtils.isNotEmpty(examineTaskVos)){
+            for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
+                if(StringUtils.isNotBlank(examineTaskVo.getApplyUrl())){
+                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BLOCK))
+                        blockTaskList.add(examineTaskVo);
+                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.ESTATE))
+                        estateTaskList.add(examineTaskVo);
+                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BUILDING))
+                        buildingTaskList.add(examineTaskVo);
+                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.UNIT))
+                        unitTaskList.add(examineTaskVo);
+                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.HOUSE))
+                        houseTaskList.add(examineTaskVo);
+                }
+            }
+        }
+        map.put(AssessExamineTaskConstant.BLOCK,blockTaskList);
+        map.put(AssessExamineTaskConstant.ESTATE,estateTaskList);
+        map.put(AssessExamineTaskConstant.BUILDING,buildingTaskList);
+        map.put(AssessExamineTaskConstant.UNIT,unitTaskList);
+        map.put(AssessExamineTaskConstant.HOUSE,houseTaskList);
+        return map;
+    }
+
+    /**
+     * 保存调查信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveExamineDataInfo(String formData) throws BusinessException {
+        if(StringUtils.isBlank(formData))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        List<KeyValueDto> keyValueDtoList = JSON.parseArray(formData, KeyValueDto.class);
+        if(CollectionUtils.isNotEmpty(keyValueDtoList)){
+            for (KeyValueDto keyValueDto : keyValueDtoList) {
+                switch (keyValueDto.getKey()){
+                    case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
+                        ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
+                        examineBlockService.saveBlock(examineBlock);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
+                        ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
+                        examineEstateService.saveEstate(examineEstate);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
+                        ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
+                        examineEstateLandStateService.saveEstateLandState(examineEstateLandState);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_UNIT_BASE:
+                        ExamineUnit examineUnit = JSON.parseObject(keyValueDto.getValue(), ExamineUnit.class);
+                        examineUnitService.saveUnit(examineUnit);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_BASE:
+                        ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
+                        examineHouseService.saveHouse(examineHouse);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
+                        ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
+                        examineHouseTradingService.saveHouseTrading(examineHouseTrading);
+                        break;
                 }
             }
         }

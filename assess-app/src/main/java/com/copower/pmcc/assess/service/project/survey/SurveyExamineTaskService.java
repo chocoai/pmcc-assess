@@ -64,6 +64,16 @@ public class SurveyExamineTaskService {
     /**
      * 获取调查任务
      *
+     * @param surveyExamineTask
+     * @return
+     */
+    public List<SurveyExamineTask> getSurveyExamineTaskList(SurveyExamineTask surveyExamineTask) {
+        return surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
+    }
+
+    /**
+     * 获取调查任务
+     *
      * @param planDetailsId
      * @return
      */
@@ -79,7 +89,7 @@ public class SurveyExamineTaskService {
      * @param taskList
      * @return
      */
-    public List<SurveyExamineTaskVo> getSurveyExamineTaskVos(List<SurveyExamineTask> taskList) {
+    public List<SurveyExamineTaskVo> getSurveyExamineTaskVos(List<SurveyExamineTask> taskList,boolean isFull) {
         if (CollectionUtils.isEmpty(taskList)) return null;
         return LangUtils.transform(taskList, p -> {
             SurveyExamineTaskVo surveyExamineTaskVo = new SurveyExamineTaskVo();
@@ -92,10 +102,13 @@ public class SurveyExamineTaskService {
             if (StringUtils.isNotBlank(p.getTaskStatus())) {
                 surveyExamineTaskVo.setTaskStatusName(ProjectStatusEnum.getNameByKey(p.getTaskStatus()));
             }
-            DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(p.getDataTaskId());
-            if(dataExamineTask!=null){
-                surveyExamineTaskVo.setApplyUrl(dataExamineTask.getApplyUrl());
-                surveyExamineTaskVo.setDetailUrl(dataExamineTask.getDetailUrl());
+            if(Boolean.TRUE==isFull){
+                DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(p.getDataTaskId());
+                if(dataExamineTask!=null){
+                    surveyExamineTaskVo.setFieldName(dataExamineTask.getFieldName());
+                    surveyExamineTaskVo.setApplyUrl(dataExamineTask.getApplyUrl());
+                    surveyExamineTaskVo.setDetailUrl(dataExamineTask.getDetailUrl());
+                }
             }
             return surveyExamineTaskVo;
         });

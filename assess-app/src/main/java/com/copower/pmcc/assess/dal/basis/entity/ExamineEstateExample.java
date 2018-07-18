@@ -286,66 +286,6 @@ public class ExamineEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andBlockIdIsNull() {
-            addCriterion("block_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdIsNotNull() {
-            addCriterion("block_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdEqualTo(Integer value) {
-            addCriterion("block_id =", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdNotEqualTo(Integer value) {
-            addCriterion("block_id <>", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdGreaterThan(Integer value) {
-            addCriterion("block_id >", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("block_id >=", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdLessThan(Integer value) {
-            addCriterion("block_id <", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdLessThanOrEqualTo(Integer value) {
-            addCriterion("block_id <=", value, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdIn(List<Integer> values) {
-            addCriterion("block_id in", values, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdNotIn(List<Integer> values) {
-            addCriterion("block_id not in", values, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdBetween(Integer value1, Integer value2) {
-            addCriterion("block_id between", value1, value2, "blockId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBlockIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("block_id not between", value1, value2, "blockId");
-            return (Criteria) this;
-        }
-
         public Criteria andDeveloperIdIsNull() {
             addCriterion("developer_id is null");
             return (Criteria) this;
