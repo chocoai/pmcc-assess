@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineBlock;
+import com.copower.pmcc.assess.dto.output.project.survey.ExamineBlockVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,23 @@ public class ExamineBlockService {
      */
     public ExamineBlock getBlockById(Integer id) {
         return examineBlockDao.getBlockById(id);
+    }
+
+    /**
+     * 获取版块
+     *
+     * @param declareId
+     * @return
+     */
+    public ExamineBlock getBlockByDeclareId(Integer declareId) {
+        return examineBlockDao.getBlockByDeclareId(declareId);
+    }
+
+    public ExamineBlockVo getExamineBlockVo(ExamineBlock examineBlock) {
+        if (examineBlock == null) return null;
+        ExamineBlockVo examineBlockVo = new ExamineBlockVo();
+        BeanUtils.copyProperties(examineBlock, examineBlockVo);
+        return examineBlockVo;
     }
 
     /**

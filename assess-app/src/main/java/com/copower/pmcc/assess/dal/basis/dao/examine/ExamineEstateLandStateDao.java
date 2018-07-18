@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.dal.basis.dao.examine;
 
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandState;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandStateExample;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandState;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandStateExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ExamineEstateLandStateMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +31,19 @@ public class ExamineEstateLandStateDao {
      */
     public ExamineEstateLandState getEstateLandStateById(Integer id) {
         return examineEstateLandStateMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取数据信息
+     * @param declareId
+     * @return
+     */
+    public ExamineEstateLandState getEstateLandStateByDeclareId(Integer declareId) {
+        ExamineEstateLandStateExample example = new ExamineEstateLandStateExample();
+        example.createCriteria().andDeclareIdEqualTo(declareId);
+        List<ExamineEstateLandState> blockList = examineEstateLandStateMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        return null;
     }
 
     /**

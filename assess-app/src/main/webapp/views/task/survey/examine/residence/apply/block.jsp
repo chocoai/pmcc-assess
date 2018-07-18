@@ -41,14 +41,14 @@
             <label class="col-sm-1 control-label">版块名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="版块名称" required
-                       name="name"
+                       name="name" value="${surveyExamineDataInfoVo.examineBlockVo.name}"
                        class="form-control">
             </div>
         </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="方位" required
+                <input type="text" data-rule-maxlength="100" placeholder="方位" required value="${surveyExamineDataInfoVo.examineBlockVo.position}"
                        name="position" class="form-control">
             </div>
         </div>
@@ -67,16 +67,16 @@
 
     $(function () {
         ContainerFunForGetData.push(Block.getData);//获取数据方法写入容器
-        Block.loadRegionalNature(1);
+        Block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
 
         //初始化区域信息
         AssessCommon.initAreaInfo({
             provinceTarget: $("#frm_block").find("[name='province']"),
             cityTarget: $("#frm_block").find("[name='city']"),
             districtTarget: $("#frm_block").find("[name='district']"),
-            provinceValue: undefined,
-            cityValue: undefined,
-            districtValue: undefined
+            provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
+            cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
+            districtValue: "${surveyExamineDataInfoVo.examineBlockVo.city}"
         })
         //版块信息自动补全
         <%--$("#frm_block").find("[name='name']").autocomplete({--%>

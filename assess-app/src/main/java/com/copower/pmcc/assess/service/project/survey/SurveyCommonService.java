@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -258,43 +259,44 @@ public class SurveyCommonService {
 
     /**
      * 获取需处理的任务集合
+     *
      * @param planDetailsId
      * @param userAccount
      * @return
      */
     public Map<String, List<SurveyExamineTaskVo>> getExamineTaskByUserAccount(Integer planDetailsId, String userAccount) {
         Map<String, List<SurveyExamineTaskVo>> map = Maps.newHashMap();
-        List<SurveyExamineTaskVo> blockTaskList=Lists.newArrayList();
-        List<SurveyExamineTaskVo> estateTaskList=Lists.newArrayList();
-        List<SurveyExamineTaskVo> buildingTaskList=Lists.newArrayList();
-        List<SurveyExamineTaskVo> unitTaskList=Lists.newArrayList();
-        List<SurveyExamineTaskVo> houseTaskList=Lists.newArrayList();
+        List<SurveyExamineTaskVo> blockTaskList = Lists.newArrayList();
+        List<SurveyExamineTaskVo> estateTaskList = Lists.newArrayList();
+        List<SurveyExamineTaskVo> buildingTaskList = Lists.newArrayList();
+        List<SurveyExamineTaskVo> unitTaskList = Lists.newArrayList();
+        List<SurveyExamineTaskVo> houseTaskList = Lists.newArrayList();
         SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
         surveyExamineTask.setPlanDetailsId(planDetailsId);
         surveyExamineTask.setUserAccount(userAccount);
         List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(surveyExamineTask);
-        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList,true);
-        if(CollectionUtils.isNotEmpty(examineTaskVos)){
+        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList, true);
+        if (CollectionUtils.isNotEmpty(examineTaskVos)) {
             for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
-                if(StringUtils.isNotBlank(examineTaskVo.getApplyUrl())){
-                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BLOCK))
+                if (StringUtils.isNotBlank(examineTaskVo.getApplyUrl())) {
+                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BLOCK))
                         blockTaskList.add(examineTaskVo);
-                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.ESTATE))
+                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.ESTATE))
                         estateTaskList.add(examineTaskVo);
-                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BUILDING))
+                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.BUILDING))
                         buildingTaskList.add(examineTaskVo);
-                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.UNIT))
+                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.UNIT))
                         unitTaskList.add(examineTaskVo);
-                    if(examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.HOUSE))
+                    if (examineTaskVo.getFieldName().contains(AssessExamineTaskConstant.HOUSE))
                         houseTaskList.add(examineTaskVo);
                 }
             }
         }
-        map.put(AssessExamineTaskConstant.BLOCK,blockTaskList);
-        map.put(AssessExamineTaskConstant.ESTATE,estateTaskList);
-        map.put(AssessExamineTaskConstant.BUILDING,buildingTaskList);
-        map.put(AssessExamineTaskConstant.UNIT,unitTaskList);
-        map.put(AssessExamineTaskConstant.HOUSE,houseTaskList);
+        map.put(AssessExamineTaskConstant.BLOCK, blockTaskList);
+        map.put(AssessExamineTaskConstant.ESTATE, estateTaskList);
+        map.put(AssessExamineTaskConstant.BUILDING, buildingTaskList);
+        map.put(AssessExamineTaskConstant.UNIT, unitTaskList);
+        map.put(AssessExamineTaskConstant.HOUSE, houseTaskList);
         return map;
     }
 
@@ -303,12 +305,12 @@ public class SurveyCommonService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void saveExamineDataInfo(String formData) throws BusinessException {
-        if(StringUtils.isBlank(formData))
+        if (StringUtils.isBlank(formData))
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         List<KeyValueDto> keyValueDtoList = JSON.parseArray(formData, KeyValueDto.class);
-        if(CollectionUtils.isNotEmpty(keyValueDtoList)){
+        if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
             for (KeyValueDto keyValueDto : keyValueDtoList) {
-                switch (keyValueDto.getKey()){
+                switch (keyValueDto.getKey()) {
                     case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
                         ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
                         examineBlockService.saveBlock(examineBlock);
@@ -316,6 +318,8 @@ public class SurveyCommonService {
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
                         ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
                         examineEstateService.saveEstate(examineEstate);
+                        //更新附件
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class),examineEstate.getId());
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
                         ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
@@ -328,6 +332,8 @@ public class SurveyCommonService {
                     case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_BASE:
                         ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
                         examineHouseService.saveHouse(examineHouse);
+                        //更新附件
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class),examineHouse.getId());
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
                         ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
@@ -336,5 +342,22 @@ public class SurveyCommonService {
                 }
             }
         }
+    }
+
+    /**
+     * 获取调查数据信息
+     *
+     * @param declareId
+     * @return
+     */
+    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId) {
+        SurveyExamineDataInfoVo surveyExamineDataInfoVo = new SurveyExamineDataInfoVo();
+        surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlockService.getBlockByDeclareId(declareId)));
+        surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(examineEstateLandStateService.getEstateLandStateByDeclareId(declareId)));
+        surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstateService.getEstateByDeclareId(declareId)));
+        surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnitService.getUnitByDeclareId(declareId)));
+        surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouseService.getHouseByDeclareId(declareId)));
+        surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTradingService.getHouseTradingByDeclareId(declareId)));
+        return surveyExamineDataInfoVo;
     }
 }

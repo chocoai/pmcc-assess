@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.dal.basis.dao.examine;
 
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouse;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseExample;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineHouse;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +31,19 @@ public class ExamineHouseDao {
      */
     public ExamineHouse getHouseById(Integer id) {
         return examineHouseMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取数据信息
+     * @param declareId
+     * @return
+     */
+    public ExamineHouse getHouseByDeclareId(Integer declareId) {
+        ExamineHouseExample example = new ExamineHouseExample();
+        example.createCriteria().andDeclareIdEqualTo(declareId);
+        List<ExamineHouse> blockList = examineHouseMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        return null;
     }
 
     /**

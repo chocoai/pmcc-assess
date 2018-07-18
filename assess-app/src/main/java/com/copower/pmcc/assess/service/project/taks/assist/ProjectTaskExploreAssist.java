@@ -63,6 +63,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
+        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(parentPlan.getDeclareRecordId()));
         return modelAndView;
     }
 

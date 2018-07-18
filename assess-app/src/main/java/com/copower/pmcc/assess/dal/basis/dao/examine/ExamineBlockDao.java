@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ExamineBlock;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineBlockExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ExamineBlockMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +29,19 @@ public class ExamineBlockDao {
      */
     public ExamineBlock getBlockById(Integer id) {
         return examineBlockMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 获取数据信息
+     * @param declareId
+     * @return
+     */
+    public ExamineBlock getBlockByDeclareId(Integer declareId) {
+        ExamineBlockExample example = new ExamineBlockExample();
+        example.createCriteria().andDeclareIdEqualTo(declareId);
+        List<ExamineBlock> blockList = examineBlockMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        return null;
     }
 
     /**

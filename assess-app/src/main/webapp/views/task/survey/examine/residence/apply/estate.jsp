@@ -12,11 +12,10 @@
             <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required
-                       name="name" class="form-control">
+                     value="${surveyExamineDataInfoVo.examineEstateVo.name}"  name="name" class="form-control">
             </div>
         </div>
     </div>
-
 
     <div class="ln_solid"></div>
 </form>
