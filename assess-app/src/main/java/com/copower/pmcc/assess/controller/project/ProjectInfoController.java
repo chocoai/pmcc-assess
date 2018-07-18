@@ -94,7 +94,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
     public HttpResult projectApplySubmit(String formData, Integer projectInfoId, String bisNextUser) {
         try {
-            if (!ObjectUtils.isEmpty(projectInfoId)) {
+            if (!ObjectUtils.isEmpty(projectInfoId) && projectInfoId!=0) {
                 projectInfoService.projectUpdate(projectInfoService.format(formData), projectInfoId);
             } else {
                 boolean flag = projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
