@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseTradingMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataPropertyMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
-    <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
-    <result column="trading_price" property="tradingPrice" jdbcType="DECIMAL" />
-    <result column="buyer_extra_tax_fee" property="buyerExtraTaxFee" jdbcType="VARCHAR" />
-    <result column="renting_extra_tax_fee" property="rentingExtraTaxFee" jdbcType="VARCHAR" />
-    <result column="description_type" property="descriptionType" jdbcType="INTEGER" />
-    <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
+    <result column="social_prestige" property="socialPrestige" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,17 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, trading_time, trading_type, trading_price, buyer_extra_tax_fee, 
-    renting_extra_tax_fee, description_type, description_content, creator, gmt_created, 
+    id, declare_id, examine_type, name, company_nature, social_prestige, creator, gmt_created, 
     gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_examine_house_trading
+    from tb_data_property
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,39 +91,35 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_examine_house_trading
+    from tb_data_property
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_examine_house_trading
+    delete from tb_data_property
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingExample" >
-    delete from tb_examine_house_trading
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" >
+    delete from tb_data_property
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_trading (declare_id, examine_type, trading_time, 
-      trading_type, trading_price, buyer_extra_tax_fee, 
-      renting_extra_tax_fee, description_type, description_content, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
-      #{tradingType,jdbcType=INTEGER}, #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, 
-      #{rentingExtraTaxFee,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_property (declare_id, examine_type, name, 
+      company_nature, social_prestige, creator, 
+      gmt_created, gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_trading
+    insert into tb_data_property
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         declare_id,
@@ -136,26 +127,14 @@
       <if test="examineType != null" >
         examine_type,
       </if>
-      <if test="tradingTime != null" >
-        trading_time,
+      <if test="name != null" >
+        name,
       </if>
-      <if test="tradingType != null" >
-        trading_type,
+      <if test="companyNature != null" >
+        company_nature,
       </if>
-      <if test="tradingPrice != null" >
-        trading_price,
-      </if>
-      <if test="buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee,
-      </if>
-      <if test="rentingExtraTaxFee != null" >
-        renting_extra_tax_fee,
-      </if>
-      <if test="descriptionType != null" >
-        description_type,
-      </if>
-      <if test="descriptionContent != null" >
-        description_content,
+      <if test="socialPrestige != null" >
+        social_prestige,
       </if>
       <if test="creator != null" >
         creator,
@@ -174,26 +153,14 @@
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
-        #{tradingTime,jdbcType=TIMESTAMP},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="tradingType != null" >
-        #{tradingType,jdbcType=INTEGER},
+      <if test="companyNature != null" >
+        #{companyNature,jdbcType=INTEGER},
       </if>
-      <if test="tradingPrice != null" >
-        #{tradingPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="buyerExtraTaxFee != null" >
-        #{buyerExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="rentingExtraTaxFee != null" >
-        #{rentingExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="descriptionType != null" >
-        #{descriptionType,jdbcType=INTEGER},
-      </if>
-      <if test="descriptionContent != null" >
-        #{descriptionContent,jdbcType=VARCHAR},
+      <if test="socialPrestige != null" >
+        #{socialPrestige,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -206,14 +173,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingExample" resultType="java.lang.Integer" >
-    select count(*) from tb_examine_house_trading
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_property
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_examine_house_trading
+    update tb_data_property
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -224,26 +191,14 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingTime != null" >
-        trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.tradingType != null" >
-        trading_type = #{record.tradingType,jdbcType=INTEGER},
+      <if test="record.companyNature != null" >
+        company_nature = #{record.companyNature,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingPrice != null" >
-        trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="record.rentingExtraTaxFee != null" >
-        renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="record.descriptionType != null" >
-        description_type = #{record.descriptionType,jdbcType=INTEGER},
-      </if>
-      <if test="record.descriptionContent != null" >
-        description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      <if test="record.socialPrestige != null" >
+        social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -260,17 +215,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_examine_house_trading
+    update tb_data_property
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
-      trading_type = #{record.tradingType,jdbcType=INTEGER},
-      trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
-      buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
-      renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
-      description_type = #{record.descriptionType,jdbcType=INTEGER},
-      description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      company_nature = #{record.companyNature,jdbcType=INTEGER},
+      social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -278,8 +229,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
-    update tb_examine_house_trading
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
+    update tb_data_property
     <set >
       <if test="declareId != null" >
         declare_id = #{declareId,jdbcType=INTEGER},
@@ -287,26 +238,14 @@
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
-        trading_time = #{tradingTime,jdbcType=TIMESTAMP},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="tradingType != null" >
-        trading_type = #{tradingType,jdbcType=INTEGER},
+      <if test="companyNature != null" >
+        company_nature = #{companyNature,jdbcType=INTEGER},
       </if>
-      <if test="tradingPrice != null" >
-        trading_price = #{tradingPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="buyerExtraTaxFee != null" >
-        buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="rentingExtraTaxFee != null" >
-        renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
-      </if>
-      <if test="descriptionType != null" >
-        description_type = #{descriptionType,jdbcType=INTEGER},
-      </if>
-      <if test="descriptionContent != null" >
-        description_content = #{descriptionContent,jdbcType=VARCHAR},
+      <if test="socialPrestige != null" >
+        social_prestige = #{socialPrestige,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -320,17 +259,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
-    update tb_examine_house_trading
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataProperty" >
+    update tb_data_property
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      trading_time = #{tradingTime,jdbcType=TIMESTAMP},
-      trading_type = #{tradingType,jdbcType=INTEGER},
-      trading_price = #{tradingPrice,jdbcType=DECIMAL},
-      buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
-      renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
-      description_type = #{descriptionType,jdbcType=INTEGER},
-      description_content = #{descriptionContent,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      company_nature = #{companyNature,jdbcType=INTEGER},
+      social_prestige = #{socialPrestige,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

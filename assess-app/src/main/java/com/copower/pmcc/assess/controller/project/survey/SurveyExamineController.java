@@ -50,7 +50,7 @@ public class SurveyExamineController {
     public BootstrapTableVo getExamineTaskList(Integer planDetailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getTaskListByPlanDetailsId(planDetailsId);
-        List<SurveyExamineTaskVo> taskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList);
+        List<SurveyExamineTaskVo> taskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList,false);
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(taskVos) ? Lists.newArrayList() : taskVos);
         bootstrapTableVo.setTotal((long) examineTaskList.size());
         return bootstrapTableVo;
@@ -129,11 +129,15 @@ public class SurveyExamineController {
     }
 
     @ResponseBody
-    @GetMapping(name = "获取版块信息", value = "/getBlockById")
-    public HttpResult getBlockById() {
-
-        return null;
+    @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
+    public HttpResult saveExamineDataInfo(String formData) {
+        try {
+            surveyCommonService.saveExamineDataInfo(formData);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("保存调查信息", e);
+            return HttpResult.newErrorResult("保存调查信息异常");
+        }
     }
-
 
 }

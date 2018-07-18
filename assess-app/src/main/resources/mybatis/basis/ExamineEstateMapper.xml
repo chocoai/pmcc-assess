@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="block_id" property="blockId" jdbcType="INTEGER" />
     <result column="developer_id" property="developerId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="street" property="street" jdbcType="INTEGER" />
@@ -80,7 +79,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, block_id, developer_id, name, street, number, attach_number, 
+    id, declare_id, examine_type, developer_id, name, street, number, attach_number, 
     floor_area, cover_an_area, volumetric_rate, greening_rate, total_building_type, description, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -118,18 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_estate (declare_id, examine_type, block_id, 
-      developer_id, name, street, 
-      number, attach_number, floor_area, 
-      cover_an_area, volumetric_rate, greening_rate, 
-      total_building_type, description, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{blockId,jdbcType=INTEGER}, 
-      #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{street,jdbcType=INTEGER}, 
-      #{number,jdbcType=VARCHAR}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, 
-      #{totalBuildingType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_estate (declare_id, examine_type, developer_id, 
+      name, street, number, 
+      attach_number, floor_area, cover_an_area, 
+      volumetric_rate, greening_rate, total_building_type, 
+      description, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{street,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+      #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{totalBuildingType,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,9 +141,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="blockId != null" >
-        block_id,
       </if>
       <if test="developerId != null" >
         developer_id,
@@ -195,9 +191,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="blockId != null" >
-        #{blockId,jdbcType=INTEGER},
       </if>
       <if test="developerId != null" >
         #{developerId,jdbcType=INTEGER},
@@ -261,9 +254,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.blockId != null" >
-        block_id = #{record.blockId,jdbcType=INTEGER},
-      </if>
       <if test="record.developerId != null" >
         developer_id = #{record.developerId,jdbcType=INTEGER},
       </if>
@@ -316,7 +306,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      block_id = #{record.blockId,jdbcType=INTEGER},
       developer_id = #{record.developerId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       street = #{record.street,jdbcType=INTEGER},
@@ -343,9 +332,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="blockId != null" >
-        block_id = #{blockId,jdbcType=INTEGER},
       </if>
       <if test="developerId != null" >
         developer_id = #{developerId,jdbcType=INTEGER},
@@ -396,7 +382,6 @@
     update tb_examine_estate
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      block_id = #{blockId,jdbcType=INTEGER},
       developer_id = #{developerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       street = #{street,jdbcType=INTEGER},

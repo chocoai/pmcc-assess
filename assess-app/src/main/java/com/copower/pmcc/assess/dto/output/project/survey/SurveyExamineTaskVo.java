@@ -9,6 +9,7 @@ public class SurveyExamineTaskVo extends SurveyExamineTask {
     private Integer _parentId;
     private String userName;
     private String taskStatusName;
+    private String fieldName;
     private String applyUrl;
     private String detailUrl;
 
@@ -34,6 +35,14 @@ public class SurveyExamineTaskVo extends SurveyExamineTask {
 
     public void setTaskStatusName(String taskStatusName) {
         this.taskStatusName = taskStatusName;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
     public String getApplyUrl() {

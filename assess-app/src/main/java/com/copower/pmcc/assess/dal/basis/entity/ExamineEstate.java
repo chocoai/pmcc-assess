@@ -10,8 +10,6 @@ public class ExamineEstate {
 
     private Integer examineType;
 
-    private Integer blockId;
-
     private Integer developerId;
 
     private String name;
@@ -62,14 +60,6 @@ public class ExamineEstate {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Integer blockId) {
-        this.blockId = blockId;
     }
 
     public Integer getDeveloperId() {
