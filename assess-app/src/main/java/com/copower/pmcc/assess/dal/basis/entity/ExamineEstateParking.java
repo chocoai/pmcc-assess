@@ -9,8 +9,6 @@ public class ExamineEstateParking {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private Integer parkingType;
 
     private String location;
@@ -43,14 +41,6 @@ public class ExamineEstateParking {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public Integer getParkingType() {

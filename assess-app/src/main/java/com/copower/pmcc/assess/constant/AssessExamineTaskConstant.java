@@ -27,7 +27,9 @@ public class AssessExamineTaskConstant {
     public static final String HOUSE = "house";//房间
 
     public static final String ESTATE_DISTANCE = "estate.distance";//交通距离
-    public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级
+    public static final String ESTATE_CAR_TYPE = "estate.car.type";//车位类型
+
+    public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 
 
 }

@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="parking_type" property="parkingType" jdbcType="INTEGER" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,8 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, estate_id, parking_type, location, creator, gmt_created, 
-    gmt_modified
+    id, declare_id, examine_type, parking_type, location, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateParkingExample" >
     select
@@ -108,12 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_estate_parking (declare_id, examine_type, estate_id, 
-      parking_type, location, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{parkingType,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_estate_parking (declare_id, examine_type, parking_type, 
+      location, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{parkingType,jdbcType=INTEGER}, 
+      #{location,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateParking" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,9 +124,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="estateId != null" >
-        estate_id,
       </if>
       <if test="parkingType != null" >
         parking_type,
@@ -152,9 +147,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
       </if>
       <if test="parkingType != null" >
         #{parkingType,jdbcType=INTEGER},
@@ -191,9 +183,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
-      </if>
       <if test="record.parkingType != null" >
         parking_type = #{record.parkingType,jdbcType=INTEGER},
       </if>
@@ -219,7 +208,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
       parking_type = #{record.parkingType,jdbcType=INTEGER},
       location = #{record.location,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -237,9 +225,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="parkingType != null" >
         parking_type = #{parkingType,jdbcType=INTEGER},
@@ -263,7 +248,6 @@
     update tb_examine_estate_parking
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
       parking_type = #{parkingType,jdbcType=INTEGER},
       location = #{location,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

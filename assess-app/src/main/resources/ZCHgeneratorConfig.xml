@@ -41,7 +41,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_examine_matching_traffic" domainObjectName="ExamineMatchingTraffic">
+        <table tableName="tb_examine_estate_parking" domainObjectName="ExamineEstateParking">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table tableName="tb_data_builder" domainObjectName="DataBuilder">-->
