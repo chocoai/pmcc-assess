@@ -65,6 +65,24 @@ public class SurveyExamineTaskDao {
     }
 
     /**
+     * 编辑
+     *
+     * @param surveyExamineTask
+     * @return
+     */
+    public boolean updateSurveyExamineTask(SurveyExamineTask surveyExamineTask,SurveyExamineTask where) {
+        SurveyExamineTaskExample example = new SurveyExamineTaskExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return surveyExamineTaskMapper.updateByExampleSelective(surveyExamineTask,example) > 0;
+    }
+
+    public int getSurveyExamineTaskCount(SurveyExamineTask surveyExamineTask){
+        SurveyExamineTaskExample example = new SurveyExamineTaskExample();
+        MybatisUtils.convertObj2Example(surveyExamineTask, example);
+        return surveyExamineTaskMapper.countByExample(example);
+    }
+
+    /**
      * 删除
      *
      * @param id

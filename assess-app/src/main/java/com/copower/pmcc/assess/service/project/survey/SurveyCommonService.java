@@ -14,7 +14,19 @@ import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
+import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.examine.*;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -25,6 +37,7 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -74,6 +87,22 @@ public class SurveyCommonService {
     private ExamineHouseTradingService examineHouseTradingService;
     @Autowired
     private ExamineUnitService examineUnitService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectTaskAllService projectTaskAllService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private SurveyExamineItemService surveyExamineItemService;
 
 
     /**
@@ -176,12 +205,12 @@ public class SurveyCommonService {
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
         KeyValueDto keyValueDto = new KeyValueDto();
         keyValueDto.setKey(AssessExamineTaskConstant.FC_RESIDENCE);
-        keyValueDto.setValue("住宅商业办公");
+        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_RESIDENCE).getName());
         keyValueDtoList.add(keyValueDto);
 
         keyValueDto = new KeyValueDto();
         keyValueDto.setKey(AssessExamineTaskConstant.FC_INDUSTRY);
-        keyValueDto.setValue("工业仓储");
+        keyValueDto.setValue(dataExamineTaskService.getCacheDataExamineTaskByFieldName(AssessExamineTaskConstant.FC_INDUSTRY).getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
     }
@@ -295,7 +324,7 @@ public class SurveyCommonService {
                         ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
                         examineEstateService.saveEstate(examineEstate);
                         //更新附件
-                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class),examineEstate.getId());
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class), examineEstate.getId());
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
                         ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
@@ -309,7 +338,7 @@ public class SurveyCommonService {
                         ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
                         examineHouseService.saveHouse(examineHouse);
                         //更新附件
-                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class),examineHouse.getId());
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class), examineHouse.getId());
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
                         ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
@@ -318,6 +347,101 @@ public class SurveyCommonService {
                 }
             }
         }
+    }
+
+    /**
+     * 提交调查信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void submitExamineDataInfo(String formData, Integer planDetailsId) throws BusinessException {
+        //1.保存信息
+        //2.先检查是否需要发流程 如果不需要则更新任务状态 如果需要发流程则发起流程，写写入主表，更新任务状态为运行中，
+        //3.检查是否所有任务都已提交完成 如果都已完成则更新planDetails的状态 并确认是否走下一个阶段任务
+        saveExamineDataInfo(formData);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        //取到该事项所配置的流程
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        if (StringUtils.isBlank(projectPhase.getBoxName())) {//不走流程
+            updateExamineTaskStatus(planDetailsId, commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
+            if (isAllTaskFinish(planDetailsId)) {
+                projectPlanDetails.setStatus(ProjectStatusEnum.FINISH.getKey());
+                projectPlanDetailsService.updateProjectPlanDetails(projectPlanDetails);
+                if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
+                    projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
+                }
+            }
+        } else {//提交流程
+            //先保存流程主表
+            SurveyExamineItem surveyExamineItem=new SurveyExamineItem();
+            surveyExamineItem.setProjectId(projectPlanDetails.getProjectId());
+            surveyExamineItem.setPlanDetailsId(projectPlanDetails.getId());
+            surveyExamineItem.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+            surveyExamineItem.setCreator(commonService.thisUserAccount());
+            surveyExamineItemService.save(surveyExamineItem);
+
+            ProcessUserDto processUserDto = null;
+            //发起相应的流程
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+            String folio = String.format("%s->%s", projectPhase.getProjectPhaseName(), declareRecord.getName());
+            Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectPhase.getBoxName());
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
+            ProcessInfo processInfo = new ProcessInfo();
+            processInfo.setStartUser(commonService.thisUserAccount());
+            processInfo.setProjectId(projectPlanDetails.getProjectId());
+            processInfo.setProcessName(boxReDto.getProcessName());
+            processInfo.setGroupName(boxReDto.getGroupName());
+            processInfo.setFolio(folio);//流程描述
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(SurveyExamineItem.class));
+            processInfo.setTableId(surveyExamineItem.getId());
+            processInfo.setBoxId(boxReDto.getId());
+            processInfo.setWorkStage(projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId()).getWorkStageName());
+            processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
+            processInfo.setWorkStageId(projectPlanDetails.getProjectWorkStageId());
+            processInfo.setAppKey(applicationConstant.getAppKey());
+
+            try {
+                processUserDto = processControllerComponent.processStart(processInfo, commonService.thisUserAccount(), false);
+            } catch (BpmException e) {
+                logger.info("提交调查信息,发起流程异常",e);
+                throw new BusinessException(e.getMessage());
+            }
+            surveyExamineItem.setStatus(ProcessStatusEnum.RUN.getValue());
+            surveyExamineItem.setProcessInsId(processUserDto.getProcessInsId());
+            surveyExamineItemService.save(surveyExamineItem);
+        }
+    }
+
+    /**
+     * 更新任务状态
+     *
+     * @param planDetailsId
+     * @param userAccount
+     * @param projectStatusEnum
+     */
+    public void updateExamineTaskStatus(Integer planDetailsId, String userAccount, ProjectStatusEnum projectStatusEnum) {
+        //查询条件
+        SurveyExamineTask where = new SurveyExamineTask();
+        where.setPlanDetailsId(planDetailsId);
+        where.setUserAccount(userAccount);
+        //更新内容
+        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+        surveyExamineTask.setTaskStatus(projectStatusEnum.getKey());
+
+        surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
+    }
+
+    /**
+     * @param planDetailsId
+     * @return
+     */
+    public boolean isAllTaskFinish(Integer planDetailsId) {
+        SurveyExamineTask where = new SurveyExamineTask();
+        where.setPlanDetailsId(planDetailsId);
+        int allCount = surveyExamineTaskService.getSurveyExamineTaskCount(where);
+
+        where.setTaskStatus(ProjectStatusEnum.FINISH.getKey());
+        int finishCount = surveyExamineTaskService.getSurveyExamineTaskCount(where);
+        return allCount == finishCount;
     }
 
     /**

@@ -22,20 +22,21 @@
 
 <script type="text/javascript">
     $(function () {
-        ContainerFunForGetData.push(Estate.getData);//获取数据方法写入容器
+        ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
+        ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
     })
 </script>
 <script type="text/javascript">
     (function ($) {
         //避免方法重复，定义全局变量
         var estate = {
+            //验证
+            valid:function () {
+                return $("#frm_estate").valid();
+            },
+
             //获取需要保存的数据
-            getData: function (isValid) {
-                if (isValid) {
-                    if (!$("#frm_estate").valid()) {
-                        return false;
-                    }
-                }
+            getFormData: function () {
                 var data = formParams("frm_estate");
                 data.declareId=$("#declareId").val();
                 data.examineType=$("#examineType").val();

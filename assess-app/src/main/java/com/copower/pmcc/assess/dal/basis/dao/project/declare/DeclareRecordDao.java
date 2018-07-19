@@ -15,12 +15,6 @@ public class DeclareRecordDao {
     @Autowired
     private DeclareRecordMapper mapper;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    public DeclareRecord getByID(Integer id){
-        return mapper.selectByPrimaryKey(id);
-    }
 
     /*所有记录*/
     public List<DeclareRecord> queryAll(Integer projectID){
@@ -56,9 +50,7 @@ public class DeclareRecordDao {
         return mapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public List<DeclareRecord> getDeclareRecordById(Integer id) {
-        DeclareRecordExample example = new DeclareRecordExample();
-        example.createCriteria().andIdEqualTo(id);
-        return mapper.selectByExample(example);
+    public DeclareRecord getDeclareRecordById(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 }

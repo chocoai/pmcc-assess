@@ -185,4 +185,16 @@ public class SurveyExamineController {
         }
     }
 
+    @ResponseBody
+    @PostMapping(name = "提交调查信息", value = "/submitExamineDataInfo")
+    public HttpResult submitExamineDataInfo(String formData,Integer planDetailsId) {
+        try {
+            surveyCommonService.submitExamineDataInfo(formData,planDetailsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("保存调查信息", e);
+            return HttpResult.newErrorResult("保存调查信息异常");
+        }
+    }
+
 }

@@ -257,11 +257,8 @@ public class DeclareRecordService {
         return declareRecords;
     }
 
-    public List<DeclareRecord> getDeclareRecordById(Integer id) {
+    public DeclareRecord getDeclareRecordById(Integer id) {
         return dao.getDeclareRecordById(id);
     }
 
-    public DeclareRecord getByID(Integer id) {
-        return dao.getByID(id);
-    }
 }

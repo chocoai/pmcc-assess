@@ -74,7 +74,8 @@
 <script type="text/javascript">
 
     $(function () {
-        ContainerFunForGetData.push(Block.getData);//获取数据方法写入容器
+        ContainerFunForValid.push(Block.valid);//数据验证方法写入容器
+        ContainerFunForGetData.push(Block.getFormData);//获取数据方法写入容器
         Block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
 
         //初始化区域信息
@@ -118,13 +119,13 @@
     (function ($) {
         //避免方法重复，定义全局变量
         var block = {
+            //验证
+            valid:function () {
+                return $("#frm_block").valid();
+            },
+
             //获取需要保存的数据
-            getData: function (isValid) {
-                if (isValid) {
-                    if (!$("#frm_block").valid()) {
-                        return false;
-                    }
-                }
+            getFormData: function () {
                 var data = formParams("frm_block");
                 data.declareId = $("#declareId").val();
                 data.examineType = $("#examineType").val();

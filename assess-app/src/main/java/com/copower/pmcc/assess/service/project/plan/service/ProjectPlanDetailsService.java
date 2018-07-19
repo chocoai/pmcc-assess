@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -18,6 +19,7 @@ import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -54,6 +56,8 @@ public class ProjectPlanDetailsService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private CommonService commonService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -98,8 +102,9 @@ public class ProjectPlanDetailsService {
             for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
                 if(StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
                     continue;
-                //判断是否为查勘或案例
-                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())){
+                //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
+                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
+                        &&StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())){
                     //可细项再分配
                     projectPlanDetailsVo.setCanAssignment(true);
                 }
@@ -118,6 +123,29 @@ public class ProjectPlanDetailsService {
             }
         }
         return projectPlanDetailsVos;
+    }
+
+    /**
+     * 是否所有计划明细任务都已完成
+     * @param planId
+     * @return
+     */
+    public boolean isAllPlanDetailsFinish(Integer planId){
+        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
+        projectPlanDetailsWhere.setPlanId(planId);
+        projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
+        projectPlanDetailsWhere.setBisLastLayer(true);
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
+        return CollectionUtils.isEmpty(projectPlanDetailsList);
+    }
+
+    /**
+     * 更新
+     * @param projectPlanDetails
+     * @return
+     */
+    public boolean updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails){
+        return projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }
 
     public ProjectPlanDetailsVo getProjectPlanDetailsVo(ProjectPlanDetails projectPlanDetails)

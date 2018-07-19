@@ -1,16 +1,12 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 描述:
@@ -22,7 +18,7 @@ import java.util.List;
 @Component
 public class ProjectTaskEvent extends BaseProcessEvent {
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ProjectTaskAllService projectTaskAllService;
 
@@ -31,15 +27,8 @@ public class ProjectTaskEvent extends BaseProcessEvent {
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);
         String processInstanceId = processExecution.getProcessInstanceId();
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(processInstanceId);
-
-        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-        projectPlanDetailsWhere.setPlanId(projectPlanDetails.getPlanId());
-        projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetailsWhere.setBisLastLayer(true);
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-
-        if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInstanceId);
+        if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
             //任务都执行则发起相应的整体复核流程
             projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
         }

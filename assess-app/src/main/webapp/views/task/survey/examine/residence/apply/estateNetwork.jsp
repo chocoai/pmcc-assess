@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <!-- 包含此文件时需要删除掉css -->
-    <%@include file="/views/share/main_css.jsp" %>
+
 </head>
 
 <body>
@@ -31,7 +31,6 @@
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
     var estateNetwork = function () {

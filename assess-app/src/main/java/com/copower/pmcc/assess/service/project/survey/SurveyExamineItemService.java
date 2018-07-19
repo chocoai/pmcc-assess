@@ -19,14 +19,14 @@ public class SurveyExamineItemService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    public boolean save(SurveyExamineItem surveyExamineItemDto) throws BusinessException {
-        if(surveyExamineItemDto == null)
+    public boolean save(SurveyExamineItem surveyExamineItem) throws BusinessException {
+        if(surveyExamineItem == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if(surveyExamineItemDto.getId() != null && surveyExamineItemDto.getId() > 0){
-            return surveyExamineItemDao.update(surveyExamineItemDto);
+        if(surveyExamineItem.getId() != null && surveyExamineItem.getId() > 0){
+            return surveyExamineItemDao.update(surveyExamineItem);
         }else{
-            surveyExamineItemDto.setCreator(processControllerComponent.getThisUser());
-            return surveyExamineItemDao.save(surveyExamineItemDto);
+            surveyExamineItem.setCreator(processControllerComponent.getThisUser());
+            return surveyExamineItemDao.save(surveyExamineItem);
         }
     }
 
@@ -37,12 +37,12 @@ public class SurveyExamineItemService {
     }
 
 
-    public SurveyExamineItem getSurveyExamineItem(String processInsId) {
+    public SurveyExamineItem getExamineItemByProcessInsId(String processInsId) {
         SurveyExamineItem surveyExamineItem= surveyExamineItemDao.getSurveyExamineItem(processInsId);
         return surveyExamineItem;
     }
 
-    public SurveyExamineItem getExploreByPlanDetailsId(Integer planDetailsId) {
+    public SurveyExamineItem getExamineItemByPlanDetailsId(Integer planDetailsId) {
         SurveyExamineItem surveyExamineItem= surveyExamineItemDao.getExamineItemByPlanDetailsId(planDetailsId);
         return surveyExamineItem;
     }

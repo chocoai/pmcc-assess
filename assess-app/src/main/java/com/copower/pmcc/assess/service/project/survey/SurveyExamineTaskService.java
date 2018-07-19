@@ -176,12 +176,30 @@ public class SurveyExamineTaskService {
     }
 
     /**
+     * 更新调查任务
+     * @param surveyExamineTask
+     * @param where
+     */
+    public void updateSurveyExamineTask(SurveyExamineTask surveyExamineTask,SurveyExamineTask where) {
+        surveyExamineTaskDao.updateSurveyExamineTask(surveyExamineTask,where);
+    }
+
+    /**
      * 删除调查任务
      *
      * @param id
      */
     public void deleteSurveyExamineTask(Integer id) {
         surveyExamineTaskDao.deleteSurveyExamineTask(id);
+    }
+
+    /**
+     * 获取数据总条数
+     * @param surveyExamineTask
+     * @return
+     */
+    public int getSurveyExamineTaskCount(SurveyExamineTask surveyExamineTask){
+        return surveyExamineTaskDao.getSurveyExamineTaskCount(surveyExamineTask);
     }
 
     /**
@@ -240,6 +258,7 @@ public class SurveyExamineTaskService {
      *
      * @param surveyExamineTaskDto
      */
+    @Transactional(rollbackFor = Exception.class)
     public void confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyExamineTaskDto.getPlanDetailsId());
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
@@ -301,7 +320,9 @@ public class SurveyExamineTaskService {
                 }
             }
         }
-
+        //将planDetails任务设置为运行
+        planDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
+        projectPlanDetailsService.updateProjectPlanDetails(planDetails);
     }
 
 }

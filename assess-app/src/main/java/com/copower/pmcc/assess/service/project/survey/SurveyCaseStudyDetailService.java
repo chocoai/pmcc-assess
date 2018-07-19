@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyCaseStudyDetailDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyCaseStudyDetailVo;
@@ -90,28 +89,10 @@ public class SurveyCaseStudyDetailService {
                     surveyCaseStudyDetailVo.setInformationSourceName(baseDataDic1.getName());
                 }
             }
-            //changeName(surveyCaseStudyDetailVo, p);
-
             return surveyCaseStudyDetailVo;
         });
     }
 
-    private SurveyCaseStudyDetailVo changeName(SurveyCaseStudyDetailVo surveyCaseStudyDetailVo, SurveyCaseStudyDetail p) {
-        String strs = p.getCorrelationCard();
-        String[] correlationCards = strs.split(",");
-        List<String> strings = new ArrayList<>();
-        for (String correlationCard : correlationCards) {
-            Integer id = Integer.valueOf(correlationCard);
-            List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordById(id);
-            if(declareRecords !=null &&declareRecords.size()>0){
-                DeclareRecord declareRecord = declareRecords.get(0);
-                strings.add(declareRecord.getName());
-            }
-        }
-        String correlationCardName =String.join(",",strings);   //数组转成字符串
-        surveyCaseStudyDetailVo.setCorrelationCardName(correlationCardName);
-        return surveyCaseStudyDetailVo;
-    }
 
     public SurveyCaseStudyDetail getSingelDetail(Integer id) {
         return surveyCaseStudyDetailDao.getSingelDetail(id);
