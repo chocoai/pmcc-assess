@@ -7,7 +7,7 @@ public class DataDeveloper {
 
     private String name;
 
-    private Integer companyNature;
+    private String companyNature;
 
     private String socialPrestige;
 
@@ -33,12 +33,12 @@ public class DataDeveloper {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getCompanyNature() {
+    public String getCompanyNature() {
         return companyNature;
     }
 
-    public void setCompanyNature(Integer companyNature) {
-        this.companyNature = companyNature;
+    public void setCompanyNature(String companyNature) {
+        this.companyNature = companyNature == null ? null : companyNature.trim();
     }
 
     public String getSocialPrestige() {

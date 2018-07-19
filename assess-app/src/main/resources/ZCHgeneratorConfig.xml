@@ -44,12 +44,12 @@
         <table tableName="tb_data_property" domainObjectName="DataProperty">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="tb_data_builder " domainObjectName="DataBuilder">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_data_developer " domainObjectName="DataDeveloper">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_builder" domainObjectName="DataBuilder">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
     </context>
 
