@@ -163,7 +163,7 @@
                 <h3 class="modal-title">通信网络</h3>
             </div>
             <form id="frmExamineEstateNetwork" class="form-horizontal">
-                <input type="hidden" id="id" name="id">
+                <input type="hidden"  name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
