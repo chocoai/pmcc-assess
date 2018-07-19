@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataDeveloper" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="company_nature" property="companyNature" jdbcType="INTEGER" />
+    <result column="company_nature" property="companyNature" jdbcType="VARCHAR" />
     <result column="social_prestige" property="socialPrestige" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -77,7 +77,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from "tb_data_developer"
+    from tb_data_developer
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,15 +88,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from "tb_data_developer"
+    from tb_data_developer
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from "tb_data_developer"
+    delete from tb_data_developer
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDeveloperExample" >
-    delete from "tb_data_developer"
+    delete from tb_data_developer
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -105,10 +105,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into "tb_data_developer" (name, company_nature, social_prestige, 
+    insert into tb_data_developer (name, company_nature, social_prestige, 
       creator, gmt_created, gmt_modified
       )
-    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=INTEGER}, #{socialPrestige,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{companyNature,jdbcType=VARCHAR}, #{socialPrestige,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -116,7 +116,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into "tb_data_developer"
+    insert into tb_data_developer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
@@ -142,7 +142,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="companyNature != null" >
-        #{companyNature,jdbcType=INTEGER},
+        #{companyNature,jdbcType=VARCHAR},
       </if>
       <if test="socialPrestige != null" >
         #{socialPrestige,jdbcType=VARCHAR},
@@ -159,13 +159,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDeveloperExample" resultType="java.lang.Integer" >
-    select count(*) from "tb_data_developer"
+    select count(*) from tb_data_developer
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update "tb_data_developer"
+    update tb_data_developer
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -174,7 +174,7 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.companyNature != null" >
-        company_nature = #{record.companyNature,jdbcType=INTEGER},
+        company_nature = #{record.companyNature,jdbcType=VARCHAR},
       </if>
       <if test="record.socialPrestige != null" >
         social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
@@ -194,10 +194,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update "tb_data_developer"
+    update tb_data_developer
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      company_nature = #{record.companyNature,jdbcType=INTEGER},
+      company_nature = #{record.companyNature,jdbcType=VARCHAR},
       social_prestige = #{record.socialPrestige,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -207,13 +207,13 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDeveloper" >
-    update "tb_data_developer"
+    update tb_data_developer
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="companyNature != null" >
-        company_nature = #{companyNature,jdbcType=INTEGER},
+        company_nature = #{companyNature,jdbcType=VARCHAR},
       </if>
       <if test="socialPrestige != null" >
         social_prestige = #{socialPrestige,jdbcType=VARCHAR},
@@ -231,9 +231,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDeveloper" >
-    update "tb_data_developer"
+    update tb_data_developer
     set name = #{name,jdbcType=VARCHAR},
-      company_nature = #{companyNature,jdbcType=INTEGER},
+      company_nature = #{companyNature,jdbcType=VARCHAR},
       social_prestige = #{socialPrestige,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

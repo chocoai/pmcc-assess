@@ -245,52 +245,62 @@ public class DataDeveloperExample {
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureEqualTo(Integer value) {
+        public Criteria andCompanyNatureEqualTo(String value) {
             addCriterion("company_nature =", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotEqualTo(Integer value) {
+        public Criteria andCompanyNatureNotEqualTo(String value) {
             addCriterion("company_nature <>", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureGreaterThan(Integer value) {
+        public Criteria andCompanyNatureGreaterThan(String value) {
             addCriterion("company_nature >", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCompanyNatureGreaterThanOrEqualTo(String value) {
             addCriterion("company_nature >=", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureLessThan(Integer value) {
+        public Criteria andCompanyNatureLessThan(String value) {
             addCriterion("company_nature <", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureLessThanOrEqualTo(Integer value) {
+        public Criteria andCompanyNatureLessThanOrEqualTo(String value) {
             addCriterion("company_nature <=", value, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureIn(List<Integer> values) {
+        public Criteria andCompanyNatureLike(String value) {
+            addCriterion("company_nature like", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureNotLike(String value) {
+            addCriterion("company_nature not like", value, "companyNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyNatureIn(List<String> values) {
             addCriterion("company_nature in", values, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotIn(List<Integer> values) {
+        public Criteria andCompanyNatureNotIn(List<String> values) {
             addCriterion("company_nature not in", values, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureBetween(Integer value1, Integer value2) {
+        public Criteria andCompanyNatureBetween(String value1, String value2) {
             addCriterion("company_nature between", value1, value2, "companyNature");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyNatureNotBetween(Integer value1, Integer value2) {
+        public Criteria andCompanyNatureNotBetween(String value1, String value2) {
             addCriterion("company_nature not between", value1, value2, "companyNature");
             return (Criteria) this;
         }
