@@ -15,6 +15,7 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -76,22 +77,41 @@ public class ProjectPlanDetailsService {
         return getProjectPlanDetailsVos(projectPlanDetails, false);
     }
 
+    /**
+     * 获取项目下所有计划详细任务
+     * @param projectId
+     * @return
+     */
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectid(Integer projectId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectid(projectId);
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
+
+        //获取当前人该项目下待处理的任务
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-        if (CollectionUtils.isNotEmpty(projectTaskList) && CollectionUtils.isNotEmpty(projectPlanDetailsVos)) {
-            for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
-                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                    if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
 
-                        if (responsibilityDto.getUrl().contains("?")) {
-                            projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                        } else {
-                            projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+
+        //判断任务是否结束，如果结束只能查看详情
+        if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
+                if(StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
+                    continue;
+                //判断是否为查勘或案例
+                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())){
+                    //可细项再分配
+                    projectPlanDetailsVo.setCanAssignment(true);
+                }
+
+                if(CollectionUtils.isNotEmpty(projectTaskList)){
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
+                            if (responsibilityDto.getUrl().contains("?")) {
+                                projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                            } else {
+                                projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                            }
                         }
                     }
                 }

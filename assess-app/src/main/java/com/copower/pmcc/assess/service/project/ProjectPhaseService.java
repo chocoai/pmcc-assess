@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
@@ -137,5 +138,21 @@ public class ProjectPhaseService {
         BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(typeId);
         if(defaultCategory==null) return null;
         return getCacheProjectPhaseByCategoryId(defaultCategory.getId());
+    }
+
+    /**
+     * 是否为查勘案例的任务
+     * @param phaseId
+     * @return
+     */
+    public boolean isExaminePhase(Integer phaseId){
+        ProjectPhase projectPhase = getCacheProjectPhaseById(phaseId);
+        if(projectPhase!=null){
+            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.LOCALE_EXPLORE) )
+                return true;
+            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY) )
+                return true;
+        }
+        return false;
     }
 }

@@ -78,35 +78,6 @@
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>项目成员</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content collapse">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                项目经理
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${projectMemberVo.userAccountManagerName}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                项目成员
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control">${projectMemberVo.userAccountMemberName}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>工作成果</h2>
@@ -292,13 +263,21 @@
                     var s = "";
                     if (row.bisLastLayer) {
                         if (row.url) {
-                            s += "<a target='_blank' href='" + row.url + "'>提交</a> "
+                            s += "<a target='_blank' href='" + row.url + "'>提交</a> ";
+                            if(row.canAssignment){
+                                s += " | <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "'>分派</a> ";
+                            }
                         } else {
                             s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
-
                         }
                     }
                     return s;
+
+                    //1.当为查勘或案例时，
+                    // 2.如果整个任务未结束该项的处理人可设置任务分派，
+                    // 3.如果整个任务未结束而当前登录人有对应任务，则可提交任务 ，没有任务可查看详情
+                    // 4.当整个任务结束时可查看详情
+
                 }
                 }
             ]]

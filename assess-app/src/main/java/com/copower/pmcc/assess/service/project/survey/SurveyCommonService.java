@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
-import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -62,9 +61,7 @@ public class SurveyCommonService {
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
-    private SurveyLocaleExploreService surveyLocaleExploreService;
-    @Autowired
-    private SurveyCaseStudyService surveyCaseStudyService;
+    private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
     private ExamineBlockService examineBlockService;
     @Autowired
@@ -198,27 +195,6 @@ public class SurveyCommonService {
     public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
         //清除原有数据
         surveyExamineTaskService.deleteTaskByPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-        //保存主表信息
-        if (surveyExamineTaskDto.getExamineType().equals(ExamineTypeEnum.EXPLORE.getId())) {//查勘
-            SurveyLocaleExplore surveyLocaleExplore = new SurveyLocaleExplore();
-            surveyLocaleExplore.setId(surveyExamineTaskDto.getTableId());
-            surveyLocaleExplore.setProjectId(surveyExamineTaskDto.getProjectId());
-            surveyLocaleExplore.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-            surveyLocaleExplore.setExamineFormType(surveyExamineTaskDto.getExamineFormType());
-            surveyLocaleExplore.setDeclareRecordId(surveyExamineTaskDto.getDeclareRecordId());
-            surveyLocaleExplore.setCreator(commonService.thisUserAccount());
-            surveyLocaleExploreService.save(surveyLocaleExplore);
-        } else {//案例
-            SurveyCaseStudy surveyCaseStudy = new SurveyCaseStudy();
-            surveyCaseStudy.setId(surveyExamineTaskDto.getTableId());
-            surveyCaseStudy.setProjectId(surveyExamineTaskDto.getProjectId());
-            surveyCaseStudy.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-            surveyCaseStudy.setExamineFormType(surveyExamineTaskDto.getExamineFormType());
-            surveyCaseStudy.setDeclareRecordId(surveyExamineTaskDto.getDeclareRecordId());
-            surveyCaseStudy.setCreator(commonService.thisUserAccount());
-            surveyCaseStudyService.save(surveyCaseStudy);
-        }
-
 
         List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
 

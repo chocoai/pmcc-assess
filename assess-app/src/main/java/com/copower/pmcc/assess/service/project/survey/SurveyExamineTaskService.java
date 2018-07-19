@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
@@ -46,7 +47,7 @@ public class SurveyExamineTaskService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
@@ -89,7 +90,7 @@ public class SurveyExamineTaskService {
      * @param taskList
      * @return
      */
-    public List<SurveyExamineTaskVo> getSurveyExamineTaskVos(List<SurveyExamineTask> taskList,boolean isFull) {
+    public List<SurveyExamineTaskVo> getSurveyExamineTaskVos(List<SurveyExamineTask> taskList, boolean isFull) {
         if (CollectionUtils.isEmpty(taskList)) return null;
         return LangUtils.transform(taskList, p -> {
             SurveyExamineTaskVo surveyExamineTaskVo = new SurveyExamineTaskVo();
@@ -102,9 +103,9 @@ public class SurveyExamineTaskService {
             if (StringUtils.isNotBlank(p.getTaskStatus())) {
                 surveyExamineTaskVo.setTaskStatusName(ProjectStatusEnum.getNameByKey(p.getTaskStatus()));
             }
-            if(Boolean.TRUE==isFull){
+            if (Boolean.TRUE == isFull) {
                 DataExamineTask dataExamineTask = dataExamineTaskService.getCacheDataExamineTaskById(p.getDataTaskId());
-                if(dataExamineTask!=null){
+                if (dataExamineTask != null) {
                     surveyExamineTaskVo.setFieldName(dataExamineTask.getFieldName());
                     surveyExamineTaskVo.setApplyUrl(dataExamineTask.getApplyUrl());
                     surveyExamineTaskVo.setDetailUrl(dataExamineTask.getDetailUrl());
@@ -237,13 +238,13 @@ public class SurveyExamineTaskService {
     /**
      * 确认分派
      *
-     * @param planDetailsId
+     * @param surveyExamineTaskDto
      */
-    public void confirmAssignment(Integer planDetailsId) {
-        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+    public void confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyExamineTaskDto.getPlanDetailsId());
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(planDetails.getProjectId());
-        projectResponsibilityDto.setPlanDetailsId(planDetailsId);
+        projectResponsibilityDto.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
         ProjectResponsibilityDto projectTask = null;
         if (CollectionUtils.isNotEmpty(projectTaskList)) {
@@ -254,8 +255,22 @@ public class SurveyExamineTaskService {
             }
         }
 
+        if (surveyExamineTaskDto.getExamineInfoId() == null) {
+            SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
+            surveyExamineInfo.setExamineType(surveyExamineTaskDto.getExamineType());
+            surveyExamineInfo.setId(surveyExamineTaskDto.getExamineInfoId());
+            surveyExamineInfo.setProjectId(surveyExamineTaskDto.getProjectId());
+            surveyExamineInfo.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+            surveyExamineInfo.setExamineFormType(surveyExamineTaskDto.getExamineFormType());
+            surveyExamineInfo.setDeclareRecordId(surveyExamineTaskDto.getDeclareRecordId());
+            surveyExamineInfo.setBisAssignment(true);
+            surveyExamineInfo.setCreator(commonService.thisUserAccount());
+            surveyExamineInfoService.save(surveyExamineInfo);
+        }
+
+
         SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-        surveyExamineTask.setPlanDetailsId(planDetailsId);
+        surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
         surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
         List<SurveyExamineTask> examineTaskList = surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
         if (CollectionUtils.isNotEmpty(examineTaskList)) {

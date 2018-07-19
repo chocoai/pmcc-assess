@@ -20,29 +20,6 @@
             <!--填写表单-->
             <input type="hidden" id="declareId" name="declareId" value="${parentPlan.declareRecordId}">
             <input type="hidden" id="examineType" name="examineType" value="${examineType}">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${parentPlan.projectPhaseName}-任务分派</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="col-sm-12">
-                        <c:forEach var="item" items="${examineFormTypeList}">
-                             <span class="col-sm-2">
-                            <input type="radio" id="examineFormType_${item.key}"
-                                   onclick="examineTask.initExamineTask(this,'${surveyLocaleExplore.id}');" ${item.key eq surveyLocaleExplore.examineFormType?"checked=\"checked\"":""}
-                                   name="examineFormType"
-                                   value="${item.key}"><label
-                                     for="examineFormType_${item.key}">&nbsp;${item.value}</label>
-                        </span>
-                        </c:forEach>
-                    </div>
-                    <%@include file="/views/task/survey/common/examineTask.jsp" %>
-                </div>
-            </div>
             <div class="x_panel examine">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">

@@ -23,6 +23,8 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String declareFormName;
 
+    private Boolean canAssignment;
+
     private List<KeyValueDto> tasks;
 
     public String get_parentId() {
@@ -71,5 +73,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Boolean getCanAssignment() {
+        return canAssignment;
+    }
+
+    public void setCanAssignment(Boolean canAssignment) {
+        this.canAssignment = canAssignment;
     }
 }
