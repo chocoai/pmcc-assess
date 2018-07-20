@@ -184,6 +184,17 @@ public class ProjectTaskController {
         String viewUrl = "projectTaskAssist";
 
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
+        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails);
+    }
+
+    @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情", method = RequestMethod.GET)
+    public ModelAndView projectTaskDetailsById(Integer projectDetailsId) {
+        String viewUrl = "projectTaskAssist";
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
+        return getProjectTaskDetails(0, viewUrl, projectPlanDetails);
+    }
+
+    private ModelAndView getProjectTaskDetails(Integer boxId, String viewUrl, ProjectPlanDetails projectPlanDetails) {
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.isNotBlank(projectPhase.getPhaseForm())) {
             viewUrl = projectPhase.getPhaseForm();

@@ -170,7 +170,8 @@
                                 <input type="hidden" id="planDetailsId" name="id"/>
                                 <input type="hidden" id="pid" name="pid"/>
                                 <input type="hidden" id="firstPid" name="firstPid"/>
-                                <input type="hidden" id="projectPhaseId" name="projectPhaseId" value="${projectPhases.get(0).id}"/>
+                                <input type="hidden" id="projectPhaseId" name="projectPhaseId"
+                                       value="${projectPhases.get(0).id}"/>
                                 <div id="plan_content"></div>
                             </form>
                         </div>
@@ -209,11 +210,24 @@
                 申报表
             </label>
             <div class="col-sm-10">
-                <input type="hidden" id="declareFormId" name="declareFormId"/>
-                <input type="text" placeholder="申报表" maxlength="50"
-                       id="declareFormName" name="declareFormName"
-                       onclick="selectDeclareForm(this)"
-                       class="form-control">
+                <div class="input-group">
+                    <input type="hidden" id="declareFormId" name="declareFormId"/>
+                    <input type="text" id="declareFormName" name="declareFormName" readonly="readonly" required
+                           placeholder="申报表" class="form-control" onclick="selectDeclareForm(this);">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="selectDeclareForm(this);">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                     </span>
+                </div>
             </div>
         </div>
     </div>
@@ -583,7 +597,7 @@
     //计划或公司编辑
     function editPlan(id) {
         var row = $('#PlanItemListed').treegrid('find', id);
-        if (row.firstPid == 0&&'${bisComprehensiveAssets}' == 'true') {
+        if (row.firstPid == 0 && '${bisComprehensiveAssets}' == 'true') {
             companyStatus();
         } else {
             backStatus();
