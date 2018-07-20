@@ -254,6 +254,53 @@ public class SurveyExamineTaskService {
     }
 
     /**
+     * 初始化该调查表下的所有任务
+     *
+     * @param surveyExamineTaskDto
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
+        //清除原有数据
+        deleteTaskByPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+
+        List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
+
+        if (CollectionUtils.isNotEmpty(examineTaskList)) {
+            SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+            surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+            surveyExamineTask.setDeclareId(surveyExamineTaskDto.getDeclareRecordId());
+            surveyExamineTask.setExamineType(surveyExamineTaskDto.getExamineType());
+            surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
+            surveyExamineTask.setCreator(commonService.thisUserAccount());
+            //第一层级
+            for (DataExamineTask dataExamineTask : examineTaskList) {
+                surveyExamineTask.setId(0);
+                surveyExamineTask.setPid(0);
+                surveyExamineTask.setName(dataExamineTask.getName());
+                surveyExamineTask.setDataTaskId(dataExamineTask.getId());
+                surveyExamineTask.setSorting(dataExamineTask.getSorting());
+                surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
+                saveSurveyExamineTask(surveyExamineTask);
+                Integer pid = surveyExamineTask.getId();
+                List<DataExamineTask> taskList = dataExamineTaskService.getCacheDataExamineTaskListByPid(dataExamineTask.getId());
+                //第二层级
+                if (CollectionUtils.isNotEmpty(taskList)) {
+                    for (DataExamineTask examineTask : taskList) {
+                        surveyExamineTask.setId(0);
+                        surveyExamineTask.setPid(pid);
+                        surveyExamineTask.setName(examineTask.getName());
+                        surveyExamineTask.setUserAccount(surveyExamineTaskDto.getUserAccount());
+                        surveyExamineTask.setDataTaskId(examineTask.getId());
+                        surveyExamineTask.setSorting(examineTask.getSorting());
+                        surveyExamineTask.setBisMust(examineTask.getBisMust());
+                        saveSurveyExamineTask(surveyExamineTask);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 确认分派
      *
      * @param surveyExamineTaskDto

@@ -18,7 +18,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-            <input type="hidden" id="declareId" name="declareId" value="${parentPlan.declareRecordId}">
+            <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
             <input type="hidden" id="examineType" name="examineType" value="${examineType}">
             <div class="x_panel examine">
                 <div class="x_title collapse-link">
@@ -177,7 +177,7 @@
         save: function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyExamine/saveExamineDataInfo",
+                url: "${pageContext.request.contextPath}/surveyExamineItem/saveExamineDataInfo",
                 data: {
                     formData: JSON.stringify(taskExamineItemIndex.getFormData())
                 },
@@ -206,10 +206,11 @@
             var data = taskExamineItemIndex.getFormData();
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyExamine/submitExamineDataInfo",
+                url: "${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo",
                 data: {
                     formData: JSON.stringify(data),
-                    planDetailsId: "${projectPlanDetails.id}"
+                    planDetailsId: "${projectPlanDetails.id}",
+                    responsibilityId:"${responsibilityId}"
                 },
                 type: "post",
                 dataType: "json",

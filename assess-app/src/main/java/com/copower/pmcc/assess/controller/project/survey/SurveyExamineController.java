@@ -82,7 +82,7 @@ public class SurveyExamineController {
     @PostMapping(name = "初始化该调查表下的所有任务", value = "/initExamineTask")
     public HttpResult initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) {
         try {
-            surveyCommonService.initExamineTask(surveyExamineTaskDto);
+            surveyExamineTaskService.initExamineTask(surveyExamineTaskDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("初始化该调查表下的所有任务", e);
@@ -173,28 +173,6 @@ public class SurveyExamineController {
         }
     }
 
-    @ResponseBody
-    @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
-    public HttpResult saveExamineDataInfo(String formData) {
-        try {
-            surveyCommonService.saveExamineDataInfo(formData);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("保存调查信息", e);
-            return HttpResult.newErrorResult("保存调查信息异常");
-        }
-    }
 
-    @ResponseBody
-    @PostMapping(name = "提交调查信息", value = "/submitExamineDataInfo")
-    public HttpResult submitExamineDataInfo(String formData,Integer planDetailsId) {
-        try {
-            surveyCommonService.submitExamineDataInfo(formData,planDetailsId);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("保存调查信息", e);
-            return HttpResult.newErrorResult("保存调查信息异常");
-        }
-    }
 
 }

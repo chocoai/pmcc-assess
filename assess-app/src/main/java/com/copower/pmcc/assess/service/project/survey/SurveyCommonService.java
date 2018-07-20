@@ -1,43 +1,30 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreDetail;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
-import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
-import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
-import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.examine.*;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
-import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
-import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -46,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,22 +73,7 @@ public class SurveyCommonService {
     private ExamineHouseTradingService examineHouseTradingService;
     @Autowired
     private ExamineUnitService examineUnitService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ProjectTaskAllService projectTaskAllService;
-    @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private BpmRpcBoxService bpmRpcBoxService;
-    @Autowired
-    private DeclareRecordService declareRecordService;
-    @Autowired
-    private ApplicationConstant applicationConstant;
-    @Autowired
-    private ProjectWorkStageService projectWorkStageService;
-    @Autowired
-    private SurveyExamineItemService surveyExamineItemService;
+
 
 
     /**
@@ -216,53 +187,6 @@ public class SurveyCommonService {
     }
 
     /**
-     * 初始化该调查表下的所有任务
-     *
-     * @param surveyExamineTaskDto
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void initExamineTask(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
-        //清除原有数据
-        surveyExamineTaskService.deleteTaskByPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-
-        List<DataExamineTask> examineTaskList = dataExamineTaskService.getCacheDataExamineTaskListByKey(surveyExamineTaskDto.getExamineFormType());
-
-        if (CollectionUtils.isNotEmpty(examineTaskList)) {
-            SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
-            surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-            surveyExamineTask.setDeclareId(surveyExamineTaskDto.getDeclareRecordId());
-            surveyExamineTask.setExamineType(surveyExamineTaskDto.getExamineType());
-            surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
-            surveyExamineTask.setCreator(commonService.thisUserAccount());
-            //第一层级
-            for (DataExamineTask dataExamineTask : examineTaskList) {
-                surveyExamineTask.setId(0);
-                surveyExamineTask.setPid(0);
-                surveyExamineTask.setName(dataExamineTask.getName());
-                surveyExamineTask.setDataTaskId(dataExamineTask.getId());
-                surveyExamineTask.setSorting(dataExamineTask.getSorting());
-                surveyExamineTask.setBisMust(dataExamineTask.getBisMust());
-                surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                Integer pid = surveyExamineTask.getId();
-                List<DataExamineTask> taskList = dataExamineTaskService.getCacheDataExamineTaskListByPid(dataExamineTask.getId());
-                //第二层级
-                if (CollectionUtils.isNotEmpty(taskList)) {
-                    for (DataExamineTask examineTask : taskList) {
-                        surveyExamineTask.setId(0);
-                        surveyExamineTask.setPid(pid);
-                        surveyExamineTask.setName(examineTask.getName());
-                        surveyExamineTask.setUserAccount(surveyExamineTaskDto.getUserAccount());
-                        surveyExamineTask.setDataTaskId(examineTask.getId());
-                        surveyExamineTask.setSorting(examineTask.getSorting());
-                        surveyExamineTask.setBisMust(examineTask.getBisMust());
-                        surveyExamineTaskService.saveSurveyExamineTask(surveyExamineTask);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * 获取需处理的任务集合
      *
      * @param planDetailsId
@@ -305,111 +229,9 @@ public class SurveyCommonService {
         return map;
     }
 
-    /**
-     * 保存调查信息
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void saveExamineDataInfo(String formData) throws BusinessException {
-        if (StringUtils.isBlank(formData))
-            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        List<KeyValueDto> keyValueDtoList = JSON.parseArray(formData, KeyValueDto.class);
-        if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
-            for (KeyValueDto keyValueDto : keyValueDtoList) {
-                switch (keyValueDto.getKey()) {
-                    case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
-                        ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
-                        examineBlockService.saveBlock(examineBlock);
-                        break;
-                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
-                        ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
-                        examineEstateService.saveEstate(examineEstate);
-                        //更新附件
-                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class), examineEstate.getId());
-                        break;
-                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
-                        ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
-                        examineEstateLandStateService.saveEstateLandState(examineEstateLandState);
-                        break;
-                    case AssessExamineTaskConstant.FC_RESIDENCE_UNIT_BASE:
-                        ExamineUnit examineUnit = JSON.parseObject(keyValueDto.getValue(), ExamineUnit.class);
-                        examineUnitService.saveUnit(examineUnit);
-                        break;
-                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_BASE:
-                        ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
-                        examineHouseService.saveHouse(examineHouse);
-                        //更新附件
-                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class), examineHouse.getId());
-                        break;
-                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
-                        ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
-                        examineHouseTradingService.saveHouseTrading(examineHouseTrading);
-                        break;
-                }
-            }
-        }
-    }
 
-    /**
-     * 提交调查信息
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void submitExamineDataInfo(String formData, Integer planDetailsId) throws BusinessException {
-        //1.保存信息
-        //2.先检查是否需要发流程 如果不需要则更新任务状态 如果需要发流程则发起流程，写写入主表，更新任务状态为运行中，
-        //3.检查是否所有任务都已提交完成 如果都已完成则更新planDetails的状态 并确认是否走下一个阶段任务
-        saveExamineDataInfo(formData);
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        //取到该事项所配置的流程
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (StringUtils.isBlank(projectPhase.getBoxName())) {//不走流程
-            updateExamineTaskStatus(planDetailsId, commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
-            if (isAllTaskFinish(planDetailsId)) {
-                projectPlanDetails.setStatus(ProjectStatusEnum.FINISH.getKey());
-                projectPlanDetailsService.updateProjectPlanDetails(projectPlanDetails);
-                if (projectPlanDetailsService.isAllPlanDetailsFinish(projectPlanDetails.getPlanId())) {
-                    projectTaskAllService.startTaskAllApproval(projectPlanDetails.getPlanId());
-                }
-            }
-        } else {//提交流程
-            //先保存流程主表
-            SurveyExamineItem surveyExamineItem=new SurveyExamineItem();
-            surveyExamineItem.setProjectId(projectPlanDetails.getProjectId());
-            surveyExamineItem.setPlanDetailsId(projectPlanDetails.getId());
-            surveyExamineItem.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
-            surveyExamineItem.setCreator(commonService.thisUserAccount());
-            surveyExamineItemService.save(surveyExamineItem);
 
-            ProcessUserDto processUserDto = null;
-            //发起相应的流程
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-            String folio = String.format("%s->%s", projectPhase.getProjectPhaseName(), declareRecord.getName());
-            Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectPhase.getBoxName());
-            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
-            ProcessInfo processInfo = new ProcessInfo();
-            processInfo.setStartUser(commonService.thisUserAccount());
-            processInfo.setProjectId(projectPlanDetails.getProjectId());
-            processInfo.setProcessName(boxReDto.getProcessName());
-            processInfo.setGroupName(boxReDto.getGroupName());
-            processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(SurveyExamineItem.class));
-            processInfo.setTableId(surveyExamineItem.getId());
-            processInfo.setBoxId(boxReDto.getId());
-            processInfo.setWorkStage(projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId()).getWorkStageName());
-            processInfo.setProcessEventExecutorName(ProjectInfoEvent.class.getSimpleName());
-            processInfo.setWorkStageId(projectPlanDetails.getProjectWorkStageId());
-            processInfo.setAppKey(applicationConstant.getAppKey());
 
-            try {
-                processUserDto = processControllerComponent.processStart(processInfo, commonService.thisUserAccount(), false);
-            } catch (BpmException e) {
-                logger.info("提交调查信息,发起流程异常",e);
-                throw new BusinessException(e.getMessage());
-            }
-            surveyExamineItem.setStatus(ProcessStatusEnum.RUN.getValue());
-            surveyExamineItem.setProcessInsId(processUserDto.getProcessInsId());
-            surveyExamineItemService.save(surveyExamineItem);
-        }
-    }
 
     /**
      * 更新任务状态
