@@ -28,6 +28,19 @@ public class AssessExamineTaskConstant {
 
     public static final String ESTATE_DISTANCE = "estate.distance";//交通距离
     public static final String ESTATE_CAR_TYPE = "estate.car.type";//车位类型
+    public static final String ESTATE_LINE_WATER_SUPPLY_PIPE_GRADE = "estate.line.water.supply.pipe.grade";//线路供水管等级
+    public static final String ESTATE_SUPPLIER_GRADE = "estate.supplier.grade";//供应商等级
+    public static final String ESTATE_SCHOOL_NATURE = "estate.school.nature";//学校性质
+    public static final String ESTATE_SCHOOL_GRADATION = "estate.school.gradation";//学校级次
+    public static final String ESTATE_SCHOOL_LEVEL = "estate.school.level";//学校等级
+    public static final String ESTATE_ENVIRONMENT_TYPE = "estate.environment.type";//环境类型
+    public static final String ESTATE_ENVIRONMENT_CATEGORY = "estate.environment.category";//环境类别
+    public static final String ESTATE_ENVIRONMENT_INFLUENCE_DEGREE = "estate.environment.Influence.degree";//影响程度
+    public static final String ESTATE_FINANCE_CATEGORY = "estate.finance.category";//金融类别
+    public static final String ESTATE_FINANCE_NATURE = "estate.finance.nature";//金融机构性质
+    public static final String ESTATE_FINANCE_SERVICE_CONTENT = "estate.finance.service.content";//金融服务内容
+    public static final String ESTATE_EXAMINEMATCHINGLEISUREPLACE_CATEGORY = "estate.examinematchingleisureplace.category";//休闲场所-包含-购物-娱乐-餐饮 类别
+    public static final String ESTATE_SHOP_GRADE = "estate.shop.grade";//购物商场档次
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 

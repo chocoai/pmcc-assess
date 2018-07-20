@@ -9,8 +9,6 @@ public class ExamineMatchingFinance {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private String name;
 
     private Integer category;
@@ -49,14 +47,6 @@ public class ExamineMatchingFinance {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public String getName() {

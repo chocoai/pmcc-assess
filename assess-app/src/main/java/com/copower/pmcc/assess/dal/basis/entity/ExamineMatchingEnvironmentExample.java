@@ -285,66 +285,6 @@ public class ExamineMatchingEnvironmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andEstateIdIsNull() {
-            addCriterion("estate_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdIsNotNull() {
-            addCriterion("estate_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdEqualTo(Integer value) {
-            addCriterion("estate_id =", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotEqualTo(Integer value) {
-            addCriterion("estate_id <>", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdGreaterThan(Integer value) {
-            addCriterion("estate_id >", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("estate_id >=", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdLessThan(Integer value) {
-            addCriterion("estate_id <", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdLessThanOrEqualTo(Integer value) {
-            addCriterion("estate_id <=", value, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdIn(List<Integer> values) {
-            addCriterion("estate_id in", values, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotIn(List<Integer> values) {
-            addCriterion("estate_id not in", values, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdBetween(Integer value1, Integer value2) {
-            addCriterion("estate_id between", value1, value2, "estateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEstateIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("estate_id not between", value1, value2, "estateId");
-            return (Criteria) this;
-        }
-
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
