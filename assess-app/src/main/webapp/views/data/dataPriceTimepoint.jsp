@@ -40,11 +40,11 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="loadDataList()">
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success" onclick="addDataDic()"
+                                <button type="button" class="btn btn-success" onclick="addData()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -98,7 +98,6 @@
                                         <div class="col-sm-10">
                                             <textarea placeholder="描述" class="form-control" id="description"
                                                       name="description">
-
                                             </textarea>
                                         </div>
                                     </div>
@@ -111,7 +110,7 @@
                         <button type="button" data-dismiss="modal" class="btn btn-default">
                             取消
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                        <button type="button" class="btn btn-primary" onclick="saveData()">
                             保存
                         </button>
                     </div>
@@ -122,42 +121,23 @@
 </div>
 
 
-<!--价值时点数据子项数据 ===========-->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent">价值时点数据</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
     $(function () {
-        loadDataDicList();
+        loadDataList();
     })
     //加载 价值时点 数据列表
-    function loadDataDicList() {
+    function loadDataList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'description', title: '描述'});
-
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deletePriceTimepointDescription(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editData(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -176,7 +156,7 @@
     }
 
     //删除 价值时点 数据
-    function deletePriceTimepointDescription(id, tbId) {
+    function deleteData(id, tbId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -188,7 +168,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadDataDicList();//重载 (刷新)
+                        loadDataList();//重载 (刷新)
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
@@ -204,11 +184,11 @@
     }
 
     //对新增 价值时点 数据处理
-    function addDataDic() {
+    function addData() {
         $("#frm").clearAll();
     }
     //新增 价值时点 数据
-    function saveSubDataDic() {
+    function saveData() {
         var flag = false;
         var data = $("#frm").serialize();
         if ($("#frm").valid()) {
@@ -220,7 +200,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadDataDicList();
+                        loadDataList();
                         $('#divBox').modal('hide');
                     }
                     else {
@@ -234,54 +214,13 @@
         }
     }
     //-------------------------------------------------------------------------------------
-    //编辑字典数据
-    function editDataDic(id) {
-        $("#frm").clearAll();
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/priceTimepoint/getPriceTimepointDescription",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    $("#id").val(id);
-                    $("#name").val(result.data.name);
-                    $("#fieldName").val(result.data.fieldName);
-                    $("#bisEnable").prop("checked", result.data.bisEnable);
-                    $("#sorting").val(result.data.sorting);
-                    $("#remark").val(result.data.remark);
-                    $('#divBox').modal();
-                }
-                else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
 
-    function editHrProfessional(index) {
+    function editData(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $('#divBox').modal();
     }
-
-    function isNot(val) {
-        if (val != null) {
-            if (val != '') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 </script>
 
 
