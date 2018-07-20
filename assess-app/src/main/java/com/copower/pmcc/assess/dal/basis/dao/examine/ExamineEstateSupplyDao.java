@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.dal.basis.dao.examine;
 
-import com.copower.pmcc.assess.dal.basis.entity.ExamineBlock;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineBlockExample;
-import com.copower.pmcc.assess.dal.basis.mapper.ExamineBlockMapper;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateSupply;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateSupplyExample;
+import com.copower.pmcc.assess.dal.basis.mapper.ExamineEstateSupplyMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,45 +18,46 @@ import java.util.List;
  */
 @Repository
 public class ExamineEstateSupplyDao {
+    
     @Autowired
-    private ExamineBlockMapper examineBlockMapper;
+    private ExamineEstateSupplyMapper examineEstateSupplyMapper;
 
     /**
      * 获取数据信息
      * @param id
      * @return
      */
-    public ExamineBlock getBlockById(Integer id) {
-        return examineBlockMapper.selectByPrimaryKey(id);
+    public ExamineEstateSupply getExamineEstateSupplyById(Integer id) {
+        return examineEstateSupplyMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 获取数据列表
-     * @param examineBlock
+     * @param examineEstateSupply
      * @return
      */
-    public List<ExamineBlock> getBlockList(ExamineBlock examineBlock) {
-        ExamineBlockExample example = new ExamineBlockExample();
-        MybatisUtils.convertObj2Example(examineBlock, example);
-        return examineBlockMapper.selectByExample(example);
+    public List<ExamineEstateSupply> getExamineEstateSupplyList(ExamineEstateSupply examineEstateSupply) {
+        ExamineEstateSupplyExample example = new ExamineEstateSupplyExample();
+        MybatisUtils.convertObj2Example(examineEstateSupply, example);
+        return examineEstateSupplyMapper.selectByExample(example);
     }
 
     /**
      * 新增
-     * @param examineBlock
+     * @param examineEstateSupply
      * @return
      */
-    public boolean addBlock(ExamineBlock examineBlock) {
-        return examineBlockMapper.insertSelective(examineBlock) > 0;
+    public boolean addExamineEstateSupply(ExamineEstateSupply examineEstateSupply) {
+        return examineEstateSupplyMapper.insertSelective(examineEstateSupply) > 0;
     }
 
     /**
      * 编辑
-     * @param examineBlock
+     * @param examineEstateSupply
      * @return
      */
-    public boolean updateBlock(ExamineBlock examineBlock) {
-        return examineBlockMapper.updateByPrimaryKeySelective(examineBlock) > 0;
+    public boolean updateExamineEstateSupply(ExamineEstateSupply examineEstateSupply) {
+        return examineEstateSupplyMapper.updateByPrimaryKeySelective(examineEstateSupply) > 0;
     }
 
     /**
@@ -64,8 +65,7 @@ public class ExamineEstateSupplyDao {
      * @param id
      * @return
      */
-    public boolean deleteBlock(Integer id){
-        return examineBlockMapper.deleteByPrimaryKey(id) > 0;
+    public boolean deleteExamineEstateSupply(Integer id){
+        return examineEstateSupplyMapper.deleteByPrimaryKey(id) > 0;
     }
-
 }

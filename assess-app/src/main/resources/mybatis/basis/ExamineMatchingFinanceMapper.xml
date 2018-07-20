@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="nature" property="nature" jdbcType="INTEGER" />
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, estate_id, name, category, nature, service_content, 
-    auto_service_content, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, name, category, nature, service_content, auto_service_content, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingFinanceExample" >
     select
@@ -111,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_matching_finance (declare_id, examine_type, estate_id, 
-      name, category, nature, 
-      service_content, auto_service_content, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{nature,jdbcType=INTEGER}, 
-      #{serviceContent,jdbcType=VARCHAR}, #{autoServiceContent,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_matching_finance (declare_id, examine_type, name, 
+      category, nature, service_content, 
+      auto_service_content, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{nature,jdbcType=INTEGER}, #{serviceContent,jdbcType=VARCHAR}, 
+      #{autoServiceContent,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingFinance" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,9 +130,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="estateId != null" >
-        estate_id,
       </if>
       <if test="name != null" >
         name,
@@ -166,9 +162,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -214,9 +207,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
-      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -251,7 +241,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
       nature = #{record.nature,jdbcType=INTEGER},
@@ -272,9 +261,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -307,7 +293,6 @@
     update tb_examine_matching_finance
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       nature = #{nature,jdbcType=INTEGER},

@@ -9,8 +9,6 @@ public class ExamineEstateSupply {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private String type;
 
     private String name;
@@ -51,14 +49,6 @@ public class ExamineEstateSupply {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public String getType() {
