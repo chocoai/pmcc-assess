@@ -258,25 +258,20 @@
                 {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
                 {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
                 {
-                    field: 'processInsId', align: 'center', title: '查看成果', width: '10%', formatter: function (value, row) {
+                    field: 'processInsId', align: 'left', title: '查看成果', width: '10%', formatter: function (value, row) {
 
                     var s = "";
                     if (row.bisLastLayer) {
                         if (row.url) {
-                            s += "<a target='_blank' href='" + row.url + "'>提交</a> ";
+                            s += "<a target='_blank' href='" + row.url + "' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
                             if(row.canAssignment){
-                                s += " | <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "'>分派</a> ";
+                                s += " <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
                             }
                         } else {
                             s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
                         }
                     }
                     return s;
-
-                    //1.当为查勘或案例时，
-                    // 2.如果整个任务未结束该项的处理人可设置任务分派，
-                    // 3.如果整个任务未结束而当前登录人有对应任务，则可提交任务 ，没有任务可查看详情
-                    // 4.当整个任务结束时可查看详情
 
                 }
                 }
