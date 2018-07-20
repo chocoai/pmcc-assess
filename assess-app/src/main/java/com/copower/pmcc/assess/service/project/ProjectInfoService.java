@@ -36,6 +36,7 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -141,7 +142,7 @@ public class ProjectInfoService {
      *
      * @param projectDto
      */
-    public boolean projectApply(InitiateProjectDto projectDto, String bisNextUser) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto, Boolean bisNextUser) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
@@ -149,47 +150,9 @@ public class ProjectInfoService {
         return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), change(projectMember), projectDto.getProjectInfo(), bisNextUser);
     }
 
-    /*项目立项修改*/
-    @Transactional
-    public void projectUpdate(InitiateProjectDto initiateProjectDto, Integer projectInfoId) throws Exception {
-        ProjectInfoDto projectInfo = initiateProjectDto.getProjectInfo();
-        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfoId);
-        projectInfo.setId(projectInfoId);
-        String userAccountManager = projectInfo.getUserAccountManager();
-        String userAccountMember = projectInfo.getUserAccountMember();
-        if (!org.springframework.util.StringUtils.isEmpty(userAccountManager)){
-            projectMemberVo.setUserAccountManager(userAccountManager);
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(userAccountMember)){
-            projectMemberVo.setUserAccountMember(userAccountMember);
-        }
-        projectApplyUpdate(projectInfo,initiateProjectDto.getUnitinformation(),initiateProjectDto.getConsignor(),initiateProjectDto.getPossessor(),projectMemberVo);
-    }
-
-    public void projectApplyUpdate(ProjectInfoDto projectInfo,InitiateUnitInformationDto unitinformation,
-         InitiateConsignorDto consignor,InitiatePossessorDto possessor,ProjectMember projectMember) throws Exception {
-        projectInfoDao.updateProjectInfo(change(projectInfo));
-        consignorService.update(consignor);
-        possessorService.update(possessor);
-        projectMemberService.updateProjectMember(projectMember);
-        unitInformationService.update(unitinformation);
-        //联系人在修改或者新增时已经更新的主id（pid）
-        //附件更新
-        //region Description
-        try {
-            //由于页面已经更新 故在此不做更新
-//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectInfo.getId());
-//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateConsignor.class), consignor.getId());
-//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiatePossessor.class), possessor.getId());
-        }catch (Exception e){
-            logger.error(String.format("附件更新异常!",e.getMessage()),e);
-        }
-        //endregion
-    }
-
     @Transactional
     public boolean projectApplyChange(InitiateConsignorDto consignorDto, InitiateUnitInformationDto unitInformationDto, InitiatePossessorDto possessorDto, ProjectMemberDto projectMemberDto,
-                                      ProjectInfoDto projectInfoDto, String bisNextUser) {
+                                      ProjectInfoDto projectInfoDto, Boolean bisNextUser) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
@@ -224,7 +187,7 @@ public class ProjectInfoService {
 
             //判断是否需要下级再进行任务分派 //20180621 Calvin
             //如果可以下级分派，则先走任务分派流程
-            if (bisNextUser.equals("1")) {
+            if (Boolean.TRUE == bisNextUser) {
                 //发起流程
                 String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
@@ -264,6 +227,44 @@ public class ProjectInfoService {
         }
         return flag;
     }
+
+    /**
+     * 项目立项返回修改
+     *
+     * @param approvalModelDto
+     * @throws BusinessException
+     * @throws BpmException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void projectEditApproval(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) throws Exception {
+        projectUpdate(format(formData), projectInfoId);//保存数据
+        //以下参数为返回修改必须设置的参数
+        approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
+        approvalModelDto.setCurrentStep(-1);
+        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);//提交流程
+    }
+
+    /*项目立项修改*/
+    @Transactional
+    public void projectUpdate(InitiateProjectDto initiateProjectDto, Integer projectInfoId) throws Exception {
+        ProjectInfoDto projectInfo = initiateProjectDto.getProjectInfo();
+        ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfoId);
+        projectInfo.setId(projectInfoId);
+        String userAccountManager = projectInfo.getUserAccountManager();
+        String userAccountMember = projectInfo.getUserAccountMember();
+        if (!org.springframework.util.StringUtils.isEmpty(userAccountManager)) {
+            projectMemberVo.setUserAccountManager(userAccountManager);
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(userAccountMember)) {
+            projectMemberVo.setUserAccountMember(userAccountMember);
+        }
+        projectInfoDao.updateProjectInfo(change(projectInfo));
+        consignorService.update(initiateProjectDto.getConsignor());
+        possessorService.update(initiateProjectDto.getPossessor());
+        projectMemberService.updateProjectMember(projectMemberVo);
+        unitInformationService.update(initiateProjectDto.getUnitinformation());
+    }
+
 
     /**
      * 初始化项目信息
@@ -383,6 +384,13 @@ public class ProjectInfoService {
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
+    /**
+     * 分派项目经理审批
+     *
+     * @param approvalModelDto
+     * @throws BusinessException
+     * @throws BpmException
+     */
     @Transactional(rollbackFor = Exception.class)
     public void projectAssignApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         //如果选择了项目经理，则更新项目经理，如果没有选择项目经理并且该项目还为设置项目经理则取该部门领导作为项目经理
@@ -392,11 +400,11 @@ public class ProjectInfoService {
             projectMember.setUserAccountManager(approvalModelDto.getAppointUserAccount());
             projectMemberDao.updateProjectMember(projectMember);
         } else {
-            if(StringUtils.isBlank(projectMember.getUserAccountManager())){
+            if (StringUtils.isBlank(projectMember.getUserAccountManager())) {
                 ProjectInfo projectInfo = getProjectInfoById(approvalModelDto.getProjectId());
                 Integer departmentId = projectInfo.getDepartmentId();
                 List<String> departmentCE = bpmRpcBoxRoleUserService.getDepartmentCE(departmentId);
-                if(CollectionUtils.isEmpty(departmentCE))
+                if (CollectionUtils.isEmpty(departmentCE))
                     throw new BusinessException("未找到对应的部门领导");
                 projectMember.setUserAccountManager(departmentCE.get(0));
                 projectMemberDao.updateProjectMember(projectMember);
@@ -405,17 +413,6 @@ public class ProjectInfoService {
         processControllerComponent.processSubmitPendingTaskNodeArg(approvalModelDto);
     }
 
-    /**
-     * 返回修改
-     *
-     * @param approvalModelDto
-     * @throws BusinessException
-     * @throws BpmException
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void projectEditApproval(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) throws BusinessException, BpmException {
-        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, true);
-    }
 
     public ProjectInfo getProjectInfoByProcessInsId(String processInsId) {
         return projectInfoDao.getProjectInfoByProcessInsId(processInsId);
@@ -553,7 +550,7 @@ public class ProjectInfoService {
         if (!ObjectUtils.isEmpty(customerId)) {
             initiateContactsService.writeContacts(customerId, cType, pid);//写入本地
         }
-        vos = initiateContactsService.getVoList(pid, cType,customerId);//从本地获取
+        vos = initiateContactsService.getVoList(pid, cType, customerId);//从本地获取
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
@@ -579,8 +576,8 @@ public class ProjectInfoService {
         return initiateContactsService.update(dto);
     }
 
-    public InitiateContactsVo getInitiateContacts(Integer id){
-        return  initiateContactsService.get(id);
+    public InitiateContactsVo getInitiateContacts(Integer id) {
+        return initiateContactsService.get(id);
     }
 
     public ProjectInfo change(ProjectInfoDto dto) {

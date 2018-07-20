@@ -298,7 +298,7 @@
     function loadProjectCategoryList(projectTypeId, projectCategoryId) {
         $("#projectCategoryId").empty();
         if (projectTypeId) {
-            AssessCommon.getProjectCategoryList(projectTypeId, function (html, data) {
+            AssessCommon.getProjectClassifyList(projectTypeId, function (html, data) {
                 $("#projectCategoryId").append(html);
                 if (projectCategoryId) {
                     $("#projectCategoryId").val(projectCategoryId);

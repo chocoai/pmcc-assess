@@ -21,10 +21,8 @@
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <input type="hidden" name="uUseUnit" id="uUseUnit" class="form-control"
-                                   required="required"
-                                   value="${projectInfo.unitInformationVo.uUseUnit}">
-                            <input type="text" id="uUseUnitX" readonly="readonly"
+                            <input type="hidden" name="uUseUnit" id="uUseUnit" value="${projectInfo.unitInformationVo.uUseUnit}">
+                            <input type="text" id="uUseUnitX" readonly="readonly" required
                                    placeholder="单位" class="form-control" onclick="UNIT_INFORMATION.prototype.selectCustomer();"
                                    value="${projectInfo.unitInformationVo.uUseUnitName}">
                             <span class="input-group-btn">

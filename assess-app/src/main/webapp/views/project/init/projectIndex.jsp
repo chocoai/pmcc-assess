@@ -84,6 +84,12 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${processInsId ne '0'}">
+                <%@include file="/views/share/form_log.jsp" %>
+                <form id="frm_approval">
+                    <%@include file="/views/share/ApprovalVariable.jsp" %>
+                </form>
+            </c:if>
         </div>
     </div>
 </div>
@@ -93,7 +99,7 @@
 </html>
 
 <script type="text/javascript">
-    function params() {
+    function getFormData() {
         var data = {};
         var projectInfo = formParams("frm_project_info");//项目信息
         var consignor = formParams("frm_consignor"); //委托人信息
@@ -103,9 +109,7 @@
         data.consignor = consignor;
         data.possessor = possessor;
         data.unitinformation = unitinformation;
-        //合并json
-        var json = JSON.stringify(data);
-        return json;
+        return data;
     }
 
     function projectApply() {
@@ -137,21 +141,27 @@
             return false;
         }
 
-        var bisNextUser = "0";
+        var bisNextUser = false;
         //如果没有设置项目经理则必须先进行下级分派
         if ($("#userAccountMemberCheckBox").is(':checked') || !$("#userAccountManager").val()) {
-            bisNextUser = "1";
+            bisNextUser = true;
         }
-        var formData = params();
+        var data = {};
+        data.formData = JSON.stringify(getFormData());
+        data.projectInfoId = $("#projectInfoId").val();
+        data.bisNextUser=bisNextUser;
+        var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
+        if ("${empty processInsId?"0":processInsId}" != "0") {
+            url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";
+            var approvalData = formParams("frm_approval");
+            data = $.extend({}, approvalData, data);
+        }
         Loading.progressShow();
         $.ajax({
             type: "POST",
-            url: getContextPath() + "/projectInfo/projectApplySubmit",
-            data: {
-                formData: formData,
-                projectInfoId: $("#projectInfoId").val(),
-                bisNextUser: bisNextUser
-            }, success: function (result) {
+            url: url,
+            data: data,
+            success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
                     Alert("提交数据成功!", 1, null, function () {
@@ -177,16 +187,16 @@
 
     $(function () {
         Contacts.prototype.getUrl = function () {
-            return "${pageContext.request.contextPath}" ;
+            return "${pageContext.request.contextPath}";
         };
         //载入选项框
         POSSESSOR.prototype.tabControl();
         CONSIGNOR.prototype.tabControl();
 
         /**返回修改页面**/
-        var projectInfo = "${projectInfo.consignorVo}" ;
-        if (projectInfo != null && projectInfo!=''){//返回修改页面自动带出联系人 加载联系人列表
-            Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}",null);
+        var projectInfo = "${projectInfo.consignorVo}";
+        if (projectInfo != null && projectInfo != '') {//返回修改页面自动带出联系人 加载联系人列表
+            Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}", null);
             Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
             Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
 

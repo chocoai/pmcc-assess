@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dto.input.project.ProjectInfoDto;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
@@ -90,23 +89,6 @@ public class ProjectInfoController {
         return modelAndView;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/projectApplySubmit", name = "保存项目", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Integer projectInfoId, String bisNextUser) {
-        try {
-            if (!ObjectUtils.isEmpty(projectInfoId) && projectInfoId!=0) {
-                projectInfoService.projectUpdate(projectInfoService.format(formData), projectInfoId);
-            } else {
-                boolean flag = projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
-                if (!flag)
-                    return HttpResult.newErrorResult("异常!");
-            }
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
     @RequestMapping(value = "/projectInfoEdit", name = "项目返回修改 页面")
     public ModelAndView projectInfoEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/init/projectIndex", processInsId, boxId, taskId, agentUserAccount);
@@ -145,13 +127,34 @@ public class ProjectInfoController {
         return modelAndView;
     }
 
-    /**
-     * 审批提交
-     *
-     * @return
-     */
     @ResponseBody
-    @RequestMapping(value = "/projectApprovalSubmit", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApplySubmit", name = "项目立项", method = RequestMethod.POST)
+    public HttpResult projectApplySubmit(String formData,Boolean bisNextUser) {
+        try {
+            projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/projectEditSubmit",name = "项目立项返回修改", method = RequestMethod.POST)
+    public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
+        try {
+            projectInfoService.projectEditApproval(approvalModelDto, formData,projectInfoId);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/projectApprovalSubmit",name = "项目立项审批", method = RequestMethod.POST)
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectApproval(approvalModelDto);
@@ -162,7 +165,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectApprovalAssignSubmit", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApprovalAssignSubmit",name = "分派项目经理审批", method = RequestMethod.POST)
     public HttpResult projectApprovalAssignSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectAssignApproval(approvalModelDto);
@@ -172,21 +175,7 @@ public class ProjectInfoController {
         return HttpResult.newCorrectResult();
     }
 
-    /**
-     * 返回修改提交
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/projectEditSubmit", method = RequestMethod.POST)
-    public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, ProjectInfoDto projectInfoDto) {
-        try {
-            projectInfoService.projectEditApproval(approvalModelDto, projectInfoDto);
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
+
 
     @RequestMapping(value = "/projectAssignDetails", name = "项目详情")
     public Object projectAssignDetails(String processInsId) throws BusinessException {
