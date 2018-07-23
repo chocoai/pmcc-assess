@@ -60,7 +60,7 @@ public class SurveyExamineItemController {
     @RequestMapping(value = "/examineItemDetails", name = "详情视图", method = {RequestMethod.GET})
     public ModelAndView examineItemDetails(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         String view = "/task/survey/taskExamineItemApproval";
-        return getDetailExamineItemView(processInsId, taskId, boxId, agentUserAccount, view);
+        return getDetailExamineItemView(processInsId, "-1", boxId, agentUserAccount, view);
     }
 
     private ModelAndView getDetailExamineItemView(String processInsId, String taskId, Integer boxId, String agentUserAccount, String view) {
