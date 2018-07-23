@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineMatchingLeisurePlaceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class ExamineMatchingLeisurePlaceService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+
     /**
      * 获取数据信息
      *
@@ -72,8 +75,32 @@ public class ExamineMatchingLeisurePlaceService {
     public ExamineMatchingLeisurePlaceVo getExamineMatchingLeisurePlaceVo(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
         ExamineMatchingLeisurePlaceVo vo = new ExamineMatchingLeisurePlaceVo();
         BeanUtils.copyProperties(examineMatchingLeisurePlace, vo);
-        if (examineMatchingLeisurePlace.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_EXAMINEMATCHINGLEISUREPLACE_CATEGORY, examineMatchingLeisurePlace.getCategory()));
+        String key = examineMatchingLeisurePlace.getType();
+        if (!StringUtils.isEmpty(key)) {
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
+                if (examineMatchingLeisurePlace.getGrade() != null) {
+                    vo.setGradeName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_GRADE, examineMatchingLeisurePlace.getGrade()));
+                }
+                if (examineMatchingLeisurePlace.getCategory() != null) {
+                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_CATEGORY, examineMatchingLeisurePlace.getCategory()));
+                }
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
+                if (examineMatchingLeisurePlace.getCategory() != null) {
+                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_ENTERTAINMENT_CATEGORY, examineMatchingLeisurePlace.getCategory()));
+                }
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
+                if (examineMatchingLeisurePlace.getCategory() != null) {
+                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_DINING_CATEGORY, examineMatchingLeisurePlace.getCategory()));
+                }
+                if (examineMatchingLeisurePlace.getGrade() != null) {
+                    vo.setGradeName(getValue(AssessExamineTaskConstant.ESTATE_DINING_GRADE, examineMatchingLeisurePlace.getGrade()));
+                }
+            }
+        }
+        if (examineMatchingLeisurePlace.getDistance() != null) {
+            vo.setDistanceName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE, examineMatchingLeisurePlace.getDistance()));
         }
         return vo;
     }
@@ -81,11 +108,12 @@ public class ExamineMatchingLeisurePlaceService {
     private String getValue(String key, Integer v) {
         StringBuilder builder = new StringBuilder(100);
         List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
+        if (!ObjectUtils.isEmpty(baseDataDic)) {
+            if (baseDataDic.size() >= 1) {
+                if (v != null) {
+                    for (BaseDataDic base : baseDataDic) {
+                        if (base.getId().intValue() == v.intValue())
+                            builder.append(base.getName());
                     }
                 }
             }
@@ -129,5 +157,45 @@ public class ExamineMatchingLeisurePlaceService {
      */
     public boolean deleteExamineMatchingLeisurePlace(Integer id) {
         return examineMatchingLeisurePlaceDao.deleteMatchingFinance(id);
+    }
+
+    public List<BaseDataDic> examineMatchingLeisurePlace_category(ExamineMatchingLeisurePlaceTypeEnum typeEnum) {
+        String key = typeEnum.getKey();
+        if (!StringUtils.isEmpty(key)) {
+            List<BaseDataDic> baseDataDic = null;
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SHOP_CATEGORY);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENTERTAINMENT_CATEGORY);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DINING_CATEGORY);
+            }
+            if (!ObjectUtils.isEmpty(baseDataDic)) {
+                return baseDataDic;
+            }
+        }
+        return null;
+    }
+
+    public List<BaseDataDic> examineMatchingLeisurePlace_grade(ExamineMatchingLeisurePlaceTypeEnum typeEnum) {
+        String key = typeEnum.getKey();
+        if (!StringUtils.isEmpty(key)) {
+            List<BaseDataDic> baseDataDic = null;
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SHOP_GRADE);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
+
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DINING_GRADE);
+            }
+            if (!ObjectUtils.isEmpty(baseDataDic)) {
+                return baseDataDic;
+            }
+        }
+        return null;
     }
 }

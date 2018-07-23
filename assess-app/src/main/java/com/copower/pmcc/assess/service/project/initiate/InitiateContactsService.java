@@ -209,6 +209,11 @@ public class InitiateContactsService {
         return vo;
     }
 
+
+    public boolean remove(Integer pid,Integer type){
+        return dao.remove(pid,type);
+    }
+
     public Map<String, String> getTypeMap() {
         Map<String, String> map = new HashMap<>();
         map.put("" + InitiateContactsEnum.CONSIGNOR.getId(), InitiateContactsEnum.CONSIGNOR.getName());

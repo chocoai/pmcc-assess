@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="builder_id" property="builderId" jdbcType="INTEGER" />
     <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
@@ -91,10 +90,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, estate_id, builder_id, property_Id, building_number, 
-    property_type, floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, 
-    floor_end, building_height, "building area", cover_an_area, building_category, open_time, 
-    room_time, floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
+    id, declare_id, examine_type, builder_id, property_Id, building_number, property_type, 
+    floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, floor_end, 
+    building_height, "building area", cover_an_area, building_category, open_time, room_time, 
+    floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuildingExample" >
@@ -131,26 +130,26 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_building (declare_id, examine_type, estate_id, 
-      builder_id, property_Id, building_number, 
-      property_type, floor_count, unit_interval, 
-      property_fee, facilities_use_fee, floor_start, 
-      floor_end, building_height, "building area", 
-      cover_an_area, building_category, open_time, 
-      room_time, floor_height, diameter_depth, 
-      land_use_year, location, net_height, 
-      building_structure, creator, gmt_created, 
-      gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, 
-      #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, 
-      #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, 
-      #{buildingStructure,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_building (declare_id, examine_type, builder_id, 
+      property_Id, building_number, property_type, 
+      floor_count, unit_interval, property_fee, 
+      facilities_use_fee, floor_start, floor_end, 
+      building_height, "building area", cover_an_area, 
+      building_category, open_time, room_time, 
+      floor_height, diameter_depth, land_use_year, 
+      location, net_height, building_structure, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, 
+      #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, 
+      #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
+      #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, 
+      #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
+      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
+      #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -163,9 +162,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="estateId != null" >
-        estate_id,
       </if>
       <if test="builderId != null" >
         builder_id,
@@ -249,9 +245,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
       </if>
       <if test="builderId != null" >
         #{builderId,jdbcType=INTEGER},
@@ -348,9 +341,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
-      </if>
       <if test="record.builderId != null" >
         builder_id = #{record.builderId,jdbcType=INTEGER},
       </if>
@@ -436,7 +426,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
       builder_id = #{record.builderId,jdbcType=INTEGER},
       property_Id = #{record.propertyId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
@@ -474,9 +463,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="builderId != null" >
         builder_id = #{builderId,jdbcType=INTEGER},
@@ -560,7 +546,6 @@
     update tb_examine_building
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
       builder_id = #{builderId,jdbcType=INTEGER},
       property_Id = #{propertyId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},

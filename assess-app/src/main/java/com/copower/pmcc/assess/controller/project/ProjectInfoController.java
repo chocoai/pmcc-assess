@@ -85,6 +85,7 @@ public class ProjectInfoController {
         projectInfo.setProjectTypeId(projectTypeId);
         projectInfo.setProjectCategoryId(projectCategoryId);
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
+        projectInfoService.init();
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }

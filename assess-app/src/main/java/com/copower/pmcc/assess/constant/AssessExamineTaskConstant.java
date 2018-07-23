@@ -39,8 +39,17 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_FINANCE_CATEGORY = "estate.finance.category";//金融类别
     public static final String ESTATE_FINANCE_NATURE = "estate.finance.nature";//金融机构性质
     public static final String ESTATE_FINANCE_SERVICE_CONTENT = "estate.finance.service.content";//金融服务内容
-    public static final String ESTATE_EXAMINEMATCHINGLEISUREPLACE_CATEGORY = "estate.examinematchingleisureplace.category";//休闲场所-包含-购物-娱乐-餐饮 类别
     public static final String ESTATE_SHOP_GRADE = "estate.shop.grade";//购物商场档次
+    public static final String ESTATE_SHOP_CATEGORY = "estate.shop.category";//购物场所类别
+    public static final String ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE = "estate.shop_or_entertainment_or_dining.distance";//购物场所,餐饮场所,休闲娱乐距离
+    public static final String ESTATE_ENTERTAINMENT_CATEGORY = "estate.entertainment.category";//休闲娱乐场所类别
+    public static final String ESTATE_DINING_CATEGORY = "estate.dining.category";//餐饮场所类别
+    public static final String ESTATE_DINING_GRADE = "estate.dining.grade";//餐饮场所档次
+    public static final String ESTATE_EXAMINEMATCHINGMEDICAL_LEVEL = "estate.examineMatchingMedical.level";//医养条件等级
+    public static final String ESTATE_EXAMINEMATCHINGMEDICAL_DISTANCE = "estate.examineMatchingMedical.distance";//医养条件距离
+
+    public static final String EXAMINE_BUILDING_PROPERTY_TYPE = "building.property_type";//物业类型
+    public static final String EXAMINE_BUILDING_PROPERTY_CATEGORY = "building.building_category";//建筑类别
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 

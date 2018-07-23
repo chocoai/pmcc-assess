@@ -639,4 +639,10 @@ public class ProjectInfoService {
         initiateContactsService.writeCrmCustomerDto(projectID, cType);
     }
 
+    public void init(){
+        initiateContactsService.remove(0,InitiateContactsEnum.CONSIGNOR.getId());
+        initiateContactsService.remove(0,InitiateContactsEnum.POSSESSOR.getId());
+        initiateContactsService.remove(0,InitiateContactsEnum.UNIT_INFORMATION.getId());
+    }
+
 }

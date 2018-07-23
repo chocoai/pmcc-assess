@@ -21,46 +21,59 @@ public class InitiateContactsDao {
     @Autowired
     private InitiateContactsMapper mapper;
 
-    public int save(InitiateContacts contacts){
+    public int save(InitiateContacts contacts) {
         mapper.insertSelective(contacts);
         return contacts.getId();
     }
 
-    public boolean add(InitiateContacts contacts){
-        return mapper.insertSelective(contacts)==1;
+    public boolean add(InitiateContacts contacts) {
+        return mapper.insertSelective(contacts) == 1;
     }
 
-    public boolean remove(Integer id){
-        return mapper.deleteByPrimaryKey(id)==1;
+    public boolean remove(Integer id) {
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public boolean update(InitiateContacts contacts){
-        return mapper.updateByPrimaryKeySelective(contacts)==1;
+    public boolean remove(Integer pid, Integer type) {
+        InitiateContactsExample example = new InitiateContactsExample();
+        InitiateContactsExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (pid != null) {
+            criteria.andCPidEqualTo(pid);
+        }
+        if (type != null) {
+            criteria.andCTypeEqualTo(type);
+        }
+        return mapper.deleteByExample(example) >= 1;
+    }
+
+    public boolean update(InitiateContacts contacts) {
+        return mapper.updateByPrimaryKeySelective(contacts) == 1;
     }
 
 
-    public InitiateContacts get(Integer id){
+    public InitiateContacts get(Integer id) {
         return mapper.selectByPrimaryKey(id);
     }
 
 
-    public List<InitiateContacts> getList(Integer cPid,Integer cType,String createPeople,Integer customerId,Integer crmID){
+    public List<InitiateContacts> getList(Integer cPid, Integer cType, String createPeople, Integer customerId, Integer crmID) {
         InitiateContactsExample example = new InitiateContactsExample();
         InitiateContactsExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (!ObjectUtils.isEmpty(cPid)){//主表(关联的主表,如:委托人id)
+        if (!ObjectUtils.isEmpty(cPid)) {//主表(关联的主表,如:委托人id)
             criteria.andCPidEqualTo(cPid);
         }
-        if (!ObjectUtils.isEmpty(cType)){//类型如:委托人,资产占有人,报告使用单位
+        if (!ObjectUtils.isEmpty(cType)) {//类型如:委托人,资产占有人,报告使用单位
             criteria.andCTypeEqualTo(cType);
         }
-        if (!StringUtils.isEmpty(createPeople)){//当前用户
+        if (!StringUtils.isEmpty(createPeople)) {//当前用户
             criteria.andCreatorEqualTo(createPeople);
         }
-        if (!ObjectUtils.isEmpty(customerId)){
+        if (!ObjectUtils.isEmpty(customerId)) {
             criteria.andCustomerIdEqualTo(String.valueOf(customerId));
         }
-        if (!ObjectUtils.isEmpty(crmID)){
+        if (!ObjectUtils.isEmpty(crmID)) {
             criteria.andCrmIdEqualTo(String.valueOf(crmID));
         }
         List<InitiateContacts> contacts = mapper.selectByExample(example);

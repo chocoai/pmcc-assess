@@ -9,8 +9,6 @@ public class ExamineMatchingMedical {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private String organizationName;
 
     private String organizationLevel;
@@ -47,14 +45,6 @@ public class ExamineMatchingMedical {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public String getOrganizationName() {
