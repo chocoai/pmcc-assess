@@ -41,6 +41,11 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_FINANCE_SERVICE_CONTENT = "estate.finance.service.content";//金融服务内容
     public static final String ESTATE_EXAMINEMATCHINGLEISUREPLACE_CATEGORY = "estate.examinematchingleisureplace.category";//休闲场所-包含-购物-娱乐-餐饮 类别
     public static final String ESTATE_SHOP_GRADE = "estate.shop.grade";//购物商场档次
+    public static final String ESTATE_SHOP_TYPE = "estate.shop.type";//购物场所类别
+    public static final String ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE = "estate.shop_or_entertainment_or_dining.distance";//购物场所,餐饮场所,休闲娱乐距离
+    public static final String ESTATE_ENTERTAINMENT_VENUES_TYPE = "estate.entertainment_venues.type";//休闲娱乐场所类别
+    public static final String ESTATE_DINING_TYPE = "estate.dining.type";//餐饮场所类别
+    public static final String ESTATE_DINING_GRADE = "estate.dining.grade";//餐饮场所类别
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 

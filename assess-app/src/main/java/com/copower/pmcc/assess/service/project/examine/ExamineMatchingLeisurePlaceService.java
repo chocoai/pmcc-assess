@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineMatchingLeisurePlaceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,5 +131,45 @@ public class ExamineMatchingLeisurePlaceService {
      */
     public boolean deleteExamineMatchingLeisurePlace(Integer id) {
         return examineMatchingLeisurePlaceDao.deleteMatchingFinance(id);
+    }
+
+    public List<BaseDataDic> examineMatchingLeisurePlace_category(ExamineMatchingLeisurePlaceTypeEnum typeEnum){
+        String key = typeEnum.getKey();
+        if (!StringUtils.isEmpty(key)){
+            List<BaseDataDic> baseDataDic = null;
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())){
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SHOP_TYPE);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())){
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENTERTAINMENT_VENUES_TYPE);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())){
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DINING_TYPE);
+            }
+            if (!ObjectUtils.isEmpty(baseDataDic)){
+                return  baseDataDic;
+            }
+        }
+        return null;
+    }
+
+    public List<BaseDataDic> examineMatchingLeisurePlace_grade(ExamineMatchingLeisurePlaceTypeEnum typeEnum){
+        String key = typeEnum.getKey();
+        if (!StringUtils.isEmpty(key)){
+            List<BaseDataDic> baseDataDic = null;
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())){
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SHOP_GRADE);
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())){
+
+            }
+            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())){
+                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DINING_GRADE);
+            }
+            if (!ObjectUtils.isEmpty(baseDataDic)){
+                return  baseDataDic;
+            }
+        }
+        return null;
     }
 }
