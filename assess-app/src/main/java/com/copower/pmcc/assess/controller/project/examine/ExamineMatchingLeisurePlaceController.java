@@ -43,7 +43,9 @@ public class ExamineMatchingLeisurePlaceController {
     @Deprecated
     @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/matchingMarket" ; //购物商场
+//        String view = "/task/survey/examine/residence/apply/matchingMarket" ; //购物商场
+//        String view = "/task/survey/examine/residence/apply/matchingRecreation" ; //休闲娱乐
+        String view = "/task/survey/examine/residence/apply/matchingRestaurant" ; //餐饮
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         return modelAndView;
     }
@@ -125,7 +127,7 @@ public class ExamineMatchingLeisurePlaceController {
                 ExamineMatchingLeisurePlaceTypeEnum typeEnum = ExamineMatchingLeisurePlaceTypeEnum.getEnumByName(ExamineMatchingLeisurePlaceTypeEnum.getNameByKey(type));
                 baseDataDic = examineMatchingLeisurePlaceService.examineMatchingLeisurePlace_category(typeEnum);
             }
-            if (ObjectUtils.isEmpty(baseDataDic)){
+            if (!ObjectUtils.isEmpty(baseDataDic)){
                 return HttpResult.newCorrectResult(baseDataDic);
             }else {
                 return HttpResult.newErrorResult("没有获取到数据!");
@@ -145,7 +147,7 @@ public class ExamineMatchingLeisurePlaceController {
                 ExamineMatchingLeisurePlaceTypeEnum typeEnum = ExamineMatchingLeisurePlaceTypeEnum.getEnumByName(ExamineMatchingLeisurePlaceTypeEnum.getNameByKey(type));
                 baseDataDic = examineMatchingLeisurePlaceService.examineMatchingLeisurePlace_grade(typeEnum);
             }
-            if (ObjectUtils.isEmpty(baseDataDic)){
+            if (!ObjectUtils.isEmpty(baseDataDic)){
                 return HttpResult.newCorrectResult(baseDataDic);
             }else {
                 return HttpResult.newErrorResult("没有获取到数据!");

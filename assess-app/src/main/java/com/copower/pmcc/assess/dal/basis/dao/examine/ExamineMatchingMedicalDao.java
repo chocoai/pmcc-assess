@@ -19,15 +19,15 @@ import java.util.List;
 @Repository
 public class ExamineMatchingMedicalDao {
     @Autowired
-    private ExamineMatchingMedicalMapper examineMatchingMedicalMapper;
+    private ExamineMatchingMedicalMapper examineExamineMatchingMedicalMapper;
 
     /**
      * 获取数据信息
      * @param id
      * @return
      */
-    public ExamineMatchingMedical getMatchingMedicalById(Integer id) {
-        return examineMatchingMedicalMapper.selectByPrimaryKey(id);
+    public ExamineMatchingMedical getExamineMatchingMedicalById(Integer id) {
+        return examineExamineMatchingMedicalMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -35,28 +35,28 @@ public class ExamineMatchingMedicalDao {
      * @param examineMatchingMedical
      * @return
      */
-    public List<ExamineMatchingMedical> getMatchingMedicalList(ExamineMatchingMedical examineMatchingMedical) {
+    public List<ExamineMatchingMedical> getExamineMatchingMedicalList(ExamineMatchingMedical examineMatchingMedical) {
         ExamineMatchingMedicalExample example = new ExamineMatchingMedicalExample();
         MybatisUtils.convertObj2Example(examineMatchingMedical, example);
-        return examineMatchingMedicalMapper.selectByExample(example);
+        return examineExamineMatchingMedicalMapper.selectByExample(example);
     }
 
     /**
      * 新增
-     * @param examineMatchingMedical
+     * @param examineExamineMatchingMedical
      * @return
      */
-    public boolean addMatchingMedical(ExamineMatchingMedical examineMatchingMedical) {
-        return examineMatchingMedicalMapper.insertSelective(examineMatchingMedical) > 0;
+    public boolean addExamineMatchingMedical(ExamineMatchingMedical examineExamineMatchingMedical) {
+        return examineExamineMatchingMedicalMapper.insertSelective(examineExamineMatchingMedical) > 0;
     }
 
     /**
      * 编辑
-     * @param examineMatchingMedical
+     * @param examineExamineMatchingMedical
      * @return
      */
-    public boolean updateMatchingMedical(ExamineMatchingMedical examineMatchingMedical) {
-        return examineMatchingMedicalMapper.updateByPrimaryKeySelective(examineMatchingMedical) > 0;
+    public boolean updateExamineMatchingMedical(ExamineMatchingMedical examineExamineMatchingMedical) {
+        return examineExamineMatchingMedicalMapper.updateByPrimaryKeySelective(examineExamineMatchingMedical) > 0;
     }
 
     /**
@@ -64,8 +64,8 @@ public class ExamineMatchingMedicalDao {
      * @param id
      * @return
      */
-    public boolean deleteMatchingMedical(Integer id){
-        return examineMatchingMedicalMapper.deleteByPrimaryKey(id) > 0;
+    public boolean deleteExamineMatchingMedical(Integer id){
+        return examineExamineMatchingMedicalMapper.deleteByPrimaryKey(id) > 0;
     }
 
 }

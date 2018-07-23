@@ -10,8 +10,6 @@ public class ExamineBuilding {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private Integer builderId;
 
     private Integer propertyId;
@@ -84,14 +82,6 @@ public class ExamineBuilding {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public Integer getBuilderId() {

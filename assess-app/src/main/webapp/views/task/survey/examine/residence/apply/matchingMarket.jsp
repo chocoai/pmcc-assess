@@ -51,11 +51,10 @@
         },
         loadDataDicList:function () {
             var cols = [];
-            cols.push({field: 'name', title: '金融名称'});
-            cols.push({field: 'categoryName', title: '金融类别'});
-            cols.push({field: 'natureName', title: '金融机构性质'});
-            cols.push({field: 'serviceContentName', title: '购物商场内容'});
-            cols.push({field: 'autoServiceContent', title: '自动服务内容'});
+            cols.push({field: 'name', title: '购物商场名称'});
+            cols.push({field: 'categoryName', title: '购物商场类别'});
+            cols.push({field: 'gradeName', title: '购物商场档次'});
+            cols.push({field: 'distanceName', title: '购物商场距离'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -100,6 +99,28 @@
         showModel:function () {
             $("#"+matchingMarket.prototype.config().frm).clearAll();
             $("#"+matchingMarket.prototype.config().frm+" .type").val(matchingMarket.prototype.config().type);
+            $("#"+matchingMarket.prototype.config().frm+" .name").empty();
+            // var size = $("#"+matchingMarket.prototype.config().frm+" .name .form-group").size();
+            // for (var i = 0 ;i < size; i++){
+            //     console.log("i:"+i);
+            //     if(i==0){
+            //         var dom = $("#"+matchingMarket.prototype.config().frm+" .name .form-group")[i];
+            //     }else {
+            //         var dom = $("#"+matchingMarket.prototype.config().frm+" .name .form-group")[i];
+            //         // $(dom).empty();
+            //         $(dom).remove();
+            //     }
+            // }
+
+            var lableValue = "购物商场名称";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
             $('#'+matchingMarket.prototype.config().box).modal("show");
         },
         saveData:function () {
@@ -113,6 +134,7 @@
             if ($("#examineType").size() > 0){
                 data.examineType = $("#examineType").val();
             }
+            data.type = matchingMarket.prototype.config().type;
             $.ajax({
                 url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/saveAndUpdateExamineMatchingLeisurePlace",
                 type: "post",
@@ -158,6 +180,7 @@
                         }else {
                             $("#"+matchingMarket.prototype.config().frm+" .distance").val(result.data.distance).trigger("change");
                         }
+                        matchingMarket.prototype.writeHTMLData(result.data.name);
                         $('#'+matchingMarket.prototype.config().box).modal("show");
                     }
                 },
@@ -216,7 +239,7 @@
             $.ajax({
                 url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_distance",
                 type: "get",
-                // data:{type:matchingMarket.prototype.config().type},
+                data:{type:matchingMarket.prototype.config().type},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -237,6 +260,40 @@
                 }
             })
 
+        },
+        appendHTML:function (item,this_) {
+            var lableValue = "购物商场名称";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            // $(this_).parent().prev().parent().parent().after(html);
+            $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
+        },
+        cleanHTMLData:function (item) {
+            var value = "";
+            $(item).parent().prev().parent().parent().empty();
+        },
+        writeHTMLData:function (str) {
+            $("#"+matchingMarket.prototype.config().frm+" .name").empty();
+            var strs = str.split(",");
+            var length = strs.length;
+            var lableValue = "购物商场名称";
+            var item = "name";
+            for (var i = 0; i < length; i++) {
+                console.log("i:"+i);
+                var html = "<div class='form-group' style='margin-top:8px;'>";
+                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+                html += "</div>";
+                $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
+            }
         }
     }
     /**
@@ -265,16 +322,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            购物商场名称
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -309,6 +356,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            购物商场名称
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <button class="btn btn-xs btn-success" onclick="matchingMarket.prototype.appendHTML('name',this)"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 8px;" class="name">
+                                    <div class="form-group" style=" margin-top: 8px;">
+                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">购物商场名称</label>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <input class="form-control" name="name" required="required" type="text">
+                                            <span class="input-group-btn"><input type="button" class="btn btn-warning" value="X" onclick="matchingMarket.prototype.cleanHTMLData(this)"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -327,4 +394,3 @@
 </div>
 
 </html>
-

@@ -9,8 +9,6 @@ public class ExamineBuildingOutfit {
 
     private Integer examineType;
 
-    private Integer buildingId;
-
     private Integer decorationPart;
 
     private Integer decoratingMaterial;
@@ -47,14 +45,6 @@ public class ExamineBuildingOutfit {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
     }
 
     public Integer getDecorationPart() {
