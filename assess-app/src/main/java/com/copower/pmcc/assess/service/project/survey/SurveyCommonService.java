@@ -75,7 +75,6 @@ public class SurveyCommonService {
     private ExamineUnitService examineUnitService;
 
 
-
     /**
      * 获取所属权证信息
      *
@@ -202,7 +201,8 @@ public class SurveyCommonService {
         List<SurveyExamineTaskVo> houseTaskList = Lists.newArrayList();
         SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
         surveyExamineTask.setPlanDetailsId(planDetailsId);
-        surveyExamineTask.setUserAccount(userAccount);
+        if (StringUtils.isNotBlank(userAccount))
+            surveyExamineTask.setUserAccount(userAccount);
         List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(surveyExamineTask);
         List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList, true);
         if (CollectionUtils.isNotEmpty(examineTaskVos)) {
@@ -229,8 +229,14 @@ public class SurveyCommonService {
         return map;
     }
 
-
-
+    /**
+     * 获取该细任务的所有任务
+     * @param planDetailsId
+     * @return
+     */
+    public Map<String, List<SurveyExamineTaskVo>> getExamineTaskAll(Integer planDetailsId) {
+        return getExamineTaskByUserAccount(planDetailsId, null);
+    }
 
 
     /**

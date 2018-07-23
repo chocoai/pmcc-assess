@@ -90,7 +90,7 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExamineItemApproval", processInsId, boxId, taskId, agentUserAccount);
 
         return modelAndView;
     }
@@ -109,8 +109,16 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExamineItemApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
+        Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskAll(projectPlanDetails.getId());
+        modelAndView.addObject("blockTaskList", mapTaskList.get(AssessExamineTaskConstant.BLOCK));
+        modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
+        modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
+        modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
+        modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
+        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(declareRecord.getId()));
         return modelAndView;
     }
 
