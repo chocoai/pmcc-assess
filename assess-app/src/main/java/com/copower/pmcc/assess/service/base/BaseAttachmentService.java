@@ -5,14 +5,17 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
-import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,13 +28,17 @@ import java.util.List;
 @Service
 public class BaseAttachmentService {
     @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
+    private ServletContext servletContext;
     @Autowired
     private CommonService commonService;
     @Autowired
     private ErpRpcAttachmentService erpRpcAttachmentService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
+
+    private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
 
     /**
      * 创建不重复的文件名
@@ -50,7 +57,15 @@ public class BaseAttachmentService {
      * @return
      */
     public String createTempBasePath(String... params) {
-        return erpRpcAttachmentService.createTempPath(applicationConstant.getAppKey(), params);
+        String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + TEMP_UPLOAD_PATH;
+        //清除今天、昨天以外的临时文件
+        FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
+        filePath += File.separator + DateUtils.formatNowToYMD() + File.separator + commonService.thisUserAccount();
+        for (String param : params) {
+            filePath += File.separator + StringUtils.defaultIfBlank(param, "default");
+        }
+        FileUtils.folderMake(filePath);
+        return filePath;
     }
 
     /**
@@ -109,6 +124,7 @@ public class BaseAttachmentService {
 
     /**
      * 更新附件表业务id
+     *
      * @param tableName
      * @param tableId
      */
@@ -213,6 +229,10 @@ public class BaseAttachmentService {
      * @throws Exception
      */
     public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
-        return erpRpcAttachmentService.downloadFtpFileToLocal(attachmentId);
+        SysAttachmentDto attachmentDto = erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
+        String loaclDir = createTempBasePath();
+        String localFileName = createNoRepeatFileName(attachmentDto.getFileExtension());
+        ftpUtilsExtense.downloadFileToLocal(attachmentDto.getFtpFileName(), attachmentDto.getFilePath(), localFileName, loaclDir);
+        return loaclDir + File.separator + localFileName;
     }
 }
