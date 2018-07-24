@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdMarketCompareInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfo" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdMarketCompareItemMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="mc_id" property="mcId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -72,13 +72,13 @@
   <sql id="Base_Column_List" >
     id, mc_id, name, type, json_content, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfoExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_md_market_compare_info
+    from tb_md_market_compare_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,35 +89,35 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_md_market_compare_info
+    from tb_md_market_compare_item
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_md_market_compare_info
+    delete from tb_md_market_compare_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfoExample" >
-    delete from tb_md_market_compare_info
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
+    delete from tb_md_market_compare_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfo" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_market_compare_info (mc_id, name, type, 
+    insert into tb_md_market_compare_item (mc_id, name, type, 
       json_content, creator, gmt_created, 
       gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfo" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_market_compare_info
+    insert into tb_md_market_compare_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="mcId != null" >
         mc_id,
@@ -165,14 +165,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfoExample" resultType="java.lang.Integer" >
-    select count(*) from tb_md_market_compare_info
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_market_compare_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_md_market_compare_info
+    update tb_md_market_compare_item
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -204,7 +204,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_md_market_compare_info
+    update tb_md_market_compare_item
     set id = #{record.id,jdbcType=INTEGER},
       mc_id = #{record.mcId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -217,8 +217,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfo" >
-    update tb_md_market_compare_info
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
+    update tb_md_market_compare_item
     <set >
       <if test="mcId != null" >
         mc_id = #{mcId,jdbcType=INTEGER},
@@ -244,8 +244,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareInfo" >
-    update tb_md_market_compare_info
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
+    update tb_md_market_compare_item
     set mc_id = #{mcId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},

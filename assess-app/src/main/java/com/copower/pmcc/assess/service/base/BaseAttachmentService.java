@@ -230,9 +230,6 @@ public class BaseAttachmentService {
      */
     public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
         SysAttachmentDto attachmentDto = erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
-        String loaclDir = createTempBasePath();
-        String localFileName = createNoRepeatFileName(attachmentDto.getFileExtension());
-        ftpUtilsExtense.downloadFileToLocal(attachmentDto.getFtpFileName(), attachmentDto.getFilePath(), localFileName, loaclDir);
-        return loaclDir + File.separator + localFileName;
+        return ftpUtilsExtense.downloadFileToLocal(attachmentDto);
     }
 }

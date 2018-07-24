@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MdMarketCompareInfoExample {
+public class MdMarketCompareFieldExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public MdMarketCompareInfoExample() {
+    public MdMarketCompareFieldExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -295,133 +295,323 @@ public class MdMarketCompareInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andValueIsNull() {
+            addCriterion("value is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andValueIsNotNull() {
+            addCriterion("value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
+        public Criteria andValueEqualTo(String value) {
+            addCriterion("value =", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andValueNotEqualTo(String value) {
+            addCriterion("value <>", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
+        public Criteria andValueGreaterThan(String value) {
+            addCriterion("value >", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andValueGreaterThanOrEqualTo(String value) {
+            addCriterion("value >=", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
+        public Criteria andValueLessThan(String value) {
+            addCriterion("value <", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andValueLessThanOrEqualTo(String value) {
+            addCriterion("value <=", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andValueLike(String value) {
+            addCriterion("value like", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
+        public Criteria andValueNotLike(String value) {
+            addCriterion("value not like", value, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
+        public Criteria andValueIn(List<String> values) {
+            addCriterion("value in", values, "value");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
+        public Criteria andValueNotIn(List<String> values) {
+            addCriterion("value not in", values, "value");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNull() {
-            addCriterion("json_content is null");
+        public Criteria andValueBetween(String value1, String value2) {
+            addCriterion("value between", value1, value2, "value");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNotNull() {
-            addCriterion("json_content is not null");
+        public Criteria andValueNotBetween(String value1, String value2) {
+            addCriterion("value not between", value1, value2, "value");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentEqualTo(String value) {
-            addCriterion("json_content =", value, "jsonContent");
+        public Criteria andBisPrimaryKeyIsNull() {
+            addCriterion("bis_primary_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotEqualTo(String value) {
-            addCriterion("json_content <>", value, "jsonContent");
+        public Criteria andBisPrimaryKeyIsNotNull() {
+            addCriterion("bis_primary_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThan(String value) {
-            addCriterion("json_content >", value, "jsonContent");
+        public Criteria andBisPrimaryKeyEqualTo(Boolean value) {
+            addCriterion("bis_primary_key =", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
-            addCriterion("json_content >=", value, "jsonContent");
+        public Criteria andBisPrimaryKeyNotEqualTo(Boolean value) {
+            addCriterion("bis_primary_key <>", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThan(String value) {
-            addCriterion("json_content <", value, "jsonContent");
+        public Criteria andBisPrimaryKeyGreaterThan(Boolean value) {
+            addCriterion("bis_primary_key >", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLessThanOrEqualTo(String value) {
-            addCriterion("json_content <=", value, "jsonContent");
+        public Criteria andBisPrimaryKeyGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_primary_key >=", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentLike(String value) {
-            addCriterion("json_content like", value, "jsonContent");
+        public Criteria andBisPrimaryKeyLessThan(Boolean value) {
+            addCriterion("bis_primary_key <", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotLike(String value) {
-            addCriterion("json_content not like", value, "jsonContent");
+        public Criteria andBisPrimaryKeyLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_primary_key <=", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIn(List<String> values) {
-            addCriterion("json_content in", values, "jsonContent");
+        public Criteria andBisPrimaryKeyIn(List<Boolean> values) {
+            addCriterion("bis_primary_key in", values, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotIn(List<String> values) {
-            addCriterion("json_content not in", values, "jsonContent");
+        public Criteria andBisPrimaryKeyNotIn(List<Boolean> values) {
+            addCriterion("bis_primary_key not in", values, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentBetween(String value1, String value2) {
-            addCriterion("json_content between", value1, value2, "jsonContent");
+        public Criteria andBisPrimaryKeyBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_primary_key between", value1, value2, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentNotBetween(String value1, String value2) {
-            addCriterion("json_content not between", value1, value2, "jsonContent");
+        public Criteria andBisPrimaryKeyNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_primary_key not between", value1, value2, "bisPrimaryKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewIsNull() {
+            addCriterion("bis_only_view is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewIsNotNull() {
+            addCriterion("bis_only_view is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewEqualTo(Boolean value) {
+            addCriterion("bis_only_view =", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewNotEqualTo(Boolean value) {
+            addCriterion("bis_only_view <>", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewGreaterThan(Boolean value) {
+            addCriterion("bis_only_view >", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_only_view >=", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewLessThan(Boolean value) {
+            addCriterion("bis_only_view <", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_only_view <=", value, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewIn(List<Boolean> values) {
+            addCriterion("bis_only_view in", values, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewNotIn(List<Boolean> values) {
+            addCriterion("bis_only_view not in", values, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_only_view between", value1, value2, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisOnlyViewNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_only_view not between", value1, value2, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 

@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.common.enums;
 
 public enum MarketCompareObjectTypeEnum {
-    EXPLORE(0, "委估对象"), CASE(1, "案例");
+    EVALUATION(0, "委估对象"), CASE(1, "案例");
     private String name;
     private Integer id;
 

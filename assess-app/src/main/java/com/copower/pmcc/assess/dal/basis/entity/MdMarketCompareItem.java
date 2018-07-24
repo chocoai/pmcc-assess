@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class MdMarketCompareInfo {
+public class MdMarketCompareItem {
     private Integer id;
 
     private Integer mcId;
