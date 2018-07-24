@@ -41,12 +41,12 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <!--<table tableName="tb_data_builder" domainObjectName="DataBuilder">-->
+        <!--<table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
+        <table tableName="tb_examine_house_room" domainObjectName="ExamineHouseRoom">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
         <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->

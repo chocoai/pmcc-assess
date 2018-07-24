@@ -50,6 +50,14 @@ public class AssessExamineTaskConstant {
 
     public static final String EXAMINE_BUILDING_PROPERTY_TYPE = "building.property_type";//物业类型
     public static final String EXAMINE_BUILDING_PROPERTY_CATEGORY = "building.building_category";//建筑类别
+    public static final String EXAMINE_BUILDING_PROPERTY_STRUCTURE = "building.building_structure";//建筑结构
+    public static final String EXAMINE_BUILDING_DECORATING_MATERIAL = "building.decorating_material";//装修材料
+    public static final String EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY = "building.construction_technology";//施工工艺
+    public static final String EXAMINE_BUILDING_DECORATION_PART = "building.decoration_part";//装修部位
+    public static final String EXAMINE_BUILDING_MATERIAL_PRICE = "building.material_price";//材料价格区间
+
+    public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
+    public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 
