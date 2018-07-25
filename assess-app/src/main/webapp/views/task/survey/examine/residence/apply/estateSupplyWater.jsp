@@ -13,12 +13,12 @@
 <body>
 <div class="x_content">
     <div class="x_title">
-        <h3>供水信息 <button type="button" class="btn btn-success" onclick="estateSupplyPower.prototype.showModel()"
+        <h3>供水信息 <button type="button" class="btn btn-success" onclick="estateSupplyWater.prototype.showModel()"
                          data-toggle="modal" href="#divBox"> 新增
         </button></h3>
         <div class="clearfix"></div>
     </div>
-    <form id="frm_estateSupplyPower" class="form-horizontal">
+    <form class="form-horizontal">
         <div class="form-group">
             <div class="x-valid">
             </div>
@@ -38,10 +38,10 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
 
-    var estateSupplyPower = function () {
+    var estateSupplyWater = function () {
 
     };
-    estateSupplyPower.prototype = {
+    estateSupplyWater.prototype = {
         config:function () {
             var data = {};
             data.table = "EstateSupplyWaterList" ;
@@ -61,15 +61,15 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateSupplyPower.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateSupplyPower.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateSupplyWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateSupplyWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#"+estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
-                type:estateSupplyPower.prototype.config().type
+            $("#"+estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
+            TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
+                type:estateSupplyWater.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -88,7 +88,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
-                        estateSupplyPower.prototype.loadDataDicList();
+                        estateSupplyWater.prototype.loadDataDicList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -100,15 +100,15 @@
             })
         },
         showModel:function () {
-            $("#"+estateSupplyPower.prototype.config().frm).clearAll();
-            $("#"+estateSupplyPower.prototype.config().frm+" .type").val(estateSupplyPower.prototype.config().type);
-            $('#'+estateSupplyPower.prototype.config().box).modal("show");
+            $("#"+estateSupplyWater.prototype.config().frm).clearAll();
+            $("#"+estateSupplyWater.prototype.config().frm+" .type").val(estateSupplyWater.prototype.config().type);
+            $('#'+estateSupplyWater.prototype.config().box).modal("show");
         },
         saveData:function () {
-            if (!$("#"+estateSupplyPower.prototype.config().frm).valid()){
+            if (!$("#"+estateSupplyWater.prototype.config().frm).valid()){
                 return false;
             }
-            var data = formParams(estateSupplyPower.prototype.config().frm);
+            var data = formParams(estateSupplyWater.prototype.config().frm);
             if ($("#declareId").size() > 0){
                 data.declareId = $("#declareId").val();
             }
@@ -123,8 +123,8 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+estateSupplyPower.prototype.config().box).modal('hide');
-                        estateSupplyPower.prototype.loadDataDicList();
+                        $('#'+estateSupplyWater.prototype.config().box).modal('hide');
+                        estateSupplyWater.prototype.loadDataDicList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -143,19 +143,19 @@
                 data: {id:id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+estateSupplyPower.prototype.config().frm).clearAll();
-                        $("#" + estateSupplyPower.prototype.config().frm).initForm(result.data);
+                        $("#"+estateSupplyWater.prototype.config().frm).clearAll();
+                        $("#" + estateSupplyWater.prototype.config().frm).initForm(result.data);
                         if (result.data.lineGrade == null || result.data.lineGrade == ''){
-                            $("#"+estateSupplyPower.prototype.config().frm+" .lineGrade").val(null).trigger("change");
+                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").val(null).trigger("change");
                         }else {
-                            $("#"+estateSupplyPower.prototype.config().frm+" .lineGrade").val(result.data.lineGrade).trigger("change");
+                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").val(result.data.lineGrade).trigger("change");
                         }
                         if (result.data.grade == null || result.data.grade == ''){
-                            $("#"+estateSupplyPower.prototype.config().frm+" .grade").val(null).trigger("change");
+                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").val(null).trigger("change");
                         }else {
-                            $("#"+estateSupplyPower.prototype.config().frm+" .grade").val(result.data.grade).trigger("change");
+                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").val(result.data.grade).trigger("change");
                         }
-                        $('#'+estateSupplyPower.prototype.config().box).modal("show");
+                        $('#'+estateSupplyWater.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -177,8 +177,8 @@
                             for(var i = 0;i< gradeNum;i++){
                                 option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
                             }
-                            $("#"+estateSupplyPower.prototype.config().frm+" .lineGrade").html(option);
-                            $("#"+estateSupplyPower.prototype.config().frm+" .lineGrade").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").html(option);
+                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").select2({ minimumResultsForSearch: -1 });//加载样式
                         }
                     }
                 },
@@ -199,8 +199,8 @@
                             for(var i = 0;i< gradeNum;i++){
                                 option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
                             }
-                            $("#"+estateSupplyPower.prototype.config().frm+" .grade").html(option);
-                            $("#"+estateSupplyPower.prototype.config().frm+" .grade").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").html(option);
+                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").select2({ minimumResultsForSearch: -1 });//加载样式
                         }
                     }
                 },
@@ -214,8 +214,8 @@
      * 初始化
      */
     $(function () {
-        estateSupplyPower.prototype.loadDataDicList();
-        estateSupplyPower.prototype.init();
+        estateSupplyWater.prototype.loadDataDicList();
+        estateSupplyWater.prototype.init();
     })
 
 </script>
@@ -300,7 +300,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="estateSupplyPower.prototype.saveData()">
+                    <button type="button" class="btn btn-primary" onclick="estateSupplyWater.prototype.saveData()">
                         保存
                     </button>
                 </div>

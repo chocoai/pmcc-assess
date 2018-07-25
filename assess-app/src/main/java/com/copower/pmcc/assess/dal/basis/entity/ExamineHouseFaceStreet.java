@@ -9,8 +9,6 @@ public class ExamineHouseFaceStreet {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private String streetName;
 
     private Integer streetLevel;
@@ -47,14 +45,6 @@ public class ExamineHouseFaceStreet {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
     }
 
     public String getStreetName() {

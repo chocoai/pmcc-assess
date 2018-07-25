@@ -9,8 +9,6 @@ public class ExamineHouseWater {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private Integer supplyErectionMethod;
 
     private String intakePointNumber;
@@ -61,14 +59,6 @@ public class ExamineHouseWater {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
     }
 
     public Integer getSupplyErectionMethod() {
