@@ -967,62 +967,62 @@ public class ExamineBuildingExample {
         }
 
         public Criteria andBuildingAreaIsNull() {
-            addCriterion("\"building area\" is null");
+            addCriterion("building_area is null");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaIsNotNull() {
-            addCriterion("\"building area\" is not null");
+            addCriterion("building_area is not null");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaEqualTo(BigDecimal value) {
-            addCriterion("\"building area\" =", value, "buildingArea");
+            addCriterion("building_area =", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaNotEqualTo(BigDecimal value) {
-            addCriterion("\"building area\" <>", value, "buildingArea");
+            addCriterion("building_area <>", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaGreaterThan(BigDecimal value) {
-            addCriterion("\"building area\" >", value, "buildingArea");
+            addCriterion("building_area >", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("\"building area\" >=", value, "buildingArea");
+            addCriterion("building_area >=", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaLessThan(BigDecimal value) {
-            addCriterion("\"building area\" <", value, "buildingArea");
+            addCriterion("building_area <", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("\"building area\" <=", value, "buildingArea");
+            addCriterion("building_area <=", value, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaIn(List<BigDecimal> values) {
-            addCriterion("\"building area\" in", values, "buildingArea");
+            addCriterion("building_area in", values, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaNotIn(List<BigDecimal> values) {
-            addCriterion("\"building area\" not in", values, "buildingArea");
+            addCriterion("building_area not in", values, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("\"building area\" between", value1, value2, "buildingArea");
+            addCriterion("building_area between", value1, value2, "buildingArea");
             return (Criteria) this;
         }
 
         public Criteria andBuildingAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("\"building area\" not between", value1, value2, "buildingArea");
+            addCriterion("building_area not between", value1, value2, "buildingArea");
             return (Criteria) this;
         }
 

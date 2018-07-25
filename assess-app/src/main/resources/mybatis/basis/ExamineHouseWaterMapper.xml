@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="supply_erection_method" property="supplyErectionMethod" jdbcType="INTEGER" />
     <result column="intake_point_number" property="intakePointNumber" jdbcType="VARCHAR" />
     <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
@@ -80,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, house_id, supply_erection_method, intake_point_number, 
-    pretreated_water, purification_equipment, purification_equipment_price, natrue_intake_point_number, 
+    id, declare_id, examine_type, supply_erection_method, intake_point_number, pretreated_water, 
+    purification_equipment, purification_equipment_price, natrue_intake_point_number, 
     water_intake_equipment, water_intake_equipment_price, drainage_erection_method, drainage_circuit, 
     drainage_circuit_count, creator, gmt_created, gmt_modified
   </sql>
@@ -119,17 +118,15 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_water (declare_id, examine_type, house_id, 
-      supply_erection_method, intake_point_number, 
-      pretreated_water, purification_equipment, 
+    insert into tb_examine_house_water (declare_id, examine_type, supply_erection_method, 
+      intake_point_number, pretreated_water, purification_equipment, 
       purification_equipment_price, natrue_intake_point_number, 
       water_intake_equipment, water_intake_equipment_price, 
       drainage_erection_method, drainage_circuit, 
       drainage_circuit_count, creator, gmt_created, 
       gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
-      #{supplyErectionMethod,jdbcType=INTEGER}, #{intakePointNumber,jdbcType=VARCHAR}, 
-      #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{supplyErectionMethod,jdbcType=INTEGER}, 
+      #{intakePointNumber,jdbcType=VARCHAR}, #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
       #{purificationEquipmentPrice,jdbcType=VARCHAR}, #{natrueIntakePointNumber,jdbcType=VARCHAR}, 
       #{waterIntakeEquipment,jdbcType=VARCHAR}, #{waterIntakeEquipmentPrice,jdbcType=VARCHAR}, 
       #{drainageErectionMethod,jdbcType=VARCHAR}, #{drainageCircuit,jdbcType=INTEGER}, 
@@ -147,9 +144,6 @@
       </if>
       <if test="examineType != null" >
         examine_type,
-      </if>
-      <if test="houseId != null" >
-        house_id,
       </if>
       <if test="supplyErectionMethod != null" >
         supply_erection_method,
@@ -200,9 +194,6 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="houseId != null" >
-        #{houseId,jdbcType=INTEGER},
       </if>
       <if test="supplyErectionMethod != null" >
         #{supplyErectionMethod,jdbcType=INTEGER},
@@ -266,9 +257,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.houseId != null" >
-        house_id = #{record.houseId,jdbcType=INTEGER},
-      </if>
       <if test="record.supplyErectionMethod != null" >
         supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
       </if>
@@ -321,7 +309,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      house_id = #{record.houseId,jdbcType=INTEGER},
       supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
       intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
       pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
@@ -348,9 +335,6 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
-      </if>
-      <if test="houseId != null" >
-        house_id = #{houseId,jdbcType=INTEGER},
       </if>
       <if test="supplyErectionMethod != null" >
         supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
@@ -401,7 +385,6 @@
     update tb_examine_house_water
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
       supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
       intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},

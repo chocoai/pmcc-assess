@@ -42,8 +42,8 @@ public class ExamineEstateSupplyController {
     public ModelAndView index() {
 //        String view = "/task/survey/examine/residence/apply/estateSupplyGas" ;//供气
 //        String view = "/task/survey/examine/residence/apply/estateSupplyPower" ;//供电
-//        String view = "/task/survey/examine/residence/apply/estateSupplyWater" ;//供水
-        String view = "/task/survey/examine/residence/apply/estateSupplyHeating" ;//供热
+        String view = "/task/survey/examine/residence/apply/estateSupplyWater" ;//供水
+//        String view = "/task/survey/examine/residence/apply/estateSupplyHeating" ;//供热
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         return modelAndView;
     }

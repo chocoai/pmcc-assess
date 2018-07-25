@@ -285,66 +285,6 @@ public class ExamineHouseFaceStreetExample {
             return (Criteria) this;
         }
 
-        public Criteria andHouseIdIsNull() {
-            addCriterion("house_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdIsNotNull() {
-            addCriterion("house_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdEqualTo(Integer value) {
-            addCriterion("house_id =", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotEqualTo(Integer value) {
-            addCriterion("house_id <>", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdGreaterThan(Integer value) {
-            addCriterion("house_id >", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("house_id >=", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdLessThan(Integer value) {
-            addCriterion("house_id <", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
-            addCriterion("house_id <=", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdIn(List<Integer> values) {
-            addCriterion("house_id in", values, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotIn(List<Integer> values) {
-            addCriterion("house_id not in", values, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
-            addCriterion("house_id between", value1, value2, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("house_id not between", value1, value2, "houseId");
-            return (Criteria) this;
-        }
-
         public Criteria andStreetNameIsNull() {
             addCriterion("street_name is null");
             return (Criteria) this;

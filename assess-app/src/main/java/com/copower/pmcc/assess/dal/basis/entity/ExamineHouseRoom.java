@@ -10,8 +10,6 @@ public class ExamineHouseRoom {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private Integer roomType;
 
     private String name;
@@ -54,14 +52,6 @@ public class ExamineHouseRoom {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
     }
 
     public Integer getRoomType() {

@@ -9,8 +9,6 @@ public class ExamineHouseIntelligent {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private Integer wireErection;
 
     private Integer switchCircuit;
@@ -51,14 +49,6 @@ public class ExamineHouseIntelligent {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
     }
 
     public Integer getWireErection() {

@@ -17,7 +17,7 @@
         </button></h3>
         <div class="clearfix"></div>
     </div>
-    <form id="frm_matchingMetro" class="form-horizontal">
+    <form class="form-horizontal">
         <div class="form-group">
             <div class="x-valid">
             </div>
