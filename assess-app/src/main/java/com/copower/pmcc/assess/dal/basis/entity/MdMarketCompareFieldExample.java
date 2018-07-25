@@ -425,6 +425,66 @@ public class MdMarketCompareFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisPriceIsNull() {
+            addCriterion("bis_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceIsNotNull() {
+            addCriterion("bis_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceEqualTo(Boolean value) {
+            addCriterion("bis_price =", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceNotEqualTo(Boolean value) {
+            addCriterion("bis_price <>", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceGreaterThan(Boolean value) {
+            addCriterion("bis_price >", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_price >=", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceLessThan(Boolean value) {
+            addCriterion("bis_price <", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_price <=", value, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceIn(List<Boolean> values) {
+            addCriterion("bis_price in", values, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceNotIn(List<Boolean> values) {
+            addCriterion("bis_price not in", values, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_price between", value1, value2, "bisPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisPriceNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_price not between", value1, value2, "bisPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andBisOnlyViewIsNull() {
             addCriterion("bis_only_view is null");
             return (Criteria) this;

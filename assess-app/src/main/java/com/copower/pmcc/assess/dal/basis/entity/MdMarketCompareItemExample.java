@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -422,6 +423,416 @@ public class MdMarketCompareItemExample {
 
         public Criteria andJsonContentNotBetween(String value1, String value2) {
             addCriterion("json_content not between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceIsNull() {
+            addCriterion("specific_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceIsNotNull() {
+            addCriterion("specific_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceEqualTo(String value) {
+            addCriterion("specific_price =", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceNotEqualTo(String value) {
+            addCriterion("specific_price <>", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceGreaterThan(String value) {
+            addCriterion("specific_price >", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceGreaterThanOrEqualTo(String value) {
+            addCriterion("specific_price >=", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceLessThan(String value) {
+            addCriterion("specific_price <", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceLessThanOrEqualTo(String value) {
+            addCriterion("specific_price <=", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceLike(String value) {
+            addCriterion("specific_price like", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceNotLike(String value) {
+            addCriterion("specific_price not like", value, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceIn(List<String> values) {
+            addCriterion("specific_price in", values, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceNotIn(List<String> values) {
+            addCriterion("specific_price not in", values, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceBetween(String value1, String value2) {
+            addCriterion("specific_price between", value1, value2, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificPriceNotBetween(String value1, String value2) {
+            addCriterion("specific_price not between", value1, value2, "specificPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceIsNull() {
+            addCriterion("correction_difference is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceIsNotNull() {
+            addCriterion("correction_difference is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceEqualTo(String value) {
+            addCriterion("correction_difference =", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceNotEqualTo(String value) {
+            addCriterion("correction_difference <>", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceGreaterThan(String value) {
+            addCriterion("correction_difference >", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceGreaterThanOrEqualTo(String value) {
+            addCriterion("correction_difference >=", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceLessThan(String value) {
+            addCriterion("correction_difference <", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceLessThanOrEqualTo(String value) {
+            addCriterion("correction_difference <=", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceLike(String value) {
+            addCriterion("correction_difference like", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceNotLike(String value) {
+            addCriterion("correction_difference not like", value, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceIn(List<String> values) {
+            addCriterion("correction_difference in", values, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceNotIn(List<String> values) {
+            addCriterion("correction_difference not in", values, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceBetween(String value1, String value2) {
+            addCriterion("correction_difference between", value1, value2, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorrectionDifferenceNotBetween(String value1, String value2) {
+            addCriterion("correction_difference not between", value1, value2, "correctionDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceIsNull() {
+            addCriterion("case_difference is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceIsNotNull() {
+            addCriterion("case_difference is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceEqualTo(String value) {
+            addCriterion("case_difference =", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceNotEqualTo(String value) {
+            addCriterion("case_difference <>", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceGreaterThan(String value) {
+            addCriterion("case_difference >", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceGreaterThanOrEqualTo(String value) {
+            addCriterion("case_difference >=", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceLessThan(String value) {
+            addCriterion("case_difference <", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceLessThanOrEqualTo(String value) {
+            addCriterion("case_difference <=", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceLike(String value) {
+            addCriterion("case_difference like", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceNotLike(String value) {
+            addCriterion("case_difference not like", value, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceIn(List<String> values) {
+            addCriterion("case_difference in", values, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceNotIn(List<String> values) {
+            addCriterion("case_difference not in", values, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceBetween(String value1, String value2) {
+            addCriterion("case_difference between", value1, value2, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDifferenceNotBetween(String value1, String value2) {
+            addCriterion("case_difference not between", value1, value2, "caseDifference");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightIsNull() {
+            addCriterion("weight is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightIsNotNull() {
+            addCriterion("weight is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightEqualTo(BigDecimal value) {
+            addCriterion("weight =", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightNotEqualTo(BigDecimal value) {
+            addCriterion("weight <>", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightGreaterThan(BigDecimal value) {
+            addCriterion("weight >", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("weight >=", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightLessThan(BigDecimal value) {
+            addCriterion("weight <", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("weight <=", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightIn(List<BigDecimal> values) {
+            addCriterion("weight in", values, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightNotIn(List<BigDecimal> values) {
+            addCriterion("weight not in", values, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("weight between", value1, value2, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("weight not between", value1, value2, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionIsNull() {
+            addCriterion("weight_description is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionIsNotNull() {
+            addCriterion("weight_description is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionEqualTo(String value) {
+            addCriterion("weight_description =", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionNotEqualTo(String value) {
+            addCriterion("weight_description <>", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionGreaterThan(String value) {
+            addCriterion("weight_description >", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("weight_description >=", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionLessThan(String value) {
+            addCriterion("weight_description <", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("weight_description <=", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionLike(String value) {
+            addCriterion("weight_description like", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionNotLike(String value) {
+            addCriterion("weight_description not like", value, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionIn(List<String> values) {
+            addCriterion("weight_description in", values, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionNotIn(List<String> values) {
+            addCriterion("weight_description not in", values, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionBetween(String value1, String value2) {
+            addCriterion("weight_description between", value1, value2, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightDescriptionNotBetween(String value1, String value2) {
+            addCriterion("weight_description not between", value1, value2, "weightDescription");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceIsNull() {
+            addCriterion("average_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceIsNotNull() {
+            addCriterion("average_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceEqualTo(String value) {
+            addCriterion("average_price =", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotEqualTo(String value) {
+            addCriterion("average_price <>", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceGreaterThan(String value) {
+            addCriterion("average_price >", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceGreaterThanOrEqualTo(String value) {
+            addCriterion("average_price >=", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLessThan(String value) {
+            addCriterion("average_price <", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLessThanOrEqualTo(String value) {
+            addCriterion("average_price <=", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLike(String value) {
+            addCriterion("average_price like", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotLike(String value) {
+            addCriterion("average_price not like", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceIn(List<String> values) {
+            addCriterion("average_price in", values, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotIn(List<String> values) {
+            addCriterion("average_price not in", values, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceBetween(String value1, String value2) {
+            addCriterion("average_price between", value1, value2, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotBetween(String value1, String value2) {
+            addCriterion("average_price not between", value1, value2, "averagePrice");
             return (Criteria) this;
         }
 

@@ -7,6 +7,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="value" property="value" jdbcType="VARCHAR" />
     <result column="bis_primary_key" property="bisPrimaryKey" jdbcType="BIT" />
+    <result column="bis_price" property="bisPrice" jdbcType="BIT" />
     <result column="bis_only_view" property="bisOnlyView" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mc_id, name, value, bis_primary_key, bis_only_view, sorting, remark, creator, 
-    gmt_created, gmt_modified
+    id, mc_id, name, value, bis_primary_key, bis_price, bis_only_view, sorting, remark, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareFieldExample" >
     select
@@ -111,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_market_compare_field (mc_id, name, value, 
-      bis_primary_key, bis_only_view, sorting, 
-      remark, creator, gmt_created, 
-      gmt_modified)
+      bis_primary_key, bis_price, bis_only_view, 
+      sorting, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
-      #{bisPrimaryKey,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisPrimaryKey,jdbcType=BIT}, #{bisPrice,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, 
+      #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +137,9 @@
       </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key,
+      </if>
+      <if test="bisPrice != null" >
+        bis_price,
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view,
@@ -168,6 +172,9 @@
       </if>
       <if test="bisPrimaryKey != null" >
         #{bisPrimaryKey,jdbcType=BIT},
+      </if>
+      <if test="bisPrice != null" >
+        #{bisPrice,jdbcType=BIT},
       </if>
       <if test="bisOnlyView != null" >
         #{bisOnlyView,jdbcType=BIT},
@@ -213,6 +220,9 @@
       <if test="record.bisPrimaryKey != null" >
         bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
       </if>
+      <if test="record.bisPrice != null" >
+        bis_price = #{record.bisPrice,jdbcType=BIT},
+      </if>
       <if test="record.bisOnlyView != null" >
         bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
       </if>
@@ -243,6 +253,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       value = #{record.value,jdbcType=VARCHAR},
       bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
+      bis_price = #{record.bisPrice,jdbcType=BIT},
       bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -267,6 +278,9 @@
       </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
+      </if>
+      <if test="bisPrice != null" >
+        bis_price = #{bisPrice,jdbcType=BIT},
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view = #{bisOnlyView,jdbcType=BIT},
@@ -295,6 +309,7 @@
       name = #{name,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},
       bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
+      bis_price = #{bisPrice,jdbcType=BIT},
       bis_only_view = #{bisOnlyView,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},

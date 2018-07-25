@@ -3,14 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdMarketCompareResultMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareResult" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="mc_info_id" property="mcInfoId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="real_estate_name" property="realEstateName" jdbcType="VARCHAR" />
+    <result column="mc_item_id" property="mcItemId" jdbcType="INTEGER" />
     <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
     <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
     <result column="case_difference" property="caseDifference" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="DECIMAL" />
     <result column="weight_description" property="weightDescription" jdbcType="VARCHAR" />
+    <result column="average_price" property="averagePrice" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mc_info_id, name, real_estate_name, specific_price, correction_difference, case_difference, 
-    weight, weight_description, creator, gmt_created, gmt_modified
+    id, mc_item_id, specific_price, correction_difference, case_difference, weight, weight_description, 
+    average_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareResultExample" >
     select
@@ -111,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_market_compare_result (mc_info_id, name, real_estate_name, 
-      specific_price, correction_difference, case_difference, 
-      weight, weight_description, creator, 
-      gmt_created, gmt_modified)
-    values (#{mcInfoId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{realEstateName,jdbcType=VARCHAR}, 
-      #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=DECIMAL}, #{weightDescription,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_market_compare_result (mc_item_id, specific_price, correction_difference, 
+      case_difference, weight, weight_description, 
+      average_price, creator, gmt_created, 
+      gmt_modified)
+    values (#{mcItemId,jdbcType=INTEGER}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
+      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{weightDescription,jdbcType=VARCHAR}, 
+      #{averagePrice,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareResult" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,14 +125,8 @@
     </selectKey>
     insert into tb_md_market_compare_result
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="mcInfoId != null" >
-        mc_info_id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="realEstateName != null" >
-        real_estate_name,
+      <if test="mcItemId != null" >
+        mc_item_id,
       </if>
       <if test="specificPrice != null" >
         specific_price,
@@ -150,6 +143,9 @@
       <if test="weightDescription != null" >
         weight_description,
       </if>
+      <if test="averagePrice != null" >
+        average_price,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -161,14 +157,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="mcInfoId != null" >
-        #{mcInfoId,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateName != null" >
-        #{realEstateName,jdbcType=VARCHAR},
+      <if test="mcItemId != null" >
+        #{mcItemId,jdbcType=INTEGER},
       </if>
       <if test="specificPrice != null" >
         #{specificPrice,jdbcType=VARCHAR},
@@ -184,6 +174,9 @@
       </if>
       <if test="weightDescription != null" >
         #{weightDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="averagePrice != null" >
+        #{averagePrice,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -208,14 +201,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.mcInfoId != null" >
-        mc_info_id = #{record.mcInfoId,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.realEstateName != null" >
-        real_estate_name = #{record.realEstateName,jdbcType=VARCHAR},
+      <if test="record.mcItemId != null" >
+        mc_item_id = #{record.mcItemId,jdbcType=INTEGER},
       </if>
       <if test="record.specificPrice != null" >
         specific_price = #{record.specificPrice,jdbcType=VARCHAR},
@@ -231,6 +218,9 @@
       </if>
       <if test="record.weightDescription != null" >
         weight_description = #{record.weightDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.averagePrice != null" >
+        average_price = #{record.averagePrice,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -249,14 +239,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_market_compare_result
     set id = #{record.id,jdbcType=INTEGER},
-      mc_info_id = #{record.mcInfoId,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      real_estate_name = #{record.realEstateName,jdbcType=VARCHAR},
+      mc_item_id = #{record.mcItemId,jdbcType=INTEGER},
       specific_price = #{record.specificPrice,jdbcType=VARCHAR},
       correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
       case_difference = #{record.caseDifference,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=DECIMAL},
       weight_description = #{record.weightDescription,jdbcType=VARCHAR},
+      average_price = #{record.averagePrice,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -267,14 +256,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareResult" >
     update tb_md_market_compare_result
     <set >
-      <if test="mcInfoId != null" >
-        mc_info_id = #{mcInfoId,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="realEstateName != null" >
-        real_estate_name = #{realEstateName,jdbcType=VARCHAR},
+      <if test="mcItemId != null" >
+        mc_item_id = #{mcItemId,jdbcType=INTEGER},
       </if>
       <if test="specificPrice != null" >
         specific_price = #{specificPrice,jdbcType=VARCHAR},
@@ -291,6 +274,9 @@
       <if test="weightDescription != null" >
         weight_description = #{weightDescription,jdbcType=VARCHAR},
       </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -305,14 +291,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareResult" >
     update tb_md_market_compare_result
-    set mc_info_id = #{mcInfoId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      real_estate_name = #{realEstateName,jdbcType=VARCHAR},
+    set mc_item_id = #{mcItemId,jdbcType=INTEGER},
       specific_price = #{specificPrice,jdbcType=VARCHAR},
       correction_difference = #{correctionDifference,jdbcType=VARCHAR},
       case_difference = #{caseDifference,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=DECIMAL},
       weight_description = #{weightDescription,jdbcType=VARCHAR},
+      average_price = #{averagePrice,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

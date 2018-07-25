@@ -6,11 +6,7 @@ import java.util.Date;
 public class MdMarketCompareResult {
     private Integer id;
 
-    private Integer mcInfoId;
-
-    private String name;
-
-    private String realEstateName;
+    private Integer mcItemId;
 
     private String specificPrice;
 
@@ -21,6 +17,8 @@ public class MdMarketCompareResult {
     private BigDecimal weight;
 
     private String weightDescription;
+
+    private String averagePrice;
 
     private String creator;
 
@@ -36,28 +34,12 @@ public class MdMarketCompareResult {
         this.id = id;
     }
 
-    public Integer getMcInfoId() {
-        return mcInfoId;
+    public Integer getMcItemId() {
+        return mcItemId;
     }
 
-    public void setMcInfoId(Integer mcInfoId) {
-        this.mcInfoId = mcInfoId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getRealEstateName() {
-        return realEstateName;
-    }
-
-    public void setRealEstateName(String realEstateName) {
-        this.realEstateName = realEstateName == null ? null : realEstateName.trim();
+    public void setMcItemId(Integer mcItemId) {
+        this.mcItemId = mcItemId;
     }
 
     public String getSpecificPrice() {
@@ -98,6 +80,14 @@ public class MdMarketCompareResult {
 
     public void setWeightDescription(String weightDescription) {
         this.weightDescription = weightDescription == null ? null : weightDescription.trim();
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice == null ? null : averagePrice.trim();
     }
 
     public String getCreator() {

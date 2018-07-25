@@ -7,6 +7,12 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
+    <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
+    <result column="case_difference" property="caseDifference" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="weight_description" property="weightDescription" jdbcType="VARCHAR" />
+    <result column="average_price" property="averagePrice" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, mc_id, name, type, json_content, creator, gmt_created, gmt_modified
+    id, mc_id, name, type, json_content, specific_price, correction_difference, case_difference, 
+    weight, weight_description, average_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
@@ -107,10 +114,14 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_market_compare_item (mc_id, name, type, 
-      json_content, creator, gmt_created, 
+      json_content, specific_price, correction_difference, 
+      case_difference, weight, weight_description, 
+      average_price, creator, gmt_created, 
       gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{jsonContent,jdbcType=CHAR}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
+      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{weightDescription,jdbcType=VARCHAR}, 
+      #{averagePrice,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
@@ -130,6 +141,24 @@
       </if>
       <if test="jsonContent != null" >
         json_content,
+      </if>
+      <if test="specificPrice != null" >
+        specific_price,
+      </if>
+      <if test="correctionDifference != null" >
+        correction_difference,
+      </if>
+      <if test="caseDifference != null" >
+        case_difference,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="weightDescription != null" >
+        weight_description,
+      </if>
+      <if test="averagePrice != null" >
+        average_price,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,6 +182,24 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="specificPrice != null" >
+        #{specificPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="correctionDifference != null" >
+        #{correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="caseDifference != null" >
+        #{caseDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="weightDescription != null" >
+        #{weightDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="averagePrice != null" >
+        #{averagePrice,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -189,6 +236,24 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
+      <if test="record.specificPrice != null" >
+        specific_price = #{record.specificPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.correctionDifference != null" >
+        correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseDifference != null" >
+        case_difference = #{record.caseDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightDescription != null" >
+        weight_description = #{record.weightDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.averagePrice != null" >
+        average_price = #{record.averagePrice,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -210,6 +275,12 @@
       name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
+      specific_price = #{record.specificPrice,jdbcType=VARCHAR},
+      correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      case_difference = #{record.caseDifference,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=DECIMAL},
+      weight_description = #{record.weightDescription,jdbcType=VARCHAR},
+      average_price = #{record.averagePrice,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -232,6 +303,24 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
+      <if test="specificPrice != null" >
+        specific_price = #{specificPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="correctionDifference != null" >
+        correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="caseDifference != null" >
+        case_difference = #{caseDifference,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="weightDescription != null" >
+        weight_description = #{weightDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -250,6 +339,12 @@
       name = #{name,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
+      specific_price = #{specificPrice,jdbcType=VARCHAR},
+      correction_difference = #{correctionDifference,jdbcType=VARCHAR},
+      case_difference = #{caseDifference,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=DECIMAL},
+      weight_description = #{weightDescription,jdbcType=VARCHAR},
+      average_price = #{averagePrice,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

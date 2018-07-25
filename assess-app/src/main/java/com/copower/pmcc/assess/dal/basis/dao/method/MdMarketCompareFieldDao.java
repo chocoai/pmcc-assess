@@ -38,6 +38,7 @@ public class MdMarketCompareFieldDao {
     public List<MdMarketCompareField> getMarketCompareFieldList(MdMarketCompareField examineMarketCompareField) {
         MdMarketCompareFieldExample example = new MdMarketCompareFieldExample();
         MybatisUtils.convertObj2Example(examineMarketCompareField, example);
+        example.setOrderByClause("sorting");
         return mdMarketCompareFieldMapper.selectByExample(example);
     }
 

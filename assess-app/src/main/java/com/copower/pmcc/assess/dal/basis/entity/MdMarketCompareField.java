@@ -13,6 +13,8 @@ public class MdMarketCompareField {
 
     private Boolean bisPrimaryKey;
 
+    private Boolean bisPrice;
+
     private Boolean bisOnlyView;
 
     private Integer sorting;
@@ -63,6 +65,14 @@ public class MdMarketCompareField {
 
     public void setBisPrimaryKey(Boolean bisPrimaryKey) {
         this.bisPrimaryKey = bisPrimaryKey;
+    }
+
+    public Boolean getBisPrice() {
+        return bisPrice;
+    }
+
+    public void setBisPrice(Boolean bisPrice) {
+        this.bisPrice = bisPrice;
     }
 
     public Boolean getBisOnlyView() {
