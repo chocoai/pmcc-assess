@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -37,5 +40,17 @@ public class MarketCompareController {
         modelAndView.addObject("evaluationJSON",JSON.toJSONString(evaluationObject));
         modelAndView.addObject("casesJSON",JSON.toJSONString(caseList));
         return modelAndView;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/saveResult", name = "保存市场比较法结果", method = RequestMethod.POST)
+    public HttpResult saveResult(MarketCompareResultDto marketCompareResultDto) {
+        try {
+            MdMarketCompare marketCompare = mdMarketCompareService.saveResult(marketCompareResultDto);
+            return HttpResult.newCorrectResult(marketCompare);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult("保存失败");
+        }
     }
 }

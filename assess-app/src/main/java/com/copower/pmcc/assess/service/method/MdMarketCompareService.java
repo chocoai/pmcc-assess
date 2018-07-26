@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareResultDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,24 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.CASE.getId());
         List<MdMarketCompareItem> marketCompareItemList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItem);
         return marketCompareItemList;
+    }
+
+    /**
+     *
+     * @param marketCompareResultDto
+     * @return
+     */
+    public MdMarketCompare saveResult(MarketCompareResultDto marketCompareResultDto){
+        MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(marketCompareResultDto.getId());
+        MdMarketCompareItem evaluationItem = marketCompareResultDto.getEvaluationItem();
+        mdMarketCompareItemDao.updateMarketCompareItem(evaluationItem);
+        List<MdMarketCompareItem> caseItemList = marketCompareResultDto.getCaseItemList();
+        if(CollectionUtils.isNotEmpty(caseItemList)){
+            for (MdMarketCompareItem mdMarketCompareItem : caseItemList) {
+                mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
+            }
+        }
+        //marketCompare.setPrice(evaluationItem.getAveragePrice());
+        return marketCompare;
     }
 }

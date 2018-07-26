@@ -23,7 +23,7 @@ public class AreaController {
     private ErpAreaService areaService;
 
     /**
-     * 获取字典列表数据
+     * 获取区域数据
      *
      * @return
      */
@@ -40,7 +40,7 @@ public class AreaController {
     }
 
     /**
-     * 获取字典列表数据
+     * 获取区域数据
      *
      * @return
      */

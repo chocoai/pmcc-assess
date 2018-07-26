@@ -11,18 +11,24 @@
     <div class="x_content">
         <div class="col-sm-12 form-group">
             <span class="col-sm-1 col-sm-offset-1 checkbox-inline">
-                <input type="checkbox" checked="checked" value="text">关系值
+                <input id="cbxText" type="checkbox" checked="checked" value="text"
+                       onclick="marketCompare.toggle(this);">
+                <label for="cbxText">关系值</label>
             </span>
             <span class="col-sm-1  checkbox-inline">
-                <input type="checkbox" checked="checked" value="score">修正指数
+                <input id="cbxScore" type="checkbox" checked="checked" value="score"
+                       onclick="marketCompare.toggle(this);">
+                <label for="cbxScore">修正指数</label>
             </span>
             <span class="col-sm-1  checkbox-inline">
-                <input type="checkbox" checked="checked" value="ratio">测算值
+                <input id="cbxRatio" type="checkbox" checked="checked" value="ratio"
+                       onclick="marketCompare.toggle(this);">
+                <label for="cbxRatio">测算值</label>
             </span>
         </div>
         <div>
-            <table id="tb_mc_item" class="table table-striped jambo_table bulk_action">
-
+            <input type="hidden" id="marketCompareId">
+            <table id="tb_md_mc_item_list" class="table  jambo_table bulk_action">
 
             </table>
         </div>
@@ -36,7 +42,7 @@
 <script type="text/javascript">
     $(function () {
         marketCompare.init({
-            element: $("#tb_mc_item"),
+            marketCompare: JSON.parse($("#marketCompareJSON").val()),
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             cases: JSON.parse($("#casesJSON").val())
@@ -115,25 +121,35 @@
                             $(this).addClass('red');
                         ratioEle.text(iTofixed(evaluationScore / currScore, 4));
                     }
+                    marketCompare.calculation();
+                }
+            });
 
-                    //1.更新该案例下的比准价格
-                    //2.计算出对应的修正差额
-                    //3.计算出对应的案例差异
-                    //4.根据填写的权重计算出加权平均价
+            $(".p_weight").find('a').editable({
+                validate: function (value) { //字段验证
+                    if (!$.trim(value)) {
+                        return '不能为空';
+                    }
+                }
+            });
+
+            $(".p_weightDesc").find('a').editable({
+                validate: function (value) { //字段验证
+                    if (!$.trim(value)) {
+                        return '不能为空';
+                    }
                 }
             });
         }
 
-        //测算
-        function calculation() {
-            var aa = $("#").val();
-        }
 
         var marketCompare = {};
         //初始化 1.初始化表格的标题 2.初始化表格内容
+        marketCompare.isPass = true;
+        marketCompare.fields = [];
         marketCompare.init = function (options) {
             var defaluts = {
-                element: undefined,//html元素
+                marketCompare: undefined,//主表信息
                 fields: undefined,//字段信息
                 evaluation: undefined,//委估对象
                 cases: undefined,//案例
@@ -141,14 +157,15 @@
             };
             defaluts = $.extend({}, defaluts, options);
             //验证
-            if (!defaluts.element) {
-                Alert("元素为空！");
+            if (!defaluts.marketCompare) {
+                Alert("主信息为空！");
                 return;
             }
             if (!defaluts.fields) {
                 Alert("字段为空！");
                 return;
             }
+            marketCompare.fields = defaluts.fields;
             if (!defaluts.evaluation) {
                 Alert("委估对象为空！");
                 return;
@@ -168,12 +185,12 @@
             //头部html
             var headHtml = '<thead> <tr>';
             headHtml += '<th width="5%">项目</th>';
-            headHtml += '<th width="10%">委估对象</th>';
+            headHtml += '<th width="10%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">委估对象</th>';
             for (var i = 1; i <= defaluts.cases.length; i++) {
-                headHtml += '<th width="10%">案例' + i + '</th>';
+                headHtml += '<th width="10%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">案例' + i + '</th>';
             }
             headHtml += '</tr> </thead>';
-            $(defaluts.element).append(headHtml);
+            $("#tb_md_mc_item_list").append(headHtml);
         }
 
         //初始内容
@@ -184,7 +201,11 @@
                 var evaluationItem = getItemByName(JSON.parse(defaluts.evaluation.jsonContent), item.name);
                 evaluationItem = evaluationItem == undefined ? {} : evaluationItem;
                 if (item.bisOnlyView) {//只用于显示的字段
-                    var trHtml = ' <tr>';
+                    var trHtml = '<tr';
+                    item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
+                    item.bisPrice == true ? trHtml += ' data-bisPrice="true" ' : '';
+                    trHtml += '>'
+                    var trHtml = item.bisPrice == true ? '<tr data-bisPrice="true">' : '<tr>';
                     trHtml += ' <td>' + toString(item.value) + '</td>';
                     if (evaluationItem) {
                         trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
@@ -202,6 +223,7 @@
                     rowHtml = rowHtml.replace(/{fieldName}/g, toString(item.name)).replace(/{fieldValue}/g, toString(item.value));
                     rowHtml = rowHtml.replace(/{evaluationText}/g, toString(evaluationItem.value)).replace(/{evaluationScore}/g, toString(evaluationItem.score));
                     rowHtml = rowHtml.replace(/{evaluationRatio}/g, toString(evaluationItem.ratio)).replace(/{itemId}/g, toString(defaluts.evaluation.id));
+                    rowHtml = rowHtml.replace(/{bisPrice}/g, toString(item.bisPrice)).replace(/{bisPrimaryKey}/g, toString(item.bisPrimaryKey));
                     //取到案例相关
                     var caseText, caseScore, caseRatio;
                     for (var j = 0; j < defaluts.cases.length; j++) {
@@ -219,27 +241,200 @@
                 }
             })
             bodyHtml += ' </tbody>';
-            $(defaluts.element).append(bodyHtml);
+            $("#tb_md_mc_item_list").append(bodyHtml);
         }
 
         //初始测算结果
         marketCompare.initResult = function (defaluts) {
             var resultHtml = getTempHtml("resultTemp", defaluts.readonly);
-            var caseSpecificPrice, caseCorrectionDifference, caseCaseDifference,caseWeight;
+            var caseSpecificPrice, caseCorrectionDifference, caseCaseDifference, caseWeight, caseWeightDescription;
             for (var j = 0; j < defaluts.cases.length; j++) {
-                caseSpecificPrice += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + defaluts.cases[j].specificPrice + '</td>';
-                caseCorrectionDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + defaluts.cases[j].correctionDifference + '</td>';
-                caseCaseDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + defaluts.cases[j].caseDifference + '</td>';
-                caseWeight += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + defaluts.cases[j].weight + '</td>';
+                caseSpecificPrice += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].specificPrice) + '</td>';
+                caseCorrectionDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].correctionDifference) + '</td>';
+                caseCaseDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].caseDifference) + '</td>';
+
+                var weightHtml = getTempHtml("pWeightTemp", defaluts.readonly);
+                weightHtml = weightHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weight));
+                caseWeight += weightHtml;
+
+                var weightDescHtml = getTempHtml("pWeightDescTemp", defaluts.readonly);
+                weightDescHtml = weightDescHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weightDescription));
+                caseWeightDescription += weightDescHtml;
             }
             resultHtml = resultHtml.replace(/{caseSpecificPrice}/g, toString(caseSpecificPrice)).replace(/{caseCorrectionDifference}/g, toString(caseCorrectionDifference));
             resultHtml = resultHtml.replace(/{caseCaseDifference}/g, toString(caseCaseDifference)).replace(/{caseWeight}/g, toString(caseWeight));
-            resultHtml = resultHtml.replace(/{colspan}/g, toString(2+defaluts.cases.length));
-            $(defaluts.element).append(resultHtml);
+            resultHtml = resultHtml.replace(/{colspan}/g, toString(2 + defaluts.cases.length)).replace(/{evaluationId}/g, toString(defaluts.evaluation.id));
+            resultHtml = resultHtml.replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
+            $("#tb_md_mc_item_list").append(resultHtml);
         }
 
         //测算
         marketCompare.calculation = function () {
+            //1.更新该案例下的比准价格
+            //2.计算出对应的修正差额
+            //3.计算出对应的案例差异
+            //4.根据填写的权重计算出加权平均价
+            var evaluationItemId;
+            var caseItemIdArray = [];
+            var table = $("#tb_md_mc_item_list");
+            $("#tb_md_mc_item_list").find('thead th').each(function () {
+                if ($(this).attr('data-type') == 'evaluation') {
+                    evaluationItemId = $(this).attr('data-item-id');
+                }
+                if ($(this).attr('data-type') == 'case') {
+                    caseItemIdArray.push($(this).attr('data-item-id'));
+                }
+            })
+
+            //计算比准价格
+            $.each(caseItemIdArray, function (i, item) {
+                //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
+                var price = table.find('tr[data-bisprice="true"]').find('td[data-item-id=' + item + ']').text();
+                var specificPrice = price = parseFloat(price);
+                table.find('tr[data-name="ratio"]').each(function () {
+                    specificPrice = specificPrice * parseFloat($(this).find('td[data-item-id=' + item + ']').text());
+                })
+                specificPrice = iTofixed(specificPrice, 2);
+                table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text(specificPrice);
+
+                //修正差额 	修正差额不能大于30%，如果大于30%提示修改案例，修正差额=（比准价格-成交价）/成交价 的绝对值
+                var correctionDifference = iTofixed(Math.abs(specificPrice - price) / price * 100, 2);
+                var correctionDifferenceTd = table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']');
+                correctionDifferenceTd.removeClass('red').text(correctionDifference + "%");
+                if (correctionDifference > 30) {
+                    correctionDifferenceTd.text(correctionDifferenceTd.text() + " 请调整案例").addClass('red');
+                }
+            })
+
+            //案例比准价验证 经修正和调整后的各个可比实例价格中，最高单价不应超过最低单价的20％，
+            //即（案例最高比准价-案例最低比准价）/案例最低比准价<=20%，如果大于20%则提示案例或修正指数修改错误；
+            var maxSpecificPrice, minSpecificPrice, currSpecificPrice;
+            $.each(caseItemIdArray, function (i, item) {
+                currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                currSpecificPrice = parseFloat(currSpecificPrice);
+                if (!maxSpecificPrice || currSpecificPrice > maxSpecificPrice) {
+                    maxSpecificPrice = currSpecificPrice;
+                }
+                if (!minSpecificPrice || currSpecificPrice < minSpecificPrice) {
+                    minSpecificPrice = currSpecificPrice;
+                }
+            })
+            $("#resultMsg").text('');
+            if ((maxSpecificPrice - minSpecificPrice) / minSpecificPrice > 0.2) {
+                $("#resultMsg").text('案例或修正指数修改错误');
+            }
+
+            //案例差异=（当前案例比准价-所有案例比准价中最小值）/所有案例比准价中最小值
+            $.each(caseItemIdArray, function (i, item) {
+                currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                currSpecificPrice = parseFloat(currSpecificPrice);
+                var caseDifference = iTofixed((currSpecificPrice - minSpecificPrice) / minSpecificPrice * 100, 2);
+                var caseDifferenceTd = table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']');
+                caseDifferenceTd.text(caseDifference + "%");
+            })
+
+            //计算平均价
+            var totalPrice = 0;//总价
+            $.each(caseItemIdArray, function (i, item) {
+                currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                currSpecificPrice = parseFloat(currSpecificPrice);
+                totalPrice += currSpecificPrice;
+            })
+            var averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
+
+            table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(averagePrice);
+        }
+
+        //切换
+        marketCompare.toggle = function (that) {
+            $("#tb_md_mc_item_list").find('tr[data-name="' + $(that).val() + '"]').each(function () {
+                var td = $(this).show().closest('tbody').find('tr[data-name="field"]').find('td');
+                if ($(that).prop('checked')) {
+                    $(this).show();
+                    td.attr('rowspan', parseInt(td.attr('rowspan')) + 1);
+                } else {
+                    $(this).hide();
+                    td.attr('rowspan', parseInt(td.attr('rowspan')) - 1);
+                }
+            })
+        }
+
+        //保存
+        marketCompare.save = function (callback) {
+            //1.委估对象主要保存 结果价格
+            //2.获取到各个案例的数据
+            var evaluationItemId;
+            var caseItemIdArray = [];
+            var table = $("#tb_md_mc_item_list");
+            $("#tb_md_mc_item_list").find('thead th').each(function () {
+                if ($(this).attr('data-type') == 'evaluation') {
+                    evaluationItemId = $(this).attr('data-item-id');
+                }
+                if ($(this).attr('data-type') == 'case') {
+                    caseItemIdArray.push($(this).attr('data-item-id'));
+                }
+            })
+            //数据验证
+
+            var data = {
+                id: $("#marketCompareId").val(),
+                evaluationItem: {},
+                caseItemList: []
+            };
+
+            var averagePrice = table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
+            data.evaluationItem.averagePrice = averagePrice;
+            $.each(caseItemIdArray, function (i, item) {
+                var caseItem = {};
+                caseItem.jsonContent = [];
+                $.each(marketCompare.fields, function (j, field) {
+                    var fieldContent = {};
+                    fieldContent.name = field.name;
+                    fieldContent.value = field.value;
+                    fieldContent.score = 100;
+                    fieldContent.ratio = 1;
+
+                    var trs = table.find('tr[data-group="' + field.name + '"]');
+                    if (trs.length > 0) {
+                        trs.each(function () {
+                            if ($(this).attr('data-name') == 'text') {
+                                fieldContent.value = $(this).find('td[data-item-id=' + item + ']').find('a').text();
+                            }
+                            if ($(this).attr('data-name') == 'score') {
+                                fieldContent.score = $(this).find('td[data-item-id=' + item + ']').find('a').text();
+                            }
+                            if ($(this).attr('data-name') == 'ratio') {
+                                fieldContent.ratio = $(this).find('td[data-item-id=' + item + ']').find('a').text();
+                            }
+                        })
+                    }
+                    caseItem.jsonContent.push(fieldContent);
+                })
+                caseItem.specificPrice=table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.correctionDifference=table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.caseDifference=table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.weight=table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.weightDescription=table.find('tr[data-name="weightDescription"]').find('td[data-item-id=' + item + ']').text();
+                data.caseItemList.push(caseItem);
+            })
+
+            $.ajax({
+                url: '',
+                data: {
+                    formData: JSON.stringify(data)
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback)
+                            callback(result.data.id);
+                    } else {
+                        Alert('保存数据异常，' + result.msg);
+                    }
+                }
+            })
+
 
         }
 
@@ -251,7 +446,9 @@
 <script type="text/html" id="resultTemp">
     <tbody id="tbody_mc_result">
     <tr>
-        <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果</span></td>
+        <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果 </span>
+            <span class="red" id="resultMsg"></span>
+        </td>
     </tr>
     <tr data-name="specificPrice">
         <td>比准价格</td>
@@ -273,9 +470,14 @@
         <td></td>
         {caseWeight}
     </tr>
+    <tr data-name="weightDescription">
+        <td>权重描述</td>
+        <td></td>
+        {caseWeightDescription}
+    </tr>
     <tr data-name="averagePrice">
         <td>加权平均价</td>
-        <td data-item-id="{itemId}">100</td>
+        <td data-item-id="{evaluationId}"></td>
         <td></td>
         <td></td>
     </tr>
@@ -316,7 +518,8 @@
 
 <%--行数据模板--%>
 <script type="text/html" id="pRowTemp">
-    <tr data-group="{fieldName}" data-bisPrice="{bisPrice}">
+    <tbody style="background-color: #fbfbfb">
+    <tr data-group="{fieldName}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="field">
         <td rowspan="4" style="vertical-align: middle">{fieldValue}</td>
     </tr>
     <tr data-group="{fieldName}" data-name="text">
@@ -327,7 +530,7 @@
         </td>
         {caseText}
     </tr>
-    <tr data-group="{fieldName}" data-name="sroce">
+    <tr data-group="{fieldName}" data-name="score">
         <td data-type="evaluation">{evaluationScore}</td>
         {caseScore}
     </tr>
@@ -335,6 +538,7 @@
         <td>{evaluationRatio}</td>
         {caseRatio}
     </tr>
+    </tbody>
 </script>
 
 <%--行数据模板只读--%>
@@ -365,4 +569,28 @@
     </tr>
 </script>
 
+<%--权重模板--%>
+<script type="text/html" id="pWeightTemp">
+    <td class="p_weight" data-item-id="{itemId}">
+        <a href="javascript://" data-original-title="权重"
+           class="editable editable-click editable-pre-wrapped">{value}</a>
+    </td>
+</script>
 
+<%--权重模板只读--%>
+<script type="text/html" id="pWeightTempView">
+    <td>{value}</td>
+</script>
+
+<%--权重模板--%>
+<script type="text/html" id="pWeightDescTemp">
+    <td class="p_weightDesc" data-item-id="{itemId}">
+        <a href="javascript://" data-original-title="权重描述" data-type="textarea"
+           class="editable editable-click editable-pre-wrapped">{value}</a>
+    </td>
+</script>
+
+<%--权重模板只读--%>
+<script type="text/html" id="pWeightDescTempView">
+    <td>{value}</td>
+</script>
