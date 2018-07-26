@@ -13,26 +13,20 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingFinance.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingFinance.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>金融服务信息
-            <button type="button" class="btn btn-success" onclick="matchingFinance.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
 
     <div class="x_content" style="display: none">
-        <%--<div class="x_title">--%>
-            <%--<h3>金融服务信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingFinance.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingFinance.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -58,6 +52,10 @@
 
     };
     matchingFinance.prototype = {
+        viewInit:function () {
+            matchingFinance.prototype.loadDataDicList();
+            matchingFinance.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingFinanceList";
@@ -117,7 +115,7 @@
         showModel: function () {
             $("#" + matchingFinance.prototype.config().frm).clearAll();
             $("#" + matchingFinance.prototype.config().frm + " .type").val(matchingFinance.prototype.config().type);
-            matchingFinance.prototype.init();
+            // matchingFinance.prototype.init();
             $('#' + matchingFinance.prototype.config().box).modal("show");
         },
         saveData: function () {

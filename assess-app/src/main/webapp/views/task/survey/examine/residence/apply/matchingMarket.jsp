@@ -13,27 +13,21 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingMarket.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingMarket.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>购物商场信息
-            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
 
 
     <div class="x_content" style="display: none">
-        <%--<div class="x_title">--%>
-            <%--<h3>购物商场信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -59,6 +53,10 @@
 
     };
     matchingMarket.prototype = {
+        viewInit:function () {
+            matchingMarket.prototype.loadDataDicList();
+            matchingMarket.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingMarketList";
@@ -139,7 +137,7 @@
             html += "</div>";
             html += "</div>";
             $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
-            matchingMarket.prototype.init();
+            // matchingMarket.prototype.init();
             $('#' + matchingMarket.prototype.config().box).modal("show");
         },
         saveData: function () {

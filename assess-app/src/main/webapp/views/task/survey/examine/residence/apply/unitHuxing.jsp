@@ -10,26 +10,37 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>户型信息 <button type="button" class="btn btn-success" onclick="unitHuxing.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="unitHuxing.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>户型信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form id="frm_unitHuxing" class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="unitHuxing.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="UnitHuxingList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form id="frm_unitHuxing" class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="UnitHuxingList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
@@ -41,15 +52,19 @@
 
     };
     unitHuxing.prototype = {
-        config:function () {
+        viewInit:function () {
+            unitHuxing.prototype.loadDataDicList();
+            unitHuxing.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "UnitHuxingList" ;
+            data.table = "UnitHuxingList";
             data.box = "divBoxUnitHuxing";
             data.frm = "frmUnitHuxing";
-            data.type = "null" ;//
+            data.type = "null";//
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'description', title: '描述'});
             cols.push({field: 'houseLayoutName', title: '房型'});
@@ -65,9 +80,9 @@
                     return str;
                 }
             });
-            $("#"+unitHuxing.prototype.config().table).bootstrapTable('destroy');
+            $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingList", cols, {
-                type:unitHuxing.prototype.config().type
+                type: unitHuxing.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -77,12 +92,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineUnitHuxing/deleteExamineUnitHuxingById",
+                url: "${pageContext.request.contextPath}/examineUnitHuxing/deleteExamineUnitHuxingById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -97,31 +112,31 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+unitHuxing.prototype.config().frm).clearAll();
-            $("#"+unitHuxing.prototype.config().frm+" .type").val(unitHuxing.prototype.config().type);
-            $('#'+unitHuxing.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + unitHuxing.prototype.config().frm).clearAll();
+            $("#" + unitHuxing.prototype.config().frm + " .type").val(unitHuxing.prototype.config().type);
+            $('#' + unitHuxing.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+unitHuxing.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + unitHuxing.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(unitHuxing.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineUnitHuxing/saveAndUpdateExamineUnitHuxing",
+                url: "${pageContext.request.contextPath}/examineUnitHuxing/saveAndUpdateExamineUnitHuxing",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+unitHuxing.prototype.config().box).modal('hide');
+                        $('#' + unitHuxing.prototype.config().box).modal('hide');
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
@@ -133,22 +148,22 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
+                url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+unitHuxing.prototype.config().frm).clearAll();
+                        $("#" + unitHuxing.prototype.config().frm).clearAll();
                         $("#" + unitHuxing.prototype.config().frm).initForm(result.data);
-                        if (result.data.houseLayout == null || result.data.houseLayout == ''){
-                            $("#"+unitHuxing.prototype.config().frm+" .houseLayout").val(null).trigger("change");
-                        }else {
-                            $("#"+unitHuxing.prototype.config().frm+" .houseLayout").val(result.data.houseLayout).trigger("change");
+                        if (result.data.houseLayout == null || result.data.houseLayout == '') {
+                            $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(null).trigger("change");
+                        } else {
+                            $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(result.data.houseLayout).trigger("change");
                         }
-                        $('#'+unitHuxing.prototype.config().box).modal("show");
+                        $('#' + unitHuxing.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -156,9 +171,9 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineUnitHuxing/examine_unit_house_layout",
+                url: "${pageContext.request.contextPath}/examineUnitHuxing/examine_unit_house_layout",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -166,12 +181,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+unitHuxing.prototype.config().frm+" .houseLayout").html(option);
-                            $("#"+unitHuxing.prototype.config().frm+" .houseLayout").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + unitHuxing.prototype.config().frm + " .houseLayout").html(option);
+                            $("#" + unitHuxing.prototype.config().frm + " .houseLayout").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -186,8 +201,8 @@
      * 初始化
      */
     $(function () {
-        unitHuxing.prototype.loadDataDicList();
-        unitHuxing.prototype.init();
+        // unitHuxing.prototype.loadDataDicList();
+        // unitHuxing.prototype.init();
     })
 
 </script>
@@ -202,7 +217,7 @@
                 <h3 class="modal-title">户型</h3>
             </div>
             <form id="frmUnitHuxing" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -213,7 +228,8 @@
                                             面积
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area" class="form-control" required="required">
+                                            <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -223,7 +239,8 @@
                                             跨长
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="跨长(数字)" data-rule-number='true' name="spanLength" class="form-control" required="required">
+                                            <input type="text" placeholder="跨长(数字)" data-rule-number='true'
+                                                   name="spanLength" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -233,7 +250,8 @@
                                             跨宽
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="跨宽(数字)" data-rule-number='true' name="spanWidth" class="form-control" required="required">
+                                            <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
+                                                   name="spanWidth" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -243,7 +261,8 @@
                                             跨数
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="跨数(数字)" data-rule-number='true' name="spanNumber" class="form-control" required="required">
+                                            <input type="text" placeholder="跨数(数字)" data-rule-number='true'
+                                                   name="spanNumber" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +272,8 @@
                                             户型描述
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="户型描述" name="description" class="form-control" required="required">
+                                            <input type="text" placeholder="户型描述" name="description"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +283,8 @@
                                             户型内容
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="houseLayout" class="form-control search-select select2 houseLayout">
+                                            <select required="required" name="houseLayout"
+                                                    class="form-control search-select select2 houseLayout">
                                             </select>
                                         </div>
                                     </div>

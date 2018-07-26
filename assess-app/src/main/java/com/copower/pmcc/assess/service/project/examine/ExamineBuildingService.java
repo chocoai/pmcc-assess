@@ -2,13 +2,11 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
-import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
+import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -46,6 +44,8 @@ public class ExamineBuildingService {
     private DataBuilderService dataBuilderService;
     @Autowired
     private DataPropertyService dataPropertyService;
+    @Autowired
+    private DataDeveloperService dataDeveloperService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -167,6 +167,10 @@ public class ExamineBuildingService {
 
     public List<DataProperty> getDataPropertyList() {
         return dataPropertyService.getDataPropertyList(null);
+    }
+
+    public List<DataDeveloper> getDataDeveloperList(){
+        return dataDeveloperService.getDataDeveloperList(null);
     }
 
 }

@@ -13,25 +13,19 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingEnvironment.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingEnvironment.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>环境因素信息
-            <button type="button" class="btn btn-success" onclick="matchingEnvironment.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content" style="display: none">
-        <%--<div class="x_title">--%>
-            <%--<h3>环境因素信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingEnvironment.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingEnvironment.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -57,6 +51,10 @@
 
     };
     matchingEnvironment.prototype = {
+        viewInit:function () {
+            matchingEnvironment.prototype.loadDataDicList();
+            matchingEnvironment.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingEnvironmentList";
@@ -114,7 +112,7 @@
         showModel: function () {
             $("#" + matchingEnvironment.prototype.config().frm).clearAll();
             $("#" + matchingEnvironment.prototype.config().frm + " .type").val(matchingEnvironment.prototype.config().type);
-            matchingEnvironment.prototype.init();
+            // matchingEnvironment.prototype.init();
             $('#' + matchingEnvironment.prototype.config().box).modal("show");
         },
         saveData: function () {

@@ -13,26 +13,20 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingRecreation.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingRecreation.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>休闲娱乐信息
-            <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
 
     <div class="x_content" style="display: none">
-        <%--<div class="x_title">--%>
-            <%--<h3>休闲娱乐信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -58,6 +52,10 @@
 
     };
     matchingRecreation.prototype = {
+        viewInit:function () {
+            matchingRecreation.prototype.loadDataDicList();
+            matchingRecreation.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingRecreationList";
@@ -138,7 +136,7 @@
             html += "</div>";
             html += "</div>";
             $("#" + matchingRecreation.prototype.config().frm + " .name").append(html);
-            matchingRecreation.prototype.init();
+            // matchingRecreation.prototype.init();
             $('#' + matchingRecreation.prototype.config().box).modal("show");
         },
         saveData: function () {

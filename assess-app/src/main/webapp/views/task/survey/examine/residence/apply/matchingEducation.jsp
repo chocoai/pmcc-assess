@@ -13,24 +13,19 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingEducation.prototype.loadDataDicList()"><i class="fa fa-chevron-up"></i></a></li>
+            <li><a class="collapse-link" onclick="matchingEducation.prototype.viewInit()"><i class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>教育条件信息 <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button>
+        <h3>教育条件信息
         </h3>
         <div class="clearfix"></div>
     </div>
 
     <div class="x_content" style="display: none;">
-        <%--<div class="x_title">--%>
-            <%--<h3>教育条件信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -56,6 +51,10 @@
 
     };
     matchingEducation.prototype = {
+        viewInit:function () {
+            matchingEducation.prototype.loadDataDicList();
+            matchingEducation.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingEducationList";
@@ -115,7 +114,7 @@
         showModel: function () {
             $("#" + matchingEducation.prototype.config().frm).clearAll();
             $("#" + matchingEducation.prototype.config().frm + " .type").val(matchingEducation.prototype.config().type);
-            matchingEducation.prototype.init();
+            // matchingEducation.prototype.init();
             $('#' + matchingEducation.prototype.config().box).modal("show");
         },
         saveData: function () {

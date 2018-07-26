@@ -13,26 +13,20 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingRestaurant.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingRestaurant.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>餐饮信息
-            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
 
     <div class="x_content" style="display: none">
-        <%--<div class="x_title">--%>
-            <%--<h3>餐饮信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -58,6 +52,10 @@
 
     };
     matchingRestaurant.prototype = {
+        viewInit:function () {
+            matchingRestaurant.prototype.loadDataDicList();
+            matchingRestaurant.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingRestaurantList";
@@ -138,7 +136,7 @@
             html += "</div>";
             html += "</div>";
             $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
-            matchingRestaurant.prototype.init();
+            // matchingRestaurant.prototype.init();
             $('#' + matchingRestaurant.prototype.config().box).modal("show");
         },
         saveData: function () {

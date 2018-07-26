@@ -10,26 +10,37 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>交通枢纽信息 <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="matchingTrafficHub.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>交通枢纽信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="MatchingTrafficHubList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="MatchingTrafficHubList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
@@ -41,15 +52,19 @@
 
     };
     matchingTrafficHub.prototype = {
-        config:function () {
+        viewInit:function () {
+            matchingTrafficHub.prototype.loadDataDicList();
+            matchingTrafficHub.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "MatchingTrafficHubList" ;
+            data.table = "MatchingTrafficHubList";
             data.box = "divBoxMatchingTrafficHub";
             data.frm = "frmMatchingTrafficHub";
-            data.type = "trafficHub" ;//根据ExamineMatchingTrafficTypeEnum 配置
+            data.type = "trafficHub";//根据ExamineMatchingTrafficTypeEnum 配置
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
@@ -65,9 +80,9 @@
                     return str;
                 }
             });
-            $("#"+matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
+            $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingTraffic/getExamineMatchingTrafficList", cols, {
-                type:matchingTrafficHub.prototype.config().type
+                type: matchingTrafficHub.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -77,12 +92,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingTraffic/deleteExamineMatchingTrafficById",
+                url: "${pageContext.request.contextPath}/examineMatchingTraffic/deleteExamineMatchingTrafficById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -97,31 +112,31 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+matchingTrafficHub.prototype.config().frm).clearAll();
-            $("#"+matchingTrafficHub.prototype.config().frm+" .type").val(matchingTrafficHub.prototype.config().type);
-            $('#'+matchingTrafficHub.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + matchingTrafficHub.prototype.config().frm).clearAll();
+            $("#" + matchingTrafficHub.prototype.config().frm + " .type").val(matchingTrafficHub.prototype.config().type);
+            $('#' + matchingTrafficHub.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+matchingTrafficHub.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + matchingTrafficHub.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(matchingTrafficHub.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingTraffic/saveAndUpdateExamineMatchingTraffic",
+                url: "${pageContext.request.contextPath}/examineMatchingTraffic/saveAndUpdateExamineMatchingTraffic",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+matchingTrafficHub.prototype.config().box).modal('hide');
+                        $('#' + matchingTrafficHub.prototype.config().box).modal('hide');
                         matchingTrafficHub.prototype.loadDataDicList();
                     }
                     else {
@@ -133,22 +148,22 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingTraffic/getExamineMatchingTrafficById",
+                url: "${pageContext.request.contextPath}/examineMatchingTraffic/getExamineMatchingTrafficById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+matchingTrafficHub.prototype.config().frm).clearAll();
+                        $("#" + matchingTrafficHub.prototype.config().frm).clearAll();
                         $("#" + matchingTrafficHub.prototype.config().frm).initForm(result.data);
-                        if (result.data.distance == null || result.data.distance == ''){
-                            $("#"+matchingTrafficHub.prototype.config().frm+" .distance").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingTrafficHub.prototype.config().frm+" .distance").val(result.data.distance).trigger("change");
+                        if (result.data.distance == null || result.data.distance == '') {
+                            $("#" + matchingTrafficHub.prototype.config().frm + " .distance").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingTrafficHub.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
                         }
-                        $('#'+matchingTrafficHub.prototype.config().box).modal("show");
+                        $('#' + matchingTrafficHub.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -156,9 +171,9 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingTraffic/estate_distance",
+                url: "${pageContext.request.contextPath}/examineMatchingTraffic/estate_distance",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -166,12 +181,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingTrafficHub.prototype.config().frm+" .distance").html(option);
-                            $("#"+matchingTrafficHub.prototype.config().frm+" .distance").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingTrafficHub.prototype.config().frm + " .distance").html(option);
+                            $("#" + matchingTrafficHub.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -185,13 +200,14 @@
      * 初始化
      */
     $(function () {
-        matchingTrafficHub.prototype.loadDataDicList();
-        matchingTrafficHub.prototype.init();
+        // matchingTrafficHub.prototype.loadDataDicList();
+        // matchingTrafficHub.prototype.init();
     })
 
 </script>
 
-<div id="divBoxMatchingTrafficHub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxMatchingTrafficHub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -201,8 +217,8 @@
                 <h3 class="modal-title">交通枢纽</h3>
             </div>
             <form id="frmMatchingTrafficHub" class="form-horizontal">
-                <input type="hidden"  name="id">
-                <input type="hidden"  name="type" class="type">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type" class="type">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -210,7 +226,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                           名称
+                                            名称
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
@@ -224,7 +240,8 @@
                                             距离
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="distance" class="form-control search-select select2 distance">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>

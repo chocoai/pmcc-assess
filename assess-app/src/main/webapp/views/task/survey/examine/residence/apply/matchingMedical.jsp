@@ -13,26 +13,20 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingMedical.prototype.loadDataDicList()"><i
+            <li><a class="collapse-link" onclick="matchingMedical.prototype.viewInit()"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>医养条件信息
-            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
-                    data-toggle="modal" href="#divBox"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
 
     <div class="x_content" style="display:none;">
-        <%--<div class="x_title">--%>
-            <%--<h3>医养条件信息--%>
-                <%--<button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"--%>
-                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                <%--</button>--%>
-            <%--</h3>--%>
-            <%--<div class="clearfix"></div>--%>
-        <%--</div>--%>
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">
@@ -58,6 +52,10 @@
 
     };
     matchingMedical.prototype = {
+        viewInit:function () {
+            matchingMedical.prototype.loadDataDicList();
+            matchingMedical.prototype.init();
+        },
         config: function () {
             var data = {};
             data.table = "MatchingMedicalList";
@@ -115,7 +113,7 @@
         showModel: function () {
             $("#" + matchingMedical.prototype.config().frm).clearAll();
             $("#" + matchingMedical.prototype.config().frm + " .type").val(matchingMedical.prototype.config().type);
-            matchingMedical.prototype.init();
+            // matchingMedical.prototype.init();
             $('#' + matchingMedical.prototype.config().box).modal("show");
         },
         saveData: function () {
