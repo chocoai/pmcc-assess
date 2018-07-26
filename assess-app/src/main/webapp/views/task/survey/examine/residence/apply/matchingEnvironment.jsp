@@ -10,46 +10,60 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>环境因素信息 <button type="button" class="btn btn-success" onclick="matchingEnvironment.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="matchingEnvironment.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>环境因素信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingEnvironment.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="MatchingEnvironmentList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="MatchingEnvironmentList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var matchingEnvironment = function () {
 
     };
     matchingEnvironment.prototype = {
-        config:function () {
+        viewInit:function () {
+            matchingEnvironment.prototype.loadDataDicList();
+            matchingEnvironment.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "MatchingEnvironmentList" ;
+            data.table = "MatchingEnvironmentList";
             data.box = "divBoxMatchingEnvironment";
             data.frm = "frmMatchingEnvironment";
-            data.type = "null" ;//
+            data.type = "null";//
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'typeName', title: '环境类型'});
             cols.push({field: 'categoryName', title: '环境类别'});
@@ -63,9 +77,9 @@
                     return str;
                 }
             });
-            $("#"+matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
+            $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingEnvironment/getExamineMatchingEnvironmentList", cols, {
-                type:matchingEnvironment.prototype.config().type
+                type: matchingEnvironment.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -75,12 +89,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/deleteExamineMatchingEnvironmentById",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/deleteExamineMatchingEnvironmentById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -95,31 +109,32 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+matchingEnvironment.prototype.config().frm).clearAll();
-            $("#"+matchingEnvironment.prototype.config().frm+" .type").val(matchingEnvironment.prototype.config().type);
-            $('#'+matchingEnvironment.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + matchingEnvironment.prototype.config().frm).clearAll();
+            $("#" + matchingEnvironment.prototype.config().frm + " .type").val(matchingEnvironment.prototype.config().type);
+            // matchingEnvironment.prototype.init();
+            $('#' + matchingEnvironment.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+matchingEnvironment.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + matchingEnvironment.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(matchingEnvironment.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/saveAndUpdateExamineMatchingEnvironment",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/saveAndUpdateExamineMatchingEnvironment",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+matchingEnvironment.prototype.config().box).modal('hide');
+                        $('#' + matchingEnvironment.prototype.config().box).modal('hide');
                         matchingEnvironment.prototype.loadDataDicList();
                     }
                     else {
@@ -131,32 +146,32 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/getExamineMatchingEnvironmentById",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/getExamineMatchingEnvironmentById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+matchingEnvironment.prototype.config().frm).clearAll();
+                        $("#" + matchingEnvironment.prototype.config().frm).clearAll();
                         $("#" + matchingEnvironment.prototype.config().frm).initForm(result.data);
-                        if (result.data.category == null || result.data.category == ''){
-                            $("#"+matchingEnvironment.prototype.config().frm+" .category").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingEnvironment.prototype.config().frm+" .category").val(result.data.category).trigger("change");
+                        if (result.data.category == null || result.data.category == '') {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .category").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .category").val(result.data.category).trigger("change");
                         }
-                        if (result.data.type == null || result.data.type == ''){
-                            $("#"+matchingEnvironment.prototype.config().frm+" .type").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingEnvironment.prototype.config().frm+" .type").val(result.data.type).trigger("change");
+                        if (result.data.type == null || result.data.type == '') {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .type").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .type").val(result.data.type).trigger("change");
                         }
-                        if (result.data.influenceDegree == null || result.data.influenceDegree == ''){
-                            $("#"+matchingEnvironment.prototype.config().frm+" .influenceDegree").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingEnvironment.prototype.config().frm+" .influenceDegree").val(result.data.influenceDegree).trigger("change");
+                        if (result.data.influenceDegree == null || result.data.influenceDegree == '') {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").val(result.data.influenceDegree).trigger("change");
                         }
-                        $('#'+matchingEnvironment.prototype.config().box).modal("show");
+                        $('#' + matchingEnvironment.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -164,9 +179,9 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/environment_category",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_category",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -174,12 +189,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingEnvironment.prototype.config().frm+" .category").html(option);
-                            $("#"+matchingEnvironment.prototype.config().frm+" .category").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingEnvironment.prototype.config().frm + " .category").html(option);
+                            $("#" + matchingEnvironment.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -188,7 +203,7 @@
                 }
             })
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/environment_type",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_type",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -196,12 +211,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingEnvironment.prototype.config().frm+" .type").html(option);
-                            $("#"+matchingEnvironment.prototype.config().frm+" .type").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingEnvironment.prototype.config().frm + " .type").html(option);
+                            $("#" + matchingEnvironment.prototype.config().frm + " .type").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -210,7 +225,7 @@
                 }
             })
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingEnvironment/environment_influence_degree",
+                url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_influence_degree",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -218,12 +233,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingEnvironment.prototype.config().frm+" .influenceDegree").html(option);
-                            $("#"+matchingEnvironment.prototype.config().frm+" .influenceDegree").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").html(option);
+                            $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -231,20 +246,21 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-            
+
         }
     }
     /**
      * 初始化
      */
     $(function () {
-        matchingEnvironment.prototype.loadDataDicList();
-        matchingEnvironment.prototype.init();
+        // matchingEnvironment.prototype.loadDataDicList();
+        // matchingEnvironment.prototype.init();
     })
 
 </script>
 
-<div id="divBoxMatchingEnvironment" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxMatchingEnvironment" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -254,7 +270,7 @@
                 <h3 class="modal-title">环境因素</h3>
             </div>
             <form id="frmMatchingEnvironment" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -265,7 +281,8 @@
                                             影响程度
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="influenceDegree" class="form-control search-select select2 influenceDegree">
+                                            <select required="required" name="influenceDegree"
+                                                    class="form-control search-select select2 influenceDegree">
                                             </select>
                                         </div>
                                     </div>
@@ -277,7 +294,8 @@
                                             环境类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="type" class="form-control search-select select2 type">
+                                            <select required="required" name="type"
+                                                    class="form-control search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
@@ -288,7 +306,8 @@
                                             环境类别
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category" class="form-control search-select select2 category">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
                                             </select>
                                         </div>
                                     </div>

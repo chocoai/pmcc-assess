@@ -42,147 +42,187 @@ public class ExamineBuildingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+    @RequestMapping(value = "/view", name = "转到index页面 (临时)", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/building" ;
+        String view = "/task/survey/examine/residence/apply/building";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingById",method = {RequestMethod.GET},name = "获取楼栋基础")
+    @RequestMapping(value = "/getExamineBuildingById", method = {RequestMethod.GET}, name = "获取楼栋基础")
     public HttpResult getById(Integer id) {
         ExamineBuildingVo examineBuilding = null;
         try {
-            if (id!=null){
+            if (id != null) {
                 examineBuilding = examineBuildingService.getExamineBuildingById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(examineBuilding);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineBuildingList",method = {RequestMethod.GET},name = "楼栋基础列表")
+    @RequestMapping(value = "/getExamineBuildingList", method = {RequestMethod.GET}, name = "楼栋基础列表")
     public BootstrapTableVo getExamineBuildingList(Integer examineType, Integer declareId) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuilding examineBuilding = new ExamineBuilding();
-            if (!ObjectUtils.isEmpty(examineType)){
+            if (!ObjectUtils.isEmpty(examineType)) {
                 examineBuilding.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId != null && declareId.equals(0)) {
                 examineBuilding.setDeclareId(declareId);
             }
             vo = examineBuildingService.getExamineBuildingLists(examineBuilding);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s",e1.getMessage()),e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteExamineBuildingById",method = {RequestMethod.POST},name = "删除楼栋基础")
+    @RequestMapping(value = "/deleteExamineBuildingById", method = {RequestMethod.POST}, name = "删除楼栋基础")
     public HttpResult delete(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 return HttpResult.newCorrectResult(examineBuildingService.deleteExamineBuilding(id));
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateExamineBuilding",method = {RequestMethod.POST},name = "更新楼栋基础")
-    public HttpResult save(ExamineBuildingDto examineBuildingDto){
+    @RequestMapping(value = "/saveAndUpdateExamineBuilding", method = {RequestMethod.POST}, name = "更新楼栋基础")
+    public HttpResult save(ExamineBuildingDto examineBuildingDto) {
         ExamineBuilding examineBuilding = new ExamineBuilding();
-        BeanUtils.copyProperties(examineBuildingDto,examineBuilding);
+        BeanUtils.copyProperties(examineBuildingDto, examineBuilding);
         try {
-            if (examineBuilding.getId()==null || examineBuilding.getId().equals(0)){
+            if (examineBuilding.getId() == null || examineBuilding.getId().equals(0)) {
                 examineBuildingService.addExamineBuilding(examineBuilding);
-            }else {
+            } else {
                 examineBuildingService.updateExamineBuilding(examineBuilding);
             }
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_examineBuilding_category",method = {RequestMethod.GET},name = "楼栋基础 建筑类别")
+    @RequestMapping(value = "/estate_examineBuilding_category", method = {RequestMethod.GET}, name = "楼栋基础 建筑类别")
     public HttpResult environment_type() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_PROPERTY_CATEGORY);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_building_structure",method = {RequestMethod.GET},name = "楼栋基础 建筑结构 上")
+    @RequestMapping(value = "/estate_building_structure", method = {RequestMethod.GET}, name = "楼栋基础 建筑结构 上")
     public HttpResult environment_category() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_PROPERTY_STRUCTURE);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasisList",method = {RequestMethod.GET},name = "楼栋基础 建筑结构 下")
+    @RequestMapping(value = "/getBasisList", method = {RequestMethod.GET}, name = "楼栋基础 建筑结构 下")
     public HttpResult getBasisList(Integer id) {
         List<BaseDataDic> baseDataDic = null;
         try {
-            if (id!=null){
+            if (id != null) {
                 baseDataDic = baseDataDicService.getCacheDataDicListByPid(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(baseDataDic);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_building_type",method = {RequestMethod.GET},name = "楼栋基础 物业类型")
+    @RequestMapping(value = "/estate_building_type", method = {RequestMethod.GET}, name = "楼栋基础 物业类型")
     public HttpResult environment_influence_degree() {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_PROPERTY_TYPE);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBuildAndProperty",method = {RequestMethod.GET},name = "楼栋基础 物业公司与建筑公司")
+    @RequestMapping(value = "/getBuildAndProperty", method = {RequestMethod.GET}, name = "楼栋基础 物业公司与建筑公司以及开发商")
     public HttpResult getBuildAndProperty(String type) {
         try {
-            if (!StringUtils.isEmpty(type)){
-                if (Objects.equal(type,"DataBuilder")){
+            if (!StringUtils.isEmpty(type)) {
+                if (Objects.equal(type, "DataBuilder")) {
                     return HttpResult.newCorrectResult(examineBuildingService.getDataBuilderList());
                 }
-                if (Objects.equal(type,"DataProperty")){
+                if (Objects.equal(type, "DataProperty")) {
                     return HttpResult.newCorrectResult(examineBuildingService.getDataPropertyList());
+                }
+                if (Objects.equal(type, "DataDeveloper")) {
+                    return HttpResult.newCorrectResult(examineBuildingService.getDataDeveloperList());
                 }
             }
             return null;
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    //-----------
+    @ResponseBody
+    @RequestMapping(value = "/estate_total_building_type", method = {RequestMethod.GET}, name = "总栋数 (0一栋 1多栋)")
+    public HttpResult estate_total_building_type() {
+        try {
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_BUILDING_TYPE);
+            return HttpResult.newCorrectResult(baseDataDic);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/estate_total_land_use", method = {RequestMethod.GET}, name = "土地用途")
+    public HttpResult estate_total_land_use() {
+        try {
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_USE);
+            return HttpResult.newCorrectResult(baseDataDic);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/estate_total_land_level", method = {RequestMethod.GET}, name = "土地级别")
+    public HttpResult estate_total_land_level() {
+        try {
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_LEVEL);
+            return HttpResult.newCorrectResult(baseDataDic);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 

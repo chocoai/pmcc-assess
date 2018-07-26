@@ -10,46 +10,62 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>购物商场信息 <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="matchingMarket.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>购物商场信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+
+
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="MatchingMarketList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="MatchingMarketList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var matchingMarket = function () {
 
     };
     matchingMarket.prototype = {
-        config:function () {
+        viewInit:function () {
+            matchingMarket.prototype.loadDataDicList();
+            matchingMarket.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "MatchingMarketList" ;
+            data.table = "MatchingMarketList";
             data.box = "divBoxMatchingMarket";
             data.frm = "frmMatchingMarket";
-            data.type = "matchingMarket" ;// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+            data.type = "matchingMarket";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '购物商场名称'});
             cols.push({field: 'categoryName', title: '购物商场类别'});
@@ -64,9 +80,9 @@
                     return str;
                 }
             });
-            $("#"+matchingMarket.prototype.config().table).bootstrapTable('destroy');
+            $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
-                type:matchingMarket.prototype.config().type
+                type: matchingMarket.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -76,12 +92,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/deleteExamineMatchingLeisurePlaceById",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/deleteExamineMatchingLeisurePlaceById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -96,10 +112,10 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+matchingMarket.prototype.config().frm).clearAll();
-            $("#"+matchingMarket.prototype.config().frm+" .type").val(matchingMarket.prototype.config().type);
-            $("#"+matchingMarket.prototype.config().frm+" .name").empty();
+        showModel: function () {
+            $("#" + matchingMarket.prototype.config().frm).clearAll();
+            $("#" + matchingMarket.prototype.config().frm + " .type").val(matchingMarket.prototype.config().type);
+            $("#" + matchingMarket.prototype.config().frm + " .name").empty();
             // var size = $("#"+matchingMarket.prototype.config().frm+" .name .form-group").size();
             // for (var i = 0 ;i < size; i++){
             //     console.log("i:"+i);
@@ -120,30 +136,31 @@
             html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
             html += "</div>";
-            $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
-            $('#'+matchingMarket.prototype.config().box).modal("show");
+            $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
+            // matchingMarket.prototype.init();
+            $('#' + matchingMarket.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+matchingMarket.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + matchingMarket.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(matchingMarket.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             data.type = matchingMarket.prototype.config().type;
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/saveAndUpdateExamineMatchingLeisurePlace",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/saveAndUpdateExamineMatchingLeisurePlace",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+matchingMarket.prototype.config().box).modal('hide');
+                        $('#' + matchingMarket.prototype.config().box).modal('hide');
                         matchingMarket.prototype.loadDataDicList();
                     }
                     else {
@@ -155,33 +172,33 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceById",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+matchingMarket.prototype.config().frm).clearAll();
+                        $("#" + matchingMarket.prototype.config().frm).clearAll();
                         $("#" + matchingMarket.prototype.config().frm).initForm(result.data);
-                        if (result.data.category == null || result.data.category == ''){
-                            $("#"+matchingMarket.prototype.config().frm+" .category").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingMarket.prototype.config().frm+" .category").val(result.data.category).trigger("change");
+                        if (result.data.category == null || result.data.category == '') {
+                            $("#" + matchingMarket.prototype.config().frm + " .category").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingMarket.prototype.config().frm + " .category").val(result.data.category).trigger("change");
                         }
-                        if (result.data.grade == null || result.data.grade == ''){
-                            $("#"+matchingMarket.prototype.config().frm+" .grade").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingMarket.prototype.config().frm+" .grade").val(result.data.grade).trigger("change");
+                        if (result.data.grade == null || result.data.grade == '') {
+                            $("#" + matchingMarket.prototype.config().frm + " .grade").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingMarket.prototype.config().frm + " .grade").val(result.data.grade).trigger("change");
                         }
-                        if (result.data.distance == null || result.data.distance == ''){
-                            $("#"+matchingMarket.prototype.config().frm+" .distance").val(null).trigger("change");
-                        }else {
-                            $("#"+matchingMarket.prototype.config().frm+" .distance").val(result.data.distance).trigger("change");
+                        if (result.data.distance == null || result.data.distance == '') {
+                            $("#" + matchingMarket.prototype.config().frm + " .distance").val(null).trigger("change");
+                        } else {
+                            $("#" + matchingMarket.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
                         }
                         matchingMarket.prototype.writeHTMLData(result.data.name);
-                        $('#'+matchingMarket.prototype.config().box).modal("show");
+                        $('#' + matchingMarket.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -189,23 +206,23 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_category",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_category",
                 type: "get",
-                data:{type:matchingMarket.prototype.config().type},
+                data: {type: matchingMarket.prototype.config().type},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingMarket.prototype.config().frm+" .category").html(option);
-                            $("#"+matchingMarket.prototype.config().frm+" .category").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingMarket.prototype.config().frm + " .category").html(option);
+                            $("#" + matchingMarket.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -214,21 +231,21 @@
                 }
             })
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_grade",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_grade",
                 type: "get",
-                data:{type:matchingMarket.prototype.config().type},
+                data: {type: matchingMarket.prototype.config().type},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingMarket.prototype.config().frm+" .grade").html(option);
-                            $("#"+matchingMarket.prototype.config().frm+" .grade").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingMarket.prototype.config().frm + " .grade").html(option);
+                            $("#" + matchingMarket.prototype.config().frm + " .grade").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -237,21 +254,21 @@
                 }
             })
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_distance",
+                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_distance",
                 type: "get",
-                data:{type:matchingMarket.prototype.config().type},
+                data: {type: matchingMarket.prototype.config().type},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+matchingMarket.prototype.config().frm+" .distance").html(option);
-                            $("#"+matchingMarket.prototype.config().frm+" .distance").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + matchingMarket.prototype.config().frm + " .distance").html(option);
+                            $("#" + matchingMarket.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -261,7 +278,7 @@
             })
 
         },
-        appendHTML:function (item,this_) {
+        appendHTML: function (item, this_) {
             var lableValue = "购物商场名称";
             var html = "<div class='form-group' style='margin-top:8px;'>";
             html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
@@ -271,20 +288,20 @@
             html += "</div>";
             html += "</div>";
             // $(this_).parent().prev().parent().parent().after(html);
-            $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
+            $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
         },
-        cleanHTMLData:function (item) {
+        cleanHTMLData: function (item) {
             var value = "";
             $(item).parent().prev().parent().parent().empty();
         },
-        writeHTMLData:function (str) {
-            $("#"+matchingMarket.prototype.config().frm+" .name").empty();
+        writeHTMLData: function (str) {
+            $("#" + matchingMarket.prototype.config().frm + " .name").empty();
             var strs = str.split(",");
             var length = strs.length;
             var lableValue = "购物商场名称";
             var item = "name";
             for (var i = 0; i < length; i++) {
-                console.log("i:"+i);
+                console.log("i:" + i);
                 var html = "<div class='form-group' style='margin-top:8px;'>";
                 html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
                 html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
@@ -292,7 +309,7 @@
                 html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
                 html += "</div>";
                 html += "</div>";
-                $("#"+matchingMarket.prototype.config().frm+" .name").append(html);
+                $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
             }
         }
     }
@@ -300,8 +317,8 @@
      * 初始化
      */
     $(function () {
-        matchingMarket.prototype.loadDataDicList();
-        matchingMarket.prototype.init();
+        // matchingMarket.prototype.loadDataDicList();
+        // matchingMarket.prototype.init();
     })
 
 </script>
@@ -316,8 +333,8 @@
                 <h3 class="modal-title">购物商场</h3>
             </div>
             <form id="frmMatchingMarket" class="form-horizontal">
-                <input type="hidden"  name="id">
-                <input type="hidden"  name="type">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -328,7 +345,8 @@
                                             购物商场距离
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="distance" class="form-control search-select select2 distance">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>
@@ -340,7 +358,8 @@
                                             购物商场档次
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="grade" class="form-control search-select select2 grade">
+                                            <select required="required" name="grade"
+                                                    class="form-control search-select select2 grade">
                                             </select>
                                         </div>
                                     </div>
@@ -351,7 +370,8 @@
                                             购物商场类别
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category" class="form-control search-select select2 category">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
                                             </select>
                                         </div>
                                     </div>
@@ -362,7 +382,9 @@
                                             购物商场名称
                                         </label>
                                         <div class="col-sm-10">
-                                            <button class="btn btn-xs btn-success" onclick="matchingMarket.prototype.appendHTML('name',this)"><i class="fa fa-plus"></i></button>
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="matchingMarket.prototype.appendHTML('name',this)"><i
+                                                    class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -372,7 +394,9 @@
                                         <label class="col-md-2 col-sm-2 col-xs-12 control-label">购物商场名称</label>
                                         <div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                             <input class="form-control" name="name" required="required" type="text">
-                                            <span class="input-group-btn"><input type="button" class="btn btn-warning" value="X" onclick="matchingMarket.prototype.cleanHTMLData(this)"></span>
+                                            <span class="input-group-btn"><input type="button" class="btn btn-warning"
+                                                                                 value="X"
+                                                                                 onclick="matchingMarket.prototype.cleanHTMLData(this)"></span>
                                         </div>
                                     </div>
                                 </div>

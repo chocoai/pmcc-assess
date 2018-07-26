@@ -47,6 +47,9 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_DINING_GRADE = "estate.dining.grade";//餐饮场所档次
     public static final String ESTATE_EXAMINEMATCHINGMEDICAL_LEVEL = "estate.examineMatchingMedical.level";//医养条件等级
     public static final String ESTATE_EXAMINEMATCHINGMEDICAL_DISTANCE = "estate.examineMatchingMedical.distance";//医养条件距离
+    public static final String ESTATE_TOTAL_BUILDING_TYPE = "estate.total_building_type";//总栋数 (0一栋 1多栋)
+    public static final String ESTATE_TOTAL_LAND_USE = "estate.land_use";//土地用途
+    public static final String ESTATE_TOTAL_LAND_LEVEL = "estate.land_level";//土地级别
 
     public static final String EXAMINE_BUILDING_PROPERTY_TYPE = "building.property_type";//物业类型
     public static final String EXAMINE_BUILDING_PROPERTY_CATEGORY = "building.building_category";//建筑类别

@@ -81,7 +81,7 @@ public class ExamineHouseIntelligentService {
             vo.setSwitchCircuitName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_SWITCH_CIRCUIT,examineHouseIntelligent.getSwitchCircuit()));
         }
         if (examineHouseIntelligent.getLampsLanterns() != null){
-            vo.setSwitchCircuitName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_LAMPS_LANTERNS,examineHouseIntelligent.getLampsLanterns()));
+            vo.setLampsLanternsName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_LAMPS_LANTERNS,examineHouseIntelligent.getLampsLanterns()));
         }
         if (examineHouseIntelligent.getInternalCommunication() != null){
             vo.setInternalCommunicationName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_INTERNAL_COMMUNICATION,examineHouseIntelligent.getInternalCommunication()));

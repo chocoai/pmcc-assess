@@ -78,7 +78,7 @@ public class ExamineHouseWaterService {
             vo.setSupplyErectionMethodName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_SUPPLY_ERECTION_METHOD,examineHouseWater.getSupplyErectionMethod()));
         }
         if (examineHouseWater.getPretreatedWater() != null){
-            vo.setSupplyErectionMethodName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_PRETREATED_WATER,examineHouseWater.getPretreatedWater()));
+            vo.setPretreatedWaterName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_PRETREATED_WATER,examineHouseWater.getPretreatedWater()));
         }
         if (examineHouseWater.getDrainageCircuit() != null){
             vo.setDrainageCircuitName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT,examineHouseWater.getDrainageCircuit()));
