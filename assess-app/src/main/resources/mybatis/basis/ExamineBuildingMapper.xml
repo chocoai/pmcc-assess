@@ -16,7 +16,7 @@
     <result column="floor_start" property="floorStart" jdbcType="INTEGER" />
     <result column="floor_end" property="floorEnd" jdbcType="INTEGER" />
     <result column="building_height" property="buildingHeight" jdbcType="DECIMAL" />
-    <result column="building area" property="buildingArea" jdbcType="DECIMAL" />
+    <result column="building_area" property="buildingArea" jdbcType="DECIMAL" />
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="building_category" property="buildingCategory" jdbcType="INTEGER" />
     <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
@@ -92,7 +92,7 @@
   <sql id="Base_Column_List" >
     id, declare_id, examine_type, builder_id, property_Id, building_number, property_type, 
     floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, floor_end, 
-    building_height, "building area", cover_an_area, building_category, open_time, room_time, 
+    building_height, building_area, cover_an_area, building_category, open_time, room_time, 
     floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -134,7 +134,7 @@
       property_Id, building_number, property_type, 
       floor_count, unit_interval, property_fee, 
       facilities_use_fee, floor_start, floor_end, 
-      building_height, "building area", cover_an_area, 
+      building_height, building_area, cover_an_area, 
       building_category, open_time, room_time, 
       floor_height, diameter_depth, land_use_year, 
       location, net_height, building_structure, 
@@ -197,7 +197,7 @@
         building_height,
       </if>
       <if test="buildingArea != null" >
-        "building area",
+        building_area,
       </if>
       <if test="coverAnArea != null" >
         cover_an_area,
@@ -375,7 +375,7 @@
         building_height = #{record.buildingHeight,jdbcType=DECIMAL},
       </if>
       <if test="record.buildingArea != null" >
-        "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+        building_area = #{record.buildingArea,jdbcType=DECIMAL},
       </if>
       <if test="record.coverAnArea != null" >
         cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
@@ -437,7 +437,7 @@
       floor_start = #{record.floorStart,jdbcType=INTEGER},
       floor_end = #{record.floorEnd,jdbcType=INTEGER},
       building_height = #{record.buildingHeight,jdbcType=DECIMAL},
-      "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+      building_area = #{record.buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       building_category = #{record.buildingCategory,jdbcType=INTEGER},
       open_time = #{record.openTime,jdbcType=TIMESTAMP},
@@ -498,7 +498,7 @@
         building_height = #{buildingHeight,jdbcType=DECIMAL},
       </if>
       <if test="buildingArea != null" >
-        "building area" = #{buildingArea,jdbcType=DECIMAL},
+        building_area = #{buildingArea,jdbcType=DECIMAL},
       </if>
       <if test="coverAnArea != null" >
         cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
@@ -557,7 +557,7 @@
       floor_start = #{floorStart,jdbcType=INTEGER},
       floor_end = #{floorEnd,jdbcType=INTEGER},
       building_height = #{buildingHeight,jdbcType=DECIMAL},
-      "building area" = #{buildingArea,jdbcType=DECIMAL},
+      building_area = #{buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       building_category = #{buildingCategory,jdbcType=INTEGER},
       open_time = #{openTime,jdbcType=TIMESTAMP},

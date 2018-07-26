@@ -10,8 +10,6 @@ public class ExamineUnitHuxing {
 
     private Integer examineType;
 
-    private Integer unitId;
-
     private Integer houseLayout;
 
     private BigDecimal area;
@@ -52,14 +50,6 @@ public class ExamineUnitHuxing {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
     }
 
     public Integer getHouseLayout() {

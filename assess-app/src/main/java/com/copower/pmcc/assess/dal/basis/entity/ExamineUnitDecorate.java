@@ -9,8 +9,6 @@ public class ExamineUnitDecorate {
 
     private Integer examineType;
 
-    private Integer unitId;
-
     private Integer decorationPart;
 
     private Integer decoratingMaterial;
@@ -47,14 +45,6 @@ public class ExamineUnitDecorate {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
     }
 
     public Integer getDecorationPart() {

@@ -9,8 +9,6 @@ public class ExamineUnitElevator {
 
     private Integer examineType;
 
-    private Integer unitId;
-
     private String type;
 
     private String brand;
@@ -53,14 +51,6 @@ public class ExamineUnitElevator {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
     }
 
     public String getType() {

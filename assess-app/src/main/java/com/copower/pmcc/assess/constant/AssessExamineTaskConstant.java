@@ -50,6 +50,33 @@ public class AssessExamineTaskConstant {
 
     public static final String EXAMINE_BUILDING_PROPERTY_TYPE = "building.property_type";//物业类型
     public static final String EXAMINE_BUILDING_PROPERTY_CATEGORY = "building.building_category";//建筑类别
+    public static final String EXAMINE_BUILDING_PROPERTY_STRUCTURE = "building.building_structure";//建筑结构
+    public static final String EXAMINE_BUILDING_DECORATING_MATERIAL = "building.decorating_material";//装修材料
+    public static final String EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY = "building.construction_technology";//施工工艺
+    public static final String EXAMINE_BUILDING_DECORATION_PART = "building.decoration_part";//装修部位
+    public static final String EXAMINE_BUILDING_MATERIAL_PRICE = "building.material_price";//材料价格区间
+
+    public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
+    public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型
+    public static final String EXAMINE_HOUSE_STREET_LEVEL = "examine.house.street_level";//街道级别
+    public static final String EXAMINE_HOUSE_TRAFFIC_FLOW = "examine.house.traffic_flow";//交通流量
+    public static final String EXAMINE_HOUSE_VISITORS_FLOWRATE = "examine.house.visitors_flowrate";//人流量
+    public static final String EXAMINE_HOUSE_AIR_CONDITIONING_MODE = "examine.house.Air_conditioning_mode";//空调制式
+    public static final String EXAMINE_HOUSE_EQUIPMENT_PRICE_RANGE = "examine.house.equipment_price_range";//设备价格区间
+    public static final String EXAMINE_HOUSE_WAY_WIND = "examine.house.way.wind";//供风方式
+    public static final String EXAMINE_HOUSE_HEATING_METHOD = "examine.house.heating.method";//供暖方式
+    public static final String EXAMINE_HOUSE_WIRE_ERECTION_METHOD = "examine.house.wire_erection_method";//电线架设方式
+    public static final String EXAMINE_HOUSE_SWITCH_CIRCUIT = "examine.house.switch_circuit";//开关回路
+    public static final String EXAMINE_HOUSE_LAMPS_LANTERNS = "examine.house.lamps_lanterns";//灯具
+    public static final String EXAMINE_HOUSE_INTERNAL_COMMUNICATION = "examine.house.internal_communication";//屋内通讯
+    public static final String EXAMINE_HOUSE_MONITORING_SYSTEM = "examine.house.monitoring_system";//监控系统
+    public static final String EXAMINE_HOUSE_INTELLIGENT_SYSTEM = "examine.house.intelligent_system";//智能系统
+    public static final String EXAMINE_HOUSE_SUPPLY_ERECTION_METHOD = "examine.house.water.supply_erection_method";//供水管架设方式
+    public static final String EXAMINE_HOUSE_PRETREATED_WATER = "examine.house.water.pretreated_water";//前置净水
+    public static final String EXAMINE_HOUSE_PURIFICATION_EQUIPMENT_PRICE = "examine.house.water.purification_equipment_price";//前置净水设备价格区间
+    public static final String EXAMINE_HOUSE_WATER_INTAKE_EQUIPMENT_PRICE = "examine.house.water.water_intake_equipment_price";//取水设备价格区间
+    public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT = "examine.house.water.drainage_circuit";//排水回路
+    public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT_COUNT = "examine.house.water.drainage_circuit_count";//排水回路数
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 
