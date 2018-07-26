@@ -7,12 +7,25 @@
 </head>
 
 <body>
-    <div class="x_content">
-        <div class="x_title">
-            <h3>通讯网络信息 <button type="button" class="btn btn-success" onclick="estateNetwork.prototype.showModel()"
-                               data-toggle="modal" href="#divBox"> 新增
-            </button></h3>
-            <div class="clearfix"></div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="estateNetwork.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>通讯网络信息
+            <%--<button type="button" class="btn btn-success" onclick="estateNetwork.prototype.showModel()"--%>
+                    <%--data-toggle="modal" href="#divBox"> 新增--%>
+            <%--</button>--%>
+        </h3>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="x_content" style="display: none;">
+        <div>
+            <button type="button" class="btn btn-success" onclick="estateNetwork.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
         <form class="form-horizontal">
             <div class="form-group">
@@ -28,8 +41,9 @@
             </div>
         </form>
     </div>
+</div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 
 <script type="application/javascript">
 
@@ -37,14 +51,18 @@
 
     };
     estateNetwork.prototype = {
-        config:function () {
+        viewInit:function () {
+            estateNetwork.prototype.loadDataDicList();
+            // estateNetwork.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "examineEstateNetworkList" ;
+            data.table = "examineEstateNetworkList";
             data.box = "divBoxExamineEstateNetwork";
             data.frm = "frmExamineEstateNetwork";
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '通讯名称'});
             cols.push({field: 'serviceContent', title: '服务内容'});
@@ -58,9 +76,9 @@
                     return str;
                 }
             });
-            $("#"+estateNetwork.prototype.config().table).bootstrapTable('destroy');
+            $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkList", cols, {
-                name:$("#queryName").val()
+                name: $("#queryName").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -70,12 +88,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateNetwork/deleteExamineEstateNetworkById",
+                url: "${pageContext.request.contextPath}/examineEstateNetwork/deleteExamineEstateNetworkById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -90,30 +108,30 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+estateNetwork.prototype.config().frm).clearAll();
-            $('#'+estateNetwork.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + estateNetwork.prototype.config().frm).clearAll();
+            $('#' + estateNetwork.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+estateNetwork.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + estateNetwork.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(estateNetwork.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateNetwork/saveAndUpdateExamineEstateNetwork",
+                url: "${pageContext.request.contextPath}/examineEstateNetwork/saveAndUpdateExamineEstateNetwork",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+estateNetwork.prototype.config().box).modal('hide');
+                        $('#' + estateNetwork.prototype.config().box).modal('hide');
                         estateNetwork.prototype.loadDataDicList();
                     }
                     else {
@@ -125,17 +143,17 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkById",
+                url: "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+estateNetwork.prototype.config().frm).clearAll();
+                        $("#" + estateNetwork.prototype.config().frm).clearAll();
                         $("#" + estateNetwork.prototype.config().frm).initForm(result.data);
-                        $('#'+estateNetwork.prototype.config().box).modal("show");
+                        $('#' + estateNetwork.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -148,12 +166,13 @@
      * 初始化
      */
     $(function () {
-        estateNetwork.prototype.loadDataDicList();
+        // estateNetwork.prototype.loadDataDicList();
     });
 
 </script>
 
-<div id="divBoxExamineEstateNetwork" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxExamineEstateNetwork" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -163,7 +182,7 @@
                 <h3 class="modal-title">通信网络</h3>
             </div>
             <form id="frmExamineEstateNetwork" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">

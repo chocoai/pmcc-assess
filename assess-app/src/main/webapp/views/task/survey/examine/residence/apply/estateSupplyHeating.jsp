@@ -11,37 +11,51 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>供热信息 <button type="button" class="btn btn-success" onclick="estateSupplyHeating.prototype.showModel()"
-                         data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="estateSupplyHeating.prototype.viewInit()"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>供热信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="estateSupplyHeating.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="EstateSupplyHeatingList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="EstateSupplyHeatingList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var estateSupplyHeating = function () {
 
     };
     estateSupplyHeating.prototype = {
+        viewInit:function () {
+            estateSupplyHeating.prototype.loadDataDicList();
+            estateSupplyHeating.prototype.init();
+        },
         config:function () {
             var data = {};
             data.table = "EstateSupplyHeatingList" ;
@@ -102,6 +116,7 @@
         showModel:function () {
             $("#"+estateSupplyHeating.prototype.config().frm).clearAll();
             $("#"+estateSupplyHeating.prototype.config().frm+" .type").val(estateSupplyHeating.prototype.config().type);
+            // estateSupplyHeating.prototype.init();
             $('#'+estateSupplyHeating.prototype.config().box).modal("show");
         },
         saveData:function () {
@@ -214,8 +229,8 @@
      * 初始化
      */
     $(function () {
-        estateSupplyHeating.prototype.loadDataDicList();
-        estateSupplyHeating.prototype.init();
+        // estateSupplyHeating.prototype.loadDataDicList();
+        // estateSupplyHeating.prototype.init();
     })
 
 </script>

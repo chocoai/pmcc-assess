@@ -10,37 +10,51 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>车位信息 <button type="button" class="btn btn-success" onclick="estateParking.prototype.showModel()"
-                           data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="estateParking.prototype.viewInit()"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>车位信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+
+    <div class="x_content" style="display:none;">
+        <div>
+            <button type="button" class="btn btn-success" onclick="estateParking.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="estateParkingList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="estateParkingList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var estateParking = function () {
 
     };
     estateParking.prototype = {
+        viewInit:function () {
+            estateParking.prototype.loadDataDicList();
+            estateParking.prototype.init();
+        },
         config:function () {
             var data = {};
             data.table = "estateParkingList" ;
@@ -95,6 +109,7 @@
         },
         showModel:function () {
             $("#"+estateParking.prototype.config().frm).clearAll();
+            // estateParking.prototype.init();
             $('#'+estateParking.prototype.config().box).modal("show");
         },
         saveData:function () {
@@ -180,8 +195,8 @@
      * 初始化
      */
     $(function () {
-        estateParking.prototype.loadDataDicList();
-        estateParking.prototype.init();
+        // estateParking.prototype.loadDataDicList();
+        // estateParking.prototype.init();
     })
 
 </script>

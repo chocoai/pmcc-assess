@@ -41,7 +41,7 @@
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var examineBuildingOutfit = function () {

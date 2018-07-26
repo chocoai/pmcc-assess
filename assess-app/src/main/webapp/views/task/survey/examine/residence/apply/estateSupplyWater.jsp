@@ -11,46 +11,60 @@
 </head>
 
 <body>
-<div class="x_content">
-    <div class="x_title">
-        <h3>供水信息 <button type="button" class="btn btn-success" onclick="estateSupplyWater.prototype.showModel()"
-                         data-toggle="modal" href="#divBox"> 新增
-        </button></h3>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" onclick="estateSupplyWater.prototype.viewInit()"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h3>供水信息
+        </h3>
         <div class="clearfix"></div>
     </div>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <div class="x-valid">
-            </div>
+    <div class="x_content" style="display: none">
+        <div>
+            <button type="button" class="btn btn-success" onclick="estateSupplyWater.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="EstateSupplyWaterList">
-                    <!-- cerare document add ajax data-->
-                </table>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="x-valid">
+                    <table class="table table-bordered" id="EstateSupplyWaterList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     var estateSupplyWater = function () {
 
     };
     estateSupplyWater.prototype = {
-        config:function () {
+        viewInit:function () {
+            estateSupplyWater.prototype.loadDataDicList();
+            estateSupplyWater.prototype.init();
+        },
+        config: function () {
             var data = {};
-            data.table = "EstateSupplyWaterList" ;
+            data.table = "EstateSupplyWaterList";
             data.box = "divBoxEstateSupplyWater";
             data.frm = "frmEstateSupplyWater";
-            data.type = "estateSupplyWater" ;//根据 ExamineEstateSupplyEnumType 配置
+            data.type = "estateSupplyWater";//根据 ExamineEstateSupplyEnumType 配置
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '供水名称'});
             cols.push({field: 'reputation', title: '供水商信誉'});
@@ -67,9 +81,9 @@
                     return str;
                 }
             });
-            $("#"+estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
+            $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
-                type:estateSupplyWater.prototype.config().type
+                type: estateSupplyWater.prototype.config().type
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -79,12 +93,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateSupply/deleteExamineEstateSupplyById",
+                url: "${pageContext.request.contextPath}/examineEstateSupply/deleteExamineEstateSupplyById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -99,31 +113,32 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+estateSupplyWater.prototype.config().frm).clearAll();
-            $("#"+estateSupplyWater.prototype.config().frm+" .type").val(estateSupplyWater.prototype.config().type);
-            $('#'+estateSupplyWater.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + estateSupplyWater.prototype.config().frm).clearAll();
+            $("#" + estateSupplyWater.prototype.config().frm + " .type").val(estateSupplyWater.prototype.config().type);
+            // estateSupplyWater.prototype.init();
+            $('#' + estateSupplyWater.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+estateSupplyWater.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + estateSupplyWater.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(estateSupplyWater.prototype.config().frm);
-            if ($("#declareId").size() > 0){
+            if ($("#declareId").size() > 0) {
                 data.declareId = $("#declareId").val();
             }
-            if ($("#examineType").size() > 0){
+            if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateSupply/saveAndUpdateExamineEstateSupply",
+                url: "${pageContext.request.contextPath}/examineEstateSupply/saveAndUpdateExamineEstateSupply",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+estateSupplyWater.prototype.config().box).modal('hide');
+                        $('#' + estateSupplyWater.prototype.config().box).modal('hide');
                         estateSupplyWater.prototype.loadDataDicList();
                     }
                     else {
@@ -135,27 +150,27 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyById",
+                url: "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+estateSupplyWater.prototype.config().frm).clearAll();
+                        $("#" + estateSupplyWater.prototype.config().frm).clearAll();
                         $("#" + estateSupplyWater.prototype.config().frm).initForm(result.data);
-                        if (result.data.lineGrade == null || result.data.lineGrade == ''){
-                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").val(null).trigger("change");
-                        }else {
-                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").val(result.data.lineGrade).trigger("change");
+                        if (result.data.lineGrade == null || result.data.lineGrade == '') {
+                            $("#" + estateSupplyWater.prototype.config().frm + " .lineGrade").val(null).trigger("change");
+                        } else {
+                            $("#" + estateSupplyWater.prototype.config().frm + " .lineGrade").val(result.data.lineGrade).trigger("change");
                         }
-                        if (result.data.grade == null || result.data.grade == ''){
-                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").val(null).trigger("change");
-                        }else {
-                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").val(result.data.grade).trigger("change");
+                        if (result.data.grade == null || result.data.grade == '') {
+                            $("#" + estateSupplyWater.prototype.config().frm + " .grade").val(null).trigger("change");
+                        } else {
+                            $("#" + estateSupplyWater.prototype.config().frm + " .grade").val(result.data.grade).trigger("change");
                         }
-                        $('#'+estateSupplyWater.prototype.config().box).modal("show");
+                        $('#' + estateSupplyWater.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -163,9 +178,9 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateSupply/line_water_supply_pipe_grade",
+                url: "${pageContext.request.contextPath}/examineEstateSupply/line_water_supply_pipe_grade",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -173,12 +188,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").html(option);
-                            $("#"+estateSupplyWater.prototype.config().frm+" .lineGrade").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + estateSupplyWater.prototype.config().frm + " .lineGrade").html(option);
+                            $("#" + estateSupplyWater.prototype.config().frm + " .lineGrade").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -187,7 +202,7 @@
                 }
             })
             $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateSupply/supplier_grade",
+                url: "${pageContext.request.contextPath}/examineEstateSupply/supplier_grade",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
@@ -195,12 +210,12 @@
                         var data = result.data;
                         var gradeNum = data.length;
                         var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").html(option);
-                            $("#"+estateSupplyWater.prototype.config().frm+" .grade").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $("#" + estateSupplyWater.prototype.config().frm + " .grade").html(option);
+                            $("#" + estateSupplyWater.prototype.config().frm + " .grade").select2({minimumResultsForSearch: -1});//加载样式
                         }
                     }
                 },
@@ -214,13 +229,14 @@
      * 初始化
      */
     $(function () {
-        estateSupplyWater.prototype.loadDataDicList();
-        estateSupplyWater.prototype.init();
+        // estateSupplyWater.prototype.loadDataDicList();
+        // estateSupplyWater.prototype.init();
     })
 
 </script>
 
-<div id="divBoxEstateSupplyWater" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxEstateSupplyWater" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -230,8 +246,8 @@
                 <h3 class="modal-title">供水</h3>
             </div>
             <form id="frmEstateSupplyWater" class="form-horizontal">
-                <input type="hidden"  name="id">
-                <input type="hidden"  name="type" class="type">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type" class="type">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -253,7 +269,8 @@
                                             供水线路管等级
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="lineGrade" class="form-control search-select select2 lineGrade">
+                                            <select required="required" name="lineGrade"
+                                                    class="form-control search-select select2 lineGrade">
                                             </select>
                                         </div>
                                     </div>
@@ -276,7 +293,8 @@
                                             供水商等级
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="grade" class="form-control search-select select2 grade">
+                                            <select required="required" name="grade"
+                                                    class="form-control search-select select2 grade">
                                             </select>
                                         </div>
                                     </div>
@@ -287,7 +305,8 @@
                                             功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control" data-rule-number='true' name="number"
+                                            <input type="text" name="power" class="form-control" data-rule-number='true'
+                                                   name="number"
                                                    placeholder="功率" required="required">
                                         </div>
                                     </div>
