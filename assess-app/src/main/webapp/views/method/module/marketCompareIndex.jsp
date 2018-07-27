@@ -35,21 +35,6 @@
     </div>
 </div>
 
-<input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
-<input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
-<input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
-<input type="hidden" id="casesJSON" value='${casesJSON}'>
-<script type="text/javascript">
-    $(function () {
-        marketCompare.init({
-            marketCompare: JSON.parse($("#marketCompareJSON").val()),
-            fields: JSON.parse($("#fieldsJSON").val()),
-            evaluation: JSON.parse($("#evaluationJSON").val()),
-            cases: JSON.parse($("#casesJSON").val())
-        });
-    })
-</script>
-
 <script type="text/javascript">
     (function ($) {
 

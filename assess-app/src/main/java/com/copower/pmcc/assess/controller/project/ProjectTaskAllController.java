@@ -73,7 +73,7 @@ public class ProjectTaskAllController {
     public HttpResult projectTaskAllSubmit(String conclusion, Integer planId, String backData, String appointUserAccount) {
         try {
             List<ProjectTaskAllBackDto> taskAllBackDtos = JSON.parseArray(backData, ProjectTaskAllBackDto.class);
-            projectTaskAllService.startTaskAllApproval(conclusion, planId, taskAllBackDtos,appointUserAccount);
+            projectTaskAllService.startTaskAllApproval(conclusion, planId, taskAllBackDtos, appointUserAccount);
         } catch (Exception ex) {
             return HttpResult.newErrorResult(ex.getMessage());
         }
@@ -168,13 +168,6 @@ public class ProjectTaskAllController {
     }
 
     public String checkNextNodeSelectUser(String boxName, Integer currentStep) {
-        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
-        BoxReActivityDto nextBoxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, currentStep + 1);
-        if (nextBoxReActivityDto != null) {
-            if (nextBoxReActivityDto.getBisSelectUser()) {
-                return "1";
-            }
-        }
-        return "";
+        return processControllerComponent.checkNextNodeSelectUser(boxName, currentStep) ? "1" : "";
     }
 }

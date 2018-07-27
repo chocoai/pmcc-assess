@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseTradingDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseTradingVo;
@@ -37,8 +38,8 @@ public class ExamineHouseTradingService {
      * @param declareId
      * @return
      */
-    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId) {
-        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId);
+    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
+        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId,examineTypeEnum.getId());
     }
 
     public ExamineHouseTradingVo getExamineHouseTradingVo(ExamineHouseTrading examineHouseTrading) {

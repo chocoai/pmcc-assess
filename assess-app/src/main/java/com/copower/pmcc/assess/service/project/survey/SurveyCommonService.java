@@ -1,13 +1,11 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.NetDownloadUtils;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreDetail;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
@@ -278,14 +276,26 @@ public class SurveyCommonService {
      * @param declareId
      * @return
      */
-    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId) {
+    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId,ExamineTypeEnum examineTypeEnum) {
         SurveyExamineDataInfoVo surveyExamineDataInfoVo = new SurveyExamineDataInfoVo();
-        surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlockService.getBlockByDeclareId(declareId)));
-        surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(examineEstateLandStateService.getEstateLandStateByDeclareId(declareId)));
-        surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstateService.getEstateByDeclareId(declareId)));
-        surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnitService.getUnitByDeclareId(declareId)));
-        surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouseService.getHouseByDeclareId(declareId)));
-        surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTradingService.getHouseTradingByDeclareId(declareId)));
+
+        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlock));
+
+        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId,examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(estateLandState));
+
+        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId,examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstate));
+
+        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId,examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnit));
+
+        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId,examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouse));
+
+        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,examineTypeEnum);
+        surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
         return surveyExamineDataInfoVo;
     }
 }

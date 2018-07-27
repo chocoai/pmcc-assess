@@ -38,9 +38,9 @@ public class ExamineHouseTradingDao {
      * @param declareId
      * @return
      */
-    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId) {
+    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,Integer examineType) {
         ExamineHouseTradingExample example = new ExamineHouseTradingExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId);
+        example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
         List<ExamineHouseTrading> blockList = examineHouseTradingMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
         return null;

@@ -64,7 +64,7 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
             try {
                 response.sendRedirect(String.format("/pmcc-assess/surveyExamine/assignment?planDetailsId=%s", projectPlanDetails.getId()));
             } catch (IOException e) {
-                logger.error("调查成果重定向异常",e);
+                logger.error("调查成果重定向异常", e);
             }
             return modelAndView;
         }
@@ -72,19 +72,19 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
 
-        Integer examineType = ExamineTypeEnum.EXPLORE.getId();
+        ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)) {
-            examineType = ExamineTypeEnum.CASE.getId();
+            examineTypeEnum = ExamineTypeEnum.CASE;
         }
-        modelAndView.addObject("examineType", examineType);
+        modelAndView.addObject("examineType", examineTypeEnum.getId());
         Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskByUserAccount(projectPlanDetails.getId(), commonService.thisUserAccount());
         modelAndView.addObject("blockTaskList", mapTaskList.get(AssessExamineTaskConstant.BLOCK));
         modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
-        modelAndView.addObject("surveyExamineDataInfoVo", surveyCommonService.getExamineDataInfoVo(projectPlanDetails.getDeclareRecordId()));
+        modelAndView.addObject("surveyExamineDataInfoVo", surveyCommonService.getExamineDataInfoVo(projectPlanDetails.getDeclareRecordId(), examineTypeEnum));
         return modelAndView;
     }
 
@@ -112,13 +112,18 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/taskExamineItemApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
+        ExamineTypeEnum examineTypeEnum = ExamineTypeEnum.EXPLORE;
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)) {
+            examineTypeEnum = ExamineTypeEnum.CASE;
+        }
         Map<String, List<SurveyExamineTaskVo>> mapTaskList = surveyCommonService.getExamineTaskAll(projectPlanDetails.getId());
         modelAndView.addObject("blockTaskList", mapTaskList.get(AssessExamineTaskConstant.BLOCK));
         modelAndView.addObject("estateTaskList", mapTaskList.get(AssessExamineTaskConstant.ESTATE));
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
-        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(declareRecord.getId()));
+        modelAndView.addObject("surveyExamineDataInfoVo", surveyCommonService.getExamineDataInfoVo(declareRecord.getId(),examineTypeEnum));
         return modelAndView;
     }
 

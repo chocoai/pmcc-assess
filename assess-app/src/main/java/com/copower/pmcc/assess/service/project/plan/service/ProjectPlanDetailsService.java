@@ -169,7 +169,7 @@ public class ProjectPlanDetailsService {
         if(projectPlanDetails.getProjectPhaseId()!=null) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
             if(projectPhase!=null) {
-                projectPlanDetailsVo.setDeclareFormName(projectPhase.getPhaseForm());
+                projectPlanDetailsVo.setProjectPhaseName(projectPhase.getProjectPhaseName());
             }
         }
         return projectPlanDetailsVo;

@@ -24,14 +24,24 @@ public class SurveyAssetInventoryDao {
         return i > 0;
     }
 
-    public int save(SurveyAssetInventoryDto surveyAssetInventoryDto) {
-        surveyAssetInventoryMapper.insertSelective(surveyAssetInventoryDto);
-        return surveyAssetInventoryDto.getId();
+    public int save(SurveyAssetInventory surveyAssetInventory) {
+        surveyAssetInventoryMapper.insertSelective(surveyAssetInventory);
+        return surveyAssetInventory.getId();
     }
 
-    public SurveyAssetInventory getSurveyAssetInventoryByProcessInsId(String processInsId) {
+    public SurveyAssetInventory getDataByProcessInsId(String processInsId) {
         SurveyAssetInventoryExample example = new SurveyAssetInventoryExample();
         example.createCriteria().andProcessInsIdEqualTo(processInsId);
+        List<SurveyAssetInventory> surveyAssetInventory = surveyAssetInventoryMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(surveyAssetInventory)) {
+            return surveyAssetInventory.get(0);
+        }
+        return null;
+    }
+
+    public SurveyAssetInventory getDataByPlanDetailsId(Integer planDetailsId) {
+        SurveyAssetInventoryExample example = new SurveyAssetInventoryExample();
+        example.createCriteria().andPlanDetailIdEqualTo(planDetailsId);
         List<SurveyAssetInventory> surveyAssetInventory = surveyAssetInventoryMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(surveyAssetInventory)) {
             return surveyAssetInventory.get(0);

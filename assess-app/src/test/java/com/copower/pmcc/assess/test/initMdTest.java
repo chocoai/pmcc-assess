@@ -228,4 +228,9 @@ public class initMdTest {
         itemList.add(mdMarketCompareItem);
         return itemList;
     }
+
+    @org.junit.Test
+    public void initTask(){
+
+    }
 }

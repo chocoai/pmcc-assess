@@ -11,7 +11,7 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <!--填写表单-->
@@ -29,14 +29,14 @@
                         <div class="form-group">
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">评估人员<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">评估人员</label>
                                 <div class="col-sm-2">
                                     <label class="form-control">${thisUserInfo.userName}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">核对日期<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">核对日期</label>
                                 <div class="col-sm-2">
                                     <label class="form-control"><fmt:formatDate value="${surveyAssetInventory.checkDate}" pattern="yyyy-MM-dd"/></label>
                                 </div>
@@ -125,115 +125,6 @@
                     <table class="table table-bordered" id="tb_OtherList">
                         <!-- cerare document add ajax data-->
                     </table>
-
-                    <%--<form id="frm_checkbox" class="form-horizontal">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="col-sm-2 control-label" data-label="&lt;label&gt;">--%>
-                    <%--他项权利与实际情况--%>
-                    <%--</label>--%>
-                    <%--</div>--%>
-                    <%--</form>--%>
-
-
-                    <%--<form id="frm_survey" class="form-horizontal">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--他权登记人--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.otherRightsRegistrar}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--实际行权人--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.rightHander}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--登记面积--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerArea}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--</div>--%>
-
-                    <%--<div class="form-group">--%>
-
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--实际面积--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualArea}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--登记用途--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.registerPurpose}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<label class="col-sm-1 control-label">--%>
-                    <%--实际用途--%>
-                    <%--</label>--%>
-                    <%--<div class="x-valid">--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control">${surveyAssetOtherTemplate.actualPurpose}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--</div>--%>
-
-                    <%--<div class="form-group">--%>
-
-                    <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">登记日期</label>--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.registerDate}" pattern="yyyy-MM-dd"/></label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">到期日</label>--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.dueDate}" pattern="yyyy-MM-dd"/></label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">实际行权人行权日期</label>--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.exerciseDate}" pattern="yyyy-MM-dd"/></label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--</div>--%>
-
-                    <%--<div class="form-group">--%>
-
-                    <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">预计到期日</label>--%>
-                    <%--<div class="col-sm-2">--%>
-                    <%--<label class="form-control"><fmt:formatDate value="${surveyAssetOtherTemplate.predictDueDate}" pattern="yyyy-MM-dd"/></label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-
-                    <%--</div>--%>
-                    <%--</form>--%>
-
                 </div>
             </div>
 
@@ -286,9 +177,13 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-//        loadDataDicList();
         loadDataList();
-        showFiles();
+
+        showFileCommon("${surveyAssetTemplateVos.get(0).id}");
+        showFileCommon("${surveyAssetTemplateVos.get(1).id}");
+        showFileCommon("${surveyAssetTemplateVos.get(2).id}");
+        showFileCommon("${surveyAssetTemplateVos.get(3).id}");
+
         FileUtils.getFileShows({
             target: "file_upload_task",
             formData: {
@@ -300,39 +195,25 @@
             deleteFlag: false
         })
     })
+
+    //显示附件通用
+    function showFileCommon(tableId) {
+        FileUtils.getFileShows({
+            showMode: 'table',
+            target: "credentialAccessory" + tableId,
+            formData: {
+                tableName: "tb_survey_asset_template",
+                tableId: tableId,
+                fieldsName: "credentialAccessory",
+                projectId: "${projectPlanDetails.projectId}"
+            },
+            deleteFlag: false
+        })
+    }
+
     function saveform() {
         saveApprovalform("");
     }
-
-
-    <%--function loadDataDicList() {--%>
-    <%--var cols = [];--%>
-    <%--cols.push({field: 'inventoryContentName', title: '清查内容'});--%>
-    <%--cols.push({field: 'areConsistent', title: '是否一致'});--%>
-    <%--cols.push({field: 'registrationAddress', title: '登记面积'});--%>
-    <%--cols.push({field: 'actualAddress', title: '实际面积'});--%>
-    <%--cols.push({field: 'differenceReason', title: '差异原因'});--%>
-    <%--cols.push({field: 'credential', title: '证明文件'});--%>
-    <%--cols.push({field: 'credentialAccessory',--%>
-    <%--title: '证明文件附件',--%>
-    <%--});--%>
-    <%--cols.push({field: 'voucher', title: '证明人'});--%>
-
-    <%--cols.push({--%>
-    <%--field: 'surveyTime', title: '调查时间', formatter: function (value, row, index) {--%>
-    <%--return formatDate(value, false);--%>
-    <%--}--%>
-    <%--});--%>
-
-    <%--$("#tb_List").bootstrapTable('destroy');--%>
-    <%--TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetTemplate/list", cols, {--%>
-    <%--pid: ${surveyAssetInventory.id}--%>
-    <%--}, {--%>
-    <%--showColumns: false,--%>
-    <%--showRefresh: false,--%>
-    <%--search: false--%>
-    <%--});--%>
-    <%--}--%>
 
     function loadDataList() {
         var cols = [];
@@ -364,8 +245,6 @@
                 return formatDate(value, false);
             }
         });
-        cols.push({field: 'sorting', title: '排序'});
-
         $("#tb_OtherList").bootstrapTable('destroy');
         TableInit("tb_OtherList", "${pageContext.request.contextPath}/surveyAssetOtherTemplate/list", cols, {
             pid: ${surveyAssetInventory.id}
@@ -376,20 +255,7 @@
         });
     }
 
-    function showFiles() {
-        var temp = $("#tb_List").find('tbody tr');
-        $.each(temp, function (i, tr) {
-            FileUtils.getFileShows({
-                target: "credentialAccessory${surveyAssetTemplateVos.get(i).id}",
-                formData: {
-                    tableName: "tb_survey_asset_template",
-                    tableId: ${surveyAssetTemplateVos.get(i).id},
-                    fieldsName: "credentialAccessory"
-                },
-                deleteFlag: false
-            })
-        })
-    }
+
 
 
 </script>
