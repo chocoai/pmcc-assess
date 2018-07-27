@@ -38,7 +38,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地面积" required="required" name="landArea">
+                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea">
                 </div>
             </div>
         </div>
@@ -77,13 +77,50 @@
                     <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState">
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地开发程度<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土地开发程度" required="required" name="developmentDegree">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">开发限制条件<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="开发限制条件" required="required" name="restrictiveCondition">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土壤<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="地形地势" required="required" name="topographicTerrain">
+                </div>
+            </div>
         </div>
     </form>
 </div>
 <script type="text/javascript">
     $(function () {
-        ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
-        ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
+        // ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
+        // ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
         estateLandState.prototype.init();
     })
 </script>
@@ -91,6 +128,7 @@
     function estateLandState() {
 
     }
+
     estateLandState.prototype.init = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_use",

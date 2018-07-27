@@ -131,14 +131,54 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">供水平面图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <input id="water_supply_plan" name="frm_estate_floor_total_plan"
+                       required="required" placeholder="上传附件" class="form-control" type="file">
+                <div id="_water_supply_plan"></div>
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">供电平面图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <input id="power_supply_plan" name="frm_estate_floor_total_plan"
+                       required="required" placeholder="上传附件" class="form-control" type="file">
+                <div id="_power_supply_plan"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">供气平面图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <input id="air_supply_plan" name="frm_estate_floor_total_plan"
+                       required="required" placeholder="上传附件" class="form-control" type="file">
+                <div id="_air_supply_plan"></div>
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">采暖平面图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <input id="heating_plan" name="frm_estate_floor_total_plan"
+                       required="required" placeholder="上传附件" class="form-control" type="file">
+                <div id="_heating_plan"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="ln_solid"></div>
 </form>
 <script type="text/javascript">
     $(function () {
         ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
-        Estate.files();
         estateFun.prototype.init();
+        estateFun.prototype.viewFiles();
     })
 </script>
 <script type="text/javascript">
@@ -200,6 +240,157 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        viewFiles:function () {
+            //总平面图
+            FileUtils.uploadFiles({
+                target: Estate.config().filePlanTotal,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().filePlanTotal,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().filePlanTotal,
+                formData: {
+                    fieldsName:Estate.config().filePlanTotal,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
+
+            //外观图
+            FileUtils.uploadFiles({
+                target: Estate.config().fileAppearance,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().fileAppearance,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().fileAppearance,
+                formData: {
+                    fieldsName:Estate.config().fileAppearance,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
+
+            //供水平面图
+            FileUtils.uploadFiles({
+                target: Estate.config().waterSupplyPlan,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().waterSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().waterSupplyPlan,
+                formData: {
+                    fieldsName:Estate.config().waterSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
+
+            //供电平面图
+            FileUtils.uploadFiles({
+                target: Estate.config().powerSupplyPlan,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().powerSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().powerSupplyPlan,
+                formData: {
+                    fieldsName:Estate.config().powerSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
+
+            //供气平面图
+            FileUtils.uploadFiles({
+                target: Estate.config().airSupplyPlan,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().airSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().airSupplyPlan,
+                formData: {
+                    fieldsName:Estate.config().airSupplyPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
+
+            //采暖平面图
+            FileUtils.uploadFiles({
+                target: Estate.config().heatingPlan,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName:Estate.config().heatingPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+            FileUtils.getFileShows({
+                target: Estate.config().heatingPlan,
+                formData: {
+                    fieldsName:Estate.config().heatingPlan,
+                    tableName: Estate.config().database_Table,
+                    tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
+                    projectId: 0,
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
         }
     };
 
@@ -209,9 +400,14 @@
             config: function () {
                 var data = {};
                 data.frm = "frm_estate";
-                data.database_TableA = "tb_examine_estate";
-                data.filePlanTotal = "estate_floor_total_plan";//总平面图id
-                data.fileAppearance = "estate_floor_Appearance_figure";//外观图id
+                data.database_Table = AssessDBKey.ExamineEstate;
+                //下面根据字段 ExamineFileUpLoadFieldEnum 配置而来 (假如修改必须在此中更新)
+                data.filePlanTotal = "estate_floor_total_plan";//总平面图id和字段
+                data.waterSupplyPlan = "water_supply_plan";//供水平面图id和字段
+                data.powerSupplyPlan = "power_supply_plan";//供电平面图id和字段
+                data.airSupplyPlan = "air_supply_plan";//供气平面图id和字段
+                data.heatingPlan = "heating_plan";//采暖平面图id和字段
+                data.fileAppearance = "estate_floor_Appearance_figure";//外观图id和字段
                 return data;
             },
             //验证
@@ -231,49 +427,7 @@
             },
             //文件上传处理
             files:function () {
-                FileUtils.uploadFiles({
-                    target: estate.config().filePlanTotal,
-                    disabledTarget: "btn_submit",
-                    formData: {
-                        tableName: estate.config().database_TableA,
-                        tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: estate.config().filePlanTotal,
-                    formData: {
-                        tableName: estate.config().database_TableA,
-                        tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                })
-
-                FileUtils.uploadFiles({
-                    target: estate.config().fileAppearance,
-                    disabledTarget: "btn_submit",
-                    formData: {
-                        tableName: estate.config().database_TableA,
-                        tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: estate.config().fileAppearance,
-                    formData: {
-                        tableName: estate.config().database_TableA,
-                        tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                })
+                //已经移除
             }
         };
         window.Estate = estate;

@@ -9,6 +9,7 @@ AssessDBKey.InitiatePossessor = "tb_initiate_possessor";
 AssessDBKey.InitiateConsignor = "tb_initiate_consignor";
 AssessDBKey.BoxApprovalLog = "tb_box_approval_log";
 AssessDBKey.SurveyLocaleExploreDetail = "tb_survey_locale_explore_detail";
+AssessDBKey.ExamineEstate = "tb_examine_estate";
 
 
 /**
