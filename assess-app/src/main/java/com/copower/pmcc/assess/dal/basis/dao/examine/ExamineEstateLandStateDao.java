@@ -38,9 +38,9 @@ public class ExamineEstateLandStateDao {
      * @param declareId
      * @return
      */
-    public ExamineEstateLandState getEstateLandStateByDeclareId(Integer declareId) {
+    public ExamineEstateLandState getEstateLandStateByDeclareId(Integer declareId,Integer examineType) {
         ExamineEstateLandStateExample example = new ExamineEstateLandStateExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId);
+        example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
         List<ExamineEstateLandState> blockList = examineEstateLandStateMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
         return null;

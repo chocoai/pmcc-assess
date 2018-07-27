@@ -118,7 +118,12 @@
                     </button>
                 </div>
             </div>
-            <%@include file="/views/share/form_log.jsp" %>
+            <c:if test="${processInsId ne '0'}">
+                <%@include file="/views/share/form_log.jsp" %>
+                <form id="frm_approval">
+                    <%@include file="/views/share/ApprovalVariable.jsp" %>
+                </form>
+            </c:if>
         </div>
     </div>
 </div>
@@ -136,12 +141,13 @@
 
     var taskExamineItemIndex = {
         //选择第一个tab
-        selectFirstTab:function () {
+        selectFirstTab: function () {
             $(".examine .nav-tabs").find('a:first').tab('show');
         },
 
         //验证
-        valid:function () {
+        valid: function () {
+            console.log(ContainerFunForValid);
             if (ContainerFunForValid.length > 0) {
                 for(var i=0;i<ContainerFunForValid.length;i++){
                     if(!ContainerFunForValid[i]()){
@@ -149,11 +155,11 @@
                     }
                 }
             }
-            return true;
+            return false;
         },
 
         //获取表单数据
-        getFormData:function () {
+        getFormData: function () {
             //读取到各个子表单提供的数据
             if (ContainerFunForGetData.length <= 0) {
                 return false;
@@ -161,12 +167,12 @@
             var formDataArray = [];
             $.each(ContainerFunForGetData, function (i, fn) {
                 var data = fn();
-                if(!data) return true;
-                if(Array.isArray(data)){
-                    $.each(data,function (k,info) {
+                if (!data) return true;
+                if (Array.isArray(data)) {
+                    $.each(data, function (k, info) {
                         formDataArray.push(info);
                     })
-                }else{
+                } else {
                     formDataArray.push(data);
                 }
             })
@@ -200,25 +206,30 @@
 
         //提交
         submit: function () {
-            if(!taskExamineItemIndex.valid()){
-                return false;
+//            if (!taskExamineItemIndex.valid()) {
+//                return false;
+//            }
+            var formData = taskExamineItemIndex.getFormData();
+            var data = {};
+            var url='${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
+            if ("${processInsId}" != "0") {
+                data = formParams("frm_approval");
+                url='${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
             }
-            var data = taskExamineItemIndex.getFormData();
+            data.formData=JSON.stringify(formData);
+            data.planDetailsId= "${projectPlanDetails.id}";
+            data.responsibilityId= "${responsibilityId}";
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo",
-                data: {
-                    formData: JSON.stringify(data),
-                    planDetailsId: "${projectPlanDetails.id}",
-                    responsibilityId:"${responsibilityId}"
-                },
+                url: url,
+                data: data,
                 type: "post",
                 dataType: "json",
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
                         //保存完后其他动作
-                        Alert("提交成功",1,null,function () {
+                        Alert("提交成功", 1, null, function () {
                             window.close();
                         });
                     } else {

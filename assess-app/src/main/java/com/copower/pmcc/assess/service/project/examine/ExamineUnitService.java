@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineUnit;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineUnitVo;
@@ -37,8 +38,8 @@ public class ExamineUnitService {
      * @param declareId
      * @return
      */
-    public ExamineUnit getUnitByDeclareId(Integer declareId) {
-        return examineUnitDao.getUnitByDeclareId(declareId);
+    public ExamineUnit getUnitByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
+        return examineUnitDao.getUnitByDeclareId(declareId,examineTypeEnum.getId());
     }
 
     public ExamineUnitVo getExamineUnitVo(ExamineUnit examineUnit) {

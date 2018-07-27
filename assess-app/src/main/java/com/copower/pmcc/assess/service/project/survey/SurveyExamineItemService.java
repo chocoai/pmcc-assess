@@ -6,8 +6,6 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
-import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineItemEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
@@ -20,6 +18,7 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -29,7 +28,6 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -223,6 +221,18 @@ public class SurveyExamineItemService {
         }
         //关掉bpm的任务
         bpmRpcProjectTaskService.deleteProjectTask(responsibilityId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void submitEditExamineDataInfo(String formData, ApprovalModelDto approvalModelDto) throws BusinessException {
+        saveExamineDataInfo(formData);
+        try {
+            approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
+            approvalModelDto.setCurrentStep(-1);
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        } catch (BpmException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     /**
