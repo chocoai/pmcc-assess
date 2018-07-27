@@ -1,15 +1,19 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineUnitHuxingVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +43,8 @@ public class ExamineUnitHuxingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     /**
      * 获取数据信息
@@ -77,6 +83,19 @@ public class ExamineUnitHuxingService {
         if (examineUnitHuxing.getHouseLayout() != null) {
             vo.setHouseLayoutName(getValue(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_LAYOUT, examineUnitHuxing.getHouseLayout()));
         }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(examineUnitHuxing.getId(), ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName(),FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
+            if (sysAttachmentDtos.size() >= 1){
+                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtos){
+                    if (sysAttachmentDto != null){
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 
@@ -110,7 +129,14 @@ public class ExamineUnitHuxingService {
         if (ObjectUtils.isEmpty(examineUnitHuxing.getExamineType())) {
             examineUnitHuxing.setExamineType(0);
         }
-        return examineUnitHuxingDao.addUnitHuxing(examineUnitHuxing);
+        try {
+            int id = examineUnitHuxingDao.saveReturnID(examineUnitHuxing);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class),id);
+        } catch (Exception e1) {
+            logger.error(String.format("异常! %s",e1.getMessage()),e1);
+            return false;
+        }
+        return true;
     }
 
     /**

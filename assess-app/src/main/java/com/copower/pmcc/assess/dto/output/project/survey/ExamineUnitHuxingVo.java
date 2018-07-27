@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing;
  */
 public class ExamineUnitHuxingVo extends ExamineUnitHuxing {
     private String houseLayoutName;
+    private String fileViewName;
 
     public String getHouseLayoutName() {
         return houseLayoutName;
@@ -16,5 +17,13 @@ public class ExamineUnitHuxingVo extends ExamineUnitHuxing {
 
     public void setHouseLayoutName(String houseLayoutName) {
         this.houseLayoutName = houseLayoutName;
+    }
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
     }
 }

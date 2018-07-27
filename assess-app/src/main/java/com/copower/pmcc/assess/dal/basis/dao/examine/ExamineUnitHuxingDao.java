@@ -50,6 +50,11 @@ public class ExamineUnitHuxingDao {
         return examineUnitHuxingMapper.insertSelective(examineUnitHuxing) > 0;
     }
 
+    public int saveReturnID(ExamineUnitHuxing examineUnitHuxing){
+        examineUnitHuxingMapper.insertSelective(examineUnitHuxing);
+        return examineUnitHuxing.getId();
+    }
+
     /**
      * 编辑
      * @param examineUnitHuxing

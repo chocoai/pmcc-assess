@@ -80,6 +80,11 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_WATER_INTAKE_EQUIPMENT_PRICE = "examine.house.water.water_intake_equipment_price";//取水设备价格区间
     public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT = "examine.house.water.drainage_circuit";//排水回路
     public static final String EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT_COUNT = "examine.house.water.drainage_circuit_count";//排水回路数
+    public static final String EXAMINE_HOUSE_NEWSHUXING = "examine.house.newsHuxing";//最新户型
+    public static final String EXAMINE_HOUSE_LOAD_UTILITY = "examine.house.load.utility";//证载用途
+    public static final String EXAMINE_HOUSE_PRACTICAL_USE = "examine.house.practical.use";//实际用途
+    public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
+    public static final String EXAMINE_HOUSE_DESCRIPTION_TYPE = "examine.house.description_type";//说明事项类型
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 

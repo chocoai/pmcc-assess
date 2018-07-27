@@ -9,6 +9,8 @@
         <div class="clearfix"></div>
     </div>
     <form id="frm_estateLandState" class="form-horizontal">
+        <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.id}">
+        <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称<span class="symbol required"></span></label>
@@ -119,8 +121,8 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        // ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
-        // ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
+        ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
+        ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
         estateLandState.prototype.init();
     })
 </script>
@@ -198,7 +200,7 @@
 
             //获取需要保存的数据
             getFormData: function () {
-                var data = formParams(estate.config().frm);
+                var data = formParams(estateLandState.config().frm);
                 data.declareId = $("#declareId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};

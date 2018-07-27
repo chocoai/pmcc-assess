@@ -56,7 +56,7 @@ public class ExamineUnitHuxingController {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
             return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(examineUnitHuxing);
+        return HttpResult.newCorrectResult(examineUnitHuxingService.getExamineUnitHuxingVo(examineUnitHuxing));
     }
 
     @ResponseBody

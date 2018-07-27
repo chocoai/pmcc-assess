@@ -17,7 +17,9 @@ public enum ExamineFileUpLoadFieldEnum {
     buildingFigureOutside("building_figure_outside","外装图id和字段 (楼栋)"),
     buildingFloorAppearanceFigure("building_floor_Appearance_figure","外观图id和字段 (楼栋)"),
 
-    houseLatestFamilyPlan("house_latest_family_plan","最新户型图id和字段 (房间)"),
+    houseNewLatestFamilyPlan("house_new_latest_family_plan","最新户型图id和字段 (房间)"),
+    houseLatestFamilyPlan("house_latest_family_plan","户型图id和字段 (房间)"),// 主表 页面显示
+    houseLatestFamilyPlanV("house_latest_family_planV","户型图id和字段 (房间)"), //从表
     houseHousePlan("house_house_plan","房屋平面图id和字段 (房间)")
     ;
     private String name;
