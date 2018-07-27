@@ -14,6 +14,9 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
+
+            <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
+
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -78,7 +81,22 @@
     </div>
 </div>
 </body>
+<script src="/pmcc-assess/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
+<input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
+<input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
+<input type="hidden" id="casesJSON" value='${casesJSON}'>
+<script type="text/javascript">
+    $(function () {
+        marketCompare.init({
+            marketCompare: JSON.parse($("#marketCompareJSON").val()),
+            fields: JSON.parse($("#fieldsJSON").val()),
+            evaluation: JSON.parse($("#evaluationJSON").val()),
+            cases: JSON.parse($("#casesJSON").val())
+        });
+    })
+</script>
 <script type="application/javascript">
 
     $(function () {
@@ -123,12 +141,15 @@
             return false;
         }
 
-        if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
-        else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-        }
+        //先保存市场比较法信息
+        marketCompare.save(function (id) {
+            if ("${processInsId}" != "0") {
+                submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            }
+            else {
+                submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            }
+        })
     }
 
 </script>

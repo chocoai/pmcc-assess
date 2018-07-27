@@ -124,23 +124,17 @@ public class TaskCompareService {
         return modelAndView;
     }
 
-    //提交时保存数据
+    /**
+     * 保存数据
+     * @param projectPlanDetails
+     * @param processInsId
+     * @param formData
+     */
     public void saveData(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
-        MethodMarketCompareCommonDto methodMarketCompareCommonDto = JSON.parseObject(formData, MethodMarketCompareCommonDto.class);  //json 转对象
-        //提取各自对象
-        List<MethodMarketCompareFactorDto> methodMarketCompareFactorDtos = methodMarketCompareCommonDto.getMethodMarketCompareFactorDtos();
-        List<MethodMarketCompareIndexDto> methodMarketCompareIndexDtos = methodMarketCompareCommonDto.getMethodMarketCompareIndexDtos();
-        List<MethodMarketCompareCalculationDto> methodMarketCompareCalculationDtos = methodMarketCompareCommonDto.getMethodMarketCompareCalculationDtos();
-        List<MethodMarketCompareResultDto> methodMarketCompareResultDtos = methodMarketCompareCommonDto.getMethodMarketCompareResultDtos();
-
-        methodMarketCompareFactorService.save(methodMarketCompareFactorDtos);   //因素表
-        methodMarketCompareIndexService.save(methodMarketCompareIndexDtos);     //指数表
-        methodMarketCompareCalculationService.save(methodMarketCompareCalculationDtos); //测算表
-        methodMarketCompareResultService.save(methodMarketCompareResultDtos);   //结果表
 
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-        schemeInfo.setEvaluationObjectId(methodMarketCompareResultDtos.get(0).getEvaluationObjectId());
+        schemeInfo.setEvaluationObjectId(1);
         schemeInfo.setPlanDetailsId(projectPlanDetails.getPlanId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfo.setCreator(commonService.thisUserAccount());

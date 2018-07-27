@@ -37,19 +37,24 @@ public class SurveyAssetInventoryService {
     @Autowired
     private SurveyAssetTemplateDao surveyAssetTemplateDao;
     @Autowired
-    private SurveyAssetOtherTemplateService surveyAssetOtherTemplateService;
-    @Autowired
     private SurveyAssetTemplateService surveyAssetTemplateService;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
+    /**
+     * 保存资产清查数据
+     * @param projectPlanDetails
+     * @param processInsId
+     * @param surveyAssetCommonDataDto
+     * @throws BusinessException
+     */
     public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         Integer projectId = projectPlanDetails.getProjectId();
-        Integer planId = projectPlanDetails.getPlanId();
+        Integer planDetailsId = projectPlanDetails.getId();
         if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventoryDto surveyAssetInventoryDto = surveyAssetCommonDataDto.getSurveyAssetInventoryDto();
             List<SurveyAssetTemplateDto> surveyAssetTemplateDtos = surveyAssetCommonDataDto.getSurveyAssetTemplateDtos();
-            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
+            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getDataByProcessInsId(processInsId);
             if (surveyAssetInventory != null) {
                 surveyAssetInventoryDao.update(surveyAssetInventoryDto);
 
@@ -58,7 +63,7 @@ public class SurveyAssetInventoryService {
                 }
             } else {
                 surveyAssetInventoryDto.setProjectId(projectId);
-                surveyAssetInventoryDto.setPlanDetailId(planId);
+                surveyAssetInventoryDto.setPlanDetailId(planDetailsId);
                 surveyAssetInventoryDto.setProcessInsId(processInsId);
                 surveyAssetInventoryDto.setCreator(processControllerComponent.getThisUser());
                 int pid = surveyAssetInventoryDao.save(surveyAssetInventoryDto);
@@ -87,8 +92,16 @@ public class SurveyAssetInventoryService {
         return dto;
     }
 
+    public SurveyAssetInventory getDataByProcessInsId(String processInsId){
+        return surveyAssetInventoryDao.getDataByProcessInsId(processInsId);
+    }
+
+    public SurveyAssetInventory getDataByPlanDetailsId(Integer planDetailsId){
+        return surveyAssetInventoryDao.getDataByPlanDetailsId(planDetailsId);
+    }
+
     public ModelAndView getSurveyAssetInventoryByProcessInsId(ModelAndView modelAndView, String processInsId) {
-        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryByProcessInsId(processInsId);
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getDataByProcessInsId(processInsId);
         if (surveyAssetInventory != null) {
             List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
             List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(surveyAssetInventory.getId());

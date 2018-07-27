@@ -212,7 +212,7 @@
             <div class="col-sm-10">
                 <div class="input-group">
                     <input type="hidden" id="declareFormId" name="declareFormId"/>
-                    <input type="text" id="declareFormName" name="declareFormName" readonly="readonly" required
+                    <input type="text" id="declareFormName" name="declareFormName" readonly="readonly"
                            placeholder="申报表" class="form-control" onclick="selectDeclareForm(this);">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -602,6 +602,7 @@
         } else {
             backStatus();
         }
+        console.log(row);
         $("#frm_planDetails").clearAll();
         $("#frm_planDetails").validate();
         $("#frm_planDetails").initForm(row);
