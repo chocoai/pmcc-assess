@@ -11,27 +11,30 @@ import java.util.Date;
  */
 public class ExamineHouseTradingSellAndLeaseDto {
     private String tradingType;
+
     private Integer id;
+
+    private Integer declareId;
+
+    private Integer examineType;
 
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date instalmentPeriodStart;
-
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date instalmentPeriodEnd;
 
     private String instalmentInterest;
 
+
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date rentPaymentTimeStart;
-
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date rentPaymentTimeEnd;
 
-
-    private Integer tradingId;
-
-
     private String rentGrowthRate;
+
+
+    private String creator;
 
     public String getTradingType() {
         return tradingType;
@@ -47,6 +50,22 @@ public class ExamineHouseTradingSellAndLeaseDto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Date getInstalmentPeriodStart() {
@@ -89,19 +108,19 @@ public class ExamineHouseTradingSellAndLeaseDto {
         this.rentPaymentTimeEnd = rentPaymentTimeEnd;
     }
 
-    public Integer getTradingId() {
-        return tradingId;
-    }
-
-    public void setTradingId(Integer tradingId) {
-        this.tradingId = tradingId;
-    }
-
     public String getRentGrowthRate() {
         return rentGrowthRate;
     }
 
     public void setRentGrowthRate(String rentGrowthRate) {
         this.rentGrowthRate = rentGrowthRate;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

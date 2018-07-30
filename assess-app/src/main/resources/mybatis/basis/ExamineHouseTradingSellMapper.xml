@@ -3,7 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ExamineHouseTradingSellMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSell" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="trading_id" property="tradingId" jdbcType="INTEGER" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="instalment_period_start" property="instalmentPeriodStart" jdbcType="TIMESTAMP" />
     <result column="instalment_period_end" property="instalmentPeriodEnd" jdbcType="TIMESTAMP" />
     <result column="instalment_interest" property="instalmentInterest" jdbcType="VARCHAR" />
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, trading_id, instalment_period_start, instalment_period_end, instalment_interest, 
+    id, declare_id, examine_type, instalment_period_start, instalment_period_end, instalment_interest, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSellExample" >
@@ -107,11 +108,11 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_trading_sell (trading_id, instalment_period_start, 
+    insert into tb_examine_house_trading_sell (declare_id, examine_type, instalment_period_start, 
       instalment_period_end, instalment_interest, 
       creator, gmt_created, gmt_modified
       )
-    values (#{tradingId,jdbcType=INTEGER}, #{instalmentPeriodStart,jdbcType=TIMESTAMP}, 
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{instalmentPeriodStart,jdbcType=TIMESTAMP}, 
       #{instalmentPeriodEnd,jdbcType=TIMESTAMP}, #{instalmentInterest,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -122,8 +123,11 @@
     </selectKey>
     insert into tb_examine_house_trading_sell
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="tradingId != null" >
-        trading_id,
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="examineType != null" >
+        examine_type,
       </if>
       <if test="instalmentPeriodStart != null" >
         instalment_period_start,
@@ -145,8 +149,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="tradingId != null" >
-        #{tradingId,jdbcType=INTEGER},
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        #{examineType,jdbcType=INTEGER},
       </if>
       <if test="instalmentPeriodStart != null" >
         #{instalmentPeriodStart,jdbcType=TIMESTAMP},
@@ -180,8 +187,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingId != null" >
-        trading_id = #{record.tradingId,jdbcType=INTEGER},
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.examineType != null" >
+        examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
       <if test="record.instalmentPeriodStart != null" >
         instalment_period_start = #{record.instalmentPeriodStart,jdbcType=TIMESTAMP},
@@ -209,7 +219,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_examine_house_trading_sell
     set id = #{record.id,jdbcType=INTEGER},
-      trading_id = #{record.tradingId,jdbcType=INTEGER},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      examine_type = #{record.examineType,jdbcType=INTEGER},
       instalment_period_start = #{record.instalmentPeriodStart,jdbcType=TIMESTAMP},
       instalment_period_end = #{record.instalmentPeriodEnd,jdbcType=TIMESTAMP},
       instalment_interest = #{record.instalmentInterest,jdbcType=VARCHAR},
@@ -223,8 +234,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSell" >
     update tb_examine_house_trading_sell
     <set >
-      <if test="tradingId != null" >
-        trading_id = #{tradingId,jdbcType=INTEGER},
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="examineType != null" >
+        examine_type = #{examineType,jdbcType=INTEGER},
       </if>
       <if test="instalmentPeriodStart != null" >
         instalment_period_start = #{instalmentPeriodStart,jdbcType=TIMESTAMP},
@@ -249,7 +263,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSell" >
     update tb_examine_house_trading_sell
-    set trading_id = #{tradingId,jdbcType=INTEGER},
+    set declare_id = #{declareId,jdbcType=INTEGER},
+      examine_type = #{examineType,jdbcType=INTEGER},
       instalment_period_start = #{instalmentPeriodStart,jdbcType=TIMESTAMP},
       instalment_period_end = #{instalmentPeriodEnd,jdbcType=TIMESTAMP},
       instalment_interest = #{instalmentInterest,jdbcType=VARCHAR},

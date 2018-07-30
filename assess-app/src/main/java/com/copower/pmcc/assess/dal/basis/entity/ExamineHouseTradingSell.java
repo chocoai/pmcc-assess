@@ -5,7 +5,9 @@ import java.util.Date;
 public class ExamineHouseTradingSell {
     private Integer id;
 
-    private Integer tradingId;
+    private Integer declareId;
+
+    private Integer examineType;
 
     private Date instalmentPeriodStart;
 
@@ -27,12 +29,20 @@ public class ExamineHouseTradingSell {
         this.id = id;
     }
 
-    public Integer getTradingId() {
-        return tradingId;
+    public Integer getDeclareId() {
+        return declareId;
     }
 
-    public void setTradingId(Integer tradingId) {
-        this.tradingId = tradingId;
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public Integer getExamineType() {
+        return examineType;
+    }
+
+    public void setExamineType(Integer examineType) {
+        this.examineType = examineType;
     }
 
     public Date getInstalmentPeriodStart() {

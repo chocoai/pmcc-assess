@@ -28,4 +28,12 @@ public class ExamineHouseTradingSellDao {
         MybatisUtils.convertObj2Example(examineHouseTradingSell, example);
         return examineHouseTradingSellMapper.selectByExample(example);
     }
+
+    public boolean removeExamineHouseTradingSell(Integer id){
+        return examineHouseTradingSellMapper.deleteByPrimaryKey(id)==1;
+    }
+
+    public boolean updateExamineHouseTradingSell(ExamineHouseTradingSell examineHouseTradingSell){
+        return examineHouseTradingSellMapper.updateByPrimaryKeySelective(examineHouseTradingSell)==1;
+    }
 }

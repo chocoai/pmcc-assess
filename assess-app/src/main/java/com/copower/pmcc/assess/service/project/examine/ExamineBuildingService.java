@@ -48,6 +48,10 @@ public class ExamineBuildingService {
     private DataDeveloperService dataDeveloperService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer examineType){
+        return examineBuildingDao.getByDeclareIdAndExamineType(declareId,examineType);
+    }
+
     /**
      * 获取数据信息
      *

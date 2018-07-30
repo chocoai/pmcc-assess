@@ -10,6 +10,7 @@ public class SurveyExamineDataInfoVo {
     private ExamineUnitVo examineUnitVo;
     private ExamineHouseVo examineHouseVo;
     private ExamineHouseTradingVo examineHouseTradingVo;
+    private ExamineBuildingVo examineBuildingVo;
 
     public ExamineBlockVo getExamineBlockVo() {
         return examineBlockVo;
@@ -57,5 +58,13 @@ public class SurveyExamineDataInfoVo {
 
     public void setExamineHouseTradingVo(ExamineHouseTradingVo examineHouseTradingVo) {
         this.examineHouseTradingVo = examineHouseTradingVo;
+    }
+
+    public ExamineBuildingVo getExamineBuildingVo() {
+        return examineBuildingVo;
+    }
+
+    public void setExamineBuildingVo(ExamineBuildingVo examineBuildingVo) {
+        this.examineBuildingVo = examineBuildingVo;
     }
 }

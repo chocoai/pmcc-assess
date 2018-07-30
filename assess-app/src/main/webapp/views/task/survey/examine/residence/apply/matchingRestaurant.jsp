@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="matchingRestaurant.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingRestaurant.prototype.viewInit()"><i
+            <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>餐饮信息
@@ -48,277 +48,283 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var matchingRestaurant = function () {
+    var matchingRestaurant;
+    (function () {
+        var flag = true;
+        matchingRestaurant = function () {
 
-    };
-    matchingRestaurant.prototype = {
-        viewInit:function () {
-            matchingRestaurant.prototype.loadDataDicList();
-            matchingRestaurant.prototype.init();
-        },
-        config: function () {
-            var data = {};
-            data.table = "MatchingRestaurantList";
-            data.box = "divBoxMatchingRestaurant";
-            data.frm = "frmMatchingRestaurant";
-            data.type = "matchingRestaurant";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
-            return data;
-        },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'name', title: '餐饮名称'});
-            cols.push({field: 'categoryName', title: '餐饮类别'});
-            cols.push({field: 'gradeName', title: '餐饮档次'});
-            cols.push({field: 'distanceName', title: '餐饮距离'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingRestaurant.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingRestaurant.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        matchingRestaurant.prototype = {
+            setFlag: function (flag_) {
+                flag = flag_;
+            },
+            getFlag: function () {
+                return flag;
+            },
+            viewInit: function () {
+                matchingRestaurant.prototype.loadDataDicList();
+                if (matchingRestaurant.prototype.getFlag()) {
+                    matchingRestaurant.prototype.init();
+                    matchingRestaurant.prototype.setFlag(false);
                 }
-            });
-            $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
-                type: matchingRestaurant.prototype.config().type
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/deleteExamineMatchingLeisurePlaceById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        matchingRestaurant.prototype.loadDataDicList();
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingRestaurantList";
+                data.box = "divBoxMatchingRestaurant";
+                data.frm = "frmMatchingRestaurant";
+                data.type = "matchingRestaurant";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '餐饮名称'});
+                cols.push({field: 'categoryName', title: '餐饮类别'});
+                cols.push({field: 'gradeName', title: '餐饮档次'});
+                cols.push({field: 'distanceName', title: '餐饮距离'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingRestaurant.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingRestaurant.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                });
+                $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
+                    type: matchingRestaurant.prototype.config().type
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            $("#" + matchingRestaurant.prototype.config().frm).clearAll();
-            $("#" + matchingRestaurant.prototype.config().frm + " .type").val(matchingRestaurant.prototype.config().type);
-            $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
-            // var size = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group").size();
-            // for (var i = 0 ;i < size; i++){
-            //     console.log("i:"+i);
-            //     if(i==0){
-            //         var dom = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group")[i];
-            //     }else {
-            //         var dom = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group")[i];
-            //         // $(dom).empty();
-            //         $(dom).remove();
-            //     }
-            // }
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/deleteExamineMatchingLeisurePlaceById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            matchingRestaurant.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            showModel: function () {
+                $("#" + matchingRestaurant.prototype.config().frm).clearAll();
+                $("#" + matchingRestaurant.prototype.config().frm + " .type").val(matchingRestaurant.prototype.config().type);
+                $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
+                // var size = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group").size();
+                // for (var i = 0 ;i < size; i++){
+                //     console.log("i:"+i);
+                //     if(i==0){
+                //         var dom = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group")[i];
+                //     }else {
+                //         var dom = $("#"+matchingRestaurant.prototype.config().frm+" .name .form-group")[i];
+                //         // $(dom).empty();
+                //         $(dom).remove();
+                //     }
+                // }
 
-            var lableValue = "餐饮名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
-            html += "</div>";
-            $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
-            // matchingRestaurant.prototype.init();
-            $('#' + matchingRestaurant.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + matchingRestaurant.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(matchingRestaurant.prototype.config().frm);
-            if ($("#declareId").size() > 0) {
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0) {
-                data.examineType = $("#examineType").val();
-            }
-            data.type = matchingRestaurant.prototype.config().type;
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/saveAndUpdateExamineMatchingLeisurePlace",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#' + matchingRestaurant.prototype.config().box).modal('hide');
-                        matchingRestaurant.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + matchingRestaurant.prototype.config().frm).clearAll();
-                        $("#" + matchingRestaurant.prototype.config().frm).initForm(result.data);
-                        if (result.data.category == null || result.data.category == '') {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .category").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .category").val(result.data.category).trigger("change");
-                        }
-                        if (result.data.grade == null || result.data.grade == '') {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .grade").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .grade").val(result.data.grade).trigger("change");
-                        }
-                        if (result.data.distance == null || result.data.distance == '') {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .distance").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingRestaurant.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
-                        }
-                        matchingRestaurant.prototype.writeHTMLData(result.data.name);
-                        $('#' + matchingRestaurant.prototype.config().box).modal("show");
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        init: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_category",
-                type: "get",
-                data: {type: matchingRestaurant.prototype.config().type},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + matchingRestaurant.prototype.config().frm + " .category").html(option);
-                            $("#" + matchingRestaurant.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_grade",
-                type: "get",
-                data: {type: matchingRestaurant.prototype.config().type},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + matchingRestaurant.prototype.config().frm + " .grade").html(option);
-                            $("#" + matchingRestaurant.prototype.config().frm + " .grade").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_distance",
-                type: "get",
-                data: {type: matchingRestaurant.prototype.config().type},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + matchingRestaurant.prototype.config().frm + " .distance").html(option);
-                            $("#" + matchingRestaurant.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-
-        },
-        appendHTML: function (item, this_) {
-            var lableValue = "餐饮名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
-            html += "</div>";
-            // $(this_).parent().prev().parent().parent().after(html);
-            $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
-        },
-        cleanHTMLData: function (item) {
-            var value = "";
-            $(item).parent().prev().parent().parent().empty();
-        },
-        writeHTMLData: function (str) {
-            $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
-            var strs = str.split(",");
-            var length = strs.length;
-            var lableValue = "餐饮名称";
-            var item = "name";
-            for (var i = 0; i < length; i++) {
-                console.log("i:" + i);
+                var lableValue = "餐饮名称";
                 var html = "<div class='form-group' style='margin-top:8px;'>";
                 html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
                 html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
                 html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
+                // matchingRestaurant.prototype.init();
+                $('#' + matchingRestaurant.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + matchingRestaurant.prototype.config().frm).valid()) {
+                    return false;
+                }
+                var data = formParams(matchingRestaurant.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                data.type = matchingRestaurant.prototype.config().type;
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/saveAndUpdateExamineMatchingLeisurePlace",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + matchingRestaurant.prototype.config().box).modal('hide');
+                            matchingRestaurant.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + matchingRestaurant.prototype.config().frm).clearAll();
+                            $("#" + matchingRestaurant.prototype.config().frm).initForm(result.data);
+                            if (result.data.category == null || result.data.category == '') {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .category").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .category").val(result.data.category).trigger("change");
+                            }
+                            if (result.data.grade == null || result.data.grade == '') {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .grade").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .grade").val(result.data.grade).trigger("change");
+                            }
+                            if (result.data.distance == null || result.data.distance == '') {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .distance").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingRestaurant.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
+                            }
+                            matchingRestaurant.prototype.writeHTMLData(result.data.name);
+                            $('#' + matchingRestaurant.prototype.config().box).modal("show");
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_category",
+                    type: "get",
+                    data: {type: matchingRestaurant.prototype.config().type},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingRestaurant.prototype.config().frm + " .category").html(option);
+                                $("#" + matchingRestaurant.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_grade",
+                    type: "get",
+                    data: {type: matchingRestaurant.prototype.config().type},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingRestaurant.prototype.config().frm + " .grade").html(option);
+                                $("#" + matchingRestaurant.prototype.config().frm + " .grade").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingLeisurePlace/examineMatchingLeisurePlace_distance",
+                    type: "get",
+                    data: {type: matchingRestaurant.prototype.config().type},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingRestaurant.prototype.config().frm + " .distance").html(option);
+                                $("#" + matchingRestaurant.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+
+            },
+            appendHTML: function (item, this_) {
+                var lableValue = "餐饮名称";
+                var html = "<div class='form-group' style='margin-top:8px;'>";
+                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+                html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+                html += "</div>";
+                // $(this_).parent().prev().parent().parent().after(html);
+                $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
+            },
+            cleanHTMLData: function (item) {
+                var value = "";
+                $(item).parent().prev().parent().parent().empty();
+            },
+            writeHTMLData: function (str) {
+                $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
+                var strs = str.split(",");
+                var length = strs.length;
+                var lableValue = "餐饮名称";
+                var item = "name";
+                for (var i = 0; i < length; i++) {
+                    console.log("i:" + i);
+                    var html = "<div class='form-group' style='margin-top:8px;'>";
+                    html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+                    html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+                    html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
+                    html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+                    html += "</div>";
+                    html += "</div>";
+                    $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
+                }
             }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // matchingRestaurant.prototype.loadDataDicList();
-        // matchingRestaurant.prototype.init();
-    })
+    })();
 
 </script>
 
