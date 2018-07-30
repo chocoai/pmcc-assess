@@ -65,6 +65,32 @@ public class ExamineBuildingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getFirstData", method = {RequestMethod.GET}, name = "获取 第一楼栋基础")
+    public HttpResult getFirstData(Integer examineType, Integer declareId) {
+        ExamineBuildingVo examineBuilding = null;
+        try {
+           examineBuilding = examineBuildingService.getFirstData(examineType,declareId,1);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return HttpResult.newCorrectResult(examineBuilding);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getTwoData", method = {RequestMethod.GET}, name = "获取 第二楼栋基础")
+    public HttpResult getTwoData(Integer examineType, Integer declareId) {
+        ExamineBuildingVo examineBuilding = null;
+        try {
+            examineBuilding = examineBuildingService.getFirstData(examineType,declareId,2);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return HttpResult.newCorrectResult(examineBuilding);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getExamineBuildingList", method = {RequestMethod.GET}, name = "楼栋基础列表")
     public BootstrapTableVo getExamineBuildingList(Integer examineType, Integer declareId) {
         BootstrapTableVo vo = null;

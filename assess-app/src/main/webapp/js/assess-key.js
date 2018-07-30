@@ -11,6 +11,7 @@ AssessDBKey.BoxApprovalLog = "tb_box_approval_log";
 AssessDBKey.SurveyLocaleExploreDetail = "tb_survey_locale_explore_detail";
 AssessDBKey.ExamineEstate = "tb_examine_estate";
 AssessDBKey.ExamineHouse = "tb_examine_house";
+AssessDBKey.ExamineBuilding = "tb_examine_building";
 AssessDBKey.ExamineUnitHuxing = "tb_examine_unit_huxing";
 
 
