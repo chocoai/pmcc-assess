@@ -20,42 +20,37 @@ public class SchemeJudgeObjectDao {
     @Autowired
     private SchemeJudgeObjectMapper mapper;
 
-    public boolean add(SchemeJudgeObject dto){
-        return mapper.insertSelective(change(dto))==1;
+    public boolean add(SchemeJudgeObject schemeJudgeObject) {
+        return mapper.insertSelective(schemeJudgeObject) == 1;
     }
 
-    public boolean remove(Integer id){
-        return mapper.deleteByPrimaryKey(id)==1;
+    public boolean remove(Integer id) {
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public boolean update(SchemeJudgeObject dto){
-        return mapper.updateByPrimaryKeySelective(change(dto))==1;
+    public boolean update(SchemeJudgeObject schemeJudgeObject) {
+        return mapper.updateByPrimaryKeySelective(schemeJudgeObject) == 1;
     }
 
-    public SchemeJudgeObject get(Integer id){
-        return change(mapper.selectByPrimaryKey(id));
+    public SchemeJudgeObject get(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
-    public SchemeJudgeObjectDto change(SchemeJudgeObject oo){
-        SchemeJudgeObjectDto dto = new SchemeJudgeObjectDto();
-        BeanUtils.copyProperties(oo,dto);
-        return dto;
+    public List<SchemeJudgeObject> getSchemeJudgeObjectList(Integer evaluationId) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andEvaluationIdEqualTo(evaluationId);
+        example.setOrderByClause("group_number,number");
+        return mapper.selectByExample(example);
     }
 
-    public SchemeJudgeObject change(SchemeJudgeObjectDto dto){
-        SchemeJudgeObject oo = new SchemeJudgeObject();
-        BeanUtils.copyProperties(dto,oo);
-        return oo;
-    }
-
-    public List<SchemeJudgeObject> list(Integer areaGroupId){
+    public List<SchemeJudgeObject> list(Integer areaGroupId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andIdIsNotNull().andAreaGroupIdEqualTo(areaGroupId);
         example.setOrderByClause("group_number,number");
         return mapper.selectByExample(example);
     }
 
-    public List<SchemeJudgeObject> getByProjectIdAndAreaGroupId(Integer ProjectId, Integer AreaGroupId,Integer groupNumber) {
+    public List<SchemeJudgeObject> getByProjectIdAndAreaGroupId(Integer ProjectId, Integer AreaGroupId, Integer groupNumber) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andProjectIdEqualTo(ProjectId).andAreaGroupIdEqualTo(AreaGroupId).andGroupNumberEqualTo(groupNumber);
         return mapper.selectByExample(example);

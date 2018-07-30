@@ -66,7 +66,7 @@ public class ProjectPlanCompileService {
                 int j = 1;
                 Integer pid = 0;
                 Integer groupId = schemeAreaGroup.getId();
-                List<SchemeEvaluationObject> evaluationObjects = schemeEvaluationObjectDao.getSchemeEvaluationObjectByGroupId(groupId, projectId);
+                List<SchemeEvaluationObject> evaluationObjects = schemeEvaluationObjectDao.getDataListByGroupId(groupId, projectId);
                 //二级分类 评估对象
                 pid = projectPlanDetails.getId();
 

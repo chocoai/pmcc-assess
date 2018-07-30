@@ -215,6 +215,7 @@ public class SurveyExamineItemService {
                 logger.info("提交调查信息,发起流程异常",e);
                 throw new BusinessException(e.getMessage());
             }
+            surveyCommonService.updateExamineTaskStatus(planDetailsId, commonService.thisUserAccount(), ProjectStatusEnum.RUNING);
             surveyExamineItem.setStatus(ProcessStatusEnum.RUN.getValue());
             surveyExamineItem.setProcessInsId(processUserDto.getProcessInsId());
             surveyExamineItemService.save(surveyExamineItem);

@@ -76,6 +76,8 @@ public class ProjectPlanDetails {
 
     private Integer reportAnalysisCategory;
 
+    private Integer areaGroupId;
+
     private Integer evaluationId;
 
     public Integer getId() {
@@ -364,6 +366,14 @@ public class ProjectPlanDetails {
 
     public void setReportAnalysisCategory(Integer reportAnalysisCategory) {
         this.reportAnalysisCategory = reportAnalysisCategory;
+    }
+
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
     }
 
     public Integer getEvaluationId() {
