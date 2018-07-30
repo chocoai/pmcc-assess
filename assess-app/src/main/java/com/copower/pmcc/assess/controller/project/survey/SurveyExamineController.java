@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
@@ -94,10 +95,10 @@ public class SurveyExamineController {
     @GetMapping(name = "获取调查任务", value = "/getExamineTaskList")
     public BootstrapTableVo getExamineTaskList(Integer planDetailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getTaskListByPlanDetailsId(planDetailsId);
-        List<SurveyExamineTaskVo> taskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList, false);
+        List<CustomSurveyExamineTask> customeExamineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId, null);
+        List<SurveyExamineTaskVo> taskVos = surveyExamineTaskService.getSurveyExamineTaskVos(customeExamineTaskList);
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(taskVos) ? Lists.newArrayList() : taskVos);
-        bootstrapTableVo.setTotal((long) examineTaskList.size());
+        bootstrapTableVo.setTotal((long) taskVos.size());
         return bootstrapTableVo;
     }
 

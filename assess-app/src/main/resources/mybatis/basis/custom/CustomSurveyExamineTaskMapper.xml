@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomSurveyExamineTaskMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="data_task_id" property="dataTaskId" jdbcType="INTEGER"/>
+        <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER"/>
+        <result column="declare_id" property="declareId" jdbcType="INTEGER"/>
+        <result column="examine_type" property="examineType" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_account" property="userAccount" jdbcType="VARCHAR"/>
+        <result column="sorting" property="sorting" jdbcType="INTEGER"/>
+        <result column="bis_must" property="bisMust" jdbcType="BIT"/>
+        <result column="task_status" property="taskStatus" jdbcType="VARCHAR"/>
+        <result column="field_name" property="fieldName" jdbcType="VARCHAR"/>
+        <result column="apply_url" property="applyUrl" jdbcType="VARCHAR"/>
+        <result column="detail_url" property="detailUrl" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getCustomExamineTaskList" parameterType="map" resultMap="BaseResultMap">
+        select
+        A.id,A.pid,A.data_task_id,A.plan_details_id,A.declare_id,A.examine_type,A.name,A.user_account,
+        A.sorting,A.bis_must,A.task_status,B.field_name,B.apply_url,B.detail_url,A.creator,A.gmt_created,A.gmt_modified
+        from tb_survey_examine_task A
+        LEFT JOIN tb_data_examine_task B ON A.data_task_id = B.id WHERE 1=1
+        <if test="planDetailsId!=null">
+            AND A.plan_details_id = #{planDetailsId}
+        </if>
+        <if test="userAccount!=null and userAccount!=''">
+            AND A.user_account = #{userAccount}
+        </if>
+        ORDER BY A.sorting
+    </select>
+</mapper>
+

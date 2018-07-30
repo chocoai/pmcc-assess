@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomSurveyExamineTaskMapper;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineTaskExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyExamineTaskMapper;
@@ -20,6 +22,8 @@ import java.util.List;
 public class SurveyExamineTaskDao {
     @Autowired
     private SurveyExamineTaskMapper surveyExamineTaskMapper;
+    @Autowired
+    private CustomSurveyExamineTaskMapper customSurveyExamineTaskMapper;
 
     /**
      * 获取数据信息
@@ -97,5 +101,16 @@ public class SurveyExamineTaskDao {
         SurveyExamineTaskExample example = new SurveyExamineTaskExample();
         MybatisUtils.convertObj2Example(surveyExamineTask, example);
         return surveyExamineTaskMapper.deleteByExample(example) > 0;
+    }
+
+
+    /**
+     * 获取数据列表
+     * @param planDetailsId
+     * @param userAccount
+     * @return
+     */
+    public List<CustomSurveyExamineTask> getCustomExamineTaskList(Integer planDetailsId,String userAccount) {
+        return customSurveyExamineTaskMapper.getCustomExamineTaskList(planDetailsId,userAccount);
     }
 }

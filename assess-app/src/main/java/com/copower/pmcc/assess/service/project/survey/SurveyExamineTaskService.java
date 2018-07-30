@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
@@ -72,6 +72,10 @@ public class SurveyExamineTaskService {
         return surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
     }
 
+    public List<CustomSurveyExamineTask> getCustomeExamineTaskList(Integer planDetailsId,String userAccount) {
+        return surveyExamineTaskDao.getCustomExamineTaskList(planDetailsId,userAccount);
+    }
+
     /**
      * 获取调查任务
      *
@@ -110,6 +114,23 @@ public class SurveyExamineTaskService {
                     surveyExamineTaskVo.setApplyUrl(dataExamineTask.getApplyUrl());
                     surveyExamineTaskVo.setDetailUrl(dataExamineTask.getDetailUrl());
                 }
+            }
+            return surveyExamineTaskVo;
+        });
+    }
+
+    public List<SurveyExamineTaskVo> getSurveyExamineTaskVos(List<CustomSurveyExamineTask> taskList) {
+        if (CollectionUtils.isEmpty(taskList)) return null;
+        return LangUtils.transform(taskList, p -> {
+            SurveyExamineTaskVo surveyExamineTaskVo = new SurveyExamineTaskVo();
+            BeanUtils.copyProperties(p, surveyExamineTaskVo);
+            if (p.getPid() != null && p.getPid() > 0)
+                surveyExamineTaskVo.set_parentId(p.getPid());
+            if (StringUtils.isNotBlank(p.getUserAccount())) {
+                surveyExamineTaskVo.setUserName(publicService.getUserNameByAccount(p.getUserAccount()));
+            }
+            if (StringUtils.isNotBlank(p.getTaskStatus())) {
+                surveyExamineTaskVo.setTaskStatusName(ProjectStatusEnum.getNameByKey(p.getTaskStatus()));
             }
             return surveyExamineTaskVo;
         });

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
@@ -201,8 +202,8 @@ public class SurveyCommonService {
         surveyExamineTask.setPlanDetailsId(planDetailsId);
         if (StringUtils.isNotBlank(userAccount))
             surveyExamineTask.setUserAccount(userAccount);
-        List<SurveyExamineTask> examineTaskList = surveyExamineTaskService.getSurveyExamineTaskList(surveyExamineTask);
-        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList, true);
+        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId,userAccount);
+        List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList);
         if (CollectionUtils.isNotEmpty(examineTaskVos)) {
             for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
                 if (StringUtils.isNotBlank(examineTaskVo.getApplyUrl())) {
