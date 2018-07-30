@@ -16,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +26,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -48,8 +51,8 @@ public class ExamineBuildingService {
     private DataDeveloperService dataDeveloperService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer examineType){
-        return examineBuildingDao.getByDeclareIdAndExamineType(declareId,examineType);
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
+        return examineBuildingDao.getByDeclareIdAndExamineType(declareId, examineType);
     }
 
     /**
@@ -61,6 +64,31 @@ public class ExamineBuildingService {
     public ExamineBuildingVo getExamineBuildingById(Integer id) {
         ExamineBuildingVo examineBuildingVo = getExamineBuildingVo(examineBuildingDao.getBuildingById(id));
         return examineBuildingVo;
+    }
+
+    public ExamineBuildingVo getFirstData(Integer examineType, Integer declareId, Integer number) {
+        ExamineBuilding oo = new ExamineBuilding();
+        oo.setExamineType(examineType);
+        oo.setDeclareId(declareId);
+        List<ExamineBuilding> examineBuildings = getExamineBuildingList(oo);
+        if (!ObjectUtils.isEmpty(examineBuildings)) {
+            Ordering<ExamineBuilding> firstOrdering = Ordering.from(new Comparator<ExamineBuilding>() {
+                @Override
+                public int compare(ExamineBuilding o1, ExamineBuilding o2) {
+                    return o1.getGmtCreated().compareTo(o2.getGmtCreated());
+                }
+            }).reverse();//排序 并且反转
+            Collections.sort(examineBuildings, firstOrdering);
+            ExamineBuilding examineBuilding = null;
+            if (number.equals(1)) {
+                examineBuilding = examineBuildings.get(0);
+            }
+            if (number.equals(2)) {
+                examineBuilding = examineBuildings.get(1);
+            }
+            return getExamineBuildingVo(examineBuilding);
+        }
+        return null;
     }
 
     /**
@@ -89,7 +117,7 @@ public class ExamineBuildingService {
         BeanUtils.copyProperties(examineBuilding, vo);
         if (examineBuilding.getBuildingStructure() != null) {
             BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructure());
-            if (baseDataDic != null){
+            if (baseDataDic != null) {
                 vo.setBuildingStructureName(baseDataDic.getName());
                 vo.setBuildingStructurePid(baseDataDic.getPid());
             }
@@ -173,7 +201,7 @@ public class ExamineBuildingService {
         return dataPropertyService.getDataPropertyList(null);
     }
 
-    public List<DataDeveloper> getDataDeveloperList(){
+    public List<DataDeveloper> getDataDeveloperList() {
         return dataDeveloperService.getDataDeveloperList(null);
     }
 
