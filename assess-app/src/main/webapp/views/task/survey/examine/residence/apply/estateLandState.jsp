@@ -15,7 +15,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称<span class="symbol required"></span></label>
                 <div class="col-sm-11">
-                    <input type="text" class="form-control" required="required" name="name" placeholder="名称">
+                    <input type="text" class="form-control" required="required" name="name" placeholder="名称" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea">
+                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
                 </div>
             </div>
         </div>
@@ -49,19 +49,19 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">东至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="东至" required="required" name="eastTo">
+                    <input type="text" class="form-control" placeholder="东至" required="required" name="eastTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.eastTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">南至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="南至" required="required" name="southTo">
+                    <input type="text" class="form-control" placeholder="南至" required="required" name="southTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.southTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">西至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="西至" required="required" name="westTo">
+                    <input type="text" class="form-control" placeholder="西至" required="required" name="westTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.westTo}">
                 </div>
             </div>
         </div>
@@ -70,19 +70,19 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">北至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="北至" required="required" name="northTo">
+                    <input type="text" class="form-control" placeholder="北至" required="required" name="northTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.northTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状状况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState">
+                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness">
+                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
                 </div>
             </div>
         </div>
@@ -91,20 +91,20 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地开发程度" required="required" name="developmentDegree">
+                    <input type="text" class="form-control" placeholder="土地开发程度" required="required" name="developmentDegree" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.developmentDegree}">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发限制条件<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="开发限制条件" required="required" name="restrictiveCondition">
+                    <input type="text" class="form-control" placeholder="开发限制条件" required="required" name="restrictiveCondition" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.restrictiveCondition}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土壤<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil">
+                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
                 </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="地形地势" required="required" name="topographicTerrain">
+                    <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地形地势" required="required" name="topographicTerrain">
                 </div>
             </div>
         </div>
