@@ -9,7 +9,7 @@
 
 <c:forEach items="${dataList}" var="item">
     <div class="x_panel">
-        <div class="x_title collapse-link">
+        <div class="x_title collapse-link" onclick="firstLoadJudgeObjectList(this,${item.id});">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
@@ -18,13 +18,6 @@
                     ${item.provinceCityDistrictStr}
                 </c:if>
             </h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link" onclick="firstLoadJudgeObjectList(this,${item.id});">
-                        <i class="fa fa-chevron-down"></i>
-                    </a>
-                </li>
-            </ul>
             <div class="clearfix"></div>
         </div>
         <div class="x_content" style="display: none;">
@@ -38,7 +31,8 @@
                             <input type="text" name="valueTimePoint" required="required" placeholder="价值时间点"
                                    data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
                                    readonly="readonly" pattern='yyyy-MM-dd'
-                                   value="<fmt:formatDate value="${item.valueTimePoint}"  pattern="yyyy-MM-dd"/>">
+                                   value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
+                                   pattern="yyyy-MM-dd"/>">
                         </div>
                     </div>
                 </div>

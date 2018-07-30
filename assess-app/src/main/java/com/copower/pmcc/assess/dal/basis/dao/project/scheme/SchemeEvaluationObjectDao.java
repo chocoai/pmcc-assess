@@ -22,13 +22,7 @@ public class SchemeEvaluationObjectDao {
     @Autowired
     private SchemeEvaluationObjectMapper schemeEvaluationObjectMapper;
 
-    public List<SchemeEvaluationObject> getSchemeEvaluationObjectByProjectId(Integer projectId) {
-        SchemeEvaluationObjectExample example = new SchemeEvaluationObjectExample();
-        example.createCriteria().andProjectIdEqualTo(projectId);
-        return schemeEvaluationObjectMapper.selectByExample(example);
-    }
-
-    public List<SchemeEvaluationObject> getSchemeEvaluationObjectByGroupId(Integer groupId, Integer projectId) {
+    public List<SchemeEvaluationObject> getDataListByGroupId(Integer groupId, Integer projectId) {
         SchemeEvaluationObjectExample example = new SchemeEvaluationObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(groupId).andProjectIdEqualTo(projectId);
         return schemeEvaluationObjectMapper.selectByExample(example);

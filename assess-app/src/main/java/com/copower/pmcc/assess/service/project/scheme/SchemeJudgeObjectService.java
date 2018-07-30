@@ -1,18 +1,19 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
-import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectApplyDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,12 +43,13 @@ public class SchemeJudgeObjectService {
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
-    private ProjectPhaseDao projectPhaseDao;
+    private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
     private ProjectPlanDao projectPlanDao;
 
     /**
      * 保存委估对象
+     *
      * @param applyDto
      */
     public void saveEvaluationObject(SchemeJudgeObjectApplyDto applyDto) {
@@ -59,13 +61,13 @@ public class SchemeJudgeObjectService {
         SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(applyDto.getAreaGroupId());
         schemeAreaGroup.setValueTimePoint(applyDto.getValueTimePoint());
         schemeAreaGroupService.update(schemeAreaGroup);
-        HashSet<Integer> hashSet= Sets.newHashSet();
+        HashSet<Integer> hashSet = Sets.newHashSet();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjects) {
-            if(schemeJudgeObject.getId()!=null&&schemeJudgeObject.getId()>0){
+            if (schemeJudgeObject.getId() != null && schemeJudgeObject.getId() > 0) {
                 update(schemeJudgeObject);
-            }else {
+            } else {
                 SchemeJudgeObject judgeObject = get(schemeJudgeObject.getSourceId());
-                if(judgeObject!=null){
+                if (judgeObject != null) {
                     //1.先拷贝一份数据
                     judgeObject.setId(0);
                     judgeObject.setBestUseId(schemeJudgeObject.getBestUseId());
@@ -80,8 +82,19 @@ public class SchemeJudgeObjectService {
         }
 
         //清空原生成的数据
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setProjectWorkStageId(projectPlan.getWorkStageId());
+        where.setPlanId(projectPlan.getId());
+        where.setProjectId(projectPlan.getProjectId());
+        where.setAreaGroupId(applyDto.getAreaGroupId());
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(where);
+        if (CollectionUtils.isNotEmpty(planDetailsList)) {
+            for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+                projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+            }
+        }
 
-
+        //生成数据
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
         projectPlanDetails.setPlanId(projectPlan.getId());
@@ -90,13 +103,14 @@ public class SchemeJudgeObjectService {
         projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
         projectPlanDetails.setBisLastLayer(false);
         projectPlanDetails.setSorting(0);
+        projectPlanDetails.setAreaGroupId(applyDto.getAreaGroupId());
         projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
 
-        hashSet.forEach(p->{
-            SchemeEvaluationObject schemeEvaluationObject=new SchemeEvaluationObjectDto();
+        hashSet.forEach(p -> {
+            SchemeEvaluationObject schemeEvaluationObject = new SchemeEvaluationObjectDto();
             schemeEvaluationObject.setProjectId(projectPlan.getProjectId());
             schemeEvaluationObject.setAreaGroupId(applyDto.getAreaGroupId());
-            schemeEvaluationObject.setName(String.format("%s号委估对象",p));
+            schemeEvaluationObject.setName(String.format("%s号委估对象", p));
             schemeEvaluationObject.setGroupNumber(p);
             schemeEvaluationObject.setCreator(commonService.thisUserAccount());
             evaluationObjectService.add(schemeEvaluationObject);
@@ -111,7 +125,18 @@ public class SchemeJudgeObjectService {
             details.setPid(projectPlanDetails.getId());
             details.setBisLastLayer(false);
             details.setSorting(p);
+            details.setAreaGroupId(applyDto.getAreaGroupId());
             projectPlanDetailsDao.addProjectPlanDetails(details);
+
+            //找出适用方法
+            //先根据委估对象 找到委估对象下的所有估价对象 并找出这些估价对象中挂有评估方法且为适用的方法数据
+
+            List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeEvaluationObject.getId());
+            if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                List<Integer> judgeIds = LangUtils.transform(judgeObjectList, o -> o.getId());
+
+            }
+
         });
     }
 
