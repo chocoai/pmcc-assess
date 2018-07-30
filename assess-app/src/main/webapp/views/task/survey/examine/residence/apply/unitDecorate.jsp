@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="unitDecorate.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="unitDecorate.prototype.viewInit()"><i
+            <li><a class="collapse-link" ><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>楼栋内装信息
@@ -48,243 +48,249 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var unitDecorate = function () {
+    var unitDecorate;
+    (function () {
+        var flag = true;
+        unitDecorate= function () {
 
-    };
-    unitDecorate.prototype = {
-        viewInit:function () {
-            unitDecorate.prototype.loadDataDicList();
-            unitDecorate.prototype.init();
-        },
-        config: function () {
-            var data = {};
-            data.table = "ExamineUnitDecorateList";
-            data.box = "divBoxExamineUnitDecorate";
-            data.frm = "frmExamineUnitDecorate";
-            data.type = "null";//
-            return data;
-        },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'decorationPartName', title: '装修部位'});
-            cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-            cols.push({field: 'materialPriceName', title: '材料价格区间'});
-            cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        unitDecorate.prototype = {
+            setFlag:function (flag_) {
+                flag = flag_;
+            },
+            getFlag:function () {
+                return flag;
+            },
+            viewInit: function () {
+                if (unitDecorate.prototype.getFlag()){
+                    unitDecorate.prototype.init();
+                    unitDecorate.prototype.setFlag(false);
                 }
-            });
-            $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateList", cols, {
-                type: unitDecorate.prototype.config().type
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/deleteExamineUnitDecorateById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        unitDecorate.prototype.loadDataDicList();
+                unitDecorate.prototype.loadDataDicList();
+            },
+            config: function () {
+                var data = {};
+                data.table = "ExamineUnitDecorateList";
+                data.box = "divBoxExamineUnitDecorate";
+                data.frm = "frmExamineUnitDecorate";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'decorationPartName', title: '装修部位'});
+                cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+                cols.push({field: 'materialPriceName', title: '材料价格区间'});
+                cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                });
+                $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
+                TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateList", cols, {
+                    type: unitDecorate.prototype.config().type
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            $("#" + unitDecorate.prototype.config().frm).clearAll();
-            $("#" + unitDecorate.prototype.config().frm + " .type").val(unitDecorate.prototype.config().type);
-            $('#' + unitDecorate.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + unitDecorate.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(unitDecorate.prototype.config().frm);
-            if ($("#declareId").size() > 0) {
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0) {
-                data.examineType = $("#examineType").val();
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/saveAndUpdateExamineUnitDecorate",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#' + unitDecorate.prototype.config().box).modal('hide');
-                        unitDecorate.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + unitDecorate.prototype.config().frm).clearAll();
-                        $("#" + unitDecorate.prototype.config().frm).initForm(result.data);
-                        //decoratingMaterial
-                        if (result.data.decoratingMaterial == null || result.data.decoratingMaterial == '') {
-                            $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").val(null).trigger("change");
-                        } else {
-                            $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").val(result.data.decoratingMaterial).trigger("change");
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/deleteExamineUnitDecorateById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            unitDecorate.prototype.loadDataDicList();
                         }
-                        if (result.data.materialPriceRange == null || result.data.materialPriceRange == '') {
-                            $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").val(null).trigger("change");
-                        } else {
-                            $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").val(result.data.materialPriceRange).trigger("change");
-                        }//constructionTechnology
-                        if (result.data.constructionTechnology == null || result.data.constructionTechnology == '') {
-                            $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").val(null).trigger("change");
-                        } else {
-                            $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").val(result.data.constructionTechnology).trigger("change");
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
                         }
-                        if (result.data.decorationPart == null || result.data.decorationPart == '') {
-                            $("#" + unitDecorate.prototype.config().frm + " .decorationPart").val(null).trigger("change");
-                        } else {
-                            $("#" + unitDecorate.prototype.config().frm + " .decorationPart").val(result.data.decorationPart).trigger("change");
-                        }
-                        $('#' + unitDecorate.prototype.config().box).modal("show");
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                })
+            },
+            showModel: function () {
+                $("#" + unitDecorate.prototype.config().frm).clearAll();
+                $("#" + unitDecorate.prototype.config().frm + " .type").val(unitDecorate.prototype.config().type);
+                $('#' + unitDecorate.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + unitDecorate.prototype.config().frm).valid()) {
+                    return false;
                 }
-            })
-        },
-        init: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_decorating_material",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                var data = formParams(unitDecorate.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/saveAndUpdateExamineUnitDecorate",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + unitDecorate.prototype.config().box).modal('hide');
+                            unitDecorate.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + unitDecorate.prototype.config().frm).clearAll();
+                            $("#" + unitDecorate.prototype.config().frm).initForm(result.data);
+                            //decoratingMaterial
+                            if (result.data.decoratingMaterial == null || result.data.decoratingMaterial == '') {
+                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").val(null).trigger("change");
+                            } else {
+                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").val(result.data.decoratingMaterial).trigger("change");
                             }
-                            $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").html(option);
-                            $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_material_price",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.materialPriceRange == null || result.data.materialPriceRange == '') {
+                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").val(null).trigger("change");
+                            } else {
+                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").val(result.data.materialPriceRange).trigger("change");
+                            }//constructionTechnology
+                            if (result.data.constructionTechnology == null || result.data.constructionTechnology == '') {
+                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").val(null).trigger("change");
+                            } else {
+                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").val(result.data.constructionTechnology).trigger("change");
                             }
-                            $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").html(option);
-                            $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_construction_technology",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.decorationPart == null || result.data.decorationPart == '') {
+                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").val(null).trigger("change");
+                            } else {
+                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").val(result.data.decorationPart).trigger("change");
                             }
-                            $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").html(option);
-                            $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                            $('#' + unitDecorate.prototype.config().box).modal("show");
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_decoration_part",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_decorating_material",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").html(option);
+                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
                             }
-                            $("#" + unitDecorate.prototype.config().frm + " .decorationPart").html(option);
-                            $("#" + unitDecorate.prototype.config().frm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_material_price",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").html(option);
+                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_construction_technology",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").html(option);
+                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineUnitDecorate/examine_building_decoration_part",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").html(option);
+                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
 
+            }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // unitDecorate.prototype.loadDataDicList();
-        // unitDecorate.prototype.init();
-    })
+    })();
 
 </script>
 

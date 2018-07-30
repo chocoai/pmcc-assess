@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="matchingMedical.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingMedical.prototype.viewInit()"><i
+            <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>医养条件信息
@@ -48,189 +48,195 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var matchingMedical = function () {
+    var matchingMedical;
+    (function () {
+        var flag = true;
+        matchingMedical = function () {
 
-    };
-    matchingMedical.prototype = {
-        viewInit:function () {
-            matchingMedical.prototype.loadDataDicList();
-            matchingMedical.prototype.init();
-        },
-        config: function () {
-            var data = {};
-            data.table = "MatchingMedicalList";
-            data.box = "divBoxMatchingMedical";
-            data.frm = "frmMatchingMedical";
-            data.type = "null";//
-            return data;
-        },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'bedNumber', title: '床位数'});
-            cols.push({field: 'distanceName', title: '医养条件距离'});
-            cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingMedical.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingMedical.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        matchingMedical.prototype = {
+            setFlag: function (flag_) {
+                flag = flag_;
+            },
+            getFlag: function () {
+                return flag;
+            },
+            viewInit: function () {
+                matchingMedical.prototype.loadDataDicList();
+                if (matchingMedical.prototype.getFlag()) {
+                    matchingMedical.prototype.init();
+                    matchingMedical.prototype.setFlag(false);
                 }
-            });
-            $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalList", cols, {
-                type: matchingMedical.prototype.config().type
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingMedical/deleteExamineMatchingMedicalById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        matchingMedical.prototype.loadDataDicList();
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingMedicalList";
+                data.box = "divBoxMatchingMedical";
+                data.frm = "frmMatchingMedical";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'bedNumber', title: '床位数'});
+                cols.push({field: 'distanceName', title: '医养条件距离'});
+                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingMedical.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingMedical.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                });
+                $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalList", cols, {
+                    type: matchingMedical.prototype.config().type
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            $("#" + matchingMedical.prototype.config().frm).clearAll();
-            $("#" + matchingMedical.prototype.config().frm + " .type").val(matchingMedical.prototype.config().type);
-            // matchingMedical.prototype.init();
-            $('#' + matchingMedical.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + matchingMedical.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(matchingMedical.prototype.config().frm);
-            if ($("#declareId").size() > 0) {
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0) {
-                data.examineType = $("#examineType").val();
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingMedical/saveAndUpdateExamineMatchingMedical",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#' + matchingMedical.prototype.config().box).modal('hide');
-                        matchingMedical.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + matchingMedical.prototype.config().frm).clearAll();
-                        $("#" + matchingMedical.prototype.config().frm).initForm(result.data);
-                        if (result.data.organizationLevel == null || result.data.organizationLevel == '') {
-                            $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").val(result.data.organizationLevel).trigger("change");
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingMedical/deleteExamineMatchingMedicalById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            matchingMedical.prototype.loadDataDicList();
                         }
-                        if (result.data.distance == null || result.data.distance == '') {
-                            $("#" + matchingMedical.prototype.config().frm + " .distance").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingMedical.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
                         }
-                        $('#' + matchingMedical.prototype.config().box).modal("show");
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                })
+            },
+            showModel: function () {
+                $("#" + matchingMedical.prototype.config().frm).clearAll();
+                $("#" + matchingMedical.prototype.config().frm + " .type").val(matchingMedical.prototype.config().type);
+                // matchingMedical.prototype.init();
+                $('#' + matchingMedical.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + matchingMedical.prototype.config().frm).valid()) {
+                    return false;
                 }
-            })
-        },
-        init: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingMedical/estate_examinematchingmedical_level",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                var data = formParams(matchingMedical.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingMedical/saveAndUpdateExamineMatchingMedical",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + matchingMedical.prototype.config().box).modal('hide');
+                            matchingMedical.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + matchingMedical.prototype.config().frm).clearAll();
+                            $("#" + matchingMedical.prototype.config().frm).initForm(result.data);
+                            if (result.data.organizationLevel == null || result.data.organizationLevel == '') {
+                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").val(result.data.organizationLevel).trigger("change");
                             }
-                            $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").html(option);
-                            $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingMedical/estate_examinematchingmedical_distance",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.distance == null || result.data.distance == '') {
+                                $("#" + matchingMedical.prototype.config().frm + " .distance").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingMedical.prototype.config().frm + " .distance").val(result.data.distance).trigger("change");
                             }
-                            $("#" + matchingMedical.prototype.config().frm + " .distance").html(option);
-                            $("#" + matchingMedical.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                            $('#' + matchingMedical.prototype.config().box).modal("show");
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingMedical/estate_examinematchingmedical_level",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").html(option);
+                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
 
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingMedical/estate_examinematchingmedical_distance",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingMedical.prototype.config().frm + " .distance").html(option);
+                                $("#" + matchingMedical.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+
+            }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // matchingMedical.prototype.loadDataDicList();
-        // matchingMedical.prototype.init();
-    })
+    })();
 
 </script>
 

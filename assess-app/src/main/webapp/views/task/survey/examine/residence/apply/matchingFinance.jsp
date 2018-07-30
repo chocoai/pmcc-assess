@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="matchingFinance.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="matchingFinance.prototype.viewInit()"><i
+            <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>金融服务信息
@@ -48,217 +48,222 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var matchingFinance = function () {
+    var matchingFinance;
+    (function () {
+        var flag = true;
+        matchingFinance = function () {
 
-    };
-    matchingFinance.prototype = {
-        viewInit:function () {
-            matchingFinance.prototype.loadDataDicList();
-            matchingFinance.prototype.init();
-        },
-        config: function () {
-            var data = {};
-            data.table = "MatchingFinanceList";
-            data.box = "divBoxMatchingFinance";
-            data.frm = "frmMatchingFinance";
-            data.type = "null";//
-            return data;
-        },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'name', title: '金融名称'});
-            cols.push({field: 'categoryName', title: '金融类别'});
-            cols.push({field: 'natureName', title: '金融机构性质'});
-            cols.push({field: 'serviceContentName', title: '金融服务内容'});
-            cols.push({field: 'autoServiceContent', title: '自动服务内容'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingFinance.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingFinance.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        matchingFinance.prototype = {
+            setFlag: function (flag_) {
+                flag = flag_;
+            },
+            getFlag: function () {
+                return flag;
+            },
+            viewInit: function () {
+                matchingFinance.prototype.loadDataDicList();
+                if (matchingFinance.prototype.getFlag()) {
+                    matchingFinance.prototype.init();
+                    matchingFinance.prototype.setFlag(false);
                 }
-            });
-            $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
-            TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceList", cols, {
-                type: matchingFinance.prototype.config().type
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/deleteExamineMatchingFinanceById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        matchingFinance.prototype.loadDataDicList();
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingFinanceList";
+                data.box = "divBoxMatchingFinance";
+                data.frm = "frmMatchingFinance";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '金融名称'});
+                cols.push({field: 'categoryName', title: '金融类别'});
+                cols.push({field: 'natureName', title: '金融机构性质'});
+                cols.push({field: 'serviceContentName', title: '金融服务内容'});
+                cols.push({field: 'autoServiceContent', title: '自动服务内容'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingFinance.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingFinance.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                });
+                $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceList", cols, {
+                    type: matchingFinance.prototype.config().type
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            $("#" + matchingFinance.prototype.config().frm).clearAll();
-            $("#" + matchingFinance.prototype.config().frm + " .type").val(matchingFinance.prototype.config().type);
-            // matchingFinance.prototype.init();
-            $('#' + matchingFinance.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + matchingFinance.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(matchingFinance.prototype.config().frm);
-            if ($("#declareId").size() > 0) {
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0) {
-                data.examineType = $("#examineType").val();
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/saveAndUpdateExamineMatchingFinance",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#' + matchingFinance.prototype.config().box).modal('hide');
-                        matchingFinance.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + matchingFinance.prototype.config().frm).clearAll();
-                        $("#" + matchingFinance.prototype.config().frm).initForm(result.data);
-                        if (result.data.serviceContent == null || result.data.serviceContent == '') {
-                            $("#" + matchingFinance.prototype.config().frm + " .serviceContent").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingFinance.prototype.config().frm + " .serviceContent").val(result.data.serviceContent).trigger("change");
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/deleteExamineMatchingFinanceById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            matchingFinance.prototype.loadDataDicList();
                         }
-                        if (result.data.nature == null || result.data.nature == '') {
-                            $("#" + matchingFinance.prototype.config().frm + " .nature").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingFinance.prototype.config().frm + " .nature").val(result.data.nature).trigger("change");
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
                         }
-                        if (result.data.category == null || result.data.category == '') {
-                            $("#" + matchingFinance.prototype.config().frm + " .category").val(null).trigger("change");
-                        } else {
-                            $("#" + matchingFinance.prototype.config().frm + " .category").val(result.data.category).trigger("change");
-                        }
-                        $('#' + matchingFinance.prototype.config().box).modal("show");
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                })
+            },
+            showModel: function () {
+                $("#" + matchingFinance.prototype.config().frm).clearAll();
+                $("#" + matchingFinance.prototype.config().frm + " .type").val(matchingFinance.prototype.config().type);
+                $('#' + matchingFinance.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + matchingFinance.prototype.config().frm).valid()) {
+                    return false;
                 }
-            })
-        },
-        init: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_service_content",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                var data = formParams(matchingFinance.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/saveAndUpdateExamineMatchingFinance",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + matchingFinance.prototype.config().box).modal('hide');
+                            matchingFinance.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + matchingFinance.prototype.config().frm).clearAll();
+                            $("#" + matchingFinance.prototype.config().frm).initForm(result.data);
+                            if (result.data.serviceContent == null || result.data.serviceContent == '') {
+                                $("#" + matchingFinance.prototype.config().frm + " .serviceContent").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingFinance.prototype.config().frm + " .serviceContent").val(result.data.serviceContent).trigger("change");
                             }
-                            $("#" + matchingFinance.prototype.config().frm + " .serviceContent").html(option);
-                            $("#" + matchingFinance.prototype.config().frm + " .serviceContent").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_nature",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.nature == null || result.data.nature == '') {
+                                $("#" + matchingFinance.prototype.config().frm + " .nature").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingFinance.prototype.config().frm + " .nature").val(result.data.nature).trigger("change");
                             }
-                            $("#" + matchingFinance.prototype.config().frm + " .nature").html(option);
-                            $("#" + matchingFinance.prototype.config().frm + " .nature").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_category",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.category == null || result.data.category == '') {
+                                $("#" + matchingFinance.prototype.config().frm + " .category").val(null).trigger("change");
+                            } else {
+                                $("#" + matchingFinance.prototype.config().frm + " .category").val(result.data.category).trigger("change");
                             }
-                            $("#" + matchingFinance.prototype.config().frm + " .category").html(option);
-                            $("#" + matchingFinance.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                            $('#' + matchingFinance.prototype.config().box).modal("show");
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_service_content",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingFinance.prototype.config().frm + " .serviceContent").html(option);
+                                $("#" + matchingFinance.prototype.config().frm + " .serviceContent").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_nature",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingFinance.prototype.config().frm + " .nature").html(option);
+                                $("#" + matchingFinance.prototype.config().frm + " .nature").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineMatchingFinance/estate_finance_category",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + matchingFinance.prototype.config().frm + " .category").html(option);
+                                $("#" + matchingFinance.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
 
+            }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // matchingFinance.prototype.loadDataDicList();
-        // matchingFinance.prototype.init();
-    })
+    })();
 
 </script>
 

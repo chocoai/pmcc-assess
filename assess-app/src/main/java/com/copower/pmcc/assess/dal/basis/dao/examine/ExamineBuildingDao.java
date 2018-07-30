@@ -30,6 +30,19 @@ public class ExamineBuildingDao {
         return examineBuildingMapper.selectByPrimaryKey(id);
     }
 
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer examineType){
+        ExamineBuildingExample examineBuildingExample = new ExamineBuildingExample();
+        ExamineBuildingExample.Criteria criteria = examineBuildingExample.createCriteria();
+        criteria.andIdIsNotNull();
+        if (declareId!=null){
+            criteria.andDeclareIdEqualTo(declareId);
+        }
+        if (examineType != null){
+            criteria.andExamineTypeEqualTo(examineType);
+        }
+        return examineBuildingMapper.selectByExample(examineBuildingExample);
+    }
+
     /**
      * 获取数据列表
      * @param examineBuilding

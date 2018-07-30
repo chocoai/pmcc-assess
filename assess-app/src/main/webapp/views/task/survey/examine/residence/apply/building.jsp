@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="examineBuilding_.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="examineBuilding_.prototype.viewInit()"><i
+            <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>楼栋基础信息
@@ -48,280 +48,226 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var examineBuilding_ = function () {
+    var examineBuilding_ ;
+    (function () {
+        var flag = true;
+        examineBuilding_ = function () {
 
-    };
-    examineBuilding_.prototype = {
-        viewInit:function () {
-            examineBuilding_.prototype.loadDataDicList();
-            examineBuilding_.prototype.init();
-        },
-        config: function () {
-            var data = {};
-            data.table = "ExamineBuilding_List";
-            data.box = "divBoxExamineBuilding_";
-            data.frm = "frmExamineBuilding_";
-            data.type = "null";//
-            return data;
-        },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'builderName', title: '建造商'});
-            cols.push({field: 'propertyName', title: '物业公司'});
-            cols.push({field: 'buildingCategoryName', title: '建筑类别'});
-            cols.push({field: 'buildingStructureName', title: '建筑结构'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        examineBuilding_.prototype = {
+            setFlag: function (flag_) {
+                flag = flag_;
+            },
+            getFlag: function () {
+                return flag;
+            },
+            viewInit: function () {
+                examineBuilding_.prototype.loadDataDicList();
+                if (examineBuilding_.prototype.getFlag()){
+                    examineBuilding_.prototype.init();
+                    examineBuilding_.prototype.setFlag(false);
                 }
-            });
-            $("#" + examineBuilding_.prototype.config().table).bootstrapTable('destroy');
-            TableInit(examineBuilding_.prototype.config().table, "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingList", cols, {
-                type: examineBuilding_.prototype.config().type
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
+            },
+            config: function () {
+                var data = {};
+                data.table = "ExamineBuilding_List";
+                data.box = "divBoxExamineBuilding_";
+                data.frm = "frmExamineBuilding_";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'builderName', title: '建造商'});
+                cols.push({field: 'propertyName', title: '物业公司'});
+                cols.push({field: 'buildingCategoryName', title: '建筑类别'});
+                cols.push({field: 'buildingStructureName', title: '建筑结构'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+                $("#" + examineBuilding_.prototype.config().table).bootstrapTable('destroy');
+                TableInit(examineBuilding_.prototype.config().table, "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingList", cols, {
+                    type: examineBuilding_.prototype.config().type
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/deleteExamineBuildingById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            examineBuilding_.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            showModel: function () {
+                $("#" + examineBuilding_.prototype.config().frm).clearAll();
+                $("#" + examineBuilding_.prototype.config().frm + " .type").val(examineBuilding_.prototype.config().type);
+                $('#' + examineBuilding_.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + examineBuilding_.prototype.config().frm).valid()) {
+                    return false;
                 }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/deleteExamineBuildingById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        examineBuilding_.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                var data = formParams(examineBuilding_.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
                 }
-            })
-        },
-        showModel: function () {
-            $("#" + examineBuilding_.prototype.config().frm).clearAll();
-            $("#" + examineBuilding_.prototype.config().frm + " .type").val(examineBuilding_.prototype.config().type);
-            $('#' + examineBuilding_.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + examineBuilding_.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(examineBuilding_.prototype.config().frm);
-            if ($("#declareId").size() > 0) {
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0) {
-                data.examineType = $("#examineType").val();
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/saveAndUpdateExamineBuilding",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#' + examineBuilding_.prototype.config().box).modal('hide');
-                        examineBuilding_.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
                 }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + examineBuilding_.prototype.config().frm).clearAll();
-                        $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                        if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
-                        } else {
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/saveAndUpdateExamineBuilding",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + examineBuilding_.prototype.config().box).modal('hide');
+                            examineBuilding_.prototype.loadDataDicList();
                         }
-                        if (result.data.buildingStructurePid == null || result.data.buildingStructurePid == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
-                        } else {
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructurePid).trigger("change");
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
                         }
-                        if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(null).trigger("change");
-                        } else {
-                            console.log(result.data.buildingStructure);
-                            console.log(result.data);
-                            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(result.data.buildingStructure).trigger("change");
-                            // $("#"+examineBuilding_.prototype.config().frm+" .buildingStructureV").val(result.data.buildingStructure).trigger("change");
-                            // $("#frmExamineBuilding_buildingStructure").val(result.data.buildingStructure).trigger("change");
-                        }
-                        if (result.data.propertyType == null || result.data.propertyType == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
-                        } else {
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
-                        }
-                        if (result.data.builderId == null || result.data.builderId == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
-                        } else {
-                            $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
-                        }
-                        if (result.data.propertyId == null || result.data.propertyId == '') {
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
-                        } else {
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
-                        }
-                        $('#' + examineBuilding_.prototype.config().box).modal("show");
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        init: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/estate_examineBuilding_category",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + examineBuilding_.prototype.config().frm).clearAll();
+                            $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
+                            if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
+                            } else {
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
                             }
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(option);
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/estate_building_structure",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (result.data.buildingStructurePid == null || result.data.buildingStructurePid == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
+                            } else {
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructurePid).trigger("change");
                             }
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(option);
-                            $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                            if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(null).trigger("change");
+                            } else {
+                                console.log(result.data.buildingStructure);
+                                console.log(result.data);
+                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(result.data.buildingStructure).trigger("change");
+                                // $("#"+examineBuilding_.prototype.config().frm+" .buildingStructureV").val(result.data.buildingStructure).trigger("change");
+                                // $("#frmExamineBuilding_buildingStructure").val(result.data.buildingStructure).trigger("change");
+                            }
+                            if (result.data.propertyType == null || result.data.propertyType == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
+                            } else {
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
+                            }
+                            if (result.data.builderId == null || result.data.builderId == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
+                            } else {
+                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
+                            }
+                            if (result.data.propertyId == null || result.data.propertyId == '') {
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
+                            } else {
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
+                            }
+                            $('#' + examineBuilding_.prototype.config().box).modal("show");
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
-            $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").eq(1).val();
-                if (id != null && id != '' && id != 0) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/examineBuilding/getBasisList",
-                        dataType: "JSON",
-                        data: {'id': id},
-                        type: "GET",
-                        success: function (result) {
-                            if (result.ret) {
-                                var data = result.data;
-                                var gradeNum = data.length;
-                                var option = "<option value=''>请选择</option>";
-                                if (gradeNum > 0) {
-                                    for (var i = 0; i < gradeNum; i++) {
-                                        option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                    }
-                                    // $("#"+examineBuilding_.prototype.config().frm+"buildingStructure").empty();
-                                    $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(option);
-                                    $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/estate_examineBuilding_category",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(option);
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2({minimumResultsForSearch: -1});//加载样式
                             }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
                         }
-                    });
-                }
-            });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/estate_building_type",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(option);
-                            $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2({minimumResultsForSearch: -1});//加载样式
-                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-                type: "get",
-                dataType: "json",
-                data: {type: "DataBuilder"},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/estate_building_structure",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(option);
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
                             }
-                            $("#" + examineBuilding_.prototype.config().frm + " .builderId").html(option);
-                            $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2({minimumResultsForSearch: -1});//加载样式
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").change(function () {
+                    /**
+                     * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
+                     **/
+                    var id = $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").eq(1).val();
+                    if (id != null && id != '' && id != 0) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-                            type: "get",
-                            dataType: "json",
-                            data: {type: "DataProperty"},
+                            url: "${pageContext.request.contextPath}/examineBuilding/getBasisList",
+                            dataType: "JSON",
+                            data: {'id': id},
+                            type: "GET",
                             success: function (result) {
                                 if (result.ret) {
                                     var data = result.data;
@@ -331,31 +277,91 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().frm + " .propertyId").html(option);
-                                        $("#" + examineBuilding_.prototype.config().frm + " .propertyId").select2({minimumResultsForSearch: -1});//加载样式
+                                        // $("#"+examineBuilding_.prototype.config().frm+"buildingStructure").empty();
+                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(option);
+                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
                                     }
+
                                 }
                             },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
+                            error: function (e) {
+                                Alert("调用服务端方法失败，失败原因:" + e);
                             }
-                        })
+                        });
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                });
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/estate_building_type",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(option);
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
+                    type: "get",
+                    dataType: "json",
+                    data: {type: "DataBuilder"},
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").html(option);
+                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
+                                type: "get",
+                                dataType: "json",
+                                data: {type: "DataProperty"},
+                                success: function (result) {
+                                    if (result.ret) {
+                                        var data = result.data;
+                                        var gradeNum = data.length;
+                                        var option = "<option value=''>请选择</option>";
+                                        if (gradeNum > 0) {
+                                            for (var i = 0; i < gradeNum; i++) {
+                                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                            }
+                                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").html(option);
+                                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").select2({minimumResultsForSearch: -1});//加载样式
+                                        }
+                                    }
+                                },
+                                error: function (result) {
+                                    Alert("调用服务端方法失败，失败原因:" + result);
+                                }
+                            })
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
 
+            }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // examineBuilding_.prototype.loadDataDicList();
-        // examineBuilding_.prototype.init();
-    })
+    })();
 
 </script>
 
@@ -541,30 +547,30 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-2 control-label">--%>
-                                <%--开盘时间--%>
-                                <%--</label>--%>
-                                <%--<div class="col-sm-10">--%>
-                                <%--<input required="required" placeholder="开盘时间"--%>
-                                <%--name="openTime" data-date-format="yyyy-mm-dd"--%>
-                                <%--class="form-control date-picker dbdate">--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<div class="x-valid">--%>
-                                <%--<label class="col-sm-2 control-label">--%>
-                                <%--交房时间--%>
-                                <%--</label>--%>
-                                <%--<div class="col-sm-10">--%>
-                                <%--<input required="required" placeholder="开盘时间"--%>
-                                <%--name="roomTime" data-date-format="yyyy-mm-dd"--%>
-                                <%--class="form-control date-picker dbdate">--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            开盘时间
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input required="required" placeholder="开盘时间"
+                                                   name="openTime" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            交房时间
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input required="required" placeholder="开盘时间"
+                                                   name="roomTime" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">

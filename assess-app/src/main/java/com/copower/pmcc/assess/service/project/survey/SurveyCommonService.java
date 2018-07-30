@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
+import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,6 +74,8 @@ public class SurveyCommonService {
     private ExamineHouseTradingService examineHouseTradingService;
     @Autowired
     private ExamineUnitService examineUnitService;
+    @Autowired
+    private ExamineBuildingService examineBuildingService;
 
 
     /**
@@ -297,6 +301,13 @@ public class SurveyCommonService {
 
         ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
+
+        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId,examineTypeEnum.getId());
+        if (!ObjectUtils.isEmpty(examineBuildings)){
+            ExamineBuilding examineBuilding = examineBuildings.get(0);
+            ExamineBuildingVo examineBuildingVo = examineBuildingService.getExamineBuildingVo(examineBuilding);
+            surveyExamineDataInfoVo.setExamineBuildingVo(examineBuildingVo);
+        }
         return surveyExamineDataInfoVo;
     }
 }

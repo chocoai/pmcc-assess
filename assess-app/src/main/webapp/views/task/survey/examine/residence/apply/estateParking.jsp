@@ -11,9 +11,9 @@
 
 <body>
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title collapse-link" onclick="estateParking.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" onclick="estateParking.prototype.viewInit()"><i class="fa fa-chevron-up"></i></a></li>
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
         </ul>
         <h3>车位信息
         </h3>
@@ -47,157 +47,163 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
-    var estateParking = function () {
+    var estateParking;
+    (function () {
+        var flag = true;
+        estateParking = function () {
 
-    };
-    estateParking.prototype = {
-        viewInit:function () {
-            estateParking.prototype.loadDataDicList();
-            estateParking.prototype.init();
-        },
-        config:function () {
-            var data = {};
-            data.table = "estateParkingList" ;
-            data.box = "divBoxEstateParking";
-            data.frm = "frmEstateParking";
-            return data;
-        },
-        loadDataDicList:function () {
-            var cols = [];
-            cols.push({field: 'parkingTypeName', title: '车位类型'});
-            cols.push({field: 'location', title: '车辆位置'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateParking.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateParking.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
+        };
+        estateParking.prototype = {
+            setFlag: function (flag_) {
+                flag = flag_;
+            },
+            getFlag: function () {
+                return flag;
+            },
+            viewInit: function () {
+                if (estateParking.prototype.getFlag()){
+                    estateParking.prototype.init();
+                    estateParking.prototype.setFlag(false);
                 }
-            });
-            $("#"+estateParking.prototype.config().table).bootstrapTable('destroy');
-            TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingList", cols, {
-                name:$("#queryName").val()
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData:function (id) {
-            $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateParking/deleteExamineEstateParkingById",
-                type: "post",
-                dataType: "json",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        estateParking.prototype.loadDataDicList();
+                estateParking.prototype.loadDataDicList();
+            },
+            config: function () {
+                var data = {};
+                data.table = "estateParkingList";
+                data.box = "divBoxEstateParking";
+                data.frm = "frmEstateParking";
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'parkingTypeName', title: '车位类型'});
+                cols.push({field: 'location', title: '车辆位置'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="estateParking.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="estateParking.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                });
+                $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
+                TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingList", cols, {
+                    name: $("#queryName").val()
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel:function () {
-            $("#"+estateParking.prototype.config().frm).clearAll();
-            // estateParking.prototype.init();
-            $('#'+estateParking.prototype.config().box).modal("show");
-        },
-        saveData:function () {
-            if (!$("#"+estateParking.prototype.config().frm).valid()){
-                return false;
-            }
-            var data = formParams(estateParking.prototype.config().frm);
-            if ($("#declareId").size() > 0){
-                data.declareId = $("#declareId").val();
-            }
-            if ($("#examineType").size() > 0){
-                data.examineType = $("#examineType").val();
-            }
-            $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateParking/saveAndUpdateExamineEstateParking",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#'+estateParking.prototype.config().box).modal('hide');
-                        estateParking.prototype.loadDataDicList();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit:function (id) {
-            $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingById",
-                type: "get",
-                dataType: "json",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#"+estateParking.prototype.config().frm).clearAll();
-                        $("#" + estateParking.prototype.config().frm).initForm(result.data);
-                        if (result.data.parkingType == null || result.data.parkingType == ''){
-                            $("#"+estateParking.prototype.config().frm+" .parkingType").val(null).trigger("change");
-                        }else {
-                            $("#"+estateParking.prototype.config().frm+" .parkingType").val(result.data.parkingType).trigger("change");
+                });
+            },
+            removeData: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineEstateParking/deleteExamineEstateParkingById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            estateParking.prototype.loadDataDicList();
                         }
-                        $('#'+estateParking.prototype.config().box).modal("show");
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                })
+            },
+            showModel: function () {
+                $("#" + estateParking.prototype.config().frm).clearAll();
+                // estateParking.prototype.init();
+                $('#' + estateParking.prototype.config().box).modal("show");
+            },
+            saveData: function () {
+                if (!$("#" + estateParking.prototype.config().frm).valid()) {
+                    return false;
                 }
-            })
-        },
-        init:function () {
-            $.ajax({
-                url:"${pageContext.request.contextPath}/examineEstateParking/estate_car_type",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if(gradeNum > 0){
-                            for(var i = 0;i< gradeNum;i++){
-                                option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                var data = formParams(estateParking.prototype.config().frm);
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineEstateParking/saveAndUpdateExamineEstateParking",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + estateParking.prototype.config().box).modal('hide');
+                            estateParking.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            },
+            getAndInit: function (id) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + estateParking.prototype.config().frm).clearAll();
+                            $("#" + estateParking.prototype.config().frm).initForm(result.data);
+                            if (result.data.parkingType == null || result.data.parkingType == '') {
+                                $("#" + estateParking.prototype.config().frm + " .parkingType").val(null).trigger("change");
+                            } else {
+                                $("#" + estateParking.prototype.config().frm + " .parkingType").val(result.data.parkingType).trigger("change");
                             }
-                            $("#"+estateParking.prototype.config().frm+" .parkingType").html(option);
-                            $("#"+estateParking.prototype.config().frm+" .parkingType").select2({ minimumResultsForSearch: -1 });//加载样式
+                            $('#' + estateParking.prototype.config().box).modal("show");
                         }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+                })
+            },
+            init: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineEstateParking/estate_car_type",
+                    type: "get",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + estateParking.prototype.config().frm + " .parkingType").html(option);
+                                $("#" + estateParking.prototype.config().frm + " .parkingType").select2({minimumResultsForSearch: -1});//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            }
         }
-    }
-    /**
-     * 初始化
-     */
-    $(function () {
-        // estateParking.prototype.loadDataDicList();
-        // estateParking.prototype.init();
-    })
+    })();
 
 </script>
 
@@ -211,7 +217,7 @@
                 <h3 class="modal-title">车位</h3>
             </div>
             <form id="frmEstateParking" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -233,7 +239,8 @@
                                             车位类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="parkingType" class="form-control search-select select2 parkingType">
+                                            <select required="required" name="parkingType"
+                                                    class="form-control search-select select2 parkingType">
                                             </select>
                                         </div>
                                     </div>

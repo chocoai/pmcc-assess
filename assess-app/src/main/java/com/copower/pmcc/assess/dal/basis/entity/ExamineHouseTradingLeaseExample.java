@@ -165,63 +165,123 @@ public class ExamineHouseTradingLeaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdIsNull() {
-            addCriterion("trading_id is null");
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdIsNotNull() {
-            addCriterion("trading_id is not null");
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdEqualTo(Integer value) {
-            addCriterion("trading_id =", value, "tradingId");
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdNotEqualTo(Integer value) {
-            addCriterion("trading_id <>", value, "tradingId");
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdGreaterThan(Integer value) {
-            addCriterion("trading_id >", value, "tradingId");
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("trading_id >=", value, "tradingId");
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdLessThan(Integer value) {
-            addCriterion("trading_id <", value, "tradingId");
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdLessThanOrEqualTo(Integer value) {
-            addCriterion("trading_id <=", value, "tradingId");
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdIn(List<Integer> values) {
-            addCriterion("trading_id in", values, "tradingId");
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdNotIn(List<Integer> values) {
-            addCriterion("trading_id not in", values, "tradingId");
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdBetween(Integer value1, Integer value2) {
-            addCriterion("trading_id between", value1, value2, "tradingId");
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andTradingIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("trading_id not between", value1, value2, "tradingId");
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNull() {
+            addCriterion("examine_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIsNotNull() {
+            addCriterion("examine_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeEqualTo(Integer value) {
+            addCriterion("examine_type =", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotEqualTo(Integer value) {
+            addCriterion("examine_type <>", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThan(Integer value) {
+            addCriterion("examine_type >", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("examine_type >=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThan(Integer value) {
+            addCriterion("examine_type <", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("examine_type <=", value, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeIn(List<Integer> values) {
+            addCriterion("examine_type in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotIn(List<Integer> values) {
+            addCriterion("examine_type not in", values, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type between", value1, value2, "examineType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("examine_type not between", value1, value2, "examineType");
             return (Criteria) this;
         }
 
