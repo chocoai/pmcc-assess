@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:forEach items="${dataList}" var="item">
-    <div class="x_panel">
+    <div class="x_panel area_panel">
+        <input type="hidden" name="areaGroupId" value="${item.id}">
         <div class="x_title collapse-link" onclick="firstLoadJudgeObjectList(this,${item.id});">
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -76,7 +77,8 @@
                 <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="judgeObjectId">
+                <input type="hidden" id="currAreaGroupId">
+                <input type="hidden" id="currGroupNumber">
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                     <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                         <c:forEach items="${dataDicMethodList}" var="item" varStatus="status">
@@ -93,6 +95,7 @@
                                  id="tab_content${method.id}"
                                  aria-labelledby="home-tab">
                                 <input type="hidden" name="id" value="0">
+                                <input type="hidden" name="name" value="${method.name}">
                                 <input type="hidden" name="methodType" value="${method.id}">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">
@@ -302,8 +305,10 @@
         data.judgeFunctionList = [];
         $("#myTabContent").find('.tab-pane').each(function () {
             var judgeFunction = {};
-            judgeFunction.judgeObjectId = $("#judgeObjectId").val();
+            judgeFunction.areaGroupId = $("#currAreaGroupId").val();
+            judgeFunction.groupNumber = $("#currGroupNumber").val();
             judgeFunction.id = $(this).find('[name="id"]').val();
+            judgeFunction.name = $(this).find('[name="name"]').val();
             judgeFunction.methodType = $(this).find('[name="methodType"]').val();
             judgeFunction.bisApplicable = $(this).find('[name="bisApplicable"]:checked').val();
             judgeFunction.applicableReason = $(this).find('[name="applicableReason"]').val();
@@ -312,15 +317,20 @@
             judgeFunction.notApplicableThinking = $(this).find('[name="notApplicableThinking"]').val();
             data.judgeFunctionList.push(judgeFunction);
         })
-
+        data.areaGroupId = $("#currAreaGroupId").val();
+        data.groupNumber = $("#currGroupNumber").val();
         $.ajax({
             url: '${pageContext.request.contextPath}/projectplanschemeassist/saveJudgeFunction',
-            data: {formData: JSON.stringify(data)},
+            data: {
+                formData: JSON.stringify(data)
+            },
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
+                    //刷新treegride
+                    getPlanItemList();
                 } else {
                     Alert("保存失败:" + result.errmsg);
                 }
@@ -333,14 +343,19 @@
 
     //设置评估方法
     function setEvaluationMethod(_this) {
-        var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
-        $("#judgeObjectId").val(judgeObjectId);
+        var groupNumber = $(_this).closest("tr").find('[data-name="groupNumber"]').val();
+        var areaGroupId = $(_this).closest(".area_panel").find('[name="areaGroupId"]').val();
+        $("#currGroupNumber").val(groupNumber);
+        $("#currAreaGroupId").val(areaGroupId);
         //还原数据状态
         cleanEvaluationMethod();
         //如果该估计对象已经设置过评估方法，则将数据填充回去
         $.ajax({
             url: '${pageContext.request.contextPath}/projectplanschemeassist/getSchemeJudgeFunctions',
-            data: {judgeObjectId: judgeObjectId},
+            data: {
+                areaGroupId: areaGroupId,
+                groupNumber: groupNumber
+            },
             type: "get",
             dataType: "json",
             success: function (result) {

@@ -24,7 +24,7 @@ public class MdMarketCompareItem {
 
     private String weightDescription;
 
-    private String averagePrice;
+    private BigDecimal averagePrice;
 
     private String creator;
 
@@ -112,12 +112,12 @@ public class MdMarketCompareItem {
         this.weightDescription = weightDescription == null ? null : weightDescription.trim();
     }
 
-    public String getAveragePrice() {
+    public BigDecimal getAveragePrice() {
         return averagePrice;
     }
 
-    public void setAveragePrice(String averagePrice) {
-        this.averagePrice = averagePrice == null ? null : averagePrice.trim();
+    public void setAveragePrice(BigDecimal averagePrice) {
+        this.averagePrice = averagePrice;
     }
 
     public String getCreator() {

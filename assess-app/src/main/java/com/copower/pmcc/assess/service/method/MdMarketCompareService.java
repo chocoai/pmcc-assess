@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -75,11 +76,13 @@ public class MdMarketCompareService {
     }
 
     /**
-     *
+     *保存市场比较法的结果信息
      * @param marketCompareResultDto
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public MdMarketCompare saveResult(MarketCompareResultDto marketCompareResultDto){
+        //1.委估对象的平均价保存 2.案例数据相关信息存储
         MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(marketCompareResultDto.getId());
         MdMarketCompareItem evaluationItem = marketCompareResultDto.getEvaluationItem();
         mdMarketCompareItemDao.updateMarketCompareItem(evaluationItem);
@@ -89,7 +92,8 @@ public class MdMarketCompareService {
                 mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
             }
         }
-        //marketCompare.setPrice(evaluationItem.getAveragePrice());
+        marketCompare.setPrice(evaluationItem.getAveragePrice());
+        mdMarketCompareDao.updateMarketCompare(marketCompare);
         return marketCompare;
     }
 }

@@ -45,8 +45,9 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/saveResult", name = "保存市场比较法结果", method = RequestMethod.POST)
-    public HttpResult saveResult(MarketCompareResultDto marketCompareResultDto) {
+    public HttpResult saveResult(String formData) {
         try {
+            MarketCompareResultDto marketCompareResultDto=JSON.parseObject(formData,MarketCompareResultDto.class);
             MdMarketCompare marketCompare = mdMarketCompareService.saveResult(marketCompareResultDto);
             return HttpResult.newCorrectResult(marketCompare);
         } catch (Exception e) {

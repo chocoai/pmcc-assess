@@ -3,8 +3,8 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
 </head>
-
 
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -81,8 +81,8 @@
     </div>
 </div>
 </body>
-<script src="/pmcc-assess/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="/pmcc-assess/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
@@ -143,6 +143,8 @@
 
         //先保存市场比较法信息
         marketCompare.save(function (id) {
+            alert('比较法数据保存完毕');
+            return false;
             if ("${processInsId}" != "0") {
                 submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
             }

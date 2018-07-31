@@ -19,19 +19,19 @@ public class SchemeJudgeFunctionDao {
     @Autowired
     private SchemeJudgeFunctionMapper mapper;
 
-    public boolean add(SchemeJudgeFunction schemeJudgeFunction) {
+    public boolean addSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
         return mapper.insertSelective(schemeJudgeFunction) == 1;
     }
 
-    public boolean remove(Integer id) {
+    public boolean removeSchemeJudgeFunction(Integer id) {
         return mapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public boolean update(SchemeJudgeFunction schemeJudgeFunction) {
+    public boolean updateSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
         return mapper.updateByPrimaryKeySelective(schemeJudgeFunction) == 1;
     }
 
-    public SchemeJudgeFunction get(Integer id) {
+    public SchemeJudgeFunction getSchemeJudgeFunction(Integer id) {
         return mapper.selectByPrimaryKey(id);
     }
 

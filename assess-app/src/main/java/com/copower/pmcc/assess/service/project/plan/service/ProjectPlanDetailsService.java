@@ -229,4 +229,8 @@ public class ProjectPlanDetailsService {
 
         return listObject;
     }
+
+    public void deleteProjectPlanDetails(Integer id){
+        projectPlanDetailsDao.deleteProjectPlanDetails(id);
+    }
 }

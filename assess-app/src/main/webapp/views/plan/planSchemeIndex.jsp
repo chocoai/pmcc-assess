@@ -170,6 +170,22 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            工作内容
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="hidden" id="planDetailsId" name="id"/>
+                                            <input type="hidden" id="pid" name="pid"/>
+                                            <input type="hidden" id="firstPid" name="firstPid"/>
+                                            <input type="text" placeholder="计划名称" required maxlength="50"
+                                                   id="projectPhaseName" name="projectPhaseName"
+                                                   readonly="readonly" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             开始时间
                                         </label>
                                         <div class="col-sm-4">
@@ -274,7 +290,8 @@
     </div>
 </div>
 
-<div id="div_fastSet" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
+<div id="div_fastSet" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -285,7 +302,8 @@
                     <div class="col-md-12">
                         <div class="panel-body">
                             <form id="frm_fastset" class="form-horizontal">
-                                <table class="table table-striped table-bordered table-hover table-bordered" id="sample-table-2">
+                                <table class="table table-striped table-bordered table-hover table-bordered"
+                                       id="sample-table-2">
                                     <thead>
                                     <tr>
                                         <th class="hidden-xs">设置内容</th>
@@ -299,7 +317,8 @@
                                         <td class="hidden-xs">开始时间</td>
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" title="开始时间" value="planStartDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                            <input type="text" data-date-format='yyyy-mm-dd'
+                                                   class="fast_value form-control dbdate"></td>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
                                                 <c:forEach var="item" items="${fastSet}">
@@ -308,14 +327,17 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
                                         <td class="hidden-xs">结束时间</td>
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="planEndDate">
-                                            <input type="text" data-date-format='yyyy-mm-dd' class="fast_value form-control dbdate"></td>
+                                            <input type="text" data-date-format='yyyy-mm-dd'
+                                                   class="fast_value form-control dbdate"></td>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
                                                 <c:forEach var="item" items="${fastSet}">
@@ -324,7 +346,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -332,7 +356,8 @@
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="executeUserAccount">
                                             <input type="hidden" id="fast_executeUserAccount" class="fast_value">
-                                            <input type="text" id="fast_executeUserName" class="form-control" readonly="readonly"
+                                            <input type="text" id="fast_executeUserName" class="form-control"
+                                                   readonly="readonly"
                                                    onclick="selFastEmployee()">
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -342,7 +367,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" id="btn_user" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning" id="btn_user"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -350,7 +377,8 @@
                                         <td class="hidden-xs">
                                             <input type="hidden" class="fast_fileds" value="executeDepartmentId">
                                             <input type="hidden" id="fast_executeDepartmentId" class="fast_value">
-                                            <input type="text" id="fast_executeDepartmentName" class="form-control" onclick="selFastDept()"
+                                            <input type="text" id="fast_executeDepartmentName" class="form-control"
+                                                   onclick="selFastDept()"
                                                    readonly="readonly">
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -360,7 +388,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" id="btn_dept" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning" id="btn_dept"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -368,7 +398,8 @@
                                         <td class="hidden-xs">
                                             <div class="x-valid">
                                                 <input type="hidden" class="fast_fileds" value="planHours">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
+                                                <input type="text" data-rule-number='true' maxlength="5"
+                                                       class="form-control fast_value">
                                             </div>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -379,7 +410,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr class="fast_tr">
@@ -388,7 +421,8 @@
                                         <td class="hidden-xs">
                                             <div class="x-valid">
                                                 <input type="hidden" class="fast_fileds" value="proportion">
-                                                <input type="text" data-rule-number='true' maxlength="5" class="form-control fast_value">
+                                                <input type="text" data-rule-number='true' maxlength="5"
+                                                       class="form-control fast_value">
                                             </div>
                                         <td class="hidden-xs">
                                             <select class="form-control fast_range">
@@ -398,7 +432,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning" onclick="clearFastValue(this)">清除</button>
+                                            <button type="button" class="btn btn-warning"
+                                                    onclick="clearFastValue(this)">清除
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -424,3 +460,87 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/project-plan.js"></script>
+<script type="text/javascript">
+    //重写任务列表方法
+    function treeGridload() {
+        $("#PlanItemListed").treegrid({
+                data: treeGridJson,
+                idField: 'id',
+                treeField: 'projectPhaseName',
+                datatype: 'json',
+                lines: true,
+                width: 'auto',
+                toolbar: "#tb",
+                rownumbers: true,
+                onDblClickRow: function (row) {
+                    editPlan(row.id);
+                },
+                onLoadSuccess: function () {
+                    $(".tooltips").tooltip();
+                },
+
+                columns: [[
+                    {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
+                    {
+                        field: "planStartDate",
+                        title: "开始时间",
+                        width: "10%",
+                        align: "center",
+                        formatter: function (value, row) {
+                            return formatDate(value, false);
+                        }
+                    },
+                    {
+                        field: "planEndDate",
+                        title: "结束时间",
+                        width: "10%",
+                        align: "center",
+                        formatter: function (value, row) {
+                            return formatDate(value, false);
+                        }
+                    },
+                    {
+                        field: "planHours",
+                        title: "计划工时",
+                        width: "5%",
+                        align: "center"
+                    },
+                    {
+                        field: "executeUserName",
+                        title: "责任人",
+                        width: "10%",
+                        align: "center"
+                    },
+                    {
+                        field: "executeDepartmentName",
+                        title: "责任部门",
+                        width: "10%",
+                        align: "center"
+                    },
+                    {
+                        field: "proportion",
+                        title: "权重占比",
+                        width: "5%",
+                        align: "center"
+                    },
+                    {field: "planRemarks", title: "说明", width: "15%", align: "left"},
+                    {field: "firstPid", title: "firstPid", align: "center", hidden: true},
+                    {field: "sorting", title: "sorting", align: "center", hidden: true},
+                    {field: "id", title: "PlanItemId", align: "center", hidden: true},
+                    {field: "projectPhaseId", title: "projectPhaseId", align: "center", hidden: true},
+                    {field: "declareFormId", title: "declareFormId", align: "center", hidden: true},
+                    {field: "declareFormName", title: "declareFormName", align: "center", hidden: true},
+                    {
+                        field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
+                        if (row.bisEnable && row.bisLastLayer) {
+                            var s = "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='editPlan(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+                            return s;
+                        }
+                    }
+                    }
+                ]]
+            }
+        )
+        ;
+    }
+</script>

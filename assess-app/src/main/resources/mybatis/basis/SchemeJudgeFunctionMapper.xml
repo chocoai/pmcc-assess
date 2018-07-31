@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="group_number" property="groupNumber" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="method_type" property="methodType" jdbcType="INTEGER" />
     <result column="bis_applicable" property="bisApplicable" jdbcType="BIT" />
     <result column="applicable_reason" property="applicableReason" jdbcType="VARCHAR" />
@@ -74,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, area_group_id, group_number, method_type, bis_applicable, applicable_reason, 
+    id, area_group_id, group_number, name, method_type, bis_applicable, applicable_reason, 
     not_applicable_reason, applicable_thinking, not_applicable_thinking, creator, gmt_created, 
     gmt_modified
   </sql>
@@ -112,16 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_function (area_group_id, group_number, method_type, 
-      bis_applicable, applicable_reason, not_applicable_reason, 
-      applicable_thinking, not_applicable_thinking, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{areaGroupId,jdbcType=INTEGER}, #{groupNumber,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, 
-      #{bisApplicable,jdbcType=BIT}, #{applicableReason,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
-      #{applicableThinking,jdbcType=VARCHAR}, #{notApplicableThinking,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_scheme_judge_function (area_group_id, group_number, name, 
+      method_type, bis_applicable, applicable_reason, 
+      not_applicable_reason, applicable_thinking, 
+      not_applicable_thinking, creator, gmt_created, 
+      gmt_modified)
+    values (#{areaGroupId,jdbcType=INTEGER}, #{groupNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{methodType,jdbcType=INTEGER}, #{bisApplicable,jdbcType=BIT}, #{applicableReason,jdbcType=VARCHAR}, 
+      #{notApplicableReason,jdbcType=VARCHAR}, #{applicableThinking,jdbcType=VARCHAR}, 
+      #{notApplicableThinking,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -134,6 +135,9 @@
       </if>
       <if test="groupNumber != null" >
         group_number,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="methodType != null" >
         method_type,
@@ -169,6 +173,9 @@
       </if>
       <if test="groupNumber != null" >
         #{groupNumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="methodType != null" >
         #{methodType,jdbcType=INTEGER},
@@ -217,6 +224,9 @@
       <if test="record.groupNumber != null" >
         group_number = #{record.groupNumber,jdbcType=INTEGER},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.methodType != null" >
         method_type = #{record.methodType,jdbcType=INTEGER},
       </if>
@@ -254,6 +264,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       group_number = #{record.groupNumber,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       method_type = #{record.methodType,jdbcType=INTEGER},
       bis_applicable = #{record.bisApplicable,jdbcType=BIT},
       applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
@@ -275,6 +286,9 @@
       </if>
       <if test="groupNumber != null" >
         group_number = #{groupNumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="methodType != null" >
         method_type = #{methodType,jdbcType=INTEGER},
@@ -310,6 +324,7 @@
     update tb_scheme_judge_function
     set area_group_id = #{areaGroupId,jdbcType=INTEGER},
       group_number = #{groupNumber,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       method_type = #{methodType,jdbcType=INTEGER},
       bis_applicable = #{bisApplicable,jdbcType=BIT},
       applicable_reason = #{applicableReason,jdbcType=VARCHAR},

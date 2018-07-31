@@ -9,6 +9,8 @@ public class SchemeJudgeFunction {
 
     private Integer groupNumber;
 
+    private String name;
+
     private Integer methodType;
 
     private Boolean bisApplicable;
@@ -49,6 +51,14 @@ public class SchemeJudgeFunction {
 
     public void setGroupNumber(Integer groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getMethodType() {

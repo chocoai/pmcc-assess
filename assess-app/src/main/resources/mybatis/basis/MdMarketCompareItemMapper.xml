@@ -12,7 +12,7 @@
     <result column="case_difference" property="caseDifference" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="DECIMAL" />
     <result column="weight_description" property="weightDescription" jdbcType="VARCHAR" />
-    <result column="average_price" property="averagePrice" jdbcType="VARCHAR" />
+    <result column="average_price" property="averagePrice" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -121,7 +121,7 @@
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{jsonContent,jdbcType=CHAR}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
       #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{weightDescription,jdbcType=VARCHAR}, 
-      #{averagePrice,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{averagePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
@@ -199,7 +199,7 @@
         #{weightDescription,jdbcType=VARCHAR},
       </if>
       <if test="averagePrice != null" >
-        #{averagePrice,jdbcType=VARCHAR},
+        #{averagePrice,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -252,7 +252,7 @@
         weight_description = #{record.weightDescription,jdbcType=VARCHAR},
       </if>
       <if test="record.averagePrice != null" >
-        average_price = #{record.averagePrice,jdbcType=VARCHAR},
+        average_price = #{record.averagePrice,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
       case_difference = #{record.caseDifference,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=DECIMAL},
       weight_description = #{record.weightDescription,jdbcType=VARCHAR},
-      average_price = #{record.averagePrice,jdbcType=VARCHAR},
+      average_price = #{record.averagePrice,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -319,7 +319,7 @@
         weight_description = #{weightDescription,jdbcType=VARCHAR},
       </if>
       <if test="averagePrice != null" >
-        average_price = #{averagePrice,jdbcType=VARCHAR},
+        average_price = #{averagePrice,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -344,7 +344,7 @@
       case_difference = #{caseDifference,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=DECIMAL},
       weight_description = #{weightDescription,jdbcType=VARCHAR},
-      average_price = #{averagePrice,jdbcType=VARCHAR},
+      average_price = #{averagePrice,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

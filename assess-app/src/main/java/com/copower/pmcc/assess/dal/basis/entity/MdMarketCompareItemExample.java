@@ -776,62 +776,52 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceEqualTo(String value) {
+        public Criteria andAveragePriceEqualTo(BigDecimal value) {
             addCriterion("average_price =", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceNotEqualTo(String value) {
+        public Criteria andAveragePriceNotEqualTo(BigDecimal value) {
             addCriterion("average_price <>", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceGreaterThan(String value) {
+        public Criteria andAveragePriceGreaterThan(BigDecimal value) {
             addCriterion("average_price >", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceGreaterThanOrEqualTo(String value) {
+        public Criteria andAveragePriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("average_price >=", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceLessThan(String value) {
+        public Criteria andAveragePriceLessThan(BigDecimal value) {
             addCriterion("average_price <", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceLessThanOrEqualTo(String value) {
+        public Criteria andAveragePriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("average_price <=", value, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceLike(String value) {
-            addCriterion("average_price like", value, "averagePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAveragePriceNotLike(String value) {
-            addCriterion("average_price not like", value, "averagePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAveragePriceIn(List<String> values) {
+        public Criteria andAveragePriceIn(List<BigDecimal> values) {
             addCriterion("average_price in", values, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceNotIn(List<String> values) {
+        public Criteria andAveragePriceNotIn(List<BigDecimal> values) {
             addCriterion("average_price not in", values, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceBetween(String value1, String value2) {
+        public Criteria andAveragePriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("average_price between", value1, value2, "averagePrice");
             return (Criteria) this;
         }
 
-        public Criteria andAveragePriceNotBetween(String value1, String value2) {
+        public Criteria andAveragePriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("average_price not between", value1, value2, "averagePrice");
             return (Criteria) this;
         }

@@ -146,6 +146,7 @@
                 Alert("主信息为空！");
                 return;
             }
+            $("#marketCompareId").val(defaluts.marketCompare.id);
             if (!defaluts.fields) {
                 Alert("字段为空！");
                 return;
@@ -249,7 +250,7 @@
             resultHtml = resultHtml.replace(/{caseSpecificPrice}/g, toString(caseSpecificPrice)).replace(/{caseCorrectionDifference}/g, toString(caseCorrectionDifference));
             resultHtml = resultHtml.replace(/{caseCaseDifference}/g, toString(caseCaseDifference)).replace(/{caseWeight}/g, toString(caseWeight));
             resultHtml = resultHtml.replace(/{colspan}/g, toString(2 + defaluts.cases.length)).replace(/{evaluationId}/g, toString(defaluts.evaluation.id));
-            resultHtml = resultHtml.replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
+            resultHtml = resultHtml.replace(/{averagePrice}/g, toString(defaluts.evaluation.averagePrice)).replace(/{caseWeightDescription}/g, toString(caseWeightDescription));
             $("#tb_md_mc_item_list").append(resultHtml);
         }
 
@@ -368,7 +369,9 @@
             };
 
             var averagePrice = table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
+            data.evaluationItem.id = evaluationItemId;
             data.evaluationItem.averagePrice = averagePrice;
+
             $.each(caseItemIdArray, function (i, item) {
                 var caseItem = {};
                 caseItem.jsonContent = [];
@@ -395,16 +398,17 @@
                     }
                     caseItem.jsonContent.push(fieldContent);
                 })
-                caseItem.specificPrice=table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
-                caseItem.correctionDifference=table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']').text();
-                caseItem.caseDifference=table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']').text();
-                caseItem.weight=table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').text();
-                caseItem.weightDescription=table.find('tr[data-name="weightDescription"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.id = item;
+                caseItem.specificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.correctionDifference = table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.caseDifference = table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']').text();
+                caseItem.weight = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text();
+                caseItem.weightDescription = table.find('tr[data-name="weightDescription"]').find('td[data-item-id=' + item + ']').find('a').text();
                 data.caseItemList.push(caseItem);
             })
 
             $.ajax({
-                url: '',
+                url: '${pageContext.request.contextPath}/marketCompare/saveResult',
                 data: {
                     formData: JSON.stringify(data)
                 },
@@ -419,8 +423,6 @@
                     }
                 }
             })
-
-
         }
 
         window.marketCompare = marketCompare;
@@ -462,7 +464,7 @@
     </tr>
     <tr data-name="averagePrice">
         <td>加权平均价</td>
-        <td data-item-id="{evaluationId}"></td>
+        <td data-item-id="{evaluationId}">{averagePrice}</td>
         <td></td>
         <td></td>
     </tr>

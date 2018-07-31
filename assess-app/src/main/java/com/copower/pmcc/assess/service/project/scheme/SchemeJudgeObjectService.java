@@ -45,7 +45,6 @@ public class SchemeJudgeObjectService {
      * @param applyDto
      */
     public void saveEvaluationObject(SchemeJudgeObjectApplyDto applyDto) {
-        //先清除所有
         //1.保存估价对象信息 2.根据测算号生成委估对象 3.根据委估信息生成对应的计划目录
 
         List<SchemeJudgeObject> schemeJudgeObjects = applyDto.getSchemeJudgeObjects();
@@ -75,7 +74,7 @@ public class SchemeJudgeObjectService {
             hashSet.add(schemeJudgeObject.getGroupNumber());
         }
 
-        //清空原生成的数据
+        //清除计划任务数据
         ProjectPlanDetails where = new ProjectPlanDetails();
         where.setProjectWorkStageId(projectPlan.getWorkStageId());
         where.setPlanId(projectPlan.getId());
@@ -85,6 +84,13 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(planDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
                 projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+            }
+        }
+        //清除委估对象数据
+        List<SchemeEvaluationObject> evaluationObjectList = evaluationObjectService.getDataListByGroupId(applyDto.getAreaGroupId(), projectPlan.getProjectId());
+        if(CollectionUtils.isNotEmpty(evaluationObjectList)){
+            for (SchemeEvaluationObject schemeEvaluationObject : evaluationObjectList) {
+                evaluationObjectService.remove(schemeEvaluationObject.getId());
             }
         }
 
