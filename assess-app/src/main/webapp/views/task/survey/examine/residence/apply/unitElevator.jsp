@@ -91,7 +91,9 @@
                 });
                 $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/examineUnitElevator/getExamineUnitElevatorList", cols, {
-                    name: $("#queryName").val()
+                    name: $("#queryName").val(),
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

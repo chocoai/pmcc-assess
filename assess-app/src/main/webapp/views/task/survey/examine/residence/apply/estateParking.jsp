@@ -89,7 +89,8 @@
                 });
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingList", cols, {
-                    name: $("#queryName").val()
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

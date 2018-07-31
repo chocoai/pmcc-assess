@@ -95,7 +95,9 @@
                 });
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
-                    type: estateSupplyPower.prototype.config().type
+                    type: estateSupplyPower.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

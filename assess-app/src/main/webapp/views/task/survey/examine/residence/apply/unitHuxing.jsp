@@ -134,7 +134,9 @@
                 });
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingList", cols, {
-                    type: unitHuxing.prototype.config().type
+                    type: unitHuxing.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

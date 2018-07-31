@@ -36,13 +36,13 @@ public class ExamineUnitDecorateController {
     @Autowired
     private ExamineUnitDecorateService examineUnitDecorateService;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/unitDecorate" ;
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+//        String view = "/task/survey/examine/residence/apply/unitDecorate" ;
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineUnitDecorateById",method = {RequestMethod.GET},name = "获取室内公共装修")

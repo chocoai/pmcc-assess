@@ -92,7 +92,9 @@
                 });
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');//examineHouseFaceStreet
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/examineHouseFaceStreet/getExamineHouseFaceStreetList", cols, {
-                    type: houseFaceStreet.prototype.config().type
+                    type: houseFaceStreet.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

@@ -177,6 +177,7 @@
     $(function () {
         ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
+        //两个方法 都可以假如选项卡载入时 初始化
         estateFun.prototype.init();
         estateFun.prototype.viewFiles();
     })
@@ -205,7 +206,8 @@
                             }
                             if ($("#" + Estate.config().frm + " .developerId").size() > 0) {
                                 $("#" + Estate.config().frm + " .developerId").html(option);
-                                $("#" + Estate.config().frm + " .developerId").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + Estate.config().frm + " .developerId").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + Estate.config().frm + " .developerId").select2();//加载样式
                             }
                         }
                     }
@@ -231,7 +233,8 @@
                             }
                             if ($("#" + Estate.config().frm + " .totalBuildingType").size() > 0) {
                                 $("#" + Estate.config().frm + " .totalBuildingType").html(option);
-                                $("#" + Estate.config().frm + " .totalBuildingType").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + Estate.config().frm + " .totalBuildingType").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式
                             }
                         }
                     }

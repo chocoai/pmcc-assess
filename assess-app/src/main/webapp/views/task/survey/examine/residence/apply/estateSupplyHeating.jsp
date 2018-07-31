@@ -95,7 +95,9 @@
                 });
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
-                    type: estateSupplyHeating.prototype.config().type
+                    type: estateSupplyHeating.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

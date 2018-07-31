@@ -94,7 +94,9 @@
                 });
                 $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingTraffic/getExamineMatchingTrafficList", cols, {
-                    type: matchingTrafficHub.prototype.config().type
+                    type: matchingTrafficHub.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

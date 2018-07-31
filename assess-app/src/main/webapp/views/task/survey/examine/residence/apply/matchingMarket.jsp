@@ -94,7 +94,9 @@
                 });
                 $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
-                    type: matchingMarket.prototype.config().type
+                    type: matchingMarket.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

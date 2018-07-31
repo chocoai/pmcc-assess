@@ -93,7 +93,9 @@
                 });
                 $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRecreation.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
-                    type: matchingRecreation.prototype.config().type
+                    type: matchingRecreation.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

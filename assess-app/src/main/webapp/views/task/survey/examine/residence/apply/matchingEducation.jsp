@@ -93,7 +93,9 @@
                 });
                 $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingEducation/getExamineMatchingEducationList", cols, {
-                    type: matchingEducation.prototype.config().type
+                    type: matchingEducation.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

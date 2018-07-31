@@ -36,13 +36,13 @@ public class ExamineHouseFaceStreetController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/houseFaceStreet" ;
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+//        String view = "/task/survey/examine/residence/apply/houseFaceStreet" ;
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseFaceStreetById",method = {RequestMethod.GET},name = "获取临街（路）状况")

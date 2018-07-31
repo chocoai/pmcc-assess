@@ -92,7 +92,9 @@
                 });
                 $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalList", cols, {
-                    type: matchingMedical.prototype.config().type
+                    type: matchingMedical.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

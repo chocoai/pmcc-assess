@@ -59,8 +59,9 @@ public class ExamineBuildingDao {
      * @param examineBuilding
      * @return
      */
-    public boolean addBuilding(ExamineBuilding examineBuilding) {
-        return examineBuildingMapper.insertSelective(examineBuilding) > 0;
+    public int addBuilding(ExamineBuilding examineBuilding) {
+        examineBuildingMapper.insertSelective(examineBuilding);
+        return examineBuilding.getId();
     }
 
     /**

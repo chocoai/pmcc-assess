@@ -45,6 +45,7 @@ public class ExamineBuildingDto implements Serializable {
     private BigDecimal coverAnArea;
 
     private Integer buildingCategory;
+    private Integer buildingstructurepid;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date openTime;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
@@ -289,4 +290,12 @@ public class ExamineBuildingDto implements Serializable {
     private String creator;
     private Date gmtCreated;
     private Date gmtModified;
+
+    public Integer getBuildingstructurepid() {
+        return buildingstructurepid;
+    }
+
+    public void setBuildingstructurepid(Integer buildingstructurepid) {
+        this.buildingstructurepid = buildingstructurepid;
+    }
 }

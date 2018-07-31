@@ -1,17 +1,21 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -49,6 +54,10 @@ public class ExamineBuildingService {
     private DataPropertyService dataPropertyService;
     @Autowired
     private DataDeveloperService dataDeveloperService;
+    @Autowired
+    private ExamineBuildingOutfitService examineBuildingOutfitService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
@@ -66,7 +75,7 @@ public class ExamineBuildingService {
         return examineBuildingVo;
     }
 
-    public ExamineBuildingVo getFirstData(Integer examineType, Integer declareId, Integer number) {
+    public ExamineBuilding getOneAndTwoData(Integer examineType, Integer declareId, Integer number) {
         ExamineBuilding oo = new ExamineBuilding();
         oo.setExamineType(examineType);
         oo.setDeclareId(declareId);
@@ -83,10 +92,12 @@ public class ExamineBuildingService {
             if (number.equals(1)) {
                 examineBuilding = examineBuildings.get(0);
             }
-            if (number.equals(2)) {
-                examineBuilding = examineBuildings.get(1);
+            if (examineBuildings.size() >= 2){
+                if (number.equals(2)) {
+                    examineBuilding = examineBuildings.get(1);
+                }
             }
-            return getExamineBuildingVo(examineBuilding);
+            return examineBuilding;
         }
         return null;
     }
@@ -114,27 +125,29 @@ public class ExamineBuildingService {
 
     public ExamineBuildingVo getExamineBuildingVo(ExamineBuilding examineBuilding) {
         ExamineBuildingVo vo = new ExamineBuildingVo();
-        BeanUtils.copyProperties(examineBuilding, vo);
-        if (examineBuilding.getBuildingStructure() != null) {
-            BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructure());
-            if (baseDataDic != null) {
-                vo.setBuildingStructureName(baseDataDic.getName());
-                vo.setBuildingStructurePid(baseDataDic.getPid());
+        if (examineBuilding != null){
+            BeanUtils.copyProperties(examineBuilding, vo);
+            if (examineBuilding.getBuildingStructure() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructure());
+                if (baseDataDic != null) {
+                    vo.setBuildingStructureName(baseDataDic.getName());
+                    vo.setBuildingStructurePid(baseDataDic.getPid());
+                }
             }
-        }
-        if (examineBuilding.getBuildingCategory() != null) {
-            vo.setBuildingCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_PROPERTY_CATEGORY, examineBuilding.getBuildingCategory()));
-        }
-        if (examineBuilding.getBuilderId() != null) {
-            DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(examineBuilding.getBuilderId());
-            if (dataBuilder != null) {
-                vo.setBuilderName(dataBuilder.getName());
+            if (examineBuilding.getBuildingCategory() != null) {
+                vo.setBuildingCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_PROPERTY_CATEGORY, examineBuilding.getBuildingCategory()));
             }
-        }
-        if (examineBuilding.getPropertyId() != null) {
-            DataProperty dataProperty = dataPropertyService.getByDataPropertyId(examineBuilding.getPropertyId());
-            if (dataProperty != null) {
-                vo.setPropertyName(dataProperty.getName());
+            if (examineBuilding.getBuilderId() != null) {
+                DataBuilder dataBuilder = dataBuilderService.getByDataBuilderId(examineBuilding.getBuilderId());
+                if (dataBuilder != null) {
+                    vo.setBuilderName(dataBuilder.getName());
+                }
+            }
+            if (examineBuilding.getPropertyId() != null) {
+                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(examineBuilding.getPropertyId());
+                if (dataProperty != null) {
+                    vo.setPropertyName(dataProperty.getName());
+                }
             }
         }
         return vo;
@@ -161,6 +174,7 @@ public class ExamineBuildingService {
      * @param examineBuilding
      * @return
      */
+    @Transactional
     public boolean addExamineBuilding(ExamineBuilding examineBuilding) {
         examineBuilding.setCreator(commonService.thisUserAccount());
         //以后需要删除掉
@@ -170,7 +184,39 @@ public class ExamineBuildingService {
         if (ObjectUtils.isEmpty(examineBuilding.getExamineType())) {
             examineBuilding.setExamineType(0);
         }
-        return examineBuildingDao.addBuilding(examineBuilding);
+        ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
+        examineBuildingOutfit.setDeclareId(examineBuilding.getDeclareId());
+        examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
+        examineBuildingOutfit.setBuildingId(0);
+        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
+
+        try {
+            int id = examineBuildingDao.addBuilding(examineBuilding);
+            if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
+                for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
+                    oo.setBuildingId(id);
+                    examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
+                }
+            }
+            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),id);
+            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName(),id);
+            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName(),id);
+            return true;
+        } catch (Exception e1) {
+            logger.error(String.format("%s%s", "异常! ===>", e1.getMessage()), e1);
+            return false;
+        }
+    }
+
+    private void updateSysAttachmentDto(String fileName,Integer id){
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
+        sysAttachmentDtoList = baseAttachmentService.getByField_tableId(0, fileName, FormatUtils.entityNameConvertToTableName(ExamineBuilding.class));
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+            for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                sysAttachmentDto.setTableId(id);
+                baseAttachmentService.updateAttachment(sysAttachmentDto);
+            }
+        }
     }
 
     /**
@@ -180,6 +226,20 @@ public class ExamineBuildingService {
      * @return
      */
     public boolean updateExamineBuilding(ExamineBuilding examineBuilding) {
+        ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
+        examineBuildingOutfit.setDeclareId(examineBuilding.getDeclareId());
+        examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
+        examineBuildingOutfit.setBuildingId(0);
+        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
+        if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
+            for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
+                oo.setBuildingId(examineBuilding.getId());
+                examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
+            }
+        }
+        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),examineBuilding.getId());
+        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName(),examineBuilding.getId());
+        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName(),examineBuilding.getId());
         return examineBuildingDao.updateBuilding(examineBuilding);
     }
 

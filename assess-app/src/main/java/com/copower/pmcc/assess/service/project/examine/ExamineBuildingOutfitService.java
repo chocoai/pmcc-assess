@@ -119,6 +119,9 @@ public class ExamineBuildingOutfitService {
         if (ObjectUtils.isEmpty(examineBuildingOutfit.getExamineType())) {
             examineBuildingOutfit.setExamineType(0);
         }
+        if (examineBuildingOutfit.getBuildingId() == null) {
+            examineBuildingOutfit.setBuildingId(0);
+        }
         return examineBuildingOutfitDao.addBuildingOutfit(examineBuildingOutfit);
     }
 
@@ -140,5 +143,14 @@ public class ExamineBuildingOutfitService {
      */
     public boolean deleteExamineBuildingOutfit(Integer id) {
         return examineBuildingOutfitDao.deleteBuildingOutfit(id);
+    }
+
+    public boolean initRemove(){
+        try {
+            examineBuildingOutfitDao.initRemove();
+        } catch (Exception e1) {
+            return false;
+        }
+        return true;
     }
 }

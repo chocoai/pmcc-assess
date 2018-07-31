@@ -38,15 +38,15 @@ public class ExamineHouseEquipmentController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/houseAirConditioner" ; //空调情况
-        String view = "/task/survey/examine/residence/apply/houseHeating" ; //供暖情况
-//        String view = "/task/survey/examine/residence/apply/houseNewWind" ; //新风情况
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+////        String view = "/task/survey/examine/residence/apply/houseAirConditioner" ; //空调情况
+//        String view = "/task/survey/examine/residence/apply/houseHeating" ; //供暖情况
+////        String view = "/task/survey/examine/residence/apply/houseNewWind" ; //新风情况
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseEquipmentById",method = {RequestMethod.GET},name = "获取设备包含（空调、新风、供暖）")

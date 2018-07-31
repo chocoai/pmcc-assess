@@ -54,7 +54,7 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">最新户型图<span class="symbol required"></span></label>
             <div class="col-sm-5">
                 <input id="house_new_latest_family_plan"
                        required="required" placeholder="上传附件" class="form-control" type="file">
@@ -95,7 +95,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control">
+                <textarea class="form-control" name="description">
                     ${surveyExamineDataInfoVo.examineHouseVo.description}
                 </textarea>
             </div>
@@ -115,8 +115,12 @@
 </form>
 <script>
     $(function () {
+        //三个方法 都可以假如选项卡载入时 初始化
         houseFun.prototype.files();
-        houseFun.prototype.init();
+        houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
+        houseFun.prototype.select2Init();//处理select2赋值
+
+        houseFun.prototype.init2();
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouse.getFormData);//获取数据方法写入容器
     });
@@ -129,6 +133,59 @@
 
         };
         houseFun.prototype = {
+            select2Init:function () {
+                //页面保存数据后 展示数据
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}","huxingId");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}","newsHuxing");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}","certUse");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}","practicalUse");
+                var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
+                if (houseFun.prototype.select2IsNotNull(id)){
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
+                        dataType: "JSON",
+                        data: {'id': id},
+                        type: "GET",
+                        success: function (result) {
+                            if (result.ret) {
+                                var data = result.data;
+                                if (houseFun.prototype.select2IsNotNull(data)){
+                                    $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
+                                }
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
+                }
+            },
+            select2InitMethodWrite:function (data,name) {
+                if (houseFun.prototype.select2IsNotNull(data)){
+                    if (houseFun.prototype.select2IsNotNull(name)){
+                        $("#"+houseFun.prototype.config().frm+" ."+name).val(data).trigger("change");
+                    }
+                }else {
+                    if (houseFun.prototype.select2IsNotNull(name)){
+                        $("#"+houseFun.prototype.config().frm+" ."+name).val(null).trigger("change");
+                    }
+                }
+            },
+            select2IsNotNull:function (data) {
+                if (data == null){
+                    return false;
+                }
+                if (data == ''){
+                    return false;
+                }
+                if (data == ""){
+                    return false;
+                }
+                if (data == 0){
+                    return false;
+                }
+                return true;
+            },
             config: function () {
                 return {
                     frm: "frm_house",
@@ -143,6 +200,7 @@
                     url: "${pageContext.request.contextPath}/examineHouse/examine_house_practical_use",
                     type: "get",
                     dataType: "json",
+                    async:false,
                     success: function (result) {
                         if (result.ret) {
                             var data = result.data;
@@ -153,7 +211,8 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + houseFun.prototype.config().frm + " .practicalUse").html(option);
-                                $("#" + houseFun.prototype.config().frm + " .practicalUse").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + houseFun.prototype.config().frm + " .practicalUse").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式
                             }
                         }
                     },
@@ -165,6 +224,7 @@
                     url: "${pageContext.request.contextPath}/examineHouse/examine_house_load_utility",
                     type: "get",
                     dataType: "json",
+                    async:false,
                     success: function (result) {
                         if (result.ret) {
                             var data = result.data;
@@ -175,7 +235,8 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + houseFun.prototype.config().frm + " .certUse").html(option);
-                                $("#" + houseFun.prototype.config().frm + " .certUse").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + houseFun.prototype.config().frm + " .certUse").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
                             }
                         }
                     },
@@ -186,6 +247,7 @@
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineHouse/examine_house_newshuxing",
                     type: "get",
+                    async:false,
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
@@ -197,7 +259,8 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + houseFun.prototype.config().frm + " .newsHuxing").html(option);
-                                $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2();//加载样式
                             }
                         }
                     },
@@ -209,6 +272,11 @@
                     url: "${pageContext.request.contextPath}/examineHouse/examineunithuxingSelect",
                     type: "get",
                     dataType: "json",
+                    async:false,
+                    data:{
+                        declareId : $("#declareId").val(),
+                        examineType : $("#examineType").val()
+                    },
                     success: function (result) {
                         if (result.ret) {
                             var data = result.data;
@@ -220,7 +288,8 @@
                                 }
                                 if ($("#" + houseFun.prototype.config().frm + " .huxingId").size() > 0) {
                                     $("#" + houseFun.prototype.config().frm + " .huxingId").html(option);
-                                    $("#" + houseFun.prototype.config().frm + " .huxingId").select2({minimumResultsForSearch: -1});//加载样式
+                                    // $("#" + houseFun.prototype.config().frm + " .huxingId").select2({minimumResultsForSearch: -1});//加载样式
+                                    $("#" + houseFun.prototype.config().frm + " .huxingId").select2();//加载样式
                                 }
                             }
                         }
@@ -229,6 +298,8 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+            },
+            init2:function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {
                     var id = $("#" + houseFun.prototype.config().frm + " .huxingId").eq(1).val();
                     // 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值

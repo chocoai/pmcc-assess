@@ -1825,6 +1825,66 @@ public class ExamineBuildingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBuildingstructurepidIsNull() {
+            addCriterion("buildingStructurePid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidIsNotNull() {
+            addCriterion("buildingStructurePid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidEqualTo(Integer value) {
+            addCriterion("buildingStructurePid =", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidNotEqualTo(Integer value) {
+            addCriterion("buildingStructurePid <>", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidGreaterThan(Integer value) {
+            addCriterion("buildingStructurePid >", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("buildingStructurePid >=", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidLessThan(Integer value) {
+            addCriterion("buildingStructurePid <", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidLessThanOrEqualTo(Integer value) {
+            addCriterion("buildingStructurePid <=", value, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidIn(List<Integer> values) {
+            addCriterion("buildingStructurePid in", values, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidNotIn(List<Integer> values) {
+            addCriterion("buildingStructurePid not in", values, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidBetween(Integer value1, Integer value2) {
+            addCriterion("buildingStructurePid between", value1, value2, "buildingstructurepid");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingstructurepidNotBetween(Integer value1, Integer value2) {
+            addCriterion("buildingStructurePid not between", value1, value2, "buildingstructurepid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

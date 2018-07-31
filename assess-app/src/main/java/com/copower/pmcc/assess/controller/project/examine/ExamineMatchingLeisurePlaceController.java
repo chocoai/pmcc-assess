@@ -40,15 +40,15 @@ public class ExamineMatchingLeisurePlaceController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/matchingMarket" ; //购物商场
-//        String view = "/task/survey/examine/residence/apply/matchingRecreation" ; //休闲娱乐
-        String view = "/task/survey/examine/residence/apply/matchingRestaurant" ; //餐饮
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+////        String view = "/task/survey/examine/residence/apply/matchingMarket" ; //购物商场
+////        String view = "/task/survey/examine/residence/apply/matchingRecreation" ; //休闲娱乐
+//        String view = "/task/survey/examine/residence/apply/matchingRestaurant" ; //餐饮
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingLeisurePlaceById",method = {RequestMethod.GET},name = "获取休闲场所-包含-购物-娱乐-餐饮")

@@ -28,13 +28,13 @@ public class ExamineEstateNetworkController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/estateNetwork" ;
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+//        String view = "/task/survey/examine/residence/apply/estateNetwork" ;
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateNetworkById",method = {RequestMethod.GET},name = "获取通信网络")
@@ -53,16 +53,12 @@ public class ExamineEstateNetworkController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateNetworkList",method = {RequestMethod.GET},name = "获取通信网络列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String name,Integer examineType) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer declareId ,Integer examineType) {
         BootstrapTableVo vo = null;
         try {
             ExamineEstateNetwork examineEstateNetwork = new ExamineEstateNetwork();
-            if (!StringUtils.isEmpty(name)){
-                examineEstateNetwork.setName(name);
-            }
-            if (!ObjectUtils.isEmpty(examineType)){
-                examineEstateNetwork.setExamineType(examineType);
-            }
+            examineEstateNetwork.setDeclareId(declareId);
+            examineEstateNetwork.setExamineType(examineType);
             vo = examineEstateNetworkService.getExamineEstateNetworkList(examineEstateNetwork);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

@@ -30,6 +30,8 @@ public class ExamineHouseTrading {
 
     private Date gmtModified;
 
+    private String deposit;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +134,13 @@ public class ExamineHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit == null ? null : deposit.trim();
     }
 }

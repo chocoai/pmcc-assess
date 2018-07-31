@@ -18,7 +18,7 @@
                 </label>
                 <div class="col-sm-3">
                     <button type="button" class="btn btn-default"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.firstData();"> 第一栋
+                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.firstData(this);"> 第一栋
                     </button>
                     <button type="button" class="btn btn-primary"
                             data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.saveData()"> 保存
@@ -30,7 +30,7 @@
                 </label>
                 <div class="col-sm-3">
                     <button type="button" class="btn btn-default"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.twoData();"> 第二栋
+                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.twoData(this);"> 第二栋
                     </button>
                     <button type="button" class="btn btn-primary"
                             data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.saveData()"> 保存
@@ -202,7 +202,7 @@
                 <div class="col-sm-3">
                     <input required="required" placeholder="开盘时间"
                            name="openTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate">
+                           class="form-control date-picker dbdate openTime">
                 </div>
             </div>
             <div class="x-valid">
@@ -210,9 +210,9 @@
                     交房时间
                 </label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="开盘时间"
+                    <input required="required" placeholder="交房时间"
                            name="roomTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate">
+                           class="form-control date-picker dbdate roomTime">
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@
                     建筑结构上级
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="buildingStructurePid"
+                    <select required="required" name="buildingStructure"
                             class="form-control search-select select2 buildingStructure">
                     </select>
                 </div>
@@ -244,8 +244,8 @@
                 </label>
                 <div class="col-sm-3">
                     <select required="required" id="frmExamineBuilding_buildingStructure"
-                            name="buildingStructure"
-                            class="form-control search-select select2 buildingStructureV">
+                            name="buildingstructurepid"
+                            class="form-control search-select select2 buildingstructurepid">
                         <option>请先选择建筑结构上级</option>
                     </select>
                 </div>
@@ -340,8 +340,8 @@
 
 <script>
     $(function () {
+        //两个方法 都可以假如选项卡载入时 初始化
         examineBuilding_.prototype.viewInit();
-        // examineBuilding_.prototype.firstData();
         examineBuilding_.prototype.uploadFiles();
     });
 </script>
@@ -357,6 +357,21 @@
 
         };
         examineBuilding_.prototype = {
+            select2IsNotNull:function (data) {
+                if (data == null){
+                    return false;
+                }
+                if (data == ''){
+                    return false;
+                }
+                if (data == ""){
+                    return false;
+                }
+                if (data == 0){
+                    return false;
+                }
+                return true;
+            },
             setFlag: function (flag_) {
                 flag = flag_;
             },
@@ -369,7 +384,21 @@
             getSonFlag: function () {
                 return sonFlag;
             },
-            twoData:function () {
+            getBuildId:function () {
+                var data =  formParams(examineBuilding_.prototype.config().frm);
+                var id = data.id;
+                if (id == 0){
+                    return 0;
+                }
+                if (id == ''){
+                    return 0;
+                }
+                if (id == null){
+                    return 0;
+                }
+                return id;
+            },
+            twoData:function (target) {
                 var data = {};
                 if ($("#declareId").size() > 0){
                     data.declareId = $("#declareId").val();
@@ -377,6 +406,7 @@
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
+                $("#" + examineBuilding_.prototype.config().frm).clearAll();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getTwoData",
                     type: "get",
@@ -384,49 +414,54 @@
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
-                            $("#" + examineBuilding_.prototype.config().frm).clearAll();
-                            $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                            if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
+                            if (result.data != null){
+                                //改变按钮颜色
+                                $(target).removeClass();
+                                $(target).addClass("btn btn-primary");
+                                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
+                                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
+                                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
+                                if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
+                                }
+                                if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructure).trigger("change");
+                                }
+                                if (result.data.buildingstructurepid == null || result.data.buildingstructurepid == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(result.data.buildingstructurepid).trigger("change");
+                                }
+                                if (result.data.propertyType == null || result.data.propertyType == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
+                                }
+                                if (result.data.builderId == null || result.data.builderId == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
+                                }
+                                if (result.data.propertyId == null || result.data.propertyId == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
+                                }
                             }
-                            if (result.data.buildingStructurePid == null || result.data.buildingStructurePid == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructurePid).trigger("change");
-                            }
-                            if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(result.data.buildingStructure).trigger("change");
-                                // $("#"+examineBuilding_.prototype.config().frm+" .buildingStructureV").val(result.data.buildingStructure).trigger("change");
-                                // $("#frmExamineBuilding_buildingStructure").val(result.data.buildingStructure).trigger("change");
-                            }
-                            if (result.data.propertyType == null || result.data.propertyType == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
-                            }
-                            if (result.data.builderId == null || result.data.builderId == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
-                            }
-                            if (result.data.propertyId == null || result.data.propertyId == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
-                            }
-                            $('#' + examineBuilding_.prototype.config().box).modal("show");
-                        }
+                            examineBuilding_.prototype.showFiles();
+                            examineBuilding_.prototype.subLoadDataList();
+                        };
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
             },
-            firstData:function () {
+            firstData:function (target) {
                 var data = {};
                 if ($("#declareId").size() > 0){
                     data.declareId = $("#declareId").val();
@@ -434,6 +469,7 @@
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
+                $("#" + examineBuilding_.prototype.config().frm).clearAll();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getFirstData",
                     type: "get",
@@ -441,41 +477,46 @@
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
-                            $("#" + examineBuilding_.prototype.config().frm).clearAll();
-                            $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                            if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
+                            if (result.data != null){
+                                //改变按钮颜色
+                                $(target).removeClass();
+                                $(target).addClass("btn btn-primary");
+                                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
+                                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
+                                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
+                                if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
+                                }
+                                if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructure).trigger("change");
+                                }
+                                if (result.data.buildingstructurepid == null || result.data.buildingstructurepid == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(result.data.buildingstructurepid).trigger("change");
+                                }
+                                if (result.data.propertyType == null || result.data.propertyType == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
+                                }
+                                if (result.data.builderId == null || result.data.builderId == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
+                                }
+                                if (result.data.propertyId == null || result.data.propertyId == '') {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
+                                } else {
+                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
+                                }
                             }
-                            if (result.data.buildingStructurePid == null || result.data.buildingStructurePid == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructurePid).trigger("change");
-                            }
-                            if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").val(result.data.buildingStructure).trigger("change");
-                                // $("#"+examineBuilding_.prototype.config().frm+" .buildingStructureV").val(result.data.buildingStructure).trigger("change");
-                                // $("#frmExamineBuilding_buildingStructure").val(result.data.buildingStructure).trigger("change");
-                            }
-                            if (result.data.propertyType == null || result.data.propertyType == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
-                            }
-                            if (result.data.builderId == null || result.data.builderId == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
-                            }
-                            if (result.data.propertyId == null || result.data.propertyId == '') {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
-                            } else {
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
-                            }
-                            $('#' + examineBuilding_.prototype.config().box).modal("show");
+                            examineBuilding_.prototype.showFiles();
+                            examineBuilding_.prototype.subLoadDataList();
                         }
                     },
                     error: function (result) {
@@ -484,12 +525,13 @@
                 });
             },
             viewInit: function () {
-                examineBuilding_.prototype.loadDataDicList();
-                examineBuilding_.prototype.subLoadDataList();
+                // examineBuilding_.prototype.loadDataDicList();
                 if (examineBuilding_.prototype.getFlag()){
                     examineBuilding_.prototype.init();
+                    examineBuilding_.prototype.initRemoveExamineBuildingOutfit();
                     examineBuilding_.prototype.setFlag(false);
                 }
+                examineBuilding_.prototype.subLoadDataList();
             },
             config: function () {
                 var data = {};
@@ -501,7 +543,7 @@
                 data.sonFrm = "frmExamineBuildingOutfit";
                 data.type = "null";//
                 data.database_Table = AssessDBKey.ExamineBuilding;//
-                data.building_floor_plan = "building_floor_plan";//平面图id和字段 (楼栋) 根据 ExamineFileUpLoadFieldEnum配置
+                data.building_floor_plan = "building_floor_plan";//平面图id和字段 (楼栋) 根据 ExamineFileUpLoadFieldEnum 配置
                 data.building_figure_outside = "building_figure_outside";//外装图id和字段
                 data.building_floor_Appearance_figure = "building_floor_Appearance_figure";//外观图id和字段
                 return data;
@@ -511,6 +553,7 @@
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().sonFrm);
+                data.buildingId = examineBuilding_.prototype.getBuildId();
                 if ($("#declareId").size() > 0){
                     data.declareId = $("#declareId").val();
                 }
@@ -710,7 +753,9 @@
                 });
                 $("#"+examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
                 TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
-                    type:null
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val(),
+                    buildingId:examineBuilding_.prototype.getBuildId()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -855,6 +900,21 @@
                     }
                 })
             },
+            initRemoveExamineBuildingOutfit:function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/initRemoveExamineBuildingOutfit",
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('楼栋外装初始化成功');
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
             init: function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/estate_examineBuilding_category",
@@ -870,18 +930,20 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2();//加载样式
                             }
                         }
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                })
+                });
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/estate_building_structure",
                     type: "get",
                     dataType: "json",
+                    async:false,
                     success: function (result) {
                         if (result.ret) {
                             var data = result.data;
@@ -892,14 +954,15 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2();//加载样式
                             }
                         }
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                })
+                });
                 $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
                 $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").change(function () {
                     /**
@@ -911,6 +974,7 @@
                             url: "${pageContext.request.contextPath}/examineBuilding/getBasisList",
                             dataType: "JSON",
                             data: {'id': id},
+                            async:false,
                             type: "GET",
                             success: function (result) {
                                 if (result.ret) {
@@ -923,7 +987,8 @@
                                         }
                                         // $("#"+examineBuilding_.prototype.config().frm+"buildingStructure").empty();
                                         $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(option);
-                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                                        // $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2();//加载样式
                                     }
 
                                 }
@@ -948,7 +1013,8 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2();//加载样式
                             }
                         }
                     },
@@ -971,7 +1037,8 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + examineBuilding_.prototype.config().frm + " .builderId").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2({minimumResultsForSearch: -1});//加载样式
+                                // $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2();//加载样式
                             }
                             $.ajax({
                                 url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
@@ -1005,24 +1072,14 @@
 
             },
             uploadFiles:function () {
+                console.log("tableId:"+examineBuilding_.prototype.getBuildId());
                 FileUtils.uploadFiles({
                     target: examineBuilding_.prototype.config().building_floor_plan,
                     disabledTarget: "btn_submit",
                     formData: {
                         fieldsName:examineBuilding_.prototype.config().building_floor_plan,
                         tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: examineBuilding_.prototype.config().building_floor_plan,
-                    formData: {
-                        fieldsName:examineBuilding_.prototype.config().building_floor_plan,
-                        tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
+                        tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
                         creater: "${currUserAccount}"
                     },
@@ -1036,18 +1093,7 @@
                     formData: {
                         fieldsName:examineBuilding_.prototype.config().building_figure_outside,
                         tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: examineBuilding_.prototype.config().building_figure_outside,
-                    formData: {
-                        fieldsName:examineBuilding_.prototype.config().building_figure_outside,
-                        tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
+                        tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
                         creater: "${currUserAccount}"
                     },
@@ -1061,7 +1107,32 @@
                     formData: {
                         fieldsName:examineBuilding_.prototype.config().building_floor_Appearance_figure,
                         tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
+                        tableId: examineBuilding_.prototype.getBuildId(),
+                        projectId: 0,
+                        creater: "${currUserAccount}"
+                    },
+                    deleteFlag: true
+                });
+                examineBuilding_.prototype.showFiles();
+            },
+            showFiles:function () {
+                FileUtils.getFileShows({
+                    target: examineBuilding_.prototype.config().building_floor_plan,
+                    formData: {
+                        fieldsName:examineBuilding_.prototype.config().building_floor_plan,
+                        tableName: examineBuilding_.prototype.config().database_Table,
+                        tableId: examineBuilding_.prototype.getBuildId(),
+                        projectId: 0,
+                        creater: "${currUserAccount}"
+                    },
+                    deleteFlag: true
+                });
+                FileUtils.getFileShows({
+                    target: examineBuilding_.prototype.config().building_figure_outside,
+                    formData: {
+                        fieldsName:examineBuilding_.prototype.config().building_figure_outside,
+                        tableName: examineBuilding_.prototype.config().database_Table,
+                        tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
                         creater: "${currUserAccount}"
                     },
@@ -1072,7 +1143,7 @@
                     formData: {
                         fieldsName:examineBuilding_.prototype.config().building_floor_Appearance_figure,
                         tableName: examineBuilding_.prototype.config().database_Table,
-                        tableId: 0,
+                        tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
                         creater: "${currUserAccount}"
                     },

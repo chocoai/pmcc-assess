@@ -36,13 +36,13 @@ public class ExamineUnitHuxingController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/unitHuxing" ;
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+//        String view = "/task/survey/examine/residence/apply/unitHuxing" ;
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineUnitHuxingById",method = {RequestMethod.GET},name = "获取户型")

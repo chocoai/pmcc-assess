@@ -93,7 +93,9 @@
                 });
                 $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateList", cols, {
-                    type: unitDecorate.prototype.config().type
+                    type: unitDecorate.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

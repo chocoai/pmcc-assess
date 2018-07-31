@@ -94,7 +94,9 @@
                 });
                 $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/examineHouseWater/getExamineHouseWaterList", cols, {
-                    type: houseWater.prototype.config().type
+                    type: houseWater.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
