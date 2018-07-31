@@ -165,63 +165,123 @@ public class SchemeJudgeFunctionExample {
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNull() {
-            addCriterion("judge_object_id is null");
+        public Criteria andAreaGroupIdIsNull() {
+            addCriterion("area_group_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNotNull() {
-            addCriterion("judge_object_id is not null");
+        public Criteria andAreaGroupIdIsNotNull() {
+            addCriterion("area_group_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdEqualTo(Integer value) {
-            addCriterion("judge_object_id =", value, "judgeObjectId");
+        public Criteria andAreaGroupIdEqualTo(Integer value) {
+            addCriterion("area_group_id =", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
-            addCriterion("judge_object_id <>", value, "judgeObjectId");
+        public Criteria andAreaGroupIdNotEqualTo(Integer value) {
+            addCriterion("area_group_id <>", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
-            addCriterion("judge_object_id >", value, "judgeObjectId");
+        public Criteria andAreaGroupIdGreaterThan(Integer value) {
+            addCriterion("area_group_id >", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id >=", value, "judgeObjectId");
+        public Criteria andAreaGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id >=", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThan(Integer value) {
-            addCriterion("judge_object_id <", value, "judgeObjectId");
+        public Criteria andAreaGroupIdLessThan(Integer value) {
+            addCriterion("area_group_id <", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id <=", value, "judgeObjectId");
+        public Criteria andAreaGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id <=", value, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIn(List<Integer> values) {
-            addCriterion("judge_object_id in", values, "judgeObjectId");
+        public Criteria andAreaGroupIdIn(List<Integer> values) {
+            addCriterion("area_group_id in", values, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
-            addCriterion("judge_object_id not in", values, "judgeObjectId");
+        public Criteria andAreaGroupIdNotIn(List<Integer> values) {
+            addCriterion("area_group_id not in", values, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
+        public Criteria andAreaGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id between", value1, value2, "areaGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
+        public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIsNull() {
+            addCriterion("group_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIsNotNull() {
+            addCriterion("group_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberEqualTo(Integer value) {
+            addCriterion("group_number =", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotEqualTo(Integer value) {
+            addCriterion("group_number <>", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberGreaterThan(Integer value) {
+            addCriterion("group_number >", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_number >=", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberLessThan(Integer value) {
+            addCriterion("group_number <", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("group_number <=", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIn(List<Integer> values) {
+            addCriterion("group_number in", values, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotIn(List<Integer> values) {
+            addCriterion("group_number not in", values, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberBetween(Integer value1, Integer value2) {
+            addCriterion("group_number between", value1, value2, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_number not between", value1, value2, "groupNumber");
             return (Criteria) this;
         }
 

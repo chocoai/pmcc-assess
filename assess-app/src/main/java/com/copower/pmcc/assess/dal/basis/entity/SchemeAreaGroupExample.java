@@ -435,73 +435,73 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrIsNull() {
-            addCriterion("province_city_district_str is null");
+        public Criteria andAreaNameIsNull() {
+            addCriterion("area_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrIsNotNull() {
-            addCriterion("province_city_district_str is not null");
+        public Criteria andAreaNameIsNotNull() {
+            addCriterion("area_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrEqualTo(String value) {
-            addCriterion("province_city_district_str =", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameEqualTo(String value) {
+            addCriterion("area_name =", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrNotEqualTo(String value) {
-            addCriterion("province_city_district_str <>", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameNotEqualTo(String value) {
+            addCriterion("area_name <>", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrGreaterThan(String value) {
-            addCriterion("province_city_district_str >", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameGreaterThan(String value) {
+            addCriterion("area_name >", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrGreaterThanOrEqualTo(String value) {
-            addCriterion("province_city_district_str >=", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameGreaterThanOrEqualTo(String value) {
+            addCriterion("area_name >=", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrLessThan(String value) {
-            addCriterion("province_city_district_str <", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameLessThan(String value) {
+            addCriterion("area_name <", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrLessThanOrEqualTo(String value) {
-            addCriterion("province_city_district_str <=", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameLessThanOrEqualTo(String value) {
+            addCriterion("area_name <=", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrLike(String value) {
-            addCriterion("province_city_district_str like", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameLike(String value) {
+            addCriterion("area_name like", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrNotLike(String value) {
-            addCriterion("province_city_district_str not like", value, "provinceCityDistrictStr");
+        public Criteria andAreaNameNotLike(String value) {
+            addCriterion("area_name not like", value, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrIn(List<String> values) {
-            addCriterion("province_city_district_str in", values, "provinceCityDistrictStr");
+        public Criteria andAreaNameIn(List<String> values) {
+            addCriterion("area_name in", values, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrNotIn(List<String> values) {
-            addCriterion("province_city_district_str not in", values, "provinceCityDistrictStr");
+        public Criteria andAreaNameNotIn(List<String> values) {
+            addCriterion("area_name not in", values, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrBetween(String value1, String value2) {
-            addCriterion("province_city_district_str between", value1, value2, "provinceCityDistrictStr");
+        public Criteria andAreaNameBetween(String value1, String value2) {
+            addCriterion("area_name between", value1, value2, "areaName");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceCityDistrictStrNotBetween(String value1, String value2) {
-            addCriterion("province_city_district_str not between", value1, value2, "provinceCityDistrictStr");
+        public Criteria andAreaNameNotBetween(String value1, String value2) {
+            addCriterion("area_name not between", value1, value2, "areaName");
             return (Criteria) this;
         }
 

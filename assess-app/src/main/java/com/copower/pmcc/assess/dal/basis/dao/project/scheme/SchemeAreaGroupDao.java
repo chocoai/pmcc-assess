@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.basis.dao.project.scheme;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeAreaGroupMapper;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeAreaGroupDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,60 +17,25 @@ import java.util.List;
  */
 @Repository
 public class SchemeAreaGroupDao {
-
     @Autowired
     private SchemeAreaGroupMapper mapper;
-
-    @Autowired
-    private DeclareRecordService declareRecordService;
 
     public SchemeAreaGroup get(Integer id){
         return mapper.selectByPrimaryKey(id);
     }
 
-
-    public List<SchemeAreaGroupDto> areaGroupDtoList(Integer projectID){
-        List<SchemeAreaGroupDto> schemeAreaGroupDtoList = new ArrayList<>();
-        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andIdIsNotNull().andProjectIdEqualTo(projectID);
-        List<SchemeAreaGroup> schemeAreaGroups = mapper.selectByExample(example);
-        schemeAreaGroups.parallelStream().forEach(schemeAreaGroup -> schemeAreaGroupDtoList.add(change(schemeAreaGroup)));
-        return schemeAreaGroupDtoList;
-    }
-
     public int add(SchemeAreaGroup schemeAreaGroup){
-        mapper.insert(schemeAreaGroup);
+        mapper.insertSelective(schemeAreaGroup);
         return schemeAreaGroup.getId();
     }
 
 
-    public boolean addEspecially(SchemeAreaGroupDto dto){
-        mapper.insert(change(dto));
-        return true;
-    }
-
-    public boolean update(SchemeAreaGroupDto dto){
-        return mapper.updateByPrimaryKeySelective(change(dto))==1;
-    }
-
-    public boolean update(SchemeAreaGroup dto){
-        return mapper.updateByPrimaryKeySelective(dto)==1;
+    public boolean update(SchemeAreaGroup schemeAreaGroup){
+        return mapper.updateByPrimaryKeySelective(schemeAreaGroup)==1;
     }
 
     public boolean remove(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
-    }
-
-    public SchemeAreaGroupDto change(SchemeAreaGroup oo){
-        SchemeAreaGroupDto dto = new SchemeAreaGroupDto();
-        BeanUtils.copyProperties(oo,dto);
-        return dto;
-    }
-
-    public SchemeAreaGroup change(SchemeAreaGroupDto dto){
-        SchemeAreaGroup oo = new SchemeAreaGroupDto();
-        BeanUtils.copyProperties(dto,oo);
-        return oo;
     }
 
     public List<SchemeAreaGroup> getSchemeAreaGroupByProjectId(Integer projectId) {

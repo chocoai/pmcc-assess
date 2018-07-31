@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.basis.mapper;
 
 import com.copower.pmcc.assess.dal.basis.entity.SchemeEvaluationObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeEvaluationObjectExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SchemeEvaluationObjectMapper {
     int countByExample(SchemeEvaluationObjectExample example);

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeEvaluationObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeEvaluationObject;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.erp.common.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,11 +24,11 @@ public class SchemeEvaluationObjectService {
         return dao.add(dto);
     }
 
-    public boolean update(SchemeEvaluationObjectDto dto) {
-        return dao.update(dto);
+    public boolean update(SchemeEvaluationObject schemeEvaluationObject) {
+        return dao.update(schemeEvaluationObject);
     }
 
-    public SchemeEvaluationObjectDto get(Integer id) {
+    public SchemeEvaluationObject get(Integer id) {
         return dao.get(id);
     }
 

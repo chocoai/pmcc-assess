@@ -78,7 +78,7 @@ public class ProjectPlanDetails {
 
     private Integer areaGroupId;
 
-    private Integer evaluationId;
+    private Integer groupNumber;
 
     public Integer getId() {
         return id;
@@ -376,11 +376,11 @@ public class ProjectPlanDetails {
         this.areaGroupId = areaGroupId;
     }
 
-    public Integer getEvaluationId() {
-        return evaluationId;
+    public Integer getGroupNumber() {
+        return groupNumber;
     }
 
-    public void setEvaluationId(Integer evaluationId) {
-        this.evaluationId = evaluationId;
+    public void setGroupNumber(Integer groupNumber) {
+        this.groupNumber = groupNumber;
     }
 }

@@ -6,11 +6,8 @@ import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinkingField;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectApplyDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAssistService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -20,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +35,7 @@ public class ProjectPlanSchemeAssistController {
     @Autowired
     private SchemeAssistService schemeAssistService;
     @Autowired
-    private SchemeJudgeObjectService judgeObjectService;
+    private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
 
@@ -96,59 +92,25 @@ public class ProjectPlanSchemeAssistController {
 
     @ResponseBody
     @RequestMapping(value = "/schemeAreaGroupVoList", name = "评估工作方案阶段工作计划 区域分组数据 ", method = RequestMethod.POST)
-    public Object schemeAreaGroupVoList(@RequestParam(value = "areaGroupId") Integer areaGroupId) {
+    public HttpResult schemeAreaGroupVoList(@RequestParam(value = "areaGroupId") Integer areaGroupId) {
         try {
-            if (areaGroupId != null) {
-                List<SchemeJudgeObjectVo> vos = schemeAssistService.schemeAreaGroupVoListX(areaGroupId);
-                if (vos != null) return vos;
-            }
+            return HttpResult.newCorrectResult(schemeJudgeObjectService.getSchemeJudgeObjectList(areaGroupId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getListByJudgeObjectId", name = "获取估价对象设置的评估方法 ", method = RequestMethod.GET)
-    public Object getListByJudgeObjectId(Integer judgeObjectId) {
+    @RequestMapping(value = "/getSchemeJudgeFunctions", name = "获取估价对象设置的评估方法 ", method = RequestMethod.GET)
+    public Object getSchemeJudgeFunctions(Integer areaGroupId,Integer groupNumber) {
         try {
-            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getListByJudgeObjectId(judgeObjectId);
+            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getSchemeJudgeFunctions(areaGroupId,groupNumber);
             return HttpResult.newCorrectResult(judgeFunctions);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/schemeAreaGroupPrototypeList", name = "评估工作方案阶段工作计划 区域数据 ", method = RequestMethod.POST)
-    public HttpResult schemeAreaGroupPrototypeList(@RequestParam(value = "projectId") String projectId) {
-        try {
-            if (!StringUtils.isEmpty(projectId)) {
-                List<SchemeAreaGroupVo> vos = schemeAssistService.schemeAreaGroupVoList(Integer.parseInt(projectId));
-                if (!ObjectUtils.isEmpty(vos))
-                    return HttpResult.newCorrectResult(vos);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/judgeFunctionSave", name = "评估方法 保存 ", method = RequestMethod.POST)
-    public Object judgeFunction(SchemeJudgeFunctionDto dto) {
-        try {
-            if (dto != null) {
-                schemeAssistService.addSchemeJudgeFunctionDto(dto);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
@@ -171,7 +133,7 @@ public class ProjectPlanSchemeAssistController {
         try {
             if (StringUtils.isNotBlank(formData)) {
                 SchemeJudgeObjectApplyDto applyDto = JSON.parseObject(formData, SchemeJudgeObjectApplyDto.class);
-                judgeObjectService.saveEvaluationObject(applyDto);
+                schemeJudgeObjectService.saveEvaluationObject(applyDto);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -86,8 +85,8 @@ public class DeclareRecordService {
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroupVo> getSchemeGroup(Integer projectId) {
-        List<SchemeAreaGroupVo> voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
+    public List<SchemeAreaGroup> getSchemeGroup(Integer projectId) {
+        List<SchemeAreaGroup> voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return voList;
         List<DeclareRecord> declareRecords = dao.getDeclareRecordByProjectId(projectId);
@@ -97,7 +96,7 @@ public class DeclareRecordService {
 
             for (SchemeAreaGroup areaGroup : areaGroups) {
                 String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
-                areaGroup.setProvinceCityDistrictStr(areaFullName);
+                areaGroup.setAreaName(areaFullName);
                 areaGroup.setProjectId(projectId);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 schemeAreaGroupService.add(areaGroup);
@@ -119,7 +118,7 @@ public class DeclareRecordService {
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
                         schemeJudgeObject.setBisSplit(false);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
-                        schemeJudgeObjectService.add(schemeJudgeObject);
+                        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
 
                         //反写申报数据的区域id
                         declareRecord.setAreaGroupId(areaGroup.getId());

@@ -13,7 +13,7 @@ public class SchemeAreaGroup {
 
     private String district;
 
-    private String provinceCityDistrictStr;
+    private String areaName;
 
     private Date valueTimePoint;
 
@@ -63,12 +63,12 @@ public class SchemeAreaGroup {
         this.district = district == null ? null : district.trim();
     }
 
-    public String getProvinceCityDistrictStr() {
-        return provinceCityDistrictStr;
+    public String getAreaName() {
+        return areaName;
     }
 
-    public void setProvinceCityDistrictStr(String provinceCityDistrictStr) {
-        this.provinceCityDistrictStr = provinceCityDistrictStr == null ? null : provinceCityDistrictStr.trim();
+    public void setAreaName(String areaName) {
+        this.areaName = areaName == null ? null : areaName.trim();
     }
 
     public Date getValueTimePoint() {

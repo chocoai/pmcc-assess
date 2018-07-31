@@ -14,8 +14,8 @@
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
             <h2>
-                <c:if test="${!empty item.provinceCityDistrictStr}">
-                    ${item.provinceCityDistrictStr}
+                <c:if test="${!empty item.areaName}">
+                    ${item.areaName}
                 </c:if>
             </h2>
             <div class="clearfix"></div>
@@ -339,7 +339,7 @@
         cleanEvaluationMethod();
         //如果该估计对象已经设置过评估方法，则将数据填充回去
         $.ajax({
-            url: '${pageContext.request.contextPath}/projectplanschemeassist/getListByJudgeObjectId',
+            url: '${pageContext.request.contextPath}/projectplanschemeassist/getSchemeJudgeFunctions',
             data: {judgeObjectId: judgeObjectId},
             type: "get",
             dataType: "json",
@@ -658,8 +658,8 @@
             type: "post",
             dataType: "json",
             success: function (result) {
-                if (result) {
-                    $.each(result, function (i, item) {
+                if (result.ret) {
+                    $.each(result.data, function (i, item) {
                         var html = $("#judgeObjectHtml").html();
                         html = html.replace("{id}", item.id == undefined ? "" : item.id);
                         html = html.replace("{bisSplit}", item.bisSplit == undefined ? false : item.bisSplit);

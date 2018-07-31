@@ -346,66 +346,6 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationIdIsNull() {
-            addCriterion("evaluation_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdIsNotNull() {
-            addCriterion("evaluation_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdEqualTo(Integer value) {
-            addCriterion("evaluation_id =", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdNotEqualTo(Integer value) {
-            addCriterion("evaluation_id <>", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdGreaterThan(Integer value) {
-            addCriterion("evaluation_id >", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("evaluation_id >=", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdLessThan(Integer value) {
-            addCriterion("evaluation_id <", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdLessThanOrEqualTo(Integer value) {
-            addCriterion("evaluation_id <=", value, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdIn(List<Integer> values) {
-            addCriterion("evaluation_id in", values, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdNotIn(List<Integer> values) {
-            addCriterion("evaluation_id not in", values, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdBetween(Integer value1, Integer value2) {
-            addCriterion("evaluation_id between", value1, value2, "evaluationId");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("evaluation_id not between", value1, value2, "evaluationId");
-            return (Criteria) this;
-        }
-
         public Criteria andNumberIsNull() {
             addCriterion("number is null");
             return (Criteria) this;
@@ -523,6 +463,66 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andSplitNumberNotBetween(Integer value1, Integer value2) {
             addCriterion("split_number not between", value1, value2, "splitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIsNull() {
+            addCriterion("group_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIsNotNull() {
+            addCriterion("group_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberEqualTo(Integer value) {
+            addCriterion("group_number =", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotEqualTo(Integer value) {
+            addCriterion("group_number <>", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberGreaterThan(Integer value) {
+            addCriterion("group_number >", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_number >=", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberLessThan(Integer value) {
+            addCriterion("group_number <", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("group_number <=", value, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberIn(List<Integer> values) {
+            addCriterion("group_number in", values, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotIn(List<Integer> values) {
+            addCriterion("group_number not in", values, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberBetween(Integer value1, Integer value2) {
+            addCriterion("group_number between", value1, value2, "groupNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_number not between", value1, value2, "groupNumber");
             return (Criteria) this;
         }
 
@@ -783,66 +783,6 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andFloorAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("floor_area not between", value1, value2, "floorArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberIsNull() {
-            addCriterion("group_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberIsNotNull() {
-            addCriterion("group_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberEqualTo(Integer value) {
-            addCriterion("group_number =", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberNotEqualTo(Integer value) {
-            addCriterion("group_number <>", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberGreaterThan(Integer value) {
-            addCriterion("group_number >", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("group_number >=", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberLessThan(Integer value) {
-            addCriterion("group_number <", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("group_number <=", value, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberIn(List<Integer> values) {
-            addCriterion("group_number in", values, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberNotIn(List<Integer> values) {
-            addCriterion("group_number not in", values, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberBetween(Integer value1, Integer value2) {
-            addCriterion("group_number between", value1, value2, "groupNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andGroupNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("group_number not between", value1, value2, "groupNumber");
             return (Criteria) this;
         }
 

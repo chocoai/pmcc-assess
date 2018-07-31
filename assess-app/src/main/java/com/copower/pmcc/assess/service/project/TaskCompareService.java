@@ -87,7 +87,7 @@ public class TaskCompareService {
         Integer projectPlanDetailsId = projectPlanDetails.getPid();
         ProjectPlanDetails projectPlanDetails1 = projectPlanDetailsDao.getProjectPlanDetailsItemById(projectPlanDetailsId);   //根据pid查上级
 
-        Integer schemeEvaluationObjectId = projectPlanDetails1.getEvaluationId();     //查出委估对象主键id
+        Integer schemeEvaluationObjectId = projectPlanDetails1.getGroupNumber();     //查出委估对象主键id
         SchemeEvaluationObject schemeEvaluationObject = schemeEvaluationObjectDao.getSchemeEvaluationObjectById(schemeEvaluationObjectId);  //查出委估对象
         //取出委估对象数据
         Integer schemeEvaluationObjectProjectId = schemeEvaluationObject.getProjectId();
@@ -146,7 +146,7 @@ public class TaskCompareService {
 
         Integer projectPlanDetailsId = projectPlanDetails.getPid();
         ProjectPlanDetails projectPlanDetails1 = projectPlanDetailsDao.getProjectPlanDetailsItemById(projectPlanDetailsId);
-        Integer schemeEvaluationObjectId = projectPlanDetails1.getEvaluationId();
+        Integer schemeEvaluationObjectId = projectPlanDetails1.getGroupNumber();
         List<MethodMarketCompareFactor> methodMarketCompareFactors = methodMarketCompareFactorService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
         List<MethodMarketCompareIndex> methodMarketCompareIndexs = methodMarketCompareIndexService.getDataByEvaluationObjectId(schemeEvaluationObjectId);
         List<MethodMarketCompareCalculation> methodMarketCompareCalculations = methodMarketCompareCalculationService.getDataByEvaluationObjectId(schemeEvaluationObjectId);

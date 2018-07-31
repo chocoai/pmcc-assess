@@ -57,7 +57,7 @@ public class ProjectPlanCompileService {
                 projectPlanDetails.setProjectWorkStageId(workStageId);
                 projectPlanDetails.setPlanId(planId);
                 projectPlanDetails.setProjectId(projectId);
-                projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getProvinceCityDistrictStr());
+                projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
                 projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                 projectPlanDetails.setBisLastLayer(false);
                 projectPlanDetails.setSorting(i++);

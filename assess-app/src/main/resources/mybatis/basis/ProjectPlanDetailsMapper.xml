@@ -39,7 +39,7 @@
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="report_analysis_category" property="reportAnalysisCategory" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
-    <result column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
+    <result column="group_number" property="groupNumber" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -106,7 +106,7 @@
     process_ins_id, task_submit_time, task_remarks, actual_hours, bis_all_submit, bis_again_submit, 
     status, bis_partake, return_details_id, return_process_ins_id, return_details_reason, 
     bis_new, bis_last_layer, company_nature, declare_form_id, declare_record_id, report_analysis_category, 
-    area_group_id, evaluation_id
+    area_group_id, group_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample" >
     select
@@ -154,7 +154,7 @@
       return_details_id, return_process_ins_id, return_details_reason, 
       bis_new, bis_last_layer, company_nature, 
       declare_form_id, declare_record_id, report_analysis_category, 
-      area_group_id, evaluation_id)
+      area_group_id, group_number)
     values (#{projectWorkStageId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
       #{projectPhaseId,jdbcType=INTEGER}, #{projectPhaseDetailsId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{planStartDate,jdbcType=TIMESTAMP}, #{planEndDate,jdbcType=TIMESTAMP}, 
@@ -167,7 +167,7 @@
       #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{returnDetailsReason,jdbcType=VARCHAR}, 
       #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, #{companyNature,jdbcType=INTEGER}, 
       #{declareFormId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{reportAnalysisCategory,jdbcType=INTEGER}, 
-      #{areaGroupId,jdbcType=INTEGER}, #{evaluationId,jdbcType=INTEGER})
+      #{areaGroupId,jdbcType=INTEGER}, #{groupNumber,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -283,8 +283,8 @@
       <if test="areaGroupId != null" >
         area_group_id,
       </if>
-      <if test="evaluationId != null" >
-        evaluation_id,
+      <if test="groupNumber != null" >
+        group_number,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -396,8 +396,8 @@
       <if test="areaGroupId != null" >
         #{areaGroupId,jdbcType=INTEGER},
       </if>
-      <if test="evaluationId != null" >
-        #{evaluationId,jdbcType=INTEGER},
+      <if test="groupNumber != null" >
+        #{groupNumber,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -521,8 +521,8 @@
       <if test="record.areaGroupId != null" >
         area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       </if>
-      <if test="record.evaluationId != null" >
-        evaluation_id = #{record.evaluationId,jdbcType=INTEGER},
+      <if test="record.groupNumber != null" >
+        group_number = #{record.groupNumber,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -568,7 +568,7 @@
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       report_analysis_category = #{record.reportAnalysisCategory,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
-      evaluation_id = #{record.evaluationId,jdbcType=INTEGER}
+      group_number = #{record.groupNumber,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -684,8 +684,8 @@
       <if test="areaGroupId != null" >
         area_group_id = #{areaGroupId,jdbcType=INTEGER},
       </if>
-      <if test="evaluationId != null" >
-        evaluation_id = #{evaluationId,jdbcType=INTEGER},
+      <if test="groupNumber != null" >
+        group_number = #{groupNumber,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -728,7 +728,7 @@
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       report_analysis_category = #{reportAnalysisCategory,jdbcType=INTEGER},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
-      evaluation_id = #{evaluationId,jdbcType=INTEGER}
+      group_number = #{groupNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -2,9 +2,8 @@ package com.copower.pmcc.assess.dal.basis.mapper;
 
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunctionExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface SchemeJudgeFunctionMapper {
     int countByExample(SchemeJudgeFunctionExample example);

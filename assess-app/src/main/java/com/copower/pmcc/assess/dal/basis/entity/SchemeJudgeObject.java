@@ -12,11 +12,11 @@ public class SchemeJudgeObject {
 
     private Integer declareRecordId;
 
-    private Integer evaluationId;
-
     private Integer number;
 
     private Integer splitNumber;
+
+    private Integer groupNumber;
 
     private String name;
 
@@ -25,8 +25,6 @@ public class SchemeJudgeObject {
     private Integer bestUseId;
 
     private BigDecimal floorArea;
-
-    private Integer groupNumber;
 
     private String creator;
 
@@ -74,14 +72,6 @@ public class SchemeJudgeObject {
         this.declareRecordId = declareRecordId;
     }
 
-    public Integer getEvaluationId() {
-        return evaluationId;
-    }
-
-    public void setEvaluationId(Integer evaluationId) {
-        this.evaluationId = evaluationId;
-    }
-
     public Integer getNumber() {
         return number;
     }
@@ -96,6 +86,14 @@ public class SchemeJudgeObject {
 
     public void setSplitNumber(Integer splitNumber) {
         this.splitNumber = splitNumber;
+    }
+
+    public Integer getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(Integer groupNumber) {
+        this.groupNumber = groupNumber;
     }
 
     public String getName() {
@@ -128,14 +126,6 @@ public class SchemeJudgeObject {
 
     public void setFloorArea(BigDecimal floorArea) {
         this.floorArea = floorArea;
-    }
-
-    public Integer getGroupNumber() {
-        return groupNumber;
-    }
-
-    public void setGroupNumber(Integer groupNumber) {
-        this.groupNumber = groupNumber;
     }
 
     public String getCreator() {

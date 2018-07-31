@@ -1,17 +1,12 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingFieldDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeEvaluationObjectDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
-import com.copower.pmcc.assess.dto.output.project.DeclareRecordVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
@@ -20,11 +15,8 @@ import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -60,27 +52,6 @@ public class SchemeAssistService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DataBestUseDescriptionService dataBestUseDescriptionService;
-
-    public int schemeEvaluationObjectSave(SchemeEvaluationObjectDto dto) {
-        return schemeEvaluationObjectService.add(dto);
-    }
-
-    @Transactional
-    public boolean addSchemeJudgeFunctionDto(SchemeJudgeFunctionDto dto) {
-        //只是保存评估方法中的评估思路
-        if (StringUtils.isEmpty(dto.getNotApplicableReason()) && StringUtils.isEmpty(dto.getApplicableReason()) && !StringUtils.isEmpty(dto.getApplicableThinking())) {
-            dto.setCreator(commonService.thisUserAccount());
-            dto.setBisApplicable(true);//适用
-            return schemeJudgeFunctionService.add(dto);
-        } else {
-            SchemeJudgeFunction functionDto = schemeJudgeFunctionService.get(commonService.thisUserAccount(), dto.getMethodType(), dto.getJudgeObjectId());
-            functionDto.setApplicableReason(dto.getApplicableReason());
-            functionDto.setBisApplicable(true);
-            functionDto.setNotApplicableReason(dto.getNotApplicableReason());
-            functionDto.setJudgeObjectId(dto.getJudgeObjectId());
-            return schemeJudgeFunctionService.update(functionDto);
-        }
-    }
 
     /**
      * 保存评估方法
@@ -126,44 +97,14 @@ public class SchemeAssistService {
         return baseDataDics;
     }
 
-
-    /**
-     * 区域分组
-     *
-     * @param projectID
-     * @return
-     */
-    public List<SchemeAreaGroupVo> schemeAreaGroupVoList(Integer projectID) {
-        List<SchemeAreaGroupVo> vos = null;
-        vos = schemeAreaGroupService.schemeAreaGroupVoList(projectID);
-        return vos;
-    }
-
     /**
      * 获取申报信息区域分组 或初始化
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroupVo> getSchemeGroup(Integer projectId) {
+    public List<SchemeAreaGroup> getSchemeGroup(Integer projectId) {
         return declareRecordService.getSchemeGroup(projectId);
     }
 
-    /**
-     *
-     * @param areaGroupId
-     * @return
-     */
-    public List<SchemeJudgeObjectVo> schemeAreaGroupVoListX(Integer areaGroupId) {
-        List<SchemeJudgeObjectVo> vos = null;
-        vos = judgeObjectService.listGroupId(areaGroupId);
-        return vos;
-    }
-
-
-    public DeclareRecordVo change(DeclareRecord declareRecord) {
-        DeclareRecordVo vo = new DeclareRecordVo();
-        BeanUtils.copyProperties(declareRecord, vo);
-        return vo;
-    }
 
 }

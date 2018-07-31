@@ -7,7 +7,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="province_city_district_str" property="provinceCityDistrictStr" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
     <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -72,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, province, city, district, province_city_district_str, value_time_point, 
-    creator, gmt_created, gmt_modified
+    id, project_id, province, city, district, area_name, value_time_point, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
     select
@@ -110,11 +110,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_area_group (project_id, province, city, 
-      district, province_city_district_str, value_time_point, 
+      district, area_name, value_time_point, 
       creator, gmt_created, gmt_modified
       )
     values (#{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{provinceCityDistrictStr,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, 
+      #{district,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -136,8 +136,8 @@
       <if test="district != null" >
         district,
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str,
+      <if test="areaName != null" >
+        area_name,
       </if>
       <if test="valueTimePoint != null" >
         value_time_point,
@@ -165,8 +165,8 @@
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        #{provinceCityDistrictStr,jdbcType=VARCHAR},
+      <if test="areaName != null" >
+        #{areaName,jdbcType=VARCHAR},
       </if>
       <if test="valueTimePoint != null" >
         #{valueTimePoint,jdbcType=TIMESTAMP},
@@ -206,8 +206,8 @@
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
       </if>
-      <if test="record.provinceCityDistrictStr != null" >
-        province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
+      <if test="record.areaName != null" >
+        area_name = #{record.areaName,jdbcType=VARCHAR},
       </if>
       <if test="record.valueTimePoint != null" >
         value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
@@ -233,7 +233,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
-      province_city_district_str = #{record.provinceCityDistrictStr,jdbcType=VARCHAR},
+      area_name = #{record.areaName,jdbcType=VARCHAR},
       value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -257,8 +257,8 @@
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
       </if>
-      <if test="provinceCityDistrictStr != null" >
-        province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
+      <if test="areaName != null" >
+        area_name = #{areaName,jdbcType=VARCHAR},
       </if>
       <if test="valueTimePoint != null" >
         value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
@@ -281,7 +281,7 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
-      province_city_district_str = #{provinceCityDistrictStr,jdbcType=VARCHAR},
+      area_name = #{areaName,jdbcType=VARCHAR},
       value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

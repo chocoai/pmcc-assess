@@ -16,30 +16,29 @@ public class SchemeJudgeFunctionService {
     @Autowired
     private SchemeJudgeFunctionDao dao;
 
-    public boolean add(SchemeJudgeFunction dto){
+    public boolean add(SchemeJudgeFunction dto) {
         return dao.add(dto);
     }
 
-    public List<SchemeJudgeFunction> getListByJudgeObjectId(Integer judgeObjectId){
-        return dao.getListByJudgeObjectId(judgeObjectId);
+    public List<SchemeJudgeFunction> getSchemeJudgeFunctions(Integer areaGroupId, Integer groupNumber) {
+        SchemeJudgeFunction schemeJudgeFunction = new SchemeJudgeFunction();
+        schemeJudgeFunction.setAreaGroupId(areaGroupId);
+        schemeJudgeFunction.setGroupNumber(groupNumber);
+        return dao.getSchemeJudgeFunction(schemeJudgeFunction);
     }
 
-    @Transactional(readOnly = true)
-    public SchemeJudgeFunction get(String creator,Integer methodType,Integer judgeObjectId){
-        return dao.get(creator,methodType,judgeObjectId);
-    }
 
-    public boolean update(SchemeJudgeFunction dto){
+    public boolean update(SchemeJudgeFunction dto) {
         return dao.update(dto);
     }
 
     @Transactional(readOnly = true)
-    public SchemeJudgeFunction get(Integer id){
+    public SchemeJudgeFunction get(Integer id) {
         return dao.get(id);
     }
 
     @Transactional
-    public boolean remove(Integer id){
+    public boolean remove(Integer id) {
         return dao.remove(id);
     }
 }
