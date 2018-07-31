@@ -93,7 +93,9 @@
                 });
                 $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingTraffic/getExamineMatchingTrafficList", cols, {
-                    type: matchingTransit.prototype.config().type
+                    type: matchingTransit.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

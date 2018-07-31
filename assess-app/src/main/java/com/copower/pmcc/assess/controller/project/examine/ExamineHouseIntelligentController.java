@@ -39,13 +39,13 @@ public class ExamineHouseIntelligentController {
     @Autowired
     private ExamineHouseIntelligentService examineHouseIntelligentService;
 
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)", method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/task/survey/examine/residence/apply/houseIntelligent";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)", method = {RequestMethod.GET})
+//    public ModelAndView index() {
+//        String view = "/task/survey/examine/residence/apply/houseIntelligent";
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseIntelligentById", method = {RequestMethod.GET}, name = "获取电力通讯网络")

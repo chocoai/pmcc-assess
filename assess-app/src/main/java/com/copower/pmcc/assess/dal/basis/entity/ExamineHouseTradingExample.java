@@ -925,6 +925,76 @@ public class ExamineHouseTradingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andDepositIsNull() {
+            addCriterion("deposit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositIsNotNull() {
+            addCriterion("deposit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositEqualTo(String value) {
+            addCriterion("deposit =", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositNotEqualTo(String value) {
+            addCriterion("deposit <>", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositGreaterThan(String value) {
+            addCriterion("deposit >", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositGreaterThanOrEqualTo(String value) {
+            addCriterion("deposit >=", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositLessThan(String value) {
+            addCriterion("deposit <", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositLessThanOrEqualTo(String value) {
+            addCriterion("deposit <=", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositLike(String value) {
+            addCriterion("deposit like", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositNotLike(String value) {
+            addCriterion("deposit not like", value, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositIn(List<String> values) {
+            addCriterion("deposit in", values, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositNotIn(List<String> values) {
+            addCriterion("deposit not in", values, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositBetween(String value1, String value2) {
+            addCriterion("deposit between", value1, value2, "deposit");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositNotBetween(String value1, String value2) {
+            addCriterion("deposit not between", value1, value2, "deposit");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

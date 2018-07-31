@@ -94,7 +94,9 @@
                 });
                 $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceList", cols, {
-                    type: matchingFinance.prototype.config().type
+                    type: matchingFinance.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

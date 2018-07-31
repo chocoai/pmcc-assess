@@ -92,7 +92,9 @@
                 });
                 $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseNewWind.prototype.config().table, "${pageContext.request.contextPath}/examineHouseEquipment/getExamineHouseEquipmentList", cols, {
-                    type: houseNewWind.prototype.config().type
+                    type: houseNewWind.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

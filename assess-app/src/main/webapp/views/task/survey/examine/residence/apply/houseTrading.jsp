@@ -15,9 +15,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易时间<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="开盘时间"
+                    <input required="required" placeholder="交易时间"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate">
+                           class="form-control date-picker dbdate tradingTime">
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">买方支付的额外税费<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -51,7 +51,9 @@
                            class="form-control">
                 </div>
             </div>
+        </div>
 
+        <div class="form-group ExamineHouseTradingLease" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承租方支付的额外税费<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -59,6 +61,27 @@
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.rentingExtraTaxFee}"
                            name="rentingExtraTaxFee"
                            class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">押金<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="押金" required="required" class="form-control" name="deposit" value="${surveyExamineDataInfoVo.examineHouseTradingVo.deposit}">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group" style="display: none">
+            <div class="x-valid">
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-success" data-toggle="modal" href="#divBox" onclick="examineHouseTrading.prototype.subShowModel();"> 新增
+                    </button>
+                </div>
+                <div class="col-sm-11">
+                    <table class="table table-bordered" id="ExamineHouseTradingLeaseAndSellTableSon">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </div>
             </div>
         </div>
@@ -83,19 +106,14 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <table class="table table-bordered" id="ExamineHouseTradingLeaseAndSellTableSon">
-                    <!-- cerare document add ajax data-->
-                </table>
-            </div>
-        </div>
     </form>
 </div>
 
 <script type="text/javascript">
     $(function () {
-        examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化
+        examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
+        examineHouseTrading.prototype.select2Init();
+
         examineHouseTrading.prototype.init2();
         ContainerFunForValid.push(ExamineHouseTrading.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouseTrading.getFormData);//获取数据方法写入容器
@@ -107,6 +125,67 @@
 
     };
     examineHouseTrading.prototype = {
+        select2Init:function () {
+            //页面保存数据后 展示数据
+            $("#"+examineHouseTrading.prototype.config().frm+" .tradingTime").val(formatDate("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}"));
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
+
+            var tradingTypeID = "${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" ;
+            if (examineHouseTrading.prototype.select2IsNotNull(tradingTypeID)){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineHouse/getBaseDataDicById",
+                    type: "get",
+                    data:{id:tradingTypeID},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var  tradingType = result.data.fieldName;
+                            $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
+                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
+                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
+                            }
+                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
+                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+            examineHouseTrading.prototype.select2InitMethodWrite(tradingTypeID,"tradingType");
+        },
+        select2InitMethodWrite:function (data,name) {
+            if (examineHouseTrading.prototype.select2IsNotNull(data)){
+                if (examineHouseTrading.prototype.select2IsNotNull(name)){
+                    $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(data).trigger("change");
+                }
+            }else {
+                if (examineHouseTrading.prototype.select2IsNotNull(name)){
+                    $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(null).trigger("change");
+                }
+            }
+        },
+        select2IsNotNull:function (data) {
+            if (data == null){
+                return false;
+            }
+            if (data == ''){
+                return false;
+            }
+            if (data == ""){
+                return false;
+            }
+            if (data == 0){
+                return false;
+            }
+            return true;
+        },
         config: function () {
             return {
                 frm: "frm_houseTrading",
@@ -121,22 +200,16 @@
         subLoadList:function (type_) {
             var cols = [];
             if (type_ == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                // cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
-                // cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
-                // cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
-
-                cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
-                cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
-                cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
-            }
-            if (type_ == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
                 cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
                 cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
                 cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
 
-                // cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
-                // cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
-                // cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
+            }
+            if (type_ == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+
+                cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
+                cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
+                cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
             }
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -162,6 +235,7 @@
         },
         //子类 删除
         subRemove:function (id,type) {
+            console.log("id:"+id+" type:"+type);
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineHouse/deleteExamineHouseTradingSellAndLeaseDtoById",
                 type: "post",
@@ -179,7 +253,39 @@
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            })
+            });
+        },
+        subShowModel:function () {
+            var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
+            var tradingType = null;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/examineHouse/getBaseDataDicById",
+                type: "get",
+                data:{id:tradingID},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        tradingType = data.fieldName;
+                        $("#" + examineHouseTrading.prototype.config().frmSon).clearAll();
+                        $("#" + examineHouseTrading.prototype.config().divBoxSon).modal("show");
+                        $("#" + examineHouseTrading.prototype.config().frmSon + " .type").val(tradingType);
+                        if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .lease").show();
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .sell").hide();
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .modal-title").html("出租信息");
+                        }
+                        if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .lease").hide();
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .sell").show();
+                            $("#" + examineHouseTrading.prototype.config().divBoxSon + " .modal-title").html("出售信息");
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
         //子类添加
         subSave: function () {
@@ -219,7 +325,6 @@
         },
         init2:function () {
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
-                //相当于showModel method
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
                 var tradingType = null;
                 $.ajax({
@@ -231,18 +336,16 @@
                         if (result.ret) {
                             var data = result.data;
                             tradingType = data.fieldName;
-                            $("#" + examineHouseTrading.prototype.config().frmSon).clearAll();
-                            $("#" + examineHouseTrading.prototype.config().divBoxSon).modal("show");
-                            $("#" + examineHouseTrading.prototype.config().frmSon + " .type").val(tradingType);
+                            $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
                             if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .lease").hide();
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .sell").show();
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .modal-title").html("出售信息");
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
+                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
                             }
                             if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .sell").hide();
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .lease").show();
-                                $("#" + examineHouseTrading.prototype.config().divBoxSon + " .modal-title").html("出租信息");
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
+                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
+                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
                             }
                         }
                     },
@@ -254,10 +357,10 @@
         },
         init: function () {
             //第一次加载
-            examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineHouse/examine_house_transaction_type",
                 type: "get",
+                async:false,
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -269,7 +372,8 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(option);
-                            $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2({minimumResultsForSearch: -1});//加载样式
+                            // $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2({minimumResultsForSearch: -1});//加载样式
+                            $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
                         }
                     }
                 },
@@ -280,6 +384,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineHouse/examine_house_description_type",
                 type: "get",
+                async:false,
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -291,7 +396,8 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(option);
-                            $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2({minimumResultsForSearch: -1});//加载样式
+                            // $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2({minimumResultsForSearch: -1});//加载样式
+                            $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
                         }
                     }
                 },
@@ -350,7 +456,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="租金支付时间起"
-                                                   name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
+                                                   name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
                                     </div>
@@ -362,7 +468,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="租金支付时间起"
-                                                   name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
+                                                   name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
                                     </div>
@@ -374,7 +480,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" data-rule-number='true' class="form-control"
-                                                   name="instalmentInterest"
+                                                   name="rentGrowthRate"
                                                    placeholder="租金增长比率(请输入数字)" required="required">
                                         </div>
                                     </div>
@@ -389,7 +495,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="分期支付时间起"
-                                                   name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
+                                                   name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
                                     </div>
@@ -401,7 +507,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="分期支付时间起止"
-                                                   name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
+                                                   name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate">
                                         </div>
                                     </div>
@@ -413,7 +519,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" data-rule-number='true' class="form-control"
-                                                   name="rentGrowthRate"
+                                                   name="instalmentInterest"
                                                    placeholder="分期支付利息(请输入数字)" required="required">
                                         </div>
                                     </div>

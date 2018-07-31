@@ -73,7 +73,9 @@
             });
             $("#"+examineBuildingOutfit.prototype.config().table).bootstrapTable('destroy');
             TableInit(examineBuildingOutfit.prototype.config().table, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
-                type:examineBuildingOutfit.prototype.config().type
+                type:examineBuildingOutfit.prototype.config().type,
+                declareId : $("#declareId").val(),
+                examineType : $("#examineType").val()
             }, {
                 showColumns: false,
                 showRefresh: false,

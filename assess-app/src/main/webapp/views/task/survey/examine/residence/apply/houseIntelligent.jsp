@@ -95,7 +95,9 @@
                 });
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/examineHouseIntelligent/getExamineHouseIntelligentList", cols, {
-                    type: houseIntelligent.prototype.config().type
+                    type: houseIntelligent.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

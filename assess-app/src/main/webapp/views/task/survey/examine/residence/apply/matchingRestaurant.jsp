@@ -93,7 +93,9 @@
                 });
                 $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingLeisurePlace/getExamineMatchingLeisurePlaceList", cols, {
-                    type: matchingRestaurant.prototype.config().type
+                    type: matchingRestaurant.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

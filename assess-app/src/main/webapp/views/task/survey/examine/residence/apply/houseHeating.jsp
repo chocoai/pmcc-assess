@@ -92,7 +92,9 @@
                 });
                 $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/examineHouseEquipment/getExamineHouseEquipmentList", cols, {
-                    type: houseHeating.prototype.config().type
+                    type: houseHeating.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

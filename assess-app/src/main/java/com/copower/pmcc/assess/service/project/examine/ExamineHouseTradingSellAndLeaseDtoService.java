@@ -64,22 +64,21 @@ public class ExamineHouseTradingSellAndLeaseDtoService {//
     public BootstrapTableVo getVoList(String type, ExamineHouseTradingSell examineHouseTradingSell, ExamineHouseTradingLease examineHouseTradingLease) {
         BootstrapTableVo vo = null;
         if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())) {
-            vo = examineHouseTradingSellService.getExamineHouseTradingSellLists(examineHouseTradingSell,type);
+            vo = examineHouseTradingLeaseService.getExamineHouseTradingLeaseLists(examineHouseTradingLease, type);
         }
         if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())) {
-            vo = examineHouseTradingLeaseService.getExamineHouseTradingLeaseLists(examineHouseTradingLease,type);
+            vo = examineHouseTradingSellService.getExamineHouseTradingSellLists(examineHouseTradingSell, type);
         }
         return vo;
     }
 
-
     @Transactional
     public boolean remove(String type, Integer id) {
-        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())) {
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())) {
             examineHouseTradingSellService.removeExamineHouseTradingSell(id);
             return true;
         }
-        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())) {
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())) {
             examineHouseTradingLeaseService.removeExamineHouseTradingLease(id);
             return true;
         }

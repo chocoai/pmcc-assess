@@ -30,6 +30,14 @@ public class ExamineBuildingOutfitDao {
         return examineBuildingOutfitMapper.selectByPrimaryKey(id);
     }
 
+    public void initRemove(){
+        ExamineBuildingOutfitExample example = new ExamineBuildingOutfitExample();
+        ExamineBuildingOutfitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andBuildingIdEqualTo(0);
+        examineBuildingOutfitMapper.deleteByExample(example);
+    }
+
     /**
      * 获取数据列表
      * @param examineBuildingOutfit

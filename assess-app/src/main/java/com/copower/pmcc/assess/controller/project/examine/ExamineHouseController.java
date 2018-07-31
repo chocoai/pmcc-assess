@@ -103,10 +103,13 @@ public class ExamineHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/examineunithuxingSelect",method = {RequestMethod.GET},name = "户型选择")
-    public HttpResult examineunithuxingSelect() {
+    public HttpResult examineunithuxingSelect(Integer declareId,Integer examineType) {
         try {
             List<ExamineUnitHuxingVo> vos = Lists.newArrayList();
-            List<ExamineUnitHuxing> examineUnitHuxings = examineUnitHuxingService.getExamineUnitHuxingList(new ExamineUnitHuxing());
+            ExamineUnitHuxing oo = new ExamineUnitHuxing();
+            oo.setDeclareId(declareId);
+            oo.setExamineType(examineType);
+            List<ExamineUnitHuxing> examineUnitHuxings = examineUnitHuxingService.getExamineUnitHuxingList(oo);
             if (!ObjectUtils.isEmpty(examineUnitHuxings)){
                 for (ExamineUnitHuxing examineUnitHuxing:examineUnitHuxings){
                     vos.add(examineUnitHuxingService.getExamineUnitHuxingVo(examineUnitHuxing));

@@ -60,6 +60,8 @@ public class ExamineBuilding {
 
     private Date gmtModified;
 
+    private Integer buildingstructurepid;
+
     public Integer getId() {
         return id;
     }
@@ -282,5 +284,13 @@ public class ExamineBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getBuildingstructurepid() {
+        return buildingstructurepid;
+    }
+
+    public void setBuildingstructurepid(Integer buildingstructurepid) {
+        this.buildingstructurepid = buildingstructurepid;
     }
 }

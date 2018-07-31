@@ -91,7 +91,9 @@
                 });
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingEnvironment/getExamineMatchingEnvironmentList", cols, {
-                    type: matchingEnvironment.prototype.config().type
+                    type: matchingEnvironment.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

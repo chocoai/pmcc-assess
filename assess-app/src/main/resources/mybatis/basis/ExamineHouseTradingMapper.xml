@@ -15,6 +15,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="deposit" property="deposit" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,7 +78,7 @@
   <sql id="Base_Column_List" >
     id, declare_id, examine_type, trading_time, trading_type, trading_price, buyer_extra_tax_fee, 
     renting_extra_tax_fee, description_type, description_content, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, deposit
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingExample" >
     select
@@ -116,13 +117,13 @@
     insert into tb_examine_house_trading (declare_id, examine_type, trading_time, 
       trading_type, trading_price, buyer_extra_tax_fee, 
       renting_extra_tax_fee, description_type, description_content, 
-      creator, gmt_created, gmt_modified
-      )
+      creator, gmt_created, gmt_modified, 
+      deposit)
     values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, 
       #{rentingExtraTaxFee,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{deposit,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -166,6 +167,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
@@ -203,6 +207,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -254,6 +261,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -273,7 +283,8 @@
       description_content = #{record.descriptionContent,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      deposit = #{record.deposit,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -317,6 +328,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -333,7 +347,8 @@
       description_content = #{descriptionContent,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      deposit = #{deposit,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

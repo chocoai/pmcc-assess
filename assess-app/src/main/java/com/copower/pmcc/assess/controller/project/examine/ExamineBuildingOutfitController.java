@@ -61,16 +61,9 @@ public class ExamineBuildingOutfitController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitList",method = {RequestMethod.GET},name = "楼栋外装情况列表")
-    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineBuildingOutfitList(ExamineBuildingOutfit examineBuildingOutfit) {
         BootstrapTableVo vo = null;
         try {
-            ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
-            if (!ObjectUtils.isEmpty(examineType)){
-                examineBuildingOutfit.setExamineType(examineType);
-            }
-            if (declareId!=null && declareId.equals(0)){
-                examineBuildingOutfit.setDeclareId(declareId);
-            }
             vo = examineBuildingOutfitService.getExamineBuildingOutfitLists(examineBuildingOutfit);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -151,6 +144,17 @@ public class ExamineBuildingOutfitController {
         try {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY);
             return HttpResult.newCorrectResult(baseDataDic);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
+            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initRemoveExamineBuildingOutfit",method = {RequestMethod.POST},name = "楼栋外装初始化 (删除id==0的数据)")
+    public HttpResult initRemove() {
+        try {
+            return HttpResult.newCorrectResult(examineBuildingOutfitService.initRemove());
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
             return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));

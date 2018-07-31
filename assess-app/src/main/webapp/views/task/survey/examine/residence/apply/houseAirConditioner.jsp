@@ -92,7 +92,9 @@
                 });
                 $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/examineHouseEquipment/getExamineHouseEquipmentList", cols, {
-                    type: houseAirConditioner.prototype.config().type
+                    type: houseAirConditioner.prototype.config().type,
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,

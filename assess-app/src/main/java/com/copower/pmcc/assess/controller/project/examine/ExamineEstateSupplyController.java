@@ -36,17 +36,17 @@ public class ExamineEstateSupplyController {
     @Autowired
     private ExamineEstateSupplyService examineEstateSupplyService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Deprecated
-    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/estateSupplyGas" ;//供气
-//        String view = "/task/survey/examine/residence/apply/estateSupplyPower" ;//供电
-        String view = "/task/survey/examine/residence/apply/estateSupplyWater" ;//供水
-//        String view = "/task/survey/examine/residence/apply/estateSupplyHeating" ;//供热
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
+//
+//    @Deprecated
+//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
+//    public ModelAndView index() {
+////        String view = "/task/survey/examine/residence/apply/estateSupplyGas" ;//供气
+////        String view = "/task/survey/examine/residence/apply/estateSupplyPower" ;//供电
+//        String view = "/task/survey/examine/residence/apply/estateSupplyWater" ;//供水
+////        String view = "/task/survey/examine/residence/apply/estateSupplyHeating" ;//供热
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateSupplyById",method = {RequestMethod.GET},name = "获取供应信息")

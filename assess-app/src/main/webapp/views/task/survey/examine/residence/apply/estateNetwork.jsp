@@ -87,7 +87,8 @@
                 });
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkList", cols, {
-                    name: $("#queryName").val()
+                    declareId : $("#declareId").val(),
+                    examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
