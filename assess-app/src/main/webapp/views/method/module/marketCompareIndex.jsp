@@ -345,6 +345,11 @@
             })
         }
 
+        //数据校验
+        marketCompare.valid = function () {
+
+        }
+
         //保存
         marketCompare.save = function (callback) {
             //1.委估对象主要保存 结果价格
