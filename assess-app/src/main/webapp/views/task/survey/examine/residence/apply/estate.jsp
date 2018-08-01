@@ -27,7 +27,7 @@
             <label class="col-sm-1 control-label">街道<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="街道" required
-                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="name" class="form-control">
+                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
             </div>
         </div>
     </div>
@@ -95,7 +95,7 @@
             <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
             <div class="col-sm-11">
                 <textarea class="form-control" required="required" name="description" placeholder="楼盘概况">
-
+                    ${surveyExamineDataInfoVo.examineEstateVo.description}
                 </textarea>
             </div>
         </div>
@@ -177,9 +177,6 @@
     $(function () {
         ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
-        //两个方法 都可以假如选项卡载入时 初始化
-        estateFun.prototype.init();
-        estateFun.prototype.viewFiles();
     })
 </script>
 <script type="text/javascript">
@@ -188,12 +185,43 @@
 
     }
     estateFun.prototype = {
+        select2Init:function () {
+            estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.developerId}","developerId");
+            estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}","totalBuildingType");
+        },
+        select2InitMethodWrite:function (data,name) {
+            if (estateFun.prototype.select2IsNotNull(data)){
+                if (estateFun.prototype.select2IsNotNull(name)){
+                    $("#"+Estate.config().frm+" ."+name).val(data).trigger("change");
+                }
+            }else {
+                if (estateFun.prototype.select2IsNotNull(name)){
+                    $("#"+Estate.config().frm+" ."+name).val(null).trigger("change");
+                }
+            }
+        },
+        select2IsNotNull:function (data) {
+            if (data == null){
+                return false;
+            }
+            if (data == ''){
+                return false;
+            }
+            if (data == ""){
+                return false;
+            }
+            if (data == 0){
+                return false;
+            }
+            return true;
+        },
         init:function () {
             //主要是载入select2
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
                 type: "get",
                 dataType: "json",
+                async:false,
                 data: {type: "DataDeveloper"},
                 success: function (result) {
                     if (result.ret) {
@@ -221,6 +249,7 @@
                 url: "${pageContext.request.contextPath}/examineBuilding/estate_total_building_type",
                 type: "get",
                 dataType: "json",
+                async:false,
                 data: {type: null},
                 success: function (result) {
                     if (result.ret) {

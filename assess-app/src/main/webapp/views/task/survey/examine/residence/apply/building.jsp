@@ -341,8 +341,6 @@
 <script>
     $(function () {
         //两个方法 都可以假如选项卡载入时 初始化
-        examineBuilding_.prototype.viewInit();
-        examineBuilding_.prototype.uploadFiles();
     });
 </script>
 
