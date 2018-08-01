@@ -214,8 +214,8 @@
             defaults = $.extend({}, defaults, options);
             if ($.type(defaults.provinceTarget) === "string") {
                 defaults.provinceTarget = $("#" + defaults.provinceTarget);
-            }else{
-                defaults.provinceTarget=$(defaults.provinceTarget);
+            } else {
+                defaults.provinceTarget = $(defaults.provinceTarget);
             }
             if ($.type(defaults.cityTarget) === "string") {
                 defaults.cityTarget = $("#" + defaults.cityTarget);
@@ -237,9 +237,9 @@
                     //初始化设置默认选中项
                     if (!defaults.cityValue && isCityFirstChange && defaults.useDefaultText && defaults.cityDefaultText) {
                         defaults.cityTarget.select2('val', defaults.cityTarget.find("option:contains(" + defaults.cityDefaultText + ")").val()).trigger('change');
-                    }else{
-                        if(defaults.cityValue){
-                            defaults.cityTarget.select2('val',defaults.cityValue).trigger('change');
+                    } else {
+                        if (defaults.cityValue) {
+                            defaults.cityTarget.select2('val', defaults.cityValue).trigger('change');
                         }
                     }
                 });
@@ -260,8 +260,8 @@
                     //加载区县
                     AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
                         defaults.districtTarget.append(html);
-                        if(defaults.districtValue){
-                            defaults.districtTarget.select2('val',defaults.districtValue);
+                        if (defaults.districtValue) {
+                            defaults.districtTarget.select2('val', defaults.districtValue);
                         }
                     });
                 })
@@ -275,7 +275,7 @@
                 dataType: "json",
                 data: {},
                 success: function (result) {
-                    if (result.ret&&result.data) {
+                    if (result.ret && result.data) {
                         defaults.provinceTarget.append("<option value=''>-请选择-</option>");
                         $.each(result.data, function (i, item) {
                             defaults.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
@@ -300,8 +300,19 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
 
-
+        //设置checkbox为选中状态
+        checkboxToChecked: function (checkboxs, valueArray) {
+            if (!valueArray || valueArray.length <= 0) return;
+            $(checkboxs).each(function () {
+                var that = $(this);
+                $.each(valueArray, function (i, value) {
+                    if (value && that.val() == value) {
+                        that.prop('checked', true);
+                    }
+                })
+            })
         }
     };
 

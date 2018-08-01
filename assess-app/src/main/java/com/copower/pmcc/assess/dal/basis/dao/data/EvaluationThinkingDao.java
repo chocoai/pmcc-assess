@@ -3,8 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinkingExample;
 import com.copower.pmcc.assess.dal.basis.mapper.EvaluationThinkingMapper;
-import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,63 +19,38 @@ public class EvaluationThinkingDao {
     @Autowired
     private EvaluationThinkingMapper evaluationThinkingMapper;
 
-    public boolean add(EvaluationThinkingDto evaluationThinkingDto) {
-        return evaluationThinkingMapper.insertSelective(change(evaluationThinkingDto)) == 1;
+    public boolean addThinking(EvaluationThinking evaluationThinking) {
+        return evaluationThinkingMapper.insertSelective(evaluationThinking) == 1;
     }
 
-    public int save(EvaluationThinkingDto dto){
-        EvaluationThinking thinking = change(dto);
-        evaluationThinkingMapper.insertSelective(thinking);
-        return thinking.getId();
+
+    public boolean updateThinking(EvaluationThinking evaluationThinking) {
+        return evaluationThinkingMapper.updateByPrimaryKey(evaluationThinking) == 1;
     }
 
-    public boolean remove(Integer id){
-        return evaluationThinkingMapper.deleteByPrimaryKey(id)==1;
-    }
-
-    public EvaluationThinkingDto get(Integer id){
-        EvaluationThinking evaluationThinking = evaluationThinkingMapper.selectByPrimaryKey(id);
-        return change(evaluationThinking);
-    }
-
-    public boolean update(EvaluationThinkingDto evaluationThinkingDto){
-        return evaluationThinkingMapper.updateByPrimaryKey(change(evaluationThinkingDto))==1;
-    }
-
-    public List<EvaluationThinking> list(String name){
-        EvaluationThinkingExample evaluationThinkingExample = new EvaluationThinkingExample();
-        List<EvaluationThinking> evaluationThinkings = null;
-        if (name ==null || name ==""){
-            evaluationThinkingExample.createCriteria().andIdIsNotNull();
-            evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
-        }else {
-            evaluationThinkingExample.createCriteria().andNameLike("%"+ name +"%");
-            evaluationThinkings = evaluationThinkingMapper.selectByExample(evaluationThinkingExample);
-        }
-        return evaluationThinkings;
-    }
-
-    /**
-     * 根据评估方法获取匹配的评估思路
-     * @param method
-     * @return
-     */
-    public List<EvaluationThinking> getListByMethod(Integer method){
+    public List<EvaluationThinking> getThinkingList(String name) {
         EvaluationThinkingExample example = new EvaluationThinkingExample();
         EvaluationThinkingExample.Criteria criteria = example.createCriteria();
-        criteria.andMethodLike(String.format("%s,%s,%s","%",String.valueOf(method),"%"));
+        if(StringUtils.isNotBlank(name)){
+            criteria.andNameLike(String.format("%%%s%%",name));
+        }
         return evaluationThinkingMapper.selectByExample(example);
     }
 
-    public EvaluationThinking change(EvaluationThinkingDto evaluationThinkingDto) {
-        EvaluationThinking evaluationThinking = new EvaluationThinking();
-        BeanUtils.copyProperties(evaluationThinkingDto, evaluationThinking);
-        return evaluationThinking;
+    public List<EvaluationThinking> getThinkingListByMethod(String method) {
+        EvaluationThinkingExample example = new EvaluationThinkingExample();
+        EvaluationThinkingExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(method)){
+            criteria.andMethodLike(String.format("%%%s%%",method));
+        }
+        return evaluationThinkingMapper.selectByExample(example);
     }
 
-    public EvaluationThinkingDto change(EvaluationThinking evaluationThinking){
-        EvaluationThinkingDto evaluationThinkingDto = new EvaluationThinkingDto();
-        BeanUtils.copyProperties(evaluationThinking, evaluationThinkingDto);
-        return evaluationThinkingDto;
+    public boolean removeThinking(Integer id) {
+        return evaluationThinkingMapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    public EvaluationThinking getThinking(Integer id) {
+        return evaluationThinkingMapper.selectByPrimaryKey(id);
     }
 }

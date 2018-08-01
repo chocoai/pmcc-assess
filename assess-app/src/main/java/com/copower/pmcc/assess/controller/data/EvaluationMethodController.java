@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationMethod;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -12,14 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -32,73 +30,60 @@ public class EvaluationMethodController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Resource
-    private EvaluationMethodService service;
-
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private EvaluationMethodService evaluationMethodService;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationMethodView");
-        modelAndView.addObject("useList", baseDataDics);
+        modelAndView.addObject("methodDicList", methodDicList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String methodStr) {
-        BootstrapTableVo vo = null;
-        if (methodStr == null || methodStr == "") {//查询所有
-            vo = service.getVos(null);
-        } else {
-            vo = service.getVos(service.changeMethod(methodStr));//关键字查询
-        }
-        return vo;
+    public BootstrapTableVo list(String name) {
+        return evaluationMethodService.getMethodList(name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/get", name = "获取",method = {RequestMethod.GET})
-    public Object get(@RequestParam(value = "id") Integer id) {
-        EvaluationMethodDto evaluationMethodDto = null;
-        try {
-            evaluationMethodDto = service.get(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return evaluationMethodDto;
+    @RequestMapping(value = "/getMethodList", name = "根据评估方法获取数据列表", method = RequestMethod.GET)
+    public HttpResult getMethodList(Integer method) {
+        List<EvaluationMethod> hypothesisList = evaluationMethodService.getMethodListByMethod(method);
+        return HttpResult.newCorrectResult(hypothesisList);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getEvaluationMethodList", name = "获取评估方法模板数据by method",method = {RequestMethod.GET})
-    public HttpResult getEvaluationMethodList(@RequestParam(value = "method") Integer method) {
+    @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
+    public HttpResult get(@RequestParam(value = "id") Integer id) {
         try {
-            return HttpResult.newCorrectResult(service.getEvaluationMethodList(method));
+            return HttpResult.newCorrectResult(evaluationMethodService.getMethod(id));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationMethodDto evaluationMethodDto,String field,String Nofield) {
+    @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult save(EvaluationMethod evaluationMethod) {
         try {
-            if (!ObjectUtils.isEmpty(evaluationMethodDto)) service.saveAndUpdate(evaluationMethodDto,field,Nofield);
+            evaluationMethodService.saveAndUpdate(evaluationMethod);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete", name = "删除",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", name = "删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
-
+            evaluationMethodService.removeMethod(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

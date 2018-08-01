@@ -2,8 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationBasisVo;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasis;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationBasisService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -28,67 +27,55 @@ import java.util.List;
 @RequestMapping(value = "/evaluationBasis", name = "评估依据")
 @Controller
 public class EvaluationBasisController {
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private EvaluationBasisService service;
-
-    @Autowired
     private ProcessControllerComponent processControllerComponent;
-
-
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private EvaluationBasisService evaluationBasisService;
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        List<BaseDataDic> baseDataDicsA = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationBasisView");
-        modelAndView.addObject("useList", baseDataDics);
-        modelAndView.addObject("useListA", baseDataDicsA);
+        modelAndView.addObject("methodDicList", methodDicList);
+        modelAndView.addObject("purposeDicList", purposeDicList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String methodStr) {
-        BootstrapTableVo vo = null;
-        if (methodStr == null || methodStr == "") {//查询所有
-            vo = service.list(null);
-        } else {
-            vo = service.list(methodStr);//关键字查询
-        }
-        return vo;
+    public BootstrapTableVo list(String name) {
+        return evaluationBasisService.getBasisList(name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/lists", name = "get列表", method = RequestMethod.GET)
-    public Object lists() {
-        List<EvaluationBasisVo> vos = service.listNs(null);
-        return vos;
+    @RequestMapping(value = "/getBasisList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
+    public HttpResult getBasisList(Integer method, Integer purpose) {
+        List<EvaluationBasis> hypothesisList = evaluationBasisService.getBasisList(method, purpose);
+        return HttpResult.newCorrectResult(hypothesisList);
     }
 
     @ResponseBody
     @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
-    public Object get(@RequestParam(value = "id") Integer id) {
-        EvaluationBasisVo basisVo = null;
+    public HttpResult get(@RequestParam(value = "id") Integer id) {
         try {
-
+            return HttpResult.newCorrectResult(evaluationBasisService.getBasis(id));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return basisVo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "增加与修改")
-    public HttpResult add(EvaluationBasisDto evaluationbasisdto,String field) {
+    @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult save(EvaluationBasis evaluationBasis) {
         try {
-            service.saveAndUpdate(evaluationbasisdto,field);
+            evaluationBasisService.saveAndUpdate(evaluationBasis);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -98,7 +85,7 @@ public class EvaluationBasisController {
     @RequestMapping(value = "/delete", name = "删除", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
-            service.remove(id);
+            evaluationBasisService.removeBasis(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

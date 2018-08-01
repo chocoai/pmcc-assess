@@ -1,27 +1,28 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
-import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesis;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,91 +34,99 @@ public class EvaluationHypothesisService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-
+    @Autowired
+    private DataCommonService dataCommonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private EvaluationPrincipleService principleService;
-
-    @Autowired
     private EvaluationHypothesisDao evaluationHypothesisDao;
 
-    @Transactional
-    public boolean add(EvaluationHypothesisDto evaluationHypothesisDto){
-        if (evaluationHypothesisDto.getCreator()==null)evaluationHypothesisDto.setCreator(commonService.thisUserAccount());
-        if (evaluationHypothesisDto.getGmtCreated()==null)evaluationHypothesisDto.setGmtCreated(new Date());
-        return evaluationHypothesisDao.add(evaluationHypothesisDto);
-    }
-
-    @Transactional
-    public void saveAndUpdate(EvaluationHypothesisDto evaluationHypothesisDto, String field) {
-        if (!ObjectUtils.isEmpty(evaluationHypothesisDto.getId())) {//update
-            evaluationHypothesisDto.setCreator(evaluationHypothesisDao.get(evaluationHypothesisDto.getId()).getCreator());
-            evaluationHypothesisDao.update(evaluationHypothesisDto);
-
-
-        } else {// add
-            evaluationHypothesisDto.setCreator(commonService.thisUserAccount());
-            Integer id = null;
-            try {
-                id = evaluationHypothesisDao.save(evaluationHypothesisDto);
-            } catch (Exception e) {
-                try {
-                    logger.error("异常啦!"+e.getMessage());
-                    throw e;
-                }catch (Exception e1){
-
-                }
-            }
-
+    /**
+     * 保存数据
+     *
+     * @param evaluationHypothesis
+     */
+    public void saveAndUpdate(EvaluationHypothesis evaluationHypothesis) {
+        if (evaluationHypothesis.getId() != null && evaluationHypothesis.getId() > 0) {
+            evaluationHypothesisDao.updateHypothesis(evaluationHypothesis);
+        } else {
+            evaluationHypothesis.setCreator(commonService.thisUserAccount());
+            evaluationHypothesisDao.addHypothesis(evaluationHypothesis);
         }
     }
 
-    @Transactional
-    public boolean remove(Integer id){
-        return evaluationHypothesisDao.remove(id);
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     */
+    public boolean removeHypothesis(Integer id) {
+        return evaluationHypothesisDao.removeHypothesis(id);
     }
 
-    @Transactional
-    public boolean update(EvaluationHypothesisDto evaluationHypothesisDto){
-        if (evaluationHypothesisDto.getCreator()==null)evaluationHypothesisDto.setCreator(commonService.thisUserAccount());
-        if (evaluationHypothesisDto.getGmtCreated()==null)evaluationHypothesisDto.setGmtCreated(new Date());
-        return evaluationHypothesisDao.update(evaluationHypothesisDto);
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     */
+    public EvaluationHypothesis getHypothesis(Integer id) {
+        return evaluationHypothesisDao.getHypothesis(id);
     }
 
-    @Transactional(readOnly = true)
-    public EvaluationHypothesisDto get(Integer id){
-        return evaluationHypothesisDao.get(id);
-    }
 
-    @Transactional(readOnly = true)
-    public List<EvaluationHypothesisDto> listN(String name) {
-        return evaluationHypothesisDao.list(name);
-    }
-
-    public List<EvaluationHypothesisVo> listNs(String name){
-        List<EvaluationHypothesisDto> dtos = listN(name);
-        List<EvaluationHypothesisVo> vos = new ArrayList<>();
-        for (EvaluationHypothesisDto dto:dtos){
-
-        }
-        return vos;
-    }
-
-    public BootstrapTableVo list(String name) {
+    /**
+     * 获取数据列表
+     *
+     * @param name
+     * @return
+     */
+    public BootstrapTableVo getHypothesisList(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationHypothesisVo> vos = new ArrayList<>();
-        boolean flag = StringUtils.isEmpty(name);
-
+        List<EvaluationHypothesis> hypothesisList = evaluationHypothesisDao.getHypothesisList(name);
+        List<EvaluationHypothesisVo> vos = LangUtils.transform(hypothesisList, p -> getHypothesisVo(p));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
+    /**
+     * 根据委估目的及评估方法获取数据列表
+     *
+     * @param method
+     * @param purpose
+     * @return
+     */
+    public List<EvaluationHypothesis> getHypothesisList(Integer method, Integer purpose) {
+        String methodStr = new String();
+        String purposeStr = new String();
+        if (method != null && method > 0) {
+            methodStr = String.format(",%s,", method);
+        }
+        if (purpose != null && purpose > 0) {
+            purposeStr = String.format(",%s,", purpose);
+        }
+        return evaluationHypothesisDao.getHypothesisList(methodStr, purposeStr);
+    }
 
 
+    public EvaluationHypothesisVo getHypothesisVo(EvaluationHypothesis evaluationHypothesis) {
+        if (evaluationHypothesis == null) return null;
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
+        EvaluationHypothesisVo evaluationHypothesisVo = new EvaluationHypothesisVo();
+        BeanUtils.copyProperties(evaluationHypothesis, evaluationHypothesisVo);
+        if (StringUtils.isNotBlank(evaluationHypothesis.getMethod())) {
+            evaluationHypothesisVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationHypothesis.getMethod()));
+        }
+        if (StringUtils.isNotBlank(evaluationHypothesis.getEntrustmentPurpose())) {
+            evaluationHypothesisVo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationHypothesis.getEntrustmentPurpose()));
+        }
+        return evaluationHypothesisVo;
+    }
 
 
 }

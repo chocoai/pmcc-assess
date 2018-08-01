@@ -92,7 +92,7 @@
                                             委托目的<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10" id="entrustmentPurpose">
-                                            <c:forEach items="${useListA}" var="item">
+                                            <c:forEach items="${purposeDicList}" var="item">
                                                 <span class="checkbox-inline">
                                                 <input type="checkbox" id="entrustmentPurpose${item.id}" required name="entrustmentPurpose" value="${item.id}"
                                                        class="form-inline">
@@ -108,7 +108,7 @@
                                             评估方法<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10" id="method">
-                                            <c:forEach items="${useList}" var="item">
+                                            <c:forEach items="${methodDicList}" var="item">
                                                 <span class="checkbox-inline">
                                                 <input type="checkbox" id="method${item.id}" required name="method" value="${item.id}"
                                                        class="form-inline">
@@ -178,22 +178,21 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
-        cols.push({field: 'template', title: '模板'});
         cols.push({field: 'methodStr', title: '评估方法'});
-
+        cols.push({field: 'template', title: '模板',width:'50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHypothesis(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeHypothesis(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHypothesis(' + index+ ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeHypothesis(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        var methodStrChange = $("#queryName").val();
+        var name = $("#queryName").val();
         TableInit("tb_List", "${pageContext.request.contextPath}/evaluationHypothesis/list", cols, {
-            methodStr: methodStrChange
+            name: name
         }, {
             showColumns: false,
             showRefresh: false,
@@ -269,6 +268,8 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"),row.entrustmentPurpose.split(','));
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"),row.method.split(','));
         extractTemplateField();
         $('#divBox').modal();
     }

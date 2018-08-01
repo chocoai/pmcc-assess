@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesis;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesisExample;
 import com.copower.pmcc.assess.dal.basis.mapper.EvaluationHypothesisMapper;
-import com.copower.pmcc.assess.dto.input.data.EvaluationHypothesisDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,51 +21,42 @@ public class EvaluationHypothesisDao {
     @Autowired
     private EvaluationHypothesisMapper evaluationHypothesisMapper;
 
-    public boolean add(EvaluationHypothesisDto evaluationHypothesisDto) {
-        return evaluationHypothesisMapper.insert(change(evaluationHypothesisDto)) == 1;
+    public boolean addHypothesis(EvaluationHypothesis evaluationHypothesis) {
+        return evaluationHypothesisMapper.insertSelective(evaluationHypothesis) == 1;
     }
 
-    public int save(EvaluationHypothesisDto dto){
-        EvaluationHypothesis hypothesis = change(dto);
-        evaluationHypothesisMapper.insertSelective(hypothesis);
-        return hypothesis.getId();
+
+    public boolean updateHypothesis(EvaluationHypothesis evaluationHypothesis) {
+        return evaluationHypothesisMapper.updateByPrimaryKey(evaluationHypothesis) == 1;
     }
 
-    public boolean update(EvaluationHypothesisDto evaluationHypothesisDto) {
-        return evaluationHypothesisMapper.updateByPrimaryKey(change(evaluationHypothesisDto)) == 1;
-    }
-
-    public List<EvaluationHypothesisDto> list(String name) {
-        List<EvaluationHypothesisDto> evaluationHypothesisDtos = new ArrayList<>();
-        EvaluationHypothesisExample evaluationHypothesisExample = new EvaluationHypothesisExample();
-        String methodStr ="%"+ name + "%";
-        if (name == null || name=="") {
-            evaluationHypothesisExample.createCriteria().andIdIsNotNull();
-            evaluationHypothesisMapper.selectByExample(evaluationHypothesisExample).stream().parallel().forEach(evaluationHypothesis -> evaluationHypothesisDtos.add(change(evaluationHypothesis)));
-        }else {
-            evaluationHypothesisExample.createCriteria().andNameLike(methodStr);
-            evaluationHypothesisMapper.selectByExample(evaluationHypothesisExample).stream().parallel().forEach(evaluationHypothesis -> evaluationHypothesisDtos.add(change(evaluationHypothesis)));
+    public List<EvaluationHypothesis> getHypothesisList(String name) {
+        EvaluationHypothesisExample example = new EvaluationHypothesisExample();
+        EvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(name)){
+            criteria.andNameLike(String.format("%%%s%%",name));
         }
-        return evaluationHypothesisDtos;
+        return evaluationHypothesisMapper.selectByExample(example);
     }
 
-    public boolean remove(Integer id) {
+    public List<EvaluationHypothesis> getHypothesisList(String method,String purpose) {
+        EvaluationHypothesisExample example = new EvaluationHypothesisExample();
+        EvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(method)){
+            criteria.andMethodLike(String.format("%%%s%%",method));
+        }
+        if(StringUtils.isNotBlank(purpose)){
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",purpose));
+        }
+        return evaluationHypothesisMapper.selectByExample(example);
+    }
+
+    public boolean removeHypothesis(Integer id) {
         return evaluationHypothesisMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public EvaluationHypothesisDto get(Integer id) {
-        return change(evaluationHypothesisMapper.selectByPrimaryKey(id));
+    public EvaluationHypothesis getHypothesis(Integer id) {
+        return evaluationHypothesisMapper.selectByPrimaryKey(id);
     }
 
-    private EvaluationHypothesis change(EvaluationHypothesisDto evaluationHypothesisDto) {
-        EvaluationHypothesis evaluationHypothesis = new EvaluationHypothesis();
-        BeanUtils.copyProperties(evaluationHypothesisDto, evaluationHypothesis);
-        return evaluationHypothesis;
-    }
-
-    private EvaluationHypothesisDto change(EvaluationHypothesis evaluationHypothesis) {
-        EvaluationHypothesisDto evaluationHypothesisDto = new EvaluationHypothesisDto();
-        BeanUtils.copyProperties(evaluationHypothesis, evaluationHypothesisDto);
-        return evaluationHypothesisDto;
-    }
 }
