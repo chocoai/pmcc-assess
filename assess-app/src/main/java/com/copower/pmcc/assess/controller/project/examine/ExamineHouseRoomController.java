@@ -65,13 +65,13 @@ public class ExamineHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseRoomList",method = {RequestMethod.GET},name = "获取房间列表 (父类)")
-    public BootstrapTableVo getExamineHouseRoomList(Integer examineType) {
+    public BootstrapTableVo getExamineHouseRoomList(ExamineHouseRoom examineHouseRoom) {
         BootstrapTableVo vo = null;
         try {
-            ExamineHouseRoom examineHouseRoom = new ExamineHouseRoom();
-            if (!ObjectUtils.isEmpty(examineType)){
-                examineHouseRoom.setExamineType(examineType);
-            }
+//            ExamineHouseRoom examineHouseRoom = new ExamineHouseRoom();
+//            if (!ObjectUtils.isEmpty(examineType)){
+//                examineHouseRoom.setExamineType(examineType);
+//            }
             vo = examineHouseRoomService.getExamineHouseRoomLists(examineHouseRoom);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

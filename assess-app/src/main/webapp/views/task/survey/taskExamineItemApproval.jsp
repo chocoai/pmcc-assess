@@ -16,6 +16,8 @@
 
 
             <!--填写表单-->
+            <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
+            <input type="hidden" id="examineType" name="examineType" value="${examineType}">
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
