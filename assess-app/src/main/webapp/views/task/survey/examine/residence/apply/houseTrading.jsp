@@ -111,8 +111,6 @@
 
 <script type="text/javascript">
     $(function () {
-        examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
-        examineHouseTrading.prototype.select2Init();
 
         examineHouseTrading.prototype.init2();
         ContainerFunForValid.push(ExamineHouseTrading.valid);//数据验证方法写入容器

@@ -123,19 +123,48 @@
     $(function () {
         ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
-        estateLandState.prototype.init();
     })
 </script>
 <script type="text/javascript">
     function estateLandState() {
 
     }
-
+    estateLandState.prototype.select2Init = function () {
+        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");
+        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");
+    };
+    estateLandState.prototype.select2InitMethodWrite = function (data,name) {
+        if (estateLandState.prototype.select2IsNotNull(data)){
+            if (estateLandState.prototype.select2IsNotNull(name)){
+                $("#"+EstateLandState.config().frm+" ."+name).val(data).trigger("change");
+            }
+        }else {
+            if (estateLandState.prototype.select2IsNotNull(name)){
+                $("#"+EstateLandState.config().frm+" ."+name).val(null).trigger("change");
+            }
+        }
+    };
+    estateLandState.prototype.select2IsNotNull = function (data) {
+        if (data == null){
+            return false;
+        }
+        if (data == ''){
+            return false;
+        }
+        if (data == ""){
+            return false;
+        }
+        if (data == 0){
+            return false;
+        }
+        return true;
+    };
     estateLandState.prototype.init = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_use",
             type: "get",
             dataType: "json",
+            async:false,
             data: {type: "DataDeveloper"},
             success: function (result) {
                 if (result.ret) {
@@ -162,6 +191,7 @@
             url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_level",
             type: "get",
             dataType: "json",
+            async:false,
             data: {type: "DataDeveloper"},
             success: function (result) {
                 if (result.ret) {

@@ -115,10 +115,6 @@
 </form>
 <script>
     $(function () {
-        //三个方法 都可以假如选项卡载入时 初始化
-        houseFun.prototype.files();
-        houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
-        houseFun.prototype.select2Init();//处理select2赋值
 
         houseFun.prototype.init2();
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器

@@ -138,7 +138,39 @@
 <script type="text/javascript">
     var ContainerFunForValid = [];//数据验证方法容器
     var ContainerFunForGetData = [];//获取数据方法容器
-
+    var ContainerFunInit  = function () {
+        
+    }
+    //用作 选项框的初始化
+    ContainerFunInit.prototype = {
+        estate:function () {
+            estateFun.prototype.init();
+            estateFun.prototype.select2Init();//必须在init之后
+            estateFun.prototype.viewFiles();
+        },
+        building:function () {
+            examineBuilding_.prototype.viewInit();
+            examineBuilding_.prototype.uploadFiles();
+        },
+        estateLandState:function () {
+            estateLandState.prototype.init();
+            estateLandState.prototype.select2Init();//必须在init之后
+        },
+        houseTrading:function () {
+            examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
+            examineHouseTrading.prototype.select2Init();//必须在init之后
+        },
+        house:function () {
+            houseFun.prototype.files();
+            houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
+            houseFun.prototype.select2Init();//处理select2赋值 必须在init之后
+        }
+    }
+    ContainerFunInit.prototype.estate();
+    ContainerFunInit.prototype.building();
+    ContainerFunInit.prototype.estateLandState();
+    ContainerFunInit.prototype.houseTrading();
+    ContainerFunInit.prototype.house();
     var taskExamineItemIndex = {
         //选择第一个tab
         selectFirstTab: function () {
