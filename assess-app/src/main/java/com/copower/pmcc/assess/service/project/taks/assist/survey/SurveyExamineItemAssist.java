@@ -104,7 +104,9 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
 
     @Override
     public void saveDraft(ProjectPlanDetails projectPlanDetails, String formData) throws BusinessException {
+        if (!org.springframework.util.StringUtils.isEmpty(formData)){
 
+        }
     }
 
     @Override
@@ -129,16 +131,22 @@ public class SurveyExamineItemAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
+        if (!org.springframework.util.StringUtils.isEmpty(formData)){
 
+        }
     }
 
     @Override
     public void approvalCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        if (!org.springframework.util.StringUtils.isEmpty(formData)){
 
+        }
     }
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        if (!org.springframework.util.StringUtils.isEmpty(formData)){
 
+        }
     }
 }

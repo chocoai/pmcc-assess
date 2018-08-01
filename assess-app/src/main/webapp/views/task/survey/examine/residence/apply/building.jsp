@@ -59,7 +59,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="户型区间" name="unitInterval"
-                           class="form-control" required="required">
+                           class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -90,7 +90,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼层起(数字)" name="floorStart"
-                           data-rule-number='true' class="form-control" required="required">
+                           data-rule-number='true' class="form-control">
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼层止(数字)" name="floorEnd"
-                           data-rule-number='true' class="form-control" required="required">
+                           data-rule-number='true' class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -111,7 +111,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="总层数(数字)" data-rule-number='true'
-                           name="floorCount" class="form-control" required="required">
+                           name="floorCount" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -141,7 +141,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="占地面积(数字)" data-rule-number='true'
-                           name="coverAnArea" class="form-control" required="required">
+                           name="coverAnArea" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -150,7 +150,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="层高(数字)" data-rule-number='true'
-                           name="floorHeight" class="form-control" required="required">
+                           name="floorHeight" class="form-control">
                 </div>
             </div>
         </div>
@@ -162,7 +162,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="径深(数字)" data-rule-number='true'
-                           name="diameterDepth" class="form-control" required="required">
+                           name="diameterDepth" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -180,7 +180,7 @@
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="净高(数字)" data-rule-number='true'
-                           name="netHeight" class="form-control" required="required">
+                           name="netHeight" class="form-control">
                 </div>
             </div>
         </div>
@@ -200,7 +200,7 @@
                     开盘时间
                 </label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="开盘时间"
+                    <input placeholder="开盘时间"
                            name="openTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate openTime">
                 </div>
@@ -210,7 +210,7 @@
                     交房时间
                 </label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="交房时间"
+                    <input placeholder="交房时间"
                            name="roomTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate roomTime">
                 </div>
@@ -223,7 +223,7 @@
                     物业类型
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="propertyType"
+                    <select name="propertyType"
                             class="form-control search-select select2 propertyType">
                     </select>
                 </div>
@@ -233,7 +233,7 @@
                     建筑结构上级
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="buildingStructure"
+                    <select name="buildingStructure"
                             class="form-control search-select select2 buildingStructure">
                     </select>
                 </div>
@@ -243,7 +243,7 @@
                     建筑结构(下级)
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" id="frmExamineBuilding_buildingStructure"
+                    <select id="frmExamineBuilding_buildingStructure"
                             name="buildingstructurepid"
                             class="form-control search-select select2 buildingstructurepid">
                         <option>请先选择建筑结构上级</option>
@@ -258,7 +258,7 @@
                     楼栋基础 建筑类别
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="buildingCategory"
+                    <select name="buildingCategory"
                             class="form-control search-select select2 buildingCategory">
                     </select>
                 </div>
@@ -268,7 +268,7 @@
                     楼栋基础 建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="builderId"
+                    <select name="builderId"
                             class="form-control search-select select2 builderId">
                     </select>
                 </div>
@@ -278,7 +278,7 @@
                     楼栋基础 物业公司
                 </label>
                 <div class="col-sm-3">
-                    <select required="required" name="propertyId"
+                    <select name="propertyId"
                             class="form-control search-select select2 propertyId">
                     </select>
                 </div>
@@ -1070,7 +1070,6 @@
 
             },
             uploadFiles:function () {
-                console.log("tableId:"+examineBuilding_.prototype.getBuildId());
                 FileUtils.uploadFiles({
                     target: examineBuilding_.prototype.config().building_floor_plan,
                     disabledTarget: "btn_submit",
