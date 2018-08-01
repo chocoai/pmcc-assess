@@ -374,7 +374,7 @@
 
 
     $(function () {
-        estate.init();
+        // estate.init();
     });
 </script>
 

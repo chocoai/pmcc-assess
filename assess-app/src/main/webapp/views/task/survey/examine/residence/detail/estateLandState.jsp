@@ -216,6 +216,6 @@
     };
 
     $(function () {
-        estateLandState.init();
+        // estateLandState.init();
     });
 </script>

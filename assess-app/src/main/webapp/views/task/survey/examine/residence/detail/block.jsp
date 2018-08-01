@@ -103,6 +103,6 @@
     };
 
     $(function () {
-        block.init();
+        // block.init();
     });
 </script>

@@ -125,6 +125,38 @@
         }
 
     };
+    var ContainerFunInit = function () {
+
+    };
+    //用作 选项框的初始化
+    ContainerFunInit.prototype = {
+        estate:function () {
+            estate.init();
+        },
+        building:function () {
+            building.init();
+            //默认显示第一栋
+            building.firstData(null);
+        },
+        estateLandState:function () {
+            estateLandState.init();
+        },
+        houseTrading:function () {
+            houseTrading.init();
+        },
+        house:function () {
+            house.init();
+        },
+        block:function () {
+            block.init();
+        }
+    }
+    ContainerFunInit.prototype.estate();
+    ContainerFunInit.prototype.building();
+    ContainerFunInit.prototype.estateLandState();
+    ContainerFunInit.prototype.houseTrading();
+    ContainerFunInit.prototype.house();
+    ContainerFunInit.prototype.block();
 
     function saveform() {
         if (!$("#frm_approval").valid()) {

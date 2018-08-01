@@ -338,7 +338,7 @@
     };
 
     $(function () {
-        house.init();
+        // house.init();
         house.select2ChangeEvent();
     });
 </script>
