@@ -44,4 +44,10 @@ public class AssessDataDicKeyConstant {
      * 房产查勘案例
      */
 
+    /**
+     * 评估方法
+     */
+    public static final String MD_MARKET_COMPARE = "md.market.compare"; //市场比较法
+    public static final String MD_INCOME = "md.income"; //收益法
+
 }

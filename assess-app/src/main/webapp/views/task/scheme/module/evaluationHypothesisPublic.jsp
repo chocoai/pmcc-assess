@@ -38,8 +38,12 @@
     var hypothesis = {};
     hypothesis.start = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationHypothesis/lists",
+            url: "${pageContext.request.contextPath}/evaluationHypothesis/getHypothesisList",
             type: "GET",
+            data: {
+                method: '<%=request.getParameter("method")%>',
+                purpose: '<%=request.getParameter("purpose")%>'
+            },
             dataType: "json",
             success: function (result) {
                 hypothesis.writeList(result);

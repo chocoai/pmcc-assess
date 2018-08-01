@@ -14,9 +14,18 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-            <%@include file="/views/share/project/evaluationPrinciplePublic.jsp" %>
-            <%@include file="/views/share/project/evaluationHypothesisPublic.jsp" %>
-            <%@include file="/views/share/project/evaluationBasisPublic.jsp" %>
+            <jsp:include page="/views/task/scheme/module/evaluationPrinciplePublic.jsp">
+                <jsp:param name="method" value="${method}"></jsp:param>
+                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
+            </jsp:include>
+            <jsp:include page="/views/task/scheme/module/evaluationHypothesisPublic.jsp">
+                <jsp:param name="method" value="${method}"></jsp:param>
+                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
+            </jsp:include>
+            <jsp:include page="/views/task/scheme/module/evaluationBasisPublic.jsp">
+                <jsp:param name="method" value="${method}"></jsp:param>
+                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
+            </jsp:include>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
 
             <div class="x_panel">
@@ -24,7 +33,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
+                    <h2>${projectPlanDetails.projectPhaseName}成果提交${projectInfo.entrustPurpose}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

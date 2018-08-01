@@ -90,10 +90,10 @@
                                             评估方法<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10" id="method">
-                                            <c:forEach items="${useList}" var="item">
+                                            <c:forEach items="${methodDicList}" var="item">
                                                     <span class="checkbox-inline">
-                                                    <input type="checkbox" name="method"
-                                                           value="${item.id}"><label>${item.name}</label>
+                                                    <input type="checkbox" id="method${item.id}" name="method" value="${item.id}">
+                                                        <label for="method${item.id}">${item.name}</label>
                                                     </span>
                                             </c:forEach>
                                         </div>

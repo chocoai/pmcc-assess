@@ -37,8 +37,12 @@
     var basis = {};
     basis.start = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationBasis/lists",
+            url: "${pageContext.request.contextPath}/evaluationBasis/getBasisList",
             type: "GET",
+            data: {
+                method: '<%=request.getParameter("method")%>',
+                purpose: '<%=request.getParameter("purpose")%>'
+            },
             dataType: "json",
             success: function (result) {
                 basis.writeList(result);

@@ -1,11 +1,10 @@
 package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.TaskCompareService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -33,6 +32,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private TaskCompareService taskCompareService;
     @Autowired
     private MdMarketCompareService mdMarketCompareService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     @Override
@@ -73,6 +74,9 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ModelAndView modelAndView) {
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        modelAndView.addObject("method", baseDataDic.getId());
+        modelAndView.addObject("entrustPurpose","123");
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(201);
         List<MdMarketCompareField> fieldList = mdMarketCompareService.getFieldListByMcId(marketCompare.getId());
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationListByMcId(marketCompare.getId());

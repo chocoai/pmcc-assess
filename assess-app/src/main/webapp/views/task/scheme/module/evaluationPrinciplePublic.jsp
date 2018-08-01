@@ -36,13 +36,21 @@
     var principleFun = {};
     principleFun.start = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/evaluationPrinciple/lists",
+            url: "${pageContext.request.contextPath}/evaluationPrinciple/getPrincipleList",
             type: "GET",
+            data: {
+                method: '<%=request.getParameter("method")%>',
+                purpose: '<%=request.getParameter("purpose")%>'
+            },
             dataType: "json",
             success: function (result) {
-                principleFun.writeList(result);
+                if(result.ret){
+                    principleFun.writeList(result.data);
+                }
+
             },
             error: function (result) {
+                console.log(result);
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
@@ -56,7 +64,14 @@
 
     //模板内容替换
     principleFun.fieldReplace = function (_this) {
-
+        var well = $(_this).closest(".well");
+        var template = well.find('[name="template"]').val();
+        well.find('.content-field').find('input:text').each(function () {
+            if ($(this).val()) {
+                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
+            }
+        })
+        well.find('[name="content"]').val(template);
     };
     principleFun.writeList = function (result) {
         var len = result.length;
@@ -69,8 +84,7 @@
             html += result[i].name;
             html += "</label>";
             html += "<div class='col-sm-11'>";
-            html += "<input type='hidden' name='dataID'" + "value=" + result[i].id + ">";
-            html += "<input type='hidden' value='" + result[i].template + "'id='templatePrincipleV" + result[i].id + "'>";
+            html += "<input type='hidden' value='" + result[i].template + "'name='template'>";
             html += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'" + "id=templatePrinciple" + result[i].id + ">";
             html += result[i].template;
             html += "</textarea>";
@@ -78,20 +92,21 @@
             html += "</div>";
             html += "</div>";
             /*-------------分割一下----------------*/
-            html += "<div class='content-field'" + "id=principleField" + result[i].id + ">";
+            html += "<div class='content-field'>";
             html += "</div>";
             html += '</div>';
             content.append(html);
         }
         principleFun.writeField(result);
     };
+
     principleFun.writeField = function (result) {
         var len = result.length;
         for (var i = 0; i < len; i++) {
             var template = $("#templatePrinciple" + result[i].id);
             var fieldArray = AssessCommon.extractField(template.val());
             var field = $("#principleField" + result[i].id);
-            if (fieldArray&&fieldArray.length > 0) {
+            if (fieldArray && fieldArray.length > 0) {
                 var resultHtml = "<div class='form-group'>";
                 for (var j = 0; j < fieldArray.length; j++) {
                     if (j > 0 && j % 3 == 0) {
@@ -104,8 +119,6 @@
                 resultHtml += "</div>";
                 field.append(resultHtml);
             }
-
-
         }
     };
     principleFun.start();

@@ -93,7 +93,7 @@
                                         <div class="col-sm-10">
                                             <select id="method" name="method" class="form-control" required="required">
                                                 <option selected="selected" value="0">请选择</option>
-                                                <c:forEach items="${useList}" var="item">
+                                                <c:forEach items="${methodDicList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
