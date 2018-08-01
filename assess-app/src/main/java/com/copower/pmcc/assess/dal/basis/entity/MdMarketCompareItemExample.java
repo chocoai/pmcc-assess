@@ -646,52 +646,62 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightEqualTo(BigDecimal value) {
+        public Criteria andWeightEqualTo(String value) {
             addCriterion("weight =", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotEqualTo(BigDecimal value) {
+        public Criteria andWeightNotEqualTo(String value) {
             addCriterion("weight <>", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThan(BigDecimal value) {
+        public Criteria andWeightGreaterThan(String value) {
             addCriterion("weight >", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andWeightGreaterThanOrEqualTo(String value) {
             addCriterion("weight >=", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThan(BigDecimal value) {
+        public Criteria andWeightLessThan(String value) {
             addCriterion("weight <", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andWeightLessThanOrEqualTo(String value) {
             addCriterion("weight <=", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightIn(List<BigDecimal> values) {
+        public Criteria andWeightLike(String value) {
+            addCriterion("weight like", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightNotLike(String value) {
+            addCriterion("weight not like", value, "weight");
+            return (Criteria) this;
+        }
+
+        public Criteria andWeightIn(List<String> values) {
             addCriterion("weight in", values, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotIn(List<BigDecimal> values) {
+        public Criteria andWeightNotIn(List<String> values) {
             addCriterion("weight not in", values, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andWeightBetween(String value1, String value2) {
             addCriterion("weight between", value1, value2, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andWeightNotBetween(String value1, String value2) {
             addCriterion("weight not between", value1, value2, "weight");
             return (Criteria) this;
         }

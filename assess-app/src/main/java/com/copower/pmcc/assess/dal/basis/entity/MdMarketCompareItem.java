@@ -20,7 +20,7 @@ public class MdMarketCompareItem {
 
     private String caseDifference;
 
-    private BigDecimal weight;
+    private String weight;
 
     private String weightDescription;
 
@@ -96,12 +96,12 @@ public class MdMarketCompareItem {
         this.caseDifference = caseDifference == null ? null : caseDifference.trim();
     }
 
-    public BigDecimal getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setWeight(String weight) {
+        this.weight = weight == null ? null : weight.trim();
     }
 
     public String getWeightDescription() {

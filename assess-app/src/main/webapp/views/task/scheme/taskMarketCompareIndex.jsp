@@ -14,7 +14,9 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
-
+            <%@include file="/views/share/project/evaluationPrinciplePublic.jsp" %>
+            <%@include file="/views/share/project/evaluationHypothesisPublic.jsp" %>
+            <%@include file="/views/share/project/evaluationBasisPublic.jsp" %>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
 
             <div class="x_panel">

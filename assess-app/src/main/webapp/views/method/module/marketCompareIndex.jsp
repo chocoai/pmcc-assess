@@ -38,9 +38,9 @@
 <script type="text/javascript">
     (function ($) {
 
-        //四舍五入取小数
+        //取小数
         function iTofixed(num, fractionDigits) {
-            return (Math.round(num * Math.pow(10, fractionDigits)) / Math.pow(10, fractionDigits) + Math.pow(10, -(fractionDigits + 1))).toString().slice(0, -1);
+            return num.toFixed(fractionDigits);
         };
 
         //对象不存在则返回空串
@@ -112,17 +112,19 @@
 
             $(".p_weight").find('a').editable({
                 validate: function (value) { //字段验证
-                    if (!$.trim(value)) {
-                        return '不能为空';
+                    if (value && !/^(0.\d{1,2})$/.test(value)) {
+                        return '权重只能在0至1之间的小数，小数位数最多两位';
                     }
+                },
+                url: function (params) {
+                    $(this).editable('setValue', params.value);//先将新值设置给元素
+                    marketCompare.calculation();
                 }
             });
 
             $(".p_weightDesc").find('a').editable({
                 validate: function (value) { //字段验证
-                    if (!$.trim(value)) {
-                        return '不能为空';
-                    }
+
                 }
             });
         }
@@ -187,11 +189,10 @@
                 var evaluationItem = getItemByName(JSON.parse(defaluts.evaluation.jsonContent), item.name);
                 evaluationItem = evaluationItem == undefined ? {} : evaluationItem;
                 if (item.bisOnlyView) {//只用于显示的字段
-                    var trHtml = '<tr';
+                    var trHtml = '<tr data-group="' + item.name + '" data-name="text"';
                     item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
                     item.bisPrice == true ? trHtml += ' data-bisPrice="true" ' : '';
                     trHtml += '>'
-                    var trHtml = item.bisPrice == true ? '<tr data-bisPrice="true">' : '<tr>';
                     trHtml += ' <td>' + toString(item.value) + '</td>';
                     if (evaluationItem) {
                         trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
@@ -219,7 +220,7 @@
                             var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
                             caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.value)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
                             caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.value)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
-                            caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + caseItem.ratio + '</td>';
+                            caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
                         }
                     }
                     rowHtml = rowHtml.replace(/{caseText}/g, toString(caseText)).replace(/{caseScore}/g, toString(caseScore)).replace(/{caseRatio}/g, toString(caseRatio));
@@ -289,6 +290,10 @@
                 correctionDifferenceTd.removeClass('red').text(correctionDifference + "%");
                 if (correctionDifference > 30) {
                     correctionDifferenceTd.text(correctionDifferenceTd.text() + " 请调整案例").addClass('red');
+                    marketCompare.isPass = false;
+                } else {
+                    correctionDifferenceTd.text(correctionDifferenceTd.text()).removeClass('red');
+                    marketCompare.isPass = true;
                 }
             })
 
@@ -308,6 +313,8 @@
             $("#resultMsg").text('');
             if ((maxSpecificPrice - minSpecificPrice) / minSpecificPrice > 0.2) {
                 $("#resultMsg").text('案例或修正指数修改错误');
+            } else {
+                $("#resultMsg").text('');
             }
 
             //案例差异=（当前案例比准价-所有案例比准价中最小值）/所有案例比准价中最小值
@@ -319,15 +326,36 @@
                 caseDifferenceTd.text(caseDifference + "%");
             })
 
-            //计算平均价
-            var totalPrice = 0;//总价
+            //权重填写完整后则计算权重价，否则使用平均价
+            var isWeightFinish = true;
+            var averagePrice = 0;//平均价
             $.each(caseItemIdArray, function (i, item) {
-                currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
-                currSpecificPrice = parseFloat(currSpecificPrice);
-                totalPrice += currSpecificPrice;
+                var weightText = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text()
+                if (!weightText || weightText == '空') {
+                    isWeightFinish = false;
+                    return false;
+                }
             })
-            var averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
+            if (isWeightFinish) {
+                $.each(caseItemIdArray, function (i, item) {
+                    currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                    currSpecificPrice = parseFloat(currSpecificPrice);
+                    var weight = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text();
+                    weight = parseFloat(weight);
+                    averagePrice += currSpecificPrice * weight;
+                })
 
+            } else {
+                //计算平均价
+                var totalPrice = 0;//总价
+                $.each(caseItemIdArray, function (i, item) {
+                    currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
+                    currSpecificPrice = parseFloat(currSpecificPrice);
+                    //
+                    totalPrice += currSpecificPrice;
+                })
+                averagePrice = iTofixed(totalPrice / caseItemIdArray.length, 2);
+            }
             table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text(averagePrice);
         }
 
@@ -347,6 +375,11 @@
 
         //数据校验
         marketCompare.valid = function () {
+            //1.校验平均价是否计算出
+            //2.校验是否必须填写权重信息
+            //3.校验权重是否填写完整并且和是否为1
+            //4.校验权重对应的权重描述是否填写
+
 
         }
 
@@ -354,6 +387,11 @@
         marketCompare.save = function (callback) {
             //1.委估对象主要保存 结果价格
             //2.获取到各个案例的数据
+            if (!marketCompare.isPass) {
+                toastr.error('案例错误请检查案例');
+                return false;
+            }
+
             var evaluationItemId;
             var caseItemIdArray = [];
             var table = $("#tb_md_mc_item_list");
@@ -365,17 +403,38 @@
                     caseItemIdArray.push($(this).attr('data-item-id'));
                 }
             })
-            //数据验证
+            var averagePrice = table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
 
             var data = {
                 id: $("#marketCompareId").val(),
                 evaluationItem: {},
                 caseItemList: []
             };
-
-            var averagePrice = table.find('tr[data-name="averagePrice"]').find('td[data-item-id=' + evaluationItemId + ']').text();
+            data.evaluationItem.jsonContent = [];
             data.evaluationItem.id = evaluationItemId;
             data.evaluationItem.averagePrice = averagePrice;
+            $.each(marketCompare.fields, function (j, field) {
+                var fieldContent = {};
+                fieldContent.name = field.name;
+                fieldContent.score = 100;
+                fieldContent.ratio = 1;
+
+                var trs = table.find('tr[data-group="' + field.name + '"]');
+                if (trs.length > 0) {
+                    trs.each(function () {
+                        if ($(this).attr('data-name') == 'text') {
+                            var td = fieldContent.value = $(this).find('td[data-item-id=' + evaluationItemId + ']');
+                            if (td.find('a').length > 0) {
+                                fieldContent.value = td.find('a').text();
+                            }
+                            else {
+                                fieldContent.value = td.text();
+                            }
+                        }
+                    })
+                }
+                data.evaluationItem.jsonContent.push(fieldContent);
+            })
 
             $.each(caseItemIdArray, function (i, item) {
                 var caseItem = {};
@@ -383,7 +442,6 @@
                 $.each(marketCompare.fields, function (j, field) {
                     var fieldContent = {};
                     fieldContent.name = field.name;
-                    fieldContent.value = field.value;
                     fieldContent.score = 100;
                     fieldContent.ratio = 1;
 
@@ -391,13 +449,19 @@
                     if (trs.length > 0) {
                         trs.each(function () {
                             if ($(this).attr('data-name') == 'text') {
-                                fieldContent.value = $(this).find('td[data-item-id=' + item + ']').find('a').text();
+                                var td = fieldContent.value = $(this).find('td[data-item-id=' + item + ']');
+                                if (td.find('a').length > 0) {
+                                    fieldContent.value = td.find('a').text();
+                                }
+                                else {
+                                    fieldContent.value = td.text();
+                                }
                             }
                             if ($(this).attr('data-name') == 'score') {
                                 fieldContent.score = $(this).find('td[data-item-id=' + item + ']').find('a').text();
                             }
                             if ($(this).attr('data-name') == 'ratio') {
-                                fieldContent.ratio = $(this).find('td[data-item-id=' + item + ']').find('a').text();
+                                fieldContent.ratio = $(this).find('td[data-item-id=' + item + ']').text();
                             }
                         })
                     }
@@ -409,8 +473,65 @@
                 caseItem.caseDifference = table.find('tr[data-name="caseDifference"]').find('td[data-item-id=' + item + ']').text();
                 caseItem.weight = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text();
                 caseItem.weightDescription = table.find('tr[data-name="weightDescription"]').find('td[data-item-id=' + item + ']').find('a').text();
+                if (caseItem.weight == '空') {
+                    caseItem.weight = '';
+                }
+                if (caseItem.weightDescription == '空') {
+                    caseItem.weightDescription = '';
+                }
                 data.caseItemList.push(caseItem);
             })
+
+            //数据验证
+            //1.校验平均价是否计算出
+            //2.校验是否必须填写权重信息
+            //3.校验权重是否填写完整并且和是否为1
+            //4.校验权重对应的权重描述是否填写
+            if (!averagePrice) {
+                toastr.error('【平均价】还未计算出');
+                return false;
+            }
+
+            var isWeightValid = false;//是否验证权重相关信息
+            $.each(data.caseItemList, function (k, caseItem) {
+                var caseDifference = parseFloat(caseItem.caseDifference.replace('%', ''));
+                if (caseDifference >= 30) {
+                    isWeightValid = true;
+                    return false;
+                }
+            })
+            if (isWeightValid) {
+                var isWeightEmpty = false;
+                $.each(data.caseItemList, function (k, caseItem) {
+                    if (caseItem.weight == undefined || caseItem.weight == '' || caseItem.weightDescription == '空') {
+                        isWeightEmpty = true;
+                        return false;
+                    }
+                })
+                if (isWeightEmpty) {
+                    toastr.error('【权重】必须填写');
+                    return false;
+                }
+
+                var weightTotal = 0;
+                var isWeightDescEmpty = false;
+                $.each(data.caseItemList, function (k, caseItem) {
+                    var weight = parseFloat(caseItem.weight);
+                    weightTotal += weight;
+                    if (caseItem.weightDescription == undefined || caseItem.weightDescription == '' || caseItem.weightDescription == '空') {
+                        isWeightDescEmpty = true;
+                    }
+                })
+                if (weightTotal != 1) {
+                    toastr.error('权重和必须为1');
+                    return false;
+                }
+
+                if (isWeightDescEmpty) {
+                    toastr.error('【权重描述】必须填写');
+                    return false;
+                }
+            }
 
             $.ajax({
                 url: '${pageContext.request.contextPath}/marketCompare/saveResult',

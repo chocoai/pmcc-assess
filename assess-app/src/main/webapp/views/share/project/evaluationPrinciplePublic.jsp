@@ -9,9 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
         <h2>评估原则</h2>
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
@@ -31,7 +28,7 @@
             {name}
         </label>
         <div class="col-sm-3">
-            <input type="text" class="form-control" data-name="{name}" data-value="{id}" onkeyup="{functionName}(this);">
+            <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
         </div>
     </div>
 </script>
@@ -56,56 +53,35 @@
         arr[1] = "templatePrincipleV";
         return arr;
     };
-    principleFun.fieldReplace = function (dd) {
-        var arr = principleFun.data();
-        var name = $(dd).attr("data-name");
-        var id = $(dd).attr("data-value");
-        var template = $("#" + arr[1] + id).val();
-        var regex = '/\{' + name + '\}/g';
-        if (template != '') {
-            var template = template.replace(eval(regex), $(dd).val());
-            $("#" + arr[0] + id).val(template);
-        }
+
+    //模板内容替换
+    principleFun.fieldReplace = function (_this) {
+
     };
     principleFun.writeList = function (result) {
         var len = result.length;
         var content = $("#principleContent");
         for (var i = 0; i < len; i++) {
-            var groupA = "<div class='form-group'>";
-            groupA += "<div class='x-valid'>";
-
-            groupA += "<label class='col-sm-1 control-label'>";
-            groupA += "原则名称";
-            groupA += "</label>";
-            groupA += "<div class='col-sm-11 control-label'>";
-            groupA += result[i].name;
-            groupA += "</div>";
-
-            groupA += "</div>";
-            groupA += "</div>";
+            var html = '<div class="well">'
+            html += "<div class='form-group'>";
+            html += "<div class='x-valid'>";
+            html += "<label class='col-sm-1 control-label'>";
+            html += result[i].name;
+            html += "</label>";
+            html += "<div class='col-sm-11'>";
+            html += "<input type='hidden' name='dataID'" + "value=" + result[i].id + ">";
+            html += "<input type='hidden' value='" + result[i].template + "'id='templatePrincipleV" + result[i].id + "'>";
+            html += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'" + "id=templatePrinciple" + result[i].id + ">";
+            html += result[i].template;
+            html += "</textarea>";
+            html += "</div>";
+            html += "</div>";
+            html += "</div>";
             /*-------------分割一下----------------*/
-            var groupB = "<div class='form-group'>";
-            groupB += "<div class='x-valid'>";
-
-            groupB += "<label class='col-sm-1 control-label'>";
-            groupB += "模板数据";
-            groupB += "</label>";
-            groupB += "<div class='col-sm-11'>";
-            groupB += "<input type='hidden' name='dataID'" + "value=" + result[i].id + ">";
-            groupB += "<input type='hidden' value='" + result[i].template + "'id='templatePrincipleV" + result[i].id + "'>";
-            groupB += "<textarea placeholder='原则模板' class='form-control' name='content' required='required'" + "id=templatePrinciple" + result[i].id + ">";
-            groupB += result[i].template;
-            groupB += "</textarea>";
-            groupB += "</div>";
-
-            groupB += "</div>";
-            groupB += "</div>";
-            /*-------------分割一下----------------*/
-            var groupC = "<div class='content-field'" + "id=principleField" + result[i].id + ">";
-            groupC += "</div>";
-            content.append(groupA);
-            content.append(groupB);
-            content.append(groupC);
+            html += "<div class='content-field'" + "id=principleField" + result[i].id + ">";
+            html += "</div>";
+            html += '</div>';
+            content.append(html);
         }
         principleFun.writeField(result);
     };
@@ -115,7 +91,7 @@
             var template = $("#templatePrinciple" + result[i].id);
             var fieldArray = AssessCommon.extractField(template.val());
             var field = $("#principleField" + result[i].id);
-            if (fieldArray.length > 0 && fieldArray != null) {
+            if (fieldArray&&fieldArray.length > 0) {
                 var resultHtml = "<div class='form-group'>";
                 for (var j = 0; j < fieldArray.length; j++) {
                     if (j > 0 && j % 3 == 0) {

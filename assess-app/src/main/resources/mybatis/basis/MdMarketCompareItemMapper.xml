@@ -10,7 +10,7 @@
     <result column="specific_price" property="specificPrice" jdbcType="VARCHAR" />
     <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
     <result column="case_difference" property="caseDifference" jdbcType="VARCHAR" />
-    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
     <result column="weight_description" property="weightDescription" jdbcType="VARCHAR" />
     <result column="average_price" property="averagePrice" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -120,7 +120,7 @@
       gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{jsonContent,jdbcType=CHAR}, #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, 
-      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{weightDescription,jdbcType=VARCHAR}, 
+      #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, 
       #{averagePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -193,7 +193,7 @@
         #{caseDifference,jdbcType=VARCHAR},
       </if>
       <if test="weight != null" >
-        #{weight,jdbcType=DECIMAL},
+        #{weight,jdbcType=VARCHAR},
       </if>
       <if test="weightDescription != null" >
         #{weightDescription,jdbcType=VARCHAR},
@@ -246,7 +246,7 @@
         case_difference = #{record.caseDifference,jdbcType=VARCHAR},
       </if>
       <if test="record.weight != null" >
-        weight = #{record.weight,jdbcType=DECIMAL},
+        weight = #{record.weight,jdbcType=VARCHAR},
       </if>
       <if test="record.weightDescription != null" >
         weight_description = #{record.weightDescription,jdbcType=VARCHAR},
@@ -278,7 +278,7 @@
       specific_price = #{record.specificPrice,jdbcType=VARCHAR},
       correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
       case_difference = #{record.caseDifference,jdbcType=VARCHAR},
-      weight = #{record.weight,jdbcType=DECIMAL},
+      weight = #{record.weight,jdbcType=VARCHAR},
       weight_description = #{record.weightDescription,jdbcType=VARCHAR},
       average_price = #{record.averagePrice,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -313,7 +313,7 @@
         case_difference = #{caseDifference,jdbcType=VARCHAR},
       </if>
       <if test="weight != null" >
-        weight = #{weight,jdbcType=DECIMAL},
+        weight = #{weight,jdbcType=VARCHAR},
       </if>
       <if test="weightDescription != null" >
         weight_description = #{weightDescription,jdbcType=VARCHAR},
@@ -342,7 +342,7 @@
       specific_price = #{specificPrice,jdbcType=VARCHAR},
       correction_difference = #{correctionDifference,jdbcType=VARCHAR},
       case_difference = #{caseDifference,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=DECIMAL},
+      weight = #{weight,jdbcType=VARCHAR},
       weight_description = #{weightDescription,jdbcType=VARCHAR},
       average_price = #{averagePrice,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},

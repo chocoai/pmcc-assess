@@ -1,16 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.EvaluationThinkingFieldVoEnum;
-import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationMethod;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationMethodField;
 import com.copower.pmcc.assess.dto.input.data.EvaluationMethodDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationMethodFieldDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationMethodFieldVo;
 import com.copower.pmcc.assess.dto.output.data.EvaluationMethodVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -31,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -48,18 +41,10 @@ public class EvaluationMethodService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-
     @Autowired
     private BaseDataDicService baseDataDicService;
-    @Autowired
-    private EvaluationPrincipleService principleService;
-
-    @Resource
-    private EvaluationMethodFieldDao evaluationMethodFieldDao;
-
     @Resource
     private EvaluationMethodDao methodDao;
-
     @Transactional
     public boolean add(EvaluationMethodDto evaluationMethodDto) {
         if (evaluationMethodDto.getGmtCreated() == null) evaluationMethodDto.setGmtCreated(new Date());
@@ -72,159 +57,35 @@ public class EvaluationMethodService {
         if (!ObjectUtils.isEmpty(evaluationMethodDto.getId())) {//update
             evaluationMethodDto.setCreator(methodDao.getEvaluationMethod(evaluationMethodDto.getId()).getCreator());
             methodDao.updateEvaluationMethod(evaluationMethodDto);
-            if (!StringUtils.isEmpty(field)) {// 适用
-                // 因为是修改所以可能所有的数据数据库中都已经有相关信息了
-                String[] fields = field.split(",");
-                int type = FieldEnum.APPLICABLE.getNum();//有可能增加一些字段,有可能删去一些字段
-                for (String f : fields) {
-                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type, f, evaluationMethodDto.getId());
-                }
-                for (String f : fields) {
-                    if (!StringUtils.isEmpty(f)) {
-                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
-                        fieldDto.setType(type);
-                        fieldDto.setName(f);
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setMethodId(evaluationMethodDto.getId());
-                        try {
-                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
-            }
-            if (!StringUtils.isEmpty(Nofield)) {//不适用
-                String[] noFields = Nofield.split(",");
-                int type = FieldEnum.NO_APPLICABLE.getNum();
-                for (String f : noFields) {
-                    if (!StringUtils.isEmpty(f)) evaluationMethodFieldDao.delete(type, f, evaluationMethodDto.getId());
-                }
-                for (String f : noFields) {
-                    if (!StringUtils.isEmpty(f)) {
-                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
-                        fieldDto.setType(type);
-                        fieldDto.setName(f);
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setMethodId(evaluationMethodDto.getId());
-                        try {
-                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
-            }
+
+
+
         } else {// add
-            evaluationMethodDto.setCreator(commonService.thisUserAccount());
-            int id = methodDao.save(evaluationMethodDto);
-            if (!StringUtils.isEmpty(field)) {
-                String[] fields = field.split(",");
-                for (String f : fields) {//适用字段
-                    if (!StringUtils.isEmpty(f)) {
-                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
-                        fieldDto.setType(FieldEnum.APPLICABLE.getNum());
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setName(f);
-                        fieldDto.setMethodId(id);
-                        try {
-                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
 
-            }
-            if (!StringUtils.isEmpty(Nofield)) {//不适用字段
-                String[] noFields = Nofield.split(",");
-                for (String f : noFields) {
-                    if (!StringUtils.isEmpty(f)) {
-                        EvaluationMethodFieldDto fieldDto = new EvaluationMethodFieldDto();
-                        fieldDto.setType(FieldEnum.NO_APPLICABLE.getNum());
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setName(f);
-                        fieldDto.setMethodId(id);
-                        try {
-                            evaluationMethodFieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
 
-            }
         }
     }
 
-    @Transactional
-    public boolean add(EvaluationMethodFieldDto evaluationMethodFieldDto) {
-        if (evaluationMethodFieldDto.getGmtCreated() == null) evaluationMethodFieldDto.setGmtCreated(new Date());
-        if (evaluationMethodFieldDto.getCreator() == null)
-            evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
-        return evaluationMethodFieldDao.add(evaluationMethodFieldDto);
-    }
+
 
     @Transactional
     public boolean update(EvaluationMethodDto evaluationMethodDto) {
         return methodDao.updateEvaluationMethod(evaluationMethodDto);
     }
 
-    @Transactional
-    public boolean update(EvaluationMethodFieldDto evaluationMethodFieldDto) {
-        if (evaluationMethodFieldDto.getCreator() == null)
-            evaluationMethodFieldDto.setCreator(commonService.thisUserAccount());
-        if (evaluationMethodFieldDto.getGmtCreated() == null) evaluationMethodFieldDto.setGmtCreated(new Date());
-        return evaluationMethodFieldDao.update(evaluationMethodFieldDto);
-    }
+
 
     @Transactional(readOnly = true)
     public EvaluationMethodDto get(Integer id) {
         return methodDao.getEvaluationMethod(id);
     }
 
-    public EvaluationMethodFieldDto getField(Integer id) {
-        return evaluationMethodFieldDao.get(id);
-    }
 
-    @Transactional
-    public boolean remove(Integer id) {//一起删除
-        evaluationMethodFieldDao.removeMethod(id);
-        return methodDao.removeEvaluationMethod(id);
-    }
 
-    @Transactional
-    public boolean removeFild(Integer id) {//单独字段删除
-        return evaluationMethodFieldDao.remove(id);
-    }
 
-    public BootstrapTableVo getVosField(Integer methodId) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationMethodField> evaluationMethodFields = evaluationMethodFieldDao.list(methodId);
-        List<EvaluationMethodFieldVo> list = new ArrayList<>();
-        evaluationMethodFields.forEach(evaluationMethodField -> list.add(change(evaluationMethodField)));
-        vo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<EvaluationMethodFieldVo>() : list);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
+
+
+
 
     public BootstrapTableVo getVos(Integer method) {
         List<EvaluationMethodVo> evaluationMethodVos = null;
@@ -287,14 +148,7 @@ public class EvaluationMethodService {
         return methodDao.getEvaluationMethodList(evaluationMethod);
     }
 
-    private EvaluationMethodFieldVo change(EvaluationMethodField evaluationMethodField) {
-        EvaluationMethodFieldVo vo = new EvaluationMethodFieldVo();
-        BeanUtils.copyProperties(evaluationMethodField, vo);
-        if (vo.getType() != null) {
-            vo.setTypeStr(EvaluationThinkingFieldVoEnum.getName(vo.getType()));
-        }
-        return vo;
-    }
+
 
     private List<EvaluationMethodVo> change(List<EvaluationMethodDto> evaluationMethodDtos) {
         List<EvaluationMethodVo> evaluationMethodVos = new ArrayList<>();

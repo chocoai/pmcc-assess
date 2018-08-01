@@ -3,11 +3,9 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
 import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
-import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingFieldDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -44,16 +42,10 @@ public class EvaluationThinkingService {
 
     @Autowired
     private EvaluationThinkingDao evaluationThinkingDao;
-
     @Autowired
     private EvaluationPrincipleService principleService;
-
-    @Autowired
-    private EvaluationThinkingFieldDao fieldDao;
-
     @Autowired
     private CommonService commonService;
-
     @Autowired
     private BaseDataDicService baseDataDicService;
 
@@ -74,98 +66,24 @@ public class EvaluationThinkingService {
                 // 因为是修改所以可能所有的数据数据库中都已经有相关信息了
                 String[] fields = field.split(",");
                 int type = FieldEnum.APPLICABLE.getNum();//有可能增加一些字段,有可能删去一些字段
-                for (String f : fields) {
-                    if (!org.springframework.util.StringUtils.isEmpty(f)) fieldDao.delete(type, f, dto.getId());
-                }
-                for (String f : fields) {
-                    if (!org.springframework.util.StringUtils.isEmpty(f)) {
-                        EvaluationThinkingFieldDto fieldDto = new EvaluationThinkingFieldDto();
-                        fieldDto.setType(type);
-                        fieldDto.setName(f);
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setThinkingId(dto.getId());
-                        try {
-                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
+
             }
             if (!org.springframework.util.StringUtils.isEmpty(Nofield)) {//不适用
                 String[] noFields = Nofield.split(",");
                 int type = FieldEnum.NO_APPLICABLE.getNum();
-                for (String f : noFields) {
-                    if (!org.springframework.util.StringUtils.isEmpty(f))
-                        fieldDao.delete(type, f, dto.getId());
-                }
-                for (String f : noFields) {
-                    if (!org.springframework.util.StringUtils.isEmpty(f)) {
-                        EvaluationThinkingFieldDto fieldDto = new EvaluationThinkingFieldDto();
-                        fieldDto.setType(type);
-                        fieldDto.setName(f);
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setThinkingId(dto.getId());
-                        try {
-                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
+
             }
         } else {// add
             dto.setCreator(commonService.thisUserAccount());
             int id = evaluationThinkingDao.save(dto);
             if (!org.springframework.util.StringUtils.isEmpty(field)) {
-                String[] fields = field.split(",");
-                for (String f : fields) {//适用字段
-                    if (!org.springframework.util.StringUtils.isEmpty(f)) {
-                        EvaluationThinkingFieldDto fieldDto = new EvaluationThinkingFieldDto();
-                        fieldDto.setType(FieldEnum.APPLICABLE.getNum());
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setName(f);
-                        fieldDto.setThinkingId(id);
-                        try {
-                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
-                }
+
 
             }
             if (!org.springframework.util.StringUtils.isEmpty(Nofield)) {//不适用字段
                 String[] noFields = Nofield.split(",");
                 for (String f : noFields) {
-                    if (!org.springframework.util.StringUtils.isEmpty(f)) {
-                        EvaluationThinkingFieldDto fieldDto = new EvaluationThinkingFieldDto();
-                        fieldDto.setType(FieldEnum.NO_APPLICABLE.getNum());
-                        fieldDto.setCreator(commonService.thisUserAccount());
-                        fieldDto.setName(f);
-                        fieldDto.setThinkingId(id);
-                        try {
-                            fieldDao.add(fieldDto);//会自动判断是否存在已经添加过的字段
-                        } catch (Exception e) {
-                            try {
-                                logger.error("错误打印!" + e.getMessage());
-                            } catch (Exception e1) {
-                                throw e;
-                            }
-                        }
-                    }
+
                 }
 
             }

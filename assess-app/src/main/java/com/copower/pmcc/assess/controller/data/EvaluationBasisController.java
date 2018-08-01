@@ -74,7 +74,7 @@ public class EvaluationBasisController {
     public Object get(@RequestParam(value = "id") Integer id) {
         EvaluationBasisVo basisVo = null;
         try {
-            basisVo = service.get(id);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

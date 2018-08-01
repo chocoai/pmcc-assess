@@ -30,10 +30,8 @@ import java.util.List;
 @Controller
 public class EvaluationMethodController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-
     @Resource
     private EvaluationMethodService service;
 
@@ -100,7 +98,7 @@ public class EvaluationMethodController {
     @RequestMapping(value = "/delete", name = "删除",method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
-            service.remove(id);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
