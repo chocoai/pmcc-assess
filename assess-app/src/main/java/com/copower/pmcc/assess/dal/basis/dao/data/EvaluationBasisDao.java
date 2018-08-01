@@ -3,12 +3,10 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasis;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasisExample;
 import com.copower.pmcc.assess.dal.basis.mapper.EvaluationBasisMapper;
-import com.copower.pmcc.assess.dto.input.data.EvaluationBasisDto;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,56 +15,44 @@ import java.util.List;
  */
 @Repository
 public class EvaluationBasisDao {
-
     @Autowired
-    private EvaluationBasisMapper mapper;
+    private EvaluationBasisMapper evaluationBasisMapper;
 
-    public boolean add(EvaluationBasisDto evaluationBasisDto) {
-        return mapper.insertSelective(change(evaluationBasisDto)) == 1;
+    public boolean addBasis(EvaluationBasis evaluationBasis) {
+        return evaluationBasisMapper.insertSelective(evaluationBasis) == 1;
     }
 
-    public boolean update(EvaluationBasisDto evaluationBasisDto) {
-        return mapper.updateByPrimaryKey(change(evaluationBasisDto)) == 1;
+
+    public boolean updateBasis(EvaluationBasis evaluationBasis) {
+        return evaluationBasisMapper.updateByPrimaryKey(evaluationBasis) == 1;
     }
 
-    public int save(EvaluationBasisDto dto){
-        EvaluationBasis basis = change(dto);
-        mapper.insertSelective(basis);
-        return basis.getId();
-    }
-
-    public boolean remove(Integer id) {
-        return mapper.deleteByPrimaryKey(id) == 1;
-    }
-
-    public EvaluationBasisDto get(Integer id) {
-        return change(mapper.selectByPrimaryKey(id));
-    }
-
-    public List<EvaluationBasisDto> list(String name) {
+    public List<EvaluationBasis> getBasisList(String name) {
         EvaluationBasisExample example = new EvaluationBasisExample();
-        List<EvaluationBasisDto> vos = new ArrayList<>();
-        String methodStr = "%" + name + "%";
-        if (name == null || name == "") {
-            example.createCriteria().andIdIsNotNull();
-            mapper.selectByExample(example).parallelStream().forEach(evaluationBasis -> vos.add(change(evaluationBasis)));
-        } else {
-            example.createCriteria().andNameLike(methodStr);
-            mapper.selectByExample(example).parallelStream().forEach(evaluationBasis -> vos.add(change(evaluationBasis)));
+        EvaluationBasisExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(name)){
+            criteria.andNameLike(String.format("%%%s%%",name));
         }
-        return vos;
+        return evaluationBasisMapper.selectByExample(example);
     }
 
-
-    public EvaluationBasis change(EvaluationBasisDto evaluationBasisDto) {
-        EvaluationBasis evaluationBasis = new EvaluationBasis();
-        BeanUtils.copyProperties(evaluationBasisDto, evaluationBasis);
-        return evaluationBasis;
+    public List<EvaluationBasis> getBasisList(String method,String purpose) {
+        EvaluationBasisExample example = new EvaluationBasisExample();
+        EvaluationBasisExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(method)){
+            criteria.andMethodLike(String.format("%%%s%%",method));
+        }
+        if(StringUtils.isNotBlank(purpose)){
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",purpose));
+        }
+        return evaluationBasisMapper.selectByExample(example);
     }
 
-    public EvaluationBasisDto change(EvaluationBasis evaluationbasis) {
-        EvaluationBasisDto evaluationbasisdto = new EvaluationBasisDto();
-        BeanUtils.copyProperties(evaluationbasis, evaluationbasisdto);
-        return evaluationbasisdto;
+    public boolean removeBasis(Integer id) {
+        return evaluationBasisMapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    public EvaluationBasis getBasis(Integer id) {
+        return evaluationBasisMapper.selectByPrimaryKey(id);
     }
 }

@@ -1,34 +1,28 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.FieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
-import com.copower.pmcc.assess.dto.input.data.EvaluationThinkingDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,117 +33,90 @@ import java.util.Map;
 @Service(value = "evaluationThinkingService")
 public class EvaluationThinkingService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private EvaluationThinkingDao evaluationThinkingDao;
-    @Autowired
-    private EvaluationPrincipleService principleService;
     @Autowired
     private CommonService commonService;
     @Autowired
+    private DataCommonService dataCommonService;
+    @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private EvaluationThinkingDao evaluationThinkingDao;
 
-    @Transactional
-    public boolean add(EvaluationThinkingDto evaluationThinkingDto) {
-        if (evaluationThinkingDto.getCreator() == null)
-            evaluationThinkingDto.setCreator(commonService.thisUserAccount());
-        if (evaluationThinkingDto.getGmtCreated() == null) evaluationThinkingDto.setGmtCreated(new Date());
-        return evaluationThinkingDao.add(evaluationThinkingDto);
-    }
-
-    @Transactional
-    public void saveAndUpdate(EvaluationThinkingDto dto, String field, String Nofield) {
-        if (!ObjectUtils.isEmpty(dto.getId())) {//update
-            dto.setCreator(evaluationThinkingDao.get(dto.getId()).getCreator());
-            evaluationThinkingDao.update(dto);
-            if (!org.springframework.util.StringUtils.isEmpty(field)) {// 适用
-                // 因为是修改所以可能所有的数据数据库中都已经有相关信息了
-                String[] fields = field.split(",");
-                int type = FieldEnum.APPLICABLE.getNum();//有可能增加一些字段,有可能删去一些字段
-
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(Nofield)) {//不适用
-                String[] noFields = Nofield.split(",");
-                int type = FieldEnum.NO_APPLICABLE.getNum();
-
-            }
-        } else {// add
-            dto.setCreator(commonService.thisUserAccount());
-            int id = evaluationThinkingDao.save(dto);
-            if (!org.springframework.util.StringUtils.isEmpty(field)) {
-
-
-            }
-            if (!org.springframework.util.StringUtils.isEmpty(Nofield)) {//不适用字段
-                String[] noFields = Nofield.split(",");
-                for (String f : noFields) {
-
-                }
-
-            }
+    /**
+     * 保存数据
+     *
+     * @param evaluationThinking
+     */
+    public void saveAndUpdate(EvaluationThinking evaluationThinking) {
+        if (evaluationThinking.getId() != null && evaluationThinking.getId() > 0) {
+            evaluationThinkingDao.updateThinking(evaluationThinking);
+        } else {
+            evaluationThinking.setCreator(commonService.thisUserAccount());
+            evaluationThinkingDao.addThinking(evaluationThinking);
         }
     }
 
-    @Transactional
-    public boolean update(EvaluationThinkingDto evaluationThinkingDto) {
-        if (evaluationThinkingDto.getCreator() == null)
-            evaluationThinkingDto.setCreator(commonService.thisUserAccount());
-        if (evaluationThinkingDto.getGmtCreated() == null) evaluationThinkingDto.setGmtCreated(new Date());
-        return evaluationThinkingDao.update(evaluationThinkingDto);
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     */
+    public boolean removeThinking(Integer id) {
+        return evaluationThinkingDao.removeThinking(id);
     }
 
-    @Transactional
-    public boolean remove(Integer id) {
-        return evaluationThinkingDao.remove(id);
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     */
+    public EvaluationThinking getThinking(Integer id) {
+        return evaluationThinkingDao.getThinking(id);
     }
 
-    @Transactional(readOnly = true)
-    public EvaluationThinkingDto get(Integer id) {
-        return evaluationThinkingDao.get(id);
-    }
 
-    public List<EvaluationThinking> getListByMethod(Integer method) {
-        return evaluationThinkingDao.getListByMethod(method);
-    }
-
-    @Transactional(readOnly = true)
-    public List<EvaluationThinking> list(String name) {
-        return evaluationThinkingDao.list(name);
-    }
-
-    public BootstrapTableVo listVo(String method) {
+    /**
+     * 获取数据列表
+     *
+     * @param name
+     * @return
+     */
+    public BootstrapTableVo getThinkingList(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationThinkingVo> voList = vosChange(list(method));
-        vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<EvaluationThinkingVo>() : voList);
+        List<EvaluationThinking> hypothesisList = evaluationThinkingDao.getThinkingList(name);
+        List<EvaluationThinkingVo> vos = LangUtils.transform(hypothesisList, p -> getThinkingVo(p));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationThinkingVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    private List<EvaluationThinkingVo> vosChange(List<EvaluationThinking> evaluationThinkings) {
-        List<EvaluationThinkingVo> evaluationThinkingVoList = new ArrayList<>();
-        evaluationThinkings.forEach(evaluationThinking -> {
-            evaluationThinkingVoList.add(change(evaluationThinking));
-        });
-        return evaluationThinkingVoList;
+    /**
+     * 根据委估目的及评估方法获取数据列表
+     *
+     * @param method
+     * @return
+     */
+    public List<EvaluationThinking> getThinkingList(Integer method) {
+        String methodStr = new String();
+        String purposeStr = new String();
+        if (method != null && method > 0) {
+            methodStr = String.format(",%s,", method);
+        }
+        return evaluationThinkingDao.getThinkingList(methodStr);
     }
 
-    private EvaluationThinkingVo change(EvaluationThinking evaluationThinking) {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+
+    public EvaluationThinkingVo getThinkingVo(EvaluationThinking evaluationThinking) {
+        if (evaluationThinking == null) return null;
+        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
         BeanUtils.copyProperties(evaluationThinking, evaluationThinkingVo);
-        if (StringUtils.isNotBlank(evaluationThinking.getMethod())) {
-            String s = StringUtils.replacePattern(evaluationThinking.getMethod(), "^,+|,+$", "");
-            List<Integer> integerList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(s));
-            String methodString = new String();
-            for (Integer integer : integerList) {
-                for (BaseDataDic baseDataDic : baseDataDics) {
-                    if (integer.equals(baseDataDic.getId()))
-                        methodString += baseDataDic.getName() + ",";
-                }
-            }
-            evaluationThinkingVo.setMethodStr(StringUtils.replacePattern(methodString, "^,+|,+$", ""));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationThinking.getMethod())) {
+            evaluationThinkingVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationThinking.getMethod()));
         }
         return evaluationThinkingVo;
     }
@@ -164,7 +131,7 @@ public class EvaluationThinkingService {
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         if (CollectionUtils.isNotEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
-                List<EvaluationThinking> thinkingList = getListByMethod(baseDataDic.getId());
+                List<EvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseDataDic.getId()));
                 if (CollectionUtils.isNotEmpty(thinkingList)) {
                     map.put(baseDataDic.getId(), thinkingList);
                 }
@@ -172,5 +139,4 @@ public class EvaluationThinkingService {
         }
         return map;
     }
-
 }
