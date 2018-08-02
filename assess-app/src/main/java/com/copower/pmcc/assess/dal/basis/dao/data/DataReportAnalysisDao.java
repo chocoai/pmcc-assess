@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysisExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper;
+import com.copower.pmcc.assess.dal.basis.mapper.DataReportAnalysisMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,46 +12,41 @@ import java.util.List;
 
 @Repository
 public class DataReportAnalysisDao {
-
     @Autowired
     private DataReportAnalysisMapper dataReportAnalysisMapper;
 
-    public boolean addDataReportAnalysis(DataReportAnalysis dataReportAnalysis) {
-        int flag = dataReportAnalysisMapper.insert(dataReportAnalysis);
-        return flag > 0;
+
+    public boolean addReportAnalysis(DataReportAnalysis evaluationReportAnalysis) {
+        return dataReportAnalysisMapper.insertSelective(evaluationReportAnalysis) == 1;
     }
 
-    public int save(DataReportAnalysis obj){
-        dataReportAnalysisMapper.insertSelective(obj);
-        return obj.getId();
+
+    public boolean updateReportAnalysis(DataReportAnalysis evaluationReportAnalysis) {
+        return dataReportAnalysisMapper.updateByPrimaryKey(evaluationReportAnalysis) == 1;
     }
 
-    public boolean update(DataReportAnalysis dataReportAnalysis){
-        return dataReportAnalysisMapper.updateByPrimaryKey(dataReportAnalysis)==1;
-    }
-
-    public List<DataReportAnalysis> getList(String keyWord) {
-        DataReportAnalysisExample dataReportAnalysisExample = new DataReportAnalysisExample();
-        DataReportAnalysisExample.Criteria criteria = dataReportAnalysisExample.createCriteria();
-        if (StringUtils.isNotEmpty(keyWord)){
-            criteria.andCategoryEqualTo(Integer.parseInt(keyWord));
+    public List<DataReportAnalysis> getReportAnalysisList(String name) {
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
         }
-        return dataReportAnalysisMapper.selectByExample(dataReportAnalysisExample);
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
+    public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType) {
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
+    public boolean removeReportAnalysis(Integer id) {
+        return dataReportAnalysisMapper.deleteByPrimaryKey(id) == 1;
     }
 
     public DataReportAnalysis getReportAnalysis(Integer id) {
         return dataReportAnalysisMapper.selectByPrimaryKey(id);
-    }
-
-    public boolean deleteReportAnalysis(Integer id) {
-        int flag = dataReportAnalysisMapper.deleteByPrimaryKey(id);
-        return flag > 0;
-    }
-
-    public List<DataReportAnalysis> getDataReportAnalysisByCategory(Integer category){
-        DataReportAnalysisExample example = new DataReportAnalysisExample();
-        example.createCriteria().andCategoryEqualTo(category);
-        return dataReportAnalysisMapper.selectByExample(example);
     }
 
 }

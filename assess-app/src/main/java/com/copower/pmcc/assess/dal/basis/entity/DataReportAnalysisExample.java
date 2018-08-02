@@ -165,63 +165,133 @@ public class DataReportAnalysisExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIsNull() {
-            addCriterion("category is null");
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIsNotNull() {
-            addCriterion("category is not null");
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryEqualTo(Integer value) {
-            addCriterion("category =", value, "category");
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotEqualTo(Integer value) {
-            addCriterion("category <>", value, "category");
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThan(Integer value) {
-            addCriterion("category >", value, "category");
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category >=", value, "category");
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThan(Integer value) {
-            addCriterion("category <", value, "category");
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
-            addCriterion("category <=", value, "category");
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIn(List<Integer> values) {
-            addCriterion("category in", values, "category");
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotIn(List<Integer> values) {
-            addCriterion("category not in", values, "category");
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryBetween(Integer value1, Integer value2) {
-            addCriterion("category between", value1, value2, "category");
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
-            addCriterion("category not between", value1, value2, "category");
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeIsNull() {
+            addCriterion("report_analysis_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeIsNotNull() {
+            addCriterion("report_analysis_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeEqualTo(Integer value) {
+            addCriterion("report_analysis_type =", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeNotEqualTo(Integer value) {
+            addCriterion("report_analysis_type <>", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeGreaterThan(Integer value) {
+            addCriterion("report_analysis_type >", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("report_analysis_type >=", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeLessThan(Integer value) {
+            addCriterion("report_analysis_type <", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("report_analysis_type <=", value, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeIn(List<Integer> values) {
+            addCriterion("report_analysis_type in", values, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeNotIn(List<Integer> values) {
+            addCriterion("report_analysis_type not in", values, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeBetween(Integer value1, Integer value2) {
+            addCriterion("report_analysis_type between", value1, value2, "reportAnalysisType");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportAnalysisTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("report_analysis_type not between", value1, value2, "reportAnalysisType");
             return (Criteria) this;
         }
 
@@ -292,66 +362,6 @@ public class DataReportAnalysisExample {
 
         public Criteria andTemplateNotBetween(String value1, String value2) {
             addCriterion("template not between", value1, value2, "template");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldIsNull() {
-            addCriterion("category_field is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldIsNotNull() {
-            addCriterion("category_field is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldEqualTo(Integer value) {
-            addCriterion("category_field =", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldNotEqualTo(Integer value) {
-            addCriterion("category_field <>", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldGreaterThan(Integer value) {
-            addCriterion("category_field >", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category_field >=", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldLessThan(Integer value) {
-            addCriterion("category_field <", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldLessThanOrEqualTo(Integer value) {
-            addCriterion("category_field <=", value, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldIn(List<Integer> values) {
-            addCriterion("category_field in", values, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldNotIn(List<Integer> values) {
-            addCriterion("category_field not in", values, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldBetween(Integer value1, Integer value2) {
-            addCriterion("category_field between", value1, value2, "categoryField");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryFieldNotBetween(Integer value1, Integer value2) {
-            addCriterion("category_field not between", value1, value2, "categoryField");
             return (Criteria) this;
         }
 

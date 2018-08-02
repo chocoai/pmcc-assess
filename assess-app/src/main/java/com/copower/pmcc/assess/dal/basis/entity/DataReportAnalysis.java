@@ -5,11 +5,11 @@ import java.util.Date;
 public class DataReportAnalysis {
     private Integer id;
 
-    private Integer category;
+    private String name;
+
+    private Integer reportAnalysisType;
 
     private String template;
-
-    private Integer categoryField;
 
     private String creator;
 
@@ -25,12 +25,20 @@ public class DataReportAnalysis {
         this.id = id;
     }
 
-    public Integer getCategory() {
-        return category;
+    public String getName() {
+        return name;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getReportAnalysisType() {
+        return reportAnalysisType;
+    }
+
+    public void setReportAnalysisType(Integer reportAnalysisType) {
+        this.reportAnalysisType = reportAnalysisType;
     }
 
     public String getTemplate() {
@@ -39,14 +47,6 @@ public class DataReportAnalysis {
 
     public void setTemplate(String template) {
         this.template = template == null ? null : template.trim();
-    }
-
-    public Integer getCategoryField() {
-        return categoryField;
-    }
-
-    public void setCategoryField(Integer categoryField) {
-        this.categoryField = categoryField;
     }
 
     public String getCreator() {

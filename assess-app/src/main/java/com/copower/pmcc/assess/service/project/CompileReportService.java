@@ -4,8 +4,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
@@ -45,23 +43,7 @@ public class CompileReportService {
     public void initReportDetails(Integer planDetailsId) {
         //将配置数据初始化到details表中，方便后续操作
         List<CompileReportDetails> reportDetails = compileReportDetailsDao.getListByPlanDetailsId(planDetailsId);
-        if (CollectionUtils.isEmpty(reportDetails)) {
-            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            if (projectPlanDetails == null) return;
-            List<DataReportAnalysisVo> reportAnalysisVos = dataReportAnalysisService.getDataReportAnalysisByCategory(projectPlanDetails.getReportAnalysisCategory());
-            if (CollectionUtils.isNotEmpty(reportAnalysisVos)) {
-                for (DataReportAnalysisVo reportAnalysisVo : reportAnalysisVos) {
-                    CompileReportDetails compileReportDetails = new CompileReportDetails();
-                    compileReportDetails.setPlanDetailsId(planDetailsId);
-                    compileReportDetails.setCategory(reportAnalysisVo.getCategory());
-                    compileReportDetails.setCategoryField(reportAnalysisVo.getCategoryField());
-                    compileReportDetails.setReportAnalysisId(reportAnalysisVo.getId());
-                    compileReportDetails.setTemplate(reportAnalysisVo.getTemplate());
-                    compileReportDetails.setCreator(commonService.thisUserAccount());
-                    compileReportDetailsDao.add(compileReportDetails);
-                }
-            }
-        }
+
     }
 
     /**
