@@ -285,66 +285,6 @@ public class ExamineHouseCorollaryEquipmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andHouseIdIsNull() {
-            addCriterion("house_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdIsNotNull() {
-            addCriterion("house_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdEqualTo(Integer value) {
-            addCriterion("house_id =", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotEqualTo(Integer value) {
-            addCriterion("house_id <>", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdGreaterThan(Integer value) {
-            addCriterion("house_id >", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("house_id >=", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdLessThan(Integer value) {
-            addCriterion("house_id <", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
-            addCriterion("house_id <=", value, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdIn(List<Integer> values) {
-            addCriterion("house_id in", values, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotIn(List<Integer> values) {
-            addCriterion("house_id not in", values, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
-            addCriterion("house_id between", value1, value2, "houseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("house_id not between", value1, value2, "houseId");
-            return (Criteria) this;
-        }
-
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -535,143 +475,143 @@ public class ExamineHouseCorollaryEquipmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseIsNull() {
-            addCriterion("use is null");
+        public Criteria andUseHIsNull() {
+            addCriterion("use_h is null");
             return (Criteria) this;
         }
 
-        public Criteria andUseIsNotNull() {
-            addCriterion("use is not null");
+        public Criteria andUseHIsNotNull() {
+            addCriterion("use_h is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUseEqualTo(String value) {
-            addCriterion("use =", value, "use");
+        public Criteria andUseHEqualTo(String value) {
+            addCriterion("use_h =", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotEqualTo(String value) {
-            addCriterion("use <>", value, "use");
+        public Criteria andUseHNotEqualTo(String value) {
+            addCriterion("use_h <>", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseGreaterThan(String value) {
-            addCriterion("use >", value, "use");
+        public Criteria andUseHGreaterThan(String value) {
+            addCriterion("use_h >", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseGreaterThanOrEqualTo(String value) {
-            addCriterion("use >=", value, "use");
+        public Criteria andUseHGreaterThanOrEqualTo(String value) {
+            addCriterion("use_h >=", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseLessThan(String value) {
-            addCriterion("use <", value, "use");
+        public Criteria andUseHLessThan(String value) {
+            addCriterion("use_h <", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseLessThanOrEqualTo(String value) {
-            addCriterion("use <=", value, "use");
+        public Criteria andUseHLessThanOrEqualTo(String value) {
+            addCriterion("use_h <=", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseLike(String value) {
-            addCriterion("use like", value, "use");
+        public Criteria andUseHLike(String value) {
+            addCriterion("use_h like", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotLike(String value) {
-            addCriterion("use not like", value, "use");
+        public Criteria andUseHNotLike(String value) {
+            addCriterion("use_h not like", value, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseIn(List<String> values) {
-            addCriterion("use in", values, "use");
+        public Criteria andUseHIn(List<String> values) {
+            addCriterion("use_h in", values, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotIn(List<String> values) {
-            addCriterion("use not in", values, "use");
+        public Criteria andUseHNotIn(List<String> values) {
+            addCriterion("use_h not in", values, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseBetween(String value1, String value2) {
-            addCriterion("use between", value1, value2, "use");
+        public Criteria andUseHBetween(String value1, String value2) {
+            addCriterion("use_h between", value1, value2, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotBetween(String value1, String value2) {
-            addCriterion("use not between", value1, value2, "use");
+        public Criteria andUseHNotBetween(String value1, String value2) {
+            addCriterion("use_h not between", value1, value2, "useH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexIsNull() {
-            addCriterion("parameter_index is null");
+        public Criteria andParameterIndexHIsNull() {
+            addCriterion("parameter_index_h is null");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexIsNotNull() {
-            addCriterion("parameter_index is not null");
+        public Criteria andParameterIndexHIsNotNull() {
+            addCriterion("parameter_index_h is not null");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexEqualTo(String value) {
-            addCriterion("parameter_index =", value, "parameterIndex");
+        public Criteria andParameterIndexHEqualTo(String value) {
+            addCriterion("parameter_index_h =", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexNotEqualTo(String value) {
-            addCriterion("parameter_index <>", value, "parameterIndex");
+        public Criteria andParameterIndexHNotEqualTo(String value) {
+            addCriterion("parameter_index_h <>", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexGreaterThan(String value) {
-            addCriterion("parameter_index >", value, "parameterIndex");
+        public Criteria andParameterIndexHGreaterThan(String value) {
+            addCriterion("parameter_index_h >", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexGreaterThanOrEqualTo(String value) {
-            addCriterion("parameter_index >=", value, "parameterIndex");
+        public Criteria andParameterIndexHGreaterThanOrEqualTo(String value) {
+            addCriterion("parameter_index_h >=", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexLessThan(String value) {
-            addCriterion("parameter_index <", value, "parameterIndex");
+        public Criteria andParameterIndexHLessThan(String value) {
+            addCriterion("parameter_index_h <", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexLessThanOrEqualTo(String value) {
-            addCriterion("parameter_index <=", value, "parameterIndex");
+        public Criteria andParameterIndexHLessThanOrEqualTo(String value) {
+            addCriterion("parameter_index_h <=", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexLike(String value) {
-            addCriterion("parameter_index like", value, "parameterIndex");
+        public Criteria andParameterIndexHLike(String value) {
+            addCriterion("parameter_index_h like", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexNotLike(String value) {
-            addCriterion("parameter_index not like", value, "parameterIndex");
+        public Criteria andParameterIndexHNotLike(String value) {
+            addCriterion("parameter_index_h not like", value, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexIn(List<String> values) {
-            addCriterion("parameter_index in", values, "parameterIndex");
+        public Criteria andParameterIndexHIn(List<String> values) {
+            addCriterion("parameter_index_h in", values, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexNotIn(List<String> values) {
-            addCriterion("parameter_index not in", values, "parameterIndex");
+        public Criteria andParameterIndexHNotIn(List<String> values) {
+            addCriterion("parameter_index_h not in", values, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexBetween(String value1, String value2) {
-            addCriterion("parameter_index between", value1, value2, "parameterIndex");
+        public Criteria andParameterIndexHBetween(String value1, String value2) {
+            addCriterion("parameter_index_h between", value1, value2, "parameterIndexH");
             return (Criteria) this;
         }
 
-        public Criteria andParameterIndexNotBetween(String value1, String value2) {
-            addCriterion("parameter_index not between", value1, value2, "parameterIndex");
+        public Criteria andParameterIndexHNotBetween(String value1, String value2) {
+            addCriterion("parameter_index_h not between", value1, value2, "parameterIndexH");
             return (Criteria) this;
         }
 

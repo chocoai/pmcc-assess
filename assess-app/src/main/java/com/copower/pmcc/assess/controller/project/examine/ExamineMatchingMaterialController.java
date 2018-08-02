@@ -2,10 +2,9 @@ package com.copower.pmcc.assess.controller.project.examine;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingFinance;
+import com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingMaterial;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.project.examine.ExamineMatchingFinanceService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.assess.service.project.examine.ExamineMatchingMaterialService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -16,54 +15,54 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 /**
  * @Auther: zch
- * @Date: 2018/7/20 17:30
- * @Description:金融服务
+ * @Date: 2018/8/2 15:42
+ * @Description:原料供应及销售条件
  */
-@RequestMapping(value = "/examineMatchingFinance")
+
+@RequestMapping(value = "/examineMatchingMaterial")
 @Controller
-public class ExamineMatchingFinanceController {
+public class ExamineMatchingMaterialController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ExamineMatchingFinanceService examineMatchingFinanceService;
+    private ExamineMatchingMaterialService examineMatchingMaterialService;
     @Autowired
     private BaseDataDicService baseDataDicService;
 
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineMatchingFinanceById",method = {RequestMethod.GET},name = "获取金融服务")
+    @RequestMapping(value = "/getExamineMatchingMaterialById",method = {RequestMethod.GET},name = "获取原料供应及销售条件")
     public HttpResult getById(Integer id) {
-        ExamineMatchingFinance examineMatchingFinance = null;
+        ExamineMatchingMaterial examineMatchingMaterial = null;
         try {
             if (id!=null){
-                examineMatchingFinance = examineMatchingFinanceService.getExamineMatchingFinanceById(id);
+                examineMatchingMaterial = examineMatchingMaterialService.getExamineMatchingMaterialById(id);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
             return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(examineMatchingFinance);
+        return HttpResult.newCorrectResult(examineMatchingMaterial);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getExamineMatchingFinanceList",method = {RequestMethod.GET},name = "金融服务列表")
-    public BootstrapTableVo getExamineMatchingFinanceList(Integer examineType, Integer declareId) {
+    @RequestMapping(value = "/getExamineMatchingMaterialList",method = {RequestMethod.GET},name = "原料供应及销售条件列表")
+    public BootstrapTableVo getExamineMatchingMaterialList(Integer examineType, Integer declareId) {
         BootstrapTableVo vo = null;
         try {
-            ExamineMatchingFinance examineMatchingFinance = new ExamineMatchingFinance();
+            ExamineMatchingMaterial examineMatchingMaterial = new ExamineMatchingMaterial();
             if (!ObjectUtils.isEmpty(examineType)){
-                examineMatchingFinance.setExamineType(examineType);
+                examineMatchingMaterial.setExamineType(examineType);
             }
             if (declareId!=null && declareId.equals(0)){
-                examineMatchingFinance.setDeclareId(declareId);
+                examineMatchingMaterial.setDeclareId(declareId);
             }
-            vo = examineMatchingFinanceService.getExamineMatchingFinanceLists(examineMatchingFinance);
+            vo = examineMatchingMaterialService.getExamineMatchingMaterialLists(examineMatchingMaterial);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
             return null;
@@ -72,11 +71,11 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteExamineMatchingFinanceById",method = {RequestMethod.POST},name = "删除金融服务")
+    @RequestMapping(value = "/deleteExamineMatchingMaterialById",method = {RequestMethod.POST},name = "删除原料供应及销售条件")
     public HttpResult delete(Integer id) {
         try {
             if (id!=null){
-                return HttpResult.newCorrectResult(examineMatchingFinanceService.deleteExamineMatchingFinance(id));
+                return HttpResult.newCorrectResult(examineMatchingMaterialService.deleteExamineMatchingMaterial(id));
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
@@ -86,13 +85,13 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateExamineMatchingFinance",method = {RequestMethod.POST},name = "更新金融服务")
-    public HttpResult save(ExamineMatchingFinance examineMatchingFinance){
+    @RequestMapping(value = "/saveAndUpdateExamineMatchingMaterial",method = {RequestMethod.POST},name = "更新原料供应及销售条件")
+    public HttpResult save(ExamineMatchingMaterial examineMatchingMaterial){
         try {
-            if (examineMatchingFinance.getId()==null || examineMatchingFinance.getId().equals(0)){
-                examineMatchingFinanceService.addExamineMatchingFinance(examineMatchingFinance);
+            if (examineMatchingMaterial.getId()==null || examineMatchingMaterial.getId().equals(0)){
+                examineMatchingMaterialService.addExamineMatchingMaterial(examineMatchingMaterial);
             }else {
-                examineMatchingFinanceService.updateExamineMatchingFinance(examineMatchingFinance);
+                examineMatchingMaterialService.updateExamineMatchingMaterial(examineMatchingMaterial);
             }
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
@@ -102,10 +101,10 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_finance_category",method = {RequestMethod.GET},name = "金融类别")
-    public HttpResult environment_type() {
+    @RequestMapping(value = "/estate_supply_new_type",method = {RequestMethod.GET},name = "购物场所类别")
+    public HttpResult estate_supply_new_type() {
         try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_CATEGORY);
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_TYPE);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
@@ -114,10 +113,10 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_finance_nature",method = {RequestMethod.GET},name = "金融机构性质")
-    public HttpResult environment_category() {
+    @RequestMapping(value = "/estate_supply_new_scale",method = {RequestMethod.GET},name = "购物场所规模")
+    public HttpResult estate_supply_new_scale() {
         try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_NATURE);
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_SCALE);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
@@ -126,14 +125,15 @@ public class ExamineMatchingFinanceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estate_finance_service_content",method = {RequestMethod.GET},name = "金融服务内容")
-    public HttpResult environment_influence_degree() {
+    @RequestMapping(value = "/estate_supply_new_distance",method = {RequestMethod.GET},name = "购物场所距离")
+    public HttpResult estate_supply_new_distance() {
         try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_SERVICE_CONTENT);
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_DISTANCE);
             return HttpResult.newCorrectResult(baseDataDic);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
             return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
         }
     }
+    
 }

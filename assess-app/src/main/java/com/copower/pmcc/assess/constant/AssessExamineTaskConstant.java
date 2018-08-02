@@ -50,6 +50,9 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_TOTAL_BUILDING_TYPE = "estate.total_building_type";//总栋数 (0一栋 1多栋)
     public static final String ESTATE_TOTAL_LAND_USE = "estate.land_use";//土地用途
     public static final String ESTATE_TOTAL_LAND_LEVEL = "estate.land_level";//土地级别
+    public static final String ESTATE_SUPPLY_NEW_TYPE = "estate.supply.new.type";//购物场所类别
+    public static final String ESTATE_SUPPLY_NEW_SCALE = "estate.supply.new.scale";//购物场所规模
+    public static final String ESTATE_SUPPLY_NEW_DISTANCE = "estate.supply.new.distance";//购物场所距离
 
     public static final String EXAMINE_BUILDING_PROPERTY_TYPE = "building.property_type";//物业类型
     public static final String EXAMINE_BUILDING_PROPERTY_CATEGORY = "building.building_category";//建筑类别
@@ -58,6 +61,9 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY = "building.construction_technology";//施工工艺
     public static final String EXAMINE_BUILDING_DECORATION_PART = "building.decoration_part";//装修部位
     public static final String EXAMINE_BUILDING_MATERIAL_PRICE = "building.material_price";//材料价格区间
+    public static final String EXAMINE_BUILDING_STRUCTURE = "examine.building.structure";//层面结构
+    public static final String EXAMINE_BUILDING_MAINTENANCE_CATEGORY = "examine.building.maintenance.category";//维护结构分类
+    public static final String EXAMINE_BUILDING_MATERIALQUALITY = "examine.building.maintenance.materialQuality";//维护结构材质
 
     public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
     public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型
@@ -85,6 +91,10 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_PRACTICAL_USE = "examine.house.practical.use";//实际用途
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
     public static final String EXAMINE_HOUSE_DESCRIPTION_TYPE = "examine.house.description_type";//说明事项类型
+    public static final String EXAMINE_HOUSE_ENVIRONMENT_USE = "examine.house.environment.use";//使用环境
+    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE = "examine.house.corollary.equipment.type";//配套设备设施 类型
+    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY = "examine.house.corollary.equipment.category";//配套设备设施 类别
+    public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE = "examine.house.corollary.equipment.price";//配套设备设施 价格
 
     public static final String EXAMINE_COMMON_QUALIFICATION_LEVEL = "examine.common.qualification_level";//资质等级-
 

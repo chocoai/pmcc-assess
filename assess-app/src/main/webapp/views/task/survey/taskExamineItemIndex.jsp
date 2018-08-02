@@ -224,6 +224,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
+                        console.info(taskExamineItemIndex.getFormData());
                         //保存完后其他动作
                         toastr.success("保存成功");
                     } else {
