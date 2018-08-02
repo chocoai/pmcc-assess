@@ -1,17 +1,16 @@
 package com.copower.pmcc.assess.service.project.plan.service;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeEvaluationObjectDao;
-import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeEvaluationObject;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -27,16 +26,8 @@ public class ProjectPlanCompileService {
     private SchemeEvaluationObjectDao schemeEvaluationObjectDao;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
-    private ErpAreaService erpAreaService;
 
-    public ModelAndView getInitialize(ModelAndView modelAndView, ProjectPlan projectPlan) {
-        List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
-        int size = baseDataDics.size();
-        modelAndView.addObject("reportAnalysisList", baseDataDics);
-
+    public void initialize(ProjectPlan projectPlan) {
         Integer planId = projectPlan.getId();
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
@@ -45,10 +36,9 @@ public class ProjectPlanCompileService {
         projectPlanDetailsWhere.setPlanId(planId);
         List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
         if (CollectionUtils.isNotEmpty(planDetails)) {
-            return modelAndView;//避免重复初始化
+            return ;//避免重复初始化
         }
         List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
-        String address = "";
         int i = 1;
         //一级分类 地址
         if (CollectionUtils.isNotEmpty(schemeAreaGroups)) {
@@ -91,6 +81,5 @@ public class ProjectPlanCompileService {
                 }
             }
         }
-        return modelAndView;
     }
 }

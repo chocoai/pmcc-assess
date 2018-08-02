@@ -5,7 +5,7 @@ var treeGridJson = {};
 var treeGridJsonData = {};
 $(function () {
     getPlanItemList();
-
+    $("#projectPhaseId").select2();
     DateUtils.dateSectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
     DateUtils.dateSectionChoose($("#planStartDate"), $("#planEndDate"));
 

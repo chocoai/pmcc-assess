@@ -2,15 +2,12 @@ package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReport;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.CompileReportApplyDto;
 import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.assess.service.project.CompileReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -30,15 +27,9 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DataReportAnalysisService dataReportAnalysisService;
-    @Autowired
-    private DataReportAnalysisFieldDao dataReportAnalysisFieldDao;
-    @Autowired
     private CompileReportDao compileReportDao;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private CompileReportDetailsDao compileReportDetailsDao;
     @Autowired
     private CompileReportService compileReportService;
 

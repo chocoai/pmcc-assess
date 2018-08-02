@@ -170,7 +170,6 @@
 
 
 <%@include file="/views/share/main_footer.jsp" %>
-<%--<script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>--%>
 <script type="application/javascript">
 
     $(function () {
