@@ -25,6 +25,12 @@
             }
         },
 
+        //对象不存在则返回空串
+        toString:function (o) {
+            if (!o)return "";
+            return o;
+        },
+
         //提取字段
         extractField: function (text) {
             if (!text) return text;

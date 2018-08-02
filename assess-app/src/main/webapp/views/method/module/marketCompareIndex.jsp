@@ -165,7 +165,9 @@
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
-            setElementEditable();
+            if(!defaluts.readonly){
+                setElementEditable();
+            }
         }
 
         //初始头部
@@ -375,23 +377,66 @@
 
         //数据校验
         marketCompare.valid = function () {
-            //1.校验平均价是否计算出
-            //2.校验是否必须填写权重信息
-            //3.校验权重是否填写完整并且和是否为1
-            //4.校验权重对应的权重描述是否填写
-
-
-        }
-
-        //保存
-        marketCompare.save = function (callback) {
-            //1.委估对象主要保存 结果价格
-            //2.获取到各个案例的数据
             if (!marketCompare.isPass) {
                 toastr.error('案例错误请检查案例');
                 return false;
             }
+            //数据验证
+            //1.校验平均价是否计算出
+            //2.校验是否必须填写权重信息
+            //3.校验权重是否填写完整并且和是否为1
+            //4.校验权重对应的权重描述是否填写
+            var data = marketCompare.getData();
+            if (!data.evaluationItem.averagePrice) {
+                toastr.error('【平均价】还未计算出');
+                return false;
+            }
 
+            var isWeightValid = false;//是否验证权重相关信息
+            $.each(data.caseItemList, function (k, caseItem) {
+                var caseDifference = parseFloat(caseItem.caseDifference.replace('%', ''));
+                if (caseDifference >= 30) {
+                    isWeightValid = true;
+                    return false;
+                }
+            })
+            if (isWeightValid) {
+                var isWeightEmpty = false;
+                $.each(data.caseItemList, function (k, caseItem) {
+                    if (caseItem.weight == undefined || caseItem.weight == '' || caseItem.weightDescription == '空') {
+                        isWeightEmpty = true;
+                        return false;
+                    }
+                })
+                if (isWeightEmpty) {
+                    toastr.error('【权重】必须填写');
+                    return false;
+                }
+
+                var weightTotal = 0;
+                var isWeightDescEmpty = false;
+                $.each(data.caseItemList, function (k, caseItem) {
+                    var weight = parseFloat(caseItem.weight);
+                    weightTotal += weight;
+                    if (caseItem.weightDescription == undefined || caseItem.weightDescription == '' || caseItem.weightDescription == '空') {
+                        isWeightDescEmpty = true;
+                    }
+                })
+                if (weightTotal != 1) {
+                    toastr.error('权重和必须为1');
+                    return false;
+                }
+
+                if (isWeightDescEmpty) {
+                    toastr.error('【权重描述】必须填写');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //获取需要保存的数据
+        marketCompare.getData = function () {
             var evaluationItemId;
             var caseItemIdArray = [];
             var table = $("#tb_md_mc_item_list");
@@ -481,57 +526,12 @@
                 }
                 data.caseItemList.push(caseItem);
             })
+            return data;
+        }
 
-            //数据验证
-            //1.校验平均价是否计算出
-            //2.校验是否必须填写权重信息
-            //3.校验权重是否填写完整并且和是否为1
-            //4.校验权重对应的权重描述是否填写
-            if (!averagePrice) {
-                toastr.error('【平均价】还未计算出');
-                return false;
-            }
-
-            var isWeightValid = false;//是否验证权重相关信息
-            $.each(data.caseItemList, function (k, caseItem) {
-                var caseDifference = parseFloat(caseItem.caseDifference.replace('%', ''));
-                if (caseDifference >= 30) {
-                    isWeightValid = true;
-                    return false;
-                }
-            })
-            if (isWeightValid) {
-                var isWeightEmpty = false;
-                $.each(data.caseItemList, function (k, caseItem) {
-                    if (caseItem.weight == undefined || caseItem.weight == '' || caseItem.weightDescription == '空') {
-                        isWeightEmpty = true;
-                        return false;
-                    }
-                })
-                if (isWeightEmpty) {
-                    toastr.error('【权重】必须填写');
-                    return false;
-                }
-
-                var weightTotal = 0;
-                var isWeightDescEmpty = false;
-                $.each(data.caseItemList, function (k, caseItem) {
-                    var weight = parseFloat(caseItem.weight);
-                    weightTotal += weight;
-                    if (caseItem.weightDescription == undefined || caseItem.weightDescription == '' || caseItem.weightDescription == '空') {
-                        isWeightDescEmpty = true;
-                    }
-                })
-                if (weightTotal != 1) {
-                    toastr.error('权重和必须为1');
-                    return false;
-                }
-
-                if (isWeightDescEmpty) {
-                    toastr.error('【权重描述】必须填写');
-                    return false;
-                }
-            }
+        //保存
+        marketCompare.save = function (callback) {
+            var data = marketCompare.getData();
 
             $.ajax({
                 url: '${pageContext.request.contextPath}/marketCompare/saveResult',
@@ -598,8 +598,45 @@
 </script>
 
 <%--测算结果模板只读--%>
-<script type="text/html" id="">
+<script type="text/html" id="resultTempView">
+    <tbody>
+    <tr>
+        <td colspan="{colspan}"><span style="font-weight: bold;font-size: 16px;">测算结果 </span>
 
+        </td>
+    </tr>
+    <tr>
+        <td>比准价格</td>
+        <td></td>
+        {caseSpecificPrice}
+    </tr>
+    <tr>
+        <td>修正差额</td>
+        <td></td>
+        {caseCorrectionDifference}
+    </tr>
+    <tr>
+        <td>案例差异</td>
+        <td></td>
+        {caseCaseDifference}
+    </tr>
+    <tr>
+        <td>权重</td>
+        <td></td>
+        {caseWeight}
+    </tr>
+    <tr>
+        <td>权重描述</td>
+        <td></td>
+        {caseWeightDescription}
+    </tr>
+    <tr>
+        <td>加权平均价</td>
+        <td>{averagePrice}</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
 </script>
 
 <%--文本模板--%>
@@ -656,21 +693,23 @@
 
 <%--行数据模板只读--%>
 <script type="text/html" id="pRowTempView">
-    <tr>
+    <tbody style="background-color: #fbfbfb">
+    <tr data-name="field">
         <td rowspan="4" style="vertical-align: middle">{fieldValue}</td>
     </tr>
-    <tr>
+    <tr data-name="text">
         <td>{evaluationText}</td>
         {caseText}
     </tr>
-    <tr>
+    <tr data-name="score">
         <td>{evaluationScore}</td>
         {caseScore}
     </tr>
-    <tr>
+    <tr data-name="ratio">
         <td>{evaluationRatio}</td>
         {caseRatio}
     </tr>
+    </tbody>
 </script>
 
 <%--行显示数据模板--%>

@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -46,6 +47,26 @@ public class PoiTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void gener() {
+
+        System.out.println(extractField("sdf{fff}ff{vvv}"));
+    }
+
+    public String extractField(String template) {
+        String regex = "\\{(.*?)\\}";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(template);
+        List<Map<String, String>> maps = Lists.newArrayList();
+        while (m.find()) {
+            Map<String, String> map = Maps.newHashMap();
+            String result = m.group();
+            map.put(result.replaceAll("^\\{|\\}$",""), "");
+            maps.add(map);
+        }
+        return JSON.toJSONString(maps);
     }
 
     public void importData(String path, Integer startRowNumber, Integer csrProjectId) throws IOException {

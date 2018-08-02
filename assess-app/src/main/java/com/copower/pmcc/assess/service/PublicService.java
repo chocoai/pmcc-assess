@@ -1,9 +1,15 @@
 package com.copower.pmcc.assess.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.sun.javafx.collections.MappingChange;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-5-29.
@@ -48,5 +57,25 @@ public class PublicService {
             return FormatUtils.transformListString(LangUtils.transform(sysUserList, p -> p.getUserName()));
         }
         return "";
+    }
+
+    /**
+     * 提取模板中的字段为json格式字符串
+     * @param template
+     * @return
+     */
+    public String extractField(String template) {
+        String regex = "\\{(.*?)\\}";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(template);
+        List<Map<String, String>> maps = Lists.newArrayList();
+        while (m.find()) {
+            Map<String, String> map = Maps.newHashMap();
+            String result = m.group();
+            map.put("key",result.replaceAll("^\\{|\\}$",""));
+            map.put("value","");
+            maps.add(map);
+        }
+        return JSON.toJSONString(maps);
     }
 }

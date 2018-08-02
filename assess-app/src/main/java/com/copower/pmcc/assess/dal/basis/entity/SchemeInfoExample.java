@@ -415,6 +415,136 @@ public class SchemeInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andMethodTypeIsNull() {
+            addCriterion("method_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeIsNotNull() {
+            addCriterion("method_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeEqualTo(String value) {
+            addCriterion("method_type =", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotEqualTo(String value) {
+            addCriterion("method_type <>", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeGreaterThan(String value) {
+            addCriterion("method_type >", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("method_type >=", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeLessThan(String value) {
+            addCriterion("method_type <", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeLessThanOrEqualTo(String value) {
+            addCriterion("method_type <=", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeLike(String value) {
+            addCriterion("method_type like", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotLike(String value) {
+            addCriterion("method_type not like", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeIn(List<String> values) {
+            addCriterion("method_type in", values, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotIn(List<String> values) {
+            addCriterion("method_type not in", values, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeBetween(String value1, String value2) {
+            addCriterion("method_type between", value1, value2, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotBetween(String value1, String value2) {
+            addCriterion("method_type not between", value1, value2, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdIsNull() {
+            addCriterion("method_data_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdIsNotNull() {
+            addCriterion("method_data_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdEqualTo(Integer value) {
+            addCriterion("method_data_id =", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdNotEqualTo(Integer value) {
+            addCriterion("method_data_id <>", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdGreaterThan(Integer value) {
+            addCriterion("method_data_id >", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("method_data_id >=", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdLessThan(Integer value) {
+            addCriterion("method_data_id <", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdLessThanOrEqualTo(Integer value) {
+            addCriterion("method_data_id <=", value, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdIn(List<Integer> values) {
+            addCriterion("method_data_id in", values, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdNotIn(List<Integer> values) {
+            addCriterion("method_data_id not in", values, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdBetween(Integer value1, Integer value2) {
+            addCriterion("method_data_id between", value1, value2, "methodDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodDataIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("method_data_id not between", value1, value2, "methodDataId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

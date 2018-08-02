@@ -13,27 +13,14 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-            <jsp:include page="/views/task/scheme/module/evaluationPrinciplePublic.jsp">
-                <jsp:param name="method" value="${method}"></jsp:param>
-                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
-            </jsp:include>
-            <jsp:include page="/views/task/scheme/module/evaluationHypothesisPublic.jsp">
-                <jsp:param name="method" value="${method}"></jsp:param>
-                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
-            </jsp:include>
-            <jsp:include page="/views/task/scheme/module/evaluationBasisPublic.jsp">
-                <jsp:param name="method" value="${method}"></jsp:param>
-                <jsp:param name="purpose" value="${projectInfo.entrustPurpose}"></jsp:param>
-            </jsp:include>
+            <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交${projectInfo.entrustPurpose}</h2>
+                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -93,18 +80,26 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
-<script src="/pmcc-assess/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
+
+<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <script type="text/javascript">
     $(function () {
+        //市场比较法信息初始化
         marketCompare.init({
             marketCompare: JSON.parse($("#marketCompareJSON").val()),
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             cases: JSON.parse($("#casesJSON").val())
+        });
+
+        //支撑信息初始化
+        supportInfoModule.init({
+            supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
     })
 </script>
@@ -146,23 +141,28 @@
         })
     }
 
-
+    //提交
     function submit() {
+        if (!supportInfoModule.valid()) {
+            return false;
+        }
+        if (!marketCompare.valid()) {
+            return false;
+        }
         if (!$("#frm_task").valid()) {
             return false;
         }
 
-        //先保存市场比较法信息
-        marketCompare.save(function (id) {
-            alert('比较法数据保存完毕');
-            return false;
-            if ("${processInsId}" != "0") {
-                submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-            }
-            else {
-                submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
-            }
-        })
+        var data = {};
+        data.supportInfoList = supportInfoModule.getData();
+        data.marketCompare = marketCompare.getData();
+
+        if ("${processInsId}" != "0") {
+            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
+        }
+        else {
+            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
+        }
     }
 
 </script>

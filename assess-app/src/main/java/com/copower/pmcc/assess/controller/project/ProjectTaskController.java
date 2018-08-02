@@ -12,6 +12,8 @@ import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -51,6 +53,8 @@ public class ProjectTaskController {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
     public ModelAndView projectTaskIndex(Integer responsibilityId) {
@@ -191,7 +195,12 @@ public class ProjectTaskController {
     public ModelAndView projectTaskDetailsById(Integer projectDetailsId) {
         String viewUrl = "projectTaskAssist";
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
-        return getProjectTaskDetails(0, viewUrl, projectPlanDetails);
+        int boxId = 0;
+        if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
+            BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(projectPlanDetails.getProcessInsId());
+            boxId = boxRuDto.getBoxId();
+        }
+        return getProjectTaskDetails(boxId, viewUrl, projectPlanDetails);
     }
 
     private ModelAndView getProjectTaskDetails(Integer boxId, String viewUrl, ProjectPlanDetails projectPlanDetails) {

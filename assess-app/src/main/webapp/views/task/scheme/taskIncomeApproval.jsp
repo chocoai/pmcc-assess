@@ -11,8 +11,9 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -59,6 +60,16 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
+<script type="text/javascript">
+    $(function () {
+        //支撑信息初始化
+        supportInfoModule.init({
+            readonly: true,
+            supportInfo: JSON.parse($("#supportInfosJSON").val())
+        });
+    })
+</script>
 <script type="application/javascript">
     $(function () {
         FileUtils.getFileShows({

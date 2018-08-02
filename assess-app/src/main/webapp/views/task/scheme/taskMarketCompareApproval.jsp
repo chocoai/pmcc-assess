@@ -14,6 +14,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <!--填写表单-->
+            <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -64,6 +65,8 @@
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
+
+<input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <script type="text/javascript">
     $(function () {
         marketCompare.init({
@@ -72,6 +75,12 @@
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
             cases: JSON.parse($("#casesJSON").val())
+        });
+
+        //支撑信息初始化
+        supportInfoModule.init({
+            readonly: true,
+            supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
     })
 </script>

@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.test;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kings on 2018-6-7.
@@ -61,7 +65,8 @@ public class replaceTest {
 
     @Test
     public void gener() {
-        generateTemp("1,2");
+
+        System.out.println(extractField("sdf{fff}ff{vvv}"));
     }
 
     public void generateTemp(String ids) {
@@ -116,7 +121,18 @@ public class replaceTest {
         return s;
     }
 
-
+    public String extractField(String template) {
+        String regex = "(\\{.*?\\})";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(template);
+        List<Map<String, String>> maps = Lists.newArrayList();
+        Map<String, String> map = Maps.newHashMap();
+        while (m.find()) {
+            String result = m.group();
+            map.put(result, "");
+        }
+        return JSON.toJSONString(maps);
+    }
 
 }
 

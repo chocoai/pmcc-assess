@@ -13,6 +13,10 @@ public class SchemeInfo {
 
     private Integer evaluationObjectId;
 
+    private String methodType;
+
+    private Integer methodDataId;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +61,22 @@ public class SchemeInfo {
 
     public void setEvaluationObjectId(Integer evaluationObjectId) {
         this.evaluationObjectId = evaluationObjectId;
+    }
+
+    public String getMethodType() {
+        return methodType;
+    }
+
+    public void setMethodType(String methodType) {
+        this.methodType = methodType == null ? null : methodType.trim();
+    }
+
+    public Integer getMethodDataId() {
+        return methodDataId;
+    }
+
+    public void setMethodDataId(Integer methodDataId) {
+        this.methodDataId = methodDataId;
     }
 
     public String getCreator() {

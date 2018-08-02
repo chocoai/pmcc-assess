@@ -1,21 +1,27 @@
 package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
+import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeInfoDetailVDto;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.data.EvaluationBasisService;
-import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
-import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeSupportInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -31,26 +37,26 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private EvaluationHypothesisService hypothesisService;
+    private ProjectInfoService projectInfoService;
     @Autowired
-    private EvaluationPrincipleService principleService;
-    @Autowired
-    private EvaluationBasisService basisService;
-
+    private SchemeSupportInfoService schemeSupportInfoService;
     @Autowired
     private SchemeInfoService schemeInfoService;
-
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
+        //初始化支撑数据
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_INCOME);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", processInsId, boxId, taskId, agentUserAccount);
-
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -66,20 +72,33 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", processInsId, boxId, taskId, agentUserAccount);
-
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public void saveDraft(ProjectPlanDetails projectPlanDetails, String formData) throws BusinessException {
-        if (!StringUtils.isEmpty(formData)){
-        }
+
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
+    }
+
+    /**
+     * 给modelview设置显示参数
+     *
+     * @param modelAndView
+     */
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        //评估支持数据
+        List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
+        modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
+        //收益法相关
+
     }
 
     /**
@@ -91,30 +110,34 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
      */
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        if (!StringUtils.isEmpty(formData)){
-            try {
-                SchemeInfoDetailVDto detailVDto = schemeInfoService.formDataDto(formData);
-                detailVDto.setProjectID(projectPlanDetails.getProjectId()+"");
-                detailVDto.setProcessInsId(processInsId);
-                detailVDto.setPlanDetailsId(projectPlanDetails.getId());
-                if (detailVDto!=null){
-                    schemeInfoService.saveChange(detailVDto);
-                }
-            }catch (Exception e){
-                logger.error("异常! "+e.getMessage());
+        SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
+        if(CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())){
+            for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
+                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
+
+        SchemeInfo schemeInfo=new SchemeInfo();
+        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        schemeInfo.setProcessInsId(processInsId);
+        schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_INCOME);
+        schemeInfo.setMethodDataId(0);
+        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     @Override
     public void approvalCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        if (!StringUtils.isEmpty(formData)){
-        }
+
     }
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        if (!StringUtils.isEmpty(formData)){
+        SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
+        if(CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())){
+            for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
+                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
+            }
         }
     }
 }
