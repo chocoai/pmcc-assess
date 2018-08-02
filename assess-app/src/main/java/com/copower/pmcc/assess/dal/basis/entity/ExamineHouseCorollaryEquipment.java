@@ -9,17 +9,15 @@ public class ExamineHouseCorollaryEquipment {
 
     private Integer examineType;
 
-    private Integer houseId;
-
     private Integer type;
 
     private Integer category;
 
     private String name;
 
-    private String use;
+    private String useH;
 
-    private String parameterIndex;
+    private String parameterIndexH;
 
     private Integer price;
 
@@ -55,14 +53,6 @@ public class ExamineHouseCorollaryEquipment {
         this.examineType = examineType;
     }
 
-    public Integer getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -87,20 +77,20 @@ public class ExamineHouseCorollaryEquipment {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getUse() {
-        return use;
+    public String getUseH() {
+        return useH;
     }
 
-    public void setUse(String use) {
-        this.use = use == null ? null : use.trim();
+    public void setUseH(String useH) {
+        this.useH = useH == null ? null : useH.trim();
     }
 
-    public String getParameterIndex() {
-        return parameterIndex;
+    public String getParameterIndexH() {
+        return parameterIndexH;
     }
 
-    public void setParameterIndex(String parameterIndex) {
-        this.parameterIndex = parameterIndex == null ? null : parameterIndex.trim();
+    public void setParameterIndexH(String parameterIndexH) {
+        this.parameterIndexH = parameterIndexH == null ? null : parameterIndexH.trim();
     }
 
     public Integer getPrice() {

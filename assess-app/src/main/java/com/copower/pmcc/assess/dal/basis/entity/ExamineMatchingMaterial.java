@@ -9,8 +9,6 @@ public class ExamineMatchingMaterial {
 
     private Integer examineType;
 
-    private Integer estateId;
-
     private String name;
 
     private Integer category;
@@ -47,14 +45,6 @@ public class ExamineMatchingMaterial {
 
     public void setExamineType(Integer examineType) {
         this.examineType = examineType;
-    }
-
-    public Integer getEstateId() {
-        return estateId;
-    }
-
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
     }
 
     public String getName() {

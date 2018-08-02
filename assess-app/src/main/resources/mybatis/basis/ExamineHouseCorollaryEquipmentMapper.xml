@@ -5,12 +5,11 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="use" property="use" jdbcType="VARCHAR" />
-    <result column="parameter_index" property="parameterIndex" jdbcType="VARCHAR" />
+    <result column="use_h" property="useH" jdbcType="VARCHAR" />
+    <result column="parameter_index_h" property="parameterIndexH" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="INTEGER" />
     <result column="maintenance_status" property="maintenanceStatus" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -76,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, house_id, type, category, name, use, parameter_index, 
-    price, maintenance_status, creator, gmt_created, gmt_modified
+    id, declare_id, examine_type, type, category, name, use_h, parameter_index_h, price, 
+    maintenance_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseCorollaryEquipmentExample" >
     select
@@ -113,16 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_house_corollary_equipment (declare_id, examine_type, house_id, 
-      type, category, name, 
-      use, parameter_index, price, 
-      maintenance_status, creator, gmt_created, 
-      gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{use,jdbcType=VARCHAR}, #{parameterIndex,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
-      #{maintenanceStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_house_corollary_equipment (declare_id, examine_type, type, 
+      category, name, use_h, 
+      parameter_index_h, price, maintenance_status, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{category,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{useH,jdbcType=VARCHAR}, 
+      #{parameterIndexH,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{maintenanceStatus,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineHouseCorollaryEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,9 +135,6 @@
       <if test="examineType != null" >
         examine_type,
       </if>
-      <if test="houseId != null" >
-        house_id,
-      </if>
       <if test="type != null" >
         type,
       </if>
@@ -148,11 +144,11 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="use != null" >
-        use,
+      <if test="useH != null" >
+        use_h,
       </if>
-      <if test="parameterIndex != null" >
-        parameter_index,
+      <if test="parameterIndexH != null" >
+        parameter_index_h,
       </if>
       <if test="price != null" >
         price,
@@ -177,9 +173,6 @@
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
       </if>
-      <if test="houseId != null" >
-        #{houseId,jdbcType=INTEGER},
-      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
@@ -189,11 +182,11 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        #{use,jdbcType=VARCHAR},
+      <if test="useH != null" >
+        #{useH,jdbcType=VARCHAR},
       </if>
-      <if test="parameterIndex != null" >
-        #{parameterIndex,jdbcType=VARCHAR},
+      <if test="parameterIndexH != null" >
+        #{parameterIndexH,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         #{price,jdbcType=INTEGER},
@@ -230,9 +223,6 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
-      <if test="record.houseId != null" >
-        house_id = #{record.houseId,jdbcType=INTEGER},
-      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -242,11 +232,11 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.use != null" >
-        use = #{record.use,jdbcType=VARCHAR},
+      <if test="record.useH != null" >
+        use_h = #{record.useH,jdbcType=VARCHAR},
       </if>
-      <if test="record.parameterIndex != null" >
-        parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
+      <if test="record.parameterIndexH != null" >
+        parameter_index_h = #{record.parameterIndexH,jdbcType=VARCHAR},
       </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=INTEGER},
@@ -273,12 +263,11 @@
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
-      house_id = #{record.houseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      use = #{record.use,jdbcType=VARCHAR},
-      parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
+      use_h = #{record.useH,jdbcType=VARCHAR},
+      parameter_index_h = #{record.parameterIndexH,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=INTEGER},
       maintenance_status = #{record.maintenanceStatus,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -297,9 +286,6 @@
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
       </if>
-      <if test="houseId != null" >
-        house_id = #{houseId,jdbcType=INTEGER},
-      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
@@ -309,11 +295,11 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        use = #{use,jdbcType=VARCHAR},
+      <if test="useH != null" >
+        use_h = #{useH,jdbcType=VARCHAR},
       </if>
-      <if test="parameterIndex != null" >
-        parameter_index = #{parameterIndex,jdbcType=VARCHAR},
+      <if test="parameterIndexH != null" >
+        parameter_index_h = #{parameterIndexH,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=INTEGER},
@@ -337,12 +323,11 @@
     update tb_examine_house_corollary_equipment
     set declare_id = #{declareId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      use = #{use,jdbcType=VARCHAR},
-      parameter_index = #{parameterIndex,jdbcType=VARCHAR},
+      use_h = #{useH,jdbcType=VARCHAR},
+      parameter_index_h = #{parameterIndexH,jdbcType=VARCHAR},
       price = #{price,jdbcType=INTEGER},
       maintenance_status = #{maintenanceStatus,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

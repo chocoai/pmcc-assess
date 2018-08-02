@@ -102,6 +102,18 @@ public class ExamineHouseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/examine_house_environment_use",method = {RequestMethod.GET},name = "使用环境")
+    public HttpResult examine_house_environment_use() {
+        try {
+            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_ENVIRONMENT_USE);
+            return HttpResult.newCorrectResult(baseDataDic);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
+            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/examineunithuxingSelect",method = {RequestMethod.GET},name = "户型选择")
     public HttpResult examineunithuxingSelect(Integer declareId,Integer examineType) {
         try {
