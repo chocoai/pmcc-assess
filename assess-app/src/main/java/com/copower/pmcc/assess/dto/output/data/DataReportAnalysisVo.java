@@ -4,23 +4,13 @@ import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 
 public class DataReportAnalysisVo extends DataReportAnalysis {
 
-    private String categoryName;
+    private String reportAnalysisTypeName;
 
-    private String categoryFieldName;
-
-    public String getCategoryName() {
-        return categoryName;
+    public String getReportAnalysisTypeName() {
+        return reportAnalysisTypeName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getCategoryFieldName() {
-        return categoryFieldName;
-    }
-
-    public void setCategoryFieldName(String categoryFieldName) {
-        this.categoryFieldName = categoryFieldName;
+    public void setReportAnalysisTypeName(String reportAnalysisTypeName) {
+        this.reportAnalysisTypeName = reportAnalysisTypeName;
     }
 }

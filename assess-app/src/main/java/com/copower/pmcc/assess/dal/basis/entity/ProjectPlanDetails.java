@@ -74,8 +74,6 @@ public class ProjectPlanDetails {
 
     private Integer declareRecordId;
 
-    private Integer reportAnalysisCategory;
-
     private Integer areaGroupId;
 
     private Integer groupNumber;
@@ -358,14 +356,6 @@ public class ProjectPlanDetails {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
-    }
-
-    public Integer getReportAnalysisCategory() {
-        return reportAnalysisCategory;
-    }
-
-    public void setReportAnalysisCategory(Integer reportAnalysisCategory) {
-        this.reportAnalysisCategory = reportAnalysisCategory;
     }
 
     public Integer getAreaGroupId() {

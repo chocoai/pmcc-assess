@@ -1,34 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="supportInfoContent">
+<div class="compileInfoContent">
 
 </div>
 <script type="text/javascript">
-    var supportInfoModule = {};
+    var compileInfoModule = {};
 
     //初始化
-    supportInfoModule.init = function (options) {
+    compileInfoModule.init = function (options) {
         var defaluts = {
-            supportInfo: undefined,//支撑信息
+            compileInfo: undefined,//支撑信息
             readonly: false//
         };
         defaluts = $.extend({}, defaluts, options);
-        if (defaluts.supportInfo) {
-            $.each(defaluts.supportInfo, function (i, item) {
+        if (defaluts.compileInfo) {
+            $.each(defaluts.compileInfo, function (i, item) {
                 //检查该类型模板是否创建 未创建先创建类型模板 已创建则将字段信息直接归入到该模板下
-                if ($('#frm_support_type_' + item.supportType).length <= 0) {
-                    var supportInfoPanelHtml = $('#supportInfoPanel').html();
-                    supportInfoPanelHtml = supportInfoPanelHtml.replace(/{supportTypeName}/g, item.supportTypeName).replace(/{supportType}/g, item.supportType);
-                    $('.supportInfoContent').append(supportInfoPanelHtml);
+                if ($('#frm_compile_type_' + item.reportAnalysisType).length <= 0) {
+                    var compileInfoPanelHtml = $('#compileInfoPanel').html();
+                    compileInfoPanelHtml = compileInfoPanelHtml.replace(/{reportAnalysisTypeName}/g, item.reportAnalysisName).replace(/{reportAnalysisType}/g, item.reportAnalysisType);
+                    $('.compileInfoContent').append(compileInfoPanelHtml);
                 }
 
-                var supportInfoWellHtml = '';
+                var compileInfoWellHtml = '';
                 if (defaluts.readonly) {
-                    supportInfoWellHtml = $('#supportInfoWellView').html();
-                    supportInfoWellHtml = supportInfoWellHtml.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{content}/g, AssessCommon.toString(item.content));
+                    compileInfoWellHtml = $('#compileInfoWellView').html();
+                    compileInfoWellHtml = compileInfoWellHtml.replace(/{name}/g, AssessCommon.toString(item.name)).replace(/{content}/g, AssessCommon.toString(item.content));
                 } else {
-                    supportInfoWellHtml = $('#supportInfoWell').html();
-                    supportInfoWellHtml = supportInfoWellHtml.replace(/{id}/g, item.id).replace(/{name}/g, AssessCommon.toString(item.name));
-                    supportInfoWellHtml = supportInfoWellHtml.replace(/{template}/g, item.template).replace(/{content}/g, AssessCommon.toString(item.content));
+                    compileInfoWellHtml = $('#compileInfoWell').html();
+                    compileInfoWellHtml = compileInfoWellHtml.replace(/{id}/g, item.id).replace(/{name}/g, AssessCommon.toString(item.name));
+                    compileInfoWellHtml = compileInfoWellHtml.replace(/{template}/g, item.template).replace(/{content}/g, AssessCommon.toString(item.content));
                     //处理字段
                     var wellFields = '';
                     var fieldArray = JSON.parse(item.jsonContent);
@@ -38,22 +38,22 @@
                             if (j > 0 && j % 3 == 0) {
                                 wellFields += '</div><div class="form-group">';
                             }
-                            var supportInfoFieldHtml = $("#supportInfoField").html();
+                            var compileInfoFieldHtml = $("#compileInfoField").html();
                             console.log(fieldArray[j]);
-                            supportInfoFieldHtml = supportInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
-                            wellFields += supportInfoFieldHtml;
+                            compileInfoFieldHtml = compileInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
+                            wellFields += compileInfoFieldHtml;
                         }
                         wellFields += "</div>";
                     }
-                    supportInfoWellHtml = supportInfoWellHtml.replace(/{wellFields}/g, wellFields);
+                    compileInfoWellHtml = compileInfoWellHtml.replace(/{wellFields}/g, wellFields);
                 }
-                $('#frm_support_type_' + item.supportType).find('.x_content').append(supportInfoWellHtml);
+                $('#frm_compile_type_' + item.reportAnalysisType).find('.x_content').append(compileInfoWellHtml);
             })
         }
     }
 
     //内容替换
-    supportInfoModule.fieldReplace = function (_this) {
+    compileInfoModule.fieldReplace = function (_this) {
         var well = $(_this).closest(".well");
         var template = well.find('.template').text();
         well.find('.content-field').find('input:text').each(function () {
@@ -65,9 +65,9 @@
     };
 
     //验证
-    supportInfoModule.valid = function () {
+    compileInfoModule.valid = function () {
         //先验证数据
-        var forms = $('.supportInfoContent').find('form');
+        var forms = $('.compileInfoContent').find('form');
         for (var i = 0; i < forms.length; i++) {
             var form = $(forms[i]);
             var title = form.closest('.x_panel').find('.x_title').find('h2').text();
@@ -79,35 +79,35 @@
     }
 
     //获取需要保存的数据
-    supportInfoModule.getData = function () {
-        var supportInfoArray = [];
-        $('.supportInfoContent').find('.well').each(function () {
-            var supportInfo = {};
-            supportInfo.id = $(this).find('[name=id]').val();
-            supportInfo.content = $(this).find('[data-name=content]').val();
-            supportInfo.jsonContent = [];
+    compileInfoModule.getData = function () {
+        var compileInfoArray = [];
+        $('.compileInfoContent').find('.well').each(function () {
+            var compileInfo = {};
+            compileInfo.id = $(this).find('[name=id]').val();
+            compileInfo.content = $(this).find('[data-name=content]').val();
+            compileInfo.jsonContent = [];
             $(this).find('.content-field').find(':text').each(function () {
                 var keyValue = {};
                 keyValue.key = $(this).attr('data-name');
                 keyValue.value = $(this).val();
-                supportInfo.jsonContent.push(keyValue);
+                compileInfo.jsonContent.push(keyValue);
             })
-            supportInfoArray.push(supportInfo);
+            compileInfoArray.push(compileInfo);
         })
-        return supportInfoArray;
+        return compileInfoArray;
     }
 </script>
 
-<script type="text/html" id="supportInfoPanel">
+<script type="text/html" id="compileInfoPanel">
     <div class="x_panel">
         <div class="x_title collapse-link">
-            <h2>{supportTypeName}</h2>
+            <h2>{reportAnalysisTypeName}</h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             </ul>
             <div class="clearfix"></div>
         </div>
-        <form id="frm_support_type_{supportType}" class="form-horizontal">
+        <form id="frm_compile_type_{reportAnalysisType}" class="form-horizontal">
             <div class="x_content">
 
             </div>
@@ -115,7 +115,7 @@
     </div>
 </script>
 
-<script type="text/html" id="supportInfoWell">
+<script type="text/html" id="compileInfoWell">
     <div class="well">
         <input type="hidden" name="id" value="{id}">
         <div class="form-group">
@@ -138,7 +138,7 @@
     </div>
 </script>
 
-<script type="text/html" id="supportInfoWellView">
+<script type="text/html" id="compileInfoWellView">
     <div class="well">
         <div class="form-group">
             <div class="x-valid"><label class="col-sm-1 control-label">{name}</label>
@@ -151,14 +151,14 @@
 </script>
 
 <!--动态字段-->
-<script type="text/html" id="supportInfoField">
+<script type="text/html" id="compileInfoField">
     <div class="x-valid">
         <label class="col-sm-1 control-label">
             {key}
         </label>
         <div class="col-sm-3">
             <input type="text" class="form-control" data-name="{key}" value="{value}"
-                   onkeyup="supportInfoModule.fieldReplace(this);">
+                   onkeyup="compileInfoModule.fieldReplace(this);">
         </div>
     </div>
 </script>

@@ -1,10 +1,10 @@
-package com.copower.pmcc.assess.service.project;
+package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportRecord;
-import com.copower.pmcc.assess.dto.input.project.GenerateReportApplyDto;
-import com.copower.pmcc.assess.dto.output.project.GenerateReportRecordVo;
+import com.copower.pmcc.assess.dto.input.project.generate.GenerateReportApplyDto;
+import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;

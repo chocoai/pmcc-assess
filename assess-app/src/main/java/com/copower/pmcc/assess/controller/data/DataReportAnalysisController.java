@@ -35,16 +35,16 @@ public class DataReportAnalysisController {
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
-        List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/evaluationBasisView");
-        modelAndView.addObject("methodDicList", methodDicList);
+        List<BaseDataDic> reportAnalysisTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
+        modelAndView.addObject("reportAnalysisTypeList", reportAnalysisTypeList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo list(String name) {
-        return dataReportAnalysisService.getReportAnalysisList(name);
+    public BootstrapTableVo list(String name,Integer reportAnalysisType) {
+        return dataReportAnalysisService.getReportAnalysisList(name,reportAnalysisType);
     }
 
     @ResponseBody

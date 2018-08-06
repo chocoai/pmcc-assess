@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.input.project;
+package com.copower.pmcc.assess.dto.input.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportRecord;
 

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.input.word;
+package com.copower.pmcc.assess.dto.input;
 
 import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 

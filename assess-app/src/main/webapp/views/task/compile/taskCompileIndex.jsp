@@ -11,96 +11,9 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-            <form id="frm_compile" class="form-horizontal">
-                <c:forEach items="${compileReportDetailsList}" var="item">
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h2>${item.categoryFieldName}</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                内容
-                            </label>
-                            <div class="col-sm-11">
-                                <input type="hidden" name="id" value="${item.id}">
-                                <input type="hidden" name="template" value="${item.template}">
-                                <textarea class="form-control"
-                                          name="content">${empty item.content?item.template:item.content}</textarea>
-                            </div>
-                        </div>
-                        <div class="content-field">
-                        </div>
-                    </div>
-                </c:forEach>
-            </form>
-            <script type="text/javascript">
-                $(function () {
-                    getAllField();
-                })
-                //找出所有模板具有的字段
-                function getAllField() {
-                    $("#frm_compile").find('[name="template"]').each(function () {
-                        var panel = $(this).closest('.x_panel');
-                        var fieldArray = AssessCommon.extractField($(this).val());
-                        if (fieldArray && fieldArray.length > 0) {
-                            var html = createDynaicFieldHtml(fieldArray, 'fieldReplace');
-                            panel.find('.content-field').empty().append(html);
-                        }
-                    })
-                }
-
-                //创建动态字段html
-                function createDynaicFieldHtml(fieldArray, functionName) {
-                    if (fieldArray) {
-                        var resultHtml = '<div class="form-group">';
-                        $.each(fieldArray, function (i, item) {
-                            if (i > 0 && i % 3 == 0) {
-                                resultHtml += '</div><div class="form-group">';
-                            }
-                            var templateHtml = $("#dynamicFieldHtml").html();
-                            templateHtml = templateHtml.replace(/{name}/g, item).replace(/{functionName}/, functionName);
-                            resultHtml += templateHtml;
-                        })
-                        resultHtml += '</div>';
-                        return resultHtml;
-                    } else {
-                        return '';
-                    }
-                }
-
-                //字段替换
-                function fieldReplace(_this) {
-                    //1.先找到模板 2.再依次找到字段填写的信息
-                    var tabPane = $(_this).closest(".x_panel");
-                    var template = tabPane.find('[name="template"]').val();
-                    tabPane.find('.content-field').find('input:text').each(function () {
-                        if ($(this).val()) {
-                            template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-                        }
-                    })
-                    tabPane.find('[name="content"]').val(template);
-                }
-            </script>
-
-            <!--动态字段-->
-            <script type="text/html" id="dynamicFieldHtml">
-                <label class="col-sm-1 control-label">
-                    {name}
-                </label>
-                <div class="x-valid">t
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
-                    </div>
-                </div>
-            </script>
-
+            <jsp:include page="/views/task/compile/module/compileInfoModule.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -168,8 +81,16 @@
 </div>
 </body>
 
-
+<input type="hidden" id="compileReportDetailsJSON" value='${compileReportDetailsJSON}'>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript">
+    $(function () {
+        //初始化
+        compileInfoModule.init({
+            compileInfo: JSON.parse($("#compileReportDetailsJSON").val())
+        });
+    })
+</script>
 <script type="application/javascript">
 
     $(function () {
@@ -188,8 +109,7 @@
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
             },
-            deleteFlag: true
-        }, {
+            deleteFlag: true,
             onUploadComplete: function () {
                 loadUploadFiles();
             }
@@ -212,23 +132,20 @@
 
     //提交
     function submit() {
+        if (!compileInfoModule.valid()) {
+            return false;
+        }
         if (!$("#frm_task").valid()) {
             return false;
         }
         var data = {};
-        data.compileReportDetailsList = [];
-        $('#frm_compile').find('.x_panel').each(function () {
-            var compileReportDetails = {};
-            compileReportDetails.id = $(this).find('[name="id"]').val();
-            compileReportDetails.content = $(this).find('[name="content"]').val();
-            data.compileReportDetailsList.push(compileReportDetails);
-        })
-        var formData = JSON.stringify(data);
+        data.compileReportDetailList = compileInfoModule.getData();
+
         if ("${processInsId}" != "0") {
-            submitEditToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 

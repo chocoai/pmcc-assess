@@ -99,19 +99,18 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     }
 
 
-
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
 
         SchemeMarketCompareApplyDto schemeMarketCompareApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
         MdMarketCompare mdMarketCompare = mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
-        if(CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())){
+        if (CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())) {
             for (SchemeSupportInfo schemeSupportInfo : schemeMarketCompareApplyDto.getSupportInfoList()) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
 
-        SchemeInfo schemeInfo=new SchemeInfo();
+        SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
@@ -128,8 +127,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeMarketCompareApplyDto schemeMarketCompareApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
-        MdMarketCompare mdMarketCompare = mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
-        if(CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())){
+        mdMarketCompareService.saveResult(schemeMarketCompareApplyDto.getMarketCompare());
+        if (CollectionUtils.isNotEmpty(schemeMarketCompareApplyDto.getSupportInfoList())) {
             for (SchemeSupportInfo schemeSupportInfo : schemeMarketCompareApplyDto.getSupportInfoList()) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }

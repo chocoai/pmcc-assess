@@ -1,14 +1,14 @@
-package com.copower.pmcc.assess.service.project.taks.assist;
+package com.copower.pmcc.assess.service.project.compile;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReport;
-import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetails;
+import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dto.input.project.CompileReportApplyDto;
-import com.copower.pmcc.assess.dto.output.project.CompileReportDetailsVo;
+import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.project.CompileReportService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
@@ -32,44 +32,52 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     private CommonService commonService;
     @Autowired
     private CompileReportService compileReportService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", "", 0, "0", "");
-        Integer category = projectPlanDetails.getReportAnalysisCategory();
-        compileReportService.initReportDetails(projectPlanDetails.getId());
-        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
-        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        compileReportService.initReportDetail(projectPlanDetails.getId(),projectPhase.getPhaseKey());
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", processInsId, boxId, taskId, agentUserAccount);
-        Integer category = projectPlanDetails.getReportAnalysisCategory();
-        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
-        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileIndex", processInsId, boxId, taskId, agentUserAccount);
-        Integer category = projectPlanDetails.getReportAnalysisCategory();
-        List<CompileReportDetailsVo> compileReportDetailsList = compileReportService.getCompileReportDetailsList(projectPlanDetails.getId(), category);
-        modelAndView.addObject("compileReportDetailsList",compileReportDetailsList);
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
-    }
-
-    @Override
-    public void saveDraft(ProjectPlanDetails projectPlanDetails, String formData) throws BusinessException {
-
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/compile/taskCompileApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
+    }
+
+    /**
+     * 给modelview设置显示参数
+     *
+     * @param modelAndView
+     */
+    private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        List<CompileReportDetail> compileReportDetailsList = compileReportService.getReportDetailList(projectPlanDetails.getId());
+        modelAndView.addObject("compileReportDetailsJSON",JSON.toJSONString(compileReportDetailsList));
+    }
+
+    @Override
+    public void saveDraft(ProjectPlanDetails projectPlanDetails, String formData) throws BusinessException {
+
     }
 
     @Override
@@ -82,10 +90,10 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
         compileReportDao.save(compileReport);   //保存主表
 
         CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
-        List<CompileReportDetails> compileReportDetailsList = compileReportApplyDto.getCompileReportDetailsList();
-        if(CollectionUtils.isNotEmpty(compileReportDetailsList)){
-            for (CompileReportDetails compileReportDetails : compileReportDetailsList) {
-                compileReportService.saveReportDetails(compileReportDetails);
+        List<CompileReportDetail> compileReportDetailList = compileReportApplyDto.getCompileReportDetailList();
+        if(CollectionUtils.isNotEmpty(compileReportDetailList)){
+            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
+                compileReportService.saveReportDetail(compileReportDetail);
             }
         }
     }
@@ -99,10 +107,10 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         //返回提交走这里
         CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
-        List<CompileReportDetails> compileReportDetailsList = compileReportApplyDto.getCompileReportDetailsList();
-        if(CollectionUtils.isNotEmpty(compileReportDetailsList)){
-            for (CompileReportDetails compileReportDetails : compileReportDetailsList) {
-                compileReportService.saveReportDetails(compileReportDetails);
+        List<CompileReportDetail> compileReportDetailList = compileReportApplyDto.getCompileReportDetailList();
+        if(CollectionUtils.isNotEmpty(compileReportDetailList)){
+            for (CompileReportDetail compileReportDetail : compileReportDetailList) {
+                compileReportService.saveReportDetail(compileReportDetail);
             }
         }
     }

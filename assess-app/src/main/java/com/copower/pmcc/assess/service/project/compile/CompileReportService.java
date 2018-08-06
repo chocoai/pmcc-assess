@@ -1,25 +1,40 @@
-package com.copower.pmcc.assess.service.project.plan.service;
+package com.copower.pmcc.assess.service.project.compile;
+
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeEvaluationObjectDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeEvaluationObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * Created by zly on 2018/5/21.
+ * Created by kings on 2018-5-29.
  */
 @Service
-public class ProjectPlanCompileService {
-
+public class CompileReportService {
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private CompileReportDetailDao compileReportDetailDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataReportAnalysisService dataReportAnalysisService;
     @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
@@ -27,7 +42,11 @@ public class ProjectPlanCompileService {
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
 
-    public void initialize(ProjectPlan projectPlan) {
+    /**
+     * 初始化计划信息
+     * @param projectPlan
+     */
+    public void initializePlan(ProjectPlan projectPlan) {
         Integer planId = projectPlan.getId();
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
@@ -81,5 +100,63 @@ public class ProjectPlanCompileService {
                 }
             }
         }
+    }
+
+    /**
+     * 保存分析信息
+     *
+     * @param schemeReportDetail
+     */
+    public void saveReportDetail(CompileReportDetail schemeReportDetail) throws BusinessException {
+        if (schemeReportDetail == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if (schemeReportDetail.getId() != null && schemeReportDetail.getId() > 0) {
+            compileReportDetailDao.updateReportDetail(schemeReportDetail);
+        } else {
+            schemeReportDetail.setCreator(commonService.thisUserAccount());
+            compileReportDetailDao.addReportDetail(schemeReportDetail);
+        }
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<CompileReportDetail> getReportDetailList(Integer planDetailsId) {
+        CompileReportDetail where = new CompileReportDetail();
+        where.setPlanDetailsId(planDetailsId);
+        return compileReportDetailDao.getReportDetailList(where);
+    }
+
+    /**
+     * 初始化该任务所需要的分析信息
+     *
+     * @param planDetailsId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void initReportDetail(Integer planDetailsId, String phaseKey) {
+        int count = compileReportDetailDao.getCountByPlanDetailsId(planDetailsId);
+        if (count > 0) return;
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(phaseKey);
+        if (baseDataDic == null) return;
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getReportAnalysisList(baseDataDic.getId());
+        CompileReportDetail compileReportDetail = null;
+        if (CollectionUtils.isNotEmpty(reportAnalysisList)) {
+            for (DataReportAnalysis dataReportAnalysis : reportAnalysisList) {
+                compileReportDetail = new CompileReportDetail();
+                compileReportDetail.setCreator(commonService.thisUserAccount());
+                compileReportDetail.setName(dataReportAnalysis.getName());
+                compileReportDetail.setTemplate(dataReportAnalysis.getTemplate());
+                compileReportDetail.setReportAnalysisType(baseDataDic.getId());
+                compileReportDetail.setReportAnalysisName(baseDataDic.getName());
+                compileReportDetail.setJsonContent(publicService.extractField(dataReportAnalysis.getTemplate()));
+                compileReportDetail.setPlanDetailsId(planDetailsId);
+                compileReportDetailDao.addReportDetail(compileReportDetail);
+            }
+
+        }
+
     }
 }

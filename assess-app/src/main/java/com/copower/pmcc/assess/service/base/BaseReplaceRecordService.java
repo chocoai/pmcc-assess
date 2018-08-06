@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseReplaceRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReplaceRecord;
-import com.copower.pmcc.assess.dto.input.word.DataReplaceDto;
+import com.copower.pmcc.assess.dto.input.DataReplaceDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.google.common.collect.Maps;

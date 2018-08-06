@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -23,11 +25,12 @@ import java.util.List;
 @Service(value = "dataReportAnalysisService")
 public class DataReportAnalysisService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private CommonService commonService;
     @Autowired
     private DataReportAnalysisDao dataReportAnalysisDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 保存数据
@@ -70,11 +73,11 @@ public class DataReportAnalysisService {
      * @param name
      * @return
      */
-    public BootstrapTableVo getReportAnalysisList(String name) {
+    public BootstrapTableVo getReportAnalysisList(String name,Integer reportAnalysisType) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name);
+        List<DataReportAnalysis> hypothesisList = dataReportAnalysisDao.getReportAnalysisList(name,reportAnalysisType);
         List<DataReportAnalysisVo> vos = LangUtils.transform(hypothesisList, p -> getReportAnalysisVo(p));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataReportAnalysisVo>() : vos);
         vo.setTotal(page.getTotal());
@@ -82,7 +85,7 @@ public class DataReportAnalysisService {
     }
 
     /**
-     * 根据委估目的及评估方法获取数据列表
+     * 根据取数据列表
      *
      * @param reportAnalysisType
      * @return
@@ -96,6 +99,12 @@ public class DataReportAnalysisService {
         if (evaluationReportAnalysis == null) return null;
         DataReportAnalysisVo evaluationReportAnalysisVo = new DataReportAnalysisVo();
         BeanUtils.copyProperties(evaluationReportAnalysis, evaluationReportAnalysisVo);
+        if (evaluationReportAnalysis.getReportAnalysisType() != null) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(evaluationReportAnalysis.getReportAnalysisType());
+            if (baseDataDic != null) {
+                evaluationReportAnalysisVo.setReportAnalysisTypeName(baseDataDic.getName());
+            }
+        }
         return evaluationReportAnalysisVo;
     }
 

@@ -1,8 +1,7 @@
-package com.copower.pmcc.assess.service.project.plan.assist;
+package com.copower.pmcc.assess.service.project.compile;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanCompileService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,13 @@ public class ProjectPlanCompileAssist implements ProjectPlanInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectPlanCompileService projectPlanComplieService;
+    private CompileReportService  compileReportService;
 
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planIndex", "", 0, "-1", "");
-        projectPlanComplieService.initialize(projectPlan);
+        compileReportService.initializePlan(projectPlan);
         return modelAndView;
     }
 

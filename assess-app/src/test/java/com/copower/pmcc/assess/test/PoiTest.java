@@ -2,12 +2,13 @@ package com.copower.pmcc.assess.test;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.CreateInsertHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.entity.CsrBorrower;
+import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
@@ -259,8 +260,16 @@ public class PoiTest {
 
     @Test
     public void test2(){
-        JSONObject jsonObject = JSONObject.parseObject("[{\"name\":\"province_name\",\"title\":\"省\"},{\"name\":\"city_name\",\"title\":\"市\"},{\"name\":\"district_name\",\"title\":\"区县\"},{\"name\":\"name\",\"title\":\"名称\"},{\"name\":\"public_situation\",\"title\":\"共有情况\"},{\"name\":\"street_number\",\"title\":\"街道号\"},{\"name\":\"floor_area\",\"title\":\"建筑面积\"}]");
-        System.out.println(jsonObject);
+        String formData="{\"supportInfoList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
+        SchemeMarketCompareApplyDto compileReportApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
+        System.out.println(compileReportApplyDto.getSupportInfoList());
+    }
+
+    @Test
+    public void test3(){
+        String formData="{\"compileReportDetailList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
+        CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
+        System.out.println(compileReportApplyDto.getCompileReportDetailList());
     }
 
     @Test

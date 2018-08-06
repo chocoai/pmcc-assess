@@ -26,23 +26,28 @@
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
                             <div>
+                                <label class="col-sm-1 control-label">名称</label>
+                                <div class="col-sm-2">
+                                   <input type="text" id="queryName" class="form-control">
+                                </div>
+                            </div>
+                            <div>
                                 <label class="col-sm-1 control-label">报告类别</label>
                                 <div class="col-sm-2">
-                                    <select required class="form-control" id="queryName">
-                                        <option value="">请选择</option>
-                                        <c:forEach items="${categoryList}" var="item">
+                                    <select  class="form-control" id="queryReportAnalysisType">
+                                        <option value="">-请选择-</option>
+                                        <c:forEach items="${reportAnalysisTypeList}" var="item">
                                             <option value="${item.id}">${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
+                                <button type="button" class="btn btn-primary" onclick="loadReportAnalysisList()">
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success" onclick="addDataDic()"
+                                <button type="button" class="btn btn-success" onclick="addReportAnalysis()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -61,7 +66,8 @@
 </div>
 </body>
 <!-- 添加 -->
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -75,16 +81,25 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            报告分析类别
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10" id="method">
+                                            <input required type="text" class="form-control" name="name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required class="form-control" onchange="getFieldByPid()" name="category" id="category">
+                                            <select required class="form-control" name="reportAnalysisType">
                                                 <option value="">请选择</option>
-                                                <c:forEach items="${categoryList}" var="item">
+                                                <c:forEach items="${reportAnalysisTypeList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -94,26 +109,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            字段
-                                        </label>
-                                        <div class="col-sm-10" id="method">
-
-                                            <select id="categoryField" name="categoryField" class="form-control" required="required">
-                                                <option value="0">请选择</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模版
+                                            模版<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写模版" class="form-control" id="template" name="template" required="required" onkeyup="extractTemplateField()">
-
-                                            </textarea>
+                                            <textarea placeholder="请填写模版" class="form-control" id="template"
+                                                      name="template" required="required"
+                                                      onkeyup="extractTemplateField()"></textarea>
                                             <div class="template-field">
 
                                             </div>
@@ -125,10 +126,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default" onclick="removeSubDataDic()">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
+                    <button type="button" class="btn btn-primary" onclick="saveReportAnalysis()">
                         保存
                     </button>
                 </div>
@@ -137,87 +138,11 @@
     </div>
 </div>
 
-<!-- 显示子项列表 -->
-<div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent">子项数据</h3>
-            </div>
-            <input type="hidden" name="analysisNumber" id="analysisNumber">
-            <div class="panel-body">
-        <span id="toolbarSub">
-            <button type="button" class="btn btn-success" onclick="addMethodField()"
-                    data-toggle="modal" href="#divSubDataDicManage"> 新增
-            </button>
-        </span>
-                <table class="table table-bordered" id="tbDataDicList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- 子项数据 添加 ===========-->
-<div id="firSub" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="titleContent2">字段</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form id="firSubA" name="firSubA" class="form-horizontal">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            字段名称
-                                            <input type="hidden" name="analysisId" id="analysisId">
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="name" name="name" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                                        取消
-                                    </button>
-                                    <button type="button" class="btn btn-primary" onclick="saveFileld()">
-                                        保存
-                                    </button>
-                                </div>
-                        </form>
-                    </div>
-
-                </div><!--row -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
-    var field = null;
-    function fieldExtract(result) {
-        var str = "";
-        for (var i = 0; i < result.length; i++) {
-            if (i == result.length - 1) {
-                str += result[i];
-            } else {
-                str += result[i] + ",";
-            }
-        }
-        return str;
-    }
+    $(function () {
+        loadReportAnalysisList();
+    })
     //提取字段
     function extractTemplateField() {
         var text = $("#template").val();
@@ -232,29 +157,27 @@
             $('.template-field').append(html);
         }
     }
-    $(function () {
-        loadDataDicList();
-    })
-    //加载报告分析数据列表
-    function loadDataDicList() {
-        var cols = [];
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'categoryFieldName', title: '字段'});
-        cols.push({field: 'template', title: '模版'});
 
+    //加载 评估依据 数据列表
+    function loadReportAnalysisList() {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'reportAnalysisTypeName', title: '类别'});
+        cols.push({field: 'template', title: '模板', width: '50%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                // str += '<a class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="查看选项" onclick="setSubDataDic(' + row.id + ');" ><i class="fa fa-bars fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="修改" onclick="editReportAnalysis(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editReportAnalysis(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="removeReportAnalysis(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/reportAnalysis/getList", cols, {
-            keyWord: $("#queryName").val()
+        var reportAnalysisType = $("#queryReportAnalysisType").val();
+        TableInit("tb_List", "${pageContext.request.contextPath}/reportAnalysis/list", cols, {
+            name: $('#queryName').val(),
+            reportAnalysisType: reportAnalysisType
         }, {
             showColumns: false,
             showRefresh: false,
@@ -265,12 +188,12 @@
         });
     }
 
-    //删除报告分析数据
-    function removeData(id, tbId) {
+    //删除 评估依据 数据()
+    function removeReportAnalysis(id) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/reportAnalysis/deleteReportAnalysis",
+                url: "${pageContext.request.contextPath}/reportAnalysis/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -278,8 +201,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadDataDicList();//重载 (刷新)
-                        $('#' + tbId).bootstrapTable("refresh");
+                        loadReportAnalysisList();//重载 (刷新)
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -293,20 +215,17 @@
         })
     }
 
-    //清除新增表单缓存
-    function addDataDic() {
-        $("#categoryField").html("");
+    //对新增 评估依据 数据处理
+    function addReportAnalysis() {
         $("#frm").clearAll();
+        extractTemplateField();
     }
-    function removeSubDataDic() {
-        field = null;
-        $("#divBox").hide();
-    }
-    //新增报告分析数据
-    function saveSubDataDic() {
-        var flag = false;
+    //新增 评估依据 数据
+    function saveReportAnalysis() {
         var data = formParams("frm");
-        data.field = fieldExtract(field);
+        data.method = ',' + data.method + ',';//方便like查询
+        data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
+
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/reportAnalysis/save",
@@ -316,7 +235,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadDataDicList();
+                        loadReportAnalysisList();
                         $('#divBox').modal('hide');
                     }
                     else {
@@ -329,160 +248,15 @@
             })
         }
     }
-    //修改
+    //评估依据 修改
     function editReportAnalysis(index) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/reportAnalysis/get",
-            type: "GET",
-            dataType: "json",
-            data: {id: index},
-            success: function (result) {
-                Loading.progressHide();
-                $("#frm").clearAll();
-                $('#divBox').modal();
-                $("#id").val(result.id);
-                getFieldByPid(result.category);
-                $("#category").val(result.category);
-                $("#categoryField").val(result.categoryField);
-                $("#template").val(result.template);
-                extractTemplateField();
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
-    /**
-     * 根据类别获取子项字段
-     */
-    function getFieldByPid(id) {
-        var pid = $("#category").val();
-        if (pid == null || pid == "") {
-            pid = id;
-        }
-        $("#categoryField").html("");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/reportAnalysis/getFieldByPid",
-            type: "post",
-            dataType: "json",
-            data: {pid: pid},
-            success: function (result) {
-                for (var i = 0; i < result.data.length; i++) {
-                    $("#categoryField").append("<option value='" + result.data[i].id + "'>" + result.data[i].name + "</option>");
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+        var row = $("#tb_List").bootstrapTable('getData')[index];
+        $("#frm").clearAll();
+        $("#frm").initForm(row);
+        extractTemplateField();
+        $('#divBox').modal();
     }
 
-
-    //新增 子项 字段数据
-    function addMethodField() {
-        $("#firSub").clearAll();
-        $('#firSub').modal();
-    }
-    //保存新增 子项 字段的数据
-    function saveFileld() {
-        var data = formParams("firSubA");//应该是自动form参数
-        data.analysisId = $("#analysisNumber").val();
-        if ($("#firSubA").valid()) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/reportAnalysisField/addField",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    console.info(result);
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        $('#firSub').modal('hide');//隐藏
-                        var analysisId = $("#analysisNumber").val();
-                        setSubDataDic(analysisId);
-                    } else {
-                        toastr.success('调用服务端方法失败');
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        }
-    }
-
-    //加载子项节点数据
-    function loadSubDataDicList(pid, fn) {
-        var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({
-            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#analysisNumber").val(pid);
-        $("#tbDataDicList").bootstrapTable("destroy");
-        TableInit("tbDataDicList", "${pageContext.request.contextPath}/reportAnalysisField/getFieldList",
-            cols, {pid: pid}, {
-                showRefresh: false,                  //是否显示刷新按钮
-                toolbar: '#toolbarSub',
-                uniqueId: "id",
-                onLoadSuccess: function () {
-                    if (fn) {
-                        fn();
-                    }
-                }
-            });
-    }
-
-
-    //删除 子项 子项
-    function delDataDic(id) {
-        Alert("确认要删除么？", 2, null, function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/reportAnalysisField/deleteField",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        var analysisId = $("#analysisNumber").val();
-                        setSubDataDic(analysisId);
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        })
-    }
-    //设置子项数据
-    function setSubDataDic(pid) {
-        $("#divSubDataDic").modal();//显示
-        $("#tbDataDicList").clearAll();//清除数据
-        loadSubDataDicList(pid, function () {
-            $('#divSubDataDic').modal("show");
-        });
-    }
-
-    function isNot(val) {
-        if (val != null) {
-            if (val != '') {
-                return true;
-            }
-        }
-        return false;
-    }
 
 </script>
 
