@@ -14,11 +14,17 @@ public class AssessExamineTaskConstant {
     public static final String FC_RESIDENCE = "fc.residence";//房产——住宅商业办公
     public static final String FC_INDUSTRY = "fc.industry";//房产——工业仓储
     public static final String FC_RESIDENCE_BLOCK_BASE = "fc.residence.block.base";//版块基础信息
+    public static final String FC_INDUSTRY_BLOCK_BASE = "fc.industry.block.base";//版块基础信息
     public static final String FC_RESIDENCE_ESTATE_BASE = "fc.residence.estate.base";//楼盘基础信息
+    public static final String FC_INDUSTRY_ESTATE_BASE = "fc.industry.estate.base";//楼盘基础信息
     public static final String FC_RESIDENCE_ESTATE_LAND_STATE = "fc.residence.estate.land.state";//土地实体情况
+    public static final String FC_INDUSTRY_ESTATE_LAND_STATE = "fc.industry.estate.land.state";//土地实体情况
     public static final String FC_RESIDENCE_UNIT_BASE = "fc.residence.unit.base";//单元基础信息
+    public static final String FC_INDUSTRY_UNIT_BASE = "fc.industry.unit.base";//单元基础信息
     public static final String FC_RESIDENCE_HOUSE_BASE = "fc.residence.house.base";//房屋基本信息
+    public static final String FC_INDUSTRY_HOUSE_BASE = "fc.industry.house.base";//房屋基本信息
     public static final String FC_RESIDENCE_HOUSE_TRADING = "fc.residence.house.trading";//交易信息
+    public static final String FC_INDUSTRY_HOUSE_TRADING = "fc.industry.house.trading";//交易信息
 
     public static final String BLOCK = "block";//版块
     public static final String ESTATE = "estate";//楼盘
