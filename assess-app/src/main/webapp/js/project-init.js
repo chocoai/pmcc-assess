@@ -222,14 +222,15 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'id', visible: false, title: "id"});
-        cols.push({field: 'cPhone', title: '号码'});
+
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.UNIT_INFORMATION().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.UNIT_INFORMATION().delete(' + row.id + ')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.UNIT_INFORMATION().delete(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -378,14 +379,15 @@ Contacts.prototype.POSSESSOR = function () {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'id', visible: false, title: "id"});
-        cols.push({field: 'cPhone', title: '号码'});
+
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.POSSESSOR().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.POSSESSOR().delete(' + row.id + ')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.POSSESSOR().delete(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -395,8 +397,8 @@ Contacts.prototype.POSSESSOR = function () {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
-            showRefresh: true,
-            search: true
+            showRefresh: false,
+            search: false
         });
     };
 
@@ -533,14 +535,15 @@ Contacts.prototype.CONSIGNOR = function () {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
         cols.push({field: 'cDept', title: '部门'});
+        cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
         cols.push({field: 'id', visible: false, title: "id"});
-        cols.push({field: 'cPhone', title: '号码'});
+
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.CONSIGNOR().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.CONSIGNOR().delete(' + row.id + ')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="Contacts.prototype.CONSIGNOR().delete(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -550,8 +553,8 @@ Contacts.prototype.CONSIGNOR = function () {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
-            showRefresh: true,
-            search: true
+            showRefresh: false,
+            search: false
         });
     };
 

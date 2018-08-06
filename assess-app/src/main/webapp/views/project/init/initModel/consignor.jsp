@@ -14,7 +14,7 @@
             <div id="changeType" class="col-sm-3 col-sm-offset-1">
                                 <span class="radio-inline">
                                     <input type="radio" required name="csType" id="csType0"
-                                           value="1" ${projectInfo.consignorVo.csType != 0?'checked="checked"':''}  >
+                                           value="1" ${projectInfo.consignorVo.csType == 1?'checked="checked"':''}  >
                                     <label for="csType0">法人</label></span>
                 <span class="radio-inline">
                                     <input type="radio" name="csType" id="csType1"
@@ -208,7 +208,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            号码<span class="symbol required"></span>
+                                            电话号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"

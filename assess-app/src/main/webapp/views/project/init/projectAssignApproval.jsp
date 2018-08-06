@@ -29,7 +29,8 @@
                             <div class="x-valid">
                                 <div class="col-sm-4">
                                     <label class="radio-inline">
-                                        <input type="radio" value="Approval" required name="conclusion" checked="checked"
+                                        <input type="radio" value="Approval" required name="conclusion"
+                                               checked="checked"
                                                class="grey"
                                                onclick="chkRadioClick()">
                                         同意
@@ -53,7 +54,7 @@
                             </div>
                             <div class="col-sm-5" id="div_bisNext">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="chk_bisNext" ><label for="chk_bisNext">下级分派</label>
+                                    <input type="checkbox" id="chk_bisNext"><label for="chk_bisNext">下级分派</label>
                                 </label>
 
                             </div>
@@ -161,7 +162,7 @@
         else {
             data.bisNext = "0";
         }
-
+        data.appointUserAccount = $("#appointUserAccount").val();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectInfo/projectApprovalAssignSubmit",

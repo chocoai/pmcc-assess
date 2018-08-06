@@ -16,7 +16,7 @@
             <div id="changeType1" class="col-sm-3 col-sm-offset-1">
                                 <span class="radio-inline">
                                     <input type="radio" required name="pType" id="pType1"
-                                           value="1" ${projectInfo.possessorVo.pType != 0?'checked="checked"':''}  >
+                                           value="1" ${projectInfo.possessorVo.pType == 1?'checked="checked"':''}  >
                                     <label for="pType1">法人</label></span>
                 <span class="radio-inline">
                                     <input type="radio" name="pType" id="pType0"
@@ -159,19 +159,17 @@
             </div>
         </div>
     </form>
-</div>
 
-
-
-<div class="x_title">
-    <h3> 联系人</h3>
-    <div class="clearfix"></div>
-</div>
-<div class="x_content">
-    <button class="btn btn-success" data-toggle="modal" onclick="Contacts.prototype.POSSESSOR().showModel()">新增联系人</button>
-    <table class="table table-bordered" id="tb_ListPossessor">
-        <!-- cerare document add ajax data-->
-    </table>
+    <div class="x_title">
+        <h3> 联系人</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <button class="btn btn-success" data-toggle="modal" onclick="Contacts.prototype.POSSESSOR().showModel()">新增联系人</button>
+        <table class="table table-bordered" id="tb_ListPossessor">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
 </div>
 </body>
 <div id="divBoxPossessorContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -215,7 +213,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            号码<span class="symbol required"></span>
+                                            电话号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"

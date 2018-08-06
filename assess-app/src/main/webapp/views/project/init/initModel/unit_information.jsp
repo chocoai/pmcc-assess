@@ -166,7 +166,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            号码<span class="symbol required"></span>
+                                            电话号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"

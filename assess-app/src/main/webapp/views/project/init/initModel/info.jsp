@@ -258,8 +258,8 @@
 </body>
 <script>
     $(document).ready(function () {
-        var projectInfo = "${projectInfo}" ;
-        if (projectInfo == null){// 有值的情况下  为修改
+        var projectInfo = "${projectInfo}";
+        if (projectInfo == null) {// 有值的情况下  为修改
             ProjectInfoInit.prototype.updateInit();
         }
         ProjectInfoInit.prototype.init();
@@ -326,6 +326,7 @@
     //执业部门
     ProjectInfoInit.prototype.selectDepartment = function () {
         erpDepartment.select({
+            currOrgId: 1,
             onSelected: function (nodes) {
                 $("#departmentId").val(nodes[0].id);
                 $("#departmentName").val(nodes[0].text);
