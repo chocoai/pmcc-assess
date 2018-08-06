@@ -58,6 +58,10 @@ public class ExamineBuildingService {
     private ExamineBuildingOutfitService examineBuildingOutfitService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ExamineBuildingMaintenanceService examineBuildingMaintenanceService;
+    @Autowired
+    private ExamineBuildingSurfaceService examineBuildingSurfaceService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
@@ -189,13 +193,30 @@ public class ExamineBuildingService {
         examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
         examineBuildingOutfit.setBuildingId(0);
         List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
-
+        ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
+        examineBuildingMaintenance.setBuildingId(0);
+        List<ExamineBuildingMaintenance> examineBuildingMaintenances = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(examineBuildingMaintenance);
+        ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
+        examineBuildingSurface.setBuildingId(0);
+        List<ExamineBuildingSurface> examineBuildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(examineBuildingSurface);
         try {
             int id = examineBuildingDao.addBuilding(examineBuilding);
             if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
                 for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
                     oo.setBuildingId(id);
                     examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(examineBuildingMaintenances)){
+                for (ExamineBuildingMaintenance maintenance:examineBuildingMaintenances){
+                    maintenance.setBuildingId(id);
+                    examineBuildingMaintenanceService.updateExamineBuildingMaintenance(maintenance);
+                }
+            }
+            if (!ObjectUtils.isEmpty(examineBuildingSurfaceList)){
+                for (ExamineBuildingSurface buildingSurface:examineBuildingSurfaceList){
+                    buildingSurface.setBuildingId(id);
+                    examineBuildingSurfaceService.updateExamineBuildingSurface(buildingSurface);
                 }
             }
             updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),id);
@@ -231,10 +252,28 @@ public class ExamineBuildingService {
         examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
         examineBuildingOutfit.setBuildingId(0);
         List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
+        ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
+        examineBuildingMaintenance.setBuildingId(0);
+        List<ExamineBuildingMaintenance> examineBuildingMaintenances = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(examineBuildingMaintenance);
+        ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
+        examineBuildingSurface.setBuildingId(0);
+        List<ExamineBuildingSurface> examineBuildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(examineBuildingSurface);
         if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
             for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
                 oo.setBuildingId(examineBuilding.getId());
                 examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
+            }
+        }
+        if (!ObjectUtils.isEmpty(examineBuildingMaintenances)){
+            for (ExamineBuildingMaintenance maintenance:examineBuildingMaintenances){
+                maintenance.setBuildingId(examineBuilding.getId());
+                examineBuildingMaintenanceService.updateExamineBuildingMaintenance(maintenance);
+            }
+        }
+        if (!ObjectUtils.isEmpty(examineBuildingSurfaceList)){
+            for (ExamineBuildingSurface buildingSurface:examineBuildingSurfaceList){
+                buildingSurface.setBuildingId(examineBuilding.getId());
+                examineBuildingSurfaceService.updateExamineBuildingSurface(buildingSurface);
             }
         }
         updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),examineBuilding.getId());

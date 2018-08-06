@@ -61,9 +61,19 @@ public class ExamineBuildingOutfitController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitList",method = {RequestMethod.GET},name = "楼栋外装情况列表")
-    public BootstrapTableVo getExamineBuildingOutfitList(ExamineBuildingOutfit examineBuildingOutfit) {
+    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId, Integer buildingId) {
         BootstrapTableVo vo = null;
         try {
+            ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
+            if (!ObjectUtils.isEmpty(examineType)) {
+                examineBuildingOutfit.setExamineType(examineType);
+            }
+            if (declareId != null && declareId.equals(0)) {
+                examineBuildingOutfit.setDeclareId(declareId);
+            }
+            if (buildingId != null && buildingId.equals(0)) {
+                examineBuildingOutfit.setBuildingId(buildingId);
+            }
             vo = examineBuildingOutfitService.getExamineBuildingOutfitLists(examineBuildingOutfit);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

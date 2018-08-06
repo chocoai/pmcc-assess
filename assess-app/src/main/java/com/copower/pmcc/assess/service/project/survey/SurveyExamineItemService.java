@@ -126,30 +126,36 @@ public class SurveyExamineItemService {
         if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
             for (KeyValueDto keyValueDto : keyValueDtoList) {
                 switch (keyValueDto.getKey()) {
+                    case AssessExamineTaskConstant.FC_INDUSTRY_BLOCK_BASE:
                     case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
                         ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
                         examineBlockService.saveBlock(examineBlock);
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_ESTATE_BASE:
                         ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
                         examineEstateService.saveEstate(examineEstate);
                         //更新附件
                         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class), examineEstate.getId());
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_ESTATE_LAND_STATE:
                         ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
                         examineEstateLandStateService.saveEstateLandState(examineEstateLandState);
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_UNIT_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_UNIT_BASE:
                         ExamineUnit examineUnit = JSON.parseObject(keyValueDto.getValue(), ExamineUnit.class);
                         examineUnitService.saveUnit(examineUnit);
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_HOUSE_BASE:
                         ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
                         examineHouseService.saveHouse(examineHouse);
                         //更新附件
                         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class), examineHouse.getId());
                         break;
+                    case AssessExamineTaskConstant.FC_INDUSTRY_HOUSE_TRADING:
                     case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
                         ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
                         examineHouseTradingService.saveHouseTrading(examineHouseTrading);

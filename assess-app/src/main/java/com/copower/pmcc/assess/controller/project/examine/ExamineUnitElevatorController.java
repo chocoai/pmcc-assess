@@ -55,12 +55,15 @@ public class ExamineUnitElevatorController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineUnitElevatorList",method = {RequestMethod.GET},name = "获取配备电梯列表")
-    public BootstrapTableVo getExamineUnitElevatorList(Integer examineType) {
+    public BootstrapTableVo getExamineUnitElevatorList(Integer examineType,Integer declareId) {
         BootstrapTableVo vo = null;
         try {
             ExamineUnitElevator examineUnitElevator = new ExamineUnitElevator();
             if (!ObjectUtils.isEmpty(examineType)){
                 examineUnitElevator.setExamineType(examineType);
+            }
+            if (!ObjectUtils.isEmpty(declareId)){
+                examineUnitElevator.setDeclareId(declareId);
             }
             vo = examineUnitElevatorService.getExamineUnitElevatorList(examineUnitElevator);
         } catch (Exception e1) {
