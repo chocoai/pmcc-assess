@@ -17,14 +17,14 @@
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
                     <h3>
-                        ${parentPlan.projectPhaseName}
+                        ${declareRecord.name}
                     </h3>
                 </div>
             </div>
             <div class="clearfix"></div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
-            <input type="hidden" id="declareId" name="declareId" value="${parentPlan.declareRecordId}">
+            <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
             <input type="hidden" id="examineType" name="examineType" value="${examineType}">
             <div class="x_panel">
                 <div class="x_title collapse-link">

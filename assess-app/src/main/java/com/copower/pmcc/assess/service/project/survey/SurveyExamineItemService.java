@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineItemEvent;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
@@ -89,6 +90,8 @@ public class SurveyExamineItemService {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     public boolean save(SurveyExamineItem surveyExamineItem) throws BusinessException {
         if(surveyExamineItem == null)
@@ -200,8 +203,8 @@ public class SurveyExamineItemService {
 
             ProcessUserDto processUserDto = null;
             //发起相应的流程
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-            String folio = String.format("%s->%s", projectPhase.getProjectPhaseName(), declareRecord.getName());
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            String folio = String.format("%s【成果提交】%s", projectPhase.getProjectPhaseName(), projectInfo.getProjectName());
             Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectPhase.getBoxName());
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
             ProcessInfo processInfo = new ProcessInfo();

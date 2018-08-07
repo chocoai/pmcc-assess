@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
@@ -49,6 +50,8 @@ public class SurveyExamineController {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @RequestMapping(value = "/assignment", name = "任务分派视图", method = {RequestMethod.GET})
     public ModelAndView assignment(Integer planDetailsId) {
@@ -56,9 +59,9 @@ public class SurveyExamineController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
         Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentPlan = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentPlan", parentPlan);
 
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
 
         //确认调查类型 查勘或案例
         Integer examineType = ExamineTypeEnum.EXPLORE.getId();
@@ -175,5 +178,14 @@ public class SurveyExamineController {
     }
 
 
-
+    @ResponseBody
+    @GetMapping(name = "获取调查信息by申报id", value = "/getPlanDetailsByDeclareId")
+    public HttpResult getPlanDetailsByDeclareId(Integer declareId) {
+        try {
+            return HttpResult.newCorrectResult(surveyExamineTaskService.getPlanDetailsByDeclareId(declareId));
+        } catch (Exception e) {
+            logger.error("获取调查信息by申报id", e);
+            return HttpResult.newErrorResult("获取调查信息by申报id异常");
+        }
+    }
 }

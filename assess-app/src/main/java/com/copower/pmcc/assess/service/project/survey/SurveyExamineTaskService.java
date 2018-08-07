@@ -393,4 +393,16 @@ public class SurveyExamineTaskService {
         projectPlanDetailsService.updateProjectPlanDetails(planDetails);
     }
 
+    /**
+     * 获取调查信息by申报id
+     * @param declareId
+     * @return
+     */
+    public List<ProjectPlanDetails> getPlanDetailsByDeclareId(Integer declareId){
+        ProjectPlanDetails projectPlanDetails=new ProjectPlanDetails();
+        projectPlanDetails.setDeclareRecordId(declareId);
+        projectPlanDetails.setBisLastLayer(true);
+        return projectPlanDetailsService.getProjectDetails(projectPlanDetails);
+    }
+
 }

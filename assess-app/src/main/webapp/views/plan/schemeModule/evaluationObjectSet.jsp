@@ -676,21 +676,21 @@
                 if (result.ret) {
                     $.each(result.data, function (i, item) {
                         var html = $("#judgeObjectHtml").html();
-                        html = html.replace("{id}", item.id == undefined ? "" : item.id);
-                        html = html.replace("{bisSplit}", item.bisSplit == undefined ? false : item.bisSplit);
-                        html = html.replace("{number}", item.number == undefined ? "" : item.number);
-                        html = html.replace("{splitNumber}", item.splitNumber == undefined ? "" : item.splitNumber);
-                        html = html.replace("{sourceId}", item.sourceId == undefined ? "" : item.sourceId);
+                        html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
+                        html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
+                        html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
+                        html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
+                        html = html.replace(/{sourceId}/g, item.sourceId == undefined ? "" : item.sourceId);
                         if (item.splitNumber) {
                             html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
                         } else {
                             html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);
                         }
-                        html = html.replace("{name}", item.name == undefined ? "" : item.name);
-                        html = html.replace("{ownership}", item.ownership == undefined ? "" : item.ownership);
-                        html = html.replace("{groupNumber}", item.groupNumber == undefined ? "" : item.groupNumber);
-                        html = html.replace("{floorArea}", item.floorArea == undefined ? "" : item.floorArea);
-                        html = html.replace("{evaluationArea}", item.evaluationArea == undefined ? "" : item.evaluationArea);
+                        html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
+                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
+                        html = html.replace(/{groupNumber}/g, item.groupNumber == undefined ? "" : item.groupNumber);
+                        html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
+                        html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
                         tbody.append(html);
                         tbody.find("tr:last").find('[data-name="bestUseId"]').val(item.bestUseId);
                     })
@@ -707,7 +707,51 @@
             }
         });
     }
+
+    //查看估计对象调查信息
+    function viewExamineInfo(declareId,name) {
+        $("#viewExamineInfoModal").modal();
+        $("#viewExamineInfoModal").find('.modal-title').text(name);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
+            data: {
+                declareId: declareId
+            },
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+
+                }
+            }
+        })
+    }
 </script>
+<div id="viewExamineInfoModal" class="modal fade bs-example-modal-xs" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true" >
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="x_content">
+                    <button type="button" class="btn btn-link">资产清查</button>
+                    <button type="button" class="btn btn-link">现场查勘</button>
+                    <button type="button" class="btn btn-link">案例调查</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--动态字段-->
 <script type="text/html" id="dynamicFieldHtml">
@@ -732,7 +776,14 @@
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
-        <td><label class="form-control" data-name="name">{name}</label></td>
+        <td>
+            <label class="form-control" data-name="name">
+                {name}
+                <a href="javascript://" onclick="viewExamineInfo('{declareId}','{name}');"
+                   class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+            </label>
+
+        </td>
         <td><label class="form-control" data-name="ownership">{ownership}</label></td>
         <td>
             <div class="x-valid">
@@ -762,7 +813,8 @@
         <td>
         </td>
         <td>
-            <input class="btn btn-success" type="button" value="拆分" onclick="splitJudgeObject(this)">
+            <a href="javascript://" onclick="splitJudgeObject(this);"
+               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
         </td>
     </tr>
 </script>
