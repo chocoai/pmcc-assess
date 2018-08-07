@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.event.project.SurveyExamineItemEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -86,6 +87,8 @@ public class SurveyExamineItemService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private PublicService publicService;
 
     public boolean save(SurveyExamineItem surveyExamineItem) throws BusinessException {
         if(surveyExamineItem == null)
@@ -234,9 +237,7 @@ public class SurveyExamineItemService {
     public void submitEditExamineDataInfo(String formData, ApprovalModelDto approvalModelDto) throws BusinessException {
         saveExamineDataInfo(formData);
         try {
-            approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
-            approvalModelDto.setCurrentStep(-1);
-            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

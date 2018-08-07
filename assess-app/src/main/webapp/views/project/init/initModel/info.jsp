@@ -325,13 +325,16 @@
     };
     //执业部门
     ProjectInfoInit.prototype.selectDepartment = function () {
-        erpDepartment.select({
-            currOrgId: 1,
+        var options = {
             onSelected: function (nodes) {
                 $("#departmentId").val(nodes[0].id);
                 $("#departmentName").val(nodes[0].text);
             }
-        });
+        }
+        if ("${departmentAssess.id}".length > 0) {
+            options.currOrgId = "${departmentAssess.id}";
+        }
+        erpDepartment.select(options);
     }
 
     //项目经理

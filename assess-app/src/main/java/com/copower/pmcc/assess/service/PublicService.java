@@ -1,15 +1,15 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sun.javafx.collections.MappingChange;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +77,18 @@ public class PublicService {
             maps.add(map);
         }
         return JSON.toJSONString(maps);
+    }
+
+    /**
+     * 获取返回修改的审批模型数据
+     * @param approvalModelDto
+     * @return
+     */
+    public ApprovalModelDto getEditApprovalModel(ApprovalModelDto approvalModelDto){
+        approvalModelDto.setOpinions("返回修改");
+        approvalModelDto.setActivityKey(ProcessActivityEnum.EDIT.getValue());
+        approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
+        approvalModelDto.setCurrentStep(-1);
+        return approvalModelDto;
     }
 }

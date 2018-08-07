@@ -19,7 +19,9 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +66,8 @@ public class ProjectInfoController {
     private ErpAreaService erpAreaService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -78,6 +82,7 @@ public class ProjectInfoController {
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("project_initiate_urgency", projectInfoService.project_initiate_urgency());//紧急程度
         modelAndView.addObject("value_type", projectInfoService.value_type());//价值类型
+        modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());//可选的执业部门
 
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setId(0);

@@ -20,6 +20,7 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
@@ -88,7 +89,6 @@ public class ProjectInfoService {
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
-    @Lazy
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
     @Lazy
@@ -136,6 +136,8 @@ public class ProjectInfoService {
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 项目立项申请
@@ -238,10 +240,7 @@ public class ProjectInfoService {
     @Transactional(rollbackFor = Exception.class)
     public void projectEditApproval(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) throws Exception {
         projectUpdate(format(formData), projectInfoId);//保存数据
-        //以下参数为返回修改必须设置的参数
-        approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
-        approvalModelDto.setCurrentStep(-1);
-        processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);//提交流程
+        processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);//提交流程
     }
 
     /*项目立项修改*/
