@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.cases.dao.TempFuniHouseTypeDao;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,8 +61,7 @@ public class ExamineBuildingService {
     private ExamineBuildingMaintenanceService examineBuildingMaintenanceService;
     @Autowired
     private ExamineBuildingSurfaceService examineBuildingSurfaceService;
-    @Autowired
-    private TempFuniHouseTypeDao tempFuniHouseTypeDao;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
