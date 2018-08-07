@@ -160,11 +160,12 @@
     ContainerFunInit.prototype.house();
     ContainerFunInit.prototype.block();
 
+    //审批提交
     function saveform() {
-        if (!$("#frm_approval").valid()) {
+        if (!formApproval.valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/surveyExamineItem/taskApproval",
