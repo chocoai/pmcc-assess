@@ -59,7 +59,7 @@ public class ExamineMatchingMaterialController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingMaterial.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineMatchingMaterial.setDeclareId(declareId);
             }
             vo = examineMatchingMaterialService.getExamineMatchingMaterialLists(examineMatchingMaterial);

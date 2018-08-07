@@ -157,7 +157,7 @@
                 $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal("show");
             },
             showModelSubclass: function (id) {
-                houseRoom.prototype.subclassLoadList();
+                houseRoom.prototype.subclassLoadList(id);
                 if ($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").size() > 0) {
                     $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val(id);
                 }
@@ -203,7 +203,7 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
-                            houseRoom.prototype.subclassLoadList();
+                            houseRoom.prototype.subclassLoadList($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val());
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -304,7 +304,7 @@
                     }
                 });
             },
-            subclassLoadList: function () {
+            subclassLoadList: function (id) {
                 var cols = [];
                 cols.push({field: 'materialName', title: '装修材料'});
                 cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
@@ -320,7 +320,7 @@
                 });
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomDecorateLists", cols, {
-                    type: null,
+                    roomId: id,
                     declareId : $("#declareId").val(),
                     examineType : $("#examineType").val()
                 }, {

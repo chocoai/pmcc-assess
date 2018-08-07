@@ -144,26 +144,61 @@
     //用作 选项框的初始化
     ContainerFunInit.prototype = {
         estate:function () {
-            estateFun.prototype.init();
-            estateFun.prototype.select2Init();//必须在init之后
-            estateFun.prototype.viewFiles();
+            try {
+                if (typeof(estateFun) == 'undefined'){
+                    console.log("函数或者对象没有定义!===> name:"+"estateFun");
+                }else {
+                    estateFun.prototype.init();
+                    estateFun.prototype.select2Init();//必须在init之后
+                    estateFun.prototype.viewFiles();
+                }
+            } catch (e) {
+            }
         },
         building:function () {
-            examineBuilding_.prototype.viewInit();
-            examineBuilding_.prototype.uploadFiles();
+            try {
+                if (typeof(examineBuilding_) == 'undefined'){
+                    console.log("函数或者对象没有定义!===> name:"+"examineBuilding_");
+                }else {
+                    examineBuilding_.prototype.viewInit();
+                    examineBuilding_.prototype.uploadFiles();
+                }
+            } catch (e) {
+            }
         },
         estateLandState:function () {
-            estateLandState.prototype.init();
-            estateLandState.prototype.select2Init();//必须在init之后
+            try {
+                if (typeof(estateLandState) == 'undefined'){
+                    console.log("函数或者对象没有定义!===> name:"+"estateLandState");
+                }else {
+                    estateLandState.prototype.init();
+                    estateLandState.prototype.select2Init();//必须在init之后
+                }
+            } catch (e) {
+            }
         },
         houseTrading:function () {
-            examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
-            examineHouseTrading.prototype.select2Init();//必须在init之后
+            try {
+                if (typeof(examineHouseTrading) == 'undefined'){
+                    console.log("函数或者对象没有定义!===> name:"+"examineHouseTrading");
+                }else {
+                    examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
+                    examineHouseTrading.prototype.select2Init();//必须在init之后
+                }
+            } catch (e) {
+            }
         },
         house:function () {
-            houseFun.prototype.files();
-            houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
-            houseFun.prototype.select2Init();//处理select2赋值 必须在init之后
+            try {
+                if (typeof(houseFun) == 'undefined'){
+                    console.log("函数或者对象没有定义!===> name:"+"houseFun");
+                }else {
+                    houseFun.prototype.files();
+                    houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
+                    houseFun.prototype.select2Init();//处理select2赋值 必须在init之后
+                }
+            } catch (e) {
+            }
         }
     }
     ContainerFunInit.prototype.estate();

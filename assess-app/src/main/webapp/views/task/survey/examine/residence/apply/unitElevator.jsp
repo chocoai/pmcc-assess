@@ -204,7 +204,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电梯维护情况
+                                            电梯维护情况<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="maintenance"
@@ -215,7 +215,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电梯类型
+                                            电梯类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="type"
@@ -226,7 +226,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电梯品牌
+                                            电梯品牌<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="brand"
@@ -237,7 +237,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            电梯数量
+                                            电梯数量<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="电梯数量(数字)" data-rule-number='true'
@@ -248,7 +248,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            准载人数
+                                            准载人数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="准载人数(数字)" data-rule-number='true'
@@ -259,7 +259,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            准载重量
+                                            准载重量<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="准载重量(数字)" data-rule-number='true'
@@ -270,7 +270,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            运行速度
+                                            运行速度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="runningSpeed"

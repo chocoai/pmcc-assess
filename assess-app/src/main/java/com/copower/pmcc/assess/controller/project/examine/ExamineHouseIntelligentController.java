@@ -71,7 +71,7 @@ public class ExamineHouseIntelligentController {
             if (!ObjectUtils.isEmpty(examineType)) {
                 examineHouseIntelligent.setExamineType(examineType);
             }
-            if (declareId != null && declareId.equals(0)) {
+            if (declareId != null ) {
                 examineHouseIntelligent.setDeclareId(declareId);
             }
             vo = examineHouseIntelligentService.getExamineHouseIntelligentLists(examineHouseIntelligent);

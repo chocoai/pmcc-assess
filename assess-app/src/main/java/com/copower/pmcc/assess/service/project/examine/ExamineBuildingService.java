@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.cases.dao.TempFuniHouseTypeDao;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -62,6 +63,8 @@ public class ExamineBuildingService {
     private ExamineBuildingMaintenanceService examineBuildingMaintenanceService;
     @Autowired
     private ExamineBuildingSurfaceService examineBuildingSurfaceService;
+    @Autowired
+    private TempFuniHouseTypeDao tempFuniHouseTypeDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
@@ -90,7 +93,8 @@ public class ExamineBuildingService {
                 public int compare(ExamineBuilding o1, ExamineBuilding o2) {
                     return o1.getGmtCreated().compareTo(o2.getGmtCreated());
                 }
-            }).reverse();//排序 并且反转
+//            }).reverse();//排序 并且反转
+            });//排序 并且反转
             Collections.sort(examineBuildings, firstOrdering);
             ExamineBuilding examineBuilding = null;
             if (number.equals(1)) {

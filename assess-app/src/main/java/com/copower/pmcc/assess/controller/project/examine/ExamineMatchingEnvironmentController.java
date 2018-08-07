@@ -68,7 +68,7 @@ public class ExamineMatchingEnvironmentController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingEnvironment.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineMatchingEnvironment.setDeclareId(declareId);
             }
             vo = examineMatchingEnvironmentService.getExamineMatchingEnvironmentLists(examineMatchingEnvironment);

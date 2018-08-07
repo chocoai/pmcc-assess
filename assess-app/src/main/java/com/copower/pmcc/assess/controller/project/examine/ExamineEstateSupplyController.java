@@ -78,7 +78,7 @@ public class ExamineEstateSupplyController {
             if (!StringUtils.isEmpty(type)){
                 examineEstateSupply.setType(type);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineEstateSupply.setDeclareId(declareId);
             }
             vo = examineEstateSupplyService.getExamineEstateNetworkList(examineEstateSupply);

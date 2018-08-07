@@ -68,7 +68,7 @@ public class ExamineUnitDecorateController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineUnitDecorate.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineUnitDecorate.setDeclareId(declareId);
             }
             vo = examineUnitDecorateService.getExamineUnitDecorateLists(examineUnitDecorate);

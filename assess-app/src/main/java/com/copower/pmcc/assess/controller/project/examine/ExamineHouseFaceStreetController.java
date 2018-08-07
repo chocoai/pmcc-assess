@@ -68,7 +68,7 @@ public class ExamineHouseFaceStreetController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineHouseFaceStreet.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null){
                 examineHouseFaceStreet.setDeclareId(declareId);
             }
             vo = examineHouseFaceStreetService.getExamineHouseFaceStreetLists(examineHouseFaceStreet);

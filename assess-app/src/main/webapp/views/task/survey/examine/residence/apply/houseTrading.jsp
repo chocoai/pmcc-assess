@@ -450,7 +450,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            租金支付时间起
+                                            租金支付时间起<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="租金支付时间起"
@@ -462,7 +462,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            租金支付时间止
+                                            租金支付时间止<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="租金支付时间起"
@@ -474,7 +474,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            租金增长比率
+                                            租金增长比率<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" data-rule-number='true' class="form-control"
@@ -489,7 +489,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            分期支付时间起
+                                            分期支付时间起<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="分期支付时间起"
@@ -501,7 +501,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            分期支付时间起止
+                                            分期支付时间起止<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input required="required" placeholder="分期支付时间起止"
@@ -513,7 +513,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            分期支付利息
+                                            分期支付利息<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" data-rule-number='true' class="form-control"

@@ -46,8 +46,9 @@ public class ExamineEstateParkingDao {
      * @param examineEstateParking
      * @return
      */
-    public boolean addEstateParking(ExamineEstateParking examineEstateParking) {
-        return examineEstateParkingMapper.insertSelective(examineEstateParking) > 0;
+    public int addEstateParking(ExamineEstateParking examineEstateParking) {
+        examineEstateParkingMapper.insertSelective(examineEstateParking) ;
+        return examineEstateParking.getId();
     }
 
     /**

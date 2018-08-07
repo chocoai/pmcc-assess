@@ -68,7 +68,7 @@ public class ExamineUnitHuxingController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineUnitHuxing.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null){
                 examineUnitHuxing.setDeclareId(declareId);
             }
             vo = examineUnitHuxingService.getExamineUnitHuxingLists(examineUnitHuxing);

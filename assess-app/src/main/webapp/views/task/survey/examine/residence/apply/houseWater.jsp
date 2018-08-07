@@ -341,7 +341,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            取水设备
+                                            取水设备<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="取水设备" name="waterIntakeEquipment"
@@ -352,7 +352,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            采水点数
+                                            采水点数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="采水点数" name="intakePointNumber"
@@ -363,7 +363,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自然区间取水点数
+                                            自然区间取水点数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="自然区间取水点数" name="natrueIntakePointNumber"
@@ -374,7 +374,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            排水回路
+                                            排水回路<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="drainageCircuit"
@@ -387,7 +387,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水设备价格区间
+                                            前置净水设备价格区间<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="purificationEquipmentPrice"
@@ -399,7 +399,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            取水设备价格区间
+                                            取水设备价格区间<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="waterIntakeEquipmentPrice"
@@ -411,7 +411,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            供水管架设方式
+                                            供水管架设方式<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="supplyErectionMethod"
@@ -423,7 +423,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            前置净水
+                                            前置净水<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="pretreatedWater"

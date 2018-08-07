@@ -75,7 +75,7 @@ public class ExamineMatchingEducationController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingEducation.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineMatchingEducation.setDeclareId(declareId);
             }
             vo = examineMatchingEducationService.getExamineMatchingEducationLists(examineMatchingEducation);

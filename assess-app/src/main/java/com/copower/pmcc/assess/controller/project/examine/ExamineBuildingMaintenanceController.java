@@ -59,10 +59,10 @@ public class ExamineBuildingMaintenanceController {
             if (!ObjectUtils.isEmpty(examineType)) {
                 examineBuildingMaintenance.setExamineType(examineType);
             }
-            if (declareId != null && declareId.equals(0)) {
+            if (declareId != null ) {
                 examineBuildingMaintenance.setDeclareId(declareId);
             }
-            if (buildingId != null && buildingId.equals(0)) {
+            if (buildingId != null ) {
                 examineBuildingMaintenance.setBuildingId(buildingId);
             }
             vo = examineBuildingMaintenanceService.getExamineBuildingMaintenanceLists(examineBuildingMaintenance);

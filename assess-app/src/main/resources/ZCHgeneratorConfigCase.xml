@@ -12,7 +12,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_case"
                         userId="root" password="123456">
         </jdbcConnection>
 
@@ -21,35 +21,25 @@
         </javaTypeResolver>
 
         <!-- entity 位置-->
-        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basis.entity"
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.cases.entity"
                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- mapper xml 位置 -->
-        <sqlMapGenerator targetPackage="mybatis.basis"
+        <sqlMapGenerator targetPackage="mybatis.cases"
                          targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
         </sqlMapGenerator>
 
         <!--mapper 接口位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basis.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.cases.mapper"
                              targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-
-        <!--<table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <table tableName="tb_examine_estate" domainObjectName="ExamineEstate">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_temp_funi_house_type" domainObjectName="TempFuniHouseType"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
     </context>
 

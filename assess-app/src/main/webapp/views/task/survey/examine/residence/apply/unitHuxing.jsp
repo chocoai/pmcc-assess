@@ -278,7 +278,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            面积
+                                            面积<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
@@ -289,7 +289,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            跨长
+                                            跨长<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="跨长(数字)" data-rule-number='true'
@@ -300,7 +300,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            跨宽
+                                            跨宽<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
@@ -311,7 +311,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            跨数
+                                            跨数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="跨数(数字)" data-rule-number='true'
@@ -322,7 +322,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型描述
+                                            户型描述<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="户型描述" name="description"
@@ -333,7 +333,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型内容
+                                            户型内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="houseLayout"
@@ -346,7 +346,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型图
+                                            户型图<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input id="house_latest_family_planV" name="house_latest_family_planV"

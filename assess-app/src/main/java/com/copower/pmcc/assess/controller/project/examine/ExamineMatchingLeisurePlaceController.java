@@ -74,7 +74,7 @@ public class ExamineMatchingLeisurePlaceController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingLeisurePlace.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null){
                 examineMatchingLeisurePlace.setDeclareId(declareId);
             }
             if (!StringUtils.isEmpty(type)){

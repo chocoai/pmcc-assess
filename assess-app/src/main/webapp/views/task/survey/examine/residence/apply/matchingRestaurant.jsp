@@ -350,7 +350,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮距离
+                                            餐饮距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
@@ -363,7 +363,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮档次
+                                            餐饮档次<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="grade"
@@ -375,7 +375,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮类别
+                                            餐饮类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
@@ -387,7 +387,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮名称
+                                            餐饮名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <button class="btn btn-xs btn-success"

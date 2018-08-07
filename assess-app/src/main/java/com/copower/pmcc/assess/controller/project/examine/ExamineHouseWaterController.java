@@ -71,7 +71,7 @@ public class ExamineHouseWaterController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineHouseWater.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineHouseWater.setDeclareId(declareId);
             }
             vo = examineHouseWaterService.getExamineHouseWaterLists(examineHouseWater);

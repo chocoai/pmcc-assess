@@ -57,7 +57,7 @@ public class ExamineHouseCorollaryEquipmentController {
             if (!ObjectUtils.isEmpty(examineType)) {
                 examineHouseCorollaryEquipment.setExamineType(examineType);
             }
-            if (declareId != null && declareId.equals(0)) {
+            if (declareId != null) {
                 examineHouseCorollaryEquipment.setDeclareId(declareId);
             }
             vo = examineHouseCorollaryEquipmentService.getExamineHouseCorollaryEquipmentLists(examineHouseCorollaryEquipment);

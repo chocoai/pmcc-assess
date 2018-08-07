@@ -47,9 +47,14 @@
 <%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
+    $(function () {
+        estateParking.prototype.fileUpload();
+    });
+
     var estateParking;
     (function () {
         var flag = true;
+        var fileID = null;
         estateParking = function () {
 
         };
@@ -60,6 +65,15 @@
             getFlag: function () {
                 return flag;
             },
+            setFileID:function (id_) {
+                fileID = id_;
+            },
+            getFileID:function () {
+                if (fileID == null || fileID == ''){
+                    return 0;
+                }
+                return fileID;
+            },
             viewInit: function () {
                 if (estateParking.prototype.getFlag()){
                     estateParking.prototype.init();
@@ -67,17 +81,48 @@
                 }
                 estateParking.prototype.loadDataDicList();
             },
+            fileUpload:function () {
+                FileUtils.uploadFiles({
+                    target:estateParking.prototype.config().fileIDName,
+                    disabledTarget: "btn_submit",
+                    onUpload: function (file) {
+                        var formData={
+                            fieldsName:estateParking.prototype.config().fileIDName,
+                            tableName: AssessDBKey.ExamineEstateParking,
+                            tableId: estateParking.prototype.getFileID()
+                        };
+                        return formData;
+                    },onUploadComplete:function () {
+                        estateParking.prototype.showFile();
+                    },
+                    deleteFlag: true
+                });
+            },
+            showFile:function () {
+                FileUtils.getFileShows({
+                    target: estateParking.prototype.config().fileIDName,
+                    formData: {
+                        fieldsName:estateParking.prototype.config().fileIDName,
+                        tableName: AssessDBKey.ExamineEstateParking,
+                        tableId: estateParking.prototype.getFileID(),
+                        projectId: 0
+                    },
+                    deleteFlag: true
+                })
+            },
             config: function () {
                 var data = {};
                 data.table = "estateParkingList";
                 data.box = "divBoxEstateParking";
                 data.frm = "frmEstateParking";
+                data.fileIDName = "house_estateParking" ;//ExamineFileUpLoadFieldEnum
                 return data;
             },
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'parkingTypeName', title: '车位类型'});
                 cols.push({field: 'location', title: '车辆位置'});
+                cols.push({field: 'fileViewName', title: '上传的附件'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -124,6 +169,8 @@
                 $("#" + estateParking.prototype.config().frm).clearAll();
                 // estateParking.prototype.init();
                 $('#' + estateParking.prototype.config().box).modal("show");
+                $("#"+estateParking.prototype.config().fileIDName).empty();
+                $("#_"+estateParking.prototype.config().fileIDName).empty();
             },
             saveData: function () {
                 if (!$("#" + estateParking.prototype.config().frm).valid()) {
@@ -166,6 +213,7 @@
                         if (result.ret) {
                             $("#" + estateParking.prototype.config().frm).clearAll();
                             $("#" + estateParking.prototype.config().frm).initForm(result.data);
+                            estateParking.prototype.setFileID(result.data.id);
                             if (result.data.parkingType == null || result.data.parkingType == '') {
                                 $("#" + estateParking.prototype.config().frm + " .parkingType").val(null).trigger("change");
                             } else {
@@ -243,6 +291,18 @@
                                             <select required="required" name="parkingType"
                                                     class="form-control search-select select2 parkingType">
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            车辆图
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input id="house_estateParking" name="house_estateParking"
+                                                   required="required" placeholder="上传附件" class="form-control" type="file">
+                                            <div id="_house_estateParking"></div>
                                         </div>
                                     </div>
                                 </div>

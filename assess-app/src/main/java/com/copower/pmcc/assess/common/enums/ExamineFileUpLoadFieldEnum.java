@@ -20,6 +20,7 @@ public enum ExamineFileUpLoadFieldEnum {
     houseNewLatestFamilyPlan("house_new_latest_family_plan","最新户型图id和字段 (房间)"),
     houseLatestFamilyPlan("house_latest_family_plan","户型图id和字段 (房间)"),// 主表 页面显示
     houseLatestFamilyPlanV("house_latest_family_planV","户型图id和字段 (房间)"), //从表
+    houseEstateParking("house_estateParking","车辆 图"), //从表
     houseHousePlan("house_house_plan","房屋平面图id和字段 (房间)")
     ;
     private String name;

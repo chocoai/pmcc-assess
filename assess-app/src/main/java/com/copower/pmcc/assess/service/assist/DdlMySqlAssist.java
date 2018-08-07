@@ -28,6 +28,11 @@ public class DdlMySqlAssist {
         return maps;
     }
 
+    public List<Map> getFuniHousesTypeLpbh(String sql){
+        List<Map> maps = customDdlTableMapper.getFuniHousesTypeLpbh(sql);
+        return maps;
+    }
+
     public Integer customTableDdlInsert(String sql) {
         CustomDdlTable customDdlTable =new CustomDdlTable();
         customDdlTable.setDdlSql(sql);

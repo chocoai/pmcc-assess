@@ -60,7 +60,7 @@ public class ExamineMatchingFinanceController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingFinance.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null){
                 examineMatchingFinance.setDeclareId(declareId);
             }
             vo = examineMatchingFinanceService.getExamineMatchingFinanceLists(examineMatchingFinance);

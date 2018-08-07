@@ -14,7 +14,7 @@ public class ExamineEstate {
 
     private String name;
 
-    private Integer street;
+    private String street;
 
     private String number;
 
@@ -78,12 +78,12 @@ public class ExamineEstate {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getStreet() {
+    public String getStreet() {
         return street;
     }
 
-    public void setStreet(Integer street) {
-        this.street = street;
+    public void setStreet(String street) {
+        this.street = street == null ? null : street.trim();
     }
 
     public String getNumber() {

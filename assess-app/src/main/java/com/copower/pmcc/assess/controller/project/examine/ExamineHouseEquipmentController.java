@@ -72,7 +72,7 @@ public class ExamineHouseEquipmentController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineHouseEquipment.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineHouseEquipment.setDeclareId(declareId);
             }
             if (!StringUtils.isEmpty(type)){

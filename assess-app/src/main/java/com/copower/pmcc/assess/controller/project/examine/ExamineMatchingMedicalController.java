@@ -69,7 +69,7 @@ public class ExamineMatchingMedicalController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineMatchingMedical.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineMatchingMedical.setDeclareId(declareId);
             }
             vo = examineMatchingMedicalService.getExamineMatchingMedicalLists(examineMatchingMedical);

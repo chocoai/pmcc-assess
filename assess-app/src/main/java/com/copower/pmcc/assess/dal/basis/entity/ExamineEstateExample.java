@@ -426,52 +426,62 @@ public class ExamineEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andStreetEqualTo(Integer value) {
+        public Criteria andStreetEqualTo(String value) {
             addCriterion("street =", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetNotEqualTo(Integer value) {
+        public Criteria andStreetNotEqualTo(String value) {
             addCriterion("street <>", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetGreaterThan(Integer value) {
+        public Criteria andStreetGreaterThan(String value) {
             addCriterion("street >", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetGreaterThanOrEqualTo(Integer value) {
+        public Criteria andStreetGreaterThanOrEqualTo(String value) {
             addCriterion("street >=", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetLessThan(Integer value) {
+        public Criteria andStreetLessThan(String value) {
             addCriterion("street <", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetLessThanOrEqualTo(Integer value) {
+        public Criteria andStreetLessThanOrEqualTo(String value) {
             addCriterion("street <=", value, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetIn(List<Integer> values) {
+        public Criteria andStreetLike(String value) {
+            addCriterion("street like", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNotLike(String value) {
+            addCriterion("street not like", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetIn(List<String> values) {
             addCriterion("street in", values, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetNotIn(List<Integer> values) {
+        public Criteria andStreetNotIn(List<String> values) {
             addCriterion("street not in", values, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetBetween(Integer value1, Integer value2) {
+        public Criteria andStreetBetween(String value1, String value2) {
             addCriterion("street between", value1, value2, "street");
             return (Criteria) this;
         }
 
-        public Criteria andStreetNotBetween(Integer value1, Integer value2) {
+        public Criteria andStreetNotBetween(String value1, String value2) {
             addCriterion("street not between", value1, value2, "street");
             return (Criteria) this;
         }

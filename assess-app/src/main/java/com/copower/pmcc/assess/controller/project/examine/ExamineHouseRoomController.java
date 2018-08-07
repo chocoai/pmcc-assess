@@ -129,12 +129,18 @@ public class ExamineHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseRoomDecorateLists",method = {RequestMethod.GET},name = "获取房间装修列表 (子类)")
-    public BootstrapTableVo getExamineHouseRoomDecorateLists(Integer examineType) {
+    public BootstrapTableVo getExamineHouseRoomDecorateLists(Integer examineType,Integer declareId,Integer roomId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseRoomDecorate examineHouseRoomDecorate = new ExamineHouseRoomDecorate();
             if (!ObjectUtils.isEmpty(examineType)){
                 examineHouseRoomDecorate.setExamineType(examineType);
+            }
+            if (declareId!=null){
+                examineHouseRoomDecorate.setDeclareId(declareId);
+            }
+            if (roomId != null){
+                examineHouseRoomDecorate.setRoomId(roomId);
             }
             vo = examineHouseRoomDecorateService.getExamineHouseRoomDecorateLists(examineHouseRoomDecorate);
         } catch (Exception e1) {

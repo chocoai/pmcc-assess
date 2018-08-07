@@ -70,7 +70,7 @@ public class ExamineEstateParkingController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineEstateParking.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineEstateParking.setDeclareId(declareId);
             }
             if (!StringUtils.isEmpty(location)){

@@ -57,10 +57,10 @@ public class ExamineBuildingSurfaceController {
             if (!ObjectUtils.isEmpty(examineType)){
                 examineBuildingSurface.setExamineType(examineType);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null ){
                 examineBuildingSurface.setDeclareId(declareId);
             }
-            if (buildingId!=null && buildingId.equals(0)){
+            if (buildingId!=null ){
                 examineBuildingSurface.setBuildingId(buildingId);
             }
             vo = examineBuildingSurfaceService.getExamineBuildingSurfaceLists(examineBuildingSurface);

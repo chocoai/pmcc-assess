@@ -63,7 +63,7 @@ public class ExamineMatchingTrafficController {
             if (!StringUtils.isEmpty(type)){
                 examineMatchingTraffic.setType(type);
             }
-            if (declareId!=null && declareId.equals(0)){
+            if (declareId!=null){
                 examineMatchingTraffic.setDeclareId(declareId);
             }
             vo = examineMatchingTrafficService.getExamineMatchingTrafficList(examineMatchingTraffic);

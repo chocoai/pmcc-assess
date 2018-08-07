@@ -7,7 +7,7 @@
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="developer_id" property="developerId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="street" property="street" jdbcType="INTEGER" />
+    <result column="street" property="street" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="attach_number" property="attachNumber" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
@@ -124,7 +124,7 @@
       description, creator, gmt_created, 
       gmt_modified)
     values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{street,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
       #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
       #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{totalBuildingType,jdbcType=INTEGER}, 
       #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -199,7 +199,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="street != null" >
-        #{street,jdbcType=INTEGER},
+        #{street,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
         #{number,jdbcType=VARCHAR},
@@ -261,7 +261,7 @@
         name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.street != null" >
-        street = #{record.street,jdbcType=INTEGER},
+        street = #{record.street,jdbcType=VARCHAR},
       </if>
       <if test="record.number != null" >
         number = #{record.number,jdbcType=VARCHAR},
@@ -308,7 +308,7 @@
       examine_type = #{record.examineType,jdbcType=INTEGER},
       developer_id = #{record.developerId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      street = #{record.street,jdbcType=INTEGER},
+      street = #{record.street,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
       attach_number = #{record.attachNumber,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -340,7 +340,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="street != null" >
-        street = #{street,jdbcType=INTEGER},
+        street = #{street,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
         number = #{number,jdbcType=VARCHAR},
@@ -384,7 +384,7 @@
       examine_type = #{examineType,jdbcType=INTEGER},
       developer_id = #{developerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      street = #{street,jdbcType=INTEGER},
+      street = #{street,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       attach_number = #{attachNumber,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},

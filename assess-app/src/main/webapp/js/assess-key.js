@@ -13,6 +13,7 @@ AssessDBKey.ExamineEstate = "tb_examine_estate";
 AssessDBKey.ExamineHouse = "tb_examine_house";
 AssessDBKey.ExamineBuilding = "tb_examine_building";
 AssessDBKey.ExamineUnitHuxing = "tb_examine_unit_huxing";
+AssessDBKey.ExamineEstateParking = "tb_examine_estate_parking";
 AssessDBKey.ExamineHouseCorollaryEquipment = "tb_examine_house_corollary_equipment";
 
 
