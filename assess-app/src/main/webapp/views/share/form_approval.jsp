@@ -26,17 +26,17 @@
                             <label class="radio-inline">
                                 <input type="radio" value="Approval" required name="conclusion" checked="checked"
                                        class="grey"
-                                       onclick="chkRadioClick()">
+                                       onclick="formApproval.chkRadioClick()">
                                 同意
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" value="Decline" required name="conclusion" class="grey"
-                                       onclick="chkRadioClick()">
+                                       onclick="formApproval.chkRadioClick()">
                                 不同意，退回上一级
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" value="Back" required name="conclusion" class="grey"
-                                       onclick="chkRadioClick()">
+                                       onclick="formApproval.chkRadioClick()">
                                 不同意，退回申请人
                             </label>
                         </div>
@@ -47,7 +47,7 @@
                                 <label class="checkbox-inline">
                                     <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked" value=""
                                            class="grey"
-                                           onclick="chkbisNextClick()">
+                                           onclick="formApproval.chkbisNextClick()">
                                     跳过多级审批
                                 </label>
 
@@ -110,12 +110,9 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="form-group">
                     <%@include file="/views/share/ApprovalVariable.jsp" %>
                 </div>
-
             </form>
             <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-5">
@@ -136,41 +133,57 @@
 
 
 <script type="application/javascript">
+    var formApproval={
+        valid:function () {
+            return $("#frm_approval").valid();
+        },
 
-    function saveToService(formData, appointUserAccount) {
-        if (!$("#frm_approval").valid()) {
-            return false;
-        }
-        var opinions = loadOpation();
-        $("#opinions").val(opinions);
-        var data = formParams("frm_approval");
-        data["formData"] = formData;
-        data["viewUrl"] = "${viewUrl}";
-        data["appointUserAccount"] = appointUserAccount;
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/FinancialBase/ApprovalSubmit",
-            type: "post",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+        chkbisNextClick:function () {
+            if ($("#chk_bisNext").is(":checked")) {
+                $("#bisNext").val(1);
             }
-        })
-    }
+            else {
+                $("#bisNext").val(0);
+            }
+            if (window.cutomNextClick) {
+                cutomNextClick();
+            }
+        },
 
+        chkRadioClick:function () {
+            var rdoValue = $("input[name='conclusion']:checked").val();
+            if (rdoValue == "Approval") {
+                $("#opinions").attr("required", false);//审批意见不必填
+            }
+            else {
+                $("#opinions").attr("required", true);//审批意见必填
+            }
+        },
+
+        loadOpation:function () {
+            formApproval.chkbisNextClick();
+            var opation = "";
+            if ("${approvalReview}" == "1") {
+                var objs = $(".approvalFlog");
+                var opation = "";
+                $.each(objs, function (i, j) {
+                    var obj = $(j);
+                    opation += obj.attr("placeholder") + "【" + obj.val() + "】" + ";<br/>";
+                });
+                opation = opation.substring(0, opation.length - 1);
+            }
+            else {
+                opation = $("#opinionsTemp").val();
+            }
+            return opation;
+        },
+
+        getFormData:function () {
+            var formData = formParams("frm_approval");
+            formData.opinions=formApproval.loadOpation();
+            return formData;
+        }
+    };
     $(function () {
         if ("${flog}" == "approval") {
             $("#frm_approval").validate();
@@ -189,44 +202,4 @@
             });
         }
     })
-
-    function chkbisNextClick() {
-        if ($("#chk_bisNext").is(":checked")) {
-            $("#bisNext").val(1);
-        }
-        else {
-            $("#bisNext").val(0);
-        }
-        if (window.cutomNextClick) {
-            cutomNextClick();
-        }
-    }
-
-    function chkRadioClick() {
-        var rdoValue = $("input[name='conclusion']:checked").val();
-        if (rdoValue == "Approval") {
-            $("#opinions").attr("required", false);//审批意见不必填
-        }
-        else {
-            $("#opinions").attr("required", true);//审批意见必填
-        }
-    }
-
-    function loadOpation() {
-        chkbisNextClick();
-        var opation = "";
-        if ("${approvalReview}" == "1") {
-            var objs = $(".approvalFlog");
-            var opation = "";
-            $.each(objs, function (i, j) {
-                var obj = $(j);
-                opation += obj.attr("placeholder") + "【" + obj.val() + "】" + ";<br/>";
-            });
-            opation = opation.substring(0, opation.length - 1);
-        }
-        else {
-            opation = $("#opinionsTemp").val();
-        }
-        return opation;
-    }
 </script>

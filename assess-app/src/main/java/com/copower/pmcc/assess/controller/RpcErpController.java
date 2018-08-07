@@ -33,22 +33,20 @@ import java.util.List;
 @RequestMapping(value = "/RpcErpService", name = "ERP接口")
 public class RpcErpController {
 
-//    @Autowired
-//    private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
 
     @ResponseBody
     @RequestMapping(value = "/getUserInfoByDepartmentId", method = RequestMethod.GET)
     public BootstrapTableVo getUserInfoByDepartmentId(Integer departmentId) {
-
-//        List<Integer> departmentIdListByPid = erpRpcDepartmentService.getDepartmentChildenIds(departmentId);
-//        departmentIdListByPid.add(departmentId);
-//        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-//        BootstrapTableVo userInfoByDepartmentId = erpRpcUserService.getUserInfoByDepartmentId(departmentIdListByPid, requestBaseParam.getOffset(), requestBaseParam.getLimit(), requestBaseParam
-//                .getSearch());
-//        return userInfoByDepartmentId;
-        return null;
+        List<Integer> departmentIdListByPid = erpRpcDepartmentService.getDepartmentChildenIds(departmentId);
+        departmentIdListByPid.add(departmentId);
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo userInfoByDepartmentId = erpRpcUserService.getUserInfoByDepartmentId(departmentIdListByPid, requestBaseParam.getOffset(), requestBaseParam.getLimit(), requestBaseParam
+                .getSearch());
+        return userInfoByDepartmentId;
     }
 
     @ResponseBody
@@ -77,8 +75,8 @@ public class RpcErpController {
     public HttpResult getDepartmentByUserAccount(String userAccount) {
         SysUserDto sysUser = erpRpcUserService.getSysUser(userAccount);
         if (sysUser != null) {
-//            SysDepartmentDto departmentDto = erpRpcDepartmentService.getDepartmentById(sysUser.getDepartmentId());
-//            return HttpResult.newCorrectResult(departmentDto);
+            SysDepartmentDto departmentDto = erpRpcDepartmentService.getDepartmentById(sysUser.getDepartmentId());
+            return HttpResult.newCorrectResult(departmentDto);
         }
         return HttpResult.newCorrectResult();
     }

@@ -240,7 +240,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             type: data.flag, pid: data.pid,crmId:data.crmId
         }, {
             showColumns: false,
-            showRefresh: true,
+            showRefresh: false,
             search: false
         });
     };

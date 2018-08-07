@@ -30,7 +30,7 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         var dataManager = formParams("frm_set_project_manager");
         data = $.extend({}, dataManager, data);
         Loading.progressShow();

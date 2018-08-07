@@ -7,7 +7,9 @@ import com.copower.pmcc.assess.dto.input.project.initiate.InitiateUnitInformatio
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.base.Objects;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +37,8 @@ public class InitiateUnitInformationService {
     @Lazy
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
+    @Autowired
+    private CrmRpcCustomerService crmRpcCustomerService;
 
     public int add(InitiateUnitInformationDto dto) {
         if (dto.getCreator() == null) dto.setCreator(commonService.thisUserAccount());
@@ -67,9 +71,9 @@ public class InitiateUnitInformationService {
 
         if (!StringUtils.isEmpty(unitInformation.getuUseUnit())) {
             if (isNumeric(unitInformation.getuUseUnit())){
-                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(Integer.valueOf(unitInformation.getuUseUnit()));
-                if (baseDataDic != null)
-                    vo.setuUseUnitName(baseDataDic.getName());
+                CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(unitInformation.getuUseUnit()));
+                if (customer != null)
+                    vo.setuUseUnitName(customer.getName());
             }
         }
         List<CrmBaseDataDicDto> crmBaseDataDicDtos = getUnitPropertiesList();
