@@ -23,16 +23,16 @@ import java.util.List;
 public class ProjectPlanDao {
     @Autowired
     private ProjectPlanMapper projectPlanMapper;
-    @Autowired
-    private ProjectPlanChildrenMapper projectPlanChildrenMapper;
 
     //项目计划
 
-    public List<ProjectPlan> getProjectPlanListByFinish(Integer projectId) {
+    public List<ProjectPlan> getProjectPlanList(Integer projectId) {
         ProjectPlanExample example = new ProjectPlanExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisRestartEqualTo(false);
+        example.setOrderByClause(" stage_sort");
         return projectPlanMapper.selectByExample(example);
     }
+
 
     public List<ProjectPlan> getProjectPlan(ProjectPlan projectPlan) {
         ProjectPlanExample example = new ProjectPlanExample();

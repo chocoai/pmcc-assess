@@ -9,12 +9,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
 <div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-        </ul>
+    <div class="x_title">
         <h2>
             项目信息
+            <small><button type="button" onclick="window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');return false;" class="btn btn-success btn-xs">查看更多...</button></small>
             <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
         </h2>
         <div class="clearfix"></div>

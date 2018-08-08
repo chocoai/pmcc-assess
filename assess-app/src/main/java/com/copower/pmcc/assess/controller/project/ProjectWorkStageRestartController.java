@@ -56,7 +56,7 @@ public class ProjectWorkStageRestartController {
         modelAndView.addObject("projectWorkStageRestart", projectWorkStageRestart);
         modelAndView.addObject("projectId", projectId);
         //取已完成和正在执行的项目计划
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanListByFinish(projectId);
+        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanList(projectId);
         List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
             return (o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getName()) || o.getProjectStatus().equals(ProjectStatusEnum.TASK.getName())) && o.getStageSort()>1;
         });
@@ -96,7 +96,7 @@ public class ProjectWorkStageRestartController {
         modelAndView.addObject("projectWorkStageRestart", projectWorkStageRestart);
 
         //取已完成和正在执行的项目计划
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanListByFinish(projectWorkStageRestart.getProjectId());
+        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanList(projectWorkStageRestart.getProjectId());
         List<KeyValueDto> keyValueDtos = LangUtils.transform(projectPlans, projectPlan -> {
             KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(String.valueOf(projectPlan.getId()));

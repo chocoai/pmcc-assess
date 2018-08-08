@@ -412,6 +412,17 @@ public class ProjectInfoService {
         processControllerComponent.processSubmitPendingTaskNodeArg(approvalModelDto);
     }
 
+    /**
+     * 获取项目详情显示的项目阶段
+     * @param projectId
+     * @return
+     */
+    public List<ProjectPlan> getProjectPlanList(Integer projectId){
+        List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
+        projectPlanList.remove(0);//去除立项阶段
+        return projectPlanList;
+    }
+
 
     public ProjectInfo getProjectInfoByProcessInsId(String processInsId) {
         return projectInfoDao.getProjectInfoByProcessInsId(processInsId);

@@ -96,7 +96,7 @@ public class ProjectPlanDetailsDao {
         return i == 1;
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectid(Integer projectId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByProjectId(Integer projectId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
         return projectPlanDetailsMapper.selectByExample(example);

@@ -87,7 +87,7 @@ public class ProjectPlanDetailsService {
      * @return
      */
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectid(Integer projectId) {
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectid(projectId);
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectId(projectId);
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
         //获取当前人该项目下待处理的任务
@@ -124,6 +124,53 @@ public class ProjectPlanDetailsService {
         }
         return projectPlanDetailsVos;
     }
+
+    /**
+     * 项目详情阶段任务信息
+     * @param projectId
+     * @return
+     */
+    public List<ProjectPlanDetailsVo> getPlanDetailListByPlanId(Integer projectId,Integer planId) {
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
+
+        //获取当前人该阶段下待处理的任务
+        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+        projectResponsibilityDto.setProjectId(projectId);
+        projectResponsibilityDto.setPlanId(planId);
+        projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+
+
+        //判断任务是否结束，如果结束只能查看详情
+        if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
+                if(StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
+                    continue;
+                //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
+                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
+                        &&StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())){
+                    //可细项再分配
+                    projectPlanDetailsVo.setCanAssignment(true);
+                }
+
+                if(CollectionUtils.isNotEmpty(projectTaskList)){
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
+                            if (responsibilityDto.getUrl().contains("?")) {
+                                projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                            } else {
+                                projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return projectPlanDetailsVos;
+    }
+
+
 
     /**
      * 是否所有计划明细任务都已完成

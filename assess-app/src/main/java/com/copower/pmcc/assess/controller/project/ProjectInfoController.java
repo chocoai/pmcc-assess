@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
@@ -231,13 +232,16 @@ public class ProjectInfoController {
         }
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
-
+        List<ProjectPlan> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        modelAndView.addObject("projectPlanList", projectPlanList);
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         modelAndView.addObject("projectFlog", "1");
         modelAndView.addObject("projectId", projectInfo.getId());
         //取项目成员
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
+        //取得该项目的计划信息
+
 
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
@@ -271,6 +275,16 @@ public class ProjectInfoController {
     @RequestMapping(value = "/getProjectTaskByProjectId", name = "取得项目工作成果", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPlanByProjectId(Integer projecId) {
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectid(projecId);
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
+        bootstrapTableVo.setRows(projectPlanDetailsVos);
+        return bootstrapTableVo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果", method = RequestMethod.GET)
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projecId,Integer planId) {
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getPlanDetailListByPlanId(projecId,planId);
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
