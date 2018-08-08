@@ -4,9 +4,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 
@@ -24,56 +21,8 @@
                     </h3>
 
                 </div>
-                <div class="title_right">
-                    <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
-                        <a id="btn_followProject" style="margin-left: 20px;display: none" class="btn btn-warning"
-                           onclick="followProject()">关注</a>
-                        <a id="btn_cancelFollowProject" style="margin-left: 20px;display: none" class="btn btn-warning"
-                           onclick="cancelFollowProject()">取消关注</a>
-                        <c:if test="${projectStatusEnum=='normal'}">
-                            <a class="btn btn-primary"
-                               href="${pageContext.request.contextPath}/projectClose/closeIndex?projectId=${projectInfo.id}"
-                               target="_blank">终止</a>
-                            <a class="btn btn-primary"
-                               href="${pageContext.request.contextPath}/ProjectSuspend/suspendIndex?projectId=${projectInfo.id}"
-                               target="_blank">暂停</a>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-danger">
-                                    项目变更
-                                </button>
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a onclick="changeMember()" target="_blank">成员变更</a>
-                                        <a href="${pageContext.request.contextPath}/ProjectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
-                                           target="_blank">阶段重启</a>
-                                        <a href="${pageContext.request.contextPath}/projectPlanHistory/projectPlanHistoryIndex?projectId=${projectInfo.id}"
-                                           target="_blank">总体时间</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </c:if>
-                        <c:if test="${projectStatusEnum=='pause'}">
-                            <a class="btn btn-success"
-                               onclick="restartProject()"
-                               target="_blank">重启</a>
-                        </c:if>
-
-                    </div>
-                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="panel panel-default" id="panel_project_suspend" style="display: none;">
-                <div class="panel-heading">
-                    <i class="fa fa-external-link-square"></i>项目暂停记录
-                </div>
-                <div class="panel-body">
-                    <table id="tb_projectSuspend" class="table table-bordered">
-                    </table>
-                </div>
-            </div>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">

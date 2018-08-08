@@ -183,19 +183,28 @@ public class ProjectInfoController {
 
 
 
-    @RequestMapping(value = "/projectAssignDetails", name = "项目详情")
-    public Object projectAssignDetails(String processInsId) throws BusinessException {
+    @RequestMapping(value = "/projectAssignDetails", name = "分派项目经理详情")
+    public Object projectAssignDetails(String processInsId) {
         ProjectInfo projectInfo = new ProjectInfo();
         projectInfo.setAssignProcessInsId(processInsId);
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
         return projectDetails(projectInfoList.get(0).getId());
     }
 
-    @RequestMapping(value = "/projectApprovalDetails", name = "项目详情")
-    public Object projectApprovalDetails(String processInsId) throws BusinessException {
+    @RequestMapping(value = "/projectApprovalDetails", name = "项目审批详情")
+    public Object projectApprovalDetails(String processInsId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         return projectDetails(projectInfo.getId());
     }
+
+    @RequestMapping(value = "/projectInfoDetails", name = "项目详细信息")
+    public ModelAndView projectInfoDetails(Integer projectId) {
+        ModelAndView modelAndView = new ModelAndView("/project/projectInfoDetails");
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        return modelAndView;
+    }
+
 
     /**
      * 查看项目详情的地址入口统一，但根据不同的项目类别请求不同的地址
@@ -205,7 +214,7 @@ public class ProjectInfoController {
      * @throws BusinessException
      */
     @RequestMapping(value = "/projectDetails", name = "项目详情")
-    public Object projectDetails(Integer projectId) throws BusinessException {
+    public Object projectDetails(Integer projectId) {
         ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         //获取请求地址，并确定最终请求的路径
@@ -237,7 +246,7 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/csrProjectDetails", name = "不良债权项目详情")
-    public ModelAndView csrProjectDetails(Integer projectId) throws BusinessException {
+    public ModelAndView csrProjectDetails(Integer projectId) {
         ModelAndView modelAndView = new ModelAndView("/project/projectCsrDetails");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());

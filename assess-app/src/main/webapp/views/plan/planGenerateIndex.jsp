@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
             <form id="frm_content" class="form-horizontal">
                 <div class="x_panel">

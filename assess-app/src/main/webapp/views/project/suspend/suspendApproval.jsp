@@ -14,7 +14,7 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
             <!--招标信息-->
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">

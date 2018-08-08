@@ -96,9 +96,9 @@ public class ProjectCenterController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/projectInitSelect", name = "项目立项选择")
-    public ModelAndView projectInitSelect() {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectInitSelect");
+    @RequestMapping(value = "/projectNew", name = "新建项目")
+    public ModelAndView projectNew() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectNew");
         //获取到类型 类别 范围
         List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
         modelAndView.addObject("keyValueDtoList",keyValueDtoList);

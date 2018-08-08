@@ -19,7 +19,6 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
                     <h2>
-                        <i class="fa ${baseViewDto.currentMenu.icon}"></i>
                         ${baseViewDto.currentMenu.name}
                     </h2>
                     <div class="clearfix"></div>

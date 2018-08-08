@@ -11,7 +11,7 @@
     <div class="container" style="min-height:0">
         <div class="panel-body">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-external-link-square"></i> 项目计划
