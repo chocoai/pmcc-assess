@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            价值时点
+                            价值时点<span class="symbol required"></span>
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="valueTimePoint" required="required" placeholder="价值时间点"
@@ -88,130 +88,136 @@
                             </li>
                         </c:forEach>
                     </ul>
-                    <div id="myTabContent" class="tab-content form-horizontal">
-
+                    <div id="myTabContent" class="tab-content">
                         <c:forEach items="${dataDicMethodList}" var="method" varStatus="status">
                             <div role="tabpanel" class="tab-pane fade ${status.index==0?'active in':''} "
                                  id="tab_content${method.id}"
                                  aria-labelledby="home-tab">
-                                <input type="hidden" name="id" value="0">
-                                <input type="hidden" name="name" value="${method.name}">
-                                <input type="hidden" name="methodType" value="${method.id}">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">
+                                <form id="frm_method_${method.id}" class="form-horizontal" data-name="${method.name}">
+                                    <input type="hidden" name="id" value="0">
+                                    <input type="hidden" name="name" value="${method.name}">
+                                    <input type="hidden" name="methodType" value="${method.id}">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <div class="col-sm-10 col-sm-offset-2">
+                                                <span class="radio-inline">
+                                                <input type="radio" required onclick="applicableChange(this,true)"
+                                                       name="bisApplicable" id="rdoApplicable${method.id}" value="true">
+                                                <label for="rdoApplicable${method.id}">适用</label>
+                                                </span>
 
-                                    </label>
-                                    <div class="x-valid">
-                                        <div class="col-sm-10">
-                                            <div class="btn-group" data-toggle="buttons">
-                                                <label class="btn btn-default" data-toggle-class="btn-primary"
-                                                       data-toggle-passive-class="btn-primary"
-                                                       onclick="applicableChange(this,true)">
-                                                    <input type="radio" name="bisApplicable" value="true"> 适用
-                                                </label>
-                                                <label class="btn btn-default" data-toggle-class="btn-primary"
-                                                       data-toggle-passive-class="btn-primary"
-                                                       onclick="applicableChange(this,false)">
-                                                    <input type="radio" name="bisApplicable" value="false"> 不适用
-                                                </label>
+                                                <span class="radio-inline">
+                                                <input type="radio" required onclick="applicableChange(this,false)"
+                                                       name="bisApplicable" id="rdoNotApplicable${method.id}"
+                                                       value="false">
+                                                <label for="rdoNotApplicable${method.id}">不适用</label>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">
-                                        方法模板
-                                    </label>
-                                    <div class="x-valid">
-                                        <div class="col-sm-4">
-                                            <select class="form-control" name="methodTemplate"
-                                                    onchange="evaluationMethodChange(this);">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach items="${evaluationMethodMap.get(method.id)}"
-                                                           var="evaluationMethod">
-                                                    <option value="${evaluationMethod.id}"
-                                                            data-applicable="${evaluationMethod.applicableReason}"
-                                                            data-not-applicable="${evaluationMethod.notApplicableReason}">
-                                                            ${evaluationMethod.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <label class="col-sm-2 control-label">
-                                        思路模板
-                                    </label>
-                                    <div class="x-valid">
-                                        <div class="col-sm-4">
-                                            <select class="form-control" name="thinkingTemplate"
-                                                    onchange="evaluationThinkingChange(this);">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach items="${evaluationThinkingMap.get(method.id)}"
-                                                           var="evaluationThinking">
-                                                    <option value="${evaluationThinking.id}"
-                                                            data-applicable="${evaluationThinking.applicableReason}"
-                                                            data-not-applicable="${evaluationThinking.notApplicableReason}">
-                                                            ${evaluationThinking.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="applicable" style="display: none;">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">
-                                            方法适用原因
+                                            方法模板
                                         </label>
                                         <div class="x-valid">
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
+                                                <select class="form-control" name="methodTemplate"
+                                                        onchange="evaluationMethodChange(this);">
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach items="${evaluationMethodMap.get(method.id)}"
+                                                               var="evaluationMethod">
+                                                        <option value="${evaluationMethod.id}"
+                                                                data-applicable="${evaluationMethod.applicableReason}"
+                                                                data-not-applicable="${evaluationMethod.notApplicableReason}">
+                                                                ${evaluationMethod.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <label class="col-sm-2 control-label">
+                                            思路模板
+                                        </label>
+                                        <div class="x-valid">
+                                            <div class="col-sm-4">
+                                                <select class="form-control" name="thinkingTemplate"
+                                                        onchange="evaluationThinkingChange(this);">
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach items="${evaluationThinkingMap.get(method.id)}"
+                                                               var="evaluationThinking">
+                                                        <option value="${evaluationThinking.id}"
+                                                                data-applicable="${evaluationThinking.applicableReason}"
+                                                                data-not-applicable="${evaluationThinking.notApplicableReason}">
+                                                                ${evaluationThinking.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="applicable" style="display: none;">
+                                        <div class="well">
+                                            <div class="form-group ">
+                                                <label class="col-sm-2 control-label">
+                                                    方法适用原因<span class="symbol required"></span>
+                                                </label>
+                                                <div class="x-valid">
+                                                    <div class="col-sm-10">
                                         <textarea required placeholder="方法适用原因" name="applicableReason"
                                                   class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="applicableReason-field">
+
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="applicableReason-field">
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            思路适用原因
-                                        </label>
-                                        <div class="x-valid">
-                                            <div class="col-sm-10">
+                                        <div class="well">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">
+                                                    思路适用原因<span class="symbol required"></span>
+                                                </label>
+                                                <div class="x-valid">
+                                                    <div class="col-sm-10">
                                         <textarea required placeholder="思路适用原因" name="applicableThinking"
                                                   class="form-control"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="applicableThinking-field"></div>
                                         </div>
                                     </div>
-                                    <div class="applicableThinking-field"></div>
-                                </div>
-                                <div class="not-applicable" style="display: none;">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            方法不适用原因
-                                        </label>
-                                        <div class="x-valid">
-                                            <div class="col-sm-10">
+                                    <div class="not-applicable" style="display: none;">
+                                        <div class="well">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">
+                                                    方法不适用原因<span class="symbol required"></span>
+                                                </label>
+                                                <div class="x-valid">
+                                                    <div class="col-sm-10">
                                         <textarea required placeholder="方法不适用原因" name="notApplicableReason"
                                                   class="form-control"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="notApplicableReason-field"></div>
+                                        </div>
+                                        <div class="well">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">
+                                                    思路不适用原因<span class="symbol required"></span>
+                                                </label>
+                                                <div class="x-valid">
+                                                    <div class="col-sm-10">
+                                                        <textarea required placeholder="思路不适用原因"
+                                                                  name="notApplicableThinking"
+                                                                  class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notApplicableThinking-field"></div>
                                         </div>
                                     </div>
-                                    <div class="notApplicableReason-field"></div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            思路不适用原因
-                                        </label>
-                                        <div class="x-valid">
-                                            <div class="col-sm-10">
-                                        <textarea required placeholder="思路不适用原因" name="notApplicableThinking"
-                                                  class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="notApplicableThinking-field"></div>
-                                </div>
+                                </form>
                             </div>
                         </c:forEach>
                     </div>
@@ -221,15 +227,19 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="savesEvaluationMethod()">
+                <button type="button" class="btn btn-primary" onclick="savesEvaluationMethod()">
                     保存
                 </button>
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
+    /*
+     *------------------------------------------------------------------------------------------------------
+     *评估方法设置相关
+     *------------------------------------------------------------------------------------------------------
+     */
 
     //方法适用原因字段替换
     function methodApplicableFieldReplace(_this) {
@@ -301,6 +311,15 @@
 
     //保存评估方法
     function savesEvaluationMethod() {
+        //验证数据是否填写完整
+        var isPass = true;
+        $("#myTabContent").find('.tab-pane').find('form').each(function () {
+            if (!$(this).valid("请检查【" + $(this).attr('data-name') + "】是否填写完整！")) {
+                isPass = false;
+                return false;
+            }
+        });
+        if (!isPass) return false;
         var data = {};
         data.judgeFunctionList = [];
         $("#myTabContent").find('.tab-pane').each(function () {
@@ -319,6 +338,16 @@
         })
         data.areaGroupId = $("#currAreaGroupId").val();
         data.groupNumber = $("#currGroupNumber").val();
+        //检查各个方法数据是否填写完整
+        if(data.judgeFunctionList.length>0){
+            for(var i=0;i<data.judgeFunctionList.length;i++){
+                if(!methodHasWriteFull(data.judgeFunctionList[i])){
+                    toastr.info("请检查【" + data.judgeFunctionList[i].name + "】是否填写完整！");
+                    return false;
+                }
+            }
+        }
+
         $.ajax({
             url: '${pageContext.request.contextPath}/projectplanschemeassist/saveJudgeFunction',
             data: {
@@ -331,6 +360,7 @@
                     toastr.success('保存成功');
                     //刷新treegride
                     getPlanItemList();
+                    $('#divBoxMethodExtend').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);
                 }
@@ -339,6 +369,19 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+    }
+
+    //方法信息是否填写完整
+    function methodHasWriteFull(judgeFunction) {
+        if (judgeFunction) {
+            if (judgeFunction.bisApplicable == undefined) return false;
+            if (judgeFunction.bisApplicable == 'true') {
+                if (!judgeFunction.applicableReason || !judgeFunction.applicableThinking) return false;
+            } else {
+                if (!judgeFunction.notApplicableReason || !judgeFunction.notApplicableThinking) return false;
+            }
+        }
+        return true;
     }
 
     //设置评估方法
@@ -365,10 +408,10 @@
                         var tabPane = $(methodTypeEle).closest(".tab-pane");
                         tabPane.find('[name="id"]').val(item.id);
                         if (item.bisApplicable) {
-                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked', true).parent().get(0).click();
+                            tabPane.find('[name="bisApplicable"][value="true"]').prop('checked', true);
                             tabPane.find('.applicable').show();
                         } else {
-                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true).parent().get(0).click();
+                            tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true);
                             tabPane.find('.not-applicable').show();
                         }
                         tabPane.find('[name="applicableReason"]').val(item.applicableReason);
@@ -387,8 +430,12 @@
 
     //清空
     function cleanEvaluationMethod() {
+        $("#myTab").find('a:first').tab('show');
+        $("#myTabContent").find('form').each(function () {
+            $(this).clearValid();
+        })
         $("#myTabContent").find('[name="id"]').val('0');
-        $("#myTabContent").find('[name="bisApplicable"]').parent().removeClass('active')
+        $("#myTabContent").find('[name="bisApplicable"]').attr("checked",false);
         $("#myTabContent").find('[name="applicableReason"]').val('');
         $("#myTabContent").find('[name="notApplicableReason"]').val('');
         $("#myTabContent").find('[name="applicableThinking"]').val('');
@@ -408,21 +455,23 @@
     //评估方法模板选项change
     function evaluationMethodChange(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable][checked="checked"]').val();
+        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
         var option = $(_this).find('option:selected');
+        tabPane.find('.applicableReason-field').empty();
+        tabPane.find('.notApplicableReason-field').empty();
         if (bisApplicable == "true") {
             tabPane.find('[name="applicableReason"]').val(option.attr("data-applicable"));
             var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
             if (fieldArray && fieldArray.length > 0) {
                 var html = createDynaicFieldHtml(fieldArray, 'methodApplicableFieldReplace');
-                tabPane.find('.applicableReason-field').empty().append(html);
+                tabPane.find('.applicableReason-field').append(html);
             }
         } else if (bisApplicable == "false") {
             tabPane.find('[name="notApplicableReason"]').val(option.attr("data-not-applicable"));
             var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
             if (fieldArray && fieldArray.length > 0) {
                 var html = createDynaicFieldHtml(fieldArray, 'methodNotApplicableFieldReplace');
-                tabPane.find('.notApplicableReason-field').empty().append(html);
+                tabPane.find('.notApplicableReason-field').append(html);
             }
         }
     }
@@ -430,21 +479,23 @@
     //评估思路模板选项change
     function evaluationThinkingChange(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable][checked="checked"]').val();
+        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
         var option = $(_this).find('option:selected');
+        tabPane.find('.applicableThinking-field').empty();
+        tabPane.find('.notApplicableThinking-field').empty();
         if (bisApplicable == "true") {
             tabPane.find('[name="applicableThinking"]').val(option.attr("data-applicable"));
             var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
             if (fieldArray && fieldArray.length > 0) {
                 var html = createDynaicFieldHtml(fieldArray, 'thinkingApplicableFieldReplace');
-                tabPane.find('.applicableThinking-field').empty().append(html);
+                tabPane.find('.applicableThinking-field').append(html);
             }
         } else if (bisApplicable == "false") {
             tabPane.find('[name="notApplicableThinking"]').val(option.attr("data-not-applicable"));
             var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
             if (fieldArray && fieldArray.length > 0) {
                 var html = createDynaicFieldHtml(fieldArray, 'thinkingNotApplicableFieldReplace');
-                tabPane.find('.notApplicableThinking-field').empty().append(html);
+                tabPane.find('.notApplicableThinking-field').append(html);
             }
         }
     }
@@ -463,6 +514,15 @@
             tabPane.find('.not-applicable').show();
         }
     }
+</script>
+
+<script type="text/javascript">
+
+    /*
+     *------------------------------------------------------------------------------------------------------
+     *委估对象设置相关
+     *------------------------------------------------------------------------------------------------------
+     */
 
     //保存估价对象
     function saveJudgeObject(_this, areaGroupId) {
@@ -471,9 +531,8 @@
         if (!form.valid()) {
             return false;
         }
-        var tbody = $(_this).closest(".x_panel").find(".table").find("tbody");
-        //验证评估面积是否合理
 
+        var tbody = $(_this).closest(".x_panel").find(".table").find("tbody");
         var data = {}; //找出需要保存的数据
         data.valueTimePoint = form.find('[name="valueTimePoint"]').val();
         data.planId = '${projectPlan.id}';
@@ -495,6 +554,33 @@
                 data.schemeJudgeObjects.push(schemeJudgeObject);
             })
         }
+        //验证相同测算序号的最佳利用描述是否一致
+        var keyValueArray = [];
+        for (var j = 0; j < data.schemeJudgeObjects.length; j++) {
+            var judge = data.schemeJudgeObjects[j];
+            var keyValue = {};
+            var isExist = false;
+            if (keyValueArray.length > 0) {
+                for (var k = 0; k < keyValueArray.length; k++) {
+                    if (keyValueArray[k].key == judge.groupNumber) {
+                        if (keyValueArray[k].value == judge.bestUseId) {
+                            isExist = true;
+                        } else {
+                            Alert('合并测算序号为【' + judge.groupNumber + "】的最佳利用设置不一致");
+                            return false;
+                        }
+                    }
+                }
+
+            }
+            if (!isExist) {
+                keyValue.key = judge.groupNumber;
+                keyValue.value = judge.bestUseId;
+                keyValueArray.push(keyValue);
+            }
+        }
+
+        //验证评估面积是否合理--证载面积与评估面积必须一致么，待确认
 
         var url = "${pageContext.request.contextPath}/projectplanschemeassist/saveEvaluationObject";
         $.ajax({
@@ -573,7 +659,7 @@
                     $.each(groupNumberEles, function (j, item) {
                         if ($(item).val() == groupNumer) {
                             $(item).closest('tr').find('td:eq(-2)')
-                                .html('<input class="btn btn-success" type="button" value="评估方法" onclick="setEvaluationMethod(this)">');
+                                .html('<a href="javascript://" onclick="setEvaluationMethod(this);" class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-recorder"></i>评估方法</a>');
                             return false;
                         }
                     })
@@ -603,7 +689,7 @@
         splitTr.find('[data-name="bisSplit"]').val("true");
         splitTr.find('[data-name="id"]').val("0");
         splitTr.find('[data-name="sourceId"]').val(tr.find('[data-name="id"]').val());
-        splitTr.find("td:last").html('<input class="btn btn-warning" type="button" value="移除" onclick="removeJudgeObject(this)">');
+        splitTr.find("td:last").html('<a href="javascript://" onclick="removeJudgeObject(this);" class="btn btn-xs btn-warning tooltips"><i class="fa fa-white fa-minus"></i>移除</a>');
         computeSplitNumber(tbody, splitTr.find('[data-name="number"]').val());
 
         if (canSetJudgeFunction(tbody)) {
@@ -687,6 +773,7 @@
                             html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);
                         }
                         html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
+                        html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
                         html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
                         html = html.replace(/{groupNumber}/g, item.groupNumber == undefined ? "" : item.groupNumber);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
@@ -709,26 +796,32 @@
     }
 
     //查看估计对象调查信息
-    function viewExamineInfo(declareId,name) {
-        $("#viewExamineInfoModal").modal();
-        $("#viewExamineInfoModal").find('.modal-title').text(name);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectplanschemeassist/schemeAreaGroupVoList",
-            data: {
-                declareId: declareId
-            },
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-
+    function viewExamineInfo(declareId, name) {
+        if (declareId) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/surveyExamine/getPlanDetailsByDeclareId",
+                data: {
+                    declareId: declareId
+                },
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        $("#viewExamineInfoModal .x_content").empty();
+                        $.each(result.data, function (i, item) {
+                            var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
+                            $("#viewExamineInfoModal .x_content").append(html);
+                        })
+                        $("#viewExamineInfoModal").find('.modal-title').text(name);
+                        $("#viewExamineInfoModal").modal();
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 </script>
 <div id="viewExamineInfoModal" class="modal fade bs-example-modal-xs" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true" >
+     aria-hidden="true">
     <div class="modal-dialog modal-xs">
         <div class="modal-content">
             <div class="modal-header">
@@ -738,9 +831,7 @@
             </div>
             <div class="modal-body">
                 <div class="x_content">
-                    <button type="button" class="btn btn-link">资产清查</button>
-                    <button type="button" class="btn btn-link">现场查勘</button>
-                    <button type="button" class="btn btn-link">案例调查</button>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -760,7 +851,7 @@
     </label>
     <div class="x-valid">
         <div class="col-sm-4">
-            <input type="text" class="form-control" data-name="{name}" onblur="{functionName}(this);">
+            <input type="text" class="form-control" data-name="{name}" onkeyup="{functionName}(this);">
         </div>
     </div>
 </script>
@@ -813,8 +904,8 @@
         <td>
         </td>
         <td>
-            <a href="javascript://" onclick="splitJudgeObject(this);"
-               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+            <a href="javascript://" onclick="splitJudgeObject(this);" class="btn btn-xs btn-success tooltips"><i
+                    class="fa fa-white fa-exchange"></i>拆分</a>
         </td>
     </tr>
 </script>

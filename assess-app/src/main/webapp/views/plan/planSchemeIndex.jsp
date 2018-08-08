@@ -142,7 +142,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
                         <button id="commit_btn" class="btn btn-success" onclick="commitApply();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>

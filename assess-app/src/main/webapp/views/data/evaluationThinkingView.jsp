@@ -251,11 +251,7 @@
     //新增 评估技术思路 数据
     function saveThinking() {
         var data = formParams("frm");
-        data.field = fieldExtract(field);
-        data.Nofield = fieldExtract(Nofield);
         data.method = ',' + data.method + ',';//方便like查询
-        data.field = fieldExtract(field);
-        data.Nofield = fieldExtract(Nofield);
         if ($("#frm").valid()) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/evaluationThinking/save",

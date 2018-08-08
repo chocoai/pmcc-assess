@@ -91,8 +91,8 @@
                                             评估方法<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select id="method" name="method" class="form-control" required="required">
-                                                <option selected="selected" value="0">请选择</option>
+                                            <select id="method" name="method" class="form-control" required="">
+                                                <option selected="selected" value="">请选择</option>
                                                 <c:forEach items="${methodDicList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
