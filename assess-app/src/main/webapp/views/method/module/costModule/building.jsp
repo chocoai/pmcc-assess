@@ -174,22 +174,12 @@
 <script type="text/html" id="generalPanelTemplate">
     <div class="panel panel-warning" style="width:300px;">
         <div class="panel-heading">
-            <h6>{title}</h6>
-            <%--<label>x</label><br>--%>
+            <div>{title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="control-label" onclick="build.inputCancel(this);">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X
+                </label>
+            </div>
         </div>
-
-        <%--<div class="panel-body form-inline editableform">--%>
-            <%--<div class="control-group form-group">--%>
-                <%--<div class="editable-input">--%>
-                    <%--<input class="form-control input-sm" type="text" name="{name}">--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="editable-buttons">--%>
-                <%--<button class="btn btn-primary btn-sm" onclick="build.inputSubmit(this)"><i class="glyphicon glyphicon-ok"></i></button>--%>
-                <%--<button class="btn btn-default btn-sm" onclick="build.inputCancel(this)"><i class="glyphicon glyphicon-remove"></i></button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-
         <div class="panel-body btn-toolbar" role="toolbar">
             <div class="btn-group">
                 <input class="form-control" name="{name}">
