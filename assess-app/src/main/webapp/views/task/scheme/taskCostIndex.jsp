@@ -1,10 +1,11 @@
+<!-- 成本法 -->
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
 </head>
-
 
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -13,7 +14,8 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
+            <!-- 引入成本法模块 -->
+            <jsp:include page="/views/method/module/marketCostIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -79,6 +81,12 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+    })
+</script>
 <script type="application/javascript">
 
     $(function () {
@@ -92,13 +100,12 @@
             showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
             },
-            deleteFlag: true
-        }, {
+            deleteFlag: true,
             onUploadComplete: function () {
                 loadUploadFiles();
             }
@@ -109,7 +116,7 @@
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
@@ -118,17 +125,27 @@
         })
     }
 
-
+    //提交
     function submit() {
+        if (!supportInfoModule.valid()) {
+            return false;
+        }
+        if (!marketCompare.valid()) {
+            return false;
+        }
         if (!$("#frm_task").valid()) {
             return false;
         }
 
+        var data = {};
+        data.supportInfoList = supportInfoModule.getData();
+        data.marketCompare = marketCompare.getData();
+
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 
