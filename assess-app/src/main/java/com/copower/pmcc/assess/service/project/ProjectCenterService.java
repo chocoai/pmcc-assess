@@ -10,7 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectProgressVO;
+import com.copower.pmcc.assess.dto.output.project.ProjectProgressVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
 import com.copower.pmcc.assess.service.csr.CsrProjectInfoService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -110,15 +110,15 @@ public class ProjectCenterService {
         return bootstrapTableVo;
     }
 
-    public List<ProjectProgressVO> getProjectProgressVOS(List<ProjectInfo> projectInfoList, List<Integer> projectIds) {
-        List<ProjectProgressVO> projectProgressVOS = new ArrayList<>();//返回值列表
+    public List<ProjectProgressVo> getProjectProgressVOS(List<ProjectInfo> projectInfoList, List<Integer> projectIds) {
+        List<ProjectProgressVo> projectProgressVOS = new ArrayList<>();//返回值列表
         if (CollectionUtils.isEmpty(projectInfoList)) {
             return projectProgressVOS;
         }
         List<ProjectPlan> projectPlans = projectPlanDao.getProjectplanByProjectIds(projectIds);
-        ProjectProgressVO projectProgressVO;
+        ProjectProgressVo projectProgressVO;
         for (ProjectInfo item : projectInfoList) {
-            projectProgressVO = new ProjectProgressVO();
+            projectProgressVO = new ProjectProgressVo();
             projectProgressVO.setProjectId(item.getId());
             projectProgressVO.setProjectName(item.getProjectName());
             projectProgressVO.setProcessInsId(item.getProcessInsId());

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessParameterConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.initiate.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
@@ -32,15 +34,19 @@ import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
@@ -138,6 +144,11 @@ public class ProjectInfoService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+
 
     /**
      * 项目立项申请
@@ -414,13 +425,69 @@ public class ProjectInfoService {
 
     /**
      * 获取项目详情显示的项目阶段
+     *
      * @param projectId
      * @return
      */
-    public List<ProjectPlan> getProjectPlanList(Integer projectId){
+    public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
         projectPlanList.remove(0);//去除立项阶段
-        return projectPlanList;
+        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=",applicationConstant.getAppKey());
+        List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> {
+            ProjectPlanVo projectPlanVo = new ProjectPlanVo();
+            BeanUtils.copyProperties(projectPlan, projectPlanVo);
+            try {
+                ProjectStatusEnum projectStatusEnum = ProjectStatusEnum.getEnumByName(projectPlan.getProjectStatus());
+                switch (projectStatusEnum) {
+                    case FINISH:
+                    case TASK:
+                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                    case PLAN:
+                        //判断有没有发起流程 如果发起了流程 则取待办 没有发起流程 则取任务
+                        if (StringUtils.equals(projectPlan.getProcessInsId(), "-1")) {
+                            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                            projectResponsibilityDto.setProjectId(projectId);
+                            projectResponsibilityDto.setPlanId(projectPlan.getId());
+                            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+                            projectResponsibilityDto.setModel(ResponsibileModelEnum.NEWPLAN.getId());
+                            ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
+                            if (projectTask != null) {
+                                projectPlanVo.setPlanExecutor(publicService.getUserNameByAccount(projectTask.getUserAccount()));
+                                projectPlanVo.setPlanCanExecut(StringUtils.equals(commonService.thisUserAccount(), projectTask.getUserAccount()));
+                                projectPlanVo.setPlanExecutUrl(projectTask.getUrl());
+                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                            }
+                        } else {
+                            List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
+                            try {
+                                activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(projectPlan.getProcessInsId());
+                            } catch (BpmException e) {
+                                logger.error("计划流程查询异常", e);
+                            }
+                            if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+                                ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
+                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                                String approvalUrl = boxReDto.getProcessApprovalUrl();
+                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                    approvalUrl = boxReDto.getProcessEditUrl();
+                                }
+                                approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                                String displayUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                                projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
+                                projectPlanVo.setPlanCanExecut(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
+                                projectPlanVo.setPlanExecutUrl(approvalUrl);
+                                projectPlanVo.setPlanDisplayUrl(displayUrl);
+                            }
+                        }
+                        break;
+                }
+
+            } catch (Exception e) {
+                logger.error("获取任务信息异常", e);
+            }
+            return projectPlanVo;
+        });
+        return projectPlanVos;
     }
 
 
@@ -649,10 +716,10 @@ public class ProjectInfoService {
         initiateContactsService.writeCrmCustomerDto(projectID, cType);
     }
 
-    public void init(){
-        initiateContactsService.remove(0,InitiateContactsEnum.CONSIGNOR.getId());
-        initiateContactsService.remove(0,InitiateContactsEnum.POSSESSOR.getId());
-        initiateContactsService.remove(0,InitiateContactsEnum.UNIT_INFORMATION.getId());
+    public void init() {
+        initiateContactsService.remove(0, InitiateContactsEnum.CONSIGNOR.getId());
+        initiateContactsService.remove(0, InitiateContactsEnum.POSSESSOR.getId());
+        initiateContactsService.remove(0, InitiateContactsEnum.UNIT_INFORMATION.getId());
     }
 
 }

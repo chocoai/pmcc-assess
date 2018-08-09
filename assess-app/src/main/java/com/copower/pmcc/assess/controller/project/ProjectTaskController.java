@@ -192,9 +192,9 @@ public class ProjectTaskController {
     }
 
     @RequestMapping(value = "/projectTaskDetailsById", name = "工作成果详情", method = RequestMethod.GET)
-    public ModelAndView projectTaskDetailsById(Integer projectDetailsId) {
+    public ModelAndView projectTaskDetailsById(Integer planDetailsId) {
         String viewUrl = "projectTaskAssist";
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectDetailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         int boxId = 0;
         if(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())&&!projectPlanDetails.getProcessInsId().equals("0")){
             BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(projectPlanDetails.getProcessInsId());

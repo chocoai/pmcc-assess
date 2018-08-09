@@ -59,8 +59,18 @@ public class PublicService {
         return "";
     }
 
+    public String getUserNameByAccountList(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) return "";
+        List<SysUserDto> sysUserList = erpRpcUserService.getSysUserList(list);
+        if (CollectionUtils.isNotEmpty(sysUserList)) {
+            return FormatUtils.transformListString(LangUtils.transform(sysUserList, p -> p.getUserName()));
+        }
+        return "";
+    }
+
     /**
      * 提取模板中的字段为json格式字符串
+     *
      * @param template
      * @return
      */
@@ -72,8 +82,8 @@ public class PublicService {
         while (m.find()) {
             Map<String, String> map = Maps.newHashMap();
             String result = m.group();
-            map.put("key",result.replaceAll("^\\{|\\}$",""));
-            map.put("value","");
+            map.put("key", result.replaceAll("^\\{|\\}$", ""));
+            map.put("value", "");
             maps.add(map);
         }
         return JSON.toJSONString(maps);
@@ -81,10 +91,11 @@ public class PublicService {
 
     /**
      * 获取返回修改的审批模型数据
+     *
      * @param approvalModelDto
      * @return
      */
-    public ApprovalModelDto getEditApprovalModel(ApprovalModelDto approvalModelDto){
+    public ApprovalModelDto getEditApprovalModel(ApprovalModelDto approvalModelDto) {
         approvalModelDto.setOpinions("返回修改");
         approvalModelDto.setActivityKey(ProcessActivityEnum.EDIT.getValue());
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());

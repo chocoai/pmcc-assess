@@ -95,14 +95,65 @@
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <li class="plan_tab_li" plan-id="${plan.id}">
                                     <a href="#tab_plan_${plan.id}" data-toggle="tab"
-                                       aria-expanded="true">${plan.planName}</a>
+                                       aria-expanded="true">${plan.planName}
+                                        <c:if test="${plan.projectStatus eq '安排计划' or plan.projectStatus eq '提交成果'}">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </c:if>
+                                    </a>
                                 </li>
                             </c:forEach>
                         </ul>
+                        <%--状态说明  fa-ellipsis-h 进行中  fa-power-off 结束 fa-external-link待提交 fa-edit待审批---%>
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
+                                        <%--判断逻辑 1.未到该阶段不做任何处理 2.该阶段已结束数据只做显示
+                                        3.处理该阶段任务 计划任务结束 状态结束 只读
+                                        计划任务为待提交状态 状态进行 可读 任务为当前则进入页面提交 不为当前人显示出责任人
+                                        计划任务为待审批 状态进行 可读 任务为当前人则进入页面审批 不为当前人显示出责任人--%>
+                                    <c:if test="${not empty plan.planDisplayUrl}">
+                                        <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
+                                            <div class="btn-group">
+                                                <c:if test="${empty plan.planExecutUrl}">
+                                                    <button class="btn btn-sm btn-primary" type="button">
+                                                        计划编制
+                                                    </button>
+                                                    <button class="btn btn-sm btn-default" type="button"
+                                                            data-placement="top"
+                                                            data-toggle="tooltip" data-original-title="查看"
+                                                            onclick="window.open('${plan.planDisplayUrl}')"><i
+                                                            class="fa fa-search"></i></button>
+                                                </c:if>
+                                                <c:if test="${not empty plan.planExecutUrl}">
+                                                    <button class="btn btn-sm btn-primary" type="button">
+                                                        计划编制<i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-default" type="button"
+                                                            data-placement="top" data-toggle="tooltip"
+                                                            onclick="window.open('${plan.planDisplayUrl}')"
+                                                            data-original-title="查看"><i class="fa fa-search"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-default" type="button"
+                                                            data-placement="top" data-toggle="tooltip"
+                                                            data-original-title="责任人">${plan.planExecutor}
+                                                    </button>
+                                                    <c:if test="${plan.planCanExecut eq true}">
+                                                        <button class="btn btn-sm btn-default" type="button"
+                                                                data-placement="top" data-toggle="tooltip"
+                                                                onclick="window.open('${plan.planExecutUrl}')"
+                                                                data-original-title="处理"><i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </c:if>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
+
+                                    <p>
                                     <table id="plan_item_list_${plan.id}" class="table table-bordered"></table>
+                                    </p>
+
                                 </div>
                             </c:forEach>
                         </div>
@@ -119,16 +170,17 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        $('.plan_tab_li').on('click', function () {
-            var that = $(this);
-            setTimeout(function () {
-                projectDetails.loadTaskList({
-                    target: $('#plan_item_list_' + that.attr('plan-id')),
-                    projectId: '${projectInfo.id}',
-                    planId: that.attr('plan-id')
-                });
-            }, 500)
-        })
+        //注册事件
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var that = $(this).closest('li');
+            projectDetails.loadTaskList({
+                target: $('#plan_item_list_' + that.attr('plan-id')),
+                projectId: '${projectInfo.id}',
+                planId: that.attr('plan-id')
+            });
+        });
+
+        projectDetails.selectRuningTab();
     })
 </script>
 <script type="application/javascript">
@@ -161,8 +213,11 @@
                         width: '20%',
                         formatter: function (value, row) {
                             var s = value;
+                            if (row.status == 'runing') {
+                                s += ' <i class="fa fa-ellipsis-h"></i>';
+                            }
                             if (row.bisNew) {
-                                s += "<i class='clip-new' style='font-size: 15px;color: red'></i>";
+                                s += " <i class='clip-new' style='font-size: 15px;color: red'></i>";
                             }
                             return s;
                         }
@@ -197,6 +252,7 @@
                         }
                     },
                     {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
+                    {field: 'executor', align: 'center', title: '当前责任人', width: '10%'},
                     {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
                     {
                         field: 'processInsId',
@@ -204,16 +260,16 @@
                         title: '操作',
                         width: '10%',
                         formatter: function (value, row) {
-                            //需处理问题较多，需仔细研究
                             var s = "";
                             if (row.bisLastLayer) {
-                                if (row.url) {
-                                    s += "<a target='_blank' href='" + row.url + "' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
-                                    if (row.canAssignment) {
-                                        s += " <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
-                                    }
-                                } else {
-                                    s = "<a target='_blank' href='${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=" + row.id + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                if (row.displayUrl) {
+                                    s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                }
+                                if (row.canExecute) {
+                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.executeUrl + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
+                                }
+                                if (row.canAssignment) {
+                                    s += " <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
                                 }
                             }
                             return s;
@@ -307,6 +363,18 @@
                     }
                 });
             });
+        },
+
+        //默认选择进行中的阶段tab
+        selectRuningTab: function () {
+            $('.plan_tab').find('i:first').closest('li').find('a').tab('show');
+        },
+
+        //打开任务页面的回调
+        taskOpenWin: function (url) {
+            openWin(url, function () {
+                projectDetails.selectRuningTab();
+            })
         }
     };
 

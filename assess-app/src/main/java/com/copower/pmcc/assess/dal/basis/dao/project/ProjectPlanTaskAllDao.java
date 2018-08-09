@@ -41,6 +41,16 @@ public class ProjectPlanTaskAllDao {
         return null;
     }
 
+    public ProjectPlanTaskAll getTaskAllByPlanId(Integer planId) {
+        ProjectPlanTaskAllExample example = new ProjectPlanTaskAllExample();
+        example.createCriteria().andProjectPlanIdEqualTo(planId);
+        List<ProjectPlanTaskAll> projectPlanTaskAlls = projectPlanTaskAllMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(projectPlanTaskAlls)) {
+            return projectPlanTaskAlls.get(0);
+        }
+        return null;
+    }
+
     public ProjectPlanTaskAll getObjectById(Integer id) {
         return projectPlanTaskAllMapper.selectByPrimaryKey(id);
     }

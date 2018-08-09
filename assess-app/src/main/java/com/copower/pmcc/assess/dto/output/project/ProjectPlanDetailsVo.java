@@ -19,7 +19,13 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String executeDepartmentName;
 
-    private String url;
+    private String displayUrl;
+
+    private String executeUrl;
+
+    private String executor;
+
+    private Boolean canExecute;
 
     private String declareFormName;
 
@@ -51,6 +57,38 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
         this.executeDepartmentName = executeDepartmentName;
     }
 
+    public String getDisplayUrl() {
+        return displayUrl;
+    }
+
+    public void setDisplayUrl(String displayUrl) {
+        this.displayUrl = displayUrl;
+    }
+
+    public String getExecuteUrl() {
+        return executeUrl;
+    }
+
+    public void setExecuteUrl(String executeUrl) {
+        this.executeUrl = executeUrl;
+    }
+
+    public String getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor;
+    }
+
+    public Boolean getCanExecute() {
+        return canExecute;
+    }
+
+    public void setCanExecute(Boolean canExecute) {
+        this.canExecute = canExecute;
+    }
+
     public String getDeclareFormName() {
         return declareFormName;
     }
@@ -65,14 +103,6 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setTasks(List<KeyValueDto> tasks) {
         this.tasks = tasks;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Boolean getCanAssignment() {

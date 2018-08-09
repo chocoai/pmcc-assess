@@ -6,12 +6,10 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanTaskAll;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +42,6 @@ public class ProjectTaskAllController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
-    @Autowired
-    private BpmRpcBoxService bpmRpcBoxService;
 
     @RequestMapping(value = "/projectTaskAllIndex", name = "整体复核页面")
     public ModelAndView projectTaskAllIndex(Integer planId) {

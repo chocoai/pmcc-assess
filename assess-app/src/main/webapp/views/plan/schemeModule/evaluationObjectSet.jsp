@@ -809,7 +809,7 @@
                     if (result.ret) {
                         $("#viewExamineInfoModal .x_content").empty();
                         $.each(result.data, function (i, item) {
-                            var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?projectDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
+                            var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
                             $("#viewExamineInfoModal .x_content").append(html);
                         })
                         $("#viewExamineInfoModal").find('.modal-title').text(name);

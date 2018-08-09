@@ -5,11 +5,18 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -22,8 +29,11 @@ import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +50,9 @@ import java.util.List;
  */
 @Service
 public class ProjectPlanDetailsService {
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private ApplicationConstant applicationConstant;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
@@ -58,6 +71,12 @@ public class ProjectPlanDetailsService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private PublicService publicService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
@@ -83,6 +102,7 @@ public class ProjectPlanDetailsService {
 
     /**
      * 获取项目下所有计划详细任务
+     *
      * @param projectId
      * @return
      */
@@ -93,29 +113,30 @@ public class ProjectPlanDetailsService {
         //获取当前人该项目下待处理的任务
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
+        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
 
 
         //判断任务是否结束，如果结束只能查看详情
-        if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
+        if (CollectionUtils.isNotEmpty(projectPlanDetailsVos)) {
             for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
-                if(StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
+                if (StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
                     continue;
                 //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
-                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
-                        &&StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())){
+                if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
+                        && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
                     //可细项再分配
                     projectPlanDetailsVo.setCanAssignment(true);
                 }
 
-                if(CollectionUtils.isNotEmpty(projectTaskList)){
+                if (CollectionUtils.isNotEmpty(projectTaskList)) {
                     for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                         if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
                             if (responsibilityDto.getUrl().contains("?")) {
-                                projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                                projectPlanDetailsVo.setDisplayUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
                             } else {
-                                projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                                projectPlanDetailsVo.setDisplayUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
                             }
                         }
                     }
@@ -127,57 +148,96 @@ public class ProjectPlanDetailsService {
 
     /**
      * 项目详情阶段任务信息
+     *
      * @param projectId
      * @return
      */
-    public List<ProjectPlanDetailsVo> getPlanDetailListByPlanId(Integer projectId,Integer planId) {
+    public List<ProjectPlanDetailsVo> getPlanDetailListByPlanId(Integer projectId, Integer planId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+        if (CollectionUtils.isEmpty(projectPlanDetails)) return Lists.newArrayList();
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
         //获取当前人该阶段下待处理的任务
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
         projectResponsibilityDto.setPlanId(planId);
+        projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
 
-
+        //获取当前人该阶段下的待审批任务
+        List<String> processInsIds = Lists.newArrayList();
+        for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
+            if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
+                processInsIds.add(projectPlanDetail.getProcessInsId());
+            }
+        }
+        List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
+        try {
+            activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(processInsIds.toArray(new String[processInsIds.size()]));
+        } catch (BpmException e) {
+            logger.error("计划任务获取流程任务异常", e);
+        }
+        String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
-        if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
-            for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
-                if(StringUtils.equals(projectPlanDetailsVo.getStatus(), SysProjectEnum.FINISH.getValue()))
-                    continue;
-                //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
-                if(projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
-                        &&StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())){
-                    //可细项再分配
-                    projectPlanDetailsVo.setCanAssignment(true);
-                }
-
-                if(CollectionUtils.isNotEmpty(projectTaskList)){
-                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                        if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                            if (responsibilityDto.getUrl().contains("?")) {
-                                projectPlanDetailsVo.setUrl(String.format("%s&responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                            } else {
-                                projectPlanDetailsVo.setUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+        for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {
+            //任务在进行中，则需判断任务是在提交还是审批的状态
+            // 如果任务是在审批或完成状态可查看详情
+            //如果为待提交状态 当前人与任务执行人相同 可提交任务
+            //如果为待审批状态 当前人与审批人相同 可审批该任务
+            //其它情况再特殊处理
+            //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
+            SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
+            switch (sysProjectEnum) {
+                case FINISH:
+                case CLOSE:
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                    break;
+                case RUNING:
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                    if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
+                        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                            for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                                if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
+                                    projectPlanDetailsVo.setExecuteUrl(String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                                    projectPlanDetailsVo.setExecutor(publicService.getUserNameByAccount(responsibilityDto.getUserAccount()));
+                                    projectPlanDetailsVo.setCanExecute(StringUtils.equals(commonService.thisUserAccount(), responsibilityDto.getUserAccount()));
+                                }
                             }
                         }
+                        if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
+                                && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
+                            //可细项再分配
+                            projectPlanDetailsVo.setCanAssignment(true);
+                        }
+                    } else {
+                        if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+                            ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
+                            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                            String approvalUrl = boxReDto.getProcessApprovalUrl();
+                            if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                approvalUrl = boxReDto.getProcessEditUrl();
+                            }
+                            approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                            projectPlanDetailsVo.setExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
+                            projectPlanDetailsVo.setCanExecute(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
+                            projectPlanDetailsVo.setExecuteUrl(approvalUrl);
+                        }
                     }
-                }
+                    break;
             }
         }
         return projectPlanDetailsVos;
     }
 
 
-
     /**
      * 是否所有计划明细任务都已完成
+     *
      * @param planId
      * @return
      */
-    public boolean isAllPlanDetailsFinish(Integer planId){
+    public boolean isAllPlanDetailsFinish(Integer planId) {
         ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
         projectPlanDetailsWhere.setPlanId(planId);
         projectPlanDetailsWhere.setStatus(ProcessStatusEnum.RUN.getValue());
@@ -188,15 +248,15 @@ public class ProjectPlanDetailsService {
 
     /**
      * 更新
+     *
      * @param projectPlanDetails
      * @return
      */
-    public boolean updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails){
+    public boolean updateProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
         return projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }
 
-    public ProjectPlanDetailsVo getProjectPlanDetailsVo(ProjectPlanDetails projectPlanDetails)
-    {
+    public ProjectPlanDetailsVo getProjectPlanDetailsVo(ProjectPlanDetails projectPlanDetails) {
         ProjectPlanDetailsVo projectPlanDetailsVo = new ProjectPlanDetailsVo();
         BeanUtils.copyProperties(projectPlanDetails, projectPlanDetailsVo);
         if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
@@ -213,9 +273,9 @@ public class ProjectPlanDetailsService {
         } else {
             projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
         }
-        if(projectPlanDetails.getProjectPhaseId()!=null) {
+        if (projectPlanDetails.getProjectPhaseId() != null) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if(projectPhase!=null) {
+            if (projectPhase != null) {
                 projectPlanDetailsVo.setProjectPhaseName(projectPhase.getProjectPhaseName());
             }
         }
@@ -231,8 +291,7 @@ public class ProjectPlanDetailsService {
                 bidSysAttachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class), detailsIds);
             }
             for (ProjectPlanDetails item : projectPlanDetails) {
-                if(item.getBisEnable()==false)
-                {
+                if (item.getBisEnable() == false) {
                     continue;
                 }
                 ProjectPlanDetailsVo projectPlanDetailsVo = getProjectPlanDetailsVo(item);
@@ -271,13 +330,14 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetailsVo> transform = LangUtils.transform(listObject, o -> getProjectPlanDetailsVo(o));
         return transform;
     }
+
     public List<ProjectPlanDetails> getProjectDetails(ProjectPlanDetails projectPlanDetails) {
         List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetails);
 
         return listObject;
     }
 
-    public void deleteProjectPlanDetails(Integer id){
+    public void deleteProjectPlanDetails(Integer id) {
         projectPlanDetailsDao.deleteProjectPlanDetails(id);
     }
 }

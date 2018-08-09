@@ -22,6 +22,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +87,7 @@ public class ProjectTaskAllService {
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_plan_task_all");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanTaskAll.class));
             processInfo.setTableId(projectPlanTaskAll.getId());
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setWorkStage(projectWorkStage.getWorkStageName());
@@ -215,6 +216,10 @@ public class ProjectTaskAllService {
             throw new BusinessException(e.getMessage());
         }
 
+    }
+
+    public ProjectPlanTaskAll getTaskAllByPlanId(Integer planId) {
+        return projectPlanTaskAllDao.getTaskAllByPlanId(planId);
     }
 
     public ProjectPlanTaskAll getObjectByProcessInsId(String processInsId) {

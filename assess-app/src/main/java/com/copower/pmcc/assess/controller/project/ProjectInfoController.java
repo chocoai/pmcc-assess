@@ -4,23 +4,24 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.input.project.initiate.InitiateContactsDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
+import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
-import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -69,6 +70,10 @@ public class ProjectInfoController {
     private HttpServletRequest request;
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private ProjectTaskAllService projectTaskAllService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -232,7 +237,7 @@ public class ProjectInfoController {
         }
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfo);
         modelAndView.addObject("projectInfo", projectInfoVo);
-        List<ProjectPlan> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
         modelAndView.addObject("thisTitle", projectInfo.getProjectName());
         modelAndView.addObject("projectFlog", "1");
@@ -240,8 +245,6 @@ public class ProjectInfoController {
         //取项目成员
         ProjectMemberVo projectMemberVo = projectMemberService.loadProjectMemberList(projectInfo.getId());
         modelAndView.addObject("projectMemberVo", projectMemberVo);
-        //取得该项目的计划信息
-
 
         //判断当前人员是否关注项目
         ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
@@ -290,6 +293,7 @@ public class ProjectInfoController {
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})

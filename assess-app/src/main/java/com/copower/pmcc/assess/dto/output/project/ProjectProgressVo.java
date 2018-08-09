@@ -9,7 +9,7 @@ import java.util.List;
  * @data: 2017/9/19
  * @time: 16:16
  */
-public class ProjectProgressVO {
+public class ProjectProgressVo {
 
     private Integer projectId;//项目编号
 
@@ -19,9 +19,9 @@ public class ProjectProgressVO {
 
     private String projectStatus;//项目状态
 
-    private String projectStatusFlog ;//项目状态标识
+    private String projectStatusFlog;//项目状态标识
 
-private List<ProjectProgressWorkStageVo> projectProgressWorkStageVos;//项目阶段信息
+    private List<ProjectProgressWorkStageVo> projectProgressWorkStageVos;//项目阶段信息
 
     public Integer getProjectId() {
         return projectId;
