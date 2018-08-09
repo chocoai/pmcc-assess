@@ -35,7 +35,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text"
-                       placeholder="建筑安装工程费" class="form-control">
+                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee" onclick="build.constructionInstallationEngineeringFee()">
             </div>
         </div>
     </div>
@@ -95,6 +95,9 @@
             Alert("输入非法请重新输入");
         }
     }
+    build.inputInit = function () {
+        $("."+build.popoverConfig().frm+" :input").attr("readonly","readonly");
+    }
 
     build.popoverConfig = function () {
         //延迟显示和隐藏弹出框的毫秒数
@@ -102,6 +105,7 @@
         config.show = 500;
         config.hide = 1000;
         config.frm = "frmBuild" ;
+        config.engineeringFee = "constructionInstallationEngineeringFeeA" ;
         return config;
     }
 
@@ -148,6 +152,11 @@
         });
     }
 
+    /**
+     * @author:  zch
+     * 描述:勘察设计和前期工程费率
+     * @date:2018-08-08
+     **/
     build.reconnaissanceDesignRote = function () {
         $("[data-toggle='popover reconnaissanceDesignRote']").popover({
             html : true,
@@ -163,9 +172,20 @@
         });
     }
 
+    /**
+    * @author:  zch
+    * 描述:建筑安装工程费
+    * @date:2018-08-09
+    **/
+    build.constructionInstallationEngineeringFee = function () {
+        $("."+build.popoverConfig().engineeringFee).modal("show");
+    }
+
     $(function () {
+        build.inputInit();
         build.reconnaissanceDesign();
-        build.reconnaissanceDesignRote();
+        // build.reconnaissanceDesignRote();
+        $("."+build.popoverConfig().engineeringFee).modal("show");
     })
 
 </script>
@@ -191,3 +211,27 @@
         <div class="panel-footer"></div>
     </div>
 </script>
+
+<div class="modal fade bs-example-modal-lg constructionInstallationEngineeringFeeA" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <jsp:include page="constructionInstallationEngineeringFee.jsp"></jsp:include>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" >
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

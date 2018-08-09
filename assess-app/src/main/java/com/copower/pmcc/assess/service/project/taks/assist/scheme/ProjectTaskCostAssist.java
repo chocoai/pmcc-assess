@@ -25,6 +25,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskCostIndex", "", 0, "0", "");
+        if (projectPlanDetails!=null){
+
+        }
         return modelAndView;
     }
 
