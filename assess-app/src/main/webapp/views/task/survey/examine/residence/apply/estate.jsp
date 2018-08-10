@@ -190,7 +190,6 @@
                     fieldsName: fieldsName,
                     tableName: Estate.config().database_Table,
                     tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                    projectId: 0,
                     creater: "${currUserAccount}"
                 },
                 deleteFlag: true
@@ -205,7 +204,6 @@
                     fieldsName: fieldsName,
                     tableName: Estate.config().database_Table,
                     tableId: ${empty surveyExamineDataInfoVo.examineEstateVo?0:surveyExamineDataInfoVo.examineEstateVo.id},
-                    projectId: 0,
                     creater: "${currUserAccount}"
                 },
                 deleteFlag: true
