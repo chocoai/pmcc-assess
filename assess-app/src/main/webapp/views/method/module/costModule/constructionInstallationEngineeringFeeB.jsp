@@ -16,107 +16,63 @@
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 
 <div>
-    <h2>Cell Editing in DataGrid</h2>
-    <p>Click a cell to start editing.</p>
-    <div style="margin:20px 0;"></div>
+    <table id="dg" title="学生作业" class="easyui-datagrid"
+           style="width: 100%; height: 90%">
 
-    <table id="dg" class="easyui-datagrid" title="Cell Editing in DataGrid" >
-        <thead>
-        <tr>
-            <th data-options="field:'itemid',width:80">Item ID</th>
-            <th data-options="field:'productid',width:100,editor:'text'">Product</th>
-            <th data-options="field:'listprice',width:80,align:'right',editor:{type:'numberbox',options:{precision:1}}">List Price</th>
-            <th data-options="field:'unitcost',width:80,align:'right',editor:'numberbox'">Unit Cost</th>
-            <th data-options="field:'attr1',width:250,editor:'text'">Attribute</th>
-            <th data-options="field:'status',width:60,align:'center',editor:{type:'checkbox',options:{on:'P',off:''}}">Status</th>
-        </tr>
-        </thead>
+
     </table>
 </div>
 
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.new.js"></script>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
-    var data =  {"total":28,"rows":[
-            {"productid":"FI-SW-01","productname":"Koi","unitcost":10.00,"status":"P","listprice":36.50,"attr1":"Large","itemid":"EST-1"},
-            {"productid":"K9-DL-01","productname":"Dalmation","unitcost":12.00,"status":"P","listprice":18.50,"attr1":"Spotted Adult Female","itemid":"EST-10"},
-            {"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":38.50,"attr1":"Venomless","itemid":"EST-11"},
-            {"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":26.50,"attr1":"Rattleless","itemid":"EST-12"},
-            {"selected":true,"productid":"RP-LI-02","productname":"Iguana","unitcost":12.00,"status":"P","listprice":35.50,"attr1":"Green Adult","itemid":"EST-13"},
-            {"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"P","listprice":158.50,"attr1":"Tailless","itemid":"EST-14"},
-            {"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-15"},
-            {"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"P","listprice":23.50,"attr1":"Adult Female","itemid":"EST-16"},
-            {"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-17"},
-            {"productid":"AV-CB-01","productname":"Amazon Parrot","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-18"}
-        ]}
-    ;
-    var constructionInstallationEngineeringFeeA = new Object();
-    constructionInstallationEngineeringFeeA.isNotNull = function (obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == '') {
-            return false;
-        }
-        if (obj == "") {
-            return false;
-        }
-        if (obj == 'undefined') {
-            return false;
-        }
-        return true;
-    }
-    constructionInstallationEngineeringFeeA.buildInput = function (item) {
-        console.log("item:"+item);
-    };
-
-    constructionInstallationEngineeringFeeA.treegrid = function () {
-        var url = "${pageContext.request.contextPath}/projectTaskMarketCost/getBaseDicTree";
-        $('#dg').treegrid({
-            data:data,
-            iconCls:'icon-edit',
+    var constructionInstallationEngineeringFeeB = new Object();
+    var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
+    constructionInstallationEngineeringFeeB.datagridInit = function () {
+        $('#dg').datagrid({
+            url:url,
             method: 'get',
-            queryParams:{},//请求参数
-            width: 850, //宽度
-            height: 450, //高度
-            lines: true,
-
-            // idField: 'id',//定义关键字段来标识树节点
-            // treeField: 'name',//treeField属性定义哪个字段显示为树形菜单
+            queryParams:{"schoolcalendarId":null},
             onClickCell: onClickCell,
-            onLoadSuccess: function () {//加载成功之后
-                console.log("method:"+"onLoadSuccess") ;
-            },
-            onLoadError:function () {
-                console.log("method:"+"onLoadError") ;
-            }
+            onAfterEdit:onAfterEdit,
+            rownumbers:true,
+            pagination:'true',
+            fitColumns:'true',
+            singleSelect:'true',
+            columns:[[
+                /*  {field:'ck',checkbox:true},    */
+                {field:'id',hidden:true},
+                {field:'studentId',hidden:true},
+                {field:'resultId',hidden:true},
+                {field:'daliyResultRate',hidden:true},
+                {field:'daliyResult',hidden:true},
+                {field:'code',width:30,align:'center',title:'学号'},
+                {field:'name',width:30,align:'center',title:'姓名'},
+                {field:'teachClassName',width:30,align:'center',title:'班级'}  ,
+                {field:'questionTime',width:40,align:'center',title:'留作业时间'},
+                {field:'questionName',width:50,align:'center',title:'作业名称'},
+                {field:'answerName',width:50,align:'center',title:'答案名称'},
+                {field:'preview',width:30,align:'center',title:'预览'} ,
+                {field:'finalRate',width:30,align:'center',title:'期末成绩比例'} ,
+                {field:'finalResult',editor:'text',width:30,align:'center',title:'期末成绩'} ,
+                {field:'totalResult',width:30,align:'center',title:'总分'}
+            ]]
         });
+
     }
 
-    $.extend($.fn.datagrid.methods, {
-        editCell: function(jq,param){
-            return jq.each(function(){
-                var opts = $(this).datagrid('options');
-                var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
-                for(var i=0; i<fields.length; i++){
-                    var col = $(this).datagrid('getColumnOption', fields[i]);
-                    col.editor1 = col.editor;
-                    if (fields[i] != param.field){
-                        col.editor = null;
-                    }
-                }
-                $(this).datagrid('beginEdit', param.index);
-                for(var i=0; i<fields.length; i++){
-                    var col = $(this).datagrid('getColumnOption', fields[i]);
-                    col.editor = col.editor1;
-                }
-            });
-        }
+    $(function () {
+        constructionInstallationEngineeringFeeB.datagridInit();
     });
+</script>
+
+<script type="text/javascript">
 
     var editIndex = undefined;
-    function endEditing(){
-        if (editIndex == undefined){return true}
-        if ($('#dg').datagrid('validateRow', editIndex)){
+    function endEditing() {//该方法用于关闭上一个焦点的editing状态
+        if (editIndex == undefined) {
+            return true
+        }
+        if ($('#dg').datagrid('validateRow', editIndex)) {
             $('#dg').datagrid('endEdit', editIndex);
             editIndex = undefined;
             return true;
@@ -124,18 +80,53 @@
             return false;
         }
     }
-    function onClickCell(index, field){
-        console.log("onclick");
-        console.log(index);
-        console.log(field);
-        if (endEditing()){
-            $('#dg').datagrid('selectRow', index)
-                .datagrid('editCell', {index:index,field:field});
+    //点击单元格事件：
+    function onClickCell(index,field,value) {
+        if (endEditing()) {
+            if(field=="finalResult"){
+                $(this).datagrid('beginEdit', index);
+                var ed = $(this).datagrid('getEditor', {index:index,field:field});
+                $(ed.target).focus();
+            }
             editIndex = index;
         }
+        $('#dg').datagrid('onClickRow')
+    }
+    //单元格失去焦点执行的方法
+    function onAfterEdit(index, row, changes) {
+        var updated = $('#dg').datagrid('getChanges', 'updated');
+        if (updated.length < 1) {
+            editRow = undefined;
+            $('#dg').datagrid('unselectAll');
+            return;
+        } else {
+            // 传值
+            submitForm(index, row, changes);
+        }
+
+
     }
 
-    $(function () {
-        constructionInstallationEngineeringFeeA.treegrid();
-    });
+    //提交数据
+    function submitForm(index, row, changes) {
+//	alert( row.resultId+"--"+changes.finalResult)daliyResultRate;
+        var resultId=row.resultId;//成绩id
+        if(resultId==""){
+            $.messager.alert('提醒', '没有录入该学生平时成绩！');
+            $("#dg").datagrid('reload');
+            return;
+        }
+        var daliyResultRate=row.daliyResultRate;//平时成绩比例
+        var daliyResult=row.daliyResult;//平时成绩
+        var finalRate=row.finalRate;//期末比例
+        var finalRusult=changes.finalResult;//期末成绩
+        var r =/^-?[1-9]/;//判断输入的是正整数
+        if(!r.test(finalRusult)){
+            $.messager.alert('提醒', '请输入正整数！');
+            return;
+        }
+        var totalRusult=Math.round(daliyResultRate*daliyResult+finalRate*finalRusult);//总成绩
+        //alert("保存成功");
+        $("#dg").datagrid('reload');
+    }
 </script>

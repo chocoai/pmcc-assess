@@ -91,7 +91,8 @@
     });
 
     var editIndex = undefined;
-    function submitForm(index, row, changes){
+
+    function submitForm(index, row, changes) {
 
     }
 
@@ -105,7 +106,10 @@
         console.log(index);
         console.log(field);
         if (constructionInstallationEngineeringFeeA.endEditing()) {
-            $('#constructionInstallationEngineeringFeeA').datagrid('selectRow', index).datagrid('editCell', {index: index, field: field});
+            $('#constructionInstallationEngineeringFeeA').datagrid('selectRow', index).datagrid('editCell', {
+                index: index,
+                field: field
+            });
             editIndex = index;
             $(this).datagrid('beginEdit', index);
         }
@@ -132,14 +136,15 @@
     };
 
     /**
-    * @author:  zch
-    * 描述:单元格失去焦点执行的方法
-    * @date:2018-08-10
-    **/
+     * @author:  zch
+     * 描述:单元格失去焦点执行的方法
+     * @date:2018-08-10
+     **/
     constructionInstallationEngineeringFeeA.onAfterEdit = function (index, row, changes) {
         var updated = $('#constructionInstallationEngineeringFeeA').datagrid('getChanges', 'updated');
+        console.log("constructionInstallationEngineeringFeeA.onAfterEdit");
+        console.log(updated);
         if (updated.length < 1) {
-            editRow = undefined;
             $('#constructionInstallationEngineeringFeeA').datagrid('unselectAll');
             return;
         } else {
@@ -149,10 +154,10 @@
     }
 
     /**
-    * @author:  zch
-    * 描述:用户开始编辑节点时触发
-    * @date:2018-08-10
-    **/
+     * @author:  zch
+     * 描述:用户开始编辑节点时触发
+     * @date:2018-08-10
+     **/
     constructionInstallationEngineeringFeeA.onBeforeEdit = function (index, row, changes) {
         //获的焦点
         console.log("constructionInstallationEngineeringFeeA.onBeforeEdit");
@@ -167,16 +172,17 @@
      * @date:2018-08-10
      **/
     constructionInstallationEngineeringFeeA.treegrid = function () {
-        var url = "${pageContext.request.contextPath}/projectTaskMarketCost/getBaseDicTree";
+        var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
         $('#constructionInstallationEngineeringFeeA').treegrid({
             url: url,
             method: 'get',
+            // data:data ,
             title: '建筑安装工程费', //标题
             queryParams: {},//请求参数
             width: 850, //宽度
             height: 450, //高度
             lines: true,
-            singleSelect: false,
+            singleSelect: false, //只允许选中一行
             animate: true,   //是否开启动画
             collapsible: true,//是否可以折叠
             fitColumns: true, //设置为true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
@@ -187,8 +193,8 @@
             onClickCell: constructionInstallationEngineeringFeeA.onClickCell,
             onDblClickRow: function (field, row) {//双击事件
             },
-            onBeforeEdit:constructionInstallationEngineeringFeeA.onBeforeEdit , //用户开始编辑节点时触发.
-            onAfterEdit:constructionInstallationEngineeringFeeA.onAfterEdit , //用户完成编辑节点后触发.
+            onBeforeEdit: constructionInstallationEngineeringFeeA.onBeforeEdit, //用户开始编辑节点时触发.
+            onAfterEdit: constructionInstallationEngineeringFeeA.onAfterEdit, //用户完成编辑节点后触发.
             onCancelEdit: function (row) {//用户放弃编辑节点时触发.
                 console.log("method:" + "onCancelEdit");
             },
@@ -203,6 +209,6 @@
     }
 
     $(function () {
-        constructionInstallationEngineeringFeeA.treegrid();
+        // constructionInstallationEngineeringFeeA.treegrid();
     });
 </script>

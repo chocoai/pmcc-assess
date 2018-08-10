@@ -250,7 +250,7 @@
 
     $(function () {
         optionsBuildBox.tabControl();
-        AlgorithmsPrototype.prototype.dataTest();
+        // AlgorithmsPrototype.prototype.dataTest();
     });
 </script>
 

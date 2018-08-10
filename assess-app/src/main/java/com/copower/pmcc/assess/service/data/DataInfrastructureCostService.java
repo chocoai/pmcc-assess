@@ -34,6 +34,10 @@ public class DataInfrastructureCostService {
         return vo;
     }
 
+    public List<InfrastructureCost> infrastructureCostList(){
+        return  infrastructureCostDao.getInfrastructureCostList(null);
+    }
+
     public boolean addInfrastructureCost(InfrastructureCost infrastructureCost) throws BusinessException {
         boolean flag = false;
         flag = infrastructureCostDao.addInfrastructureCost(infrastructureCost);

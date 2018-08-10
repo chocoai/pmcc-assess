@@ -34,6 +34,10 @@ public class DataInfrastructureMatchingCostService {
         return vo;
     }
 
+    public List<InfrastructureMatchingCost> infrastructureMatchingCosts(){
+        return infrastructureMatchingCostDao.getInfrastructureCostList(null);
+    }
+
     public boolean addInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost) throws BusinessException {
         boolean flag = false;
         flag = infrastructureMatchingCostDao.addInfrastructureCost(infrastructureMatchingCost);
