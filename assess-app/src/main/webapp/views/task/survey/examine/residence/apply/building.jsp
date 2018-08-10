@@ -3,13 +3,6 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en" class="no-js">
-<head>
-    <!-- 包含此文件时需要删除掉css -->
-    <%@include file="/views/share/main_css.jsp" %>
-</head>
-
-<body>
 <div class="x_content">
     <form class="form-horizontal">
         <div class="form-group">
@@ -319,7 +312,6 @@
 
     </form>
 </div>
-
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -335,8 +327,6 @@
         </table>
     </div>
 </div>
-
-</body>
 
 <script type="application/javascript">
     $(function () {

@@ -2,7 +2,6 @@
  土地实体情况
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/views/share/main_css.jsp" %>
 <div class="x_content">
     <div class="x_title">
         <h3>土地实体情况 </h3>

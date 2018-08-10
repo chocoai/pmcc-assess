@@ -107,7 +107,6 @@
     </form>
 </div>
 
-
 <script>
     var houseTrading_config ;
     (function () {

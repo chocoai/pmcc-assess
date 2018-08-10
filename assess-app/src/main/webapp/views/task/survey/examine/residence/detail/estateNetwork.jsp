@@ -1,16 +1,9 @@
 <%--
   通信网络
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en" class="no-js">
-<head>
-    <!-- 包含此文件时需要删除掉css -->
-    <%@include file="/views/share/main_css.jsp" %>
-</head>
-
-<body>
 <div class="x_panel">
     <div class="x_title collapse-link" onclick="estateNetwork.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
@@ -43,8 +36,6 @@
         </form>
     </div>
 </div>
-</body>
-<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 
 <script type="application/javascript">
 

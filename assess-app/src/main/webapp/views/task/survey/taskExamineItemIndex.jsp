@@ -75,33 +75,33 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <%--<c:if test="${not empty buildingTaskList}">--%>
-                            <%--<div class="tab-pane tab_building" id="tab_content_building">--%>
-                                <%--<c:forEach items="${buildingTaskList}" var="item">--%>
-                                    <%--<jsp:include page="${item.applyUrl}">--%>
-                                        <%--<jsp:param value="${item.fieldName}" name="fieldName"/>--%>
-                                    <%--</jsp:include>--%>
-                                <%--</c:forEach>--%>
-                            <%--</div>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${not empty unitTaskList}">--%>
-                            <%--<div class="tab-pane tab_unit" id="tab_content_unit">--%>
-                                <%--<c:forEach items="${unitTaskList}" var="item">--%>
-                                    <%--<jsp:include page="${item.applyUrl}">--%>
-                                        <%--<jsp:param value="${item.fieldName}" name="fieldName"/>--%>
-                                    <%--</jsp:include>--%>
-                                <%--</c:forEach>--%>
-                            <%--</div>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${not empty houseTaskList}">--%>
-                            <%--<div class="tab-pane tab_house" id="tab_content_house">--%>
-                                <%--<c:forEach items="${houseTaskList}" var="item">--%>
-                                    <%--<jsp:include page="${item.applyUrl}">--%>
-                                        <%--<jsp:param value="${item.fieldName}" name="fieldName"/>--%>
-                                    <%--</jsp:include>--%>
-                                <%--</c:forEach>--%>
-                            <%--</div>--%>
-                        <%--</c:if>--%>
+                        <c:if test="${not empty buildingTaskList}">
+                            <div class="tab-pane tab_building" id="tab_content_building">
+                                <c:forEach items="${buildingTaskList}" var="item">
+                                    <jsp:include page="${item.applyUrl}">
+                                        <jsp:param value="${item.fieldName}" name="fieldName"/>
+                                    </jsp:include>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty unitTaskList}">
+                            <div class="tab-pane tab_unit" id="tab_content_unit">
+                                <c:forEach items="${unitTaskList}" var="item">
+                                    <jsp:include page="${item.applyUrl}">
+                                        <jsp:param value="${item.fieldName}" name="fieldName"/>
+                                    </jsp:include>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty houseTaskList}">
+                            <div class="tab-pane tab_house" id="tab_content_house">
+                                <c:forEach items="${houseTaskList}" var="item">
+                                    <jsp:include page="${item.applyUrl}">
+                                        <jsp:param value="${item.fieldName}" name="fieldName"/>
+                                    </jsp:include>
+                                </c:forEach>
+                            </div>
+                        </c:if>
                     </div>
                     <div class="clearfix"></div>
                 </div>

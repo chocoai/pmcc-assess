@@ -2,7 +2,6 @@
   楼盘基础信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/views/share/main_css.jsp" %>
 <form id="frm_estate" class="form-horizontal">
     <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
     <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineEstateVo.id}">

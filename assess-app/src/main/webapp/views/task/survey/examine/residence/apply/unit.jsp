@@ -2,7 +2,6 @@
 单元基本情况
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <form id="frm_unit" class="form-horizontal">
     <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
     <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineUnitVo.id}">
