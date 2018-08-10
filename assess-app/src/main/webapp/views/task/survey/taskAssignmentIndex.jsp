@@ -303,7 +303,9 @@
                 toolbar: "#survey_examine_task_list_tb",
                 rownumbers: true,
                 onDblClickRow: function (row) {
-                    taskAssignment.editExamineTask(row.id);
+                    if (row.taskStatus == 'wait'){
+                        taskAssignment.editExamineTask(row.id);
+                    }
                 },
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
@@ -336,7 +338,7 @@
                         if (row.pid == 0) {//第一层级
                             s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增下级' class='btn btn-xs btn-success tooltips'  onclick='taskAssignment.addExamineTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
                         } else {
-                            if (!row.bisFinish) {
+                            if (row.taskStatus == 'wait') {
                                 s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑修改' class='btn btn-xs btn-primary tooltips'  onclick='taskAssignment.editExamineTask(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
                                 if (!row.bisMust) {
                                     s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips'  onclick='taskAssignment.delExamineTask(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
@@ -385,8 +387,15 @@
             var gridRows = $("#survey_examine_task_list").treegrid("getCheckedNodes");
             var idArray = [];
             $.each(gridRows, function (i, item) {
-                idArray.push(item.id);
+                //根据状态判断是否允许设置
+                if (item.taskStatus == 'wait') {
+                    idArray.push(item.id);
+                }
             })
+            if(idArray.length<=0){
+                Alert("没有选择有效的数据");
+                return false;
+            }
             Loading.progressShow();
             $.ajax({
                 url: getContextPath() + "/surveyExamine/saveFastSet",

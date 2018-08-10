@@ -232,7 +232,7 @@
             var formData = taskExamineItemIndex.getFormData();
             var data = {};
             var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
-            if ("${processInsId}" != "0") {
+            if ("${processInsId}" != "0") {//返回修改
                 data = formParams("frm_approval");
                 url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
             }

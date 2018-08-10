@@ -116,7 +116,7 @@
                 </div>
             </form>
             <div class="form-group" style="text-align: center;">
-                <div class="btn-group">
+                <div>
                     <button class="btn btn-default" onclick="window.close()">
                         取消
                     </button>

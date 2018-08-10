@@ -27,30 +27,30 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content examine">
-                    <ul class="nav nav-tabs bar_tabs">
+                    <ul class="nav nav-tabs bar_tabs task_examine_item_tab">
                         <c:if test="${not empty blockTaskList}">
                             <li class="tab_block">
-                                <a href="#tab_content_block" data-toggle="tab">版块</a>
+                                <a href="#tab_content_block" data-name="block" data-toggle="tab">版块</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty estateTaskList}">
                             <li class="tab_estate">
-                                <a href="#tab_content_estate" data-toggle="tab">楼盘</a>
+                                <a href="#tab_content_estate" data-name="estate" data-toggle="tab">楼盘</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty buildingTaskList}">
                             <li class="tab_building">
-                                <a href="#tab_content_building" data-toggle="tab">楼栋</a>
+                                <a href="#tab_content_building" data-name="building" data-toggle="tab">楼栋</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty unitTaskList}">
                             <li class="tab_unit">
-                                <a href="#tab_content_unit" data-toggle="tab">单元</a>
+                                <a href="#tab_content_unit" data-name="unit" data-toggle="tab">单元</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty houseTaskList}">
                             <li class="tab_house">
-                                <a href="#tab_content_house" data-toggle="tab">房屋</a>
+                                <a href="#tab_content_house" data-name="house" data-toggle="tab">房屋</a>
                             </li>
                         </c:if>
                     </ul>
@@ -115,50 +115,30 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
+        //tab注册事件
+        $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var dataName = $(this).attr('data-name');
+            if ($.inArray(dataName, ContainerFunForInitRecord) < 0) {
+                for (var i = 0; i < ContainerFunForInit[dataName].length; i++) {
+                    ContainerFunForInit[dataName][i]();
+                }
+                ContainerFunForInitRecord.push(dataName);
+            }
+        });
+
         taskExamineItemApproval.selectFirstTab();
     })
 </script>
 <script type="text/javascript">
-   
+    var ContainerFunForInit = {"block": [], "estate": [], "building": [], "unit": [], "house": []};//数据初始化方法容器
+    var ContainerFunForInitRecord = [];//数据初始化记录
+
     var taskExamineItemApproval = {
         //选择第一个tab
         selectFirstTab:function () {
-            $(".examine .nav-tabs").find('a:first').tab('show');
+            $(".task_examine_item_tab").find('a:first').tab('show');
         }
-
     };
-    var ContainerFunInit = function () {
-
-    };
-    //用作 选项框的初始化
-    ContainerFunInit.prototype = {
-        estate:function () {
-            estate.init();
-        },
-        building:function () {
-            building.init();
-            //默认显示第一栋
-            building.firstData(null);
-        },
-        estateLandState:function () {
-            estateLandState.init();
-        },
-        houseTrading:function () {
-            houseTrading.init();
-        },
-        house:function () {
-            house.init();
-        },
-        block:function () {
-            block.init();
-        }
-    }
-    ContainerFunInit.prototype.estate();
-    ContainerFunInit.prototype.building();
-    ContainerFunInit.prototype.estateLandState();
-    ContainerFunInit.prototype.houseTrading();
-    ContainerFunInit.prototype.house();
-    ContainerFunInit.prototype.block();
 
     //审批提交
     function saveform() {

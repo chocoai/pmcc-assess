@@ -343,22 +343,18 @@
                     msg:"请检查【房屋】填写的信息",
                     hiddenValid:true
                 };
-                return $("#" + houseFun.prototype.config().frm).valid(options);
+                return $("#" + houseFun.config().frm).valid(options);
             },
 
             //获取需要保存的数据
             getFormData: function () {
-                var data = formParams(houseFun.prototype.config().frm);
+                var data = formParams(houseFun.config().frm);
                 data.declareId = $("#declareId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
-                keyValueDto.key = $("#" + houseFun.prototype.config().frm).find('[data-name="fieldName"]').val();
+                keyValueDto.key = $("#" + houseFun.config().frm).find('[data-name="fieldName"]').val();
                 keyValueDto.value = data;
                 return keyValueDto;
-            },
-            //文件上传处理
-            files: function () {
-                //已经移除
             }
         };
         window.ExamineHouse = examineHouse;

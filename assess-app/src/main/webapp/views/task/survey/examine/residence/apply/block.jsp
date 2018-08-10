@@ -48,7 +48,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="方位" required data-rule-number='true'
+                <input type="text" data-rule-maxlength="100" placeholder="方位" required
                        value="${surveyExamineDataInfoVo.examineBlockVo.position}"
                        name="position" class="form-control">
             </div>

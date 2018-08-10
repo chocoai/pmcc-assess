@@ -172,12 +172,7 @@
     $(function () {
         //注册事件
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var that = $(this).closest('li');
-            projectDetails.loadTaskList({
-                target: $('#plan_item_list_' + that.attr('plan-id')),
-                projectId: '${projectInfo.id}',
-                planId: that.attr('plan-id')
-            });
+            projectDetails.loadPlanTabInfo($(this));
         });
 
         projectDetails.selectRuningTab();
@@ -185,6 +180,15 @@
 </script>
 <script type="application/javascript">
     var projectDetails = {
+        loadPlanTabInfo:function (tab) {
+            var that = $(tab).closest('li');
+            projectDetails.loadTaskList({
+                target: $('#plan_item_list_' + that.attr('plan-id')),
+                projectId: '${projectInfo.id}',
+                planId: that.attr('plan-id')
+            });
+        },
+
         loadTaskList: function (options) {
             var defaults = {
                 target: undefined,
@@ -373,7 +377,7 @@
         //打开任务页面的回调
         taskOpenWin: function (url) {
             openWin(url, function () {
-                projectDetails.selectRuningTab();
+                projectDetails.loadPlanTabInfo($('.plan_tab').find('i:first').closest('li').find('a'));
             })
         }
     };
