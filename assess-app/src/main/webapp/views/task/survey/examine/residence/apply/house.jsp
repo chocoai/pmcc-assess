@@ -113,30 +113,30 @@
         </div>
     </div>
 </form>
-<script>
+<script type="text/javascript">
     $(function () {
-
-        houseFun.prototype.init2();
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouse.getFormData);//获取数据方法写入容器
+        ContainerFunForInit.house.push(houseFun.prototype.init);//初始化方法写入容器
+        ContainerFunForInit.house.push(houseFun.prototype.select2Init);//初始化方法写入容器
+        ContainerFunForInit.house.push(houseFun.prototype.files);//初始化方法写入容器
     });
 </script>
 
 <script type="text/javascript">
     var houseFun;
     (function () {
-        houseFun = function () {
-
+        var houseFun = function () {
         };
         houseFun.prototype = {
-            select2Init:function () {
+            select2Init: function () {
                 //页面保存数据后 展示数据
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}","huxingId");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}","newsHuxing");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}","certUse");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}","practicalUse");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}", "huxingId");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}", "newsHuxing");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}", "certUse");
+                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}", "practicalUse");
                 var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
-                if (houseFun.prototype.select2IsNotNull(id)){
+                if (houseFun.prototype.select2IsNotNull(id)) {
                     $.ajax({
                         url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
                         dataType: "JSON",
@@ -145,7 +145,7 @@
                         success: function (result) {
                             if (result.ret) {
                                 var data = result.data;
-                                if (houseFun.prototype.select2IsNotNull(data)){
+                                if (houseFun.prototype.select2IsNotNull(data)) {
                                     $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
                                 }
                             }
@@ -156,28 +156,28 @@
                     });
                 }
             },
-            select2InitMethodWrite:function (data,name) {
-                if (houseFun.prototype.select2IsNotNull(data)){
-                    if (houseFun.prototype.select2IsNotNull(name)){
-                        $("#"+houseFun.prototype.config().frm+" ."+name).val(data).trigger("change");
+            select2InitMethodWrite: function (data, name) {
+                if (houseFun.prototype.select2IsNotNull(data)) {
+                    if (houseFun.prototype.select2IsNotNull(name)) {
+                        $("#" + houseFun.prototype.config().frm + " ." + name).val(data).trigger("change");
                     }
-                }else {
-                    if (houseFun.prototype.select2IsNotNull(name)){
-                        $("#"+houseFun.prototype.config().frm+" ."+name).val(null).trigger("change");
+                } else {
+                    if (houseFun.prototype.select2IsNotNull(name)) {
+                        $("#" + houseFun.prototype.config().frm + " ." + name).val(null).trigger("change");
                     }
                 }
             },
-            select2IsNotNull:function (data) {
-                if (data == null){
+            select2IsNotNull: function (data) {
+                if (data == null) {
                     return false;
                 }
-                if (data == ''){
+                if (data == '') {
                     return false;
                 }
-                if (data == ""){
+                if (data == "") {
                     return false;
                 }
-                if (data == 0){
+                if (data == 0) {
                     return false;
                 }
                 return true;
@@ -192,58 +192,70 @@
                 };
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouse/examine_house_practical_use",
-                    type: "get",
-                    dataType: "json",
-                    async:false,
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseFun.prototype.config().frm + " .practicalUse").html(option);
-                                // $("#" + houseFun.prototype.config().frm + " .practicalUse").select2({minimumResultsForSearch: -1});//加载样式
-                                $("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, "", function () {
+                    $("#" + houseFun.prototype.config().frm + " .certUse").html(option);
+                    $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
                 })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouse/examine_house_load_utility",
-                    type: "get",
-                    dataType: "json",
-                    async:false,
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseFun.prototype.config().frm + " .certUse").html(option);
-                                // $("#" + houseFun.prototype.config().frm + " .certUse").select2({minimumResultsForSearch: -1});//加载样式
-                                $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, "", function () {
+                    $("#" + houseFun.prototype.config().frm + " .certUse").html(option);
+                    $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
                 })
+
+                <%--$.ajax({--%>
+                <%--url: "${pageContext.request.contextPath}/examineHouse/examine_house_load_utility",--%>
+                <%--type: "get",--%>
+                <%--dataType: "json",--%>
+                <%--async:false,--%>
+                <%--success: function (result) {--%>
+                <%--if (result.ret) {--%>
+                <%--var data = result.data;--%>
+                <%--var gradeNum = data.length;--%>
+                <%--var option = "<option value=''>请选择</option>";--%>
+                <%--if (gradeNum > 0) {--%>
+                <%--for (var i = 0; i < gradeNum; i++) {--%>
+                <%--option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";--%>
+                <%--}--%>
+                <%--$("#" + houseFun.prototype.config().frm + " .certUse").html(option);--%>
+                <%--// $("#" + houseFun.prototype.config().frm + " .certUse").select2({minimumResultsForSearch: -1});//加载样式--%>
+                <%--$("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式--%>
+                <%--}--%>
+                <%--}--%>
+                <%--},--%>
+                <%--error: function (result) {--%>
+                <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+                <%--}--%>
+                <%--})--%>
+
+                <%--$.ajax({--%>
+                <%--url: "${pageContext.request.contextPath}/examineHouse/examine_house_practical_use",--%>
+                <%--type: "get",--%>
+                <%--dataType: "json",--%>
+                <%--async:false,--%>
+                <%--success: function (result) {--%>
+                <%--if (result.ret) {--%>
+                <%--var data = result.data;--%>
+                <%--var gradeNum = data.length;--%>
+                <%--var option = "<option value=''>请选择</option>";--%>
+                <%--if (gradeNum > 0) {--%>
+                <%--for (var i = 0; i < gradeNum; i++) {--%>
+                <%--option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";--%>
+                <%--}--%>
+                <%--$("#" + houseFun.prototype.config().frm + " .practicalUse").html(option);--%>
+                <%--// $("#" + houseFun.prototype.config().frm + " .practicalUse").select2({minimumResultsForSearch: -1});//加载样式--%>
+                <%--$("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式--%>
+                <%--}--%>
+                <%--}--%>
+                <%--},--%>
+                <%--error: function (result) {--%>
+                <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+                <%--}--%>
+                <%--})--%>
+
+
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineHouse/examine_house_newshuxing",
                     type: "get",
-                    async:false,
+                    async: false,
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
@@ -268,10 +280,10 @@
                     url: "${pageContext.request.contextPath}/examineHouse/examineunithuxingSelect",
                     type: "get",
                     dataType: "json",
-                    async:false,
-                    data:{
-                        declareId : $("#declareId").val(),
-                        examineType : $("#examineType").val()
+                    async: false,
+                    data: {
+                        declareId: $("#declareId").val(),
+                        examineType: $("#examineType").val()
                     },
                     success: function (result) {
                         if (result.ret) {
@@ -295,11 +307,11 @@
                     }
                 });
             },
-            init2:function () {
+            init2: function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {
                     var id = $("#" + houseFun.prototype.config().frm + " .huxingId").eq(1).val();
                     // 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                    if (id != null && id!=''){
+                    if (id != null && id != '') {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
                             dataType: "JSON",
@@ -370,7 +382,8 @@
                 })
             }
         };
-    })();
+    })()
+
 
     (function ($) {
         //避免方法重复，定义全局变量
@@ -397,4 +410,7 @@
         };
         window.ExamineHouse = examineHouse;
     })(jQuery)
+</script>
+<script type="text/javascript">
+
 </script>

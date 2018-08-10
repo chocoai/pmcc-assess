@@ -136,7 +136,7 @@
                 processInsId: "${processInsId}",
                 reActivityName: "${activityReName}",
                 fieldsName: "log",
-                processTaskId:${taskId}
+                processTaskId:"${taskId}"
             },
             deleteFlag: true
         });

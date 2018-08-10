@@ -74,7 +74,7 @@
 
         <div class="form-group" style="display: none">
             <div class="x-valid">
-                <div class="col-sm-1">
+                <div class="col-sm-1" style="text-align: right;">
                     <button type="button" class="btn btn-success" data-toggle="modal" href="#divBox" onclick="examineHouseTrading.prototype.subShowModel();"> 新增
                     </button>
                 </div>
@@ -111,10 +111,10 @@
 
 <script type="text/javascript">
     $(function () {
-
-        examineHouseTrading.prototype.init2();
         ContainerFunForValid.push(ExamineHouseTrading.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouseTrading.getFormData);//获取数据方法写入容器
+        ContainerFunForInit.house.push(examineHouseTrading.prototype.init);//初始化方法写入容器
+        ContainerFunForInit.house.push(examineHouseTrading.prototype.select2Init);//初始化方法写入容器
     });
 </script>
 
@@ -130,31 +130,20 @@
 
             var tradingTypeID = "${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" ;
             if (examineHouseTrading.prototype.select2IsNotNull(tradingTypeID)){
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouse/getBaseDataDicById",
-                    type: "get",
-                    data:{id:tradingTypeID},
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var  tradingType = result.data.fieldName;
-                            $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
-                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
-                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
-                            }
-                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                AssessCommon.getDataDicInfo(tradingTypeID,function (data) {
+                    var  tradingType = data.fieldName;
+                    $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
                     }
-                });
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
+                    }
+                })
             }
             examineHouseTrading.prototype.select2InitMethodWrite(tradingTypeID,"tradingType");
         },
@@ -321,87 +310,35 @@
                 }
             })
         },
-        init2:function () {
+
+        init: function () {
+            //第一次加载
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
+            })
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
+            })
+
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
                 var tradingType = null;
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouse/getBaseDataDicById",
-                    type: "get",
-                    data:{id:tradingID},
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            tradingType = data.fieldName;
-                            $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
-                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
-                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
-                            }
-                            if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
-                                $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                                examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                AssessCommon.getDataDicInfo(tradingID,function (data) {
+                    tradingType = data.fieldName;
+                    $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
                     }
-                });
-            });
-        },
-        init: function () {
-            //第一次加载
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineHouse/examine_house_transaction_type",
-                type: "get",
-                async:false,
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(option);
-                            // $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2({minimumResultsForSearch: -1});//加载样式
-                            $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
-                        }
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineHouse/examine_house_description_type",
-                type: "get",
-                async:false,
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(option);
-                            // $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2({minimumResultsForSearch: -1});//加载样式
-                            $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
+                })
             });
         }
     };

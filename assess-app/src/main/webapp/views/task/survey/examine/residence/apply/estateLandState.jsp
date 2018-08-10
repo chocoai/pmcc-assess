@@ -123,6 +123,8 @@
     $(function () {
         ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
+        ContainerFunForInit.estate.push(estateLandState.prototype.init);//初始化方法写入容器
+        ContainerFunForInit.estate.push(estateLandState.prototype.select2Init);//初始化方法写入容器
     })
 </script>
 <script type="text/javascript">

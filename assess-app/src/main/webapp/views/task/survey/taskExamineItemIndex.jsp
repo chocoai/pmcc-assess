@@ -29,30 +29,30 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <ul class="nav nav-tabs bar_tabs">
+                    <ul class="nav nav-tabs bar_tabs task_examine_item_tab">
                         <c:if test="${not empty blockTaskList}">
                             <li class="tab_block">
-                                <a href="#tab_content_block" data-toggle="tab">版块</a>
+                                <a href="#tab_content_block" data-name="block" data-toggle="tab">版块</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty estateTaskList}">
                             <li class="tab_estate">
-                                <a href="#tab_content_estate" data-toggle="tab">楼盘</a>
+                                <a href="#tab_content_estate" data-name="estate" data-toggle="tab">楼盘</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty buildingTaskList}">
                             <li class="tab_building">
-                                <a href="#tab_content_building" data-toggle="tab">楼栋</a>
+                                <a href="#tab_content_building" data-name="building" data-toggle="tab">楼栋</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty unitTaskList}">
                             <li class="tab_unit">
-                                <a href="#tab_content_unit" data-toggle="tab">单元</a>
+                                <a href="#tab_content_unit" data-name="unit" data-toggle="tab">单元</a>
                             </li>
                         </c:if>
                         <c:if test="${not empty houseTaskList}">
                             <li class="tab_house">
-                                <a href="#tab_content_house" data-toggle="tab">房屋</a>
+                                <a href="#tab_content_house" data-name="house" data-toggle="tab">房屋</a>
                             </li>
                         </c:if>
                     </ul>
@@ -132,92 +132,40 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
+        //tab注册事件
+        $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var dataName = $(this).attr('data-name');
+            if ($.inArray(dataName, ContainerFunForInitRecord) < 0) {
+                console.log(ContainerFunForInit[dataName]);
+                for (var i = 0; i < ContainerFunForInit[dataName].length; i++) {
+                    ContainerFunForInit[dataName][i]();
+                }
+                ContainerFunForInitRecord.push(dataName);
+            }
+        });
+
+        //选中第一个tab
         taskExamineItemIndex.selectFirstTab();
     })
 </script>
 <script type="text/javascript">
     var ContainerFunForValid = [];//数据验证方法容器
     var ContainerFunForGetData = [];//获取数据方法容器
-    var ContainerFunInit  = function () {
-        
-    }
-    //用作 选项框的初始化
-    ContainerFunInit.prototype = {
-        estate:function () {
-            try {
-                if (typeof(estateFun) == 'undefined'){
-                    console.log("函数或者对象没有定义!===> name:"+"estateFun");
-                }else {
-                    estateFun.prototype.init();
-                    estateFun.prototype.select2Init();//必须在init之后
-                    estateFun.prototype.viewFiles();
-                }
-            } catch (e) {
-            }
-        },
-        building:function () {
-            try {
-                if (typeof(examineBuilding_) == 'undefined'){
-                    console.log("函数或者对象没有定义!===> name:"+"examineBuilding_");
-                }else {
-                    examineBuilding_.prototype.viewInit();
-                    examineBuilding_.prototype.uploadFiles();
-                }
-            } catch (e) {
-            }
-        },
-        estateLandState:function () {
-            try {
-                if (typeof(estateLandState) == 'undefined'){
-                    console.log("函数或者对象没有定义!===> name:"+"estateLandState");
-                }else {
-                    estateLandState.prototype.init();
-                    estateLandState.prototype.select2Init();//必须在init之后
-                }
-            } catch (e) {
-            }
-        },
-        houseTrading:function () {
-            try {
-                if (typeof(examineHouseTrading) == 'undefined'){
-                    console.log("函数或者对象没有定义!===> name:"+"examineHouseTrading");
-                }else {
-                    examineHouseTrading.prototype.init();//此方法可以在加载选择框时才初始化 (方法已经加入同步否则select2无法赋值)
-                    examineHouseTrading.prototype.select2Init();//必须在init之后
-                }
-            } catch (e) {
-            }
-        },
-        house:function () {
-            try {
-                if (typeof(houseFun) == 'undefined'){
-                    console.log("函数或者对象没有定义!===> name:"+"houseFun");
-                }else {
-                    houseFun.prototype.files();
-                    houseFun.prototype.init(); //同步加载数据之后才能够select2赋值
-                    houseFun.prototype.select2Init();//处理select2赋值 必须在init之后
-                }
-            } catch (e) {
-            }
-        }
-    }
-    ContainerFunInit.prototype.estate();
-    ContainerFunInit.prototype.building();
-    ContainerFunInit.prototype.estateLandState();
-    ContainerFunInit.prototype.houseTrading();
-    ContainerFunInit.prototype.house();
+    var ContainerFunForInit = {"block": [], "estate": [], "building": [], "unit": [], "house": []};//数据初始化方法容器
+    var ContainerFunForInitRecord = [];//数据初始化记录
+
     var taskExamineItemIndex = {
         //选择第一个tab
         selectFirstTab: function () {
-            $(".examine .nav-tabs").find('a:first').tab('show');
+            $(".task_examine_item_tab").find('a:first').tab('show');
         },
 
         //验证
         valid: function () {
             console.log(ContainerFunForValid);
             if (ContainerFunForValid.length > 0) {
-                for(var i=0;i<ContainerFunForValid.length;i++){
-                    if(!ContainerFunForValid[i]()){
+                for (var i = 0; i < ContainerFunForValid.length; i++) {
+                    if (!ContainerFunForValid[i]()) {
                         return false;
                     }
                 }
@@ -279,14 +227,14 @@
 //            }
             var formData = taskExamineItemIndex.getFormData();
             var data = {};
-            var url='${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
+            var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
             if ("${processInsId}" != "0") {
                 data = formParams("frm_approval");
-                url='${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
+                url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
             }
-            data.formData=JSON.stringify(formData);
-            data.planDetailsId= "${projectPlanDetails.id}";
-            data.responsibilityId= "${responsibilityId}";
+            data.formData = JSON.stringify(formData);
+            data.planDetailsId = "${projectPlanDetails.id}";
+            data.responsibilityId = "${responsibilityId}";
             Loading.progressShow();
             $.ajax({
                 url: url,

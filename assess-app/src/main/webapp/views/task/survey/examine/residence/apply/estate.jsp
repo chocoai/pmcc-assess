@@ -177,6 +177,10 @@
     $(function () {
         ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
+        ContainerFunForInit.estate.push(estateFun.prototype.init);//初始化方法写入容器
+        ContainerFunForInit.estate.push(estateFun.prototype.select2Init);//初始化方法写入容器
+        ContainerFunForInit.estate.push(estateFun.prototype.viewFiles);//初始化方法写入容器
+
     })
 </script>
 <script type="text/javascript">

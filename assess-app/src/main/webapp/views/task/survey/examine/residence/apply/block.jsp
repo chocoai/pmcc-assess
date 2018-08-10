@@ -76,17 +76,11 @@
     $(function () {
         ContainerFunForValid.push(Block.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Block.getFormData);//获取数据方法写入容器
-        Block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
+        ContainerFunForInit.block.push(Block.init);//初始化方法写入容器
+
 
         //初始化区域信息
-        AssessCommon.initAreaInfo({
-            provinceTarget: $("#frm_block").find("[name='province']"),
-            cityTarget: $("#frm_block").find("[name='city']"),
-            districtTarget: $("#frm_block").find("[name='district']"),
-            provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
-            cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
-            districtValue: "${surveyExamineDataInfoVo.examineBlockVo.district}"
-        })
+
         //版块信息自动补全
         <%--$("#frm_block").find("[name='name']").autocomplete({--%>
         <%--source: function (request, response) {--%>
@@ -119,6 +113,20 @@
     (function ($) {
         //避免方法重复，定义全局变量
         var block = {
+            //初始化
+            init:function () {
+                AssessCommon.initAreaInfo({
+                    provinceTarget: $("#frm_block").find("[name='province']"),
+                    cityTarget: $("#frm_block").find("[name='city']"),
+                    districtTarget: $("#frm_block").find("[name='district']"),
+                    provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
+                    cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
+                    districtValue: "${surveyExamineDataInfoVo.examineBlockVo.district}"
+                });
+
+                Block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
+            },
+
             //验证
             valid:function () {
                 return $("#frm_block").valid();

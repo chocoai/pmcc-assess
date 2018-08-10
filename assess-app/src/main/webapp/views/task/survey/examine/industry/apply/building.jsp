@@ -345,8 +345,13 @@
 </div>
 
 </body>
-
-<%--<%@include file="/views/share/main_footer.jsp" %>--%>
+<script type="application/javascript">
+    $(function () {
+        //两个方法 都可以假如选项卡载入时 初始化
+        ContainerFunForInit.building.push(examineBuilding_.prototype.viewInit);//初始化方法写入容器
+        ContainerFunForInit.building.push(examineBuilding_.prototype.uploadFiles);//初始化方法写入容器
+    });
+</script>
 <script type="application/javascript">
 
     var examineBuilding_ ;

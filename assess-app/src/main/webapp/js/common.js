@@ -223,11 +223,22 @@
             } else {
                 defaults.provinceTarget = $(defaults.provinceTarget);
             }
+
             if ($.type(defaults.cityTarget) === "string") {
                 defaults.cityTarget = $("#" + defaults.cityTarget);
+            }else {
+                defaults.cityTarget = $(defaults.cityTarget);
             }
+
+            if ($.type(defaults.districtTarget) === "string") {
+                defaults.districtTarget = $("#" + defaults.districtTarget);
+            }else {
+                defaults.districtTarget = $(defaults.districtTarget);
+            }
+
             defaults.provinceTarget.select2();
             defaults.cityTarget.select2();
+            defaults.districtTarget.select2();
 
             //省切换
             defaults.provinceTarget.bind('change', function () {
