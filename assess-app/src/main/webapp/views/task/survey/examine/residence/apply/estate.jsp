@@ -249,33 +249,11 @@
                 }
             })
 
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineBuilding/estate_total_building_type",
-                type: "get",
-                dataType: "json",
-                async:false,
-                data: {type: null},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            if ($("#" + Estate.config().frm + " .totalBuildingType").size() > 0) {
-                                $("#" + Estate.config().frm + " .totalBuildingType").html(option);
-                                // $("#" + Estate.config().frm + " .totalBuildingType").select2({minimumResultsForSearch: -1});//加载样式
-                                $("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式
-                            }
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateTotalBuildingType,"",function (html,data) {
+                $("#" + Estate.config().frm + " .totalBuildingType").html(html);
+                $("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式
             })
+
         },
         viewFiles:function () {
             //总平面图

@@ -44,8 +44,6 @@
 </div>
 </body>
 
-
-<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 <script type="application/javascript">
 
     $(function () {
@@ -231,8 +229,8 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price").html(option);
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price").select2();//加载样式
+                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price_select").html(option);
+                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price_select").select2();//加载样式
                             }
                         }
                     },
@@ -409,7 +407,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="price"
-                                                    class="form-control search-select select2 price">
+                                                    class="form-control search-select select2 price_select">
                                             </select>
                                         </div>
                                     </div>

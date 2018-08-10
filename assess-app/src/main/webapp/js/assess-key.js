@@ -34,6 +34,7 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
  */
 var AssessDicKey = {}
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
+AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)
 
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
