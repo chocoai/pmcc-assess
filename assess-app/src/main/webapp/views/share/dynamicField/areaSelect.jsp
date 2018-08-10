@@ -4,7 +4,6 @@
     </label>
     <div class="col-sm-3">
         <select id="#{curr_fieldId}" name="#{curr_fieldName}" class="form-control  search-select select2" required="required">
-            <option selected="selected" value="">-请选择-</option>
         </select>
     </div>
 </div>
@@ -14,7 +13,6 @@
     </label>
     <div class="col-sm-3">
         <select id="#{curr_tableName}-city" name="city" class="form-control  search-select select2" required="required">
-            <option selected="selected" value="">请选择</option>
         </select>
     </div>
 </div>
@@ -24,7 +22,6 @@
     </label>
     <div class="col-sm-3">
         <select id="#{curr_tableName}-district" name="district" class="form-control  search-select select2">
-            <option selected="selected" value="">请选择</option>
         </select>
     </div>
 </div>

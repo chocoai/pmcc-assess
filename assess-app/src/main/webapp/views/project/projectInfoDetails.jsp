@@ -13,9 +13,6 @@
                 <div class="title_left">
                     <h3>
                         ${projectInfo.projectName}
-                        <small><label style="padding: 5px;" class="label label-danger">
-                            ${projectInfo.projectStatus}
-                        </label></small>
                     </h3>
 
                 </div>
@@ -499,9 +496,8 @@
                     </table>
                 </div>
             </div>
-
             <%@include file="/views/share/form_details.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+
         </div>
     </div>
 </div>

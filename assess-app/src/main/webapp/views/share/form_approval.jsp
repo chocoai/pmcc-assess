@@ -45,7 +45,8 @@
                         <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
                             <div class="col-sm-5" id="div_bisNext">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked" value=""
+                                    <input type="checkbox" id="chk_bisNext" name="chk_bisNext" checked="checked"
+                                           value=""
                                            class="grey"
                                            onclick="formApproval.chkbisNextClick()">
                                     跳过多级审批
@@ -114,8 +115,8 @@
                     <%@include file="/views/share/ApprovalVariable.jsp" %>
                 </div>
             </form>
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-5">
+            <div class="form-group" style="text-align: center;">
+                <div class="btn-group">
                     <button class="btn btn-default" onclick="window.close()">
                         取消
                     </button>
@@ -133,12 +134,12 @@
 
 
 <script type="application/javascript">
-    var formApproval={
-        valid:function () {
+    var formApproval = {
+        valid: function () {
             return $("#frm_approval").valid();
         },
 
-        chkbisNextClick:function () {
+        chkbisNextClick: function () {
             if ($("#chk_bisNext").is(":checked")) {
                 $("#bisNext").val(1);
             }
@@ -150,7 +151,7 @@
             }
         },
 
-        chkRadioClick:function () {
+        chkRadioClick: function () {
             var rdoValue = $("input[name='conclusion']:checked").val();
             if (rdoValue == "Approval") {
                 $("#opinions").attr("required", false);//审批意见不必填
@@ -160,7 +161,7 @@
             }
         },
 
-        loadOpation:function () {
+        loadOpation: function () {
             formApproval.chkbisNextClick();
             var opation = "";
             if ("${approvalReview}" == "1") {
@@ -178,9 +179,9 @@
             return opation;
         },
 
-        getFormData:function () {
+        getFormData: function () {
             var formData = formParams("frm_approval");
-            formData.opinions=formApproval.loadOpation();
+            formData.opinions = formApproval.loadOpation();
             return formData;
         }
     };
@@ -196,7 +197,7 @@
                     processInsId: "${processInsId}",
                     reActivityName: "${activityReName}",
                     fieldsName: "log",
-                    processTaskId:"${taskId}"
+                    processTaskId: "${taskId}"
                 },
                 deleteFlag: true
             });

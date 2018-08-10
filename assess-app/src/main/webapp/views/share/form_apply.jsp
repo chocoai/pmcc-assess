@@ -14,23 +14,25 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        <div class="col-sm-4 col-sm-offset-5">
-            <a id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                取消
-            </a>
-            <c:if test="${bisEdit==1}">
-                <a id="commit_btn" class="btn btn-warning" onclick="closeProcess()">
-                    撤销
+        <div class="form-group" style="text-align: center;">
+            <div class="btn-group">
+                <a id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                    取消
                 </a>
-            </c:if>
-            <%--<c:if test="${bisEdit!=1&&empty hideSaveDraft}">--%>
-            <%--<a id="commit_btn" class="btn btn-warning" onclick="saveDraft()">--%>
-            <%--保存草稿--%>
-            <%--</a>--%>
-            <%--</c:if>--%>
-            <a id="commit_btn" class="btn btn-success" onclick="saveform()">
-                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-            </a>
+                <c:if test="${bisEdit==1}">
+                    <a id="commit_btn" class="btn btn-warning" onclick="closeProcess()">
+                        撤销
+                    </a>
+                </c:if>
+                <%--<c:if test="${bisEdit!=1&&empty hideSaveDraft}">--%>
+                <%--<a id="commit_btn" class="btn btn-warning" onclick="saveDraft()">--%>
+                <%--保存草稿--%>
+                <%--</a>--%>
+                <%--</c:if>--%>
+                <a id="commit_btn" class="btn btn-success" onclick="saveform()">
+                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
