@@ -180,6 +180,7 @@
     })
 </script>
 <script type="text/javascript">
+
     (function () {
         //上传附件
         function uploadFile(fieldsName) {
@@ -230,19 +231,11 @@
                 }
             },
             select2IsNotNull: function (data) {
-                if (data == null) {
+                if(data){
+                    return true;
+                }else{
                     return false;
                 }
-                if (data == '') {
-                    return false;
-                }
-                if (data == "") {
-                    return false;
-                }
-                if (data == 0) {
-                    return false;
-                }
-                return true;
             },
             init: function () {
                 //主要是载入select2

@@ -225,10 +225,10 @@
 
         //提交
         submit: function () {
-            $(".examine_content [data-required]").removeAttr('data-required').attr('required','required');
-            if (!taskExamineItemIndex.valid()) {
-                return false;
-            }
+//            $(".examine_content [data-required]").removeAttr('data-required').attr('required','required');
+//            if (!taskExamineItemIndex.valid()) {
+//                return false;
+//            }
             var formData = taskExamineItemIndex.getFormData();
             var data = {};
             var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
