@@ -390,7 +390,11 @@
         var examineHouse = {
             //验证
             valid: function () {
-                return $("#" + houseFun.prototype.config().frm).valid();
+                var options={
+                    msg:"请检查【房屋】填写的信息",
+                    hiddenValid:true
+                };
+                return $("#" + houseFun.prototype.config().frm).valid(options);
             },
 
             //获取需要保存的数据

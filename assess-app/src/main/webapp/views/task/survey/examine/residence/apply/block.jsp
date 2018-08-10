@@ -48,7 +48,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="方位" required
+                <input type="text" data-rule-maxlength="100" placeholder="方位" required data-rule-number='true'
                        value="${surveyExamineDataInfoVo.examineBlockVo.position}"
                        name="position" class="form-control">
             </div>
@@ -129,7 +129,11 @@
 
             //验证
             valid:function () {
-                return $("#frm_block").valid();
+                var options={
+                    msg:"请检查【版块】填写的信息",
+                    hiddenValid:true
+                };
+                return $("#frm_block").valid(options);
             },
 
             //获取需要保存的数据

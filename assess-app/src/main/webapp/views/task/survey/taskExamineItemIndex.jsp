@@ -28,7 +28,7 @@
                     <h2>${declareRecord.name}-查勘信息</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content examine_content">
                     <ul class="nav nav-tabs bar_tabs task_examine_item_tab">
                         <c:if test="${not empty blockTaskList}">
                             <li class="tab_block">
@@ -136,7 +136,6 @@
         $('.task_examine_item_tab').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             var dataName = $(this).attr('data-name');
             if ($.inArray(dataName, ContainerFunForInitRecord) < 0) {
-                console.log(ContainerFunForInit[dataName]);
                 for (var i = 0; i < ContainerFunForInit[dataName].length; i++) {
                     ContainerFunForInit[dataName][i]();
                 }
@@ -162,7 +161,6 @@
 
         //验证
         valid: function () {
-            console.log(ContainerFunForValid);
             if (ContainerFunForValid.length > 0) {
                 for (var i = 0; i < ContainerFunForValid.length; i++) {
                     if (!ContainerFunForValid[i]()) {
@@ -170,7 +168,7 @@
                     }
                 }
             }
-            return false;
+            return true;
         },
 
         //获取表单数据
@@ -196,6 +194,11 @@
 
         //保存
         save: function () {
+            //保存只验证填写的数据合法性
+            $(".examine_content [required]").removeAttr('required').attr('data-required','true');
+            if (!taskExamineItemIndex.valid()) {
+                return false;
+            }
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyExamineItem/saveExamineDataInfo",
@@ -222,9 +225,10 @@
 
         //提交
         submit: function () {
-//            if (!taskExamineItemIndex.valid()) {
-//                return false;
-//            }
+            $(".examine_content [data-required]").removeAttr('data-required').attr('required','required');
+            if (!taskExamineItemIndex.valid()) {
+                return false;
+            }
             var formData = taskExamineItemIndex.getFormData();
             var data = {};
             var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';

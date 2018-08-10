@@ -38,7 +38,11 @@
         var unit = {
             //验证
             valid:function () {
-                return $("#frm_unit").valid();
+                var options={
+                    msg:"请检查【单元】填写的信息",
+                    hiddenValid:true
+                };
+                return $("#frm_unit").valid(options);
             },
 
             //获取需要保存的数据

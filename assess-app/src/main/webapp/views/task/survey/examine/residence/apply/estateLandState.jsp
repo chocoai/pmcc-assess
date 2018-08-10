@@ -226,7 +226,11 @@
             },
             //验证
             valid: function () {
-                return $("#" + estateLandState.config().frm).valid();
+                var options={
+                    msg:"请检查【土地实体情况】填写的信息",
+                    hiddenValid:true
+                };
+                return $("#" + estateLandState.config().frm).valid(options);
             },
 
             //获取需要保存的数据

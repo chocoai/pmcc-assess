@@ -43,9 +43,9 @@
 
         <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">买方支付的额外税费<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="买方支付的额外税费" required="required"
+                    <input type="text" placeholder="买方支付的额外税费"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.buyerExtraTaxFee}"
                            name="buyerExtraTaxFee"
                            class="form-control">
@@ -55,18 +55,18 @@
 
         <div class="form-group ExamineHouseTradingLease" style="display: none">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">承租方支付的额外税费<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="承租方支付的额外税费" required="required"
+                    <input type="text" placeholder="承租方支付的额外税费"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.rentingExtraTaxFee}"
                            name="rentingExtraTaxFee"
                            class="form-control">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">押金<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">押金</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="押金" required="required" class="form-control" name="deposit" value="${surveyExamineDataInfoVo.examineHouseTradingVo.deposit}">
+                    <input type="text" placeholder="押金"  class="form-control" name="deposit" value="${surveyExamineDataInfoVo.examineHouseTradingVo.deposit}">
                 </div>
             </div>
 
@@ -348,7 +348,11 @@
         var examineHouseTradingV = {
             //验证
             valid: function () {
-                return $("#" + examineHouseTrading.prototype.config().frm).valid();
+                var options={
+                    msg:"请检查【房屋交易信息】填写的信息",
+                    hiddenValid:true
+                };
+                return $("#" + examineHouseTrading.prototype.config().frm).valid(options);
             },
             //获取需要保存的数据
             getFormData: function () {
