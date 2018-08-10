@@ -140,7 +140,7 @@
                                                     <c:if test="${plan.planCanExecut eq true}">
                                                         <button class="btn btn-sm btn-default" type="button"
                                                                 data-placement="top" data-toggle="tooltip"
-                                                                onclick="window.open('${plan.planExecutUrl}')"
+                                                                onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
                                                                 data-original-title="处理"><i class="fa fa-edit"></i>
                                                         </button>
                                                     </c:if>
