@@ -9,6 +9,7 @@ public class ZtreeDto {
     private String name;
     private String key;
     private Integer _parentId;
+    private Integer area;
     private String number;
     private Boolean isParent;
 
@@ -67,5 +68,13 @@ public class ZtreeDto {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Integer getArea() {
+        return area;
+    }
+
+    public void setArea(Integer area) {
+        this.area = area;
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @Auther: zch
@@ -44,6 +45,7 @@ public class MdMarketCostService {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
         ZtreeDto ztreeDto = new ZtreeDto();
         BeanUtils.copyProperties(baseDataDic,ztreeDto);
+        ztreeDto.setNumber("0");
         ztreeDtos.add(ztreeDto);
         int i = 0;
         changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT,i);
@@ -60,6 +62,7 @@ public class MdMarketCostService {
     }
 
     private void changeZtreeDto(List<BaseDataDic> baseDataDics, List<ZtreeDto> ztreeDtos,String key,int i) {
+        Random random = new Random(System.currentTimeMillis());
         int v = 1;
         if (!ObjectUtils.isEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
@@ -68,10 +71,11 @@ public class MdMarketCostService {
                 BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
                 ztreeDto.set_parentId(dic.getId());
                 if (i!=0){
-                    ztreeDto.setNumber(String.format("%d-%d",i-1,v++));
+                    ztreeDto.setNumber(String.format("%d-%d",i,v++));
                 }else {
-                    ztreeDto.setNumber(String.valueOf(v++ - 1));
+                    ztreeDto.setNumber(String.valueOf(v++));
                 }
+                ztreeDto.setArea(random.nextInt(100));
                 ztreeDtos.add(ztreeDto);
             }
         }
