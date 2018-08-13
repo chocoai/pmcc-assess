@@ -44,7 +44,6 @@
             <label class="col-sm-1 control-label">区域性质<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.regionalNatureName}</label>
-                <select name="regionalNature" class="form-control" required></select>
             </div>
         </div>
     </div>

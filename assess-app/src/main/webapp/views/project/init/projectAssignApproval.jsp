@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                项目经理
+                                项目经理<span class="symbol required"></span>
                             </label>
                             <div class="x-valid">
                                 <div class="col-sm-3">
@@ -81,8 +81,7 @@
                                 </c:if>
                                 <c:if test="${approvalReview==0}">
                                     <div class="x-valid">
-                           <textarea required placeholder="审批意见" id="opinionsTemp" name="opinionsTemp"
-                                     class="form-control"></textarea>
+                                        <textarea placeholder="说明" id="opinionsTemp" name="opinionsTemp" class="form-control"></textarea>
                                     </div>
                                 </c:if>
                             </div>
@@ -127,7 +126,6 @@
 <script type="application/javascript">
     $(function () {
         $("#frm_approval").validate();
-        $("#opinions").attr("required", false);//审批意见不必填
         FileUtils.uploadFiles({
             target: "file_upload",
             disabledTarget: "btn_submit",
@@ -136,10 +134,22 @@
                 processInsId: "${processInsId}",
                 reActivityName: "${activityReName}",
                 fieldsName: "log",
-                processTaskId:"${taskId}"
+                processTaskId: "${taskId}"
             },
             deleteFlag: true
         });
+
+        FileUtils.getFileShows({
+            target: "file_upload",
+            formData: {
+                tableName: AssessDBKey.BoxApprovalLog,
+                processInsId: "${processInsId}",
+                reActivityName: "${activityReName}",
+                fieldsName: "log",
+                processTaskId: "${taskId}"
+            },
+            deleteFlag: true
+        })
     })
     // 项目经理
     function selectUserAccountManager() {
@@ -151,17 +161,11 @@
         });
     }
     function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
         var data = formParams("frm_approval");
-        if ($("#chk_bisNext").is(':checked')) {
-            data.bisNext = "1";
-            if ($("#appointUserAccount").val() == "") {
-                Alert("选择了下级分派则必须选择项目经理");
-                return false;
-            }
-        }
-        else {
-            data.bisNext = "0";
-        }
+        data.bisNext = $("#chk_bisNext").is(':checked') ? "1" : "0";
         data.appointUserAccount = $("#appointUserAccount").val();
         Loading.progressShow();
         $.ajax({

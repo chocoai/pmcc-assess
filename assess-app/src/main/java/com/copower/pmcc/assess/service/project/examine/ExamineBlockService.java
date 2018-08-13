@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,12 +54,20 @@ public class ExamineBlockService {
         if (examineBlock == null) return null;
         ExamineBlockVo examineBlockVo = new ExamineBlockVo();
         BeanUtils.copyProperties(examineBlock, examineBlockVo);
-        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getProvince()));
-        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getCity()));
-        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getDistrict()));
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(examineBlock.getRegionalNature());
-        if (baseDataDic != null)
-            examineBlockVo.setRegionalNatureName(baseDataDic.getName());
+        if (StringUtils.isNotBlank(examineBlock.getProvince())) {
+            examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getProvince()));
+        }
+        if (StringUtils.isNotBlank(examineBlock.getCity())) {
+            examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getCity()));
+        }
+        if (StringUtils.isNotBlank(examineBlock.getDistrict())) {
+            examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getDistrict()));
+        }
+        if (examineBlock.getRegionalNature() != null && examineBlock.getRegionalNature() > 0) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(examineBlock.getRegionalNature());
+            if (baseDataDic != null)
+                examineBlockVo.setRegionalNatureName(baseDataDic.getName());
+        }
         return examineBlockVo;
     }
 

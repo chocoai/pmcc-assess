@@ -173,7 +173,7 @@
 </script>
 <script type="application/javascript">
     var projectDetails = {
-        loadPlanTabInfo:function (tab) {
+        loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
             projectDetails.loadTaskList({
                 target: $('#plan_item_list_' + that.attr('plan-id')),
@@ -249,7 +249,6 @@
                         }
                     },
                     {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
-                    {field: 'executor', align: 'center', title: '当前责任人', width: '10%'},
                     {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
                     {
                         field: 'processInsId',
@@ -266,7 +265,8 @@
                                     s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.executeUrl + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
                                 }
                                 if (row.canAssignment) {
-                                    s += " <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
+                                    var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + row.id;
+                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + url + "\")' href='javascript://' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
                                 }
                             }
                             return s;

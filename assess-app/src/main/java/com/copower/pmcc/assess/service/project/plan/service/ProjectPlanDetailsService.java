@@ -200,7 +200,6 @@ public class ProjectPlanDetailsService {
                             for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                                 if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
                                     projectPlanDetailsVo.setExecuteUrl(String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                                    projectPlanDetailsVo.setExecutor(publicService.getUserNameByAccount(responsibilityDto.getUserAccount()));
                                     projectPlanDetailsVo.setCanExecute(StringUtils.equals(commonService.thisUserAccount(), responsibilityDto.getUserAccount()));
                                 }
                             }
@@ -219,7 +218,6 @@ public class ProjectPlanDetailsService {
                                 approvalUrl = boxReDto.getProcessEditUrl();
                             }
                             approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                            projectPlanDetailsVo.setExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
                             projectPlanDetailsVo.setCanExecute(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
                             projectPlanDetailsVo.setExecuteUrl(approvalUrl);
                         }

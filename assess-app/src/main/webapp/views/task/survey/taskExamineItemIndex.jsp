@@ -175,7 +175,7 @@
         getFormData: function () {
             //读取到各个子表单提供的数据
             if (ContainerFunForGetData.length <= 0) {
-                return false;
+                return [];
             }
             var formDataArray = [];
             $.each(ContainerFunForGetData, function (i, fn) {

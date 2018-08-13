@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
+    <title>任务分派</title>
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
@@ -309,6 +310,7 @@
                 },
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
+                    $('#survey_examine_task_list').treegrid('clearChecked');
                 },
 
                 columns: [[

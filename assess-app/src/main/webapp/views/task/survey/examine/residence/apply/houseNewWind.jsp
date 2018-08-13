@@ -117,6 +117,8 @@
             },
             showModel: function () {
                 $("#" + houseNewWind.prototype.config().frm).clearAll();
+                $("#" + houseNewWind.prototype.config().frm + " .equipmentPrice").val(null).trigger("change");
+                $("#" + houseNewWind.prototype.config().frm + " .category").val(null).trigger("change");
                 $('#' + houseNewWind.prototype.config().box).modal("show");
             },
             saveData: function () {
