@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-
+    <jsp:include page="constructionInstallationEngineeringFeeB.jsp"></jsp:include>
 
 </form>
 
@@ -517,15 +517,11 @@
             modal:true
         });
         $("." + build.config().engineeringFee).window('open');  // open a window
-        $(function () {
-            // constructionInstallationEngineeringFeeA.treegrid();
-        });
     }
     /**--------------------------------初始化------------------**/
     $(function () {
         build.inputInit();
         build.select2Event.init();
-        // build.constructionInstallationEngineeringFee();
     })
 
 </script>

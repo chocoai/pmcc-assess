@@ -16,9 +16,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Auther: zch
@@ -41,13 +41,13 @@ public class MdMarketCostService {
 
     public BootstrapTableVo getBaseDicTree() {
         List<ConstructionInstallationEngineeringDto> installationEngineeringDtos = Lists.newArrayList();
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
-        ConstructionInstallationEngineeringDto installationEngineeringDto = new ConstructionInstallationEngineeringDto();
-        BeanUtils.copyProperties(baseDataDic,installationEngineeringDto);
-        installationEngineeringDto.setNumber("0");
-        installationEngineeringDtos.add(installationEngineeringDto);
+//        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
+//        ConstructionInstallationEngineeringDto installationEngineeringDto = new ConstructionInstallationEngineeringDto();
+//        BeanUtils.copyProperties(baseDataDic,installationEngineeringDto);
+//        installationEngineeringDto.setNumber("0");
+//        installationEngineeringDtos.add(installationEngineeringDto);
         int i = 0;
-        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT,i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), installationEngineeringDtos,null,i);
 
         changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT,++i);
         changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT,++i);
@@ -61,20 +61,23 @@ public class MdMarketCostService {
     }
 
     private void changeConstructionInstallationEngineeringDto(List<BaseDataDic> baseDataDics, List<ConstructionInstallationEngineeringDto> ztreeDtos,String key,int i) {
-        Random random = new Random(System.currentTimeMillis());
         int v = 1;
         if (!ObjectUtils.isEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
                 ConstructionInstallationEngineeringDto engineeringDto = new ConstructionInstallationEngineeringDto();
                 BeanUtils.copyProperties(baseDataDic, engineeringDto);
-                BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
-                engineeringDto.set_parentId(dic.getId());
+                if (!StringUtils.isEmpty(key)){
+                    BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
+                    engineeringDto.set_parentId(dic.getId());
+                }else {
+                    //未传入key  说明是父节点
+                    engineeringDto.setParent(true);
+                }
                 if (i!=0){
                     engineeringDto.setNumber(String.format("%d-%d",i,v++));
                 }else {
                     engineeringDto.setNumber(String.valueOf(v++));
                 }
-                engineeringDto.setArea(random.nextInt(100));
                 ztreeDtos.add(engineeringDto);
             }
         }

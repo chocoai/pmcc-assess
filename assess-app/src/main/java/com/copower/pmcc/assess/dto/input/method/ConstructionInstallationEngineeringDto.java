@@ -13,9 +13,9 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
     private String name;
     private String key;
     private Integer _parentId;
-    private Integer area;
+    private double area;
     private String number;
-    private Boolean isParent;
+    private boolean parent = false;
     private  double totalCost;
     private double currency;
 
@@ -59,11 +59,11 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
         this._parentId = _parentId;
     }
 
-    public Integer getArea() {
+    public double getArea() {
         return area;
     }
 
-    public void setArea(Integer area) {
+    public void setArea(double area) {
         this.area = area;
     }
 
@@ -75,13 +75,6 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
         this.number = number;
     }
 
-    public Boolean getParent() {
-        return isParent;
-    }
-
-    public void setParent(Boolean parent) {
-        isParent = parent;
-    }
 
     public double getTotalCost() {
         return totalCost;
@@ -97,5 +90,13 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
 
     public void setCurrency(double currency) {
         this.currency = currency;
+    }
+
+    public boolean isParent() {
+        return parent;
+    }
+
+    public void setParent(boolean parent) {
+        this.parent = parent;
     }
 }
