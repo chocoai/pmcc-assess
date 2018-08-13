@@ -9,124 +9,137 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/views/share/main_css.jsp" %>
 <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/easyui.css">
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 
-<div>
-    <table id="dg" title="学生作业" class="easyui-datagrid"
-           style="width: 100%; height: 90%">
+<table id="constructionInstallationEngineeringFeeB"
+       style="width:700px;height:auto">
 
-
-    </table>
-</div>
+</table>
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
-    var constructionInstallationEngineeringFeeB = new Object();
-    var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
-    constructionInstallationEngineeringFeeB.datagridInit = function () {
-        $('#dg').datagrid({
-            url:url,
-            method: 'get',
-            queryParams:{"schoolcalendarId":null},
-            onClickCell: onClickCell,
-            onAfterEdit:onAfterEdit,
-            rownumbers:true,
-            pagination:'true',
-            fitColumns:'true',
-            singleSelect:'true',
-            columns:[[
-                /*  {field:'ck',checkbox:true},    */
-                {field:'id',hidden:true},
-                {field:'studentId',hidden:true},
-                {field:'resultId',hidden:true},
-                {field:'daliyResultRate',hidden:true},
-                {field:'daliyResult',hidden:true},
-                {field:'code',width:30,align:'center',title:'学号'},
-                {field:'name',width:30,align:'center',title:'姓名'},
-                {field:'teachClassName',width:30,align:'center',title:'班级'}  ,
-                {field:'questionTime',width:40,align:'center',title:'留作业时间'},
-                {field:'questionName',width:50,align:'center',title:'作业名称'},
-                {field:'answerName',width:50,align:'center',title:'答案名称'},
-                {field:'preview',width:30,align:'center',title:'预览'} ,
-                {field:'finalRate',width:30,align:'center',title:'期末成绩比例'} ,
-                {field:'finalResult',editor:'text',width:30,align:'center',title:'期末成绩'} ,
-                {field:'totalResult',width:30,align:'center',title:'总分'}
-            ]]
-        });
+    var constructEngineeringObject = new Object();
+    constructEngineeringObject.isNotNull = function (obj) {
+        if (obj) {
+            return true;
+        }
+        return false;
+    };
+    constructEngineeringObject.config = function () {
+        return {
+            tableId: "constructionInstallationEngineeringFeeB"
+        };
+    };
 
+    /**
+    * @author:  zch
+    * 描述:数据表格初始化数据
+    * @date:2018-08-13
+    **/
+    constructEngineeringObject.init = function () {
+        $('#' + constructEngineeringObject.config().tableId).treegrid({
+            iconCls: 'icon-edit',
+            nowrap: false,
+            rownumbers: true,
+            collapsible: true,
+            title:"必须双击",
+            url: "${pageContext.request.contextPath}/marketCost/getBaseDicTree",
+            method: "get",
+            idField: 'id',//数据表格要有主键
+            treeField: 'name',//treegrid 树形结构主键 text
+            fitColumns: true,
+            striped:true,//显示斑马线
+            columns: [[
+                {field: 'number', title: '序号', width: 50},
+                {field: 'name', title: '工程名称', width: 120},
+                {field: 'area', title: '建筑面积', width: 120, editor: {type: "numberbox", options: {precision: 1}}},
+                {
+                    field: 'currency',
+                    title: ' 单方造价(元/㎡)',
+                    width: 120,
+                    editor: {type: "numberbox", options: {precision: 1}}
+                },
+                {field: 'totalCost', title: '总造价', width: 120}
+            ]],
+            styler:function (value,row,index) {
+                return 'background-color:#ffee00;color:red;';
+            }
+        });
     }
+
+    /**
+     * @author:  zch
+     * 描述:封装临时的方法到$datagrid上
+     * @date:2018-08-13
+     **/
+    $.extend($.fn.datagrid.methods, {
+        editCell: function (jq, param) {
+            return jq.each(function () {
+                var opts = $(this).datagrid('options');
+                console.log("数据收集" + 2);
+                var fields = $(this).datagrid('getColumnFields', true).concat($(this).datagrid('getColumnFields'));
+                for (var i = 0; i < fields.length; i++) {
+                    var col = $(this).datagrid('getColumnOption', fields[i]);
+                    col.editor1 = col.editor;
+                    if (fields[i] != param.field) {
+                        col.editor = null;
+                    }
+                }
+                $(this).datagrid('beginEdit', param.index);
+                var ed = $(this).datagrid('getEditor', param);
+                if (ed) {
+                    if ($(ed.target).hasClass('textbox-f')) {
+                        $(ed.target).textbox('textbox').focus();
+                    } else {
+                        $(ed.target).focus();
+                    }
+                }
+                for (var i = 0; i < fields.length; i++) {
+                    var col = $(this).datagrid('getColumnOption', fields[i]);
+                    col.editor = col.editor1;
+                }
+            });
+        },
+        enableCellEditing: function (jq) {
+            return jq.each(function () {
+                var dg = $(this);
+                var opts = dg.datagrid('options');
+                opts.oldOnClickCell = opts.onClickCell;
+                opts.onClickCell = function (index, field) {
+                    console.log("数据收集" + 1);
+                    console.info(opts);
+                    console.info(index);
+                    console.info(field);
+                    if (opts.editIndex != undefined) {
+                        if (dg.datagrid('validateRow', opts.editIndex)) {
+                            dg.datagrid('endEdit', opts.editIndex);
+                            opts.editIndex = undefined;
+                        } else {
+                            return;
+                        }
+                    }
+                    dg.datagrid('selectRow', index).datagrid('editCell', {
+                        index: index,
+                        field: field
+                    });
+                    opts.editIndex = index;
+                    opts.oldOnClickCell.call(this, index, field);
+                }
+            });
+        }
+    });
 
     $(function () {
-        constructionInstallationEngineeringFeeB.datagridInit();
-    });
-</script>
-
-<script type="text/javascript">
-
-    var editIndex = undefined;
-    function endEditing() {//该方法用于关闭上一个焦点的editing状态
-        if (editIndex == undefined) {
-            return true
-        }
-        if ($('#dg').datagrid('validateRow', editIndex)) {
-            $('#dg').datagrid('endEdit', editIndex);
-            editIndex = undefined;
-            return true;
-        } else {
-            return false;
-        }
-    }
-    //点击单元格事件：
-    function onClickCell(index,field,value) {
-        if (endEditing()) {
-            if(field=="finalResult"){
-                $(this).datagrid('beginEdit', index);
-                var ed = $(this).datagrid('getEditor', {index:index,field:field});
-                $(ed.target).focus();
-            }
-            editIndex = index;
-        }
-        $('#dg').datagrid('onClickRow')
-    }
-    //单元格失去焦点执行的方法
-    function onAfterEdit(index, row, changes) {
-        var updated = $('#dg').datagrid('getChanges', 'updated');
-        if (updated.length < 1) {
-            editRow = undefined;
-            $('#dg').datagrid('unselectAll');
-            return;
-        } else {
-            // 传值
-            submitForm(index, row, changes);
-        }
-
-
-    }
-
-    //提交数据
-    function submitForm(index, row, changes) {
-//	alert( row.resultId+"--"+changes.finalResult)daliyResultRate;
-        var resultId=row.resultId;//成绩id
-        if(resultId==""){
-            $.messager.alert('提醒', '没有录入该学生平时成绩！');
-            $("#dg").datagrid('reload');
-            return;
-        }
-        var daliyResultRate=row.daliyResultRate;//平时成绩比例
-        var daliyResult=row.daliyResult;//平时成绩
-        var finalRate=row.finalRate;//期末比例
-        var finalRusult=changes.finalResult;//期末成绩
-        var r =/^-?[1-9]/;//判断输入的是正整数
-        if(!r.test(finalRusult)){
-            $.messager.alert('提醒', '请输入正整数！');
-            return;
-        }
-        var totalRusult=Math.round(daliyResultRate*daliyResult+finalRate*finalRusult);//总成绩
-        //alert("保存成功");
-        $("#dg").datagrid('reload');
-    }
+        constructEngineeringObject.init();
+        /**
+        * @author:  zch
+        * 描述:开启单元格编辑
+        * @date:2018-08-13
+        **/
+        $('#constructionInstallationEngineeringFeeB').datagrid().datagrid('enableCellEditing');
+    })
 </script>

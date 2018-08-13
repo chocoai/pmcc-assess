@@ -9,6 +9,11 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content optionsBuildBox">
+        <div>
+            <!-- 隐藏框数据 -->
+            <input type="hidden" name="area" class="mdCost area">
+            <input type="hidden" name="price" class="mdCost price">
+        </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
                 <label>建筑形态</label>

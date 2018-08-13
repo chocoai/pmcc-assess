@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,42 +40,42 @@ public class MdMarketCostService {
     private CommonService commonService;
 
     public BootstrapTableVo getBaseDicTree() {
-        List<ZtreeDto> ztreeDtos = Lists.newArrayList();
+        List<ConstructionInstallationEngineeringDto> installationEngineeringDtos = Lists.newArrayList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
-        ZtreeDto ztreeDto = new ZtreeDto();
-        BeanUtils.copyProperties(baseDataDic,ztreeDto);
-        ztreeDto.setNumber("0");
-        ztreeDtos.add(ztreeDto);
+        ConstructionInstallationEngineeringDto installationEngineeringDto = new ConstructionInstallationEngineeringDto();
+        BeanUtils.copyProperties(baseDataDic,installationEngineeringDto);
+        installationEngineeringDto.setNumber("0");
+        installationEngineeringDtos.add(installationEngineeringDto);
         int i = 0;
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT,i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT,i);
 
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT), installationEngineeringDtos,AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT,++i);
         BootstrapTableVo vo = new BootstrapTableVo();
-        vo.setTotal(Integer.toUnsignedLong(ztreeDtos.size()));
-        vo.setRows(ztreeDtos);
+        vo.setTotal(Integer.toUnsignedLong(installationEngineeringDtos.size()));
+        vo.setRows(installationEngineeringDtos);
         return vo;
     }
 
-    private void changeZtreeDto(List<BaseDataDic> baseDataDics, List<ZtreeDto> ztreeDtos,String key,int i) {
+    private void changeConstructionInstallationEngineeringDto(List<BaseDataDic> baseDataDics, List<ConstructionInstallationEngineeringDto> ztreeDtos,String key,int i) {
         Random random = new Random(System.currentTimeMillis());
         int v = 1;
         if (!ObjectUtils.isEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
-                ZtreeDto ztreeDto = new ZtreeDto();
-                BeanUtils.copyProperties(baseDataDic, ztreeDto);
+                ConstructionInstallationEngineeringDto engineeringDto = new ConstructionInstallationEngineeringDto();
+                BeanUtils.copyProperties(baseDataDic, engineeringDto);
                 BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
-                ztreeDto.set_parentId(dic.getId());
+                engineeringDto.set_parentId(dic.getId());
                 if (i!=0){
-                    ztreeDto.setNumber(String.format("%d-%d",i,v++));
+                    engineeringDto.setNumber(String.format("%d-%d",i,v++));
                 }else {
-                    ztreeDto.setNumber(String.valueOf(v++));
+                    engineeringDto.setNumber(String.valueOf(v++));
                 }
-                ztreeDto.setArea(random.nextInt(100));
-                ztreeDtos.add(ztreeDto);
+                engineeringDto.setArea(random.nextInt(100));
+                ztreeDtos.add(engineeringDto);
             }
         }
     }
