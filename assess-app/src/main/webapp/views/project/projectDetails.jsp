@@ -254,20 +254,28 @@
                         field: 'processInsId',
                         align: 'left',
                         title: '操作',
-                        width: '10%',
+                        width: '20%',
                         formatter: function (value, row) {
                             var s = "";
                             if (row.bisLastLayer) {
                                 if (row.displayUrl) {
                                     s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
                                 }
-                                if (row.canExecute) {
-                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.executeUrl + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
-                                }
                                 if (row.canAssignment) {
                                     var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + row.id;
                                     s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + url + "\")' href='javascript://' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
                                 }
+                                if (row.executeUrlList) {
+                                    $.each(row.executeUrlList,function (i,item) {
+                                        var btnClass='btn-warning';
+                                        if(/processInsId/.test(item)){
+                                            btnClass='btn-primary';
+                                        }
+                                        s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + item + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs "+btnClass+" tooltips' ><i class='fa fa-edit fa-white'></i></a>";
+                                    })
+
+                                }
+
                             }
                             return s;
 

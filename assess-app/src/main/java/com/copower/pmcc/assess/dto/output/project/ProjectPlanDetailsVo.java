@@ -21,11 +21,7 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String displayUrl;
 
-    private String executeUrl;
-
-    private String executor;
-
-    private Boolean canExecute;
+    private List<String> executeUrlList;
 
     private String declareFormName;
 
@@ -65,28 +61,12 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
         this.displayUrl = displayUrl;
     }
 
-    public String getExecuteUrl() {
-        return executeUrl;
+    public List<String> getExecuteUrlList() {
+        return executeUrlList;
     }
 
-    public void setExecuteUrl(String executeUrl) {
-        this.executeUrl = executeUrl;
-    }
-
-    public String getExecutor() {
-        return executor;
-    }
-
-    public void setExecutor(String executor) {
-        this.executor = executor;
-    }
-
-    public Boolean getCanExecute() {
-        return canExecute;
-    }
-
-    public void setCanExecute(Boolean canExecute) {
-        this.canExecute = canExecute;
+    public void setExecuteUrlList(List<String> executeUrlList) {
+        this.executeUrlList = executeUrlList;
     }
 
     public String getDeclareFormName() {
@@ -97,19 +77,19 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
         this.declareFormName = declareFormName;
     }
 
-    public List<KeyValueDto> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<KeyValueDto> tasks) {
-        this.tasks = tasks;
-    }
-
     public Boolean getCanAssignment() {
         return canAssignment;
     }
 
     public void setCanAssignment(Boolean canAssignment) {
         this.canAssignment = canAssignment;
+    }
+
+    public List<KeyValueDto> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<KeyValueDto> tasks) {
+        this.tasks = tasks;
     }
 }

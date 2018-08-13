@@ -165,11 +165,15 @@ public class ProjectPlanDetailsService {
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
 
-        //获取当前人该阶段下的待审批任务
+        //获取该阶段下正在运行的待审批任务
         List<String> processInsIds = Lists.newArrayList();
         for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-            if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
-                processInsIds.add(projectPlanDetail.getProcessInsId());
+            if(StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())){
+                if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
+                    processInsIds.add(projectPlanDetail.getProcessInsId());
+                }
+                //如果是查勘或案例则还需查找下级审批任务
+
             }
         }
         List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
@@ -187,6 +191,10 @@ public class ProjectPlanDetailsService {
             //如果为待审批状态 当前人与审批人相同 可审批该任务
             //其它情况再特殊处理
             //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
+            if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId()) && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
+                //可细项再分配
+                projectPlanDetailsVo.setCanAssignment(true);
+            }
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
             switch (sysProjectEnum) {
                 case FINISH:
@@ -199,15 +207,15 @@ public class ProjectPlanDetailsService {
                         if (CollectionUtils.isNotEmpty(projectTaskList)) {
                             for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                                 if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                                    projectPlanDetailsVo.setExecuteUrl(String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                                    projectPlanDetailsVo.setCanExecute(StringUtils.equals(commonService.thisUserAccount(), responsibilityDto.getUserAccount()));
+                                    if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
+                                        String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
+                                        if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
+                                            projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
+                                        }
+                                        projectPlanDetailsVo.getExecuteUrlList().add(executeUrl);
+                                    }
                                 }
                             }
-                        }
-                        if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId())
-                                && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
-                            //可细项再分配
-                            projectPlanDetailsVo.setCanAssignment(true);
                         }
                     } else {
                         if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
@@ -218,8 +226,12 @@ public class ProjectPlanDetailsService {
                                 approvalUrl = boxReDto.getProcessEditUrl();
                             }
                             approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                            projectPlanDetailsVo.setCanExecute(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
-                            projectPlanDetailsVo.setExecuteUrl(approvalUrl);
+                            if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
+                                if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
+                                    projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
+                                }
+                                projectPlanDetailsVo.getExecuteUrlList().add(approvalUrl);
+                            }
                         }
                     }
                     break;
