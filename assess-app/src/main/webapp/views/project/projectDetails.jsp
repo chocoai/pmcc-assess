@@ -107,10 +107,6 @@
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
-                                        <%--判断逻辑 1.未到该阶段不做任何处理 2.该阶段已结束数据只做显示
-                                        3.处理该阶段任务 计划任务结束 状态结束 只读
-                                        计划任务为待提交状态 状态进行 可读 任务为当前则进入页面提交 不为当前人显示出责任人
-                                        计划任务为待审批 状态进行 可读 任务为当前人则进入页面审批 不为当前人显示出责任人--%>
                                     <c:if test="${not empty plan.planDisplayUrl}">
                                         <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
                                             <div class="btn-group">
@@ -148,12 +144,9 @@
                                             </div>
                                         </div>
                                     </c:if>
-
-
                                     <p>
                                     <table id="plan_item_list_${plan.id}" class="table table-bordered"></table>
                                     </p>
-
                                 </div>
                             </c:forEach>
                         </div>

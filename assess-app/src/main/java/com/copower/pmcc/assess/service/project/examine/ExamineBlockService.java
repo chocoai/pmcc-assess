@@ -2,8 +2,11 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBlockDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineBlock;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBlockVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -21,6 +24,10 @@ public class ExamineBlockService {
     private ExamineBlockDao examineBlockDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ErpAreaService erpAreaService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 获取版块
@@ -39,13 +46,19 @@ public class ExamineBlockService {
      * @return
      */
     public ExamineBlock getBlockByDeclareId(Integer declareId, ExamineTypeEnum examineTypeEnum) {
-        return examineBlockDao.getBlockByDeclareId(declareId,examineTypeEnum.getId());
+        return examineBlockDao.getBlockByDeclareId(declareId, examineTypeEnum.getId());
     }
 
     public ExamineBlockVo getExamineBlockVo(ExamineBlock examineBlock) {
         if (examineBlock == null) return null;
         ExamineBlockVo examineBlockVo = new ExamineBlockVo();
         BeanUtils.copyProperties(examineBlock, examineBlockVo);
+        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getProvince()));
+        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getCity()));
+        examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getDistrict()));
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(examineBlock.getRegionalNature());
+        if (baseDataDic != null)
+            examineBlockVo.setRegionalNatureName(baseDataDic.getName());
         return examineBlockVo;
     }
 
