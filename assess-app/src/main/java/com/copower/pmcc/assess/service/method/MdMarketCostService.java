@@ -8,10 +8,11 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InfrastructureCost;
 import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
 import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
+import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureCostService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
-import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
@@ -50,6 +51,12 @@ public class MdMarketCostService {
     private DataInfrastructureCostService dataInfrastructureCostService;
     @Autowired
     private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
+    @Autowired
+    private DataBuildingNewRateService dataBuildingNewRateService;
+
+    public List<DataBuildingNewRateVo> dataBuildingNewRateList(){
+        return dataBuildingNewRateService.dataBuildingNewRateList();
+    }
 
     public List<InfrastructureCost> infrastructureCostList() {
         List<InfrastructureCost> infrastructureCosts = dataInfrastructureCostService.infrastructureCostList();

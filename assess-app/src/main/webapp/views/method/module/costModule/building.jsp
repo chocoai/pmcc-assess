@@ -261,9 +261,20 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"
-                       placeholder="成新率" class="form-control" name="newRate" value="0" onclick="build.newRateModel.show();">
+                       placeholder="成新率" class="form-control" name="newRate" value="0"
+                       onclick="build.newRateModel.show();">
             </div>
         </div>
+        <label class="col-sm-1 control-label">
+            评估单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="评估单价" class="form-control" name="assessPrice" value="0">
+            </div>
+        </div>
+
     </div>
 
 
@@ -554,6 +565,16 @@
             }
             return false;
         }
+        //评估单价
+        object.assessPriceFun = function (obj) {
+            var c = 0;
+            if (build.isNotNull(obj)){
+                var a = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().replacementValue.key + "']").val();//重置价格
+                var b = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().newRate.key + "']").val();//成新率
+                c = build.mul(object.specialTreatment(a), object.specialTreatment(b));
+                $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().assessPrice.key + "']").val(c);
+            }
+        }
         //不可预见费 动态
         object.unforeseenExpensesFun = function (obj) {
             var c = 0;
@@ -645,8 +666,15 @@
             var c = build.mul(object.specialTreatment(a), object.specialTreatment(b));//增值及附加税金 = 重置价格*增值及附加税率
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().valueAddedAdditionalTaxes.key + "']").val(c);
         }
+        //重置价格
+        if (dataName == build.config().inputConfig().replacementValue.key){
+            var a = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().replacementValue.key + "']").val();//重置价格
+            object.assessPriceFun(a);
+        }
         $(function () {
             build.inputEvent();
+            build.select2Event.init();
+            // build.inputInit();
         });
     }
     /**
@@ -774,12 +802,186 @@
 
     /**
      * @author:  zch
-     * 描述:成新率
+     * 描述:成新率 (包括初始化,事件,算法,加载等)
      * @date:
      **/
     build.newRateModel = {
+        //获取最后计算的结果
+        getResult: function () {
+            var rr = $("." + build.config().newRate + " .integratednewRate").html();
+            return rr;
+        },
+        //算法
+        algorithm: {
+            //综合成新率
+            integratednewRate: function (obj) {
+                var a = $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val();//年限法 成新率
+                var b = $("." + build.config().newRate + " " + "input[name='" + 'weightYear' + "']").val(); //年限法 权重
+                var c = $("." + build.config().newRate + " " + "input[name='" + 'newRateG' + "']").val();//观察法 成新率
+                var d = $("." + build.config().newRate + " " + "input[name='" + 'weightG' + "']").val();//观察法 权重
+                // console.log("test a:"+a+" ;b:"+b +" ;c:"+c+" ;d:"+d);
+                var k = 0;
+                //综合成新率 ==> (成新率*权重+残值率*权重)/2
+                var k1 = build.mul(build.newRateModel.algorithm.specialTreatment(a), build.newRateModel.algorithm.specialTreatment(b));
+                var k2 = build.mul(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(d));
+                k = build.add(k1, k2);
+                k = build.div(k, 2);
+                $("." + build.config().newRate + " .integratednewRate").html(k);
+                build.newRateModel.select2Event.eventInit();
+            },
+            //年限法 成新率
+            newRateA: function (obj) {
+                var a = $("." + build.config().newRate + " .durableLife").eq(1).val();//经济耐用年限
+                var b = $("." + build.config().newRate + " .residualValue").eq(1).val();//残值率
+                var c = $("." + build.config().newRate + " " + "input[name='" + 'useYear' + "']").val();//已经使用年限
+                // console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
+                //成新率 = 1-（1-残值率）*已使用年限/经济耐用年限
+                var d = 0;
+                d = build.sub(1, build.newRateModel.algorithm.specialTreatment(build.toPoint(b)));
+                d = build.sub(1, d);
+                d = build.mul(d, build.div(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(a)));
+                $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
+                // d = (1 - (1- build.toPoint(b))) * (c-a);
+                build.newRateModel.select2Event.eventInit();
+            },
+            isNotNull: function (obj) {
+                if (obj == 0) {
+                    return true;
+                }
+                if (obj == '') {
+                    return true;
+                }
+                if (obj) {
+                    return true;
+                }
+                return false;
+            },
+            specialTreatment: function (obj) {
+                if (build.newRateModel.algorithm.isNotNull(obj)) {
+                    return obj;
+                }
+                return 0;
+            }
+        },
+        //经济耐用年限 select2事件
+        select2Event: {
+            //年限法 经济耐用年限 事件
+            durableLife: function () {
+                var key = build.config().newRate + " .durableLife";
+                $("." + key).change(function () {
+                    var value = $("." + key).eq(1).val();
+                    build.newRateModel.algorithm.newRateA(value);
+                });
+            },
+            //年限法 残值率 事件
+            residualValue: function () {
+                var key = build.config().newRate + " .residualValue";
+                $("." + key).change(function () {
+                    var value = $("." + key).eq(1).val();
+                    build.newRateModel.algorithm.newRateA(value);
+                });
+            },
+            //年限法 已使用年限 事件
+            inputUseYear: function () {
+                var key = "useYear";
+                var input = $("." + build.config().newRate + " " + "input[name='" + key + "']");
+                input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
+                    var value = input.val();
+                    if (build.isNumber(value)) {
+                        build.newRateModel.algorithm.newRateA(value);
+                    } else {
+                        Alert("请输入合法数字!")
+                    }
+                });
+            },
+            //年限法 权重 事件
+            inputWeightYear: function () {
+                var key = "weightYear";
+                var input = $("." + build.config().newRate + " " + "input[name='" + key + "']");
+                input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
+                    var value = input.val();
+                    if (build.isNumber(value)) {
+                        build.newRateModel.algorithm.integratednewRate(value);
+                    } else {
+                        Alert("请输入合法数字!")
+                    }
+                });
+            }, // 观察法 成新率 事件
+            inputNewRateG: function () {
+                var key = "newRateG";
+                var input = $("." + build.config().newRate + " " + "input[name='" + key + "']");
+                input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
+                    var value = input.val();
+                    if (build.isNumber(value)) {
+                        build.newRateModel.algorithm.integratednewRate(value);
+                    } else {
+                        Alert("请输入合法数字!")
+                    }
+                });
+            },// 观察法 权重 事件
+            inputWeightG: function () {
+                var key = "weightG";
+                var input = $("." + build.config().newRate + " " + "input[name='" + key + "']");
+                input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
+                    var value = input.val();
+                    if (build.isNumber(value)) {
+                        build.newRateModel.algorithm.integratednewRate(value);
+                    } else {
+                        Alert("请输入合法数字!")
+                    }
+                });
+            },
+            //事件初始化
+            eventInit: function () {
+                build.newRateModel.select2Event.durableLife();
+                build.newRateModel.select2Event.residualValue();
+                build.newRateModel.select2Event.inputUseYear();
+                build.newRateModel.select2Event.inputWeightYear();
+                build.newRateModel.select2Event.inputNewRateG();
+                build.newRateModel.select2Event.inputWeightG();
+            }
+        },
         show: function () {
+            build.newRateModel.selectInit();
             $("." + build.config().newRate).modal("show");
+        },
+        save: function () {
+            var kk = build.newRateModel.getResult();
+            $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().newRate.key + "']").val(kk);
+            $("." + build.config().newRate).modal("hide");
+            //由于模态框 引起select2 异常,因此
+            $(function () {
+                build.inputInit();
+            });
+        },
+        selectInit: function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/marketCost/dataBuildingNewRateList",
+                type: "get",
+                data: {},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var optionA = "<option value=''>请选择</option>";
+                        var optionB = "<option value=''>请选择</option>";
+                        $.each(result.data, function (i, n) {
+                            if (build.isNotNull(n.durableLife)) {
+                                optionA += "<option value='" + n.durableLife + "'>" + n.durableLife + "</option>";
+                            }
+                            if (build.isNotNull(n.residualValue)) {
+                                optionB += "<option value='" + n.residualValue + "'>" + n.residualValue + "</option>";
+                            }
+                        })
+                        $("." + build.config().newRate + " .durableLife").html(optionA);
+                        $("." + build.config().newRate + " .durableLife").select2();
+                        $("." + build.config().newRate + " .residualValue").html(optionB);
+                        $("." + build.config().newRate + " .residualValue").select2();
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 
@@ -809,7 +1011,10 @@
     $(function () {
         build.inputInit();
         build.select2Event.init();
-        build.newRateModel.show();
+        // build.newRateModel.show();
+
+        //模态框事件
+        build.newRateModel.select2Event.eventInit();
     })
 
 </script>
@@ -848,7 +1053,121 @@
                 <h3 class="modal-title">成新率</h3>
             </div>
             <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        年限法
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            经济耐用年限
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <select name="durableLife"
+                                                    class="form-control search-select select2 durableLife">
+                                            </select>
+                                        </div>
+                                    </div>
 
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            已使用年限
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="useYear"
+                                                   placeholder="已使用年限">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            残值率
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <select name="residualValue"
+                                                    class="form-control search-select select2 residualValue">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成新率
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="newRateA" readonly="readonly"
+                                                   placeholder="成新率">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            权重
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="weightYear"
+                                                   placeholder="权重">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        观察法
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成新率
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="newRateG"
+                                                   placeholder="成新率">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            权重
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="weightG"
+                                                   placeholder="权重">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        <font color="red">综合成新率</font>
+                                    </label>
+                                    <div class="x-valid">
+                                        <div class="col-sm-5">
+                                            <label class="control-label integratednewRate">
+                                                0
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="build.newRateModel.save();">
+                        确认
+                    </button>
+                </div>
             </form>
         </div>
     </div>
