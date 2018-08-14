@@ -50,6 +50,12 @@
      * @date:
      **/
     AlgorithmsPrototype.prototype.isNumber = function (obj) {
+        if (obj == 0) {
+            return true;
+        }
+        if (obj == '0') {
+            return true;
+        }
         if (AlgorithmsPrototype.prototype.isNotNull(obj)) {
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
@@ -114,22 +120,14 @@
      * @return 两数相加的结果
      **/
     AlgorithmsPrototype.prototype.add = function (arg1, arg2) {
-        if (AlgorithmsPrototype.prototype.isNumber(arg1)) {
-            if (AlgorithmsPrototype.prototype.isNumber(arg2)) {
-                arg1 = arg1.toString(), arg2 = arg2.toString();
-                var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
-                    d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
-                var maxLen = Math.max(d1.length, d2.length);
-                var m = Math.pow(10, maxLen);
-                var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
-                var d = arguments[2];
-                return typeof d === "number" ? Number((result).toFixed(d)) : result;
-            } else {
-                return '';
-            }
-        } else {
-            return "";
-        }
+        arg1 = arg1.toString(), arg2 = arg2.toString();
+        var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
+            d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
+        var maxLen = Math.max(d1.length, d2.length);
+        var m = Math.pow(10, maxLen);
+        var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
+        var d = arguments[2];
+        return typeof d === "number" ? Number((result).toFixed(d)) : result;
     };
 
     /**

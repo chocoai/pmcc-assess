@@ -14,62 +14,58 @@
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+<div class="form-group">
+    <div class="col-sm-12">
+        <table id="constructionInstallationEngineeringFeeB">
 
-<div>
-    <form class="form-horizontal">
-        <div class="easyui-panel">
-            <table id="constructionInstallationEngineeringFeeB">
-
-            </table>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        建安成本小计
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label">
-                        建筑面积（㎡）
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label">
-                        单方造价(元/㎡)
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label">
-                        总造价（万元）
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        数据计算值:
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBAreaClass">
-                        0
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBCurrencyClass">
-                        0
-                    </label>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBTotalCostClass">
-                        0
-                    </label>
-                </div>
-            </div>
-
-        </div>
-    </form>
-
+        </table>
+    </div>
 </div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class="col-sm-3 control-label">
+            建安成本小计
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label">
+            建筑面积（㎡）
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label">
+            单方造价(元/㎡)
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label">
+            总造价（万元）
+        </label>
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class="col-sm-3 control-label">
+            数据计算值:
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClass">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBCurrencyClass">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClass">
+            0
+        </label>
+    </div>
+</div>
+
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
@@ -148,9 +144,9 @@
     constructEngineeringObject.config = function () {
         return {
             tableId: "constructionInstallationEngineeringFeeB",
-            currencyClass:"constructionInstallationEngineeringFeeBCurrencyClass",//建安成本小计 3个label class
-            areaClass:"constructionInstallationEngineeringFeeBAreaClass",
-            totalCostClass:"constructionInstallationEngineeringFeeBTotalCostClass"
+            currencyClass: "constructionInstallationEngineeringFeeBCurrencyClass",//建安成本小计 3个label class
+            areaClass: "constructionInstallationEngineeringFeeBAreaClass",
+            totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClass"
         };
     };
 
@@ -165,7 +161,7 @@
         $('#' + constructEngineeringObject.config().tableId).treegrid({
             iconCls: 'icon-edit',
             nowrap: false,
-            rownumbers: true,
+            // rownumbers: true,
             width: 700,
             height: 'auto',
             collapsible: true,
@@ -177,12 +173,12 @@
             fitColumns: true,
             striped: true,//显示斑马线
             columns: [[
-                {field: 'number', title: '序号', width: 50},
-                {field: 'name', title: '工程名称', width: 120},
+                // {field: 'number', title: '序号', width: 50},
+                {field: 'name', title: '工程名称', width: 95},
                 {
                     field: 'area',
                     title: '建筑面积',
-                    width: 120,
+                    width: 90,
                     editor: {type: "numberbox", options: {precision: 7}},//精度为7
                     styler: function (value, row, index) {
                         return 'background-color:#F0F0F0;color:red;';
@@ -191,7 +187,7 @@
                 {
                     field: 'currency',
                     title: ' 单方造价(元/㎡)',
-                    width: 120,
+                    width: 100,
                     editor: {type: "numberbox", options: {precision: 7}},//精度为7
                     styler: function (value, row, index) {
                         return 'background-color:#F0F0F0;color:red;';
@@ -278,12 +274,12 @@
         //更新建安成本小计
         constructEngineeringObject.totalCalculation();
     }
-    
+
     /**
-    * @author:  zch
-    * 描述:建安成本小计
-    * @date:2018-08-14
-    **/
+     * @author:  zch
+     * 描述:建安成本小计
+     * @date:2018-08-14
+     **/
     constructEngineeringObject.totalCalculation = function () {
         var currency = 0;
         var area = 0;
@@ -293,34 +289,34 @@
             area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
             totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
         });
-        constructEngineeringObject.updateHtml(currency,area,totalCost);
+        constructEngineeringObject.updateHtml(currency, area, totalCost);
     }
     /**
-    * @author:  zch
-    * 描述:建安成本小计 写html value
-    * @date:2018-08-14
-    **/
-    constructEngineeringObject.updateHtml = function (currency,area,totalCost) {
+     * @author:  zch
+     * 描述:建安成本小计 写html value
+     * @date:2018-08-14
+     **/
+    constructEngineeringObject.updateHtml = function (currency, area, totalCost) {
         $('.' + constructEngineeringObject.config().areaClass).html(area);
         $('.' + constructEngineeringObject.config().currencyClass).html(currency);
         $('.' + constructEngineeringObject.config().totalCostClass).html(totalCost);
     }
 
     /**
-    * @author:  zch
-    * 描述:获取建安成本小计
-    * @date:2018-08-14
-    **/
+     * @author:  zch
+     * 描述:获取建安成本小计
+     * @date:2018-08-14
+     **/
     constructEngineeringObject.getCalculatedResults = function () {
         console.log($('.' + constructEngineeringObject.config().totalCostClass).html());
         return $('.' + constructEngineeringObject.config().totalCostClass).html();
     }
 
     /**
-    * @author:  zch
-    * 描述:特别处理
-    * @date:
-    **/
+     * @author:  zch
+     * 描述:特别处理
+     * @date:
+     **/
     constructEngineeringObject.specialTreatment = function (obj) {
         if (constructEngineeringObject.isNotNull(obj)) {
             return obj;
@@ -388,7 +384,7 @@
         });
     }
 
-    $(function () {
+    constructEngineeringObject.viewInit = function () {
         constructEngineeringObject.extendOverwrite();
         constructEngineeringObject.init();
         /**
@@ -397,5 +393,9 @@
          * @date:2018-08-13
          **/
         $('#constructionInstallationEngineeringFeeB').datagrid().datagrid('enableCellEditing');
+    }
+
+    $(function () {
+        // constructEngineeringObject.viewInit();
     })
 </script>
