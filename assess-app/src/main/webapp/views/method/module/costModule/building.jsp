@@ -141,6 +141,52 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            管理费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="管理费" class="form-control" name="managementExpense" value="0">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            管理费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="管理费率" class="form-control" name="managementExpenseRote" value="0">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            不可预见费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote" value="0">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            不可预见费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="不可预见费" class="form-control" name="unforeseenExpenses" value="0">
+            </div>
+        </div>
+    </div>
+
+
     <jsp:include page="constructionInstallationEngineeringFeeB.jsp"></jsp:include>
 
 </form>
@@ -248,7 +294,10 @@
         var inputNameConfig = {
             reconnaissanceDesign: {key: "reconnaissanceDesign", describe: "勘察设计和前期工程费"},
             reconnaissanceDesignRote: {key: "reconnaissanceDesignRote", describe: "勘察设计和前期工程费率"},
-            constructionInstallationEngineeringFee: {key: "constructionInstallationEngineeringFee", describe: "建筑安装工程费"},
+            constructionInstallationEngineeringFee: {
+                key: "constructionInstallationEngineeringFee",
+                describe: "建筑安装工程费"
+            },
             infrastructureCost: {
                 key: "infrastructureCost",
                 describe: "基础设施费用",
@@ -259,17 +308,21 @@
                 describe: "公共配套设施费用",
                 select: "infrastructureMatchingCostSelect2"
             },
-            devDuringPrice:{
-                key:"devDuringPrice",
-                describe:"开发期间单价"
+            devDuringPrice: {
+                key: "devDuringPrice",
+                describe: "开发期间单价"
             },
-            devDuringPriceTax:{
-                key:"devDuringPriceTax",
-                describe:"开发期间单价税收"
+            devDuringPriceTax: {
+                key: "devDuringPriceTax",
+                describe: "开发期间单价税收"
             },
-            otherEngineeringCost:{key:"otherEngineeringCost",describe:"其它工程费"},
-            otherEngineeringCostPrice:{key:"otherEngineeringCostPrice",describe:"其它工程费单价"},
-            constructionCost:{key:"constructionCost",describe:"建设成本"},
+            otherEngineeringCost: {key: "otherEngineeringCost", describe: "其它工程费"},
+            otherEngineeringCostPrice: {key: "otherEngineeringCostPrice", describe: "其它工程费单价"},
+            constructionCost: {key: "constructionCost", describe: "建设成本"},
+            managementExpense: {key: "managementExpense", describe: "管理费"},
+            managementExpenseRote: {key: "managementExpenseRote", describe: "管理费率"},
+            unforeseenExpenses: {key: "unforeseenExpenses", describe: "不可预见费"},
+            unforeseenExpensesRote: {key: "unforeseenExpensesRote", describe: "不可预见费率"},
         };
         config.inputConfig = function () {
             return inputNameConfig;
@@ -300,9 +353,19 @@
             }]);
             arr.push([{key: inputNameConfig.devDuringPrice.key, value: inputNameConfig.devDuringPrice.value}]);
             arr.push([{key: inputNameConfig.devDuringPriceTax.key, value: inputNameConfig.devDuringPriceTax.value}]);
-            arr.push([{key: inputNameConfig.otherEngineeringCost.key, value: inputNameConfig.otherEngineeringCost.value}]);
-            arr.push([{key: inputNameConfig.otherEngineeringCostPrice.key, value: inputNameConfig.otherEngineeringCostPrice.value}]);
+            arr.push([{
+                key: inputNameConfig.otherEngineeringCost.key,
+                value: inputNameConfig.otherEngineeringCost.value
+            }]);
+            arr.push([{
+                key: inputNameConfig.otherEngineeringCostPrice.key,
+                value: inputNameConfig.otherEngineeringCostPrice.value
+            }]);
             arr.push([{key: inputNameConfig.constructionCost.key, value: inputNameConfig.constructionCost.value}]);
+            arr.push([{key: inputNameConfig.managementExpense.key, value: inputNameConfig.managementExpense.value}]);
+            arr.push([{key: inputNameConfig.managementExpenseRote.key, value: inputNameConfig.managementExpenseRote.value}]);
+            arr.push([{key: inputNameConfig.unforeseenExpenses.key, value: inputNameConfig.unforeseenExpenses.value}]);
+            arr.push([{key: inputNameConfig.unforeseenExpensesRote.key, value: inputNameConfig.unforeseenExpensesRote.value}]);
             return arr;
         };
         config.hiddenData = function () {
@@ -330,6 +393,7 @@
      * @date:2018-08-10
      **/
     build.inputAlgorithm = function (dataName, dataValue) {
+        var object = new Object();
         var b = dataValue;
         //勘察设计和前期工程费率
         if (dataName == build.config().inputConfig().reconnaissanceDesignRote.key) {
@@ -340,7 +404,8 @@
             }
             var c = build.mul(a, b);//勘察设计和前期工程费 = 建筑安装工程费*费率
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().reconnaissanceDesign.key + "']").val(c);
-        };
+            object.constructionCostFun(c);
+        }
         //基础设施建设费
         if (dataName == build.config().inputConfig().infrastructureCost.select) {
             var a = build.config().hiddenData().area //估价对象面积
@@ -350,7 +415,8 @@
             }
             var c = build.mul(a, b);//基础设施建设费 = 基础设施建设费单价*估价对象面积
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().infrastructureCost.key + "']").val(c);
-        };
+            object.constructionCostFun(c);
+        }
         //公共配套设施建设费
         if (dataName == build.config().inputConfig().infrastructureMatchingCost.select) {
             var a = build.config().hiddenData().area //估价对象面积
@@ -360,7 +426,8 @@
             }
             var c = build.mul(a, b);//公共配套设施建设费 = 公共配套设施建设费单价*估价对象面积
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().infrastructureMatchingCost.key + "']").val(c);
-        };
+            object.constructionCostFun(c);
+        }
         //开发期间税费
         if (dataName == build.config().inputConfig().devDuringPrice.key) {
             var a = build.config().hiddenData().area //估价对象面积
@@ -370,7 +437,8 @@
             }
             var c = build.mul(a, b);//开发期间税费 = 估价对象面积*开发期间单价
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().devDuringPriceTax.key + "']").val(c);
-        };
+            object.constructionCostFun(c);
+        }
         //其它工程费
         if (dataName == build.config().inputConfig().otherEngineeringCostPrice.key) {
             var a = build.config().hiddenData().area //估价对象面积
@@ -380,6 +448,26 @@
             }
             var c = build.mul(a, b);//其它工程费 = 估价对象面积*其它工程费单价
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().otherEngineeringCost.key + "']").val(c);
+            object.constructionCostFun(c);
+        }
+        //管理费
+        if (dataName == build.config().inputConfig().managementExpenseRote.key) {
+            var a = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().constructionCost.key + "']").val(); ; //建设成本
+            var c = build.mul(a, b);//管理费 = 管理费率*建设成本
+            $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().managementExpense.key + "']").val(c);
+        }
+        //建设成本
+        object.constructionCostFun = function (obj) {
+            /*建设成本 = 前期工程费+安装工程费+基础设施费+公共设施费+开发期间税费+其它工程费*/
+            var c = null;
+            c += $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().reconnaissanceDesign.key + "']").val();//前期工程费
+            c += 0; //安装工程费
+            c += $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().infrastructureCost.key + "']").val();//基础设施建设费
+            c += $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().infrastructureMatchingCost.key + "']").val();//公共配套设施建设费
+            c += $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().devDuringPriceTax.key + "']").val();//开发期间税费
+            c += $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().otherEngineeringCost.key + "']").val(); //其它工程费
+            //赋值
+            $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().constructionCost.key + "']").val(c);
         };
         $(function () {
             build.inputEvent();
@@ -512,9 +600,9 @@
      **/
     build.constructionInstallationEngineeringFee = function () {
         $("." + build.config().engineeringFee).window({
-            width:800,
-            height:600,
-            modal:true
+            width: 800,
+            height: 600,
+            modal: true
         });
         $("." + build.config().engineeringFee).window('open');  // open a window
     }
@@ -550,8 +638,8 @@
 </script>
 
 
-
-<div class="easyui-window constructionInstallationEngineeringFeeA" title="建安工程费" data-options="modal:true,closed:true,iconCls:'icon-save'">
+<div class="easyui-window constructionInstallationEngineeringFeeA" title="建安工程费"
+     data-options="modal:true,closed:true,iconCls:'icon-save'">
     <jsp:include page="constructionInstallationEngineeringFeeB.jsp"></jsp:include>
 </div>
 
