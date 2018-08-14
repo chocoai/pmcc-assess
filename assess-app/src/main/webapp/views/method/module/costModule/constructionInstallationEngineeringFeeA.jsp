@@ -16,7 +16,7 @@
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
-        <table id="constructionInstallationEngineeringFeeB">
+        <table id="constructionInstallationEngineeringFeeA">
 
         </table>
     </div>
@@ -70,14 +70,14 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 
-    var constructEngineeringObject = new Object();
+    var constructEngineeringObjectA = new Object();
 
     /**
      * @author:  zch
      * 描述:加法
      * @date:2018-08-13
      **/
-    constructEngineeringObject.add = function (arg1, arg2) {
+    constructEngineeringObjectA.add = function (arg1, arg2) {
         arg1 = arg1.toString(), arg2 = arg2.toString();
         var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
             d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
@@ -94,9 +94,9 @@
      * 参数：arg1：第一个乘数；arg2第二个乘数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
      * @date:2018-08-13
      **/
-    constructEngineeringObject.mul = function (arg1, arg2) {
-        if (constructEngineeringObject.isNumber(arg1)) {
-            if (constructEngineeringObject.isNumber(arg2)) {
+    constructEngineeringObjectA.mul = function (arg1, arg2) {
+        if (constructEngineeringObjectA.isNumber(arg1)) {
+            if (constructEngineeringObjectA.isNumber(arg2)) {
                 var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
                 m = (r1.split(".")[1] ? r1.split(".")[1].length : 0) + (r2.split(".")[1] ? r2.split(".")[1].length : 0);
                 resultVal = Number(r1.replace(".", "")) * Number(r2.replace(".", "")) / Math.pow(10, m);
@@ -110,8 +110,8 @@
      * 描述:判断是否为数字
      * @date:2018-08-13
      **/
-    constructEngineeringObject.isNumber = function (obj) {
-        if (constructEngineeringObject.isNotNull(obj)) {
+    constructEngineeringObjectA.isNumber = function (obj) {
+        if (constructEngineeringObjectA.isNotNull(obj)) {
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
             if (obj == 0) {
@@ -129,7 +129,7 @@
             return false;
         }
     }
-    constructEngineeringObject.isNotNull = function (obj) {
+    constructEngineeringObjectA.isNotNull = function (obj) {
         if (obj == 0) {
             return true;
         }
@@ -141,9 +141,10 @@
         }
         return false;
     };
-    constructEngineeringObject.config = function () {
+    constructEngineeringObjectA.config = function () {
         return {
-            tableId: "constructionInstallationEngineeringFeeB",
+            tableId: "constructionInstallationEngineeringFeeA",
+            //暂时没改
             currencyClass: "constructionInstallationEngineeringFeeBCurrencyClass",//建安成本小计 3个label class
             areaClass: "constructionInstallationEngineeringFeeBAreaClass",
             totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClass"
@@ -157,12 +158,12 @@
      * 描述:数据表格初始化数据
      * @date:2018-08-13
      **/
-    constructEngineeringObject.init = function () {
-        $('#' + constructEngineeringObject.config().tableId).treegrid({
+    constructEngineeringObjectA.init = function () {
+        $('#' + constructEngineeringObjectA.config().tableId).treegrid({
             iconCls: 'icon-edit',
             nowrap: false,
             // rownumbers: true,
-            width: 700,
+            width: 1000,
             height: 'auto',
             collapsible: true,
             title: "建安工程费用测算表",
@@ -173,7 +174,7 @@
             fitColumns: true,
             striped: true,//显示斑马线
             columns: [[
-                // {field: 'number', title: '序号', width: 50},
+                {field: 'number', title: '序号', width: 50},
                 {field: 'name', title: '工程名称', width: 95},
                 {
                     field: 'area',
@@ -193,11 +194,16 @@
                         return 'background-color:#F0F0F0;color:red;';
                     }
                 },
-                {field: 'totalCost', title: '总造价', width: 120}
+                {field: 'totalCost', title: '总造价', width: 120},
+                {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
+                {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
+                {field: 'valuationDateCurrency', title: '估价时点单价(元/㎡)', width: 110},
+                {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 110},
+                {field: 'continuedConstructionInvestmentCurrency', title: '续建投入单价(元/㎡)', width: 110},
             ]],
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
-                constructEngineeringObject.updateChildren($('#' + constructEngineeringObject.config().tableId).treegrid('find', row.id), changes);
+                constructEngineeringObjectA.updateChildren($('#' + constructEngineeringObjectA.config().tableId).treegrid('find', row.id), changes);
             }
         });
     }
@@ -207,13 +213,13 @@
      * 描述:更新子节点数据
      * @date:2018-08-13
      **/
-    constructEngineeringObject.updateChildren = function (data, changes) {
-        if (constructEngineeringObject.isNotNull(data)) {
+    constructEngineeringObjectA.updateChildren = function (data, changes) {
+        if (constructEngineeringObjectA.isNotNull(data)) {
             var area = null;
             var currency = null;
             if (changes.area) {//修改的是面积
                 area = changes.area;
-                if (constructEngineeringObject.isNumber(area)) {
+                if (constructEngineeringObjectA.isNumber(area)) {
                     currency = data.currency;
                 } else {
                     Alert("请输入数字!");
@@ -222,22 +228,22 @@
             }
             if (changes.currency) {
                 currency = changes.currency;
-                if (constructEngineeringObject.isNumber(currency)) {
+                if (constructEngineeringObjectA.isNumber(currency)) {
                     area = data.area;
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (constructEngineeringObject.isNotNull(area) && constructEngineeringObject.isNotNull(currency)) {
-                data.totalCost = constructEngineeringObject.mul(area, currency);
+            if (constructEngineeringObjectA.isNotNull(area) && constructEngineeringObjectA.isNotNull(currency)) {
+                data.totalCost = constructEngineeringObjectA.mul(area, currency);
                 //更新节点值
-                $('#' + constructEngineeringObject.config().tableId).treegrid('update', {
+                $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
                     id: data.id,
                     row: data
                 });
                 if (!data.parent) {//说明不是父节点
-                    constructEngineeringObject.updateFather(data);
+                    constructEngineeringObjectA.updateFather(data);
                 }
             }
 
@@ -250,29 +256,29 @@
      * 描述:更新父节点数据
      * @date:2018-08-13
      **/
-    constructEngineeringObject.updateFather = function (data) {
-        var parent = $('#' + constructEngineeringObject.config().tableId).treegrid('getParent', data.id);
+    constructEngineeringObjectA.updateFather = function (data) {
+        var parent = $('#' + constructEngineeringObjectA.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
         var currency = 0;
         var area = 0;
         var totalCost = 0;
-        if (constructEngineeringObject.isNotNull(childrens)) {
+        if (constructEngineeringObjectA.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
-                currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
-                area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
-                totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
+                currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
+                area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
+                totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
             });
         }
         parent.currency = currency;
         parent.area = area;
         parent.totalCost = totalCost;
         //更新节点值
-        $('#' + constructEngineeringObject.config().tableId).treegrid('update', {
+        $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
             id: parent.id,
             row: parent
         });
         //更新建安成本小计
-        constructEngineeringObject.totalCalculation();
+        constructEngineeringObjectA.totalCalculation();
     }
 
     /**
@@ -280,26 +286,26 @@
      * 描述:建安成本小计
      * @date:2018-08-14
      **/
-    constructEngineeringObject.totalCalculation = function () {
+    constructEngineeringObjectA.totalCalculation = function () {
         var currency = 0;
         var area = 0;
         var totalCost = 0;
-        $.each($('#' + constructEngineeringObject.config().tableId).treegrid('getRoots'), function (i, n) {
-            currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
-            area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
-            totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
+        $.each($('#' + constructEngineeringObjectA.config().tableId).treegrid('getRoots'), function (i, n) {
+            currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
+            area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
+            totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
         });
-        constructEngineeringObject.updateHtml(currency, area, totalCost);
+        constructEngineeringObjectA.updateHtml(currency, area, totalCost);
     }
     /**
      * @author:  zch
      * 描述:建安成本小计 写html value
      * @date:2018-08-14
      **/
-    constructEngineeringObject.updateHtml = function (currency, area, totalCost) {
-        $('.' + constructEngineeringObject.config().areaClass).html(area);
-        $('.' + constructEngineeringObject.config().currencyClass).html(currency);
-        $('.' + constructEngineeringObject.config().totalCostClass).html(totalCost);
+    constructEngineeringObjectA.updateHtml = function (currency, area, totalCost) {
+        $('.' + constructEngineeringObjectA.config().areaClass).html(area);
+        $('.' + constructEngineeringObjectA.config().currencyClass).html(currency);
+        $('.' + constructEngineeringObjectA.config().totalCostClass).html(totalCost);
     }
 
     /**
@@ -307,8 +313,8 @@
      * 描述:获取建安成本小计
      * @date:2018-08-14
      **/
-    constructEngineeringObject.getCalculatedResults = function () {
-        return $('.' + constructEngineeringObject.config().totalCostClass).html();
+    constructEngineeringObjectA.getCalculatedResults = function () {
+        return $('.' + constructEngineeringObjectA.config().totalCostClass).html();
     }
 
     /**
@@ -316,8 +322,8 @@
      * 描述:特别处理
      * @date:
      **/
-    constructEngineeringObject.specialTreatment = function (obj) {
-        if (constructEngineeringObject.isNotNull(obj)) {
+    constructEngineeringObjectA.specialTreatment = function (obj) {
+        if (constructEngineeringObjectA.isNotNull(obj)) {
             return obj;
         }
         return 0;
@@ -328,7 +334,7 @@
      * 描述:封装临时的方法到$datagrid上 enableCellEditing,editCell
      * @date:2018-08-13
      **/
-    constructEngineeringObject.extendOverwrite = function () {
+    constructEngineeringObjectA.extendOverwrite = function () {
         $.extend($.fn.datagrid.methods, {
             editCell: function (jq, param) {
                 return jq.each(function () {
@@ -383,9 +389,9 @@
         });
     }
 
-    constructEngineeringObject.viewInit = function () {
-        constructEngineeringObject.extendOverwrite();
-        constructEngineeringObject.init();
+    constructEngineeringObjectA.viewInit = function () {
+        constructEngineeringObjectA.extendOverwrite();
+        constructEngineeringObjectA.init();
         /**
          * @author:  zch
          * 描述:开启单元格编辑
@@ -395,6 +401,6 @@
     }
 
     $(function () {
-        // constructEngineeringObject.viewInit();
+        // constructEngineeringObjectA.viewInit();
     })
 </script>

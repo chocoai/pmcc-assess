@@ -13,11 +13,18 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
     private String name;
     private String key;
     private Integer _parentId;
-    private double area;
+    private double area;//建筑面积
     private String number;
     private boolean parent = false;
-    private  double totalCost;
-    private double currency;
+    private  double totalCost;//总造价
+    private double currency;//单方造价
+
+    private String valuationDateDegreeCompletion;//估价时点完工程度
+    private double valuationDateTotal;//估价时点总价（万元）
+    private double valuationDateCurrency;//估价时点单价(元/㎡)
+
+    private double continuedConstructionInvestmentTotal;//续建投入总价（万元）
+    private double continuedConstructionInvestmentCurrency;//续建投入单价（元/㎡）
 
     public Integer getId() {
         return id;
@@ -98,5 +105,45 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
 
     public void setParent(boolean parent) {
         this.parent = parent;
+    }
+
+    public String getValuationDateDegreeCompletion() {
+        return valuationDateDegreeCompletion;
+    }
+
+    public void setValuationDateDegreeCompletion(String valuationDateDegreeCompletion) {
+        this.valuationDateDegreeCompletion = valuationDateDegreeCompletion;
+    }
+
+    public double getValuationDateTotal() {
+        return valuationDateTotal;
+    }
+
+    public void setValuationDateTotal(double valuationDateTotal) {
+        this.valuationDateTotal = valuationDateTotal;
+    }
+
+    public double getValuationDateCurrency() {
+        return valuationDateCurrency;
+    }
+
+    public void setValuationDateCurrency(double valuationDateCurrency) {
+        this.valuationDateCurrency = valuationDateCurrency;
+    }
+
+    public double getContinuedConstructionInvestmentTotal() {
+        return continuedConstructionInvestmentTotal;
+    }
+
+    public void setContinuedConstructionInvestmentTotal(double continuedConstructionInvestmentTotal) {
+        this.continuedConstructionInvestmentTotal = continuedConstructionInvestmentTotal;
+    }
+
+    public double getContinuedConstructionInvestmentCurrency() {
+        return continuedConstructionInvestmentCurrency;
+    }
+
+    public void setContinuedConstructionInvestmentCurrency(double continuedConstructionInvestmentCurrency) {
+        this.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
     }
 }

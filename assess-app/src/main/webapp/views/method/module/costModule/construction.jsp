@@ -39,6 +39,9 @@
             </div>
         </div>
     </div>
+    <div>
+        <jsp:include page="constructionInstallationEngineeringFeeA.jsp"></jsp:include>
+    </div>
 </form>
 <script>
     var construction = new Object();
@@ -90,4 +93,9 @@
             Alert("输入非法请重新输入");
         }
     }
+
+    /**--------------------------------初始化------------------**/
+    $(function () {
+        // constructEngineeringObjectA.viewInit();
+    });
 </script>
