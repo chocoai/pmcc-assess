@@ -308,7 +308,6 @@
      * @date:2018-08-14
      **/
     constructEngineeringObject.getCalculatedResults = function () {
-        console.log($('.' + constructEngineeringObject.config().totalCostClass).html());
         return $('.' + constructEngineeringObject.config().totalCostClass).html();
     }
 
