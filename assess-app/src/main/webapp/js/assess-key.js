@@ -42,3 +42,5 @@ AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//实�
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型
+
+AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate" ;

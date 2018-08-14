@@ -43,10 +43,6 @@ public class ProjectTaskMarketCostController {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private DataInfrastructureCostService dataInfrastructureCostService;
-    @Autowired
-    private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
-    @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 
     @Autowired
@@ -77,8 +73,20 @@ public class ProjectTaskMarketCostController {
     @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用", method = RequestMethod.GET)
     public HttpResult listInfrastructureCostAndInfrastructureMatchingCost(){
         Map<Object,Object> map = Maps.newHashMap();
-        map.put(InfrastructureCost.class.getSimpleName(),dataInfrastructureCostService.infrastructureCostList());
-        map.put(InfrastructureMatchingCost.class.getSimpleName(),dataInfrastructureMatchingCostService.infrastructureMatchingCosts());
+        map.put(InfrastructureCost.class.getSimpleName(),mdMarketCostService.infrastructureCostList());
+        map.put(InfrastructureMatchingCost.class.getSimpleName(),mdMarketCostService.infrastructureMatchingCosts());
         return HttpResult.newCorrectResult(map);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAddedValueAdditionalTaxRate", name = "增值及附加税率", method = RequestMethod.GET)
+    public HttpResult getAddedValueAdditionalTaxRate(){
+        return HttpResult.newCorrectResult(mdMarketCostService.getAddedValueAdditionalTaxRate());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/dataBuildingNewRateList", name = "建筑成新率率", method = RequestMethod.GET)
+    public HttpResult dataBuildingNewRateList(){
+        return HttpResult.newCorrectResult(mdMarketCostService.dataBuildingNewRateList());
     }
 }

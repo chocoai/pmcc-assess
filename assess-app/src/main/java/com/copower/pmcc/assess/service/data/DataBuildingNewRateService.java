@@ -22,6 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.*;
 
+
+/**
+ *
+ * 功能描述: 建筑成新率
+ *
+ * @param:
+ * @return:
+ * @auther: zch
+ * @date: 2018/8/14 15:53
+ */
 @Service(value = "dataBuildingNewRateService")
 public class DataBuildingNewRateService {
 
@@ -29,6 +39,14 @@ public class DataBuildingNewRateService {
     private DataBuildingNewRateDao dataBuildingNewRateDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+
+    public List<DataBuildingNewRateVo> dataBuildingNewRateList(){
+        List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(null);
+        List<DataBuildingNewRateVo> dataBuildingNewRateVoList = LangUtils.transform(dataBuildingNewRateList, p -> {
+            return getDataBuildingNewRateVo(p);
+        });
+        return dataBuildingNewRateVoList;
+    }
 
 
     public BootstrapTableVo getDataBuildingNewRateList(String buildingStructure) {
