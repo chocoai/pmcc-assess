@@ -9,29 +9,21 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select name="province" class="form-control search-select select2"
-                        required="required">
-
-                </select>
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.provinceName}</label>
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select name="city" class="form-control search-select select2"
-                        required="required">
-
-                </select>
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.cityName}</label>
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">县</label>
             <div class="col-sm-3">
-                <select name="district" class="form-control search-select select2">
-
-                </select>
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.districtName}</label>
             </div>
         </div>
     </div>
@@ -39,23 +31,19 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">版块名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="版块名称" required
-                       name="name" value="${surveyExamineDataInfoVo.examineBlockVo.name}"
-                       class="form-control">
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.name}</label>
             </div>
         </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="方位" required
-                       value="${surveyExamineDataInfoVo.examineBlockVo.position}"
-                       name="position" class="form-control">
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.position}</label>
             </div>
         </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">区域性质<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select name="regionalNature" class="form-control" required></select>
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.regionalNatureName}</label>
             </div>
         </div>
     </div>
@@ -63,7 +51,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">区域描述</label>
             <div class="col-sm-11">
-                <textarea name="remark" class="form-control" placeholder="区域描述">${surveyExamineDataInfoVo.examineBlockVo.remark}</textarea>
+                <label class="form-control">${surveyExamineDataInfoVo.examineBlockVo.remark}</label>
             </div>
         </div>
     </div>

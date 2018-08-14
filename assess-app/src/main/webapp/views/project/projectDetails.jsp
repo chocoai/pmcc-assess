@@ -107,10 +107,6 @@
                         <div class="tab-content">
                             <c:forEach items="${projectPlanList}" var="plan">
                                 <div class="tab-pane fade " id="tab_plan_${plan.id}">
-                                        <%--判断逻辑 1.未到该阶段不做任何处理 2.该阶段已结束数据只做显示
-                                        3.处理该阶段任务 计划任务结束 状态结束 只读
-                                        计划任务为待提交状态 状态进行 可读 任务为当前则进入页面提交 不为当前人显示出责任人
-                                        计划任务为待审批 状态进行 可读 任务为当前人则进入页面审批 不为当前人显示出责任人--%>
                                     <c:if test="${not empty plan.planDisplayUrl}">
                                         <div class="col-md-3 col-sm-3 col-xs-3 col-sm-offset-1">
                                             <div class="btn-group">
@@ -148,12 +144,9 @@
                                             </div>
                                         </div>
                                     </c:if>
-
-
                                     <p>
                                     <table id="plan_item_list_${plan.id}" class="table table-bordered"></table>
                                     </p>
-
                                 </div>
                             </c:forEach>
                         </div>
@@ -180,7 +173,7 @@
 </script>
 <script type="application/javascript">
     var projectDetails = {
-        loadPlanTabInfo:function (tab) {
+        loadPlanTabInfo: function (tab) {
             var that = $(tab).closest('li');
             projectDetails.loadTaskList({
                 target: $('#plan_item_list_' + that.attr('plan-id')),
@@ -256,25 +249,33 @@
                         }
                     },
                     {field: 'executeUserName', align: 'center', title: '责任人', width: '10%'},
-                    {field: 'executor', align: 'center', title: '当前责任人', width: '10%'},
                     {field: 'id', title: 'PlanItemId', align: 'center', hidden: true},
                     {
                         field: 'processInsId',
                         align: 'left',
                         title: '操作',
-                        width: '10%',
+                        width: '20%',
                         formatter: function (value, row) {
                             var s = "";
                             if (row.bisLastLayer) {
                                 if (row.displayUrl) {
                                     s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
                                 }
-                                if (row.canExecute) {
-                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.executeUrl + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-edit fa-white'></i></a>";
-                                }
                                 if (row.canAssignment) {
-                                    s += " <a target='_blank' href='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=" + row.id + "' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
+                                    var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + row.id;
+                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + url + "\")' href='javascript://' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
                                 }
+                                if (row.executeUrlList) {
+                                    $.each(row.executeUrlList,function (i,item) {
+                                        var btnClass='btn-warning';
+                                        if(/processInsId/.test(item)){
+                                            btnClass='btn-primary';
+                                        }
+                                        s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + item + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs "+btnClass+" tooltips' ><i class='fa fa-edit fa-white'></i></a>";
+                                    })
+
+                                }
+
                             }
                             return s;
 

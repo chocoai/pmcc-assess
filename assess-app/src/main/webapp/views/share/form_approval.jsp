@@ -185,22 +185,35 @@
             return formData;
         }
     };
+
     $(function () {
         if ("${flog}" == "approval") {
             $("#frm_approval").validate();
             $("#opinions").attr("required", false);//审批意见不必填
-            FileUtils.uploadFiles({
-                target: "file_upload",
-                disabledTarget: "btn_submit",
-                formData: {
-                    tableName: AssessDBKey.BoxApprovalLog,
-                    processInsId: "${processInsId}",
-                    reActivityName: "${activityReName}",
-                    fieldsName: "log",
-                    processTaskId: "${taskId}"
-                },
-                deleteFlag: true
-            });
         }
+        FileUtils.uploadFiles({
+            target: "file_upload",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: AssessDBKey.BoxApprovalLog,
+                processInsId: "${processInsId}",
+                reActivityName: "${activityReName}",
+                fieldsName: "log",
+                processTaskId: "${taskId}"
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "file_upload",
+            formData: {
+                tableName: AssessDBKey.BoxApprovalLog,
+                processInsId: "${processInsId}",
+                reActivityName: "${activityReName}",
+                fieldsName: "log",
+                processTaskId: "${taskId}"
+            },
+            deleteFlag: true
+        })
     })
 </script>
