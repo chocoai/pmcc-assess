@@ -247,17 +247,6 @@
             }
             if (val == 2) {
                 optionsBuildBox.showConstruction();
-                $(function () {
-                    constructEngineeringObjectA.extendOverwrite();
-                    constructEngineeringObjectA.init();
-                    /**
-                     * @author:  zch
-                     * 描述:开启单元格编辑
-                     * @date:2018-08-13
-                     **/
-                    $('#constructionInstallationEngineeringFeeB').datagrid().datagrid('enableCellEditing');
-                    // constructEngineeringObjectA.viewInit();
-                });
             }
         });
     };

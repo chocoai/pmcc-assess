@@ -568,7 +568,7 @@
         //评估单价
         object.assessPriceFun = function (obj) {
             var c = 0;
-            if (build.isNotNull(obj)){
+            if (build.isNotNull(obj)) {
                 var a = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().replacementValue.key + "']").val();//重置价格
                 var b = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().newRate.key + "']").val();//成新率
                 c = build.mul(object.specialTreatment(a), object.specialTreatment(b));
@@ -667,7 +667,7 @@
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().valueAddedAdditionalTaxes.key + "']").val(c);
         }
         //重置价格
-        if (dataName == build.config().inputConfig().replacementValue.key){
+        if (dataName == build.config().inputConfig().replacementValue.key) {
             var a = $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().replacementValue.key + "']").val();//重置价格
             object.assessPriceFun(a);
         }
@@ -705,8 +705,8 @@
     build.select2Event = {
         infrastructureCost: function () {//基础设施建设费 单价选择
             var key = build.config().inputConfig().infrastructureCost.select;
-            $("." + key).change(function () {
-                var value = $("." + build.config().inputConfig().infrastructureCost.select).eq(1).val();
+            $("." + build.config().frm + " ." + key).change(function () {
+                var value = $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).eq(1).val();
                 if (build.isNumber(value)) {
                     build.inputAlgorithm(key, value);
                 } else {
@@ -716,8 +716,8 @@
         },
         infrastructureMatchingCost: function () {//公共配套设施建设费 单价选择
             var key = build.config().inputConfig().infrastructureMatchingCost.select;
-            $("." + key).change(function () {
-                var value = $("." + build.config().inputConfig().infrastructureMatchingCost.select).eq(1).val();
+            $("." + build.config().frm + " ." + key).change(function () {
+                var value = $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).eq(1).val();
                 if (build.isNumber(value)) {
                     build.inputAlgorithm(key, value);
                 } else {

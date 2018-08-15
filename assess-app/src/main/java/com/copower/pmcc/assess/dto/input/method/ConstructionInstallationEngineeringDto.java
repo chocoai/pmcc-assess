@@ -13,9 +13,9 @@ public class ConstructionInstallationEngineeringDto implements Serializable{
     private String name;
     private String key;
     private Integer _parentId;
-    private double area;//建筑面积
     private String number;
     private boolean parent = false;
+    private double area;//建筑面积
     private  double totalCost;//总造价
     private double currency;//单方造价
 

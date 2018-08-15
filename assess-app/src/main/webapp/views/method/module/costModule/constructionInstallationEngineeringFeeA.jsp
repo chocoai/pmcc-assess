@@ -23,44 +23,64 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-2 control-label">
             建安成本小计
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-2 control-label">
             建筑面积（㎡）
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-2 control-label">
             单方造价(元/㎡)
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-2 control-label">
             总造价（万元）
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            估价时点总价（万元)
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            续建投入总价(万元)
         </label>
     </div>
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-2 control-label">
             数据计算值:
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClass">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBAreaClassA">
             0
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBCurrencyClass">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBCurrencyClassA">
             0
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClass">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBTotalCostClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label valuationDateTotalClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label continuedConstructionInvestmentTotalClassA">
             0
         </label>
     </div>
@@ -90,6 +110,23 @@
 
     /**
      * @author:  zch
+     * 参数：arg1：除数；arg2被除数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
+     * 描述:除法函数，用来得到精确的除法结果 如:3,2 = 1.5
+     * @date:2018-08-15
+     **/
+    constructEngineeringObjectA.div = function (arg1, arg2) {
+        if (arg1 != 0) {//除数不能为0
+            var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
+            m = (r2.split(".")[1] ? r2.split(".")[1].length : 0) - (r1.split(".")[1] ? r1.split(".")[1].length : 0);
+            resultVal = Number(r1.replace(".", "")) / Number(r2.replace(".", "")) * Math.pow(10, m);
+            return typeof d !== "number" ? Number(resultVal) : Number(resultVal.toFixed(parseInt(d)));
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @author:  zch
      * 描述:乘法
      * 参数：arg1：第一个乘数；arg2第二个乘数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
      * @date:2018-08-13
@@ -103,6 +140,28 @@
                 return typeof d !== "number" ? Number(resultVal) : Number(resultVal.toFixed(parseInt(d)));
             }
         }
+    }
+
+    /**
+     * @author:  zch
+     * 描述:百分数转小数
+     * @date:
+     **/
+    constructEngineeringObjectA.toPoint = function (percent) {
+        var str = percent.replace("%", "");
+        str = str / 100;
+        return str;
+    }
+    /**
+     * @author:  zch
+     * 描述:小数转百分数
+     * *这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%
+     * @date:
+     **/
+    constructEngineeringObjectA.toPercent = function (point) {
+        var str = Number(point * 100).toFixed(1);
+        str += "%";
+        return str;
     }
 
     /**
@@ -144,10 +203,11 @@
     constructEngineeringObjectA.config = function () {
         return {
             tableId: "constructionInstallationEngineeringFeeA",
-            //暂时没改
-            currencyClass: "constructionInstallationEngineeringFeeBCurrencyClass",//建安成本小计 3个label class
-            areaClass: "constructionInstallationEngineeringFeeBAreaClass",
-            totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClass"
+            currencyClass: "constructionInstallationEngineeringFeeBCurrencyClassA",//建安成本小计 3个label class
+            areaClass: "constructionInstallationEngineeringFeeBAreaClassA",
+            totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClassA",
+            valuationDateTotalClass: "valuationDateTotalClassA",
+            continuedConstructionInvestmentTotalClass: "continuedConstructionInvestmentTotalClassA"
         };
     };
 
@@ -175,7 +235,7 @@
             striped: true,//显示斑马线
             columns: [[
                 {field: 'number', title: '序号', width: 50},
-                {field: 'name', title: '工程名称', width: 95},
+                {field: 'name', title: '工程名称', width: 110},
                 {
                     field: 'area',
                     title: '建筑面积',
@@ -185,21 +245,29 @@
                         return 'background-color:#F0F0F0;color:red;';
                     }
                 },
+                {field: 'currency', title: ' 单方造价(元/㎡)', width: 100},
+                {field: 'totalCost', title: '总造价', width: 120},
+                {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
+                {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
                 {
-                    field: 'currency',
-                    title: ' 单方造价(元/㎡)',
-                    width: 100,
+                    field: 'valuationDateCurrency',
+                    title: '估价时点单价(元/㎡)',
+                    width: 110,
                     editor: {type: "numberbox", options: {precision: 7}},//精度为7
                     styler: function (value, row, index) {
                         return 'background-color:#F0F0F0;color:red;';
                     }
                 },
-                {field: 'totalCost', title: '总造价', width: 120},
-                {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
-                {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
-                {field: 'valuationDateCurrency', title: '估价时点单价(元/㎡)', width: 110},
                 {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 110},
-                {field: 'continuedConstructionInvestmentCurrency', title: '续建投入单价(元/㎡)', width: 110},
+                {
+                    field: 'continuedConstructionInvestmentCurrency',
+                    title: '续建投入单价(元/㎡)',
+                    width: 110,
+                    editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                    styler: function (value, row, index) {
+                        return 'background-color:#F0F0F0;color:red;';
+                    }
+                },
             ]],
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
@@ -210,44 +278,113 @@
 
     /**
      * @author:  zch
+     * 描述:计算方法
+     * @date:
+     **/
+    constructEngineeringObjectA.algs = function (data) {
+        var area;//建筑面积
+        var totalCost;//总造价
+        var currency;//单方造价
+        var valuationDateDegreeCompletion;//估价时点完工程度
+        var valuationDateTotal;//估价时点总价（万元）
+        var valuationDateCurrency;//估价时点单价(元/㎡)
+        var continuedConstructionInvestmentTotal;//续建投入总价（万元）
+        var continuedConstructionInvestmentCurrency;//续建投入单价（元/㎡）
+
+        area = data.area;
+        valuationDateCurrency = data.valuationDateCurrency;
+        continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
+
+        /**
+         * 计算原则:
+         * 续建投入总价 = (续建投入单价 * 建筑面积)
+         * 估价时点总价 = (估价时点单价 * 建筑面积)
+         * 单方造价 = (续建投入单价 + 估价时点单价)
+         // * 总造价 = (单方造价 * 建筑面积)
+         * 总造价 = (续建投入总价 + 估价时点总价)
+         * 估价时点完工程度 = (估价时点总价 / 总造价)
+         * 输入值: 续建投入单价,估价时点单价,建筑面积
+         **/
+
+        currency = constructEngineeringObjectA.add(valuationDateCurrency, continuedConstructionInvestmentCurrency);
+        continuedConstructionInvestmentTotal = constructEngineeringObjectA.mul(continuedConstructionInvestmentCurrency, area);
+        valuationDateTotal = constructEngineeringObjectA.mul(valuationDateCurrency, area);
+        totalCost = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, valuationDateTotal);
+        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+
+        var algs4 = {};
+        algs4.area = area;
+        algs4.totalCost = totalCost;
+        algs4.continuedConstructionInvestmentTotal = continuedConstructionInvestmentTotal;
+        algs4.valuationDateTotal = valuationDateTotal;
+        algs4.valuationDateDegreeCompletion = valuationDateDegreeCompletion;
+        algs4.valuationDateCurrency = valuationDateCurrency;
+        algs4.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
+        algs4.currency = currency;
+        return algs4;
+    }
+
+
+    /**
+     * @author:  zch
      * 描述:更新子节点数据
      * @date:2018-08-13
      **/
     constructEngineeringObjectA.updateChildren = function (data, changes) {
         if (constructEngineeringObjectA.isNotNull(data)) {
+            var continuedConstructionInvestmentCurrency = null;
+            var valuationDateCurrency = null;
             var area = null;
-            var currency = null;
-            if (changes.area) {//修改的是面积
-                area = changes.area;
-                if (constructEngineeringObjectA.isNumber(area)) {
-                    currency = data.currency;
-                } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
-            if (changes.currency) {
-                currency = changes.currency;
-                if (constructEngineeringObjectA.isNumber(currency)) {
+            if (changes.continuedConstructionInvestmentCurrency) {//续建投入单价
+                continuedConstructionInvestmentCurrency = changes.continuedConstructionInvestmentCurrency;
+                if (constructEngineeringObjectA.isNumber(continuedConstructionInvestmentCurrency)) {
+                    valuationDateCurrency = data.valuationDateCurrency;
                     area = data.area;
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (constructEngineeringObjectA.isNotNull(area) && constructEngineeringObjectA.isNotNull(currency)) {
-                data.totalCost = constructEngineeringObjectA.mul(area, currency);
-                //更新节点值
-                $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
-                    id: data.id,
-                    row: data
-                });
-                if (!data.parent) {//说明不是父节点
-                    constructEngineeringObjectA.updateFather(data);
+            if (changes.valuationDateCurrency) {//估价时点单价(元/㎡)
+                valuationDateCurrency = changes.valuationDateCurrency;
+                if (constructEngineeringObjectA.isNumber(valuationDateCurrency)) {
+                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
+                    area = data.area;
+                } else {
+                    Alert("请输入数字!");
+                    return false;
                 }
             }
-
-
+            if (changes.area) {//面积
+                area = changes.area;
+                if (constructEngineeringObjectA.isNumber(area)) {
+                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
+                    valuationDateCurrency = data.valuationDateCurrency;
+                } else {
+                    Alert("请输入数字!");
+                    return false;
+                }
+            }
+            if (constructEngineeringObjectA.isNotNull(continuedConstructionInvestmentCurrency)) {
+                if (constructEngineeringObjectA.isNotNull(valuationDateCurrency)) {
+                    if (constructEngineeringObjectA.isNotNull(area)) {
+                        //更新节点值
+                        $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
+                            id: data.id,
+                            row: constructEngineeringObjectA.algs(
+                                {
+                                    area: area,
+                                    continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency,
+                                    valuationDateCurrency: valuationDateCurrency
+                                })
+                        });
+                        if (!data.parent) {//说明不是父节点
+                            constructEngineeringObjectA.updateFather(data);
+                        }
+                    }
+                }
+            }
         }
     };
 
@@ -259,19 +396,37 @@
     constructEngineeringObjectA.updateFather = function (data) {
         var parent = $('#' + constructEngineeringObjectA.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
-        var currency = 0;
-        var area = 0;
-        var totalCost = 0;
+        var area = 0;//建筑面积
+        var totalCost = 0;//总造价
+        var currency = 0;//单方造价
+        var valuationDateDegreeCompletion = "";//估价时点完工程度
+        var valuationDateTotal = 0;//估价时点总价（万元）
+        var valuationDateCurrency = 0;//估价时点单价(元/㎡)
+        var continuedConstructionInvestmentTotal = 0;//续建投入总价（万元）
+        var continuedConstructionInvestmentCurrency = 0;//续建投入单价（元/㎡）
+
         if (constructEngineeringObjectA.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
                 area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
                 totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
+                valuationDateTotal = constructEngineeringObjectA.add(valuationDateTotal, constructEngineeringObjectA.specialTreatment(n.valuationDateTotal));
+                valuationDateCurrency = constructEngineeringObjectA.add(valuationDateCurrency, constructEngineeringObjectA.specialTreatment(n.valuationDateCurrency));
+                continuedConstructionInvestmentTotal = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentTotal));
+                continuedConstructionInvestmentCurrency = constructEngineeringObjectA.add(continuedConstructionInvestmentCurrency, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentCurrency));
             });
         }
+        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+
         parent.currency = currency;
         parent.area = area;
         parent.totalCost = totalCost;
+        parent.valuationDateDegreeCompletion = valuationDateDegreeCompletion;
+        parent.valuationDateTotal = valuationDateTotal;
+        parent.valuationDateCurrency = valuationDateCurrency;
+        parent.continuedConstructionInvestmentTotal = continuedConstructionInvestmentTotal;
+        parent.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
         //更新节点值
         $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
             id: parent.id,
@@ -287,25 +442,49 @@
      * @date:2018-08-14
      **/
     constructEngineeringObjectA.totalCalculation = function () {
-        var currency = 0;
-        var area = 0;
-        var totalCost = 0;
+        var area = 0;//建筑面积
+        var totalCost = 0;//总造价
+        var currency = 0;//单方造价
+        var valuationDateDegreeCompletion = "";//估价时点完工程度
+        var valuationDateTotal = 0;//估价时点总价（万元）
+        var valuationDateCurrency = 0;//估价时点单价(元/㎡)
+        var continuedConstructionInvestmentTotal = 0;//续建投入总价（万元）
+        var continuedConstructionInvestmentCurrency = 0;//续建投入单价（元/㎡）
+
         $.each($('#' + constructEngineeringObjectA.config().tableId).treegrid('getRoots'), function (i, n) {
             currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
             area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
             totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
+            valuationDateTotal = constructEngineeringObjectA.add(valuationDateTotal, constructEngineeringObjectA.specialTreatment(n.valuationDateTotal));
+            valuationDateCurrency = constructEngineeringObjectA.add(valuationDateCurrency, constructEngineeringObjectA.specialTreatment(n.valuationDateCurrency));
+            continuedConstructionInvestmentTotal = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentTotal));
+            continuedConstructionInvestmentCurrency = constructEngineeringObjectA.add(continuedConstructionInvestmentCurrency, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentCurrency));
         });
-        constructEngineeringObjectA.updateHtml(currency, area, totalCost);
+        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+
+        constructEngineeringObjectA.updateHtml({
+            area:area,
+            totalCost:totalCost,
+            currency:currency,
+            valuationDateDegreeCompletion:valuationDateDegreeCompletion,
+            valuationDateTotal:valuationDateTotal,
+            valuationDateCurrency:valuationDateCurrency,
+            continuedConstructionInvestmentTotal:continuedConstructionInvestmentTotal,
+            continuedConstructionInvestmentCurrency:continuedConstructionInvestmentCurrency
+        });
     }
     /**
      * @author:  zch
      * 描述:建安成本小计 写html value
      * @date:2018-08-14
      **/
-    constructEngineeringObjectA.updateHtml = function (currency, area, totalCost) {
-        $('.' + constructEngineeringObjectA.config().areaClass).html(area);
-        $('.' + constructEngineeringObjectA.config().currencyClass).html(currency);
-        $('.' + constructEngineeringObjectA.config().totalCostClass).html(totalCost);
+    constructEngineeringObjectA.updateHtml = function (data) {
+        $('.' + constructEngineeringObjectA.config().areaClass).html(data.area);
+        $('.' + constructEngineeringObjectA.config().currencyClass).html(data.currency);
+        $('.' + constructEngineeringObjectA.config().totalCostClass).html(data.totalCost);
+        $('.' + constructEngineeringObjectA.config().valuationDateTotalClass).html(data.valuationDateTotal);
+        $('.' + constructEngineeringObjectA.config().continuedConstructionInvestmentTotalClass).html(data.continuedConstructionInvestmentTotal);
     }
 
     /**
@@ -397,7 +576,7 @@
          * 描述:开启单元格编辑
          * @date:2018-08-13
          **/
-        $('#constructionInstallationEngineeringFeeB').datagrid().datagrid('enableCellEditing');
+        $('#' + constructEngineeringObjectA.config().tableId).datagrid().datagrid('enableCellEditing');
     }
 
     $(function () {
