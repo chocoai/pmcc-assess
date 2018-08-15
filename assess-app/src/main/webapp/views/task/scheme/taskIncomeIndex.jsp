@@ -14,6 +14,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
+            <jsp:include page="/views/method/module/incomeIndex.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdIncomeSelfSupportCostMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="support_id" property="supportId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
+    <result column="cost_type" property="costType" jdbcType="INTEGER" />
+    <result column="cost_category" property="costCategory" jdbcType="INTEGER" />
+    <result column="monthly" property="monthly" jdbcType="VARCHAR" />
+    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, support_id, type, accounting_subject, cost_type, cost_category, monthly, unit_price, 
+    number, amount_money, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCostExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_md_income_self_support_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_md_income_self_support_cost
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_md_income_self_support_cost
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCostExample" >
+    delete from tb_md_income_self_support_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_income_self_support_cost (support_id, type, accounting_subject, 
+      cost_type, cost_category, monthly, 
+      unit_price, number, amount_money, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{supportId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{accountingSubject,jdbcType=INTEGER}, 
+      #{costType,jdbcType=INTEGER}, #{costCategory,jdbcType=INTEGER}, #{monthly,jdbcType=VARCHAR}, 
+      #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_md_income_self_support_cost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="supportId != null" >
+        support_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="accountingSubject != null" >
+        accounting_subject,
+      </if>
+      <if test="costType != null" >
+        cost_type,
+      </if>
+      <if test="costCategory != null" >
+        cost_category,
+      </if>
+      <if test="monthly != null" >
+        monthly,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="amountMoney != null" >
+        amount_money,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="supportId != null" >
+        #{supportId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="accountingSubject != null" >
+        #{accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="costType != null" >
+        #{costType,jdbcType=INTEGER},
+      </if>
+      <if test="costCategory != null" >
+        #{costCategory,jdbcType=INTEGER},
+      </if>
+      <if test="monthly != null" >
+        #{monthly,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amountMoney != null" >
+        #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCostExample" resultType="java.lang.Integer" >
+    select count(*) from tb_md_income_self_support_cost
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_md_income_self_support_cost
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.supportId != null" >
+        support_id = #{record.supportId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountingSubject != null" >
+        accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="record.costType != null" >
+        cost_type = #{record.costType,jdbcType=INTEGER},
+      </if>
+      <if test="record.costCategory != null" >
+        cost_category = #{record.costCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.monthly != null" >
+        monthly = #{record.monthly,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitPrice != null" >
+        unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.amountMoney != null" >
+        amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_md_income_self_support_cost
+    set id = #{record.id,jdbcType=INTEGER},
+      support_id = #{record.supportId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
+      cost_type = #{record.costType,jdbcType=INTEGER},
+      cost_category = #{record.costCategory,jdbcType=INTEGER},
+      monthly = #{record.monthly,jdbcType=VARCHAR},
+      unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      number = #{record.number,jdbcType=INTEGER},
+      amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost" >
+    update tb_md_income_self_support_cost
+    <set >
+      <if test="supportId != null" >
+        support_id = #{supportId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="accountingSubject != null" >
+        accounting_subject = #{accountingSubject,jdbcType=INTEGER},
+      </if>
+      <if test="costType != null" >
+        cost_type = #{costType,jdbcType=INTEGER},
+      </if>
+      <if test="costCategory != null" >
+        cost_category = #{costCategory,jdbcType=INTEGER},
+      </if>
+      <if test="monthly != null" >
+        monthly = #{monthly,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amountMoney != null" >
+        amount_money = #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost" >
+    update tb_md_income_self_support_cost
+    set support_id = #{supportId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      accounting_subject = #{accountingSubject,jdbcType=INTEGER},
+      cost_type = #{costType,jdbcType=INTEGER},
+      cost_category = #{costCategory,jdbcType=INTEGER},
+      monthly = #{monthly,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      number = #{number,jdbcType=INTEGER},
+      amount_money = #{amountMoney,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

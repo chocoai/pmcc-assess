@@ -39,7 +39,16 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_compile_report" domainObjectName="CompileReport">
+        <table tableName="tb_md_income" domainObjectName="MdIncome">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_md_income_lease" domainObjectName="MdIncomeLease">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_md_income_self_support" domainObjectName="MdIncomeSelfSupport">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_md_income_self_support_cost" domainObjectName="MdIncomeSelfSupportCost">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
