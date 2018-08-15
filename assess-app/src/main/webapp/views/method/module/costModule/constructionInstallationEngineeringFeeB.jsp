@@ -391,7 +391,7 @@
          * 描述:开启单元格编辑
          * @date:2018-08-13
          **/
-        $('#constructionInstallationEngineeringFeeB').datagrid().datagrid('enableCellEditing');
+        $('#'+constructEngineeringObject.config().tableId).datagrid().datagrid('enableCellEditing');
     }
 
     $(function () {
