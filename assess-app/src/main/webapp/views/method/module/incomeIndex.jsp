@@ -838,6 +838,11 @@
         });
     }
 
+    //保存数据前验证
+    income.valid=function () {
+
+    }
+
     //获取需要保存的数据
     income.getData = function () {
         var mdIncome = formParams("frm_income");

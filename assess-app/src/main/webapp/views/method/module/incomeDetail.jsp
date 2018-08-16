@@ -95,9 +95,6 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <button class="btn btn-success" data-toggle="modal" onclick="income.addLease();">
-                    新增
-                </button>
                 <table class="table table-bordered" id="tb_lease_list">
                 </table>
             </div>
@@ -413,6 +410,8 @@
         if (defaluts.incomeInfo) {
             $("#frm_income").find("[name=operationMode][value="+defaluts.incomeInfo.operationMode+"]").trigger('click');
             $("#frm_income").find("[name=leaseMode][value="+defaluts.incomeInfo.leaseMode+"]").trigger('click');
+            $("#frm_income").find("[name=operationMode]").attr('disabled','disabled');
+            $("#frm_income").find("[name=leaseMode]").attr('disabled','disabled');
         }
         if (defaluts.incomeSelfSupport) {
             $("#frm_self_support").find("[data-name=averageProfitRate]").val(defaluts.incomeSelfSupport.averageProfitRate);
@@ -469,8 +468,9 @@
     //编辑租赁收益
     income.viewLease = function (index) {
         var row = $("#tb_lease_list").bootstrapTable('getData')[index];
-        $("#frm_lease").clearAll();
-        $("#frm_lease").initForm(row);
+        $("#frm_lease").find('[data-name]').each(function () {
+            $(this).text('').text(row[$(this).attr('data-name')]);
+        })
         $('#modal_lease').modal();
     }
 
@@ -493,7 +493,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="viewLease" onclick="income.editLease(' + index + ');" ><i class="fa fa-eye fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="income.viewLease(' + index + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
