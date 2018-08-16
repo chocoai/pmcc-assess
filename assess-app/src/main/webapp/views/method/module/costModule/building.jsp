@@ -447,78 +447,9 @@
          **/
         config.inputName = function () {
             var arr = new Array();
-            arr.push([{
-                key: inputNameConfig.reconnaissanceDesign.key,
-                value: inputNameConfig.reconnaissanceDesign.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.reconnaissanceDesignRote.key,
-                value: inputNameConfig.reconnaissanceDesignRote.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.constructionInstallationEngineeringFee.key,
-                value: inputNameConfig.constructionInstallationEngineeringFee.value
-            }]);
-            arr.push([{key: inputNameConfig.infrastructureCost.key, value: inputNameConfig.infrastructureCost.value}]);
-            arr.push([{
-                key: inputNameConfig.infrastructureMatchingCost.key,
-                value: inputNameConfig.infrastructureMatchingCost.value
-            }]);
-            arr.push([{key: inputNameConfig.devDuringPrice.key, value: inputNameConfig.devDuringPrice.value}]);
-            arr.push([{key: inputNameConfig.devDuringPriceTax.key, value: inputNameConfig.devDuringPriceTax.value}]);
-            arr.push([{
-                key: inputNameConfig.otherEngineeringCost.key,
-                value: inputNameConfig.otherEngineeringCost.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.otherEngineeringCostPrice.key,
-                value: inputNameConfig.otherEngineeringCostPrice.value
-            }]);
-            arr.push([{key: inputNameConfig.constructionCost.key, value: inputNameConfig.constructionCost.value}]);
-            arr.push([{key: inputNameConfig.managementExpense.key, value: inputNameConfig.managementExpense.value}]);
-            arr.push([{
-                key: inputNameConfig.managementExpenseRote.key,
-                value: inputNameConfig.managementExpenseRote.value
-            }]);
-            arr.push([{key: inputNameConfig.unforeseenExpenses.key, value: inputNameConfig.unforeseenExpenses.value}]);
-            arr.push([{
-                key: inputNameConfig.unforeseenExpensesRote.key,
-                value: inputNameConfig.unforeseenExpensesRote.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.salesFeeRote.key,
-                value: inputNameConfig.salesFeeRote.value
-            }]);
-            arr.push([{key: inputNameConfig.salesFee.key, value: inputNameConfig.salesFee.value}]);
-            arr.push([{key: inputNameConfig.replacementValue.key, value: inputNameConfig.replacementValue.value}]);
-            arr.push([{
-                key: inputNameConfig.addedValueAdditionalTaxRate.key,
-                value: inputNameConfig.addedValueAdditionalTaxRate.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.valueAddedAdditionalTaxes.key,
-                value: inputNameConfig.valueAddedAdditionalTaxes.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.realEstateDevelopmentCycle.key,
-                value: inputNameConfig.realEstateDevelopmentCycle.value
-            }]);
-            arr.push([{key: inputNameConfig.interestPeriod.key, value: inputNameConfig.interestPeriod.value}]);
-            arr.push([{
-                key: inputNameConfig.interestRateOnInvestment.key,
-                value: inputNameConfig.interestRateOnInvestment.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.interestInInvestment.key,
-                value: inputNameConfig.interestInInvestment.value
-            }]);
-            arr.push([{
-                key: inputNameConfig.investmentProfitRate.key,
-                value: inputNameConfig.investmentProfitRate.value
-            }]);
-            arr.push([{key: inputNameConfig.investmentProfit.key, value: inputNameConfig.investmentProfit.value}]);
-            arr.push([{key: inputNameConfig.newRate.key, value: inputNameConfig.newRate.value}]);
-            arr.push([{key: inputNameConfig.assessPrice.key, value: inputNameConfig.assessPrice.value}]);
+            $.each(build.config().inputConfig(), function (i, n) {
+                arr.push(n);
+            });
             return arr;
         };
         config.hiddenData = function () {
@@ -673,9 +604,39 @@
         }
         $(function () {
             build.inputEvent();
-            build.select2Event.init();
-            // build.inputInit();
         });
+    }
+
+    /**
+    * @author:  zch
+    * 描述:input数据输入
+    * @date:
+    **/
+    build.inputFun = {
+
+    }
+
+    /**
+    * @author:  zch
+    * 描述:升级算法 方法
+    * @date:
+    **/
+    build.inputAlgorithmObject = {
+        isNotNull: function (obj) {
+            if (obj == 0) {
+                return true;
+            }
+            if (obj) {
+                return true;
+            }
+            return false;
+        },
+        specialTreatment: function (obj) {
+            if (build.inputAlgorithmObject.isNotNull(obj)) {
+                return obj;
+            }
+            return 0;
+        }
     }
     /**
      * @author:  zch
@@ -685,7 +646,7 @@
     build.inputEvent = function () {
         var arr = build.config().inputName();
         $.each(arr, function (i, n) {
-            var key = n[0].key;
+            var key = n.key;
             var input = $("." + build.config().frm + " " + "input[name='" + key + "']");
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
@@ -695,7 +656,8 @@
                     Alert("请输入合法数字!")
                 }
             });
-        })
+        });
+        build.select2Event.init();
     };
     /**
      * @author:  zch
@@ -752,53 +714,71 @@
      **/
     build.inputInit = function () {
         build.inputEvent();
-        build.loadCostAndMatchingCost();
-        build.loadAddedValueAdditionalTaxRate();
-    }
-    build.loadAddedValueAdditionalTaxRate = function () {
-        AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-            $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
-            $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
-        })
-    }
-    /**
-     * @author:  zch
-     * 描述:获取基础设施费用列表和公共配套设施费用
-     * @date:2018-08-10
-     **/
-    build.loadCostAndMatchingCost = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
-            type: "get",
-            data: {},
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    var cost = result.data.InfrastructureCost;
-                    var matchingCost = result.data.InfrastructureMatchingCost;
-                    var option = "<option value=''>请选择</option>";
-                    if (cost.length > 0) {
-                        for (var i = 0; i < cost.length; i++) {
-                            option += "<option value='" + cost[i].number + "'>" + cost[i].name + "</option>";
-                        }
-                        $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(option);
-                        $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).select2();
-                    }
-                    if (matchingCost.length > 0) {
-                        for (var i = 0; i < matchingCost.length; i++) {
-                            option += "<option value='" + matchingCost[i].number + "'>" + matchingCost[i].name + "</option>";
-                        }
-                        $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(option);
-                        $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).select2();
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+        build.select2LoadData.init();
     }
 
+    /**
+    * @author:  zch
+    * 描述://加载所有select2数据
+    * @date:
+    **/
+    build.select2LoadData = {
+        /**
+        * @author:  zch
+        * 描述:增值及附加税率
+        * @date:
+        **/
+        loadAddedValueAdditionalTaxRate:function () {
+            AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
+                $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
+                $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+            })
+        },
+        /**
+         * @author:  zch
+         * 描述:获取基础设施费用列表和公共配套设施费用
+         * @date:2018-08-10
+         **/
+        loadCostAndMatchingCost:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
+                type: "get",
+                data: {},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var cost = result.data.InfrastructureCost;
+                        var matchingCost = result.data.InfrastructureMatchingCost;
+                        var option = "<option value=''>请选择</option>";
+                        if (cost.length > 0) {
+                            for (var i = 0; i < cost.length; i++) {
+                                option += "<option value='" + cost[i].number + "'>" + cost[i].name + "</option>";
+                            }
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).select2();
+                        }
+                        if (matchingCost.length > 0) {
+                            for (var i = 0; i < matchingCost.length; i++) {
+                                option += "<option value='" + matchingCost[i].number + "'>" + matchingCost[i].name + "</option>";
+                            }
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).select2();
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        init:function () {
+            build.select2LoadData.loadCostAndMatchingCost();
+            build.select2LoadData.loadAddedValueAdditionalTaxRate();
+        }
+    }
+
+    //用做模态框初始化数据的标识符
+    var newRateModelFlag = true;
 
     /**
      * @author:  zch
@@ -806,6 +786,12 @@
      * @date:
      **/
     build.newRateModel = {
+        setNewRateModelFlag:function (flag) {
+            newRateModelFlag = flag;
+        },
+        getNewRateModelFlag:function () {
+            return newRateModelFlag;
+        },
         //获取最后计算的结果
         getResult: function () {
             var rr = $("." + build.config().newRate + " .integratednewRate").html();
@@ -942,7 +928,10 @@
             }
         },
         show: function () {
-            build.newRateModel.selectInit();
+            if (build.newRateModel.getNewRateModelFlag()){
+                build.newRateModel.selectInit();
+                build.newRateModel.setNewRateModelFlag(false);
+            }
             $("." + build.config().newRate).modal("show");
         },
         save: function () {
@@ -1010,8 +999,6 @@
     /**--------------------------------初始化------------------**/
     $(function () {
         build.inputInit();
-        build.select2Event.init();
-        // build.newRateModel.show();
 
         //模态框事件
         build.newRateModel.select2Event.eventInit();
