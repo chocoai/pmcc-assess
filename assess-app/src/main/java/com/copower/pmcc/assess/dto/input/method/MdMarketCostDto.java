@@ -1,17 +1,15 @@
-package com.copower.pmcc.assess.dal.basis.entity;
+package com.copower.pmcc.assess.dto.input.method;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class MdCostConstruction {
+/**
+ * @Auther: zch
+ * @Date: 2018/8/16 18:37
+ * @Description:
+ */
+public class MdMarketCostDto implements Serializable {
     private Integer id;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private BigDecimal assessValue;
 
     private BigDecimal evaluationValue;
@@ -23,38 +21,9 @@ public class MdCostConstruction {
     private String jsonContent;
 
     private Integer costId;
+    private String synthesisRate;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
+    private BigDecimal valuationPrice;
 
     public BigDecimal getAssessValue() {
         return assessValue;
@@ -93,7 +62,7 @@ public class MdCostConstruction {
     }
 
     public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+        this.jsonContent = jsonContent;
     }
 
     public Integer getCostId() {
@@ -102,5 +71,29 @@ public class MdCostConstruction {
 
     public void setCostId(Integer costId) {
         this.costId = costId;
+    }
+
+    public String getSynthesisRate() {
+        return synthesisRate;
+    }
+
+    public void setSynthesisRate(String synthesisRate) {
+        this.synthesisRate = synthesisRate;
+    }
+
+    public BigDecimal getValuationPrice() {
+        return valuationPrice;
+    }
+
+    public void setValuationPrice(BigDecimal valuationPrice) {
+        this.valuationPrice = valuationPrice;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

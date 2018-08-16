@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
+import com.copower.pmcc.assess.dal.basis.entity.DataExamineTask;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -116,5 +117,13 @@ public class DataBuildingNewRateController {
             dataBuildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(id);
         }
         return dataBuildingNewRateService.getDataBuildingNewRateVo(dataBuildingNewRate);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getByDataBuildingNewRateId", method = RequestMethod.GET)
+    public HttpResult getByDataBuildingNewRateId(Integer id) {
+        DataBuildingNewRate dataBuildingNewRate = null;
+        dataBuildingNewRate = dataBuildingNewRateService.getByiDdataBuildingNewRate(id);
+        return HttpResult.newCorrectResult(dataBuildingNewRate);
     }
 }

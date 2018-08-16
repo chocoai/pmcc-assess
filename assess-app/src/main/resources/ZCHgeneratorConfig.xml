@@ -44,7 +44,7 @@
         <!--<table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+        <table tableName="tb_md_cost_building" domainObjectName="MdCostBuilding">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->

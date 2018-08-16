@@ -615,6 +615,66 @@ public class MdCostBuildingExample {
             addCriterion("json_content not between", value1, value2, "jsonContent");
             return (Criteria) this;
         }
+
+        public Criteria andCostIdIsNull() {
+            addCriterion("cost_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdIsNotNull() {
+            addCriterion("cost_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdEqualTo(Integer value) {
+            addCriterion("cost_id =", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotEqualTo(Integer value) {
+            addCriterion("cost_id <>", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdGreaterThan(Integer value) {
+            addCriterion("cost_id >", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cost_id >=", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdLessThan(Integer value) {
+            addCriterion("cost_id <", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdLessThanOrEqualTo(Integer value) {
+            addCriterion("cost_id <=", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdIn(List<Integer> values) {
+            addCriterion("cost_id in", values, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotIn(List<Integer> values) {
+            addCriterion("cost_id not in", values, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdBetween(Integer value1, Integer value2) {
+            addCriterion("cost_id between", value1, value2, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("cost_id not between", value1, value2, "costId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
