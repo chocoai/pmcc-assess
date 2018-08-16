@@ -380,6 +380,81 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            投资利息
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利息" class="form-control" name="interestInInvestment">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发利润率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="开发利润率" class="form-control" name="developmentProfitMarginRote">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发利润
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="开发利润" class="form-control" name="developmentProfitMargin">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                开发利润修正
+            </label>
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="开发利润修正" class="form-control" name="developmentProfitMarginRoteCorrect">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                在建工程评估价值
+            </label>
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="在建工程评估价值" class="form-control" name="evaluationValueConstructionProject">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                在建工程评估价值修正
+            </label>
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="在建工程评估价值修正" class="form-control" name="evaluationValueConstructionProjectCorrect">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                在建工程评估值
+            </label>
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="在建工程评估值" class="form-control" name="constructionProcesAssessValue">
+            </div>
+        </div>
+    </div>
 </form>
 <script>
     /**
@@ -539,7 +614,13 @@
             interestPeriod: {key: "interestPeriod", describe: "计息周期"},
             interestRateOnInvestment: {key: "interestRateOnInvestment", describe: "投资计息利率"},
             interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
-            //landAcquisitionPrice
+            interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},//
+            developmentProfitMarginRote: {key: "developmentProfitMarginRote", describe: "开发利润率", value: "", select: ""},
+            developmentProfitMargin: {key: "developmentProfitMargin", describe: "开发利润", value: "", select: ""},
+            developmentProfitMarginRoteCorrect: {key: "developmentProfitMarginRoteCorrect", describe: "开发利润率修正", value: "", select: ""},
+            evaluationValueConstructionProject: {key: "evaluationValueConstructionProject", describe: "在建工程评估价值", value: "", select: ""},
+            evaluationValueConstructionProjectCorrect: {key: "evaluationValueConstructionProjectCorrect", describe: "在建工程评估价值修正", value: "", select: ""},
+            constructionProcesAssessValue: {key: "constructionProcesAssessValue", describe: "在建工程评估值", value: "", select: ""}
         };
         config.inputConfig = function () {
             return inputNameConfig;
@@ -610,6 +691,7 @@
             a = construction.inputAlgorithmObject.specialTreatment(a);
             c = construction.mul(b, a);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().reconnaissanceDesign.key, c); //勘察设计和前期工程费
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
         //公共配套设施建设费 = 公共配套设施建设费单价*开发建筑面积
         if (dataName == construction.config().inputConfig().infrastructureMatchingCost.select) {
@@ -619,6 +701,7 @@
             c = construction.mul(b, a);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().infrastructureMatchingCost.key, c); //公共配套设施建设费
             construction.inputAlgorithmObject.constructionCostFun();
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
         //基础设施建设费 = 基础设施建设费单价*开发建筑面积
         if (dataName == construction.config().inputConfig().infrastructureCost.select) {
@@ -628,6 +711,7 @@
             c = construction.mul(b, a);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().infrastructureCost.key, c); //基础设施建设费
             construction.inputAlgorithmObject.constructionCostFun();
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
         //更新 基础设施建设费和公共配套设施建设费 开发期间税费
         if (dataName == construction.config().inputConfig().developmentBuildArea.key) { // 开发建筑面积
@@ -655,10 +739,12 @@
             c = construction.mul(a, b);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().devDuringPriceTax.key, c); //开发期间税费
             construction.inputAlgorithmObject.constructionCostFun();
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
         //其它工程费 = 其它工程费单价 * 开发建筑面积
         if (dataName == construction.config().inputConfig().otherEngineeringCostPrice.key) {
             construction.inputAlgorithmObject.otherEngineeringCostFun(b);
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
         //建设成本
         if (dataName == construction.config().inputConfig().constructionCost.key) {
@@ -673,29 +759,161 @@
             construction.inputAlgorithmObject.unforeseenExpensesFun();
         }
         //销售费
-        if (dataName == construction.config().inputConfig().salesFeeRote.key) {
+        if (dataName == construction.config().inputConfig().salesFeeRote.key) {//销售费率
             construction.inputAlgorithmObject.salesFeeFun();
+            construction.inputAlgorithmObject.developmentProfitMarginRoteCorrectFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectCorrectFun();
         }
         //增值及附加税金
         if (dataName == construction.config().inputConfig().addedValueAdditionalTaxRate.key) {//增值及附加税率
             construction.inputAlgorithmObject.addedValueAdditionalTaxRateFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectCorrectFun();
         }
         //重置价格
         if (dataName == construction.config().inputConfig().replacementValue.key) {
             construction.inputAlgorithmObject.addedValueAdditionalTaxRateFun();
             construction.inputAlgorithmObject.salesFeeFun();
         }
+        //计息周期
         if (dataName == construction.config().inputConfig().interestPeriod.key) {
             construction.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();
+            construction.inputAlgorithmObject.interestInInvestmentFun();
         }
+        //投资计息利率
         if (dataName == construction.config().inputConfig().interestRateOnInvestment.key) {
             construction.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();
+            construction.inputAlgorithmObject.interestInInvestmentFun();
+        }
+        //投资利息
+        if (dataName == construction.config().inputConfig().interestInInvestment.key) {
+            construction.inputAlgorithmObject.interestInInvestmentFun();
+        }
+        //开发利润率
+        if (dataName == construction.config().inputConfig().developmentProfitMarginRote.key) {
+            construction.inputAlgorithmObject.developmentProfitMarginRoteFun();
         }
         $(function () {
             construction.inputEvent();
         });
     }
     construction.inputAlgorithmObject = {
+        //在建工程评估值 = 在建工程评估价值/(1-在建工程评估价值修正)
+        constructionProcesAssessValueFun:function () {
+            var a, c, b;
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key,null); //在建工程评估价值
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key,null); //在建工程评估价值修正
+            c = construction.sub(1,a);
+            c = construction.div(b,c);
+            construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionProcesAssessValue.key,c); //在建工程评估值
+        },
+        //在建工程评估价值修正 = 销售费率+投资计息税率修正+增值及附加税率+开发利润率修正
+        evaluationValueConstructionProjectCorrectFun:function () {
+            var a, c, b, d, e,f,m;
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().salesFeeRote.key, null);//销售费率
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().interestRateOnInvestmentCorrect.key,null); //投资计息税率修正
+            c = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().developmentProfitMarginRoteCorrect.key,null);//开发利润率修正
+            var value = $("." + construction.config().inputConfig().addedValueAdditionalTaxRate.select).eq(1).val();
+            AssessCommon.getDataDicInfo(value, function (data) {
+                var percent = construction.toPoint(data.name);
+                if (construction.isNumber(percent)) {
+                    //percent 增值及附加税率
+                    percent = construction.inputAlgorithmObject.specialTreatment(percent);
+                    m = construction.add(  construction.add(a,b),construction.add(c,percent)  );
+                    construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key,m); //在建工程评估价值修正
+                    construction.inputAlgorithmObject.constructionProcesAssessValueFun();
+                } else {
+                    Alert("请输入合法数字!")
+                }
+            });
+        },
+        //在建工程评估价值 = 土地取得小计+建设成本+不可预见费+管理费+投资利息+开发利润
+        evaluationValueConstructionProjectFun:function () {
+            var a, c, b, d, e,f,m;
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().landAcquisitionTotal.key, null); //土地取得小计
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionCost.key, null);//建设成本
+            c = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().unforeseenExpenses.key,null); //不可预见费
+            d = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().managementExpense.key, null); //管理费
+            e = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().interestInInvestment.key, null); //投资利息
+            f = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().developmentProfitMargin.key,null); //开发利润
+            m = construction.add(   construction.add(a,b) , construction.add(c,d)      );
+            m = construction.add(   construction.add(e,f) , m      );
+            construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().evaluationValueConstructionProject.key,m); //在建工程评估价值
+            construction.inputAlgorithmObject.constructionProcesAssessValueFun();
+        },
+        //开发利润率修正
+        developmentProfitMarginRoteCorrectFun:function () {
+            var a, c, b ;
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().developmentProfitMarginRote.key, null); //开发利润率
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().salesFeeRote.key, null);//销售费率
+            c = construction.mul(a,b);
+           construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().developmentProfitMarginRoteCorrect.key, c);//开发利润率修正
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectCorrectFun();
+        },
+        //开发利润 = (土地取得小计+建设成本+不可预见费+管理费)* 开发利润率
+        developmentProfitMarginFun:function () {
+            var a, c, b, d, e,f;
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().landAcquisitionTotal.key, null); //土地取得小计
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionCost.key, null);//建设成本
+            c = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().unforeseenExpenses.key,null); //不可预见费
+            d = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().managementExpense.key, null); //管理费
+            e = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().developmentProfitMarginRote.key, null); //开发利润率
+            f = construction.add(  construction.add(a,b), construction.add(c,d ) );
+            f = construction.mul(f,e);
+            construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().developmentProfitMargin.key, f); //开发利润
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
+        },
+        //开发利润率被输入 需要调用的方法
+        developmentProfitMarginRoteFun:function () {
+            construction.inputAlgorithmObject.developmentProfitMarginFun();
+            construction.inputAlgorithmObject.developmentProfitMarginRoteCorrectFun();
+        },
+        /**
+         * 投资利息 =
+         * (土地取得小计+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)+( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*((1+投资计息利率)^( 计息周期/2)-1)
+         * -------------------------------A-----------------------------------------|| -------------------------------------------------B---------------------------------------------------
+         * **
+         */
+        interestInInvestmentFun: function () {
+            var a, c, b, d, e;
+            var f, g, h, j, k, l;
+            var m , n ,temp;//运算变量
+            a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().landAcquisitionTotal.key, null); //土地取得小计
+            b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().reconnaissanceDesign.key,null); //勘察设计和前期工程费
+            c = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().infrastructureCost.key, null); //基础设施建设费
+            d = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().interestRateOnInvestment.key, null); //投资计息利率
+            e = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().interestPeriod.key, null); //计息周期
+
+            f = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null); //建筑安装工程费
+            g = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().infrastructureMatchingCost.key,null); //公共配套设施建设费
+            h = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().devDuringPriceTax.key, null); //开发期间税费
+            j = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().otherEngineeringCost.key, null); //其它工程费
+            k = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().unforeseenExpenses.key,null); //不可预见费
+            l = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().managementExpense.key, null); //管理费
+            //数据校验
+            var flag = construction.isNumber(a) && construction.isNumber(b) && construction.isNumber(c) && construction.isNumber(d) && construction.isNumber(e) ;
+            flag = construction.isNumber(f) && construction.isNumber(g) && construction.isNumber(h) && construction.isNumber(j) && construction.isNumber(k) ;
+            flag = flag && construction.isNumber(l);
+            if (!flag){
+                return false;
+            }
+            //首先计算A段
+            m = construction.add(a,b) ;
+            m = construction.add(m,c);
+            n = construction.add(1,d);
+            temp = construction.sub(e,1);
+            n = Math.pow(n,temp);
+            m = construction.mul(m,n);//A段结果
+            //接着计算B段结果
+            n = construction.add(   construction.add(f,g) , construction.add(h,j)      );
+            n = construction.add(   construction.add(k,l) , n);
+            temp = Math.pow(construction.add(1,d),construction.sub(construction.div(e,2),1));
+            n = construction.mul(n,temp); //B段结果
+             // 最终结果
+            m = construction.add(m,n);
+            construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().interestInInvestment.key, m); //投资利息
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
+        },
+        //投资计息税率修正 = (1+投资利息利率)^(计息周期/2)-1
         interestRateOnInvestmentCorrectFun: function () {
             var a, c, b;
             a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().interestPeriod.key, null); //计息周期
@@ -707,7 +925,8 @@
                     a = construction.add(a, 1);
                     b = construction.div(construction.mul(b, 2), 1);
                     c = Math.pow(a, b);
-                    construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().interestRateOnInvestmentCorrect.key, c); //修正
+                    construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().interestRateOnInvestmentCorrect.key, c); //投资计息税率修正
+                    construction.inputAlgorithmObject.evaluationValueConstructionProjectCorrectFun();
                 }
             }
         },
@@ -749,6 +968,9 @@
             d = construction.add(a, b);
             d = construction.mul(d, c);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().unforeseenExpenses.key, d); //不可预见费
+            construction.inputAlgorithmObject.interestInInvestmentFun();
+            construction.inputAlgorithmObject.developmentProfitMarginFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
         },
         //管理费
         managementExpenseRoteFun: function () {
@@ -759,6 +981,9 @@
             b = construction.inputAlgorithmObject.specialTreatment(b);
             c = construction.mul(a, b);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().managementExpense.key, c); //管理费
+            construction.inputAlgorithmObject.interestInInvestmentFun();
+            construction.inputAlgorithmObject.developmentProfitMarginFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
         },
         //建设成本 = 前期工程费+安装工程费+基础设施费+公共设施费+开发期间税费+其它工程费
         constructionCostFun: function () {
@@ -780,6 +1005,8 @@
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionCost.key, g); //建设成本
             construction.inputAlgorithmObject.managementExpenseRoteFun();
             construction.inputAlgorithmObject.unforeseenExpensesFun();
+            construction.inputAlgorithmObject.developmentProfitMarginFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
         },
         //其它工程费
         otherEngineeringCostFun: function (obj) {
@@ -811,6 +1038,9 @@
             b = construction.inputAlgorithmObject.specialTreatment(b);
             c = construction.mul(a, b);
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().landAcquisitionTotal.key, c); //土地取得小计
+            construction.inputAlgorithmObject.interestInInvestmentFun();
+            construction.inputAlgorithmObject.developmentProfitMarginFun();
+            construction.inputAlgorithmObject.evaluationValueConstructionProjectFun();
         },
         //土地取得单价 = 土地购买单价+土地购买单价*土地取得税率
         landAcquisitionPriceFun: function (obj) {
@@ -868,7 +1098,10 @@
         },
         jqueryInputGetAndSet: function (flag, name, data) {
             if (flag == 'get') {
-                return $("." + construction.config().frm + " " + "input[name='" + name + "']").val();
+                var text = null;
+                text = $("." + construction.config().frm + " " + "input[name='" + name + "']").val() ;
+                text = construction.inputAlgorithmObject.specialTreatment(text);
+                return text;
             }
             if (flag == 'set') {
                 $("." + construction.config().frm + " " + "input[name='" + name + "']").val(data);
@@ -878,9 +1111,9 @@
             if (obj == 0) {
                 return true;
             }
-            if (obj == '') {
-                return true;
-            }
+            // if (obj == '') {
+            //     return true;
+            // }
             if (obj) {
                 return true;
             }
