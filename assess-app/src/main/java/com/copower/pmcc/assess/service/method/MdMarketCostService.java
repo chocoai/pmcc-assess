@@ -4,9 +4,7 @@ import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.InfrastructureCost;
-import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -54,7 +52,15 @@ public class MdMarketCostService {
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
 
-    public List<DataBuildingNewRateVo> dataBuildingNewRateList(){
+    public boolean addEstateNetwork(MdCostBuilding mdCostBuilding) {
+        return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+    }
+
+    public boolean addEstateNetwork(MdCostConstruction mdCostConstruction) {
+        return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+    }
+
+    public List<DataBuildingNewRateVo> dataBuildingNewRateList() {
         return dataBuildingNewRateService.dataBuildingNewRateList();
     }
 

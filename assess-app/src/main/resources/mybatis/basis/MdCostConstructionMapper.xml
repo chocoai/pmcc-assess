@@ -11,6 +11,7 @@
     <result column="assess_value_difference" property="assessValueDifference" jdbcType="DECIMAL" />
     <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="cost_id" property="costId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, assess_value, evaluation_value, assess_value_difference, 
-    construction_installation_engineering_fee, json_content
+    construction_installation_engineering_fee, json_content, cost_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -110,12 +111,12 @@
     </selectKey>
     insert into tb_md_cost_construction (creator, gmt_created, gmt_modified, 
       assess_value, evaluation_value, assess_value_difference, 
-      construction_installation_engineering_fee, json_content
-      )
+      construction_installation_engineering_fee, json_content, 
+      cost_id)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{assessValue,jdbcType=DECIMAL}, #{evaluationValue,jdbcType=DECIMAL}, #{assessValueDifference,jdbcType=DECIMAL}, 
-      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{jsonContent,jdbcType=CHAR}
-      )
+      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{jsonContent,jdbcType=CHAR}, 
+      #{costId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,6 +148,9 @@
       <if test="jsonContent != null" >
         json_content,
       </if>
+      <if test="costId != null" >
+        cost_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -172,6 +176,9 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="costId != null" >
+        #{costId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -211,6 +218,9 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
+      <if test="record.costId != null" >
+        cost_id = #{record.costId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -226,7 +236,8 @@
       evaluation_value = #{record.evaluationValue,jdbcType=DECIMAL},
       assess_value_difference = #{record.assessValueDifference,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
-      json_content = #{record.jsonContent,jdbcType=CHAR}
+      json_content = #{record.jsonContent,jdbcType=CHAR},
+      cost_id = #{record.costId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -258,6 +269,9 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
+      <if test="costId != null" >
+        cost_id = #{costId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -270,7 +284,8 @@
       evaluation_value = #{evaluationValue,jdbcType=DECIMAL},
       assess_value_difference = #{assessValueDifference,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
-      json_content = #{jsonContent,jdbcType=CHAR}
+      json_content = #{jsonContent,jdbcType=CHAR},
+      cost_id = #{costId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

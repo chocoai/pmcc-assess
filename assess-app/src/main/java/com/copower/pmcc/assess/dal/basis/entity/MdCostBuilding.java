@@ -20,6 +20,8 @@ public class MdCostBuilding {
 
     private String jsonContent;
 
+    private Integer costId;
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +84,13 @@ public class MdCostBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Integer getCostId() {
+        return costId;
+    }
+
+    public void setCostId(Integer costId) {
+        this.costId = costId;
     }
 }

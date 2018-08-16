@@ -536,7 +536,7 @@
             build.inputAlgorithmObject.valueAddedAdditionalTaxesFun();//增值及附加税金
         },
         //成新率
-        newRateInput:function (data) {
+        newRateInput: function (data) {
             build.inputAlgorithmObject.assessPriceFun();//评估单价
         }
     }
@@ -551,8 +551,8 @@
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
             b = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().replacementValue.key, null);//重置价格
             a = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().newRate.key, null);//成新率
-            c = build.mul(a,b);
-            build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().assessPrice.key,c);//评估单价
+            c = build.mul(a, b);
+            build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().assessPrice.key, c);//评估单价
         },
         //增值及附加税金 = 重置价格*增值及附加税率
         valueAddedAdditionalTaxesFun: function () {
@@ -921,18 +921,39 @@
             },
             //年限法 成新率
             newRateA: function (obj) {
-                var a = $("." + build.config().newRate + " .durableLife").eq(1).val();//经济耐用年限
-                var b = $("." + build.config().newRate + " .residualValue").eq(1).val();//残值率
+                var id = $("." + build.config().newRate + " .durableLife").eq(1).val();
+                var a = 0;//经济耐用年限
+                var b = 0;//残值率
                 var c = $("." + build.config().newRate + " " + "input[name='" + 'useYear' + "']").val();//已经使用年限
-                // console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
-                //成新率 = 1-（1-残值率）*已使用年限/经济耐用年限
-                var d = 0;
-                d = build.sub(1, build.newRateModel.algorithm.specialTreatment(build.toPoint(b)));
-                d = build.sub(1, d);
-                d = build.mul(d, build.div(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(a)));
-                $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
-                // d = (1 - (1- build.toPoint(b))) * (c-a);
-                build.newRateModel.select2Event.eventInit();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/architecture/getByDataBuildingNewRateId",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = null;
+                            try {
+                                data = result.data;
+                            } catch (e) {
+                            }
+                            if (build.isNotNull(data)) {
+                                a = data.durableLife;
+                                b = data.residualValue;
+                                b = build.toPoint(b);
+                            }
+                            // console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
+                            //成新率 = 1-（1-残值率）*已使用年限/经济耐用年限
+                            var d = 0;
+                            d = (1 - (1 - b)) * (c - a);
+                            $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
+                            build.newRateModel.select2Event.eventInit();
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
             },
             isNotNull: function (obj) {
                 if (obj == 0) {
@@ -959,17 +980,38 @@
             durableLife: function () {
                 var key = build.config().newRate + " .durableLife";
                 $("." + key).change(function () {
-                    var value = $("." + key).eq(1).val();
-                    build.newRateModel.algorithm.newRateA(value);
+                    var id = $("." + key).eq(1).val();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/architecture/getByDataBuildingNewRateId",
+                        type: "get",
+                        dataType: "json",
+                        data: {id: id},
+                        success: function (result) {
+                            if (result.ret) {
+                                var data = null;
+                                try {
+                                    data = result.data;
+                                } catch (e) {
+                                    console.log("说明没有数据!");
+                                }
+                                if (build.isNotNull(data)) {
+                                    build.newRateModel.select2Event.residualValue(data.residualValue);
+                                    build.newRateModel.algorithm.newRateA(data);
+                                } else {
+                                    build.newRateModel.select2Event.residualValue(0);
+                                    build.newRateModel.algorithm.newRateA(data);
+                                }
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
                 });
             },
-            //年限法 残值率 事件
-            residualValue: function () {
-                var key = build.config().newRate + " .residualValue";
-                $("." + key).change(function () {
-                    var value = $("." + key).eq(1).val();
-                    build.newRateModel.algorithm.newRateA(value);
-                });
+            //年限法 残值率
+            residualValue: function (obj) {
+                $("." + build.config().newRate + " .residualValue").val(obj);
             },
             //年限法 已使用年限 事件
             inputUseYear: function () {
@@ -1024,7 +1066,6 @@
             //事件初始化
             eventInit: function () {
                 build.newRateModel.select2Event.durableLife();
-                build.newRateModel.select2Event.residualValue();
                 build.newRateModel.select2Event.inputUseYear();
                 build.newRateModel.select2Event.inputWeightYear();
                 build.newRateModel.select2Event.inputNewRateG();
@@ -1056,16 +1097,11 @@
                         var optionB = "<option value=''>请选择</option>";
                         $.each(result.data, function (i, n) {
                             if (build.isNotNull(n.durableLife)) {
-                                optionA += "<option value='" + n.durableLife + "'>" + n.durableLife + "</option>";
-                            }
-                            if (build.isNotNull(n.residualValue)) {
-                                optionB += "<option value='" + n.residualValue + "'>" + n.residualValue + "</option>";
+                                optionA += "<option value='" + n.durableLife + "'>" + n.id + "</option>";
                             }
                         })
                         $("." + build.config().newRate + " .durableLife").html(optionA);
                         $("." + build.config().newRate + " .durableLife").select2();
-                        $("." + build.config().newRate + " .residualValue").html(optionB);
-                        $("." + build.config().newRate + " .residualValue").select2();
                     }
                 },
                 error: function (result) {
@@ -1157,9 +1193,10 @@
                                             残值率
                                         </label>
                                         <div class="col-sm-5">
-                                            <select name="residualValue"
-                                                    class="form-control search-select select2 residualValue">
-                                            </select>
+                                                <input type="text" class="form-control residualValue"
+                                                       name="residualValue"
+                                                       readonly="readonly"
+                                                       placeholder="残值率">
                                         </div>
                                     </div>
                                     <div class="x-valid">
