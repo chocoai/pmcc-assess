@@ -50,6 +50,8 @@ public class MdIncomeLease {
 
     private String landUseTax;
 
+    private String usageTaxParameter;
+
     private String netProfit;
 
     private String incomePrice;
@@ -262,6 +264,14 @@ public class MdIncomeLease {
 
     public void setLandUseTax(String landUseTax) {
         this.landUseTax = landUseTax == null ? null : landUseTax.trim();
+    }
+
+    public String getUsageTaxParameter() {
+        return usageTaxParameter;
+    }
+
+    public void setUsageTaxParameter(String usageTaxParameter) {
+        this.usageTaxParameter = usageTaxParameter == null ? null : usageTaxParameter.trim();
     }
 
     public String getNetProfit() {

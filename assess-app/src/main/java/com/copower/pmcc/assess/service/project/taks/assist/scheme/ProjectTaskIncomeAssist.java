@@ -2,12 +2,10 @@ package com.copower.pmcc.assess.service.project.taks.assist.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSupportInfoService;
@@ -42,10 +40,12 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private SchemeSupportInfoService schemeSupportInfoService;
     @Autowired
     private SchemeInfoService schemeInfoService;
+    @Autowired
+    private MdIncomeService mdIncomeService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeIndex", 0);
         //初始化支撑数据
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_INCOME);
@@ -62,6 +62,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
 
     /**
      * 返回修改
+     *
      * @param processInsId
      * @param taskId
      * @param boxId
@@ -82,7 +83,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     }
 
     @Override
-    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
+    public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/scheme/taskIncomeApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
@@ -94,15 +95,28 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        modelAndView.addObject("schemeInfo", schemeInfo);
         //评估支持数据
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
         //收益法相关
-
+        MdIncome mdIncome = null;
+        if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
+            mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
+            if (mdIncome != null) {
+                MdIncomeSelfSupport incomeSelfSupport = mdIncomeService.getSelfSupportByIncomeId(mdIncome.getId());
+                modelAndView.addObject("incomeSelfSupportJSON", JSON.toJSONString(incomeSelfSupport));
+            } else {
+                mdIncome = new MdIncome();
+            }
+        }
+        modelAndView.addObject("mdIncomeJSON", JSON.toJSONString(mdIncome));
     }
 
     /**
      * save
+     *
      * @param projectPlanDetails
      * @param processInsId
      * @param formData
@@ -111,18 +125,19 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
-        if(CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())){
+        if (CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())) {
             for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
+        MdIncome mdIncome = mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
 
-        SchemeInfo schemeInfo=new SchemeInfo();
+        SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_INCOME);
-        schemeInfo.setMethodDataId(0);
+        schemeInfo.setMethodDataId(mdIncome.getId());
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
@@ -134,7 +149,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         SchemeIncomeApplyDto schemeIncomeApplyDto = JSON.parseObject(formData, SchemeIncomeApplyDto.class);
-        if(CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())){
+        if (CollectionUtils.isNotEmpty(schemeIncomeApplyDto.getSupportInfoList())) {
             for (SchemeSupportInfo schemeSupportInfo : schemeIncomeApplyDto.getSupportInfoList()) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }

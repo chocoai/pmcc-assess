@@ -144,6 +144,7 @@
 
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
+        data.incomeInfo = income.getData();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }

@@ -1676,6 +1676,76 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andUsageTaxParameterIsNull() {
+            addCriterion("usage_tax_parameter is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterIsNotNull() {
+            addCriterion("usage_tax_parameter is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterEqualTo(String value) {
+            addCriterion("usage_tax_parameter =", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterNotEqualTo(String value) {
+            addCriterion("usage_tax_parameter <>", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterGreaterThan(String value) {
+            addCriterion("usage_tax_parameter >", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterGreaterThanOrEqualTo(String value) {
+            addCriterion("usage_tax_parameter >=", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterLessThan(String value) {
+            addCriterion("usage_tax_parameter <", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterLessThanOrEqualTo(String value) {
+            addCriterion("usage_tax_parameter <=", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterLike(String value) {
+            addCriterion("usage_tax_parameter like", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterNotLike(String value) {
+            addCriterion("usage_tax_parameter not like", value, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterIn(List<String> values) {
+            addCriterion("usage_tax_parameter in", values, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterNotIn(List<String> values) {
+            addCriterion("usage_tax_parameter not in", values, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterBetween(String value1, String value2) {
+            addCriterion("usage_tax_parameter between", value1, value2, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsageTaxParameterNotBetween(String value1, String value2) {
+            addCriterion("usage_tax_parameter not between", value1, value2, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
         public Criteria andNetProfitIsNull() {
             addCriterion("net_profit is null");
             return (Criteria) this;

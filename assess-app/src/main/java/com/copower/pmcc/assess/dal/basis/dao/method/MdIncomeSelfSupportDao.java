@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupport;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportExample;
 import com.copower.pmcc.assess.dal.basis.mapper.MdIncomeSelfSupportMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,7 @@ public class MdIncomeSelfSupportDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -31,7 +33,22 @@ public class MdIncomeSelfSupportDao {
     }
 
     /**
+     * 获取数据
+     *
+     * @param mdIncomeSelfSupport
+     * @return
+     */
+    public MdIncomeSelfSupport getSelfSupport(MdIncomeSelfSupport mdIncomeSelfSupport) {
+        MdIncomeSelfSupportExample example = new MdIncomeSelfSupportExample();
+        MybatisUtils.convertObj2Example(mdIncomeSelfSupport, example);
+        List<MdIncomeSelfSupport> mdIncomeSelfSupports = mdIncomeSelfSupportMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(mdIncomeSelfSupports)) return mdIncomeSelfSupports.get(0);
+        return null;
+    }
+
+    /**
      * 获取数据列表
+     *
      * @param mdIncomeSelfSupport
      * @return
      */
@@ -43,6 +60,7 @@ public class MdIncomeSelfSupportDao {
 
     /**
      * 新增
+     *
      * @param mdIncomeSelfSupport
      * @return
      */
@@ -53,6 +71,7 @@ public class MdIncomeSelfSupportDao {
 
     /**
      * 编辑
+     *
      * @param mdIncomeSelfSupport
      * @return
      */
@@ -62,10 +81,11 @@ public class MdIncomeSelfSupportDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteSelfSupport(Integer id){
+    public boolean deleteSelfSupport(Integer id) {
         return mdIncomeSelfSupportMapper.deleteByPrimaryKey(id) > 0;
     }
 

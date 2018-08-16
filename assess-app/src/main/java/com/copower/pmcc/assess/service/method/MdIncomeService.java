@@ -4,8 +4,13 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeSelfSupportCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeSelfSupportDao;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncome;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupport;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
+import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeSelfSupportCostVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -19,7 +24,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +87,7 @@ public class MdIncomeService {
      * @param supportId
      * @return
      */
-    public BootstrapTableVo getSelfSupportCostList(Integer supportId,Integer type) {
+    public BootstrapTableVo getSelfSupportCostList(Integer supportId, Integer type) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -106,5 +113,158 @@ public class MdIncomeService {
         BeanUtils.copyProperties(mdIncomeSelfSupportCost, mdIncomeSelfSupportCostVo);
 
         return mdIncomeSelfSupportCostVo;
+    }
+
+    /**
+     租赁-----------
+     */
+
+    /**
+     * 保存数据
+     *
+     * @param mdIncomeLease
+     */
+    public void saveLease(MdIncomeLease mdIncomeLease) {
+        if (mdIncomeLease.getId() != null && mdIncomeLease.getId() > 0) {
+            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
+        } else {
+            mdIncomeLease.setCreator(commonService.thisUserAccount());
+            mdIncomeLeaseDao.addIncomeLease(mdIncomeLease);
+        }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     */
+    public boolean deleteLease(Integer id) {
+        return mdIncomeLeaseDao.deleteIncomeLease(id);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     */
+    public MdIncomeLease getLeaseById(Integer id) {
+        return mdIncomeLeaseDao.getIncomeLeaseById(id);
+    }
+
+
+    /**
+     * 获取数据列表
+     *
+     * @param incomeId
+     * @return
+     */
+    public BootstrapTableVo getLeaseList(Integer incomeId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeLease where = new MdIncomeLease();
+        if (incomeId != null && incomeId > 0) {
+            where.setIncomeId(incomeId);
+        } else {
+            where.setIncomeId(0);
+            where.setCreator(commonService.thisUserAccount());
+        }
+
+        List<MdIncomeLease> leaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
+        List<MdIncomeLeaseVo> vos = LangUtils.transform(leaseList, p -> getLeaseVo(p));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeLeaseVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public MdIncomeLeaseVo getLeaseVo(MdIncomeLease mdIncomeLease) {
+        if (mdIncomeLease == null) return null;
+        MdIncomeLeaseVo mdIncomeLeaseVo = new MdIncomeLeaseVo();
+        BeanUtils.copyProperties(mdIncomeLease, mdIncomeLeaseVo);
+
+        return mdIncomeLeaseVo;
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     */
+    public MdIncomeSelfSupport getSelfSupportById(Integer id) {
+        return mdIncomeSelfSupportDao.getSelfSupportById(id);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param incomeId
+     * @return
+     */
+    public MdIncomeSelfSupport getSelfSupportByIncomeId(Integer incomeId) {
+        MdIncomeSelfSupport where = new MdIncomeSelfSupport();
+        where.setIncomeId(incomeId);
+        return mdIncomeSelfSupportDao.getSelfSupport(where);
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param mdIncomeSelfSupport
+     */
+    public void saveSelfSupport(MdIncomeSelfSupport mdIncomeSelfSupport) {
+        if (mdIncomeSelfSupport.getId() != null && mdIncomeSelfSupport.getId() > 0) {
+            mdIncomeSelfSupportDao.updateSelfSupport(mdIncomeSelfSupport);
+        } else {
+            mdIncomeSelfSupport.setCreator(commonService.thisUserAccount());
+            mdIncomeSelfSupportDao.addSelfSupport(mdIncomeSelfSupport);
+        }
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     */
+    public MdIncome getIncomeById(Integer id) {
+        return mdIncomeDao.getIncomeById(id);
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param mdIncome
+     */
+    public void saveIncome(MdIncome mdIncome) {
+        if (mdIncome.getId() != null && mdIncome.getId() > 0) {
+            mdIncomeDao.updateIncome(mdIncome);
+        } else {
+            mdIncome.setCreator(commonService.thisUserAccount());
+            mdIncomeDao.addIncome(mdIncome);
+        }
+    }
+
+    /**
+     * 保存市场比较法的结果信息
+     *
+     * @param mdIncomeResultDto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public MdIncome saveResult(MdIncomeResultDto mdIncomeResultDto) {
+        MdIncome mdIncome = mdIncomeResultDto.getMdIncome();
+        MdIncomeSelfSupport selfSupport = mdIncomeResultDto.getMdIncomeSelfSupport();
+        if (mdIncome != null) {
+            mdIncome.setPrice(new BigDecimal("0"));
+            saveIncome(mdIncome);
+            if (selfSupport != null) {
+                selfSupport.setIncomeId(mdIncome.getId());
+                saveSelfSupport(selfSupport);
+            }
+        }
+        return mdIncome;
     }
 }

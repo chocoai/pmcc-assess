@@ -25,6 +25,7 @@
     <result column="insurance_premium" property="insurancePremium" jdbcType="VARCHAR" />
     <result column="insurance_rate" property="insuranceRate" jdbcType="VARCHAR" />
     <result column="land_use_tax" property="landUseTax" jdbcType="VARCHAR" />
+    <result column="usage_tax_parameter" property="usageTaxParameter" jdbcType="VARCHAR" />
     <result column="net_profit" property="netProfit" jdbcType="VARCHAR" />
     <result column="income_price" property="incomePrice" jdbcType="VARCHAR" />
     <result column="capitalization_rate" property="capitalizationRate" jdbcType="VARCHAR" />
@@ -103,8 +104,8 @@
     id, income_id, rental_income, rentals, month_number, deposit, interest_rate, interest_income, 
     other_income, rentals_remark, interest_rate_remark, other_income_remark, management_cost, 
     management_cost_ratio, payment_remark, maintenance, maintenance_cost_ratio, replacement_value, 
-    additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, net_profit, 
-    income_price, capitalization_rate, return_period, lease_begin_date, lease_end_date, 
+    additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, usage_tax_parameter, 
+    net_profit, income_price, capitalization_rate, return_period, lease_begin_date, lease_end_date, 
     rental_growth_rate, correction_factor, present_value_factor, floor_area, land_area, 
     total_price, creator, gmt_created, gmt_modified
   </sql>
@@ -149,12 +150,13 @@
       management_cost, management_cost_ratio, payment_remark, 
       maintenance, maintenance_cost_ratio, replacement_value, 
       additional, tax_rate, insurance_premium, 
-      insurance_rate, land_use_tax, net_profit, 
-      income_price, capitalization_rate, return_period, 
-      lease_begin_date, lease_end_date, rental_growth_rate, 
-      correction_factor, present_value_factor, floor_area, 
-      land_area, total_price, creator, 
-      gmt_created, gmt_modified)
+      insurance_rate, land_use_tax, usage_tax_parameter, 
+      net_profit, income_price, capitalization_rate, 
+      return_period, lease_begin_date, lease_end_date, 
+      rental_growth_rate, correction_factor, present_value_factor, 
+      floor_area, land_area, total_price, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{incomeId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, #{rentals,jdbcType=VARCHAR}, 
       #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, #{interestRate,jdbcType=VARCHAR}, 
       #{interestIncome,jdbcType=VARCHAR}, #{otherIncome,jdbcType=VARCHAR}, #{rentalsRemark,jdbcType=VARCHAR}, 
@@ -162,12 +164,13 @@
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=VARCHAR}, #{paymentRemark,jdbcType=VARCHAR}, 
       #{maintenance,jdbcType=VARCHAR}, #{maintenanceCostRatio,jdbcType=VARCHAR}, #{replacementValue,jdbcType=VARCHAR}, 
       #{additional,jdbcType=VARCHAR}, #{taxRate,jdbcType=VARCHAR}, #{insurancePremium,jdbcType=VARCHAR}, 
-      #{insuranceRate,jdbcType=VARCHAR}, #{landUseTax,jdbcType=VARCHAR}, #{netProfit,jdbcType=VARCHAR}, 
-      #{incomePrice,jdbcType=VARCHAR}, #{capitalizationRate,jdbcType=VARCHAR}, #{returnPeriod,jdbcType=VARCHAR}, 
-      #{leaseBeginDate,jdbcType=TIMESTAMP}, #{leaseEndDate,jdbcType=TIMESTAMP}, #{rentalGrowthRate,jdbcType=VARCHAR}, 
-      #{correctionFactor,jdbcType=VARCHAR}, #{presentValueFactor,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{landArea,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{insuranceRate,jdbcType=VARCHAR}, #{landUseTax,jdbcType=VARCHAR}, #{usageTaxParameter,jdbcType=VARCHAR}, 
+      #{netProfit,jdbcType=VARCHAR}, #{incomePrice,jdbcType=VARCHAR}, #{capitalizationRate,jdbcType=VARCHAR}, 
+      #{returnPeriod,jdbcType=VARCHAR}, #{leaseBeginDate,jdbcType=TIMESTAMP}, #{leaseEndDate,jdbcType=TIMESTAMP}, 
+      #{rentalGrowthRate,jdbcType=VARCHAR}, #{correctionFactor,jdbcType=VARCHAR}, #{presentValueFactor,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{landArea,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -240,6 +243,9 @@
       </if>
       <if test="landUseTax != null" >
         land_use_tax,
+      </if>
+      <if test="usageTaxParameter != null" >
+        usage_tax_parameter,
       </if>
       <if test="netProfit != null" >
         net_profit,
@@ -353,6 +359,9 @@
       </if>
       <if test="landUseTax != null" >
         #{landUseTax,jdbcType=VARCHAR},
+      </if>
+      <if test="usageTaxParameter != null" >
+        #{usageTaxParameter,jdbcType=VARCHAR},
       </if>
       <if test="netProfit != null" >
         #{netProfit,jdbcType=VARCHAR},
@@ -479,6 +488,9 @@
       <if test="record.landUseTax != null" >
         land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
       </if>
+      <if test="record.usageTaxParameter != null" >
+        usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
+      </if>
       <if test="record.netProfit != null" >
         net_profit = #{record.netProfit,jdbcType=VARCHAR},
       </if>
@@ -554,6 +566,7 @@
       insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
       insurance_rate = #{record.insuranceRate,jdbcType=VARCHAR},
       land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
+      usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
       net_profit = #{record.netProfit,jdbcType=VARCHAR},
       income_price = #{record.incomePrice,jdbcType=VARCHAR},
       capitalization_rate = #{record.capitalizationRate,jdbcType=VARCHAR},
@@ -642,6 +655,9 @@
       <if test="landUseTax != null" >
         land_use_tax = #{landUseTax,jdbcType=VARCHAR},
       </if>
+      <if test="usageTaxParameter != null" >
+        usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
+      </if>
       <if test="netProfit != null" >
         net_profit = #{netProfit,jdbcType=VARCHAR},
       </if>
@@ -714,6 +730,7 @@
       insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
       insurance_rate = #{insuranceRate,jdbcType=VARCHAR},
       land_use_tax = #{landUseTax,jdbcType=VARCHAR},
+      usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
       net_profit = #{netProfit,jdbcType=VARCHAR},
       income_price = #{incomePrice,jdbcType=VARCHAR},
       capitalization_rate = #{capitalizationRate,jdbcType=VARCHAR},

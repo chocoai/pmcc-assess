@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
+import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -32,8 +34,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getSelfSupportCostList", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo getSelfSupportCostList(Integer supportId,Integer type) {
-        return mdIncomeService.getSelfSupportCostList(supportId,type);
+    public BootstrapTableVo getSelfSupportCostList(Integer supportId, Integer type) {
+        return mdIncomeService.getSelfSupportCostList(supportId, type);
     }
 
     @ResponseBody
@@ -42,7 +44,7 @@ public class IncomeController {
         try {
             mdIncomeService.saveSelfSupportCost(mdIncomeSelfSupportCost);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
@@ -53,6 +55,38 @@ public class IncomeController {
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
             mdIncomeService.deleteSelfSupportCost(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getLeaseList", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo getLeaseList(Integer incomeId) {
+        return mdIncomeService.getLeaseList(incomeId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveLease", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult saveLease(String formData) {
+        try {
+            MdIncomeLease mdIncomeLease = JSON.parseObject(formData, MdIncomeLease.class);
+            mdIncomeService.saveLease(mdIncomeLease);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteLease", name = "删除", method = RequestMethod.POST)
+    public HttpResult deleteLease(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.deleteLease(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

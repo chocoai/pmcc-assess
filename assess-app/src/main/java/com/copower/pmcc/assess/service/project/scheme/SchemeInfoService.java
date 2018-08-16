@@ -38,4 +38,11 @@ public class SchemeInfoService {
             schemeInfoDao.addInfo(schemeInfo);
         }
     }
+
+    public SchemeInfo getSchemeInfo(Integer planDetailsId) {
+        SchemeInfo examle = new SchemeInfo();
+        examle.setPlanDetailsId(planDetailsId);
+        SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(examle);
+        return schemeInfo;
+    }
 }
