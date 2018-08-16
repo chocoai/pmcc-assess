@@ -220,6 +220,15 @@ public class MdIncomeService {
         } else {
             mdIncomeSelfSupport.setCreator(commonService.thisUserAccount());
             mdIncomeSelfSupportDao.addSelfSupport(mdIncomeSelfSupport);
+
+            //更新从表数据
+            MdIncomeSelfSupportCost incomeSelfSupportCost=new MdIncomeSelfSupportCost();
+            incomeSelfSupportCost.setSupportId(mdIncomeSelfSupport.getId());
+
+            MdIncomeSelfSupportCost where=new MdIncomeSelfSupportCost();
+            where.setSupportId(0);
+            where.setCreator(commonService.thisUserAccount());
+            mdIncomeSelfSupportCostDao.updateSelfSupportCost(incomeSelfSupportCost,where);
         }
     }
 
@@ -244,6 +253,14 @@ public class MdIncomeService {
         } else {
             mdIncome.setCreator(commonService.thisUserAccount());
             mdIncomeDao.addIncome(mdIncome);
+            //更新从表数据
+            MdIncomeLease mdIncomeLease=new MdIncomeLease();
+            mdIncomeLease.setIncomeId(mdIncome.getId());
+
+            MdIncomeLease where=new MdIncomeLease();
+            where.setIncomeId(0);
+            where.setCreator(commonService.thisUserAccount());
+            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease,where);
         }
     }
 

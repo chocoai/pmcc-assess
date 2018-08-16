@@ -14,6 +14,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
+            <jsp:include page="/views/method/module/incomeDetail.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -61,6 +62,8 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
+<input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
+<input type="hidden" id="incomeSelfSupportJSON" value='${incomeSelfSupportJSON}'>
 <script type="text/javascript">
     $(function () {
         //支撑信息初始化
@@ -68,6 +71,12 @@
             readonly: true,
             supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
+
+        //收益法数据显示
+        income.view({
+            incomeInfo: JSON.parse($("#mdIncomeJSON").val()),
+            incomeSelfSupport: JSON.parse($("#incomeSelfSupportJSON").val())
+        })
     })
 </script>
 <script type="application/javascript">

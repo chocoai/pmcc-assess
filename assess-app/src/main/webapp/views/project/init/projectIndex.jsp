@@ -153,7 +153,7 @@
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";
-            var approvalData = formParams("frm_approval");
+            var approvalData = formApproval.getFormData();
             data = $.extend({}, approvalData, data);
         }
         Loading.progressShow();

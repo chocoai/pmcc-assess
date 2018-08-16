@@ -196,7 +196,7 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
         Loading.progressShow();

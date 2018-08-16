@@ -88,7 +88,7 @@
             url: "${pageContext.request.contextPath}/projectPlanHistory/submitProjectPlanHistory",
             type: "post",
             dataType: "json",
-            data: formParams("frm_approval"),
+            data: formApproval.getFormData(),
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {

@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.method;
 
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCostExample;
 import com.copower.pmcc.assess.dal.basis.mapper.MdIncomeSelfSupportCostMapper;
@@ -58,6 +60,17 @@ public class MdIncomeSelfSupportCostDao {
      */
     public boolean updateSelfSupportCost(MdIncomeSelfSupportCost mdIncomeSelfSupportCost) {
         return mdIncomeSelfSupportCostMapper.updateByPrimaryKeySelective(mdIncomeSelfSupportCost) > 0;
+    }
+
+    /**
+     * 更新
+     * @param mdIncomeSelfSupportCost
+     * @return
+     */
+    public boolean updateSelfSupportCost(MdIncomeSelfSupportCost mdIncomeSelfSupportCost, MdIncomeSelfSupportCost where) {
+        MdIncomeSelfSupportCostExample example = new MdIncomeSelfSupportCostExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeSelfSupportCostMapper.updateByExample(mdIncomeSelfSupportCost,example) > 0;
     }
 
     /**

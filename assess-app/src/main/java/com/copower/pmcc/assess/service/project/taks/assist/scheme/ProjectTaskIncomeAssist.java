@@ -154,5 +154,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
+
+        mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
     }
 }

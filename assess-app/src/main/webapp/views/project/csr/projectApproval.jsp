@@ -769,7 +769,7 @@
             Alert("还有未分配的借款人或者项目组中有项目没有分派客户!");
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/csrProjectInfo/projectApprovalSubmit",

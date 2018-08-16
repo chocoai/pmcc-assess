@@ -164,7 +164,7 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         data.bisNext = $("#chk_bisNext").is(':checked') ? "1" : "0";
         data.appointUserAccount = $("#appointUserAccount").val();
         Loading.progressShow();

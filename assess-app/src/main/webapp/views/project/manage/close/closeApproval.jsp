@@ -81,7 +81,7 @@
                 url: "${pageContext.request.contextPath}/projectClose/submitClose",
                 type: "post",
                 dataType: "json",
-                data: formParams("frm_approval"),
+                data: formApproval.getFormData(),
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {

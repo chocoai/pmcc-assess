@@ -180,7 +180,7 @@
         },
 
         getFormData: function () {
-            var formData = formParams("frm_approval");
+            var formData = formApproval.getFormData();
             formData.opinions = formApproval.loadOpation();
             return formData;
         }

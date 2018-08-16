@@ -562,17 +562,22 @@
 
     //初始化
     income.init = function (options) {
+        console.log(options);
         var defaluts = {
             incomeInfo: undefined,
-            incomeSelfSupport: undefined,
-            readonly: false//
+            incomeSelfSupport: undefined
         };
         defaluts = $.extend({}, defaluts, options);
-        if (income.incomeInfo) {
-
+        console.log(defaluts.incomeInfo);
+        if (defaluts.incomeInfo) {
+            $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
+            $("#frm_income").find("[name=operationMode][value="+defaluts.incomeInfo.operationMode+"]").trigger('click');
+            $("#frm_income").find("[name=leaseMode][value="+defaluts.incomeInfo.leaseMode+"]").trigger('click');
         }
-        if (income.incomeSelfSupport) {
-
+        if (defaluts.incomeSelfSupport) {
+            $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
+            $("#frm_self_support").find("[name=averageProfitRate]").val(defaluts.incomeSelfSupport.averageProfitRate);
+            $("#frm_self_support").find("[name=averageProfitRateRemark]").val(defaluts.incomeSelfSupport.averageProfitRateRemark);
         }
     }
 

@@ -233,7 +233,7 @@
             var data = {};
             var url = '${pageContext.request.contextPath}/surveyExamineItem/submitExamineDataInfo';
             if ("${processInsId}" != "0") {//返回修改
-                data = formParams("frm_approval");
+                data = formApproval.getFormData();
                 url = '${pageContext.request.contextPath}/surveyExamineItem/submitEditExamineDataInfo';
             }
             data.formData = JSON.stringify(formData);

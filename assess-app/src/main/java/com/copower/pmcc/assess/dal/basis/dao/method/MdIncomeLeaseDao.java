@@ -52,12 +52,23 @@ public class MdIncomeLeaseDao {
     }
 
     /**
-     * 编辑
+     * 更新
      * @param mdIncomeLease
      * @return
      */
     public boolean updateIncomeLease(MdIncomeLease mdIncomeLease) {
         return mdIncomeLeaseMapper.updateByPrimaryKeySelective(mdIncomeLease) > 0;
+    }
+
+    /**
+     * 更新
+     * @param mdIncomeLease
+     * @return
+     */
+    public boolean updateIncomeLease(MdIncomeLease mdIncomeLease,MdIncomeLease where) {
+        MdIncomeLeaseExample example = new MdIncomeLeaseExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeLeaseMapper.updateByExample(mdIncomeLease,example) > 0;
     }
 
     /**
