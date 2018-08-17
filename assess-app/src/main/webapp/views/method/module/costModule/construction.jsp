@@ -7,7 +7,7 @@
   在建工程
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-horizontal frmConstruction">
+<form class="form-horizontal frmConstruction" id="frmConstruction">
     <div class="form-group">
         <label class="col-sm-1 control-label">
             开发土地面积

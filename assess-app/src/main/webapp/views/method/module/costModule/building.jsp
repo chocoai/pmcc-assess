@@ -7,7 +7,7 @@
   建筑物
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-horizontal frmBuild">
+<form class="form-horizontal frmBuild" id="frmBuild">
     <div class="form-group">
         <label class="col-sm-1 control-label">
             勘察设计和前期工程费

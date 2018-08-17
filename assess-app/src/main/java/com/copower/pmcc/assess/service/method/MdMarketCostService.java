@@ -53,11 +53,24 @@ public class MdMarketCostService {
     private DataBuildingNewRateService dataBuildingNewRateService;
 
     public boolean addEstateNetwork(MdCostBuilding mdCostBuilding) {
-        return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+        try {
+            int id = mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+            mdCostBuilding.setId(id);
+            return true;
+        } catch (Exception e1) {
+        }
+        return false;
+
     }
 
     public boolean addEstateNetwork(MdCostConstruction mdCostConstruction) {
-        return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+        try {
+            int id = mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+            mdCostConstruction.setId(id);
+            return true;
+        } catch (Exception e1) {
+            return false;
+        }
     }
 
     public List<DataBuildingNewRateVo> dataBuildingNewRateList() {
