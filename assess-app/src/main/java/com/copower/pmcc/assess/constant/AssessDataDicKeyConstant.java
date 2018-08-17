@@ -39,10 +39,6 @@ public class AssessDataDicKeyConstant {
     public static final String OTHER_RIGHT_TYPE = "other.right.type";   //他权类型
     public static final String CASE_TYPE = "case.type";  //案例类型
     public static final String CASE_INFO_SOURCE = "case.info.source";  //案例来源
-    
-    /*
-     * 房产查勘案例
-     */
 
     /**
      * 评估方法
@@ -51,5 +47,12 @@ public class AssessDataDicKeyConstant {
     public static final String MD_INCOME = "md.income"; //收益法
     public static final String MD_COST = "md.cost"; //成本法
     public static final String MD_HYPOTHESIS = "md.hypothesis"; //假设开发法
+
+    /*
+     * 测算方法配置
+     */
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_INCOME = "md.income.self.support.cost.type.income"; //收入类
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_COST = "md.income.self.support.cost.type.cost"; //成本类
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_EXPENSE = "md.income.self.support.cost.type.expense"; //费用类
 
 }

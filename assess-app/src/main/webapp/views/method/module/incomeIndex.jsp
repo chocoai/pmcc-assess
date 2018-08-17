@@ -143,8 +143,9 @@
                                             会计科目<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="accountingSubject" placeholder="会计科目"
-                                                   class="form-control" required="required">
+                                            <select name="accountingSubject" class="form-control"
+                                                    onchange="income.accountingSubjectChange(this);"
+                                                    required="required"></select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -152,8 +153,9 @@
                                             一级编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="costType" placeholder="一级编号"
-                                                   class="form-control" required="required">
+                                            <select name="costType" class="form-control"
+                                                    onchange="income.costTypeChange(this);"
+                                                    required="required"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -163,8 +165,8 @@
                                             二级编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="costCategory" placeholder="二级编号"
-                                                   class="form-control" required="required">
+                                            <select name="costCategory" class="form-control"
+                                                    required="required"></select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -242,15 +244,15 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <fieldset>
-                        <legend>1.年有效毛收入（元/m2）</legend>
+                        <legend>1.年有效毛收入 <i class="red" data-name="grossIncome"></i>（元/m2）</legend>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     月租金收入<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="rentalIncome" placeholder="月租金收入"
-                                           class="form-control" required="required">
+                                    <input type="text" name="rentalIncome" placeholder="月租金收入" onblur="income.cpGrossIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -258,8 +260,8 @@
                                     全年月份数<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="monthNumber" placeholder="全年月份数"
-                                           class="form-control" required="required">
+                                    <input type="text" name="monthNumber" placeholder="全年月份数" onblur="income.cpGrossIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -267,8 +269,8 @@
                                     出租率<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="rentals" placeholder="出租率"
-                                           class="form-control" required="required">
+                                    <input type="text" name="rentals" placeholder="出租率" onblur="income.cpGrossIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                         </div>
@@ -288,8 +290,8 @@
                                     押金<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="deposit" placeholder="押金"
-                                           class="form-control" required="required">
+                                    <input type="text" name="deposit" placeholder="押金" onblur="income.cpInterestIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -297,8 +299,8 @@
                                     利率<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="interestRate" placeholder="利率"
-                                           class="form-control" required="required">
+                                    <input type="text" name="interestRate" placeholder="利率" onblur="income.cpInterestIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -306,8 +308,8 @@
                                     年押金利息收入<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="interestIncome" placeholder="年押金利息收入"
-                                           class="form-control" required="required">
+                                    <input type="text" name="interestIncome" placeholder="年押金利息收入" readonly="readonly"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                         </div>
@@ -328,8 +330,8 @@
                                     其它收入<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="otherIncome" placeholder="其它收入"
-                                           class="form-control" required="required">
+                                    <input type="text" name="otherIncome" placeholder="其它收入" onblur="income.cpGrossIncome();"
+                                           data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                         </div>
@@ -571,8 +573,8 @@
         console.log(defaluts.incomeInfo);
         if (defaluts.incomeInfo) {
             $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
-            $("#frm_income").find("[name=operationMode][value="+defaluts.incomeInfo.operationMode+"]").trigger('click');
-            $("#frm_income").find("[name=leaseMode][value="+defaluts.incomeInfo.leaseMode+"]").trigger('click');
+            $("#frm_income").find("[name=operationMode][value=" + defaluts.incomeInfo.operationMode + "]").trigger('click');
+            $("#frm_income").find("[name=leaseMode][value=" + defaluts.incomeInfo.leaseMode + "]").trigger('click');
         }
         if (defaluts.incomeSelfSupport) {
             $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
@@ -597,20 +599,16 @@
         }
     }
 
-    //租赁方式切换
-    income.leaseModeChange = function (value) {
-        if (value == 0) {
-
-        } else if (value == 1) {
-
-        }
-    }
-
     //添加自营金额列表信息
     income.addSupportCost = function (type, tbListId) {
         $("#frm_self_support_cost").clearAll();
         $("#frm_self_support_cost").find('[name=type]').val(type);
         $("#frm_self_support_cost").find('[name=tbListId]').val(tbListId);
+        AssessCommon.loadDataDicByKey(income.getCostTypeKey(type), "", function (html, data) {
+            $("#frm_self_support_cost").find('[name=accountingSubject]').empty().append(html);
+        })
+        $("#frm_self_support_cost").find('[name=costType]').empty();
+        $("#frm_self_support_cost").find('[name=costCategory]').empty();
         $('#modal_self_support_cost').modal();
     }
 
@@ -620,7 +618,43 @@
         $("#frm_self_support_cost").clearAll();
         $("#frm_self_support_cost").initForm(row);
         $("#frm_self_support_cost").find('[name=tbListId]').val(tbListId);
+        AssessCommon.loadDataDicByKey(income.getCostTypeKey(row.type), row.accountingSubject, function (html, data) {
+            $("#frm_self_support_cost").find('[name=accountingSubject]').empty().append(html);
+        })
+        AssessCommon.loadDataDicByPid(row.accountingSubject, row.costType, function (html, data) {
+            $("#frm_self_support_cost").find('[name=costType]').empty().append(html);
+        })
+        AssessCommon.loadDataDicByPid(row.costType, row.costCategory, function (html, data) {
+            $("#frm_self_support_cost").find('[name=costCategory]').empty().append(html);
+        })
         $('#modal_self_support_cost').modal();
+    }
+
+    //获取类型key
+    income.getCostTypeKey = function (type) {
+        switch (type) {
+            case 0:
+                return AssessDicKey.mdIncomeSelfSupportCostTypeIncome;
+            case 1:
+                return AssessDicKey.mdIncomeSelfSupportCostTypeCost;
+            case 2:
+                return AssessDicKey.mdIncomeSelfSupportCostTypeExpense;
+        }
+    }
+
+    //会计编号切换
+    income.accountingSubjectChange = function (_this) {
+        $("#frm_self_support_cost").find('[name=costCategory]').empty();
+        AssessCommon.loadDataDicByPid($(_this).val(), "", function (html, data) {
+            $("#frm_self_support_cost").find('[name=costType]').empty().append(html);
+        })
+    }
+
+    //一级编号切换
+    income.costTypeChange = function (_this) {
+        AssessCommon.loadDataDicByPid($(_this).val(), "", function (html, data) {
+            $("#frm_self_support_cost").find('[name=costCategory]').empty().append(html);
+        })
     }
 
     //删除自营金额列表信息
@@ -726,6 +760,7 @@
             $("#frm_self_support_cost").find('[name=amountMoney]').val(amountMoney.toFixed(2));
         }
     }
+
 
     //租赁-----------------------------------------------------------------------------------------------------
 
@@ -838,8 +873,46 @@
         });
     }
 
+    //计算年押金利息收入
+    income.cpInterestIncome = function () {
+        var form = $("#frm_lease");
+        var deposit = form.find('[name=deposit]').val();
+        if (!AssessCommon.isNumber(deposit)) return false;
+
+        var interestRate = form.find('[name=interestRate]').val();
+        if (!AssessCommon.isNumber(interestRate)) return false;
+
+        var interestIncome = parseFloat(deposit) * parseFloat(interestRate);
+        form.find('[name=interestIncome]').val(interestIncome.toFixed(2));
+
+        income.cpGrossIncome();
+    }
+
+    //计算毛收入
+    income.cpGrossIncome = function () {
+        var form = $("#frm_lease");
+        var rentalIncome = form.find('[name=rentalIncome]').val();
+        if (!AssessCommon.isNumber(rentalIncome)) return false;
+
+        var monthNumber = form.find('[name=monthNumber]').val();
+        if (!AssessCommon.isNumber(monthNumber)) return false;
+
+        var rentals = form.find('[name=rentals]').val();
+        if (!AssessCommon.isNumber(rentals)) return false;
+
+        var interestIncome = form.find('[name=interestIncome]').val();
+        if (!AssessCommon.isNumber(interestIncome)) return false;
+
+        var otherIncome = form.find('[name=otherIncome]').val();
+        if (!AssessCommon.isNumber(otherIncome)) return false;
+
+        var grossIncome = parseFloat(rentalIncome) * parseFloat(monthNumber) * parseFloat(rentals) + parseFloat(interestIncome) + parseFloat(otherIncome);
+        form.find('[data-name=grossIncome]').text(grossIncome.toFixed(2));
+    }
+
+
     //保存数据前验证
-    income.valid=function () {
+    income.valid = function () {
 
     }
 

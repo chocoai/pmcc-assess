@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
@@ -42,6 +43,8 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private SchemeInfoService schemeInfoService;
     @Autowired
     private MdIncomeService mdIncomeService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {

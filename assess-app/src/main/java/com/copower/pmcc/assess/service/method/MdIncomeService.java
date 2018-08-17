@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeSelfSupportCostVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -45,6 +46,8 @@ public class MdIncomeService {
     private MdIncomeSelfSupportCostDao mdIncomeSelfSupportCostDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 保存数据
@@ -92,11 +95,11 @@ public class MdIncomeService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         MdIncomeSelfSupportCost where = new MdIncomeSelfSupportCost();
+        where.setType(type);
         if (supportId != null && supportId > 0) {
             where.setSupportId(supportId);
         } else {
             where.setSupportId(0);
-            where.setType(type);
             where.setCreator(commonService.thisUserAccount());
         }
 
@@ -111,7 +114,15 @@ public class MdIncomeService {
         if (mdIncomeSelfSupportCost == null) return null;
         MdIncomeSelfSupportCostVo mdIncomeSelfSupportCostVo = new MdIncomeSelfSupportCostVo();
         BeanUtils.copyProperties(mdIncomeSelfSupportCost, mdIncomeSelfSupportCostVo);
-
+        if (mdIncomeSelfSupportCost.getAccountingSubject() != null && mdIncomeSelfSupportCost.getAccountingSubject() > 0) {
+            mdIncomeSelfSupportCostVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getAccountingSubject()));
+        }
+        if (mdIncomeSelfSupportCost.getCostType() != null && mdIncomeSelfSupportCost.getCostType() > 0) {
+            mdIncomeSelfSupportCostVo.setCostTypeName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getCostType()));
+        }
+        if (mdIncomeSelfSupportCost.getCostCategory() != null && mdIncomeSelfSupportCost.getCostCategory() > 0) {
+            mdIncomeSelfSupportCostVo.setCostCategoryName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getCostCategory()));
+        }
         return mdIncomeSelfSupportCostVo;
     }
 
@@ -222,13 +233,13 @@ public class MdIncomeService {
             mdIncomeSelfSupportDao.addSelfSupport(mdIncomeSelfSupport);
 
             //更新从表数据
-            MdIncomeSelfSupportCost incomeSelfSupportCost=new MdIncomeSelfSupportCost();
+            MdIncomeSelfSupportCost incomeSelfSupportCost = new MdIncomeSelfSupportCost();
             incomeSelfSupportCost.setSupportId(mdIncomeSelfSupport.getId());
 
-            MdIncomeSelfSupportCost where=new MdIncomeSelfSupportCost();
+            MdIncomeSelfSupportCost where = new MdIncomeSelfSupportCost();
             where.setSupportId(0);
             where.setCreator(commonService.thisUserAccount());
-            mdIncomeSelfSupportCostDao.updateSelfSupportCost(incomeSelfSupportCost,where);
+            mdIncomeSelfSupportCostDao.updateSelfSupportCost(incomeSelfSupportCost, where);
         }
     }
 
@@ -254,13 +265,13 @@ public class MdIncomeService {
             mdIncome.setCreator(commonService.thisUserAccount());
             mdIncomeDao.addIncome(mdIncome);
             //更新从表数据
-            MdIncomeLease mdIncomeLease=new MdIncomeLease();
+            MdIncomeLease mdIncomeLease = new MdIncomeLease();
             mdIncomeLease.setIncomeId(mdIncome.getId());
 
-            MdIncomeLease where=new MdIncomeLease();
+            MdIncomeLease where = new MdIncomeLease();
             where.setIncomeId(0);
             where.setCreator(commonService.thisUserAccount());
-            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease,where);
+            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease, where);
         }
     }
 

@@ -45,3 +45,7 @@ AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//�
 
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate" ;//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//土地取得税率
+
+AssessDicKey.mdIncomeSelfSupportCostTypeIncome = "md.income.self.support.cost.type.income" ;//收入类
+AssessDicKey.mdIncomeSelfSupportCostTypeCost = "md.income.self.support.cost.type.cost" ;//成本类
+AssessDicKey.mdIncomeSelfSupportCostTypeExpense = "md.income.self.support.cost.type.expense" ;//费用类

@@ -318,5 +318,15 @@ public class BaseDataDicService {
         return ztreeDto;
     }
 
+    /**
+     * 根据id获取显示的名称
+     * @param id
+     * @return
+     */
+    public String getNameById(Integer id){
+        BaseDataDic baseDataDic = cmsBaseDataDicDao.getSingleObject(id);
+        if(baseDataDic==null) return "";
+        return baseDataDic.getName();
+    }
 
 }

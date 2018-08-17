@@ -26,9 +26,23 @@
         },
 
         //对象不存在则返回空串
-        toString:function (o) {
+        toString: function (o) {
             if (!o)return "";
             return o;
+        },
+
+        //判断数据是否为数字
+        isNumber: function (val) {
+            if (val === '' || val == undefined || val == null) return false;
+            if (Number(val) == 'NaN') return false;
+            val = Number(val);
+            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if (regPos.test(val) || regNeg.test(val)) {
+                return true;
+            } else {
+                return false;
+            }
         },
 
         //提取字段
@@ -226,13 +240,13 @@
 
             if ($.type(defaults.cityTarget) === "string") {
                 defaults.cityTarget = $("#" + defaults.cityTarget);
-            }else {
+            } else {
                 defaults.cityTarget = $(defaults.cityTarget);
             }
 
             if ($.type(defaults.districtTarget) === "string") {
                 defaults.districtTarget = $("#" + defaults.districtTarget);
-            }else {
+            } else {
                 defaults.districtTarget = $(defaults.districtTarget);
             }
 
