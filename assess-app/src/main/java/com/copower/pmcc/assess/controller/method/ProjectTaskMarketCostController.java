@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * @Auther: zch
  * @Date: 2018/8/8 11:38
- * @Description:市场成本法临时控制器
+ * @Description:市场成本法以及假设开发法数据传递
  */
 @RequestMapping(value = "/marketCost")
 @Controller
@@ -47,20 +47,6 @@ public class ProjectTaskMarketCostController {
 
     @Autowired
     private MdMarketCostService mdMarketCostService;
-
-    @RequestMapping(value = "/marketCostIndex", name = "成本法", method = RequestMethod.GET)
-    public ModelAndView view() {
-        String view = "/task/scheme/taskCostIndex";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        final int projectPlanDetailId = 9121;
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetailId);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        projectPlanDetails.setProjectPhaseName("成本法");
-        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoVoView(projectInfo));
-        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
-        return modelAndView;
-    }
-
 
     @ResponseBody
     @RequestMapping(value = "/getBaseDicTree", name = "获取", method = RequestMethod.GET)

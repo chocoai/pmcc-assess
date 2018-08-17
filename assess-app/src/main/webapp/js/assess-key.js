@@ -45,3 +45,5 @@ AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//�
 
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate" ;//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//土地取得税率
+
+AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、住宅、商业、办公、车库、地下商业、建设周期
