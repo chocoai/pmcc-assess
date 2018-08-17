@@ -1,7 +1,12 @@
 package com.copower.pmcc.assess.dto.input.method;
 
+import com.copower.pmcc.assess.dal.basis.entity.MdCostBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -9,84 +14,33 @@ import java.math.BigDecimal;
  * @Description:
  */
 public class MdMarketCostDto implements Serializable {
+    private List<SchemeSupportInfo> supportInfoList;
+    private MdCostBuilding mdCostBuilding;
+    private MdCostConstruction mdCostConstruction;
     private Integer id;
-    private BigDecimal assessValue;
 
-    private BigDecimal evaluationValue;
-
-    private BigDecimal assessValueDifference;
-
-    private BigDecimal constructionInstallationEngineeringFee;
-
-    private String jsonContent;
-
-    private Integer costId;
-    private String synthesisRate;
-
-    private BigDecimal valuationPrice;
-
-    public BigDecimal getAssessValue() {
-        return assessValue;
+    public List<SchemeSupportInfo> getSupportInfoList() {
+        return supportInfoList;
     }
 
-    public void setAssessValue(BigDecimal assessValue) {
-        this.assessValue = assessValue;
+    public void setSupportInfoList(List<SchemeSupportInfo> supportInfoList) {
+        this.supportInfoList = supportInfoList;
     }
 
-    public BigDecimal getEvaluationValue() {
-        return evaluationValue;
+    public MdCostBuilding getMdCostBuilding() {
+        return mdCostBuilding;
     }
 
-    public void setEvaluationValue(BigDecimal evaluationValue) {
-        this.evaluationValue = evaluationValue;
+    public void setMdCostBuilding(MdCostBuilding mdCostBuilding) {
+        this.mdCostBuilding = mdCostBuilding;
     }
 
-    public BigDecimal getAssessValueDifference() {
-        return assessValueDifference;
+    public MdCostConstruction getMdCostConstruction() {
+        return mdCostConstruction;
     }
 
-    public void setAssessValueDifference(BigDecimal assessValueDifference) {
-        this.assessValueDifference = assessValueDifference;
-    }
-
-    public BigDecimal getConstructionInstallationEngineeringFee() {
-        return constructionInstallationEngineeringFee;
-    }
-
-    public void setConstructionInstallationEngineeringFee(BigDecimal constructionInstallationEngineeringFee) {
-        this.constructionInstallationEngineeringFee = constructionInstallationEngineeringFee;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent;
-    }
-
-    public Integer getCostId() {
-        return costId;
-    }
-
-    public void setCostId(Integer costId) {
-        this.costId = costId;
-    }
-
-    public String getSynthesisRate() {
-        return synthesisRate;
-    }
-
-    public void setSynthesisRate(String synthesisRate) {
-        this.synthesisRate = synthesisRate;
-    }
-
-    public BigDecimal getValuationPrice() {
-        return valuationPrice;
-    }
-
-    public void setValuationPrice(BigDecimal valuationPrice) {
-        this.valuationPrice = valuationPrice;
+    public void setMdCostConstruction(MdCostConstruction mdCostConstruction) {
+        this.mdCostConstruction = mdCostConstruction;
     }
 
     public Integer getId() {

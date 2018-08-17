@@ -11,8 +11,8 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
-            <input type="hidden" name="area" class="mdCost area">
-            <input type="hidden" name="price" class="mdCost price">
+            <input type="hidden" name="area" class="mdCost area" value="20"><!-- 委估对象面积 -->
+            <input type="hidden" name="price" class="mdCost price" value="22.5"><!-- 委估对象价格 -->
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
@@ -249,6 +249,27 @@
                 optionsBuildBox.showConstruction();
             }
         });
+    };
+
+    optionsBuildBox.getMdCostBuilding = function () {
+        var jsonParams = formParams("frmBuild");
+        var data = {
+            synthesisRate: build.newRateModel.getResult(),//综合成新率
+            constructionInstallationEngineeringFee: build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().constructionInstallationEngineeringFee.key, null),
+            jsonContent: jsonParams,//json数据
+            valuationPrice: build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().assessPrice.key, null)//评估单价
+        };
+        return data;
+    };
+    optionsBuildBox.getMdCostConstruction = function () {
+        var jsonParams = formParams("frmConstruction");
+        var data = {
+            assessValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionProcesAssessValue.key, null),
+            evaluationValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key, null),
+            assessValueDifference:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key, null),
+            constructionInstallationEngineeringFee:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null),//
+            jsonContent: jsonParams//json数据
+        };
     };
 
     $(function () {

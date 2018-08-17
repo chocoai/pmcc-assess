@@ -49,3 +49,5 @@ AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//�
 AssessDicKey.mdIncomeSelfSupportCostTypeIncome = "md.income.self.support.cost.type.income" ;//收入类
 AssessDicKey.mdIncomeSelfSupportCostTypeCost = "md.income.self.support.cost.type.cost" ;//成本类
 AssessDicKey.mdIncomeSelfSupportCostTypeExpense = "md.income.self.support.cost.type.expense" ;//费用类
+
+AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、住宅、商业、办公、车库、地下商业、建设周期
