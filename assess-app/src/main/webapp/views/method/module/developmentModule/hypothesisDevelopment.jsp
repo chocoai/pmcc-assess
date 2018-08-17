@@ -231,6 +231,9 @@
 
 <script>
     var hypothesisDevelopment = new Object();
+    hypothesisDevelopment.isNumber = function (obj) {
+        return true;
+    }
     hypothesisDevelopment.config = function () {
         var config = {};
         config.frm = "frmDevelopment";//表单id
@@ -315,9 +318,27 @@
         return config;
     };
     hypothesisDevelopment.inputFun = {
-
+        workInput: function () {
+            hypothesisDevelopment.inputAlgorithmObject.workFun();
+        }
     }
     hypothesisDevelopment.inputAlgorithmObject = {
+        //子表单 办公建筑 算法
+        workFun: function () {
+            var workBuildArea = null;
+            workBuildArea = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get",hypothesisDevelopment.config().inputConfig().workBuildArea,null);
+        },
+        jqueryInputGetAndSet:function (flag, name, data) {
+            if (flag == 'get') {
+                var text = null;
+                text = $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + name + "']").val();
+                text = hypothesisDevelopment.inputAlgorithmObject.specialTreatment(text);
+                return text;
+            }
+            if (flag == 'set') {
+                $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + name + "']").val(data);
+            }
+        },
         isNotNull: function (obj) {
             if (obj == 0) {
                 return true;
@@ -333,10 +354,51 @@
             }
             return 0;
         }
-    }
+    };
+    /**
+     * @author:  zch
+     * 描述:判断某个字符串中是否包含某个字符串 (workdddg,WORK) return true
+     * @date:
+     **/
+    hypothesisDevelopment.indexOfUtils = function (s, str) {
+        if (s.indexOf(str) >= 0) {
+            return true;
+        }
+        s = s.toUpperCase();
+        str = str.toUpperCase();
+        if (s.indexOf(str) >= 0) {
+            return true;
+        }
+        return false;
+    };
+    hypothesisDevelopment.inputForm = function (key, value) {
+        if (hypothesisDevelopment.indexOfUtils(key,"work")){
+            hypothesisDevelopment.inputFun.workInput();
+        }
+    };
     hypothesisDevelopment.inputEvent = function () {
+        var arr = hypothesisDevelopment.config().inputName();
+        $.each(arr, function (i, n) {
+            var key = n.key;
+            var input = $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + key + "']");
+            input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
+                var value = input.val();
+                if (hypothesisDevelopment.isNumber(value)) {
+                    try {
+                        var funName = "hypothesisDevelopment.inputFun." + key + "Input(" + input.val() + ")";
+                        eval(funName);
+                    } catch (e) {
+                        console.log("没有相关定义的函数或者是属于子表单");
+                        hypothesisDevelopment.inputForm(key, value);
+                    }
+                } else {
+                    Alert("请输入合法数字!")
+                }
+            });
+        })
         hypothesisDevelopment.selectEvent.monitor.monitor();
     }
+
     hypothesisDevelopment.selectEvent = {
         load: {
             hypothesisDevelopmentSelect2: function () {
