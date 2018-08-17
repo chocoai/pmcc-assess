@@ -34,7 +34,7 @@
         //判断数据是否为数字
         isNumber: function (val) {
             if (val === '' || val == undefined || val == null) return false;
-            if (Number(val) == 'NaN') return false;
+            if (Number(val) == NaN) return false;
             val = Number(val);
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
