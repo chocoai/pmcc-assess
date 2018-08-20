@@ -113,20 +113,6 @@
     }
 
     function projectApply() {
-
-        if (!hasLinkman(Contacts.prototype.CONSIGNOR().getData().table)) {
-            Alert('还未填写委托人联系人信息');
-            return false;
-        }
-        if (!hasLinkman(Contacts.prototype.POSSESSOR().getData().table)) {
-            Alert('还未填写占有人联系人信息');
-            return false;
-        }
-        if (!hasLinkman(Contacts.prototype.UNIT_INFORMATION().getData().table)) {
-            Alert('还未填写报告使用单位联系人信息');
-            return false;
-        }
-
         //js校验
         if (!$("#frm_project_info").valid()) {
             return false;
@@ -134,13 +120,24 @@
         if (!$("#frm_consignor").valid()) {
             return false;
         }
+        if (!hasLinkman(Contacts.prototype.CONSIGNOR().getData().table)) {
+            Alert('还未填写委托人联系人信息');
+            return false;
+        }
         if (!$("#frm_possessor").valid()) {
+            return false;
+        }
+        if (!hasLinkman(Contacts.prototype.POSSESSOR().getData().table)) {
+            Alert('还未填写占有人联系人信息');
             return false;
         }
         if (!$("#frm_unitinformation").valid()) {
             return false;
         }
-
+        if (!hasLinkman(Contacts.prototype.UNIT_INFORMATION().getData().table)) {
+            Alert('还未填写报告使用单位联系人信息');
+            return false;
+        }
         var bisNextUser = false;
         //如果没有设置项目经理则必须先进行下级分派
         if ($("#userAccountMemberCheckBox").is(':checked') || !$("#userAccountManager").val()) {
@@ -193,13 +190,13 @@
         POSSESSOR.prototype.tabControl();
         CONSIGNOR.prototype.tabControl();
 
+        Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}", null);
+        Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
+        Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
+
         /**返回修改页面**/
         var projectInfo = "${projectInfo.consignorVo}";
-        if (projectInfo != null && projectInfo != '') {//返回修改页面自动带出联系人 加载联系人列表
-            Contacts.prototype.UNIT_INFORMATION().loadDataList("${projectInfo.unitInformationVo.id}", null);
-            Contacts.prototype.CONSIGNOR().loadDataList("${projectInfo.consignorVo.id}");
-            Contacts.prototype.POSSESSOR().loadDataList("${projectInfo.possessorVo.id}");
-
+        if (projectInfo != null && projectInfo != '') {//返回修改页面
             POSSESSOR.prototype.tabControlUpdate("${projectInfo.possessorVo.pType}");
             CONSIGNOR.prototype.tabControlUpdate("${projectInfo.consignorVo.csType}")
         }

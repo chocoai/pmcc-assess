@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
-
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
@@ -20,7 +19,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}记录表</h2>
+                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -109,9 +108,8 @@
 <script type="application/javascript">
 
     $(function () {
-        loadCaseList();
         $("#frm_task").validate();
-
+        //显示附件
         loadUploadFiles();
         //上传附件
         FileUtils.uploadFiles({
@@ -124,8 +122,7 @@
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
             },
-            deleteFlag: true
-        }, {
+            deleteFlag: true,
             onUploadComplete: function () {
                 loadUploadFiles();
             }
@@ -157,6 +154,7 @@
             submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
+
 
     function loadCaseList() {
         var cols = [];
@@ -230,7 +228,6 @@
             })
         })
     }
-
 </script>
 
 </html>

@@ -2,8 +2,8 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,22 +17,22 @@ public class SurveyCaseStudyService {
     @Autowired
     private SurveyCaseStudyDao surveyCaseStudyDao;
     @Autowired
-    private ProcessControllerComponent processControllerComponent;
+    private CommonService commonService;
 
-    public boolean save(SurveyCaseStudy surveyCaseStudyDto) throws BusinessException {
-        if(surveyCaseStudyDto == null)
+    public boolean saveSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) throws BusinessException {
+        if(surveyCaseStudy == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if(surveyCaseStudyDto.getId() != null && surveyCaseStudyDto.getId() > 0){
-            return surveyCaseStudyDao.update(surveyCaseStudyDto);
+        if(surveyCaseStudy.getId() != null && surveyCaseStudy.getId() > 0){
+            return surveyCaseStudyDao.updateSurveyCaseStudy(surveyCaseStudy);
         }else{
-            surveyCaseStudyDto.setCreator(processControllerComponent.getThisUser());
-            return surveyCaseStudyDao.save(surveyCaseStudyDto);
+            surveyCaseStudy.setCreator(commonService.thisUserAccount());
+            return surveyCaseStudyDao.addSurveyCaseStudy(surveyCaseStudy);
         }
     }
 
-    public boolean delete(Integer id) throws BusinessException {
+    public boolean deleteSurveyCaseStudy(Integer id) throws BusinessException {
         if(id ==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());;
-        return surveyCaseStudyDao.delete(id);
+        return surveyCaseStudyDao.deleteSurveyCaseStudy(id);
 
     }
 

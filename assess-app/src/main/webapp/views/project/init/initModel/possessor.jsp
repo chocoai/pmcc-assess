@@ -13,15 +13,17 @@
 <div class="x_content">
     <form id="frm_possessor" class="form-horizontal" enctype="multipart/form-data">
         <div class="form-group">
-            <div id="changeType1" class="col-sm-3 col-sm-offset-1">
+            <div class="x-valid">
+                <div id="changeType1" class="col-sm-3 col-sm-offset-1">
                                 <span class="radio-inline">
                                     <input type="radio" required name="pType" id="pType1"
                                            value="1" ${projectInfo.possessorVo.pType == 1?'checked="checked"':''}  >
                                     <label for="pType1">法人</label></span>
-                <span class="radio-inline">
+                    <span class="radio-inline">
                                     <input type="radio" name="pType" id="pType0"
                                            value="0" ${projectInfo.possessorVo.pType == 0?'checked="checked"':''}  >
                                     <label for="pType0">自然人</label></span>
+                </div>
             </div>
         </div>
         <div id="legal_person1">

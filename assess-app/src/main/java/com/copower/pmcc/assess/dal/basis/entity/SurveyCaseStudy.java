@@ -11,10 +11,6 @@ public class SurveyCaseStudy {
 
     private String processInsId;
 
-    private String examineFormType;
-
-    private Integer declareRecordId;
-
     private String creator;
 
     private Date gmtCreated;
@@ -51,22 +47,6 @@ public class SurveyCaseStudy {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
-    }
-
-    public String getExamineFormType() {
-        return examineFormType;
-    }
-
-    public void setExamineFormType(String examineFormType) {
-        this.examineFormType = examineFormType == null ? null : examineFormType.trim();
-    }
-
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
-    }
-
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
     }
 
     public String getCreator() {

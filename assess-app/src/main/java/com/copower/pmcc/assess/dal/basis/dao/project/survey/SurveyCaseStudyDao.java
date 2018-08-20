@@ -17,17 +17,17 @@ public class SurveyCaseStudyDao {
     @Autowired
     private SurveyCaseStudyMapper surveyCaseStudyMapper;
 
-    public boolean update(SurveyCaseStudy surveyCaseStudyDto) {
-        int i = surveyCaseStudyMapper.updateByPrimaryKeySelective(surveyCaseStudyDto);
+    public boolean updateSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        int i = surveyCaseStudyMapper.updateByPrimaryKeySelective(surveyCaseStudy);
         return i > 0;
     }
 
-    public boolean save(SurveyCaseStudy surveyCaseStudyDto) {
-        int i = surveyCaseStudyMapper.insertSelective(surveyCaseStudyDto);
+    public boolean addSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        int i = surveyCaseStudyMapper.insertSelective(surveyCaseStudy);
         return i > 0;
     }
 
-    public boolean delete(Integer id) {
+    public boolean deleteSurveyCaseStudy(Integer id) {
         int i = surveyCaseStudyMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
@@ -35,7 +35,6 @@ public class SurveyCaseStudyDao {
     public SurveyCaseStudy getSurveyCaseStudy(String processInsId) {
         SurveyCaseStudyExample example = new SurveyCaseStudyExample();
         example.createCriteria().andProcessInsIdEqualTo(processInsId);
-        example.setOrderByClause(" id ASC");
         List<SurveyCaseStudy> surveyCaseStudys = surveyCaseStudyMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(surveyCaseStudys)){
             return surveyCaseStudys.get(0);
@@ -43,9 +42,4 @@ public class SurveyCaseStudyDao {
         return null;
     }
 
-    public List<SurveyCaseStudy> getByDeclareRecordId(Integer declareRecordId) {
-        SurveyCaseStudyExample example = new SurveyCaseStudyExample();
-        example.createCriteria().andDeclareRecordIdEqualTo(declareRecordId);
-        return surveyCaseStudyMapper.selectByExample(example);
-    }
 }

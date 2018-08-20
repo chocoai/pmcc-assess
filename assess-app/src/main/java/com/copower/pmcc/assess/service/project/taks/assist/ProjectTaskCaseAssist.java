@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.project.taks.assist;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -36,31 +38,30 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", "", 0, "0", "");
-        Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentProject",parentProject);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
-        Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentProject",parentProject);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseIndex", processInsId, boxId, taskId, agentUserAccount);
-        Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentProject",parentProject);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
     }
 
@@ -72,9 +73,8 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/case/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        Integer id = projectPlanDetails.getPid();
-        ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
-        modelAndView.addObject("parentProject",parentProject);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
     }
 
@@ -85,9 +85,8 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         surveyCaseStudy.setPlanDetailsId(projectPlanDetails.getId());
         surveyCaseStudy.setProcessInsId(processInsId);
         surveyCaseStudy.setCreator(commonService.thisUserAccount());
-        surveyCaseStudy.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
-        surveyCaseStudyService.save(surveyCaseStudy);
+        surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
     }
 
     @Override
