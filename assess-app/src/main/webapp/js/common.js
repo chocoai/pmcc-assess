@@ -27,7 +27,7 @@
 
         //对象不存在则返回空串
         toString: function (o) {
-            if (!o)return "";
+            if (!o) return "";
             return o;
         },
 
@@ -44,7 +44,19 @@
                 return false;
             }
         },
-
+        //百分数转小数
+        toPoint: function () {
+            var str = percent.replace("%", "");
+            str = str / 100;
+            return str;
+        },
+        /*
+        *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
+        toPercent: function () {
+            var str = Number(point * 100).toFixed(1);
+            str += "%";
+            return str;
+        },
         //提取字段
         extractField: function (text) {
             if (!text) return text;
