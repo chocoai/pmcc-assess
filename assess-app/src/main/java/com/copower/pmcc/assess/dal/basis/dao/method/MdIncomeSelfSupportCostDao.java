@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.method;
 
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomIncomeSelfSupportCostMapper;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
@@ -9,6 +10,7 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -22,6 +24,8 @@ import java.util.List;
 public class MdIncomeSelfSupportCostDao {
     @Autowired
     private MdIncomeSelfSupportCostMapper mdIncomeSelfSupportCostMapper;
+    @Autowired
+    private CustomIncomeSelfSupportCostMapper customIncomeSelfSupportCostMapper;
 
     /**
      * 获取数据信息
@@ -80,6 +84,17 @@ public class MdIncomeSelfSupportCostDao {
      */
     public boolean deleteSelfSupportCost(Integer id){
         return mdIncomeSelfSupportCostMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 获取金额合计
+     * @param supportId
+     * @param type
+     * @param creator
+     * @return
+     */
+    public BigDecimal getAmountMoneyTotal(Integer supportId,Integer type,String creator){
+        return customIncomeSelfSupportCostMapper.getAmountMoneyTotal(supportId, type, creator);
     }
 
 }

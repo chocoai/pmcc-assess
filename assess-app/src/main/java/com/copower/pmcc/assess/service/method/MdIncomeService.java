@@ -127,6 +127,18 @@ public class MdIncomeService {
     }
 
     /**
+     * 获取金额合计
+     *
+     * @param supportId
+     * @param type
+     * @return
+     */
+    public BigDecimal getAmountMoneyTotal(Integer supportId, Integer type) {
+        String creator = supportId == 0 ? commonService.thisUserAccount() : null;
+        return mdIncomeSelfSupportCostDao.getAmountMoneyTotal(supportId, type, creator);
+    }
+
+    /**
      租赁-----------
      */
 
@@ -152,6 +164,18 @@ public class MdIncomeService {
      */
     public boolean deleteLease(Integer id) {
         return mdIncomeLeaseDao.deleteIncomeLease(id);
+    }
+
+    /**
+     * 复制数据
+     *
+     * @param id
+     * @return
+     */
+    public void copyLease(Integer id) {
+        MdIncomeLease mdIncomeLease = mdIncomeLeaseDao.getIncomeLeaseById(id);
+        mdIncomeLease.setId(0);
+        mdIncomeLeaseDao.addIncomeLease(mdIncomeLease);
     }
 
     /**

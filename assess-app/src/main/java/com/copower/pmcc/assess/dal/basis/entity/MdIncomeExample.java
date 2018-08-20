@@ -416,6 +416,76 @@ public class MdIncomeExample {
             return (Criteria) this;
         }
 
+        public Criteria andRestrictionExplainIsNull() {
+            addCriterion("restriction_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainIsNotNull() {
+            addCriterion("restriction_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainEqualTo(String value) {
+            addCriterion("restriction_explain =", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainNotEqualTo(String value) {
+            addCriterion("restriction_explain <>", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainGreaterThan(String value) {
+            addCriterion("restriction_explain >", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("restriction_explain >=", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainLessThan(String value) {
+            addCriterion("restriction_explain <", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainLessThanOrEqualTo(String value) {
+            addCriterion("restriction_explain <=", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainLike(String value) {
+            addCriterion("restriction_explain like", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainNotLike(String value) {
+            addCriterion("restriction_explain not like", value, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainIn(List<String> values) {
+            addCriterion("restriction_explain in", values, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainNotIn(List<String> values) {
+            addCriterion("restriction_explain not in", values, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainBetween(String value1, String value2) {
+            addCriterion("restriction_explain between", value1, value2, "restrictionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionExplainNotBetween(String value1, String value2) {
+            addCriterion("restriction_explain not between", value1, value2, "restrictionExplain");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

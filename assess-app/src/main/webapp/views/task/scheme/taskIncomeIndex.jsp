@@ -146,6 +146,9 @@
         if (!supportInfoModule.valid()) {
             return false;
         }
+        if (!income.valid()) {
+            return false;
+        }
         if (!$("#frm_task").valid()) {
             return false;
         }

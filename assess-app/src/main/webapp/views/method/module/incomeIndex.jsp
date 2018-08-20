@@ -32,16 +32,27 @@
                 </label>
                 <div class="col-sm-3">
                     <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
-                                                      value="0"><label
+                                                      onchange="income.leaseModeChange(this);" value="0"><label
                             for="leaseMode0">限制</label></span>
-                    <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"><label
+                    <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
+                                                      onchange="income.leaseModeChange(this);"><label
                             for="leaseMode1">无限制</label></span>
+                </div>
+            </div>
+            <div class="form-group" id="group_restriction_explain" style="display: none;">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        租约限制说明<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-11">
+                        <textarea name="restrictionExplain" class="form-control" required></textarea>
+                    </div>
                 </div>
             </div>
         </form>
         <div id="self_support_info" style="display: none">
             <div class="x_title">
-                <h3>收入类</h3>
+                <h3>收入类 <i class="red" id="amount_money_total_0"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -53,7 +64,7 @@
                 </table>
             </div>
             <div class="x_title">
-                <h3>成本类</h3>
+                <h3>成本类 <i class="red" id="amount_money_total_1"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -64,7 +75,7 @@
                 </table>
             </div>
             <div class="x_title">
-                <h3>费用类</h3>
+                <h3>费用类 <i class="red" id="amount_money_total_2"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -584,33 +595,33 @@
 
 <script type="text/javascript">
     var income = {};
-
+    //参数
+    income.defaluts = {
+        incomeInfo: undefined,
+        incomeSelfSupport: undefined
+    };
     //初始化
     income.init = function (options) {
-        console.log(options);
-        var defaluts = {
-            incomeInfo: undefined,
-            incomeSelfSupport: undefined
-        };
-        defaluts = $.extend({}, defaluts, options);
-        console.log(defaluts.incomeInfo);
-        if (defaluts.incomeInfo) {
-            $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
-            $("#frm_income").find("[name=operationMode][value=" + defaluts.incomeInfo.operationMode + "]").trigger('click');
-            $("#frm_income").find("[name=leaseMode][value=" + defaluts.incomeInfo.leaseMode + "]").trigger('click');
-        }
+        income.defaluts = $.extend({}, defaluts, options);
+        var defaluts = income.defaluts;
         if (defaluts.incomeSelfSupport) {
             $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
             $("#frm_self_support").find("[name=averageProfitRate]").val(defaluts.incomeSelfSupport.averageProfitRate);
             $("#frm_self_support").find("[name=averageProfitRateRemark]").val(defaluts.incomeSelfSupport.averageProfitRateRemark);
         }
+        if (defaluts.incomeInfo) {
+            $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
+            $("#frm_income").find("[name=restrictionExplain]").val(defaluts.incomeInfo.restrictionExplain);
+            $("#frm_income").find("[name=operationMode][value=" + defaluts.incomeInfo.operationMode + "]").trigger('click');
+        }
+
     }
 
     //经营方式切换
     income.operationModeChange = function (value) {
         if (value == 0) {
             $("#self_support_info").show();
-            $("#group_leaseMode,#lease_info").hide();
+            $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();
 
             income.loadSupportCostList('0', 'tb_income_list');
             income.loadSupportCostList('1', 'tb_cost_list');
@@ -618,7 +629,18 @@
         } else if (value == 1) {
             $("#self_support_info").hide();
             $("#group_leaseMode,#lease_info").show();
+            $("#frm_income").find("[name=leaseMode][value=" + income.defaluts.incomeInfo.leaseMode + "]").trigger('click');
             income.loadLeaseList();
+        }
+    }
+
+    //租赁方式切换
+    income.leaseModeChange = function (_this) {
+        var value = $(_this).val();
+        if (value == 0) {
+            $("#group_restriction_explain").show();
+        } else if (value == 1) {
+            $("#group_restriction_explain").hide();
         }
     }
 
@@ -770,6 +792,24 @@
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/income/getAmountMoneyTotal',
+                    data: {
+                        type: type,
+                        supportId: $("#frm_self_support").find('[name=id]').val()
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (result) {
+                        if (result.ret) {
+                            if (result.data && result.data > 0) {
+                                $("#amount_money_total_" + type).text(result.data);
+                            } else {
+                                $("#amount_money_total_" + type).text('');
+                            }
+                        }
+                    }
+                })
             }
         });
     }
@@ -840,6 +880,30 @@
         })
     }
 
+    //租赁数据拷贝
+    income.copyLease = function (id) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/income/copyLease",
+            type: "post",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('复制成功');
+                    income.loadLeaseList();
+                }
+                else {
+                    Alert("删除数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
     //保存租赁收益
     income.saveLease = function () {
         if (!$("#frm_lease").valid()) {
@@ -898,6 +962,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="income.editLease(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="复制" onclick="income.copyLease(' + row.id + ')"><i class="fa fa-copy fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="income.delLease(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -915,6 +980,7 @@
             }
         });
     }
+
 
     //计算年押金利息收入
     income.cpInterestIncome = function () {
@@ -1061,7 +1127,7 @@
         form.find('[name=correctionFactor]').val(correctionFactor);
 
         var presentValueFactor = correctionFactor / (capitalizationRate - rentalGrowthRate);
-        form.find('[name=presentValueFactor]').val(isNaN(presentValueFactor)? 0 : presentValueFactor.toFixed(2));
+        form.find('[name=presentValueFactor]').val(isNaN(presentValueFactor) ? 0 : presentValueFactor.toFixed(2));
 
         //收益现值系数变化
         income.cpIncomePrice();
@@ -1099,7 +1165,13 @@
 
     //保存数据前验证
     income.valid = function () {
-
+        if (!$("#frm_income").valid()) {
+            return false;
+        }
+        if (!$("#frm_self_support").valid()) {
+            return false;
+        }
+        return true;
     }
 
     //获取需要保存的数据

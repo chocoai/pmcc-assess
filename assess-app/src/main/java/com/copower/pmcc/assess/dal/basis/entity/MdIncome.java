@@ -14,6 +14,8 @@ public class MdIncome {
 
     private Integer leaseMode;
 
+    private String restrictionExplain;
+
     private String creator;
 
     private Date gmtCreated;
@@ -58,6 +60,14 @@ public class MdIncome {
 
     public void setLeaseMode(Integer leaseMode) {
         this.leaseMode = leaseMode;
+    }
+
+    public String getRestrictionExplain() {
+        return restrictionExplain;
+    }
+
+    public void setRestrictionExplain(String restrictionExplain) {
+        this.restrictionExplain = restrictionExplain == null ? null : restrictionExplain.trim();
     }
 
     public String getCreator() {

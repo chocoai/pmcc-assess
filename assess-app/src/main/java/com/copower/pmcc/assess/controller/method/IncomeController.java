@@ -94,4 +94,26 @@ public class IncomeController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/copyLease", name = "复制", method = RequestMethod.POST)
+    public HttpResult copyLease(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.copyLease(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAmountMoneyTotal", name = "获取金额合计", method = RequestMethod.POST)
+    public HttpResult getAmountMoneyTotal(Integer supportId, Integer type) {
+        try {
+            return HttpResult.newCorrectResult(mdIncomeService.getAmountMoneyTotal(supportId, type));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }

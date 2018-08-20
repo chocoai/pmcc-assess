@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomIncomeSelfSupportCostMapper">
+
+    <select id="getAmountMoneyTotal" parameterType="map" resultType="BigDecimal">
+       SELECT sum(amount_money) FROM tb_md_income_self_support_cost where 1=1
+        <if test="supportId!=null">
+            AND support_id = #{supportId}
+        </if>
+        <if test="type!=null">
+            AND type = #{type}
+        </if>
+        <if test="creator!=null and creator!=''">
+            AND creator = #{creator}
+        </if>
+    </select>
+</mapper>
+

@@ -7,6 +7,7 @@
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="operation_mode" property="operationMode" jdbcType="INTEGER" />
     <result column="lease_mode" property="leaseMode" jdbcType="INTEGER" />
+    <result column="restriction_explain" property="restrictionExplain" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, price, operation_mode, lease_mode, creator, gmt_created, gmt_modified
+    id, name, price, operation_mode, lease_mode, restriction_explain, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeExample" >
     select
@@ -107,11 +109,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_income (name, price, operation_mode, 
-      lease_mode, creator, gmt_created, 
-      gmt_modified)
+      lease_mode, restriction_explain, creator, 
+      gmt_created, gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{operationMode,jdbcType=INTEGER}, 
-      #{leaseMode,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{leaseMode,jdbcType=INTEGER}, #{restrictionExplain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncome" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -130,6 +132,9 @@
       </if>
       <if test="leaseMode != null" >
         lease_mode,
+      </if>
+      <if test="restrictionExplain != null" >
+        restriction_explain,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,6 +158,9 @@
       </if>
       <if test="leaseMode != null" >
         #{leaseMode,jdbcType=INTEGER},
+      </if>
+      <if test="restrictionExplain != null" >
+        #{restrictionExplain,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -189,6 +197,9 @@
       <if test="record.leaseMode != null" >
         lease_mode = #{record.leaseMode,jdbcType=INTEGER},
       </if>
+      <if test="record.restrictionExplain != null" >
+        restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -210,6 +221,7 @@
       price = #{record.price,jdbcType=DECIMAL},
       operation_mode = #{record.operationMode,jdbcType=INTEGER},
       lease_mode = #{record.leaseMode,jdbcType=INTEGER},
+      restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -232,6 +244,9 @@
       <if test="leaseMode != null" >
         lease_mode = #{leaseMode,jdbcType=INTEGER},
       </if>
+      <if test="restrictionExplain != null" >
+        restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -250,6 +265,7 @@
       price = #{price,jdbcType=DECIMAL},
       operation_mode = #{operationMode,jdbcType=INTEGER},
       lease_mode = #{leaseMode,jdbcType=INTEGER},
+      restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

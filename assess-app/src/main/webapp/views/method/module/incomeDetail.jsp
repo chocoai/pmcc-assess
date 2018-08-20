@@ -13,7 +13,7 @@
             <input type="hidden" name="id" value="0">
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    经营方式<span class="symbol required"></span>
+                    经营方式
                 </label>
                 <div class="col-sm-3">
                     <span class="radio-inline"><input type="radio" required name="operationMode" id="operationMode0"
@@ -28,20 +28,33 @@
             </div>
             <div class="form-group" id="group_leaseMode" style="display: none;">
                 <label class="col-sm-1 control-label">
-                    租赁限制<span class="symbol required"></span>
+                    租赁限制
                 </label>
                 <div class="col-sm-3">
                     <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
-                                                      readonly="readonly"  value="0"><label
+                                                      onchange="income.leaseModeChange(this);" readonly="readonly"
+                                                      value="0"><label
                             for="leaseMode0">限制</label></span>
-                    <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" readonly="readonly" value="1"><label
+                    <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1"
+                                                      onchange="income.leaseModeChange(this);" readonly="readonly"
+                                                      value="1"><label
                             for="leaseMode1">无限制</label></span>
+                </div>
+            </div>
+            <div class="form-group" id="group_restriction_explain" style="display: none;">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        租约限制说明
+                    </label>
+                    <div class="col-sm-11">
+                        <label name="restrictionExplain" class="form-control"></label>
+                    </div>
                 </div>
             </div>
         </form>
         <div id="self_support_info" style="display: none">
             <div class="x_title">
-                <h3>收入类</h3>
+                <h3>收入类 <i class="red" id="amount_money_total_0"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -49,7 +62,7 @@
                 </table>
             </div>
             <div class="x_title">
-                <h3>成本类</h3>
+                <h3>成本类 <i class="red" id="amount_money_total_1"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -57,7 +70,7 @@
                 </table>
             </div>
             <div class="x_title">
-                <h3>费用类</h3>
+                <h3>费用类 <i class="red" id="amount_money_total_2"></i></h3>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -69,10 +82,10 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            行业经经营平均利润率<span class="symbol required"></span>
+                            行业经经营平均利润率
                         </label>
                         <div class="col-sm-3">
-                            <label class="form-control" data-name="averageProfitRate"></label>
+                            <label class="form-control" name="averageProfitRate"></label>
                         </div>
                     </div>
                 </div>
@@ -82,7 +95,7 @@
                             行业经经营平均利润率取数说明
                         </label>
                         <div class="col-sm-11">
-                            <label class="form-control" data-name="averageProfitRateRemark"></label>
+                            <label class="form-control" name="averageProfitRateRemark"></label>
                         </div>
                     </div>
                 </div>
@@ -117,11 +130,11 @@
                 <input type="hidden" name="id">
                 <div class="modal-body">
                     <fieldset>
-                        <legend>1.年有效毛收入（元/m2）</legend>
+                        <legend>1.年有效毛收入 <i class="red" data-name="grossIncome"></i>（元/m2）</legend>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    月租金收入<span class="symbol required"></span>
+                                    月租金收入
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="rentalIncome"></label>
@@ -129,7 +142,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    全年月份数<span class="symbol required"></span>
+                                    全年月份数
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="monthNumber"></label>
@@ -137,7 +150,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    出租率<span class="symbol required"></span>
+                                    出租率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="rentals"></label>
@@ -157,7 +170,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    押金<span class="symbol required"></span>
+                                    押金
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="deposit"></label>
@@ -165,7 +178,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    利率<span class="symbol required"></span>
+                                    利率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="interestRate"></label>
@@ -173,7 +186,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    年押金利息收入<span class="symbol required"></span>
+                                    年押金利息收入
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="interestIncome"></label>
@@ -193,7 +206,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    其它收入<span class="symbol required"></span>
+                                    其它收入
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="otherIncome"></label>
@@ -212,19 +225,11 @@
                         </div>
                     </fieldset>
                     <fieldset>
-                        <legend>2.年运营费（元/m2）</legend>
+                        <legend>2.年运营费 <i class="red" data-name="operatingExpense"></i>（元/m2）</legend>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    管理费用<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control" data-name="managementCost"></label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    费用比率<span class="symbol required"></span>
+                                    费用比率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="managementCostRatio"></label>
@@ -232,9 +237,19 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    取费说明<span class="symbol required"></span>
+                                    管理费用
                                 </label>
                                 <div class="col-sm-3">
+                                    <label class="form-control" data-name="managementCost"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    取费说明
+                                </label>
+                                <div class="col-sm-11">
                                     <label class="form-control" data-name="paymentRemark"></label>
                                 </div>
                             </div>
@@ -242,15 +257,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    维护保养<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control" data-name="maintenance"></label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    费用比率<span class="symbol required"></span>
+                                    维护保养费率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="maintenanceCostRatio"></label>
@@ -258,25 +265,25 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    计算基数重置价格<span class="symbol required"></span>
+                                    计算基数重置价格
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="replacementValue"></label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    维护保养费
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control" data-name="maintenance"></label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    相关税金及附加<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <label class="form-control" data-name="additional"></label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    税率<span class="symbol required"></span>
+                                    税率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="taxRate"></label>
@@ -284,17 +291,17 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    保险费<span class="symbol required"></span>
+                                    相关税金及附加
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="insurancePremium"></label>
+                                    <label class="form-control" data-name="additional"></label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    保险费率<span class="symbol required"></span>
+                                    保险费率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="insuranceRate"></label>
@@ -302,31 +309,42 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    土地使用税<span class="symbol required"></span>
+                                    保险费
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="landUseTax"></label>
+                                    <label class="form-control" data-name="insurancePremium"></label>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    使用税参数<span class="symbol required"></span>
+                                    使用税参数
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="usageTaxParameter"></label>
                                 </div>
                             </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    土地使用税
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control" data-name="landUseTax"></label>
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                     <fieldset>
-                        <legend>3.房地产年净收益（元/m2）</legend>
+                        <legend>3.房地产年净收益 <i class="red" data-name="netProfit"></i>（元/m2）</legend>
                     </fieldset>
                     <fieldset>
-                        <legend>4.房地产收益价格（元/m2）</legend>
+                        <legend>4.房地产收益价格 <i class="red" data-name="incomePrice"></i>（元/m2）</legend>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    资本化率<span class="symbol required"></span>
+                                    资本化率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="capitalizationRate"></label>
@@ -334,7 +352,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    收益期限<span class="symbol required"></span>
+                                    收益期限
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="returnPeriod"></label>
@@ -344,7 +362,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    开始时间<span class="symbol required"></span>
+                                    开始时间
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="leaseBeginDate"></label>
@@ -362,7 +380,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    租金增长率<span class="symbol required"></span>
+                                    租金增长率
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="rentalGrowthRate"></label>
@@ -370,7 +388,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    年期修正系数<span class="symbol required"></span>
+                                    年期修正系数
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="correctionFactor"></label>
@@ -378,7 +396,7 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    收益现值系数<span class="symbol required"></span>
+                                    收益现值系数
                                 </label>
                                 <div class="col-sm-3">
                                     <label class="form-control" data-name="presentValueFactor"></label>
@@ -399,31 +417,36 @@
 
 <script type="text/javascript">
     var income = {};
+    //参数
+    income.defaluts = {
+        incomeInfo: undefined,
+        incomeSelfSupport: undefined
+    };
 
     //初始化
     income.view = function (options) {
-        var defaluts = {
-            incomeInfo: undefined,
-            incomeSelfSupport: undefined
-        };
-        defaluts = $.extend({}, defaluts, options);
-        if (defaluts.incomeInfo) {
-            $("#frm_income").find("[name=operationMode][value="+defaluts.incomeInfo.operationMode+"]").trigger('click');
-            $("#frm_income").find("[name=leaseMode][value="+defaluts.incomeInfo.leaseMode+"]").trigger('click');
-            $("#frm_income").find("[name=operationMode]").attr('disabled','disabled');
-            $("#frm_income").find("[name=leaseMode]").attr('disabled','disabled');
-        }
+        income.defaluts = $.extend({}, income.defaluts, options);
+        var defaluts = income.defaluts;
         if (defaluts.incomeSelfSupport) {
-            $("#frm_self_support").find("[data-name=averageProfitRate]").val(defaluts.incomeSelfSupport.averageProfitRate);
-            $("#frm_self_support").find("[data-name=averageProfitRateRemark]").val(defaluts.incomeSelfSupport.averageProfitRateRemark);
+            $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
+            $("#frm_self_support").find("[name=averageProfitRate]").text(defaluts.incomeSelfSupport.averageProfitRate);
+            $("#frm_self_support").find("[name=averageProfitRateRemark]").text(defaluts.incomeSelfSupport.averageProfitRateRemark);
         }
+        if (defaluts.incomeInfo) {
+            $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
+            $("#frm_income").find("[name=restrictionExplain]").text(defaluts.incomeInfo.restrictionExplain);
+            $("#frm_income").find("[name=operationMode][value=" + defaluts.incomeInfo.operationMode + "]").trigger('click');
+            $("#frm_income").find("[name=operationMode]").attr('disabled', 'disabled');
+            $("#frm_income").find("[name=leaseMode]").attr('disabled', 'disabled');
+        }
+
     }
 
     //经营方式切换
     income.operationModeChange = function (value) {
         if (value == 0) {
             $("#self_support_info").show();
-            $("#group_leaseMode,#lease_info").hide();
+            $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();
 
             income.loadSupportCostList('0', 'tb_income_list');
             income.loadSupportCostList('1', 'tb_cost_list');
@@ -431,7 +454,18 @@
         } else if (value == 1) {
             $("#self_support_info").hide();
             $("#group_leaseMode,#lease_info").show();
+            $("#frm_income").find("[name=leaseMode][value=" + income.defaluts.incomeInfo.leaseMode + "]").trigger('click');
             income.loadLeaseList();
+        }
+    }
+
+    //租赁方式切换
+    income.leaseModeChange = function (_this) {
+        var value = $(_this).val();
+        if (value == 0) {
+            $("#group_restriction_explain").show();
+        } else if (value == 1) {
+            $("#group_restriction_explain").hide();
         }
     }
 
@@ -460,17 +494,17 @@
     }
 
 
-
     //租赁-----------------------------------------------------------------------------------------------------
 
 
-
-    //编辑租赁收益
+    //查看租赁收益
     income.viewLease = function (index) {
         var row = $("#tb_lease_list").bootstrapTable('getData')[index];
         $("#frm_lease").find('[data-name]').each(function () {
             $(this).text('').text(row[$(this).attr('data-name')]);
         })
+        $("#frm_lease").find('[data-name=leaseBeginDate]').text(formatDate(row.leaseBeginDate, false));
+        $("#frm_lease").find('[data-name=leaseEndDate]').text(formatDate(row.leaseEndDate, false));
         $('#modal_lease').modal();
     }
 
@@ -489,6 +523,10 @@
             }
         });
         cols.push({field: 'rentalGrowthRate', title: '租金增长率'});
+        cols.push({field: 'grossIncome', title: '年有效毛收入'});
+        cols.push({field: 'operatingExpense', title: '年运营费'});
+        cols.push({field: 'netProfit', title: '房地产年净收益'});
+        cols.push({field: 'incomePrice', title: '房地产收益价格'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -500,7 +538,7 @@
         });
         $("#tb_lease_list").bootstrapTable('destroy');
         TableInit("tb_lease_list", "${pageContext.request.contextPath}/income/getLeaseList", cols, {
-            supportId: $("#frm_income").find('[name=id]').val()
+            incomeId: $("#frm_income").find('[name=id]').val()
         }, {
             showColumns: false,
             showRefresh: false,
