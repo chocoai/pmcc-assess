@@ -9,37 +9,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form class="form-horizontal frmBuild" id="frmBuild">
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="勘察设计和前期工程费" data-toggle="popover reconnaissanceDesign"
-                       class="form-control" name="reconnaissanceDesign" readonly="readonly">
+            <label class="col-sm-1 control-label">
+                勘察设计和前期工程费率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察设计和前期工程费率" data-toggle="popover reconnaissanceDesignRote" class="form-control"
+                           name="reconnaissanceDesignRote">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费率
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="勘察设计和前期工程费率" data-toggle="popover reconnaissanceDesignRote" class="form-control"
-                       name="reconnaissanceDesignRote">
+            <label class="col-sm-1 control-label">
+                建筑安装工程费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="建筑安装工程费" readonly="readonly" class="form-control"
+                           name="constructionInstallationEngineeringFee"
+                           onclick="build.constructionInstallationEngineeringFee.event();">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            建筑安装工程费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="建筑安装工程费" readonly="readonly" class="form-control"
-                       name="constructionInstallationEngineeringFee"
-                       onclick="build.constructionInstallationEngineeringFee.event();">
+            <label class="col-sm-1 control-label">
+                勘察设计和前期工程费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察设计和前期工程费" data-toggle="popover reconnaissanceDesign"
+                           class="form-control" name="reconnaissanceDesign" readonly="readonly">
+                </div>
             </div>
         </div>
     </div>
@@ -60,196 +64,223 @@
 
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            基础设施建设费 单价选择
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <select name="infrastructureCostSelect2"
-                        class="form-control search-select select2 infrastructureCostSelect2">
-                </select>
+            <label class="col-sm-1 control-label">
+                基础设施建设费 单价选择
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <select name="infrastructureCostSelect2"
+                            class="form-control search-select select2 infrastructureCostSelect2">
+                    </select>
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            基础设施建设费
-        </label>
+       <div class="x-valid">
+           <label class="col-sm-1 control-label">
+               基础设施建设费
+           </label>
+           <div class="x-valid">
+               <div class="col-sm-3">
+                   <input type="text" readonly="readonly"
+                          placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
+               </div>
+           </div>
+       </div>
+    </div>
+    <div class="form-group">
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
+            <label class="col-sm-1 control-label">
+                公共配套设施建设费 单价选择
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <select name="infrastructureMatchingCostSelect2"
+                            class="form-control search-select select2 infrastructureMatchingCostSelect2">
+                    </select>
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            公共配套设施建设费 单价选择
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <select name="infrastructureMatchingCostSelect2"
-                        class="form-control search-select select2 infrastructureMatchingCostSelect2">
-                </select>
+            <label class="col-sm-1 control-label">
+                公共配套设施建设费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
+                </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            公共配套设施建设费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
+            <label class="col-sm-1 control-label">
+                开发期间单价
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="开发期间单价" class="form-control" name="devDuringPrice">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            开发期间单价
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="开发期间单价" class="form-control" name="devDuringPrice">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            开发期间税费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
+            <label class="col-sm-1 control-label">
+                开发期间税费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
+                </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            其它工程费单价
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
+            <label class="col-sm-1 control-label">
+                其它工程费单价
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            其它工程费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
+            <label class="col-sm-1 control-label">
+                其它工程费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            建设成本
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="建设成本" class="form-control" name="constructionCost">
+            <label class="col-sm-1 control-label">
+                建设成本
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="建设成本" class="form-control" name="constructionCost">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                管理费率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="管理费率" class="form-control" name="managementExpenseRote">
+                </div>
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                管理费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="管理费" class="form-control" name="managementExpense">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                不可预见费率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
+                </div>
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                不可预见费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
+                </div>
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                重置价格
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="重置价格" class="form-control" name="replacementValue">
+                </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            管理费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="管理费" class="form-control" name="managementExpense">
+            <label class="col-sm-1 control-label">
+                销售费率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="销售费率" class="form-control" name="salesFeeRote">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            管理费率
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="管理费率" class="form-control" name="managementExpenseRote">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            不可预见费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
+            <label class="col-sm-1 control-label">
+                销售费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="销售费" class="form-control" name="salesFee">
+                </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            不可预见费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
+            <label class="col-sm-1 control-label">
+                增值及附加税率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <select name="addedValueAdditionalTaxRate"
+                            class="form-control search-select select2 addedValueAdditionalTaxRateSelect2">
+                    </select>
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            重置价格
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="重置价格" class="form-control" name="replacementValue">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            销售费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="销售费率" class="form-control" name="salesFeeRote">
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            销售费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="销售费" class="form-control" name="salesFee">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            增值及附加税率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <select name="addedValueAdditionalTaxRate"
-                        class="form-control search-select select2 addedValueAdditionalTaxRateSelect2">
-                </select>
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            增值及附加税金
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+            <label class="col-sm-1 control-label">
+                增值及附加税金
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+                </div>
             </div>
         </div>
     </div>
