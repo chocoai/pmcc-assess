@@ -1116,6 +1116,76 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andGrossIncomeIsNull() {
+            addCriterion("gross_income is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeIsNotNull() {
+            addCriterion("gross_income is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeEqualTo(String value) {
+            addCriterion("gross_income =", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeNotEqualTo(String value) {
+            addCriterion("gross_income <>", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeGreaterThan(String value) {
+            addCriterion("gross_income >", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeGreaterThanOrEqualTo(String value) {
+            addCriterion("gross_income >=", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeLessThan(String value) {
+            addCriterion("gross_income <", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeLessThanOrEqualTo(String value) {
+            addCriterion("gross_income <=", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeLike(String value) {
+            addCriterion("gross_income like", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeNotLike(String value) {
+            addCriterion("gross_income not like", value, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeIn(List<String> values) {
+            addCriterion("gross_income in", values, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeNotIn(List<String> values) {
+            addCriterion("gross_income not in", values, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeBetween(String value1, String value2) {
+            addCriterion("gross_income between", value1, value2, "grossIncome");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrossIncomeNotBetween(String value1, String value2) {
+            addCriterion("gross_income not between", value1, value2, "grossIncome");
+            return (Criteria) this;
+        }
+
         public Criteria andMaintenanceIsNull() {
             addCriterion("maintenance is null");
             return (Criteria) this;
@@ -1743,6 +1813,76 @@ public class MdIncomeLeaseExample {
 
         public Criteria andUsageTaxParameterNotBetween(String value1, String value2) {
             addCriterion("usage_tax_parameter not between", value1, value2, "usageTaxParameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseIsNull() {
+            addCriterion("operating_expense is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseIsNotNull() {
+            addCriterion("operating_expense is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseEqualTo(String value) {
+            addCriterion("operating_expense =", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseNotEqualTo(String value) {
+            addCriterion("operating_expense <>", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseGreaterThan(String value) {
+            addCriterion("operating_expense >", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseGreaterThanOrEqualTo(String value) {
+            addCriterion("operating_expense >=", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseLessThan(String value) {
+            addCriterion("operating_expense <", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseLessThanOrEqualTo(String value) {
+            addCriterion("operating_expense <=", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseLike(String value) {
+            addCriterion("operating_expense like", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseNotLike(String value) {
+            addCriterion("operating_expense not like", value, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseIn(List<String> values) {
+            addCriterion("operating_expense in", values, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseNotIn(List<String> values) {
+            addCriterion("operating_expense not in", values, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseBetween(String value1, String value2) {
+            addCriterion("operating_expense between", value1, value2, "operatingExpense");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingExpenseNotBetween(String value1, String value2) {
+            addCriterion("operating_expense not between", value1, value2, "operatingExpense");
             return (Criteria) this;
         }
 

@@ -34,6 +34,8 @@ public class MdIncomeLease {
 
     private String paymentRemark;
 
+    private String grossIncome;
+
     private String maintenance;
 
     private String maintenanceCostRatio;
@@ -51,6 +53,8 @@ public class MdIncomeLease {
     private String landUseTax;
 
     private String usageTaxParameter;
+
+    private String operatingExpense;
 
     private String netProfit;
 
@@ -202,6 +206,14 @@ public class MdIncomeLease {
         this.paymentRemark = paymentRemark == null ? null : paymentRemark.trim();
     }
 
+    public String getGrossIncome() {
+        return grossIncome;
+    }
+
+    public void setGrossIncome(String grossIncome) {
+        this.grossIncome = grossIncome == null ? null : grossIncome.trim();
+    }
+
     public String getMaintenance() {
         return maintenance;
     }
@@ -272,6 +284,14 @@ public class MdIncomeLease {
 
     public void setUsageTaxParameter(String usageTaxParameter) {
         this.usageTaxParameter = usageTaxParameter == null ? null : usageTaxParameter.trim();
+    }
+
+    public String getOperatingExpense() {
+        return operatingExpense;
+    }
+
+    public void setOperatingExpense(String operatingExpense) {
+        this.operatingExpense = operatingExpense == null ? null : operatingExpense.trim();
     }
 
     public String getNetProfit() {

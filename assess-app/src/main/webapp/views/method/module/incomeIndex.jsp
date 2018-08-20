@@ -272,7 +272,8 @@
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" name="rentals" placeholder="出租率" onblur="income.cpGrossIncome();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                         </div>
@@ -304,7 +305,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" name="interestRate" placeholder="利率"
                                            onblur="income.cpInterestIncome();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -362,7 +364,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" name="managementCostRatio" placeholder="管理费用比率"
                                            onblur="income.cpManagementCost();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -393,7 +396,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" name="maintenanceCostRatio" placeholder="维护保养费用比率"
                                            onblur="income.cpMaintenance();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -423,7 +427,8 @@
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" name="taxRate" placeholder="税率" onblur="income.cpAdditional();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -444,7 +449,8 @@
                                 <div class="col-sm-3">
                                     <input type="text" name="insuranceRate" placeholder="保险费率"
                                            onblur="income.cpInsurancePremium();"
-                                           data-rule-number="true" class="form-control" required="required">
+                                           data-rule-range="[0,1]" data-rule-number="true" class="form-control"
+                                           required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -460,19 +466,20 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    土地使用税<span class="symbol required"></span>
+                                    使用税参数<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="landUseTax" placeholder="土地使用税" onblur="income.cpOperatingExpense();"
+                                    <input type="text" name="usageTaxParameter" placeholder="使用税参数"
                                            data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
-                                    使用税参数<span class="symbol required"></span>
+                                    土地使用税<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="usageTaxParameter" placeholder="使用税参数"
+                                    <input type="text" name="landUseTax" placeholder="土地使用税"
+                                           onblur="income.cpOperatingExpense();"
                                            data-rule-number="true" class="form-control" required="required">
                                 </div>
                             </div>
@@ -783,6 +790,11 @@
     //添加租赁收益列表信息
     income.addLease = function () {
         $("#frm_lease").clearAll();
+        $("#frm_lease").find('[data-name=grossIncome]').text('');
+        $("#frm_lease").find('[data-name=operatingExpense]').text('');
+        $("#frm_lease").find('[data-name=netProfit]').text('');
+        $("#frm_lease").find('[data-name=incomePrice]').text('');
+        $("#frm_lease").validate();
         $('#modal_lease').modal();
     }
 
@@ -791,6 +803,13 @@
         var row = $("#tb_lease_list").bootstrapTable('getData')[index];
         $("#frm_lease").clearAll();
         $("#frm_lease").initForm(row);
+        $("#frm_lease").find('[data-name=grossIncome]').text(row.grossIncome);
+        $("#frm_lease").find('[data-name=operatingExpense]').text(row.operatingExpense);
+        $("#frm_lease").find('[data-name=netProfit]').text(row.netProfit);
+        $("#frm_lease").find('[data-name=incomePrice]').text(row.incomePrice);
+        $("#frm_lease").find('[name=leaseBeginDate]').val(formatDate(row.leaseBeginDate, false));
+        $("#frm_lease").find('[name=leaseEndDate]').val(formatDate(row.leaseEndDate, false));
+        $("#frm_lease").validate();
         $('#modal_lease').modal();
     }
 
@@ -827,6 +846,10 @@
             return false;
         }
         var formData = formParams("frm_lease");
+        formData.grossIncome = $("#frm_lease").find('[data-name=grossIncome]').text();
+        formData.operatingExpense = $("#frm_lease").find('[data-name=operatingExpense]').text();
+        formData.netProfit = $("#frm_lease").find('[data-name=netProfit]').text();
+        formData.incomePrice = $("#frm_lease").find('[data-name=incomePrice]').text();
         formData.incomeId = $("#frm_income").find('[name=id]').val();
         Loading.progressShow();
         $.ajax({
@@ -866,6 +889,10 @@
             }
         });
         cols.push({field: 'rentalGrowthRate', title: '租金增长率'});
+        cols.push({field: 'grossIncome', title: '年有效毛收入'});
+        cols.push({field: 'operatingExpense', title: '年运营费'});
+        cols.push({field: 'netProfit', title: '房地产年净收益'});
+        cols.push({field: 'incomePrice', title: '房地产收益价格'});
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -878,7 +905,7 @@
         });
         $("#tb_lease_list").bootstrapTable('destroy');
         TableInit("tb_lease_list", "${pageContext.request.contextPath}/income/getLeaseList", cols, {
-            supportId: $("#frm_income").find('[name=id]').val()
+            incomeId: $("#frm_income").find('[name=id]').val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -1006,7 +1033,7 @@
         var landUseTax = form.find('[name=landUseTax]').val();
         if (!AssessCommon.isNumber(landUseTax)) return false;
 
-        var operatingExpense = parseFloat(managementCost) * parseFloat(maintenance) * parseFloat(additional) + parseFloat(insurancePremium) + parseFloat(landUseTax);
+        var operatingExpense = parseFloat(managementCost) + parseFloat(maintenance) + parseFloat(additional) + parseFloat(insurancePremium) + parseFloat(landUseTax);
         form.find('[data-name=operatingExpense]').text(operatingExpense.toFixed(2));
 
         //运营费变化
@@ -1022,7 +1049,7 @@
         var returnPeriod = form.find('[name=returnPeriod]').val();
         if (!AssessCommon.isNumber(returnPeriod)) return false;
 
-        var rentalGrowthRate = form.find('[name=rental_growth_rate]').val();
+        var rentalGrowthRate = form.find('[name=rentalGrowthRate]').val();
         if (!AssessCommon.isNumber(rentalGrowthRate)) return false;
 
         capitalizationRate = parseFloat(capitalizationRate);
@@ -1031,10 +1058,10 @@
 
         var correctionFactor = 1 - Math.pow((1 + rentalGrowthRate) / (1 + capitalizationRate), returnPeriod)
         correctionFactor = correctionFactor.toFixed(2);
-        form.find('[name=correctionFactor]').value(correctionFactor.toFixed(2));
+        form.find('[name=correctionFactor]').val(correctionFactor);
 
         var presentValueFactor = correctionFactor / (capitalizationRate - rentalGrowthRate);
-        form.find('[name=presentValueFactor]').value(presentValueFactor.toFixed(2));
+        form.find('[name=presentValueFactor]').val(isNaN(presentValueFactor)? 0 : presentValueFactor.toFixed(2));
 
         //收益现值系数变化
         income.cpIncomePrice();

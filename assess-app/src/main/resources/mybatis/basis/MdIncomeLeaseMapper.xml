@@ -17,6 +17,7 @@
     <result column="management_cost" property="managementCost" jdbcType="VARCHAR" />
     <result column="management_cost_ratio" property="managementCostRatio" jdbcType="VARCHAR" />
     <result column="payment_remark" property="paymentRemark" jdbcType="VARCHAR" />
+    <result column="gross_income" property="grossIncome" jdbcType="VARCHAR" />
     <result column="maintenance" property="maintenance" jdbcType="VARCHAR" />
     <result column="maintenance_cost_ratio" property="maintenanceCostRatio" jdbcType="VARCHAR" />
     <result column="replacement_value" property="replacementValue" jdbcType="VARCHAR" />
@@ -26,6 +27,7 @@
     <result column="insurance_rate" property="insuranceRate" jdbcType="VARCHAR" />
     <result column="land_use_tax" property="landUseTax" jdbcType="VARCHAR" />
     <result column="usage_tax_parameter" property="usageTaxParameter" jdbcType="VARCHAR" />
+    <result column="operating_expense" property="operatingExpense" jdbcType="VARCHAR" />
     <result column="net_profit" property="netProfit" jdbcType="VARCHAR" />
     <result column="income_price" property="incomePrice" jdbcType="VARCHAR" />
     <result column="capitalization_rate" property="capitalizationRate" jdbcType="VARCHAR" />
@@ -103,11 +105,11 @@
   <sql id="Base_Column_List" >
     id, income_id, rental_income, rentals, month_number, deposit, interest_rate, interest_income, 
     other_income, rentals_remark, interest_rate_remark, other_income_remark, management_cost, 
-    management_cost_ratio, payment_remark, maintenance, maintenance_cost_ratio, replacement_value, 
-    additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, usage_tax_parameter, 
-    net_profit, income_price, capitalization_rate, return_period, lease_begin_date, lease_end_date, 
-    rental_growth_rate, correction_factor, present_value_factor, floor_area, land_area, 
-    total_price, creator, gmt_created, gmt_modified
+    management_cost_ratio, payment_remark, gross_income, maintenance, maintenance_cost_ratio, 
+    replacement_value, additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, 
+    usage_tax_parameter, operating_expense, net_profit, income_price, capitalization_rate, 
+    return_period, lease_begin_date, lease_end_date, rental_growth_rate, correction_factor, 
+    present_value_factor, floor_area, land_area, total_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample" >
     select
@@ -148,29 +150,29 @@
       interest_income, other_income, rentals_remark, 
       interest_rate_remark, other_income_remark, 
       management_cost, management_cost_ratio, payment_remark, 
-      maintenance, maintenance_cost_ratio, replacement_value, 
-      additional, tax_rate, insurance_premium, 
-      insurance_rate, land_use_tax, usage_tax_parameter, 
-      net_profit, income_price, capitalization_rate, 
-      return_period, lease_begin_date, lease_end_date, 
-      rental_growth_rate, correction_factor, present_value_factor, 
-      floor_area, land_area, total_price, 
-      creator, gmt_created, gmt_modified
-      )
+      gross_income, maintenance, maintenance_cost_ratio, 
+      replacement_value, additional, tax_rate, 
+      insurance_premium, insurance_rate, land_use_tax, 
+      usage_tax_parameter, operating_expense, net_profit, 
+      income_price, capitalization_rate, return_period, 
+      lease_begin_date, lease_end_date, rental_growth_rate, 
+      correction_factor, present_value_factor, floor_area, 
+      land_area, total_price, creator, 
+      gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, #{rentals,jdbcType=VARCHAR}, 
       #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, #{interestRate,jdbcType=VARCHAR}, 
       #{interestIncome,jdbcType=VARCHAR}, #{otherIncome,jdbcType=VARCHAR}, #{rentalsRemark,jdbcType=VARCHAR}, 
       #{interestRateRemark,jdbcType=VARCHAR}, #{otherIncomeRemark,jdbcType=VARCHAR}, 
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=VARCHAR}, #{paymentRemark,jdbcType=VARCHAR}, 
-      #{maintenance,jdbcType=VARCHAR}, #{maintenanceCostRatio,jdbcType=VARCHAR}, #{replacementValue,jdbcType=VARCHAR}, 
-      #{additional,jdbcType=VARCHAR}, #{taxRate,jdbcType=VARCHAR}, #{insurancePremium,jdbcType=VARCHAR}, 
-      #{insuranceRate,jdbcType=VARCHAR}, #{landUseTax,jdbcType=VARCHAR}, #{usageTaxParameter,jdbcType=VARCHAR}, 
-      #{netProfit,jdbcType=VARCHAR}, #{incomePrice,jdbcType=VARCHAR}, #{capitalizationRate,jdbcType=VARCHAR}, 
-      #{returnPeriod,jdbcType=VARCHAR}, #{leaseBeginDate,jdbcType=TIMESTAMP}, #{leaseEndDate,jdbcType=TIMESTAMP}, 
-      #{rentalGrowthRate,jdbcType=VARCHAR}, #{correctionFactor,jdbcType=VARCHAR}, #{presentValueFactor,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{landArea,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{grossIncome,jdbcType=VARCHAR}, #{maintenance,jdbcType=VARCHAR}, #{maintenanceCostRatio,jdbcType=VARCHAR}, 
+      #{replacementValue,jdbcType=VARCHAR}, #{additional,jdbcType=VARCHAR}, #{taxRate,jdbcType=VARCHAR}, 
+      #{insurancePremium,jdbcType=VARCHAR}, #{insuranceRate,jdbcType=VARCHAR}, #{landUseTax,jdbcType=VARCHAR}, 
+      #{usageTaxParameter,jdbcType=VARCHAR}, #{operatingExpense,jdbcType=VARCHAR}, #{netProfit,jdbcType=VARCHAR}, 
+      #{incomePrice,jdbcType=VARCHAR}, #{capitalizationRate,jdbcType=VARCHAR}, #{returnPeriod,jdbcType=VARCHAR}, 
+      #{leaseBeginDate,jdbcType=TIMESTAMP}, #{leaseEndDate,jdbcType=TIMESTAMP}, #{rentalGrowthRate,jdbcType=VARCHAR}, 
+      #{correctionFactor,jdbcType=VARCHAR}, #{presentValueFactor,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
+      #{landArea,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -220,6 +222,9 @@
       <if test="paymentRemark != null" >
         payment_remark,
       </if>
+      <if test="grossIncome != null" >
+        gross_income,
+      </if>
       <if test="maintenance != null" >
         maintenance,
       </if>
@@ -246,6 +251,9 @@
       </if>
       <if test="usageTaxParameter != null" >
         usage_tax_parameter,
+      </if>
+      <if test="operatingExpense != null" >
+        operating_expense,
       </if>
       <if test="netProfit != null" >
         net_profit,
@@ -336,6 +344,9 @@
       <if test="paymentRemark != null" >
         #{paymentRemark,jdbcType=VARCHAR},
       </if>
+      <if test="grossIncome != null" >
+        #{grossIncome,jdbcType=VARCHAR},
+      </if>
       <if test="maintenance != null" >
         #{maintenance,jdbcType=VARCHAR},
       </if>
@@ -362,6 +373,9 @@
       </if>
       <if test="usageTaxParameter != null" >
         #{usageTaxParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingExpense != null" >
+        #{operatingExpense,jdbcType=VARCHAR},
       </if>
       <if test="netProfit != null" >
         #{netProfit,jdbcType=VARCHAR},
@@ -464,6 +478,9 @@
       <if test="record.paymentRemark != null" >
         payment_remark = #{record.paymentRemark,jdbcType=VARCHAR},
       </if>
+      <if test="record.grossIncome != null" >
+        gross_income = #{record.grossIncome,jdbcType=VARCHAR},
+      </if>
       <if test="record.maintenance != null" >
         maintenance = #{record.maintenance,jdbcType=VARCHAR},
       </if>
@@ -490,6 +507,9 @@
       </if>
       <if test="record.usageTaxParameter != null" >
         usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatingExpense != null" >
+        operating_expense = #{record.operatingExpense,jdbcType=VARCHAR},
       </if>
       <if test="record.netProfit != null" >
         net_profit = #{record.netProfit,jdbcType=VARCHAR},
@@ -558,6 +578,7 @@
       management_cost = #{record.managementCost,jdbcType=VARCHAR},
       management_cost_ratio = #{record.managementCostRatio,jdbcType=VARCHAR},
       payment_remark = #{record.paymentRemark,jdbcType=VARCHAR},
+      gross_income = #{record.grossIncome,jdbcType=VARCHAR},
       maintenance = #{record.maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=VARCHAR},
       replacement_value = #{record.replacementValue,jdbcType=VARCHAR},
@@ -567,6 +588,7 @@
       insurance_rate = #{record.insuranceRate,jdbcType=VARCHAR},
       land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
       usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
+      operating_expense = #{record.operatingExpense,jdbcType=VARCHAR},
       net_profit = #{record.netProfit,jdbcType=VARCHAR},
       income_price = #{record.incomePrice,jdbcType=VARCHAR},
       capitalization_rate = #{record.capitalizationRate,jdbcType=VARCHAR},
@@ -631,6 +653,9 @@
       <if test="paymentRemark != null" >
         payment_remark = #{paymentRemark,jdbcType=VARCHAR},
       </if>
+      <if test="grossIncome != null" >
+        gross_income = #{grossIncome,jdbcType=VARCHAR},
+      </if>
       <if test="maintenance != null" >
         maintenance = #{maintenance,jdbcType=VARCHAR},
       </if>
@@ -657,6 +682,9 @@
       </if>
       <if test="usageTaxParameter != null" >
         usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingExpense != null" >
+        operating_expense = #{operatingExpense,jdbcType=VARCHAR},
       </if>
       <if test="netProfit != null" >
         net_profit = #{netProfit,jdbcType=VARCHAR},
@@ -722,6 +750,7 @@
       management_cost = #{managementCost,jdbcType=VARCHAR},
       management_cost_ratio = #{managementCostRatio,jdbcType=VARCHAR},
       payment_remark = #{paymentRemark,jdbcType=VARCHAR},
+      gross_income = #{grossIncome,jdbcType=VARCHAR},
       maintenance = #{maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=VARCHAR},
       replacement_value = #{replacementValue,jdbcType=VARCHAR},
@@ -731,6 +760,7 @@
       insurance_rate = #{insuranceRate,jdbcType=VARCHAR},
       land_use_tax = #{landUseTax,jdbcType=VARCHAR},
       usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
+      operating_expense = #{operatingExpense,jdbcType=VARCHAR},
       net_profit = #{netProfit,jdbcType=VARCHAR},
       income_price = #{incomePrice,jdbcType=VARCHAR},
       capitalization_rate = #{capitalizationRate,jdbcType=VARCHAR},
