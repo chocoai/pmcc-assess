@@ -125,11 +125,42 @@
         return AlgorithmsPrototype.prototype.isNotNull(obj);
     }
     hypothesisDevelopment.formType = {
+        build: {
+            cycle: "cycleBuild",
+            build: "build",
+            describe: "建设周期"
+        },
+        business: {
+            operate: "operateBusiness",
+            strategy: "strategyBusiness",
+            business: "business",
+            describe: "商业"
+        },
+        residence: {
+            residence: "residence",
+            ordinary: "ordinaryResidence",
+            apartment: "apartmentResidence",
+            villa: "villaResidence",
+            describe: "住宅"
+        },
+        undergroundBusiness: {
+            shop: "undergroundBusinessShop",
+            undergroundBusiness:"undergroundBusiness",
+            describe: "地下商业"
+        },
         garage: {
             big: "bigGarage",
             small: "smallGarage",
             garage: "garage",
             describe: "车库类型"
+        },
+        work: {
+            close: "closeWork",
+            open: "openWork",
+            scenery: "sceneryWork",
+            unit: "unitWork",
+            work: "work",
+            describe: "办公建筑类型"
         },
         base: {
             unitPrice: "UnitPrice", /* 单位售价 */
@@ -181,6 +212,50 @@
                 bigGarageMaySaleArea: {key: hypothesisDevelopment.formType.garage.big + hypothesisDevelopment.formType.base.maySaleArea},
                 bigGarageBuildArea: {key: hypothesisDevelopment.formType.garage.big + hypothesisDevelopment.formType.base.buildArea},
 
+                strategyBusinessUnitPrice: {key: hypothesisDevelopment.formType.business.strategy + hypothesisDevelopment.formType.base.unitPrice},
+                strategyBusinessTotalPrice: {key: hypothesisDevelopment.formType.business.strategy + hypothesisDevelopment.formType.base.totalPrice},
+                strategyBusinessMaySaleArea: {key: hypothesisDevelopment.formType.business.strategy + hypothesisDevelopment.formType.base.maySaleArea},
+                strategyBusinessBuildArea: {key: hypothesisDevelopment.formType.business.strategy + hypothesisDevelopment.formType.base.buildArea},
+                operateBusinessUnitPrice: {key: hypothesisDevelopment.formType.business.operate + hypothesisDevelopment.formType.base.unitPrice},
+                operateBusinessTotalPrice: {key: hypothesisDevelopment.formType.business.operate + hypothesisDevelopment.formType.base.totalPrice},
+                operateBusinessMaySaleArea: {key: hypothesisDevelopment.formType.business.operate + hypothesisDevelopment.formType.base.maySaleArea},
+                operateBusinessBuildArea: {key: hypothesisDevelopment.formType.business.operate + hypothesisDevelopment.formType.base.buildArea},
+
+                undergroundBusinessShopUnitPrice: {key: hypothesisDevelopment.formType.undergroundBusiness.shop + hypothesisDevelopment.formType.base.unitPrice},
+                undergroundBusinessShopTotalPrice: {key: hypothesisDevelopment.formType.undergroundBusiness.shop + hypothesisDevelopment.formType.base.totalPrice},
+                undergroundBusinessShopMaySaleArea: {key: hypothesisDevelopment.formType.undergroundBusiness.shop + hypothesisDevelopment.formType.base.maySaleArea},
+                undergroundBusinessShopBuildArea: {key: hypothesisDevelopment.formType.undergroundBusiness.shop + hypothesisDevelopment.formType.base.buildArea},
+
+
+                villaResidenceUnitPrice: {key: hypothesisDevelopment.formType.residence.villa + hypothesisDevelopment.formType.base.unitPrice},
+                villaResidenceTotalPrice: {key: hypothesisDevelopment.formType.residence.villa + hypothesisDevelopment.formType.base.totalPrice},
+                villaResidenceMaySaleArea: {key: hypothesisDevelopment.formType.residence.villa + hypothesisDevelopment.formType.base.maySaleArea},
+                villaResidenceBuildArea: {key: hypothesisDevelopment.formType.residence.villa + hypothesisDevelopment.formType.base.buildArea},
+                apartmentResidenceUnitPrice: {key: hypothesisDevelopment.formType.residence.apartment + hypothesisDevelopment.formType.base.unitPrice},
+                apartmentResidenceTotalPrice: {key: hypothesisDevelopment.formType.residence.apartment + hypothesisDevelopment.formType.base.totalPrice},
+                apartmentResidenceMaySaleArea: {key: hypothesisDevelopment.formType.residence.apartment + hypothesisDevelopment.formType.base.maySaleArea},
+                apartmentResidenceBuildArea: {key: hypothesisDevelopment.formType.residence.apartment + hypothesisDevelopment.formType.base.buildArea},
+                ordinaryResidenceUnitPrice: {key: hypothesisDevelopment.formType.residence.ordinary + hypothesisDevelopment.formType.base.unitPrice},
+                ordinaryResidenceTotalPrice: {key: hypothesisDevelopment.formType.residence.ordinary + hypothesisDevelopment.formType.base.totalPrice},
+                ordinaryResidenceMaySaleArea: {key: hypothesisDevelopment.formType.residence.ordinary + hypothesisDevelopment.formType.base.maySaleArea},
+                ordinaryResidenceBuildArea: {key: hypothesisDevelopment.formType.residence.ordinary + hypothesisDevelopment.formType.base.buildArea},
+
+                closeWorkUnitPrice: {key: hypothesisDevelopment.formType.work.close + hypothesisDevelopment.formType.base.unitPrice},
+                closeWorkTotalPrice: {key: hypothesisDevelopment.formType.work.close + hypothesisDevelopment.formType.base.totalPrice},
+                closeWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.close + hypothesisDevelopment.formType.base.maySaleArea},
+                closeWorkBuildArea: {key: hypothesisDevelopment.formType.work.close + hypothesisDevelopment.formType.base.buildArea},
+                openWorkUnitPrice: {key: hypothesisDevelopment.formType.work.open + hypothesisDevelopment.formType.base.unitPrice},
+                openWorkTotalPrice: {key: hypothesisDevelopment.formType.work.open + hypothesisDevelopment.formType.base.totalPrice},
+                openWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.open + hypothesisDevelopment.formType.base.maySaleArea},
+                openWorkBuildArea: {key: hypothesisDevelopment.formType.work.open + hypothesisDevelopment.formType.base.buildArea},
+                unitWorkUnitPrice: {key: hypothesisDevelopment.formType.work.unit + hypothesisDevelopment.formType.base.unitPrice},
+                unitWorkTotalPrice: {key: hypothesisDevelopment.formType.work.unit + hypothesisDevelopment.formType.base.totalPrice},
+                unitWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.unit + hypothesisDevelopment.formType.base.maySaleArea},
+                unitWorkBuildArea: {key: hypothesisDevelopment.formType.work.unit + hypothesisDevelopment.formType.base.buildArea},
+                sceneryWorkUnitPrice: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.unitPrice},
+                sceneryWorkTotalPrice: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.totalPrice},
+                sceneryWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.maySaleArea},
+                sceneryWorkBuildArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.buildArea},
 
             };
         };
@@ -194,19 +269,67 @@
         };
         return config;
     };
-    hypothesisDevelopment.inputFun = {
-        workInput: function () {
-            hypothesisDevelopment.inputAlgorithmObject.workFun();
-        }
-    }
+    hypothesisDevelopment.inputFun = {}
     hypothesisDevelopment.inputAlgorithmObject = {
+        //地下商业
+        undergroundBusinessShopFun: function () {
+            var a, b, c;
+            console.log("undergroundBusinessShopFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        //闭式员工办公 算法
+        closeWorkFun: function () {
+            var a, b, c;
+            console.log("closeWorkFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        unitWorkFun:function () {
+            var a, b, c;
+            console.log("unitWorkFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        openWorkFun:function () {
+            var a, b, c;
+            console.log("openWorkFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        sceneryWorkFun:function () {
+            var a, b, c;
+            console.log("sceneryWorkFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        strategyBusinessFun:function () {
+            var a, b, c;
+            console.log("strategyBusinessFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        operateBusinessFun:function () {
+            var a, b, c;
+            console.log("operateBusinessFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        ordinaryResidenceFun:function () {
+            var a, b, c;
+            console.log("ordinaryResidenceFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        apartmentResidenceFun:function () {
+            var a, b, c;
+            console.log("apartmentResidenceFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
+        villaResidenceFun:function () {
+            var a, b, c;
+            console.log("villaResidenceFun()");
+            hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
+        },
         //大车库 算法
         bigGarageFun: function () {
             var a, b, c, d;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().bigGarageBuildArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().bigGarageMaySaleArea.key, null);
             c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().bigGarageUnitPrice.key, null);
-            d = hypothesisDevelopment.mul(b,c);
+            d = hypothesisDevelopment.mul(b, c);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().bigGarageTotalPrice.key, d);
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
@@ -215,13 +338,14 @@
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().smallGarageMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().smallGarageUnitPrice.key, null);
-            c = hypothesisDevelopment.mul(b,a);
-            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().smallGarageTotalPrice.key,c);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().smallGarageTotalPrice.key, c);
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         baseFormFun: function () {
             var key = null, data = null;
-            var estimateBuildSaleArea = 0, estimateMaySaleArea = 0, estimateSaleTotal = 0, mayNotSaleArea = 0,totalBuildArea = 0;
+            var estimateBuildSaleArea = 0, estimateMaySaleArea = 0, estimateSaleTotal = 0, mayNotSaleArea = 0,
+                totalBuildArea = 0;
             key = "." + hypothesisDevelopment.config().frm;
             key += " ." + hypothesisDevelopment.config().baseFrm;
             data = $(key + " :input");
@@ -252,14 +376,9 @@
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().estimateSaleTotal.key, estimateSaleTotal);
             //总建筑面积 = 预计销售建筑面积+不可销售面积
             mayNotSaleArea = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().mayNotSaleArea.key, null);
-            totalBuildArea = hypothesisDevelopment.add(mayNotSaleArea,estimateBuildSaleArea);
+            totalBuildArea = hypothesisDevelopment.add(mayNotSaleArea, estimateBuildSaleArea);
             /*总建筑面积*/
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().totalBuildArea.key, totalBuildArea);
-        },
-        //子表单 办公建筑 算法
-        workFun: function () {
-            var workBuildArea = null;
-            workBuildArea = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().workBuildArea, null);
         },
         jqueryInputGetAndSet: function (flag, name, data) {
             if (flag == 'get') {
@@ -305,13 +424,51 @@
         return false;
     };
     hypothesisDevelopment.inputForm = function (key, value) {
-        console.log("formType 进入@");
+        console.log("formType 进入@" + key);
         if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.garage.garage)) {//属于车库
             if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.garage.big)) {//大车库
                 hypothesisDevelopment.inputAlgorithmObject.bigGarageFun();
             }
             if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.garage.small)) {//小车库
                 hypothesisDevelopment.inputAlgorithmObject.smallGarageFun();
+            }
+        }
+        if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.work.work)) {//属于办公
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.work.close)) {//闭式办公
+                hypothesisDevelopment.inputAlgorithmObject.closeWorkFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.work.scenery)) {//
+                hypothesisDevelopment.inputAlgorithmObject.sceneryWorkFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.work.unit)) {//
+                hypothesisDevelopment.inputAlgorithmObject.unitWorkFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.work.open)) {//
+                hypothesisDevelopment.inputAlgorithmObject.openWorkFun();
+            }
+        }
+        if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.business.business)) {//属于商业
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.business.strategy)) {//
+                hypothesisDevelopment.inputAlgorithmObject.strategyBusinessFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.business.operate)) {//
+                hypothesisDevelopment.inputAlgorithmObject.operateBusinessFun();
+            }
+        }
+        if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.undergroundBusiness.undergroundBusiness)) {//属于地下商业
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.undergroundBusiness.shop)) {//地下商业购物广场
+                hypothesisDevelopment.inputAlgorithmObject.undergroundBusinessShopFun();
+            }
+        }
+        if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.residence.residence)) {//属于住宅
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.residence.ordinary)) {//
+                hypothesisDevelopment.inputAlgorithmObject.ordinaryResidenceFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.residence.apartment)) {//
+                hypothesisDevelopment.inputAlgorithmObject.apartmentResidenceFun();
+            }
+            if (hypothesisDevelopment.indexOfUtils(key, hypothesisDevelopment.formType.residence.villa)) {//
+                hypothesisDevelopment.inputAlgorithmObject.villaResidenceFun();
             }
         }
     };
@@ -359,13 +516,21 @@
             hypothesisDevelopmentSelect2: function () {
                 var key = hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select;
                 $("." + key).change(function () {
-                    var value = $("." + key).eq(1).val();
-                    AssessCommon.loadDataDicByPid(value, "", function (html, data) {
+                    var pid = $("." + key).eq(1).val();
+                    AssessCommon.loadDataDicByPid(pid, "", function (html, data) {
                         $("." + key + "Type").prev().remove();
                         $("." + key + "Type").empty();
                         if (hypothesisDevelopment.isNotNull(data)) {
                             $("." + key + "Type").html(html);
                             $("." + key + "Type").select2();
+                        } else {
+                            AssessCommon.getDataDicInfo(pid, function (data) {
+                                if (hypothesisDevelopment.isNotNull(data)) {
+                                    if (data.fieldName == 'build') {
+                                        $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.formType.build.cycle).toggle();
+                                    }
+                                }
+                            });
                         }
                     });
                 });
@@ -378,7 +543,7 @@
                     var value = $("." + key).eq(1).val();
                     AssessCommon.getDataDicInfo(value, function (data) {
                         if (hypothesisDevelopment.isNotNull(data)) {
-                            $("." + hypothesisDevelopment.config().frm + " ." + data.fieldName).show();
+                            $("." + hypothesisDevelopment.config().frm + " ." + data.fieldName).toggle();
                         }
                     });
                 });
