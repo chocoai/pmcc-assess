@@ -78,6 +78,12 @@ public class ProjectPlanDetails {
 
     private Integer groupNumber;
 
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
+
     public Integer getId() {
         return id;
     }
@@ -372,5 +378,29 @@ public class ProjectPlanDetails {
 
     public void setGroupNumber(Integer groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

@@ -47,7 +47,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public ProjectPlanDetails getProjectPlanDetailsItemById(Integer id) {
+    public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
     }
 

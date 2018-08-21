@@ -356,6 +356,23 @@
                     }
                 })
             })
+        },
+
+        //获取用户部门信息
+        getUserDepartmentInfo:function (userAccount,callback) {
+            $.ajax({
+                url: getContextPath() + "/RpcErpService/getDepartmentByUserAccount",
+                type: "get",
+                data: {userAccount: userAccount},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                       if(callback){
+                           callback(result.data);
+                       }
+                    }
+                }
+            })
         }
     };
 

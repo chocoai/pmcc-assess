@@ -300,7 +300,7 @@ public class ProjectPlanFinancialClaimService {
     }
 
     public void updateProjectPlanDetails(Integer id, Integer type) throws BusinessException {
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(id);
         if (type == 0) {
             projectPlanDetails.setBisEnable(false);
             projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());

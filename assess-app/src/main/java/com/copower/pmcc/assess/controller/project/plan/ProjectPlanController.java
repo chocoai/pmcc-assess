@@ -177,7 +177,7 @@ public class ProjectPlanController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveProjectPlanDetails", name = "取得项目详情计划", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveProjectPlanDetails", name = "保存项目详情计划", method = RequestMethod.POST)
     public HttpResult saveProjectPlanDetails(String ds, Integer planId) {
         try {
             projectPlanService.saveProjectPlanDetails(ds);

@@ -23,10 +23,12 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -79,7 +81,7 @@ public class ProjectPlanDetailsService {
     private PublicService publicService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
-        return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        return projectPlanDetailsDao.getProjectPlanDetailsById(id);
     }
 
     public ProjectPlanDetails getProjectPlanDetailsByProcessInsId(String processInsId) {
@@ -98,6 +100,20 @@ public class ProjectPlanDetailsService {
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByPlanApply(Integer planId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, false);
+    }
+
+    /**
+     * 保存计划详情数据
+     * @param projectPlanDetails
+     */
+    public void saveProjectPlanDetails(ProjectPlanDetails projectPlanDetails) throws BusinessException {
+        if(projectPlanDetails==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if(projectPlanDetails.getId()!=null&&projectPlanDetails.getId()>0){
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+        }else{
+            projectPlanDetails.setCreator(commonService.thisUserAccount());
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+        }
     }
 
     /**
@@ -168,7 +184,7 @@ public class ProjectPlanDetailsService {
         //获取该阶段下正在运行的待审批任务
         List<String> processInsIds = Lists.newArrayList();
         for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-            if(StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())){
+            if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
                 if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
                     processInsIds.add(projectPlanDetail.getProcessInsId());
                 }
@@ -209,7 +225,7 @@ public class ProjectPlanDetailsService {
                                 if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
                                     if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
                                         String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                        if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
+                                        if (CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())) {
                                             projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
                                         }
                                         projectPlanDetailsVo.getExecuteUrlList().add(executeUrl);
@@ -227,7 +243,7 @@ public class ProjectPlanDetailsService {
                             }
                             approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                             if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
-                                if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
+                                if (CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())) {
                                     projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
                                 }
                                 projectPlanDetailsVo.getExecuteUrlList().add(approvalUrl);
@@ -283,12 +299,7 @@ public class ProjectPlanDetailsService {
         } else {
             projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
         }
-        if (projectPlanDetails.getProjectPhaseId() != null) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if (projectPhase != null) {
-                projectPlanDetailsVo.setProjectPhaseName(projectPhase.getProjectPhaseName());
-            }
-        }
+
         return projectPlanDetailsVo;
     }
 
@@ -350,4 +361,37 @@ public class ProjectPlanDetailsService {
     public void deleteProjectPlanDetails(Integer id) {
         projectPlanDetailsDao.deleteProjectPlanDetails(id);
     }
+
+    /**
+     * 获取任务及子项任务数据
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetails> getPlanDetailsListRecursion(Integer planDetailsId) {
+        List<ProjectPlanDetails> list = Lists.newArrayList();
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
+        if(projectPlanDetails!=null) {
+            list.add(projectPlanDetails);
+            getPlanDetailsSubList(projectPlanDetails.getId(),list);
+        }
+        return list;
+    }
+
+    /**
+     * 递归获取子项任务
+     * @param pid
+     * @param list
+     */
+    private void getPlanDetailsSubList(Integer pid, List<ProjectPlanDetails> list) {
+        if (pid == null) return;
+        if (CollectionUtils.isEmpty(list)) return;
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPId(pid);
+        if (CollectionUtils.isEmpty(planDetailsList)) return;
+        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            list.add(projectPlanDetails);
+            getPlanDetailsSubList(projectPlanDetails.getId(), list);
+        }
+    }
+
 }

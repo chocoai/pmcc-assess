@@ -1190,106 +1190,102 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">
-                                        年限法
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            经济耐用年限
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <select name="durableLife"
-                                                    class="form-control search-select select2 durableLife">
-                                            </select>
+                                <fieldset>
+                                    <legend>年限法 </legend>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                经济耐用年限
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <select name="durableLife"
+                                                        class="form-control search-select select2 durableLife">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                已使用年限
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="useYear"
+                                                       placeholder="已使用年限">
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            已使用年限
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="useYear"
-                                                   placeholder="已使用年限">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            残值率
-                                        </label>
-                                        <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                残值率
+                                            </label>
+                                            <div class="col-sm-5">
                                                 <input type="text" class="form-control residualValue"
                                                        name="residualValue"
                                                        readonly="readonly"
                                                        placeholder="残值率">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            成新率
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="newRateA" readonly="readonly"
-                                                   placeholder="成新率">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            权重
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightYear"
-                                                   placeholder="权重">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">
-                                        观察法
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            成新率
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="newRateG"
-                                                   placeholder="成新率">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            权重
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightG"
-                                                   placeholder="权重">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">
-                                        <font color="red">综合成新率</font>
-                                    </label>
-                                    <div class="x-valid">
-                                        <div class="col-sm-5">
-                                            <label class="control-label integratednewRate">
-                                                0
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                成新率
                                             </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="newRateA" readonly="readonly"
+                                                       placeholder="成新率">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                权重
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="weightYear"
+                                                       placeholder="权重">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>观察法 </legend>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                成新率
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="newRateG"
+                                                       placeholder="成新率">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                权重
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="weightG"
+                                                       placeholder="权重">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">
+                                            <font color="red">综合成新率</font>
+                                        </label>
+                                        <div class="x-valid">
+                                            <div class="col-sm-5">
+                                                <label class="control-label integratednewRate">
+                                                    0
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
