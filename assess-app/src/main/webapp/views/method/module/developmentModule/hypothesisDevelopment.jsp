@@ -62,6 +62,282 @@
         <jsp:include page="fromDevelopment.jsp"></jsp:include>
     </div>
 
+    <div class="form-group">
+
+        <label class="col-sm-1 control-label">
+            勘察设计和前期工程费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="勘察设计和前期工程费"
+                       class="form-control" name="reconnaissanceDesign" readonly="readonly">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            勘察设计和前期工程费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="勘察设计和前期工程费率" class="form-control" data-rule-number='true' required="required"
+                       name="reconnaissanceDesignRote">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            建筑安装工程费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       onclick="construction.constructionInstallationEngineeringFee.event();"
+                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            基础设施建设费 单价选择
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="infrastructureCostSelect"
+                        class="form-control search-select select2 infrastructureCostSelect">
+                </select>
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            基础设施建设费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            公共配套设施建设费 单价选择
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="infrastructureMatchingCostSelect"
+                        class="form-control search-select select2 infrastructureMatchingCostSelect">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            公共配套设施建设费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发期间单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="开发期间单价" class="form-control" name="devDuringPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发期间税费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            其它工程费单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            其它工程费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            建设成本
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="建设成本" class="form-control" name="constructionCost">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            管理费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="管理费" class="form-control" name="managementExpense">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            管理费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="管理费率" class="form-control" name="managementExpenseRote">
+            </div>
+        </div>
+        <label class="col-sm-1 control-label">
+            不可预见费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            不可预见费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            销售费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="销售费率" class="form-control" name="salesFeeRote">
+            </div>
+        </div>
+
+
+        <label class="col-sm-1 control-label">
+            销售费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="销售费" class="form-control" name="salesFee">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            增值及附加税率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="addedValueAdditionalTaxRate"
+                        class="form-control search-select select2 addedValueAdditionalTaxRateSelect">
+                </select>
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            增值及附加税金
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            计息周期
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="计息周期" class="form-control" name="interestPeriod">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            投资计息利率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资计息税率修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资计息税率修正" class="form-control" name="interestRateOnInvestmentCorrect">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资利息
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利息" class="form-control" name="interestInInvestment">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            投资利润
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利润" class="form-control" name="investmentProfit">
+            </div>
+        </div>
+    </div>
+
+
 </form>
 
 <script>
@@ -257,6 +533,47 @@
                 sceneryWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.maySaleArea},
                 sceneryWorkBuildArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.buildArea},
 
+                reconnaissanceDesignRote: {key: "reconnaissanceDesignRote", describe: "勘察设计和前期工程费率"},
+                reconnaissanceDesign: {key: "reconnaissanceDesign", describe: "勘察设计和前期工程费"},
+                infrastructureCost: {
+                    key: "infrastructureCost",//infrastructureCost 算是一个input
+                    describe: "基础设施费用",
+                    select: "infrastructureCostSelect"//infrastructureCostSelect 算是一个select (input)
+                },
+                infrastructureMatchingCost: {
+                    key: "infrastructureMatchingCost",//infrastructureMatchingCost 算是一个input
+                    describe: "公共配套设施费用",
+                    select: "infrastructureMatchingCostSelect"//注意:infrastructureMatchingCostSelect算是一个select (input)
+                },
+                developmentBuildArea: {key: "developmentBuildArea", describe: "开发建筑面积", value: "", select: ""},
+                devDuringPrice: {
+                    key: "devDuringPrice",
+                    describe: "开发期间单价", value: "", select: ""
+                },
+                devDuringPriceTax: {
+                    key: "devDuringPriceTax",
+                    describe: "开发期间单价税收", value: "", select: ""
+                },
+                otherEngineeringCost: {key: "otherEngineeringCost", describe: "其它工程费"},
+                otherEngineeringCostPrice: {key: "otherEngineeringCostPrice", describe: "其它工程费单价"},
+                constructionCost: {key: "constructionCost", describe: "建设成本"},
+                managementExpense: {key: "managementExpense", describe: "管理费"},
+                managementExpenseRote: {key: "managementExpenseRote", describe: "管理费率"},
+                unforeseenExpenses: {key: "unforeseenExpenses", describe: "不可预见费"},
+                unforeseenExpensesRote: {key: "unforeseenExpensesRote", describe: "不可预见费率"},
+                salesFeeRote: {key: "salesFeeRote", describe: "销售费率"},
+                salesFee: {key: "salesFee", describe: "销售费"},
+                addedValueAdditionalTaxRate: {
+                    key: "addedValueAdditionalTaxRate",
+                    describe: "增值及附加税率",
+                    select: "addedValueAdditionalTaxRateSelect"
+                },
+                valueAddedAdditionalTaxes: {key: "valueAddedAdditionalTaxes", describe: "增值及附加税金"},
+                interestPeriod: {key: "interestPeriod", describe: "计息周期"},
+                interestRateOnInvestment: {key: "interestRateOnInvestment", describe: "投资计息利率"},
+                interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
+                interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},
+                investmentProfit: {key: "investmentProfit", describe: "投资利润"},
             };
         };
         config.inputName = function () {
@@ -274,52 +591,92 @@
         //地下商业
         undergroundBusinessShopFun: function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().undergroundBusinessShopMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().undergroundBusinessShopUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().undergroundBusinessShopTotalPrice.key, c);
             console.log("undergroundBusinessShopFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         //闭式员工办公 算法
         closeWorkFun: function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().closeWorkMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().closeWorkUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().closeWorkTotalPrice.key, c);
             console.log("closeWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         unitWorkFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unitWorkMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unitWorkUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().unitWorkTotalPrice.key, c);
             console.log("unitWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         openWorkFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().openWorkMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().openWorkUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().openWorkTotalPrice.key, c);
             console.log("openWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         sceneryWorkFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().sceneryWorkMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().sceneryWorkUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().sceneryWorkTotalPrice.key, c);
             console.log("sceneryWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         strategyBusinessFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().strategyBusinessMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().strategyBusinessUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().strategyBusinessTotalPrice.key, c);
             console.log("strategyBusinessFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         operateBusinessFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().operateBusinessMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().operateBusinessUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().operateBusinessTotalPrice.key, c);
             console.log("operateBusinessFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         ordinaryResidenceFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().ordinaryResidenceMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().ordinaryResidenceUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().ordinaryResidenceTotalPrice.key, c);
             console.log("ordinaryResidenceFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         apartmentResidenceFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().apartmentResidenceMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().apartmentResidenceUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().apartmentResidenceTotalPrice.key, c);
             console.log("apartmentResidenceFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
         villaResidenceFun:function () {
             var a, b, c;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().villaResidenceMaySaleArea.key, null);
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().villaResidenceUnitPrice.key, null);
+            c = hypothesisDevelopment.mul(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().villaResidenceTotalPrice.key, c);
             console.log("villaResidenceFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
