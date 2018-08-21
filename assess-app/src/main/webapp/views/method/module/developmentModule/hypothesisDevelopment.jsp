@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="../architecturalEngineering/constructionInstallationEngineeringFeeA.jsp"></jsp:include>
+
 <form class="frmDevelopment form-horizontal" id="frmDevelopment">
     <div class="form-group">
         <div class="x-valid">
@@ -92,7 +94,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"
-                       onclick="construction.constructionInstallationEngineeringFee.event();"
+                       onclick="hypothesisDevelopment.constructionInstallationEngineeringFee.event();"
                        placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
             </div>
         </div>
@@ -336,9 +338,78 @@
             </div>
         </div>
     </div>
-
-
 </form>
+
+<div id="" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-dialog" role="document" style="width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">建设工程费用</h3>
+                </div>
+                <form class="form-horizontal">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel-body">
+                                    <div>
+                                        <%--<table id="constructionInstallationEngineeringFeeA">--%>
+
+                                        <%--</table>--%>
+                                        <%--<table cellpadding="5" class="table">--%>
+                                        <%--<thead>--%>
+                                        <%--<tr>--%>
+                                        <%--<td>建安成本小计</td>--%>
+                                        <%--<td>建筑面积（㎡）</td>--%>
+                                        <%--<td>单方造价(元/㎡)</td>--%>
+                                        <%--<td>总造价（万元）</td>--%>
+                                        <%--<td>估价时点总价（万元)</td>--%>
+                                        <%--<td>续建投入总价(万元)</td>--%>
+                                        <%--</tr>--%>
+                                        <%--</thead>--%>
+                                        <%--<tbody>--%>
+                                        <%--<tr class="info">--%>
+                                        <%--<td><label class="control-label">计算值:</label></td>--%>
+                                        <%--<td><label--%>
+                                        <%--class="control-label constructionInstallationEngineeringFeeBAreaClassA">0</label>--%>
+                                        <%--</td>--%>
+                                        <%--<td><label--%>
+                                        <%--class="control-label constructionInstallationEngineeringFeeBCurrencyClassA">0</label>--%>
+                                        <%--</td>--%>
+                                        <%--<td><label--%>
+                                        <%--class="control-label constructionInstallationEngineeringFeeBTotalCostClassA">0</label>--%>
+                                        <%--</td>--%>
+                                        <%--<td><label class="control-label valuationDateTotalClassA">0</label></td>--%>
+                                        <%--<td><label--%>
+                                        <%--class="control-label continuedConstructionInvestmentTotalClassA">0</label>--%>
+                                        <%--</td>--%>
+                                        <%--</tr>--%>
+                                        <%--</tbody>--%>
+                                        <%--</table>--%>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">
+                            取消
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var hypothesisDevelopment = new Object();
@@ -421,7 +492,7 @@
         },
         undergroundBusiness: {
             shop: "undergroundBusinessShop",
-            undergroundBusiness:"undergroundBusiness",
+            undergroundBusiness: "undergroundBusiness",
             describe: "地下商业"
         },
         garage: {
@@ -450,6 +521,7 @@
         var config = {};
         config.frm = "frmDevelopment";//表单id
         config.baseFrm = "baseFrmDevelopment";
+        config.architecturalEngineeringModel = "architecturalEngineering";
         /*此处的配置key(select2中的key为xxxxSelect2)必须与页面上input name的一致 describe 为描述*/
         config.inputConfig = function () {
             return {
@@ -586,7 +658,12 @@
         };
         return config;
     };
-    hypothesisDevelopment.inputFun = {}
+    hypothesisDevelopment.inputFun = {
+        //建筑安装工程费
+        constructionInstallationEngineeringFeeInput:function (data) {
+
+        }
+    }
     hypothesisDevelopment.inputAlgorithmObject = {
         //地下商业
         undergroundBusinessShopFun: function () {
@@ -608,7 +685,7 @@
             console.log("closeWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        unitWorkFun:function () {
+        unitWorkFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unitWorkMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unitWorkUnitPrice.key, null);
@@ -617,7 +694,7 @@
             console.log("unitWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        openWorkFun:function () {
+        openWorkFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().openWorkMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().openWorkUnitPrice.key, null);
@@ -626,7 +703,7 @@
             console.log("openWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        sceneryWorkFun:function () {
+        sceneryWorkFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().sceneryWorkMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().sceneryWorkUnitPrice.key, null);
@@ -635,7 +712,7 @@
             console.log("sceneryWorkFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        strategyBusinessFun:function () {
+        strategyBusinessFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().strategyBusinessMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().strategyBusinessUnitPrice.key, null);
@@ -644,7 +721,7 @@
             console.log("strategyBusinessFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        operateBusinessFun:function () {
+        operateBusinessFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().operateBusinessMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().operateBusinessUnitPrice.key, null);
@@ -653,7 +730,7 @@
             console.log("operateBusinessFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        ordinaryResidenceFun:function () {
+        ordinaryResidenceFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().ordinaryResidenceMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().ordinaryResidenceUnitPrice.key, null);
@@ -662,7 +739,7 @@
             console.log("ordinaryResidenceFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        apartmentResidenceFun:function () {
+        apartmentResidenceFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().apartmentResidenceMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().apartmentResidenceUnitPrice.key, null);
@@ -671,7 +748,7 @@
             console.log("apartmentResidenceFun()");
             hypothesisDevelopment.inputAlgorithmObject.baseFormFun();
         },
-        villaResidenceFun:function () {
+        villaResidenceFun: function () {
             var a, b, c;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().villaResidenceMaySaleArea.key, null);
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().villaResidenceUnitPrice.key, null);
@@ -764,6 +841,7 @@
             return 0;
         }
     };
+
     /**
      * @author:  zch
      * 描述:判断某个字符串中是否包含某个字符串 (workdddg,WORK) return true
@@ -851,6 +929,48 @@
         })
         hypothesisDevelopment.selectEvent.monitor.monitor();
     }
+    hypothesisDevelopment.selectEvent = {
+
+    }
+
+    hypothesisDevelopment.constructionInstallationEngineeringFee = {
+        event: function () {
+            hypothesisDevelopment.constructionInstallationEngineeringFee.open();
+            $(function () {
+                constructEngineeringObjectA.viewInit();
+            });
+        }
+        ,
+        open: function () {
+            var key = hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key;
+            var btn = $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + key + "']").offset();
+            var top = 3080 - btn.top;
+            var left = 1104 - btn.left;
+            console.log("top:" + top + "; left:" + left);
+            $('#' + hypothesisDevelopment.config().architecturalEngineeringModel).window({
+                modal: true, closable: true
+            });
+            $('#' + hypothesisDevelopment.config().architecturalEngineeringModel).window('open').window('resize', {
+                top: -560,
+                left: left,
+                width: '1000px',
+                height: "1000px"
+            });
+        },
+        show: function () {
+            $('#' + hypothesisDevelopment.config().architecturalEngineeringModel).modal("show");
+        },
+        close: function () {
+            $("#" + hypothesisDevelopment.config().architecturalEngineeringModel).window("close");
+        },
+        submit:function () {
+            var data = constructEngineeringObjectA.getCalculatedResults();
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set",hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key,data);
+            hypothesisDevelopment.inputFun.constructionInstallationEngineeringFeeInput(data);
+            hypothesisDevelopment.constructionInstallationEngineeringFee.close();
+        }
+
+    }
 
     hypothesisDevelopment.selectEvent = {
         load: {
@@ -921,3 +1041,51 @@
         hypothesisDevelopment.eventInit();
     });
 </script>
+
+
+<div id="architecturalEngineering" class="easyui-window" title="建筑工程费"
+     data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:200px;padding:10px;">
+    <table id="constructionInstallationEngineeringFeeA">
+
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>建安成本小计</td>
+            <td>建筑面积（㎡）</td>
+            <td>单方造价(元/㎡)</td>
+            <td>总造价（万元）</td>
+            <td>估价时点总价（万元)</td>
+            <td>续建投入总价(万元)</td>
+        </tr>
+        <tr class="info">
+            <td><label class="control-label">计算值:</label></td>
+            <td><label
+                    class="control-label constructionInstallationEngineeringFeeBAreaClassA">0</label>
+            </td>
+            <td><label
+                    class="control-label constructionInstallationEngineeringFeeBCurrencyClassA">0</label>
+            </td>
+            <td><label
+                    class="control-label constructionInstallationEngineeringFeeBTotalCostClassA">0</label>
+            </td>
+            <td><label class="control-label valuationDateTotalClassA">0</label></td>
+            <td><label
+                    class="control-label continuedConstructionInvestmentTotalClassA">0</label>
+            </td>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="3" style="text-align: center;"><label class="btn btn-success" onclick="hypothesisDevelopment.constructionInstallationEngineeringFee.submit()">submit</label></td>
+            <td colspan="3" style="text-align: center;"><label class="btn btn-default" onclick="hypothesisDevelopment.constructionInstallationEngineeringFee.close()">cancel</label></td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+<%--</div>--%>
+<%--<script id="architecturalEngineering" type="text/html" style="display: none">--%>
+<%--<jsp:include page="../architecturalEngineering/constructionInstallationEngineeringFeeA.jsp"></jsp:include>--%>
+<%--</script>--%>
+
