@@ -27,10 +27,10 @@
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
+    <result column="building_structure_pid" property="buildingStructurePid" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="buildingStructurePid" property="buildingstructurepid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -95,7 +95,7 @@
     floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, floor_end, 
     building_height, building_area, cover_an_area, building_category, open_time, room_time, 
     floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
-    creator, gmt_created, gmt_modified, buildingStructurePid
+    building_structure_pid, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuildingExample" >
     select
@@ -139,8 +139,8 @@
       building_category, open_time, room_time, 
       floor_height, diameter_depth, land_use_year, 
       location, net_height, building_structure, 
-      creator, gmt_created, gmt_modified, 
-      buildingStructurePid)
+      building_structure_pid, creator, gmt_created, 
+      gmt_modified)
     values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, 
       #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, 
       #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
@@ -149,8 +149,8 @@
       #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{buildingstructurepid,jdbcType=INTEGER})
+      #{buildingStructurePid,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -230,6 +230,9 @@
       <if test="buildingStructure != null" >
         building_structure,
       </if>
+      <if test="buildingStructurePid != null" >
+        building_structure_pid,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -238,9 +241,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="buildingstructurepid != null" >
-        buildingStructurePid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -316,6 +316,9 @@
       <if test="buildingStructure != null" >
         #{buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="buildingStructurePid != null" >
+        #{buildingStructurePid,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -324,9 +327,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildingstructurepid != null" >
-        #{buildingstructurepid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -414,6 +414,9 @@
       <if test="record.buildingStructure != null" >
         building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="record.buildingStructurePid != null" >
+        building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -422,9 +425,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.buildingstructurepid != null" >
-        buildingStructurePid = #{record.buildingstructurepid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -458,10 +458,10 @@
       location = #{record.location,jdbcType=VARCHAR},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
+      building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      buildingStructurePid = #{record.buildingstructurepid,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -541,6 +541,9 @@
       <if test="buildingStructure != null" >
         building_structure = #{buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="buildingStructurePid != null" >
+        building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -549,9 +552,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildingstructurepid != null" >
-        buildingStructurePid = #{buildingstructurepid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -582,10 +582,10 @@
       location = #{location,jdbcType=VARCHAR},
       net_height = #{netHeight,jdbcType=DECIMAL},
       building_structure = #{buildingStructure,jdbcType=INTEGER},
+      building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      buildingStructurePid = #{buildingstructurepid,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

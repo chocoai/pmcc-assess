@@ -57,7 +57,7 @@ public class SurveyExamineController {
     public ModelAndView assignment(Integer planDetailsId) {
         String view = "/task/survey/taskAssignmentIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
         Integer id = projectPlanDetails.getPid();
 
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());

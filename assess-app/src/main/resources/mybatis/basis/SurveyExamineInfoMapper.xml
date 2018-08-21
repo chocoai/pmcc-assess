@@ -10,6 +10,11 @@
     <result column="examine_form_type" property="examineFormType" jdbcType="VARCHAR" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="bis_assignment" property="bisAssignment" jdbcType="BIT" />
+    <result column="block_name" property="blockName" jdbcType="VARCHAR" />
+    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,7 +79,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, plan_details_id, process_ins_id, examine_type, examine_form_type, 
-    declare_record_id, bis_assignment, creator, gmt_created, gmt_modified
+    declare_record_id, bis_assignment, block_name, estate_name, building_number, unit_number, 
+    house_number, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfoExample" >
     select
@@ -112,12 +118,16 @@
     </selectKey>
     insert into tb_survey_examine_info (project_id, plan_details_id, process_ins_id, 
       examine_type, examine_form_type, declare_record_id, 
-      bis_assignment, creator, gmt_created, 
-      gmt_modified)
+      bis_assignment, block_name, estate_name, 
+      building_number, unit_number, house_number, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{examineType,jdbcType=INTEGER}, #{examineFormType,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{bisAssignment,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisAssignment,jdbcType=BIT}, #{blockName,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +155,21 @@
       </if>
       <if test="bisAssignment != null" >
         bis_assignment,
+      </if>
+      <if test="blockName != null" >
+        block_name,
+      </if>
+      <if test="estateName != null" >
+        estate_name,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="unitNumber != null" >
+        unit_number,
+      </if>
+      <if test="houseNumber != null" >
+        house_number,
       </if>
       <if test="creator != null" >
         creator,
@@ -177,6 +202,21 @@
       </if>
       <if test="bisAssignment != null" >
         #{bisAssignment,jdbcType=BIT},
+      </if>
+      <if test="blockName != null" >
+        #{blockName,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null" >
+        #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNumber != null" >
+        #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNumber != null" >
+        #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -222,6 +262,21 @@
       <if test="record.bisAssignment != null" >
         bis_assignment = #{record.bisAssignment,jdbcType=BIT},
       </if>
+      <if test="record.blockName != null" >
+        block_name = #{record.blockName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.estateName != null" >
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitNumber != null" >
+        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.houseNumber != null" >
+        house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -246,6 +301,11 @@
       examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{record.bisAssignment,jdbcType=BIT},
+      block_name = #{record.blockName,jdbcType=VARCHAR},
+      estate_name = #{record.estateName,jdbcType=VARCHAR},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -277,6 +337,21 @@
       <if test="bisAssignment != null" >
         bis_assignment = #{bisAssignment,jdbcType=BIT},
       </if>
+      <if test="blockName != null" >
+        block_name = #{blockName,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null" >
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNumber != null" >
+        unit_number = #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNumber != null" >
+        house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -298,6 +373,11 @@
       examine_form_type = #{examineFormType,jdbcType=VARCHAR},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       bis_assignment = #{bisAssignment,jdbcType=BIT},
+      block_name = #{blockName,jdbcType=VARCHAR},
+      estate_name = #{estateName,jdbcType=VARCHAR},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{unitNumber,jdbcType=VARCHAR},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

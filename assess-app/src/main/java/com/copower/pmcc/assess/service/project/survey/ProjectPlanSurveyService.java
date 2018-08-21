@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.service;
+package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;

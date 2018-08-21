@@ -275,7 +275,7 @@ public class ProjectPlanService {
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
 
             if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
                 projectPlanDetails.setBisLastLayer(false);
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
@@ -286,7 +286,7 @@ public class ProjectPlanService {
 
     public void deletePlan(Integer detailsId) throws BusinessException {
 
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(detailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(detailsId);
         int pid = projectPlanDetails.getPid();
 
         //删除当前行，如果当前行是目录下的最后一行，则将上级设置为一级
@@ -298,7 +298,7 @@ public class ProjectPlanService {
             projectPlanDetailsWhere.setPid(pid);
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
+                projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
                 projectPlanDetails.setBisLastLayer(true);
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
             }
@@ -768,7 +768,7 @@ public class ProjectPlanService {
      * @param recursion
      */
     public void copyPlanDetails(Integer planDetailsId, Boolean recursion) {
-        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
+        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
         if (planDetails != null) {
             planDetails.setSorting(planDetails.getSorting().intValue() + 1);
             planDetails.setId(null);
@@ -796,5 +796,6 @@ public class ProjectPlanService {
             }
         }
     }
+
 
 }

@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -72,8 +73,8 @@ public class SurveyExamineTaskService {
         return surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
     }
 
-    public List<CustomSurveyExamineTask> getCustomeExamineTaskList(Integer planDetailsId,String userAccount) {
-        return surveyExamineTaskDao.getCustomExamineTaskList(planDetailsId,userAccount);
+    public List<CustomSurveyExamineTask> getCustomeExamineTaskList(Integer planDetailsId, String userAccount) {
+        return surveyExamineTaskDao.getCustomExamineTaskList(planDetailsId, userAccount);
     }
 
     /**
@@ -198,11 +199,12 @@ public class SurveyExamineTaskService {
 
     /**
      * 更新调查任务
+     *
      * @param surveyExamineTask
      * @param where
      */
-    public void updateSurveyExamineTask(SurveyExamineTask surveyExamineTask,SurveyExamineTask where) {
-        surveyExamineTaskDao.updateSurveyExamineTask(surveyExamineTask,where);
+    public void updateSurveyExamineTask(SurveyExamineTask surveyExamineTask, SurveyExamineTask where) {
+        surveyExamineTaskDao.updateSurveyExamineTask(surveyExamineTask, where);
     }
 
     /**
@@ -216,10 +218,11 @@ public class SurveyExamineTaskService {
 
     /**
      * 获取数据总条数
+     *
      * @param surveyExamineTask
      * @return
      */
-    public int getSurveyExamineTaskCount(SurveyExamineTask surveyExamineTask){
+    public int getSurveyExamineTaskCount(SurveyExamineTask surveyExamineTask) {
         return surveyExamineTaskDao.getSurveyExamineTaskCount(surveyExamineTask);
     }
 
@@ -328,20 +331,11 @@ public class SurveyExamineTaskService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void confirmAssignment(SurveyExamineTaskDto surveyExamineTaskDto) throws BusinessException {
-        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyExamineTaskDto.getPlanDetailsId());
-        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-        projectResponsibilityDto.setProjectId(planDetails.getProjectId());
-        projectResponsibilityDto.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-        ProjectResponsibilityDto projectTask = null;
-        if (CollectionUtils.isNotEmpty(projectTaskList)) {
-            //找出最基础的任务数据
-            for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                if (responsibilityDto.getUserAccount().equals(planDetails.getExecuteUserAccount()))
-                    projectTask = responsibilityDto;
-            }
-        }
+        //需完成的事情
+        //1.更新任务状态为 进行中
+        //2.根据任务分派的人员确定该任务下挂靠多少个子任务
 
+        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyExamineTaskDto.getPlanDetailsId());
         if (surveyExamineTaskDto.getExamineInfoId() == null) {
             SurveyExamineInfo surveyExamineInfo = new SurveyExamineInfo();
             surveyExamineInfo.setExamineType(surveyExamineTaskDto.getExamineType());
@@ -356,37 +350,75 @@ public class SurveyExamineTaskService {
         }
 
 
+        //清除还为运行的计划任务,同时查询待提交任务，一同清除
+        //根据现有任务分派情况，确定子计划任务及待提交任务
+
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setPid(planDetails.getId());
+        where.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        List<ProjectPlanDetails> projectDetails = projectPlanDetailsService.getProjectDetails(where);
+        if(CollectionUtils.isNotEmpty(projectDetails)){
+            for (ProjectPlanDetails projectDetail : projectDetails) {
+                //删除
+
+                //找出待提交任务-删除
+                ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                projectResponsibilityDto.setProjectId(planDetails.getProjectId());
+                projectResponsibilityDto.setPlanDetailsId(projectDetail.getId());
+                List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+                if(CollectionUtils.isNotEmpty(projectTaskList)){
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        //删除此任务
+                        bpmRpcProjectTaskService.deleteProjectTask(responsibilityDto.getId());
+                    }
+                }
+            }
+        }
+
         SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
         surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
         surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
         List<SurveyExamineTask> examineTaskList = surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
         if (CollectionUtils.isNotEmpty(examineTaskList)) {
+            HashSet<String> hashSet = Sets.newHashSet();
+            for (SurveyExamineTask examineTask : examineTaskList) {
+                hashSet.add(examineTask.getUserAccount());
+            }
+            if(!hashSet.isEmpty()){
+                //添加计划任务子项及待提交任务
+            }
+        }
+
+//        SurveyExamineTask surveyExamineTask = new SurveyExamineTask();
+//        surveyExamineTask.setPlanDetailsId(surveyExamineTaskDto.getPlanDetailsId());
+//        surveyExamineTask.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
+//        List<SurveyExamineTask> examineTaskList = surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
+        if (CollectionUtils.isNotEmpty(examineTaskList)) {
             HashSet<String> hashSet = Sets.newHashSet(planDetails.getExecuteUserAccount());
             for (SurveyExamineTask examineTask : examineTaskList) {
-                if (StringUtils.isNotBlank(examineTask.getUserAccount()))
-                    hashSet.add(examineTask.getUserAccount());
+                hashSet.add(examineTask.getUserAccount());
             }
             //该人员已有任务，则不处理；该人员没有任务，则复制添加任务；存在任务但不属于目前参与人员，则删除任务
-            if (!hashSet.isEmpty() && CollectionUtils.isNotEmpty(projectTaskList)) {
-                HashSet<String> taskUserAccount = Sets.newHashSet();
-                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                    if (!hashSet.contains(responsibilityDto.getUserAccount())) {
-                        //删除此任务
-                        bpmRpcProjectTaskService.deleteProjectTask(responsibilityDto.getId());
-                        continue;
-                    }
-                    if (StringUtils.isNotBlank(responsibilityDto.getUserAccount()))
-                        taskUserAccount.add(responsibilityDto.getUserAccount());
-                }
-                for (String userAccount : hashSet) {
-                    if (!taskUserAccount.contains(userAccount)) {
-                        //添加任务
-                        projectTask.setId(null);
-                        projectTask.setUserAccount(userAccount);
-                        bpmRpcProjectTaskService.saveProjectTask(projectTask);
-                    }
-                }
-            }
+//            if (!hashSet.isEmpty() && CollectionUtils.isNotEmpty(projectTaskList)) {
+//                HashSet<String> taskUserAccount = Sets.newHashSet();
+//                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+//                    if (!hashSet.contains(responsibilityDto.getUserAccount())) {
+//                        //删除此任务
+//                        bpmRpcProjectTaskService.deleteProjectTask(responsibilityDto.getId());
+//                        continue;
+//                    }
+//                    if (StringUtils.isNotBlank(responsibilityDto.getUserAccount()))
+//                        taskUserAccount.add(responsibilityDto.getUserAccount());
+//                }
+//                for (String userAccount : hashSet) {
+//                    if (!taskUserAccount.contains(userAccount)) {
+//                        //添加任务
+//                        projectTask.setId(null);
+//                        projectTask.setUserAccount(userAccount);
+//                        bpmRpcProjectTaskService.saveProjectTask(projectTask);
+//                    }
+//                }
+//            }
         }
         //将planDetails任务设置为运行
         planDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
@@ -395,11 +427,12 @@ public class SurveyExamineTaskService {
 
     /**
      * 获取调查信息by申报id
+     *
      * @param declareId
      * @return
      */
-    public List<ProjectPlanDetails> getPlanDetailsByDeclareId(Integer declareId){
-        ProjectPlanDetails projectPlanDetails=new ProjectPlanDetails();
+    public List<ProjectPlanDetails> getPlanDetailsByDeclareId(Integer declareId) {
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setBisLastLayer(true);
         return projectPlanDetailsService.getProjectDetails(projectPlanDetails);
