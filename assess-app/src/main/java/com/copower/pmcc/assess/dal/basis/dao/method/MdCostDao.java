@@ -44,8 +44,9 @@ public class MdCostDao {
      * @param mdCost
      * @return
      */
-    public boolean addEstateNetwork(MdCost mdCost) {
-        return mdCostMapper.insertSelective(mdCost) > 0;
+    public int addEstateNetwork(MdCost mdCost) {
+        mdCostMapper.insertSelective(mdCost);
+        return mdCost.getId();
     }
 
     /**

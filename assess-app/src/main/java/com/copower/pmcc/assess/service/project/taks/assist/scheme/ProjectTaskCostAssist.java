@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeSupportInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,27 +79,36 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         MdMarketCostDto mdMarketCostDto = JSON.parseObject(formData, MdMarketCostDto.class);
+        MdCost mdCost = new MdCost();
+        int id = 0;
+
         if (CollectionUtils.isNotEmpty(mdMarketCostDto.getSupportInfoList())) {
             for (SchemeSupportInfo schemeSupportInfo : mdMarketCostDto.getSupportInfoList()) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostBuilding())) {//评估单价 (建筑物)
+            mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+            id = mdMarketCostService.addMdCost(mdCost);
             MdCostBuilding mdCostBuilding = mdMarketCostDto.getMdCostBuilding();
+            mdCostBuilding.setCostId(id);
             mdMarketCostService.addEstateNetwork(mdCostBuilding);
-            mdMarketCostDto.setId(mdCostBuilding.getId());
         }
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostConstruction())){//在建工程
+            mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+            id = mdMarketCostService.addMdCost(mdCost);
             MdCostConstruction mdCostConstruction = mdMarketCostDto.getMdCostConstruction();
+            mdCostConstruction.setCostId(id);
             mdMarketCostService.addEstateNetwork(mdCostConstruction);
-            mdMarketCostDto.setId(mdMarketCostDto.getMdCostConstruction().getId());
         }
+
+
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_COST);
-        schemeInfo.setMethodDataId(mdMarketCostDto.getId());
+        schemeInfo.setMethodDataId(id);
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 

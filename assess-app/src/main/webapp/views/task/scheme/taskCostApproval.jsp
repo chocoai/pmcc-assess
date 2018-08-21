@@ -13,6 +13,8 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <!-- 引入成本法 详情模块 -->
+            <jsp:include page="/views/method/marketCostDetail.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">

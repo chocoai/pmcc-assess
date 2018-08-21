@@ -29,11 +29,11 @@
         </div>
         <div class="building">
             <!-- 主题内容 -->
-            <jsp:include page="./costModule/building.jsp"></jsp:include>
+            <jsp:include page="module/costModule/building.jsp"></jsp:include>
         </div>
         <div class="construction" style="display: none;">
             <!-- 主题内容 -->
-            <jsp:include page="./costModule/construction.jsp"></jsp:include>
+            <jsp:include page="module/costModule/construction.jsp"></jsp:include>
         </div>
     </div>
 </div>

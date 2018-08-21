@@ -52,6 +52,10 @@ public class MdMarketCostService {
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
 
+    public int addMdCost(MdCost mdCost){
+        return mdCostDao.addEstateNetwork(mdCost);
+    }
+
     public boolean addEstateNetwork(MdCostBuilding mdCostBuilding) {
         try {
             int id = mdCostBuildingDao.addEstateNetwork(mdCostBuilding);

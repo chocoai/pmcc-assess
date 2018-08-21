@@ -16,7 +16,7 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入成本法模块 -->
-            <jsp:include page="/views/method/module/marketCostIndex.jsp"></jsp:include>
+            <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
