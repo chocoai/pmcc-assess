@@ -174,7 +174,7 @@
             striped: true,//显示斑马线
             columns: [[
                 // {field: 'number', title: '序号', width: 50},
-                {field: 'name', title: '工程名称', width: 95},
+                {field: 'name', title: '工程名称', width: '35%'},
                 {
                     field: 'area',
                     title: '建筑面积',

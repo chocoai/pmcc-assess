@@ -105,37 +105,39 @@
     </div>
 
     <div class="form-group">
-
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费
-        </label>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="勘察设计和前期工程费"
-                       class="form-control" name="reconnaissanceDesign" readonly="readonly">
+            <label class="col-sm-1 control-label">
+                勘察设计和前期工程费率
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察设计和前期工程费率" class="form-control"
+                           name="reconnaissanceDesignRote">
+                </div>
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="勘察设计和前期工程费率" class="form-control"
-                       name="reconnaissanceDesignRote">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
+        <div class="x-valid"><label class="col-sm-1 control-label">
             建筑安装工程费
         </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           onclick="construction.constructionInstallationEngineeringFee.event();"
+                           placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                </div>
+            </div>
+        </div>
         <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       onclick="construction.constructionInstallationEngineeringFee.event();"
-                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+            <label class="col-sm-1 control-label">
+                勘察设计和前期工程费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="勘察设计和前期工程费"
+                           class="form-control" name="reconnaissanceDesign" readonly="readonly">
+                </div>
             </div>
         </div>
     </div>
@@ -175,7 +177,8 @@
                        placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             公共配套设施建设费 单价选择
         </label>
@@ -186,9 +189,6 @@
                 </select>
             </div>
         </div>
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             公共配套设施建设费
         </label>
@@ -198,7 +198,9 @@
                        placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
             </div>
         </div>
+    </div>
 
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             开发期间单价
         </label>
@@ -254,16 +256,6 @@
 
     <div class="form-group">
         <label class="col-sm-1 control-label">
-            管理费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="管理费" class="form-control" name="managementExpense">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
             管理费率
         </label>
         <div class="x-valid">
@@ -273,6 +265,17 @@
             </div>
         </div>
         <label class="col-sm-1 control-label">
+            管理费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="管理费" class="form-control" name="managementExpense">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
             不可预见费率
         </label>
         <div class="x-valid">
@@ -281,9 +284,6 @@
                        placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
             </div>
         </div>
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             不可预见费
         </label>
@@ -293,7 +293,8 @@
                        placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             销售费率
         </label>
@@ -303,20 +304,6 @@
                        placeholder="销售费率" class="form-control" name="salesFeeRote">
             </div>
         </div>
-
-        <label class="col-sm-1 control-label">
-            重置价格
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="重置价格" class="form-control" name="replacementValue">
-            </div>
-        </div>
-
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             销售费
         </label>
@@ -326,7 +313,18 @@
                        placeholder="销售费" class="form-control" name="salesFee">
             </div>
         </div>
+        <label class="col-sm-1 control-label">
+            重置价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="重置价格" class="form-control" name="replacementValue">
+            </div>
+        </div>
+    </div>
 
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             增值及附加税率
         </label>
@@ -369,7 +367,8 @@
                        placeholder="计息周期" class="form-control" name="interestPeriod">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             投资计息税率修正
         </label>
@@ -379,9 +378,6 @@
                        placeholder="投资计息税率修正" class="form-control" name="interestRateOnInvestmentCorrect">
             </div>
         </div>
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             投资利息
         </label>
@@ -391,6 +387,9 @@
                        placeholder="投资利息" class="form-control" name="interestInInvestment">
             </div>
         </div>
+    </div>
+    <div class="form-group">
+
 
         <label class="col-sm-1 control-label">
             开发利润率
@@ -419,7 +418,7 @@
             <label class="col-sm-1 control-label">
                 开发利润修正
             </label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input type="text" readonly="readonly"
                        placeholder="开发利润修正" class="form-control" name="developmentProfitMarginRoteCorrect">
             </div>
@@ -429,17 +428,18 @@
             <label class="col-sm-1 control-label">
                 在建工程评估价值
             </label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input type="text" readonly="readonly"
                        placeholder="在建工程评估价值" class="form-control" name="evaluationValueConstructionProject">
             </div>
         </div>
-
+    </div>
+    <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">
                 在建工程评估价值修正
             </label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input type="text" readonly="readonly"
                        placeholder="在建工程评估价值修正" class="form-control" name="evaluationValueConstructionProjectCorrect">
             </div>
@@ -449,7 +449,7 @@
             <label class="col-sm-1 control-label">
                 在建工程评估值
             </label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input type="text" readonly="readonly"
                        placeholder="在建工程评估值" class="form-control" name="constructionProcesAssessValue">
             </div>
@@ -784,21 +784,21 @@
         }
     }
     /**
-    * @author:  zch
-    * 描述: 所有算法
-    * @date:2018-08-16
-    **/
+     * @author:  zch
+     * 描述: 所有算法
+     * @date:2018-08-16
+     **/
     construction.inputAlgorithmObject = {
         //在建工程评估值 = 在建工程评估价值/(1-在建工程评估价值修正)
         constructionProcesAssessValueFun: function () {
             var a, c, b;
             a = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key, null); //在建工程评估价值
             b = construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key, null); //在建工程评估价值修正
-            if (b != 0){//
+            if (b != 0) {//
                 c = construction.sub(1, a);
                 c = construction.div(b, c);
                 construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionProcesAssessValue.key, c); //在建工程评估值
-            }else {
+            } else {
                 construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionProcesAssessValue.key, 0); //在建工程评估值
             }
         },
