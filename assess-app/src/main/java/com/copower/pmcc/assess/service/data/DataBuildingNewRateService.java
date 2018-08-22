@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -39,6 +40,8 @@ public class DataBuildingNewRateService {
     private DataBuildingNewRateDao dataBuildingNewRateDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     public List<DataBuildingNewRateVo> dataBuildingNewRateList(){
         List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(null);
@@ -49,11 +52,11 @@ public class DataBuildingNewRateService {
     }
 
 
-    public BootstrapTableVo getDataBuildingNewRateList(String buildingStructure) {
+    public BootstrapTableVo getDataBuildingNewRateList(DataBuildingNewRate dataBuildingNewRate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(buildingStructure);
+        List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(dataBuildingNewRate);
         List<DataBuildingNewRateVo> dataBuildingNewRateVoList = LangUtils.transform(dataBuildingNewRateList, p -> {
             return getDataBuildingNewRateVo(p);
         });
@@ -63,19 +66,13 @@ public class DataBuildingNewRateService {
     }
 
     @Transactional
-    public boolean addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate) throws BusinessException {
-        boolean flag = false;
-        if (dataBuildingNewRate.getGmtCreated() == null)
-            dataBuildingNewRate.setGmtCreated(new Date(System.currentTimeMillis()));
-        flag = dataBuildingNewRateDao.addDataBuildingNewRate(dataBuildingNewRate);
-        return flag;
+    public boolean addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate)  {
+        dataBuildingNewRate.setCreator(commonService.thisUserAccount());
+        return dataBuildingNewRateDao.addDataBuildingNewRate(dataBuildingNewRate);
     }
 
-    @Transactional(rollbackFor = {Exception.class, SQLException.class, RuntimeException.class})
-    public boolean editDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate) throws BusinessException {
-        boolean flag = false;
-        flag = dataBuildingNewRateDao.editDataBuildingNewRate(dataBuildingNewRate);
-        return flag;
+    public boolean editDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate)  {
+        return dataBuildingNewRateDao.editDataBuildingNewRate(dataBuildingNewRate);
     }
 
     @Transactional(readOnly = true)
@@ -97,10 +94,7 @@ public class DataBuildingNewRateService {
         return dataBuildingNewRateVo;
     }
 
-    @Transactional(rollbackFor = {Exception.class})
-    public boolean deleteDataBuildingNewRate(Integer id) throws BusinessException {
-        boolean flag = false;
-        flag = dataBuildingNewRateDao.deleteDataBuildingNewRate(id);
-        return flag;
+    public boolean deleteDataBuildingNewRate(Integer id) {
+        return dataBuildingNewRateDao.deleteDataBuildingNewRate(id);
     }
 }

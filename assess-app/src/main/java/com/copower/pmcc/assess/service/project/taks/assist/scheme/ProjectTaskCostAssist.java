@@ -25,6 +25,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -56,6 +57,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
+        MdCost mdCost = new MdCost();
+        mdCost.setPrice(BigDecimal.valueOf(10));
+        mdCost.setArea(BigDecimal.valueOf(20));
+        modelAndView.addObject("mdCost",mdCost);
         return modelAndView;
     }
 
@@ -86,6 +91,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 if (!ObjectUtils.isEmpty(mdCostBuildings)) {
                     mdCostBuilding = mdCostBuildings.get(0);
                     modelAndView.addObject("mdCostBuilding", mdCostBuilding);
+                    modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
                 }
             }
             if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostConstruction.class))) {
@@ -95,6 +101,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 if (!ObjectUtils.isEmpty(mdCostConstructionList)) {
                     mdCostConstruction = mdCostConstructionList.get(0);
                     modelAndView.addObject("mdCostConstruction", mdCostConstruction);
+                    modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
                 }
             }
 
@@ -128,6 +135,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 List<MdCostBuilding> mdCostBuildings = mdMarketCostService.mdCostBuildingList(mdCostBuilding);
                 if (!ObjectUtils.isEmpty(mdCostBuildings)) {
                     mdCostBuilding = mdCostBuildings.get(0);
+                    modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
                     modelAndView.addObject("mdCostBuilding", mdCostBuilding);
                 }
             }
@@ -137,11 +145,16 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 List<MdCostConstruction> mdCostConstructionList = mdMarketCostService.getMdCostConstructionList(mdCostConstruction);
                 if (!ObjectUtils.isEmpty(mdCostConstructionList)) {
                     mdCostConstruction = mdCostConstructionList.get(0);
+                    modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
                     modelAndView.addObject("mdCostConstruction", mdCostConstruction);
                 }
             }
 
         }
+        MdCost mdCost = new MdCost();
+        mdCost.setPrice(BigDecimal.valueOf(10));
+        mdCost.setArea(BigDecimal.valueOf(20));
+        modelAndView.addObject("mdCost",mdCost);
         return modelAndView;
     }
 
@@ -170,13 +183,18 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
+        JSONObject jsonObject = JSON.parseObject(formData);
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostBuilding())) {//评估单价 (建筑物)
             mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
             id = mdMarketCostService.addMdCost(mdCost);
             MdCostBuilding mdCostBuilding = mdMarketCostDto.getMdCostBuilding();
             mdCostBuilding.setCostId(id);
-            if (!StringUtils.isEmpty(mdCostBuilding.getJsonContent())) {
-                mdCostBuilding.setJsonContent(JSON.toJSONString(mdCostBuilding.getJsonContent()));
+
+            String jsonContent = jsonObject.getString("mdCostBuilding");
+            if (StringUtils.isEmpty(jsonContent)) {
+                mdCostBuilding.setJsonContent(JSON.toJSONString(mdCostBuilding));
+            } else {
+                mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
             }
             mdMarketCostService.addMdCostBuilding(mdCostBuilding);
         }
@@ -185,13 +203,14 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             id = mdMarketCostService.addMdCost(mdCost);
             MdCostConstruction mdCostConstruction = mdMarketCostDto.getMdCostConstruction();
             mdCostConstruction.setCostId(id);
-            if (!StringUtils.isEmpty(mdCostConstruction.getJsonContent())) {
-                mdCostConstruction.setJsonContent(JSON.toJSONString(mdCostConstruction.getJsonContent()));
+            String jsonContent = jsonObject.getString("mdCostConstruction");
+            if (StringUtils.isEmpty(jsonContent)) {
+                mdCostConstruction.setJsonContent(JSON.toJSONString(mdCostConstruction));
+            } else {
+                mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
             }
             mdMarketCostService.addMdCostConstruction(mdCostConstruction);
         }
-
-
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
@@ -220,9 +239,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             try {
                 if (building.getId() != null) {
                     String jsonContent = jsonObject.getString("mdCostBuilding");
-                    if (StringUtils.isEmpty(jsonContent)){
+                    if (StringUtils.isEmpty(jsonContent)) {
                         building.setJsonContent(JSON.toJSONString(building));
-                    }else {
+                    } else {
                         building.setJsonContent(JSON.toJSONString(jsonContent));
                     }
                     mdMarketCostService.updateMdCostBuilding(building);
@@ -236,9 +255,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             try {
                 if (costConstruction.getId() != null) {
                     String jsonContent = jsonObject.getString("mdCostConstruction");
-                    if (StringUtils.isEmpty(jsonContent)){
+                    if (StringUtils.isEmpty(jsonContent)) {
                         costConstruction.setJsonContent(JSON.toJSONString(costConstruction));
-                    }else {
+                    } else {
                         costConstruction.setJsonContent(JSON.toJSONString(jsonContent));
                     }
                     mdMarketCostService.updateMdCostConstruction(costConstruction);

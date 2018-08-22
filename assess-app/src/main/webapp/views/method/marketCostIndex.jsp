@@ -11,10 +11,10 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
-            <input type="hidden" name="mdCostBuilding" value="${mdCostBuilding.jsonContent}">
-            <input type="hidden" name="mdCostConstruction" value="${mdCostConstruction.jsonContent}">
-            <input type="hidden" name="area" class="mdCost area" value="20"><!-- 委估对象面积 -->
-            <input type="hidden" name="price" class="mdCost price" value="22.5"><!-- 委估对象价格 -->
+            <input type="hidden" id="mdCostBuildingJSON" name="mdCostBuildingJSON" value='${mdCostBuildingJSON}'>
+            <input type="hidden" id="mdCostConstructionJSON" name="mdCostConstructionJSON" value='${mdCostConstructionJSON}'>
+            <input type="text" name="area" readonly="readonly" class="mdCost area" value="${mdCost.area}"><!-- 委估对象面积 -->
+            <input type="text" name="price" readonly="readonly" class="mdCost price" value="${mdCost.price}"><!-- 委估对象价格 -->
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
@@ -41,7 +41,6 @@
 </div>
 
 <script type="text/javascript">
-
     var AlgorithmsPrototype = function () {
 
     };
@@ -195,37 +194,7 @@
             return "";
         }
     }
-    /**
-     * @author:  zch
-     * 描述:测试
-     * @date:  2018-08-07
-     **/
-    AlgorithmsPrototype.prototype.dataTest = function () {
-        console.log("加法测试(正常参数):" + AlgorithmsPrototype.prototype.add(0.2, 0.1));
-        console.log("加法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.add(null, 0.1));
-        console.log("加法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.add(null, null));
-        console.log("加法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.add('', null));
-        console.log("加法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.add('', ''));
 
-        console.log("减法测试(正常参数):" + AlgorithmsPrototype.prototype.sub(3, 2));
-        console.log("减法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.sub(null, 2));
-        console.log("减法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.sub(null, null));
-        console.log("减法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.sub('', null));
-        console.log("减法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.sub('', ''));
-
-        console.log("乘法测试(正常参数):" + AlgorithmsPrototype.prototype.mul(3, 2));
-        console.log("乘法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.mul(null, 2));
-        console.log("乘法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.mul(null, null));
-        console.log("乘法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.mul('', null));
-        console.log("乘法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.mul('', ''));
-
-        console.log("除法测试(正常参数):" + AlgorithmsPrototype.prototype.div(3, 2));
-        console.log("除法测试(异常参数 null , 0):" + AlgorithmsPrototype.prototype.div(null, 0));
-        console.log("除法测试(异常参数 0 , 0):" + AlgorithmsPrototype.prototype.div(0, 0));
-        console.log("除法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.div(null, null));
-        console.log("除法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.div('', null));
-        console.log("除法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.div('', ''));
-    };
 
     var optionsBuildBox = new Object();
     optionsBuildBox.showBuilding = function () {
@@ -259,13 +228,20 @@
     optionsBuildBox.mdCostConstructionInit = function (data) {
         $("#frmConstruction").initForm(data);
     };
+    /**
+    * @author:  zch
+    * 描述:处理页面更新时
+    * @date:
+    **/
     optionsBuildBox.updateInit = function () {
         var mdCostBuilding = "${mdCostBuilding}";
         var mdCostConstruction = "${mdCostConstruction}";
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
             optionsBuildBox.showBuilding();
             try {
-                mdCostBuilding = '${mdCostBuilding.jsonContent}';
+                mdCostBuilding = $("#mdCostBuildingJSON").val();
+                mdCostBuilding = JSON.parse(mdCostBuilding);
+                //初始化数据
                 optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
             } catch (e) {
                 console.log("json parse 失败!")
@@ -274,7 +250,9 @@
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
             optionsBuildBox.showConstruction();
             try {
-                mdCostConstruction = '${mdCostConstruction.jsonContent}';
+                mdCostConstruction = $("#mdCostConstructionJSON").val();
+                mdCostConstruction = JSON.parse(mdCostConstruction);
+                //初始化数据
                 optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
             } catch (e) {
                 console.log("json parse 失败!")
