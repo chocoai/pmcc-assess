@@ -14,7 +14,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="开发土地面积" class="form-control" name="developmentLandArea">
             </div>
         </div>
@@ -24,7 +24,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="开发建筑面积" class="form-control" name="developmentBuildArea">
             </div>
         </div>
@@ -46,7 +46,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="土地购买单价" class="form-control" name="unitPriceLandPurchase">
             </div>
         </div>
@@ -122,7 +122,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="勘察设计和前期工程费率" class="form-control"
                        name="reconnaissanceDesignRote">
             </div>
@@ -204,7 +204,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="开发期间单价" class="form-control" name="devDuringPrice">
             </div>
         </div>
@@ -226,7 +226,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
             </div>
         </div>
@@ -268,7 +268,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="管理费率" class="form-control" name="managementExpenseRote">
             </div>
         </div>
@@ -277,7 +277,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
             </div>
         </div>
@@ -299,7 +299,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="销售费率" class="form-control" name="salesFeeRote">
             </div>
         </div>
@@ -309,7 +309,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="重置价格" class="form-control" name="replacementValue">
             </div>
         </div>
@@ -355,7 +355,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
             </div>
         </div>
@@ -365,7 +365,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="计息周期" class="form-control" name="interestPeriod">
             </div>
         </div>
@@ -1198,13 +1198,13 @@
             var input = $("." + construction.config().frm + " " + "input[name='" + key + "']");
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
-                if (construction.isNumber(value)) {
-                    var funName = "construction.inputFun." + key + "Input(" + input.val() + ")";
-                    eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
-                    // construction.inputAlgorithm(key, input.val());
-                } else {
-                    Alert("请输入合法数字!")
-                }
+                var funName = "construction.inputFun." + key + "Input(" + input.val() + ")";
+                eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
+                // if (construction.isNumber(value)) {
+                //
+                // } else {
+                //     Alert("请输入合法数字!")
+                // }
             });
         });
         construction.selectEvent.init();
@@ -1286,6 +1286,7 @@
     }
 
     construction.eventInit = function () {
+        $("#"+construction.config().frm).validate();
         construction.inputEvent();
         construction.select2LoadData.init();
     }

@@ -7,6 +7,10 @@ public class InfrastructureVo extends Infrastructure {
     private String provinceName;
     private String cityName;
     private String districtName;
+    /**执行开始日期*/
+    private String startDateName;
+    /**执行结束日期*/
+    private String endDateName;
 
     public String getProvinceName() {
         return provinceName;
@@ -30,5 +34,21 @@ public class InfrastructureVo extends Infrastructure {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getStartDateName() {
+        return startDateName;
+    }
+
+    public void setStartDateName(String startDateName) {
+        this.startDateName = startDateName;
+    }
+
+    public String getEndDateName() {
+        return endDateName;
+    }
+
+    public void setEndDateName(String endDateName) {
+        this.endDateName = endDateName;
     }
 }

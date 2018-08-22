@@ -15,7 +15,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="勘察设计和前期工程费率" data-toggle="popover reconnaissanceDesignRote" class="form-control"
                            name="reconnaissanceDesignRote">
                 </div>
@@ -70,7 +70,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="infrastructureCostSelect2"
+                    <select name="infrastructureCostSelect2" required="required"
                             class="form-control search-select select2 infrastructureCostSelect2">
                     </select>
                 </div>
@@ -95,7 +95,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="infrastructureMatchingCostSelect2"
+                    <select name="infrastructureMatchingCostSelect2" required="required"
                             class="form-control search-select select2 infrastructureMatchingCostSelect2">
                     </select>
                 </div>
@@ -121,7 +121,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="开发期间单价" class="form-control" name="devDuringPrice">
                 </div>
             </div>
@@ -146,7 +146,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
                 </div>
             </div>
@@ -181,7 +181,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="管理费率" class="form-control" name="managementExpenseRote">
                 </div>
             </div>
@@ -205,7 +205,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
                 </div>
             </div>
@@ -227,7 +227,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="重置价格" class="form-control" name="replacementValue">
                 </div>
             </div>
@@ -241,7 +241,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="text"
+                    <input type="text" data-rule-number='true' required="required"
                            placeholder="销售费率" class="form-control" name="salesFeeRote">
                 </div>
             </div>
@@ -266,7 +266,7 @@
             </label>
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <select name="addedValueAdditionalTaxRate"
+                    <select name="addedValueAdditionalTaxRate" required="required"
                             class="form-control search-select select2 addedValueAdditionalTaxRateSelect2">
                     </select>
                 </div>
@@ -281,6 +281,60 @@
                     <input type="text" readonly="readonly"
                            placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            计息周期
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="计息周期" class="form-control" name="interestPeriod">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资计息利率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资利息
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利息" class="form-control" name="interestInInvestment">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            投资利润率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="投资利润率" class="form-control" name="investmentProfitRate">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资利润
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利润" class="form-control" name="investmentProfit">
             </div>
         </div>
     </div>
@@ -742,15 +796,11 @@
             var input = $("." + build.config().frm + " " + "input[name='" + key + "']");
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
-                if (build.isNumber(value)) {
-                    try {
-                        var funName = "build.inputFun." + key + "Input(" + input.val() + ")";
-                        eval(funName);
-                    } catch (e) {
-                        console.log("函数不存在!");
-                    }
-                } else {
-                    Alert("请输入合法数字!")
+                try {
+                    var funName = "build.inputFun." + key + "Input(" + input.val() + ")";
+                    eval(funName);
+                } catch (e) {
+                    console.log("函数不存在!");
                 }
             });
         });
@@ -827,6 +877,8 @@
     build.inputInit = function () {
         build.inputEvent();
         build.select2LoadData.init();
+        //使数据校验生效
+        $("#"+build.config().frm).validate();
     }
 
     /**
@@ -940,13 +992,12 @@
                 var b = $("." + build.config().newRate + " " + "input[name='" + 'weightYear' + "']").val(); //年限法 权重
                 var c = $("." + build.config().newRate + " " + "input[name='" + 'newRateG' + "']").val();//观察法 成新率
                 var d = $("." + build.config().newRate + " " + "input[name='" + 'weightG' + "']").val();//观察法 权重
-                // console.log("test a:"+a+" ;b:"+b +" ;c:"+c+" ;d:"+d);
+                console.log("test a:"+a+" ;b:"+b +" ;c:"+c+" ;d:"+d);
                 var k = 0;
                 //综合成新率 ==> (成新率*权重+残值率*权重)/2
                 var k1 = build.mul(build.newRateModel.algorithm.specialTreatment(a), build.newRateModel.algorithm.specialTreatment(b));
                 var k2 = build.mul(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(d));
                 k = build.add(k1, k2);
-                k = build.div(k, 2);
                 $("." + build.config().newRate + " .integratednewRate").html(k);
                 build.newRateModel.select2Event.eventInit();
             },
@@ -973,10 +1024,11 @@
                                 b = data.residualValue;
                                 b = build.toPoint(b);
                             }
-                            // console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
-                            //成新率 = 1-（1-残值率）*已使用年限/经济耐用年限
+                            c = build.newRateModel.algorithm.specialTreatment(c);
+                            console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
+                            //成新率 = 1- (（1-残值率）*已使用年限/经济耐用年限 )
                             var d = 0;
-                            d = (1 - (1 - b)) * (c - a);
+                            d = 1 - (1-b) * (c/a) ;
                             $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
                             build.newRateModel.select2Event.eventInit();
                         }
@@ -990,16 +1042,13 @@
                 if (obj == 0) {
                     return true;
                 }
-                if (obj == '') {
-                    return true;
-                }
                 if (obj) {
                     return true;
                 }
                 return false;
             },
             specialTreatment: function (obj) {
-                if (build.newRateModel.algorithm.isNotNull(obj)) {
+                if (build.isNotNull(obj)){
                     return obj;
                 }
                 return 0;
@@ -1111,6 +1160,9 @@
             $("." + build.config().newRate).modal("show");
         },
         save: function () {
+            if (!$("#" + build.config().newRate).valid()) {
+                return false;
+            }
             var kk = build.newRateModel.getResult();
             $("." + build.config().frm + " " + "input[name='" + build.config().inputConfig().newRate.key + "']").val(kk);
             build.inputFun.newRateInput(kk);
@@ -1125,10 +1177,9 @@
                 success: function (result) {
                     if (result.ret) {
                         var optionA = "<option value=''>请选择</option>";
-                        var optionB = "<option value=''>请选择</option>";
                         $.each(result.data, function (i, n) {
                             if (build.isNotNull(n.durableLife)) {
-                                optionA += "<option value='" + n.durableLife + "'>" + n.id + "</option>";
+                                optionA += "<option value='" + n.id + "'>" + n.durableLife + "</option>";
                             }
                         })
                         $("." + build.config().newRate + " .durableLife").html(optionA);
@@ -1185,7 +1236,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">成新率</h3>
             </div>
-            <form class="form-horizontal">
+            <form class="form-horizontal" id="newRateModelA">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -1201,7 +1252,7 @@
                                             经济耐用年限
                                         </label>
                                         <div class="col-sm-5">
-                                            <select name="durableLife"
+                                            <select name="durableLife" required="required"
                                                     class="form-control search-select select2 durableLife">
                                             </select>
                                         </div>
@@ -1212,7 +1263,7 @@
                                             已使用年限
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="useYear"
+                                            <input type="text" class="form-control" name="useYear" data-rule-number='true' required="required"
                                                    placeholder="已使用年限">
                                         </div>
                                     </div>
@@ -1247,7 +1298,7 @@
                                             权重
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightYear"
+                                            <input type="text" class="form-control" name="weightYear" data-rule-number='true' required="required"
                                                    placeholder="权重">
                                         </div>
                                     </div>
@@ -1263,7 +1314,7 @@
                                             成新率
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="newRateG"
+                                            <input type="text" class="form-control" name="newRateG" data-rule-number='true' required="required"
                                                    placeholder="成新率">
                                         </div>
                                     </div>
@@ -1272,7 +1323,7 @@
                                             权重
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightG"
+                                            <input type="text" class="form-control" name="weightG" data-rule-number='true' required="required"
                                                    placeholder="权重">
                                         </div>
                                     </div>

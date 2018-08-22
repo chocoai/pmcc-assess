@@ -238,12 +238,19 @@
                 });
                 if (!data.parent) {//说明不是父节点
                     constructEngineeringObject.updateFather(data);
+                }else {
+                    constructEngineeringObject.updateDirectFather(data);
                 }
             }
 
 
         }
     };
+    constructEngineeringObject.updateDirectFather = function (data) {
+        var roots = $('#' + constructEngineeringObject.config().tableId).treegrid('getRoots', data.id);
+        //更新建安成本小计
+        constructEngineeringObject.totalCalculation();
+    }
 
     /**
      * @author:  zch

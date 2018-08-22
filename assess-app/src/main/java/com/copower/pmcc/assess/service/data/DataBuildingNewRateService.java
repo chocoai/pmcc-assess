@@ -44,7 +44,7 @@ public class DataBuildingNewRateService {
     private CommonService commonService;
 
     public List<DataBuildingNewRateVo> dataBuildingNewRateList(){
-        List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(null);
+        List<DataBuildingNewRate> dataBuildingNewRateList = dataBuildingNewRateDao.getDataBuildingNewRateList(new DataBuildingNewRate());
         List<DataBuildingNewRateVo> dataBuildingNewRateVoList = LangUtils.transform(dataBuildingNewRateList, p -> {
             return getDataBuildingNewRateVo(p);
         });

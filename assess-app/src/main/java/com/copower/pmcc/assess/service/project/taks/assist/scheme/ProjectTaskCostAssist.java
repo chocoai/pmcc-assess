@@ -277,6 +277,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         //评估支持数据
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
+        Integer projectId = projectPlanDetails.getProjectId();
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
     }
 }

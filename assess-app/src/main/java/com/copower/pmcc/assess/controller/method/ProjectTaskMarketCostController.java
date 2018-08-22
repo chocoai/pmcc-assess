@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.data.DataInfrastructureCostService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
@@ -56,23 +57,29 @@ public class ProjectTaskMarketCostController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用", method = RequestMethod.GET)
-    public HttpResult listInfrastructureCostAndInfrastructureMatchingCost(){
-        Map<Object,Object> map = Maps.newHashMap();
-        map.put(InfrastructureCost.class.getSimpleName(),mdMarketCostService.infrastructureCostList());
-        map.put(InfrastructureMatchingCost.class.getSimpleName(),mdMarketCostService.infrastructureMatchingCosts());
+    @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用以及基础设施维护", method = RequestMethod.GET)
+    public HttpResult listInfrastructureCostAndInfrastructureMatchingCost(Integer projectId) {
+        Map<Object, Object> map = Maps.newHashMap();
+        map.put(InfrastructureCost.class.getSimpleName(), mdMarketCostService.infrastructureCostList());
+        map.put(InfrastructureMatchingCost.class.getSimpleName(), mdMarketCostService.infrastructureMatchingCosts());
+        if (projectId == null) {
+            map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(null));
+        }else {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(projectInfo));
+        }
         return HttpResult.newCorrectResult(map);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getAddedValueAdditionalTaxRate", name = "增值及附加税率", method = RequestMethod.GET)
-    public HttpResult getAddedValueAdditionalTaxRate(){
+    public HttpResult getAddedValueAdditionalTaxRate() {
         return HttpResult.newCorrectResult(mdMarketCostService.getAddedValueAdditionalTaxRate());
     }
 
     @ResponseBody
     @RequestMapping(value = "/dataBuildingNewRateList", name = "建筑成新率率", method = RequestMethod.GET)
-    public HttpResult dataBuildingNewRateList(){
+    public HttpResult dataBuildingNewRateList() {
         return HttpResult.newCorrectResult(mdMarketCostService.dataBuildingNewRateList());
     }
 }

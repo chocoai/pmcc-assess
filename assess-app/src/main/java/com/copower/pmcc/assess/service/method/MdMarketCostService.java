@@ -7,12 +7,15 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
 import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
+import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureCostService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
+import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
@@ -51,6 +54,8 @@ public class MdMarketCostService {
     private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
+    @Autowired
+    private DataInfrastructureService dataInfrastructureService;
 
     public int addMdCost(MdCost mdCost){
         mdCost.setCreator(commonService.thisUserAccount());
@@ -103,6 +108,20 @@ public class MdMarketCostService {
 
     public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction){
         return mdCostConstructionDao.getEstateNetworkList(mdCostConstruction);
+    }
+    public List<InfrastructureVo> infrastructureList(ProjectInfo projectInfo){
+        List<InfrastructureVo> vos = dataInfrastructureService.infrastructureList(new Infrastructure());
+        List<InfrastructureVo> tela = Lists.newArrayList();
+        if (projectInfo==null){
+            return vos;
+        }
+        String province = projectInfo.getProvince();
+        for (InfrastructureVo vo:vos){
+            if (Objects.equal(vo.getProvince(),province)){
+                tela.add(vo);
+            }
+        }
+        return tela;
     }
 
     public List<DataBuildingNewRateVo> dataBuildingNewRateList() {
