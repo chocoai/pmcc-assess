@@ -13,7 +13,7 @@ public class AssessDataDicKeyConstant {
      */
     public static final String ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
     public static final String EVALUATION_METHOD = "data.evaluation.method";//评估方法
-    public static final String BUILDING_NEW_RATE_USE = "databuilding.new.rate.use";//建筑成新率用途
+    public static final String BUILDING_NEW_RATE_USE = "data.building.new.rate.use";//建筑成新率用途
     public static final String EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
     public static final String EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
 

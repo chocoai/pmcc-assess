@@ -16,6 +16,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +47,17 @@ public class DataInfrastructureService {
 
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+
+    public List<InfrastructureVo> infrastructureList(Infrastructure infrastructure){
+        List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureList(infrastructure);
+        List<InfrastructureVo> vos = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(infrastructureList)){
+            for (Infrastructure infrastru:infrastructureList){
+                vos.add(change(infrastru));
+            }
+        }
+        return vos;
+    }
 
     public BootstrapTableVo getInfrastructure(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -123,6 +137,13 @@ public class DataInfrastructureService {
         vo.setProvinceName(getProvinceName(Integer.parseInt(infrastructure.getProvince())));
         vo.setCityName(getSysArea(Integer.parseInt(infrastructure.getCity())));
         vo.setDistrictName(getSysArea(Integer.parseInt(infrastructure.getDistrict())));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (!ObjectUtils.isEmpty(infrastructure.getEndDate())){
+            vo.setEndDateName(sdf.format(infrastructure.getEndDate()));
+        }
+        if (!ObjectUtils.isEmpty(infrastructure.getStartDate())){
+            vo.setStartDateName(sdf.format(infrastructure.getStartDate()));
+        }
         return vo;
     }
 

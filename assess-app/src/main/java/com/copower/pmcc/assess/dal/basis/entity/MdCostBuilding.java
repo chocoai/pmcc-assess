@@ -12,9 +12,9 @@ public class MdCostBuilding {
 
     private Date gmtModified;
 
-    private String synthesisRate;
+    private String newRate;
 
-    private BigDecimal valuationPrice;
+    private BigDecimal assessPrice;
 
     private BigDecimal constructionInstallationEngineeringFee;
 
@@ -54,20 +54,20 @@ public class MdCostBuilding {
         this.gmtModified = gmtModified;
     }
 
-    public String getSynthesisRate() {
-        return synthesisRate;
+    public String getNewRate() {
+        return newRate;
     }
 
-    public void setSynthesisRate(String synthesisRate) {
-        this.synthesisRate = synthesisRate == null ? null : synthesisRate.trim();
+    public void setNewRate(String newRate) {
+        this.newRate = newRate == null ? null : newRate.trim();
     }
 
-    public BigDecimal getValuationPrice() {
-        return valuationPrice;
+    public BigDecimal getAssessPrice() {
+        return assessPrice;
     }
 
-    public void setValuationPrice(BigDecimal valuationPrice) {
-        this.valuationPrice = valuationPrice;
+    public void setAssessPrice(BigDecimal assessPrice) {
+        this.assessPrice = assessPrice;
     }
 
     public BigDecimal getConstructionInstallationEngineeringFee() {

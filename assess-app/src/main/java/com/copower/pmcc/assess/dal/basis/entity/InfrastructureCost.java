@@ -16,6 +16,8 @@ public class InfrastructureCost {
 
     private Date gmtModified;
 
+    private Integer pid;
+
     public Integer getId() {
         return id;
     }
@@ -62,5 +64,13 @@ public class InfrastructureCost {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

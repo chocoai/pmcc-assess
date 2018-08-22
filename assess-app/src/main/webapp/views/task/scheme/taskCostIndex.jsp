@@ -134,16 +134,18 @@
 
     //提交
     function submit() {
-        if (!supportInfoModule.valid()) {
-            return false;
-        }
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
+
         if (!$("#frmBuild").valid()) {
             return false;
         }
         if (!$("#frmConstruction").valid()) {
+            return false;
+        }
+
+        if (!supportInfoModule.valid()) {
+            return false;
+        }
+        if (!$("#frm_task").valid()) {
             return false;
         }
 
