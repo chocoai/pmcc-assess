@@ -54,13 +54,13 @@ public class ExamineBuilding {
 
     private Integer buildingStructure;
 
+    private Integer buildingStructurePid;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer buildingstructurepid;
 
     public Integer getId() {
         return id;
@@ -262,6 +262,14 @@ public class ExamineBuilding {
         this.buildingStructure = buildingStructure;
     }
 
+    public Integer getBuildingStructurePid() {
+        return buildingStructurePid;
+    }
+
+    public void setBuildingStructurePid(Integer buildingStructurePid) {
+        this.buildingStructurePid = buildingStructurePid;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -284,13 +292,5 @@ public class ExamineBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getBuildingstructurepid() {
-        return buildingstructurepid;
-    }
-
-    public void setBuildingstructurepid(Integer buildingstructurepid) {
-        this.buildingstructurepid = buildingstructurepid;
     }
 }

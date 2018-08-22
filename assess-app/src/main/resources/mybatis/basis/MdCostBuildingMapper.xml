@@ -6,8 +6,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="synthesis_rate" property="synthesisRate" jdbcType="VARCHAR" />
-    <result column="valuation_price" property="valuationPrice" jdbcType="DECIMAL" />
+    <result column="new_rate" property="newRate" jdbcType="VARCHAR" />
+    <result column="assess_price" property="assessPrice" jdbcType="DECIMAL" />
     <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="cost_id" property="costId" jdbcType="INTEGER" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, synthesis_rate, valuation_price, construction_installation_engineering_fee, 
+    id, creator, gmt_created, gmt_modified, new_rate, assess_price, construction_installation_engineering_fee, 
     json_content, cost_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostBuildingExample" >
@@ -109,10 +109,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_cost_building (creator, gmt_created, gmt_modified, 
-      synthesis_rate, valuation_price, construction_installation_engineering_fee, 
+      new_rate, assess_price, construction_installation_engineering_fee, 
       json_content, cost_id)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{synthesisRate,jdbcType=VARCHAR}, #{valuationPrice,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
+      #{newRate,jdbcType=VARCHAR}, #{assessPrice,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
       #{jsonContent,jdbcType=CHAR}, #{costId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostBuilding" >
@@ -130,11 +130,11 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="synthesisRate != null" >
-        synthesis_rate,
+      <if test="newRate != null" >
+        new_rate,
       </if>
-      <if test="valuationPrice != null" >
-        valuation_price,
+      <if test="assessPrice != null" >
+        assess_price,
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee,
@@ -156,11 +156,11 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="synthesisRate != null" >
-        #{synthesisRate,jdbcType=VARCHAR},
+      <if test="newRate != null" >
+        #{newRate,jdbcType=VARCHAR},
       </if>
-      <if test="valuationPrice != null" >
-        #{valuationPrice,jdbcType=DECIMAL},
+      <if test="assessPrice != null" >
+        #{assessPrice,jdbcType=DECIMAL},
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -194,11 +194,11 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.synthesisRate != null" >
-        synthesis_rate = #{record.synthesisRate,jdbcType=VARCHAR},
+      <if test="record.newRate != null" >
+        new_rate = #{record.newRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.valuationPrice != null" >
-        valuation_price = #{record.valuationPrice,jdbcType=DECIMAL},
+      <if test="record.assessPrice != null" >
+        assess_price = #{record.assessPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -220,8 +220,8 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      synthesis_rate = #{record.synthesisRate,jdbcType=VARCHAR},
-      valuation_price = #{record.valuationPrice,jdbcType=DECIMAL},
+      new_rate = #{record.newRate,jdbcType=VARCHAR},
+      assess_price = #{record.assessPrice,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{record.jsonContent,jdbcType=CHAR},
       cost_id = #{record.costId,jdbcType=INTEGER}
@@ -241,11 +241,11 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="synthesisRate != null" >
-        synthesis_rate = #{synthesisRate,jdbcType=VARCHAR},
+      <if test="newRate != null" >
+        new_rate = #{newRate,jdbcType=VARCHAR},
       </if>
-      <if test="valuationPrice != null" >
-        valuation_price = #{valuationPrice,jdbcType=DECIMAL},
+      <if test="assessPrice != null" >
+        assess_price = #{assessPrice,jdbcType=DECIMAL},
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -264,8 +264,8 @@
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      synthesis_rate = #{synthesisRate,jdbcType=VARCHAR},
-      valuation_price = #{valuationPrice,jdbcType=DECIMAL},
+      new_rate = #{newRate,jdbcType=VARCHAR},
+      assess_price = #{assessPrice,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{jsonContent,jdbcType=CHAR},
       cost_id = #{costId,jdbcType=INTEGER}

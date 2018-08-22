@@ -11,6 +11,8 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
+            <input type="hidden" name="mdCostBuilding" value="${mdCostBuilding.jsonContent}">
+            <input type="hidden" name="mdCostConstruction" value="${mdCostConstruction.jsonContent}">
             <input type="hidden" name="area" class="mdCost area" value="20"><!-- 委估对象面积 -->
             <input type="hidden" name="price" class="mdCost price" value="22.5"><!-- 委估对象价格 -->
         </div>
@@ -251,30 +253,49 @@
         });
     };
 
+    optionsBuildBox.mdCostBuildingInit = function (data) {
+        $("#frmBuild").initForm(data);
+    };
+    optionsBuildBox.mdCostConstructionInit = function (data) {
+        $("#frmConstruction").initForm(data);
+    };
+    optionsBuildBox.updateInit = function () {
+        var mdCostBuilding = "${mdCostBuilding}";
+        var mdCostConstruction = "${mdCostConstruction}";
+        if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
+            optionsBuildBox.showBuilding();
+            try {
+                mdCostBuilding = '${mdCostBuilding.jsonContent}';
+                optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+        if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
+            optionsBuildBox.showConstruction();
+            try {
+                mdCostConstruction = '${mdCostConstruction.jsonContent}';
+                optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+    }
+
     optionsBuildBox.getMdCostBuilding = function () {
         var jsonParams = formParams("frmBuild");
-        var data = {
-            synthesisRate: build.newRateModel.getResult(),//综合成新率
-            constructionInstallationEngineeringFee: build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().constructionInstallationEngineeringFee.key, null),
-            jsonContent: jsonParams,//json数据
-            valuationPrice: build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().assessPrice.key, null)//评估单价
-        };
-        return data;
+        jsonParams.id = "${mdCostBuilding.id}";//确保修改能成功
+        return jsonParams;
     };
     optionsBuildBox.getMdCostConstruction = function () {
         var jsonParams = formParams("frmConstruction");
-        var data = {
-            assessValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionProcesAssessValue.key, null),
-            evaluationValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key, null),
-            assessValueDifference:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key, null),
-            constructionInstallationEngineeringFee:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null),//
-            jsonContent: jsonParams//json数据
-        };
+        jsonParams.id = "${mdCostConstruction.id}";//确保修改能成功
+        return jsonParams;
     };
 
     $(function () {
         optionsBuildBox.tabControl();
-        // AlgorithmsPrototype.prototype.dataTest();
+        optionsBuildBox.updateInit();
     });
 </script>
 

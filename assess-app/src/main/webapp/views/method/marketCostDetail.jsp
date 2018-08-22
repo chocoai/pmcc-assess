@@ -11,6 +11,8 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
+            <input type="hidden" name="mdCostBuilding" value="${mdCostBuilding.jsonContent}">
+            <input type="hidden" name="mdCostConstruction" value="${mdCostConstruction.jsonContent}">
             <input type="hidden" name="area" class="mdCost area" value="20"><!-- 委估对象面积 -->
             <input type="hidden" name="price" class="mdCost price" value="22.5"><!-- 委估对象价格 -->
         </div>
@@ -193,37 +195,6 @@
             return "";
         }
     }
-    /**
-     * @author:  zch
-     * 描述:测试
-     * @date:  2018-08-07
-     **/
-    AlgorithmsPrototype.prototype.dataTest = function () {
-        console.log("加法测试(正常参数):" + AlgorithmsPrototype.prototype.add(0.2, 0.1));
-        console.log("加法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.add(null, 0.1));
-        console.log("加法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.add(null, null));
-        console.log("加法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.add('', null));
-        console.log("加法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.add('', ''));
-
-        console.log("减法测试(正常参数):" + AlgorithmsPrototype.prototype.sub(3, 2));
-        console.log("减法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.sub(null, 2));
-        console.log("减法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.sub(null, null));
-        console.log("减法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.sub('', null));
-        console.log("减法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.sub('', ''));
-
-        console.log("乘法测试(正常参数):" + AlgorithmsPrototype.prototype.mul(3, 2));
-        console.log("乘法测试(异常参数 null , 0.1):" + AlgorithmsPrototype.prototype.mul(null, 2));
-        console.log("乘法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.mul(null, null));
-        console.log("乘法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.mul('', null));
-        console.log("乘法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.mul('', ''));
-
-        console.log("除法测试(正常参数):" + AlgorithmsPrototype.prototype.div(3, 2));
-        console.log("除法测试(异常参数 null , 0):" + AlgorithmsPrototype.prototype.div(null, 0));
-        console.log("除法测试(异常参数 0 , 0):" + AlgorithmsPrototype.prototype.div(0, 0));
-        console.log("除法测试(异常参数 null , null):" + AlgorithmsPrototype.prototype.div(null, null));
-        console.log("除法测试(异常参数 '' , null):" + AlgorithmsPrototype.prototype.div('', null));
-        console.log("除法测试(异常参数 '' , ''):" + AlgorithmsPrototype.prototype.div('', ''));
-    };
 
     var optionsBuildBox = new Object();
     optionsBuildBox.showBuilding = function () {
@@ -251,6 +222,37 @@
         });
     };
 
+    optionsBuildBox.mdCostBuildingInit = function (data) {
+        $("#frmBuild").initForm(data);
+        $("#frmBuild :input").attr("readonly", "readonly");
+    };
+    optionsBuildBox.mdCostConstructionInit = function (data) {
+        $("#frmConstruction").initForm(data);
+        $("#frmConstruction :input").attr("readonly", "readonly");
+    };
+    optionsBuildBox.detailInit = function () {
+        var mdCostBuilding = "${mdCostBuilding}";
+        var mdCostConstruction = "${mdCostConstruction}";
+        if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
+            optionsBuildBox.showBuilding();
+            try {
+                mdCostBuilding = '${mdCostBuilding.jsonContent}';
+                optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+        if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
+            optionsBuildBox.showConstruction();
+            try {
+                mdCostConstruction = '${mdCostConstruction.jsonContent}';
+                optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+    }
+
     optionsBuildBox.getMdCostBuilding = function () {
         var jsonParams = formParams("frmBuild");
         var data = {
@@ -264,17 +266,17 @@
     optionsBuildBox.getMdCostConstruction = function () {
         var jsonParams = formParams("frmConstruction");
         var data = {
-            assessValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionProcesAssessValue.key, null),
-            evaluationValue:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key, null),
-            assessValueDifference:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key, null),
-            constructionInstallationEngineeringFee:construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null),//
+            assessValue: construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionProcesAssessValue.key, null),
+            evaluationValue: construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProject.key, null),
+            assessValueDifference: construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().evaluationValueConstructionProjectCorrect.key, null),
+            constructionInstallationEngineeringFee: construction.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null),//
             jsonContent: jsonParams//json数据
         };
     };
 
     $(function () {
         optionsBuildBox.tabControl();
-        // AlgorithmsPrototype.prototype.dataTest();
+        optionsBuildBox.detailInit();
     });
 </script>
 

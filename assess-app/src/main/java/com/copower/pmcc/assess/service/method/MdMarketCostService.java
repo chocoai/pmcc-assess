@@ -53,11 +53,30 @@ public class MdMarketCostService {
     private DataBuildingNewRateService dataBuildingNewRateService;
 
     public int addMdCost(MdCost mdCost){
+        mdCost.setCreator(commonService.thisUserAccount());
         return mdCostDao.addEstateNetwork(mdCost);
     }
 
-    public boolean addEstateNetwork(MdCostBuilding mdCostBuilding) {
+    public boolean updateMdCostBuilding(MdCostBuilding mdCostBuilding){
+        return mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
+    }
+
+    public boolean updateMdCostConstruction(MdCostConstruction mdCostConstruction){
+        return mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
+    }
+
+    public MdCost getByMdCostId(int id){
+        MdCost mdCost = mdCostDao.getEstateNetworkById(id);
+        return mdCost;
+    }
+
+    public List<MdCost> getMdCostList(MdCost mdCost){
+        return mdCostDao.getEstateNetworkList(mdCost);
+    }
+
+    public boolean addMdCostBuilding(MdCostBuilding mdCostBuilding) {
         try {
+            mdCostBuilding.setCreator(commonService.thisUserAccount());
             int id = mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
             mdCostBuilding.setId(id);
             return true;
@@ -67,14 +86,23 @@ public class MdMarketCostService {
 
     }
 
-    public boolean addEstateNetwork(MdCostConstruction mdCostConstruction) {
+    public boolean addMdCostConstruction(MdCostConstruction mdCostConstruction) {
         try {
+            mdCostConstruction.setCreator(commonService.thisUserAccount());
             int id = mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
             mdCostConstruction.setId(id);
             return true;
         } catch (Exception e1) {
             return false;
         }
+    }
+
+    public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding){
+        return  mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
+    }
+
+    public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction){
+        return mdCostConstructionDao.getEstateNetworkList(mdCostConstruction);
     }
 
     public List<DataBuildingNewRateVo> dataBuildingNewRateList() {

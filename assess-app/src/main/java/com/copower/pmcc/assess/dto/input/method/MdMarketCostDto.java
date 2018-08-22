@@ -17,7 +17,6 @@ public class MdMarketCostDto implements Serializable {
     private List<SchemeSupportInfo> supportInfoList;
     private MdCostBuilding mdCostBuilding;
     private MdCostConstruction mdCostConstruction;
-    private Integer id;
 
     public List<SchemeSupportInfo> getSupportInfoList() {
         return supportInfoList;
@@ -43,11 +42,5 @@ public class MdMarketCostDto implements Serializable {
         this.mdCostConstruction = mdCostConstruction;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

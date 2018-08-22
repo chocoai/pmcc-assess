@@ -6,9 +6,9 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="assess_value" property="assessValue" jdbcType="DECIMAL" />
-    <result column="evaluation_value" property="evaluationValue" jdbcType="DECIMAL" />
-    <result column="assess_value_difference" property="assessValueDifference" jdbcType="DECIMAL" />
+    <result column="construction_proces_assess_value" property="constructionProcesAssessValue" jdbcType="DECIMAL" />
+    <result column="evaluation_value_construction_project" property="evaluationValueConstructionProject" jdbcType="DECIMAL" />
+    <result column="evaluation_value_construction_project_correct" property="evaluationValueConstructionProjectCorrect" jdbcType="DECIMAL" />
     <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="cost_id" property="costId" jdbcType="INTEGER" />
@@ -72,8 +72,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, assess_value, evaluation_value, assess_value_difference, 
-    construction_installation_engineering_fee, json_content, cost_id
+    id, creator, gmt_created, gmt_modified, construction_proces_assess_value, evaluation_value_construction_project, 
+    evaluation_value_construction_project_correct, construction_installation_engineering_fee, 
+    json_content, cost_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_cost_construction (creator, gmt_created, gmt_modified, 
-      assess_value, evaluation_value, assess_value_difference, 
-      construction_installation_engineering_fee, json_content, 
-      cost_id)
+      construction_proces_assess_value, evaluation_value_construction_project, 
+      evaluation_value_construction_project_correct, construction_installation_engineering_fee, 
+      json_content, cost_id)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{assessValue,jdbcType=DECIMAL}, #{evaluationValue,jdbcType=DECIMAL}, #{assessValueDifference,jdbcType=DECIMAL}, 
-      #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, #{jsonContent,jdbcType=CHAR}, 
-      #{costId,jdbcType=INTEGER})
+      #{constructionProcesAssessValue,jdbcType=DECIMAL}, #{evaluationValueConstructionProject,jdbcType=DECIMAL}, 
+      #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
+      #{jsonContent,jdbcType=CHAR}, #{costId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -133,14 +134,14 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="assessValue != null" >
-        assess_value,
+      <if test="constructionProcesAssessValue != null" >
+        construction_proces_assess_value,
       </if>
-      <if test="evaluationValue != null" >
-        evaluation_value,
+      <if test="evaluationValueConstructionProject != null" >
+        evaluation_value_construction_project,
       </if>
-      <if test="assessValueDifference != null" >
-        assess_value_difference,
+      <if test="evaluationValueConstructionProjectCorrect != null" >
+        evaluation_value_construction_project_correct,
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee,
@@ -162,14 +163,14 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="assessValue != null" >
-        #{assessValue,jdbcType=DECIMAL},
+      <if test="constructionProcesAssessValue != null" >
+        #{constructionProcesAssessValue,jdbcType=DECIMAL},
       </if>
-      <if test="evaluationValue != null" >
-        #{evaluationValue,jdbcType=DECIMAL},
+      <if test="evaluationValueConstructionProject != null" >
+        #{evaluationValueConstructionProject,jdbcType=DECIMAL},
       </if>
-      <if test="assessValueDifference != null" >
-        #{assessValueDifference,jdbcType=DECIMAL},
+      <if test="evaluationValueConstructionProjectCorrect != null" >
+        #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -203,14 +204,14 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.assessValue != null" >
-        assess_value = #{record.assessValue,jdbcType=DECIMAL},
+      <if test="record.constructionProcesAssessValue != null" >
+        construction_proces_assess_value = #{record.constructionProcesAssessValue,jdbcType=DECIMAL},
       </if>
-      <if test="record.evaluationValue != null" >
-        evaluation_value = #{record.evaluationValue,jdbcType=DECIMAL},
+      <if test="record.evaluationValueConstructionProject != null" >
+        evaluation_value_construction_project = #{record.evaluationValueConstructionProject,jdbcType=DECIMAL},
       </if>
-      <if test="record.assessValueDifference != null" >
-        assess_value_difference = #{record.assessValueDifference,jdbcType=DECIMAL},
+      <if test="record.evaluationValueConstructionProjectCorrect != null" >
+        evaluation_value_construction_project_correct = #{record.evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
       </if>
       <if test="record.constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -232,9 +233,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      assess_value = #{record.assessValue,jdbcType=DECIMAL},
-      evaluation_value = #{record.evaluationValue,jdbcType=DECIMAL},
-      assess_value_difference = #{record.assessValueDifference,jdbcType=DECIMAL},
+      construction_proces_assess_value = #{record.constructionProcesAssessValue,jdbcType=DECIMAL},
+      evaluation_value_construction_project = #{record.evaluationValueConstructionProject,jdbcType=DECIMAL},
+      evaluation_value_construction_project_correct = #{record.evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{record.jsonContent,jdbcType=CHAR},
       cost_id = #{record.costId,jdbcType=INTEGER}
@@ -254,14 +255,14 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="assessValue != null" >
-        assess_value = #{assessValue,jdbcType=DECIMAL},
+      <if test="constructionProcesAssessValue != null" >
+        construction_proces_assess_value = #{constructionProcesAssessValue,jdbcType=DECIMAL},
       </if>
-      <if test="evaluationValue != null" >
-        evaluation_value = #{evaluationValue,jdbcType=DECIMAL},
+      <if test="evaluationValueConstructionProject != null" >
+        evaluation_value_construction_project = #{evaluationValueConstructionProject,jdbcType=DECIMAL},
       </if>
-      <if test="assessValueDifference != null" >
-        assess_value_difference = #{assessValueDifference,jdbcType=DECIMAL},
+      <if test="evaluationValueConstructionProjectCorrect != null" >
+        evaluation_value_construction_project_correct = #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
       </if>
       <if test="constructionInstallationEngineeringFee != null" >
         construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
@@ -280,9 +281,9 @@
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      assess_value = #{assessValue,jdbcType=DECIMAL},
-      evaluation_value = #{evaluationValue,jdbcType=DECIMAL},
-      assess_value_difference = #{assessValueDifference,jdbcType=DECIMAL},
+      construction_proces_assess_value = #{constructionProcesAssessValue,jdbcType=DECIMAL},
+      evaluation_value_construction_project = #{evaluationValueConstructionProject,jdbcType=DECIMAL},
+      evaluation_value_construction_project_correct = #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{jsonContent,jdbcType=CHAR},
       cost_id = #{costId,jdbcType=INTEGER}

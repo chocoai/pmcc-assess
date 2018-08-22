@@ -356,133 +356,133 @@ public class MdCostBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateIsNull() {
-            addCriterion("synthesis_rate is null");
+        public Criteria andNewRateIsNull() {
+            addCriterion("new_rate is null");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateIsNotNull() {
-            addCriterion("synthesis_rate is not null");
+        public Criteria andNewRateIsNotNull() {
+            addCriterion("new_rate is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateEqualTo(String value) {
-            addCriterion("synthesis_rate =", value, "synthesisRate");
+        public Criteria andNewRateEqualTo(String value) {
+            addCriterion("new_rate =", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateNotEqualTo(String value) {
-            addCriterion("synthesis_rate <>", value, "synthesisRate");
+        public Criteria andNewRateNotEqualTo(String value) {
+            addCriterion("new_rate <>", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateGreaterThan(String value) {
-            addCriterion("synthesis_rate >", value, "synthesisRate");
+        public Criteria andNewRateGreaterThan(String value) {
+            addCriterion("new_rate >", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateGreaterThanOrEqualTo(String value) {
-            addCriterion("synthesis_rate >=", value, "synthesisRate");
+        public Criteria andNewRateGreaterThanOrEqualTo(String value) {
+            addCriterion("new_rate >=", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateLessThan(String value) {
-            addCriterion("synthesis_rate <", value, "synthesisRate");
+        public Criteria andNewRateLessThan(String value) {
+            addCriterion("new_rate <", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateLessThanOrEqualTo(String value) {
-            addCriterion("synthesis_rate <=", value, "synthesisRate");
+        public Criteria andNewRateLessThanOrEqualTo(String value) {
+            addCriterion("new_rate <=", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateLike(String value) {
-            addCriterion("synthesis_rate like", value, "synthesisRate");
+        public Criteria andNewRateLike(String value) {
+            addCriterion("new_rate like", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateNotLike(String value) {
-            addCriterion("synthesis_rate not like", value, "synthesisRate");
+        public Criteria andNewRateNotLike(String value) {
+            addCriterion("new_rate not like", value, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateIn(List<String> values) {
-            addCriterion("synthesis_rate in", values, "synthesisRate");
+        public Criteria andNewRateIn(List<String> values) {
+            addCriterion("new_rate in", values, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateNotIn(List<String> values) {
-            addCriterion("synthesis_rate not in", values, "synthesisRate");
+        public Criteria andNewRateNotIn(List<String> values) {
+            addCriterion("new_rate not in", values, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateBetween(String value1, String value2) {
-            addCriterion("synthesis_rate between", value1, value2, "synthesisRate");
+        public Criteria andNewRateBetween(String value1, String value2) {
+            addCriterion("new_rate between", value1, value2, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andSynthesisRateNotBetween(String value1, String value2) {
-            addCriterion("synthesis_rate not between", value1, value2, "synthesisRate");
+        public Criteria andNewRateNotBetween(String value1, String value2) {
+            addCriterion("new_rate not between", value1, value2, "newRate");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceIsNull() {
-            addCriterion("valuation_price is null");
+        public Criteria andAssessPriceIsNull() {
+            addCriterion("assess_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceIsNotNull() {
-            addCriterion("valuation_price is not null");
+        public Criteria andAssessPriceIsNotNull() {
+            addCriterion("assess_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceEqualTo(BigDecimal value) {
-            addCriterion("valuation_price =", value, "valuationPrice");
+        public Criteria andAssessPriceEqualTo(BigDecimal value) {
+            addCriterion("assess_price =", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceNotEqualTo(BigDecimal value) {
-            addCriterion("valuation_price <>", value, "valuationPrice");
+        public Criteria andAssessPriceNotEqualTo(BigDecimal value) {
+            addCriterion("assess_price <>", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceGreaterThan(BigDecimal value) {
-            addCriterion("valuation_price >", value, "valuationPrice");
+        public Criteria andAssessPriceGreaterThan(BigDecimal value) {
+            addCriterion("assess_price >", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("valuation_price >=", value, "valuationPrice");
+        public Criteria andAssessPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_price >=", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceLessThan(BigDecimal value) {
-            addCriterion("valuation_price <", value, "valuationPrice");
+        public Criteria andAssessPriceLessThan(BigDecimal value) {
+            addCriterion("assess_price <", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("valuation_price <=", value, "valuationPrice");
+        public Criteria andAssessPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_price <=", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceIn(List<BigDecimal> values) {
-            addCriterion("valuation_price in", values, "valuationPrice");
+        public Criteria andAssessPriceIn(List<BigDecimal> values) {
+            addCriterion("assess_price in", values, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceNotIn(List<BigDecimal> values) {
-            addCriterion("valuation_price not in", values, "valuationPrice");
+        public Criteria andAssessPriceNotIn(List<BigDecimal> values) {
+            addCriterion("assess_price not in", values, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("valuation_price between", value1, value2, "valuationPrice");
+        public Criteria andAssessPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_price between", value1, value2, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andValuationPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("valuation_price not between", value1, value2, "valuationPrice");
+        public Criteria andAssessPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_price not between", value1, value2, "assessPrice");
             return (Criteria) this;
         }
 
