@@ -85,4 +85,5 @@ public class SurveyExamineTaskDto {
     public void setDataTaskIds(String dataTaskIds) {
         this.dataTaskIds = dataTaskIds;
     }
+
 }

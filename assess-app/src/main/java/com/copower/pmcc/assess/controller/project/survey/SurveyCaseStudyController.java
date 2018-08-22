@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
-import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
@@ -28,16 +28,16 @@ import java.util.List;
 public class SurveyCaseStudyController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private SurveyExamineTaskService surveyExamineTaskService;
+    private SurveyCommonService surveyCommonService;
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
 
 
     @ResponseBody
-    @GetMapping(name = "获取案例任务", value = "/getCaseTaskList")
-    public BootstrapTableVo getCaseTaskList(Integer planDetailsId) {
+    @GetMapping(name = "获取计划相关调查任务", value = "/getPlanTaskExamineList")
+    public BootstrapTableVo getPlanTaskExamineList(Integer planDetailsId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        List<ProjectPlanDetailsVo> caseTaskList = surveyCaseStudyService.getCaseTaskList(planDetailsId);
+        List<ProjectPlanDetailsVo> caseTaskList = surveyCommonService.getPlanTaskExamineList(planDetailsId);
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(caseTaskList) ? Lists.newArrayList() : caseTaskList);
         bootstrapTableVo.setTotal((long) caseTaskList.size());
         return bootstrapTableVo;

@@ -11,7 +11,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2> ${projectPlanDetails.projectPhaseName}工作内容</h2>
+        <h2> ${projectPlanDetails.projectPhaseName}-工作内容</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">

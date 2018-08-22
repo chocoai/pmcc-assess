@@ -1,13 +1,11 @@
 package com.copower.pmcc.assess.service.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.event.project.SurveyCaseStudyEvent;
+import com.copower.pmcc.assess.service.event.project.SurveySceneExploreEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
@@ -26,8 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "案例调查成果")
-public class ProjectTaskCaseAssist implements ProjectTaskInterface {
+@WorkFlowAnnotation(desc = "现场查勘成果")
+public class ProjectTaskExploreAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -35,13 +33,13 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
-    private SurveyCaseStudyService surveyCaseStudyService;
+    private SurveySceneExploreService surveySceneExploreService;
     @Autowired
     private DeclareRecordService declareRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreIndex", "", 0, "0", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
@@ -49,7 +47,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
@@ -57,7 +55,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
@@ -70,7 +68,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         return modelAndView;
@@ -78,13 +76,13 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveyCaseStudy surveyCaseStudy=new SurveyCaseStudy();
-        surveyCaseStudy.setProjectId(projectPlanDetails.getProjectId());
-        surveyCaseStudy.setPlanDetailsId(projectPlanDetails.getId());
-        surveyCaseStudy.setProcessInsId(processInsId);
-        surveyCaseStudy.setCreator(commonService.thisUserAccount());
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyCaseStudyEvent.class.getSimpleName());//修改监听器
-        surveyCaseStudyService.saveSurveyCaseStudy(surveyCaseStudy);
+        SurveySceneExplore surveySceneExplore=new SurveySceneExplore();
+        surveySceneExplore.setProjectId(projectPlanDetails.getProjectId());
+        surveySceneExplore.setPlanDetailsId(projectPlanDetails.getId());
+        surveySceneExplore.setProcessInsId(processInsId);
+        surveySceneExplore.setCreator(commonService.thisUserAccount());
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
+        surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
     }
 
     @Override

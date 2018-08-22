@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
@@ -15,11 +14,9 @@ import org.springframework.stereotype.Component;
  * Created by kings on 2018-5-21.
  */
 @Component
-public class SurveyCaseStudyEvent extends ProjectTaskEvent {
+public class SurveySceneExploreEvent extends ProjectTaskEvent {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
@@ -34,6 +31,7 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);
+
 
     }
 }

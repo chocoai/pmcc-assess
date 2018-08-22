@@ -7,24 +7,25 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
-import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.examine.*;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -53,7 +54,7 @@ public class SurveyCommonService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private FormConfigureService formConfigureService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -61,7 +62,7 @@ public class SurveyCommonService {
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
-    private SurveyExamineInfoService surveyExamineInfoService;
+    private ApplicationConstant applicationConstant;
     @Autowired
     private ExamineBlockService examineBlockService;
     @Autowired
@@ -76,36 +77,8 @@ public class SurveyCommonService {
     private ExamineUnitService examineUnitService;
     @Autowired
     private ExamineBuildingService examineBuildingService;
-
-
-    /**
-     * 获取所属权证信息
-     *
-     * @param correlationCard
-     * @param projectPlanDetails
-     * @param declareRecords
-     * @return
-     */
-    public List<SurveyCorrelationCardVo> getSurveyCorrelationCardVos(String correlationCard, ProjectPlanDetails projectPlanDetails, List<DeclareRecord> declareRecords) {
-//        if(StringUtils.isBlank(correlationCard)) return null;
-        List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
-        List<Integer> correlationCardIds = Lists.newArrayList();
-        if (StringUtils.isNotBlank(correlationCard)) {
-            List<String> list = FormatUtils.transformString2List(correlationCard);
-            correlationCardIds = FormatUtils.ListStringToListInteger(list);
-        }
-        if (CollectionUtils.isNotEmpty(declareRecords)) {
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
-                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
-                surveyCorrelationCardVo.setId(declareRecord.getId());
-                surveyCorrelationCardVo.setName(declareRecord.getName());
-                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
-                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
-            }
-        }
-        return surveyCorrelationCardVos;
-    }
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
 
     /**
@@ -127,8 +100,7 @@ public class SurveyCommonService {
         }
         //再将图片上传到FTP
         String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
-        String ftpDirName = baseAttachmentService.createFTPBasePath(SurveyLocaleExploreDetail.class.getSimpleName(),
-                DateUtils.formatNowToYMD(), "surveyLocaltion");
+        String ftpDirName = baseAttachmentService.createFTPBasePath();
         try {
             ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
         } catch (Exception e) {
@@ -149,25 +121,6 @@ public class SurveyCommonService {
         baseAttachmentService.addAttachment(baseAttachment);
     }
 
-    /**
-     * 保存动态表单数据
-     *
-     * @param formId
-     * @param formData
-     * @param tableName
-     * @param tableId
-     * @return
-     * @throws BusinessException
-     */
-    public Integer saveDynamicForm(Integer formId, String formData, String tableName, Integer tableId) throws BusinessException {
-        if (formId == null) return 0;
-        FormConfigureDetailDto configureDetailDto = new FormConfigureDetailDto();
-        configureDetailDto.setFormData(formData);
-        configureDetailDto.setFormModuleId(formId);
-        configureDetailDto.setTableId(tableId);
-        configureDetailDto.setTableName(tableName);
-        return formConfigureService.saveSimpleData(configureDetailDto);
-    }
 
     /**
      * 获取房产所有调查表单
@@ -309,5 +262,42 @@ public class SurveyCommonService {
             surveyExamineDataInfoVo.setExamineBuildingVo(examineBuildingVo);
         }
         return surveyExamineDataInfoVo;
+    }
+
+    /**
+     * 获取案例调查所有任务
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
+
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId,true);
+        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
+        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
+            //获取当前人该阶段下待处理的任务
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
+            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+            projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
+                if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
+                    projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
+                } else if (projectPlanDetailsVo.getPid().equals(planDetailsId)) {//第二层级为具体案例数据，可查看详情
+                    //暂不处理
+                }
+                if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (responsibilityDto.getPlanDetailsId().equals(projectPlanDetailsVo.getId())) {
+                            projectPlanDetailsVo.setExcuteUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                        }
+                    }
+                }
+            }
+        }
+        return planDetailsVoList;
     }
 }

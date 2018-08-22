@@ -23,6 +23,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -91,7 +92,7 @@ public class ProjectTaskService {
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_plan_details");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
             processInfo.setTableId(projectPlanDetails.getId());
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setWorkStage(projectWorkStage.getWorkStageName());
@@ -109,7 +110,7 @@ public class ProjectTaskService {
             SysAttachmentDto sysAttachment = new SysAttachmentDto();
             sysAttachment.setProcessInsId("0");
             sysAttachment.setCreater(processControllerComponent.getThisUser());
-            sysAttachment.setTableName("tb_project_plan_details");
+            sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
             sysAttachment.setTableId(projectDetailsId);
             SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
             sysAttachmentNew.setProcessInsId(processUserDto.getProcessInsId());

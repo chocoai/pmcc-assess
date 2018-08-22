@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveyLocaleExploreMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveySceneExploreMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="examine_form_type" property="examineFormType" jdbcType="VARCHAR" />
-    <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,16 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, examine_form_type, declare_record_id, 
-    creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExploreExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_survey_scene_explore
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,35 +88,35 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_survey_locale_explore
+    from tb_survey_scene_explore
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_survey_locale_explore
+    delete from tb_survey_scene_explore
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreExample" >
-    delete from tb_survey_locale_explore
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExploreExample" >
+    delete from tb_survey_scene_explore
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore (project_id, plan_details_id, process_ins_id, 
-      examine_form_type, declare_record_id, creator, 
-      gmt_created, gmt_modified)
+    insert into tb_survey_scene_explore (project_id, plan_details_id, process_ins_id, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{examineFormType,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_locale_explore
+    insert into tb_survey_scene_explore
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
         project_id,
@@ -129,12 +126,6 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id,
-      </if>
-      <if test="examineFormType != null" >
-        examine_form_type,
-      </if>
-      <if test="declareRecordId != null" >
-        declare_record_id,
       </if>
       <if test="creator != null" >
         creator,
@@ -156,12 +147,6 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="examineFormType != null" >
-        #{examineFormType,jdbcType=VARCHAR},
-      </if>
-      <if test="declareRecordId != null" >
-        #{declareRecordId,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -173,14 +158,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExploreExample" resultType="java.lang.Integer" >
-    select count(*) from tb_survey_locale_explore
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExploreExample" resultType="java.lang.Integer" >
+    select count(*) from tb_survey_scene_explore
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_survey_scene_explore
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -193,12 +178,6 @@
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.examineFormType != null" >
-        examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.declareRecordId != null" >
-        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -215,13 +194,11 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_survey_locale_explore
+    update tb_survey_scene_explore
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      examine_form_type = #{record.examineFormType,jdbcType=VARCHAR},
-      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -229,8 +206,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
+    update tb_survey_scene_explore
     <set >
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
@@ -240,12 +217,6 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="examineFormType != null" >
-        examine_form_type = #{examineFormType,jdbcType=VARCHAR},
-      </if>
-      <if test="declareRecordId != null" >
-        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -259,13 +230,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyLocaleExplore" >
-    update tb_survey_locale_explore
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
+    update tb_survey_scene_explore
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      examine_form_type = #{examineFormType,jdbcType=VARCHAR},
-      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

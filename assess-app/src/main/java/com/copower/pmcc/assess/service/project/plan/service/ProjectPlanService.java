@@ -475,12 +475,19 @@ public class ProjectPlanService {
 
     }
 
+    /**
+     * 保存项目任务数据
+     *
+     * @param item
+     * @param projectName
+     * @param workStageName
+     * @param responsibileModelEnum
+     */
     public void saveProjectPlanDetailsResponsibility(ProjectPlanDetails item, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
-
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(item.getPlanId());
         projectPlanResponsibility.setPlanDetailsId(item.getId());
-        projectPlanResponsibility.setPlanDetailsName(workStageName + " → " + item.getProjectPhaseName());
+        projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, item.getProjectPhaseName()));
         projectPlanResponsibility.setProjectId(item.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(item.getExecuteUserAccount());
@@ -489,16 +496,25 @@ public class ProjectPlanService {
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setPlanEndTime(item.getPlanEndDate());
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanResponsibility = bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
+        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+
     }
 
+    /**
+     * 保存项目任务数据
+     *
+     * @param projectPlan
+     * @param nextUser
+     * @param projectName
+     * @param workStageName
+     * @param responsibileModelEnum
+     */
     public void saveProjectPlanResponsibility(ProjectPlan projectPlan, String nextUser, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
-
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(projectPlan.getId());
         projectPlanResponsibility.setPlanDetailsId(0);
-        projectPlanResponsibility.setPlanDetailsName(workStageName + " → " + responsibileModelEnum.getName());
+        projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, responsibileModelEnum.getName()));
         projectPlanResponsibility.setProjectId(projectPlan.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(nextUser);
@@ -506,11 +522,18 @@ public class ProjectPlanService {
         projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanResponsibility = bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
+        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+
     }
 
-    private void updateProjectTaskUrl(ResponsibileModelEnum responsibileModelEnum, ProjectResponsibilityDto projectPlanResponsibility) {
+    /**
+     * 设置项目任务的url
+     *
+     * @param responsibileModelEnum
+     * @param projectPlanResponsibility
+     */
+    public void updateProjectTaskUrl(ResponsibileModelEnum responsibileModelEnum, ProjectResponsibilityDto projectPlanResponsibility) {
         if (projectPlanResponsibility == null)
             return;
         String url = new String();
@@ -527,7 +550,6 @@ public class ProjectPlanService {
         }
         projectPlanResponsibility.setProjectDetailsUrl("/" + applicationConstant.getAppKey() + "/projectInfo/projectDetails?projectId=" + projectPlanResponsibility.getProjectId());
         projectPlanResponsibility.setUrl(url);
-        bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
     }
 
     /**
@@ -732,6 +754,7 @@ public class ProjectPlanService {
 
     /**
      * 获取下个阶段
+     *
      * @param currStageSort
      * @param projectPlans
      * @return
@@ -754,7 +777,7 @@ public class ProjectPlanService {
         }
         List<ProjectPlan> nextStagePlanList = Lists.newArrayList();
         for (ProjectPlan plan : projectPlans) {
-            if(nextStageSort.equals(plan.getStageSort().intValue())){
+            if (nextStageSort.equals(plan.getStageSort().intValue())) {
                 nextStagePlanList.add(plan);
             }
         }

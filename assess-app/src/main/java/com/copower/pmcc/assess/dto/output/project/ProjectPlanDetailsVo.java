@@ -21,6 +21,8 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String displayUrl;
 
+    private String excuteUrl;
+
     private List<String> executeUrlList;
 
     private String declareFormName;
@@ -59,6 +61,14 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setDisplayUrl(String displayUrl) {
         this.displayUrl = displayUrl;
+    }
+
+    public String getExcuteUrl() {
+        return excuteUrl;
+    }
+
+    public void setExcuteUrl(String excuteUrl) {
+        this.excuteUrl = excuteUrl;
     }
 
     public List<String> getExecuteUrlList() {

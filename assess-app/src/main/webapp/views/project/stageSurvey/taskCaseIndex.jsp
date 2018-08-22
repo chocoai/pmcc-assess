@@ -116,80 +116,84 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            工作内容
+                                            案例名称
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="hidden" id="planDetailsId" name="id"/>
                                             <input type="hidden" id="pid" name="pid"/>
-                                            <input type="text" placeholder="工作内容" required maxlength="50"
+                                            <input type="text" placeholder="案例名称" required maxlength="50"
                                                    id="projectPhaseName" name="projectPhaseName"
                                                    class="form-control">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开始时间
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
-                                                   id="planStartDate" name="planStartDate"
-                                                   class="form-control dbdate">
+                                <%--这部分功能暂不开放--%>
+                                <div style="display:none;">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                开始时间
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
+                                                       id="planStartDate" name="planStartDate"
+                                                       class="form-control dbdate">
+                                            </div>
+                                        </div>
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                结束时间
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
+                                                       id="planEndDate" name="planEndDate"
+                                                       class="form-control dbdate">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="x-valid">
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">
-                                            结束时间
+                                            责任人
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
-                                                   id="planEndDate" name="planEndDate"
-                                                   class="form-control dbdate">
+                                            <input type="hidden" placeholder="责任人" maxlength="50" id="executeUserAccount"
+                                                   name="executeUserAccount" class="form-control">
+                                            <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
+                                                   name="executeUserName" class="form-control" readonly="readonly"
+                                                   onclick="taskCaseIndex.selectEmployee()">
+                                        </div>
+                                        <label class="col-sm-2 control-label">
+                                            责任部门
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId"
+                                                   name="executeDepartmentId" class="form-control">
+                                            <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName"
+                                                   name="executeDepartmentName" class="form-control"
+                                                   onclick="taskCaseIndex.selectDepartment()"
+                                                   readonly="readonly">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">
-                                        责任人
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="hidden" placeholder="责任人" maxlength="50" id="executeUserAccount"
-                                               name="executeUserAccount" class="form-control">
-                                        <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
-                                               name="executeUserName" class="form-control" readonly="readonly"
-                                               onclick="taskCaseIndex.selectEmployee()">
-                                    </div>
-                                    <label class="col-sm-2 control-label">
-                                        责任部门
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="hidden" placeholder="责任部门" maxlength="50" id="executeDepartmentId"
-                                               name="executeDepartmentId" class="form-control">
-                                        <input type="text" placeholder="责任部门" maxlength="50" id="executeDepartmentName"
-                                               name="executeDepartmentName" class="form-control" onclick="taskCaseIndex.selectDepartment()"
-                                               readonly="readonly">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            计划工时
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5"
-                                                   id="planHours" name="planHours"
-                                                   class="form-control">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                计划工时
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="计划工时" data-rule-number='true' maxlength="5"
+                                                       id="planHours" name="planHours"
+                                                       class="form-control">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            权重占比
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5"
-                                                   id="proportion" name="proportion"
-                                                   class="form-control">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                权重占比
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="权重占比" data-rule-number='true' maxlength="5"
+                                                       id="proportion" name="proportion"
+                                                       class="form-control">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +222,6 @@
     $(function () {
         $("#frm_task").validate();
         taskCaseIndex.getCaseTaskList();
-        DatepickerUtils.sectionChoose($("#planStartDate"), $("#planEndDate"));
         //显示附件
         loadUploadFiles();
         //上传附件
@@ -272,7 +275,7 @@
     //加载案例数据
     taskCaseIndex.getCaseTaskList = function () {
         $("#case_list").treegrid({
-                url: '${pageContext.request.contextPath}/surveyCaseStudy/getCaseTaskList?planDetailsId=${projectPlanDetails.id}',
+                url: '${pageContext.request.contextPath}/surveyCaseStudy/getPlanTaskExamineList?planDetailsId=${projectPlanDetails.id}',
                 method: 'get',
                 idField: 'id',
                 treeField: 'projectPhaseName',
@@ -280,9 +283,6 @@
                 lines: true,
                 width: 'auto',
                 rownumbers: true,
-                onDblClickRow: function (row) {
-                    taskCaseIndex.editCaseTask(row.id);
-                },
                 onLoadSuccess: function () {
                     $(".tooltips").tooltip();
                 },
@@ -339,16 +339,12 @@
                             if (row.id == '${projectPlanDetails.id}') {
                                 s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='新增' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.addCaseTask(" + row.id + ")'   ><i class='fa fa-plus fa-white'></i></a>";
                             } else if (row.pid == '${projectPlanDetails.id}') {
-                                if(row.status=='finish'){
-                                    return s;
-                                }
-                                if(row.status=='none'){
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + row.id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + row.id + ")'><i class='fa fa-minus fa-white'></i></a>";
-                                }
-                                s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + row.id + ")'><i class='fa fa-random fa-white'></i></a>";
+                                s += taskCaseIndex.getOperationHtml(row.status,row.id);
                             } else {
                                 //只用于处理任务
+                                if(row.excuteUrl){
+                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskCaseIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                }
                             }
                             return s;
                         }
@@ -357,8 +353,34 @@
                     }
                 ]]
             }
-        )
-        ;
+        );
+    }
+
+    //获取案例任务可操作权限
+    taskCaseIndex.getOperationHtml = function (status,id) {
+        //none 可编辑、删除、分派 runing 查看 分派 finish 查看
+        var editHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
+        var deleteHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + id + ")'><i class='fa fa-minus fa-white'></i></a>";
+        var assignmentHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
+        var viewHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-search fa-white'></i></a>";
+        var resultHtml = "";
+        switch (status) {
+            case "none":
+                resultHtml = editHtml + deleteHtml + assignmentHtml;
+                break
+            case "runing":
+                resultHtml = viewHtml + assignmentHtml;
+                break
+            case "finish":
+                resultHtml = viewHtml;
+                break
+        }
+        return resultHtml;
+    }
+
+    //打开提交任务链接
+    taskCaseIndex.openTaskUrl =function (url) {
+        window.open(url);
     }
 
     //新增案例任务
@@ -450,7 +472,7 @@
                 if (data.account) {
                     $("#executeUserAccount").val(data.account);
                     $("#executeUserName").val(data.name);
-                    AssessCommon.getUserDepartmentInfo(data.account,function (retData) {
+                    AssessCommon.getUserDepartmentInfo(data.account, function (retData) {
                         $("#executeDepartmentId").val(retData.id);
                         $("#executeDepartmentName").val(retData.name);
                     })
@@ -476,7 +498,7 @@
 
     //任务分派
     taskCaseIndex.assignment = function (id) {
-        var url='${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId='+id;
+        var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + id;
         window.open(url);
     }
 

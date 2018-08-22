@@ -585,7 +585,7 @@
     //添加子节点计划
     function addPlan(id) {
         backStatus();
-        $("#frm_planDetails").clearAll();
+        $("#frm_planDetails").clearAll(["projectPhaseId"]);
         $("#frm_planDetails").validate();
         var row = $('#PlanItemListed').treegrid('find', id);
         $("#pid").val(row["id"]);
@@ -602,8 +602,7 @@
         } else {
             backStatus();
         }
-        console.log(row);
-        $("#frm_planDetails").clearAll();
+        $("#frm_planDetails").clearAll(["projectPhaseId"]);
         $("#frm_planDetails").validate();
         $("#frm_planDetails").initForm(row);
         $("#planDetailsId").val(row["id"]);

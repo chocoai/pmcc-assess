@@ -104,13 +104,14 @@ public class ProjectPlanDetailsService {
 
     /**
      * 保存计划详情数据
+     *
      * @param projectPlanDetails
      */
     public void saveProjectPlanDetails(ProjectPlanDetails projectPlanDetails) throws BusinessException {
-        if(projectPlanDetails==null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        if(projectPlanDetails.getId()!=null&&projectPlanDetails.getId()>0){
+        if (projectPlanDetails == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-        }else{
+        } else {
             projectPlanDetails.setCreator(commonService.thisUserAccount());
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
         }
@@ -368,18 +369,20 @@ public class ProjectPlanDetailsService {
      * @param planDetailsId
      * @return
      */
-    public List<ProjectPlanDetails> getPlanDetailsListRecursion(Integer planDetailsId) {
+    public List<ProjectPlanDetails> getPlanDetailsListRecursion(Integer planDetailsId, boolean containThis) {
         List<ProjectPlanDetails> list = Lists.newArrayList();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
-        if(projectPlanDetails!=null) {
-            list.add(projectPlanDetails);
-            getPlanDetailsSubList(projectPlanDetails.getId(),list);
+        if (projectPlanDetails != null) {
+            if (containThis)
+                list.add(projectPlanDetails);
+            getPlanDetailsSubList(projectPlanDetails.getId(), list);
         }
         return list;
     }
 
     /**
      * 递归获取子项任务
+     *
      * @param pid
      * @param list
      */

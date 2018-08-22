@@ -148,7 +148,7 @@ public class ProjectPhaseService {
     public boolean isExaminePhase(Integer phaseId){
         ProjectPhase projectPhase = getCacheProjectPhaseById(phaseId);
         if(projectPhase!=null){
-            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.LOCALE_EXPLORE) )
+            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE) )
                 return true;
             if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY) )
                 return true;
