@@ -932,7 +932,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
                 type: "get",
-                data: {projectId:"${projectInfo.id}"},
+                data: {},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {

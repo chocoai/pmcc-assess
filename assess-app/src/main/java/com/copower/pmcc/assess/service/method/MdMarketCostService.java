@@ -56,6 +56,8 @@ public class MdMarketCostService {
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
+    @Autowired
+    private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
 
     public int addMdCost(MdCost mdCost){
         mdCost.setCreator(commonService.thisUserAccount());
