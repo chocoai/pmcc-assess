@@ -49,7 +49,7 @@ public class MdMarketCostService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private DataInfrastructureCostService dataInfrastructureCostService;
+    private DataInfrastructureCostService dataDataInfrastructureCostService;
     @Autowired
     private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
     @Autowired
@@ -128,16 +128,16 @@ public class MdMarketCostService {
         return dataBuildingNewRateService.dataBuildingNewRateList();
     }
 
-    public List<InfrastructureCost> infrastructureCostList() {
-        List<InfrastructureCost> infrastructureCosts = dataInfrastructureCostService.infrastructureCostList();
-        Ordering<InfrastructureCost> firstOrdering = Ordering.from(new Comparator<InfrastructureCost>() {
+    public List<DataInfrastructureCost> infrastructureCostList() {
+        List<DataInfrastructureCost> infrastructureCosts = dataDataInfrastructureCostService.infrastructureCostList();
+        Ordering<DataInfrastructureCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureCost>() {
             @Override
-            public int compare(InfrastructureCost o1, InfrastructureCost o2) {
+            public int compare(DataInfrastructureCost o1, DataInfrastructureCost o2) {
                 return o1.getGmtCreated().compareTo(o2.getGmtCreated());
             }
         }).reverse();//排序 并且反转
         Collections.sort(infrastructureCosts, firstOrdering);
-        List<InfrastructureCost> costList = Lists.newArrayList();
+        List<DataInfrastructureCost> costList = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(infrastructureCosts)) {
             costList.add(infrastructureCosts.get(0));
         }

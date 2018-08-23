@@ -41,10 +41,10 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_data_infrastructure_cost" domainObjectName="InfrastructureCost">
+        <table tableName="tb_data_infrastructure_cost" domainObjectName="DataInfrastructureCost">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="tb_data_infrastructure_cost" domainObjectName="InfrastructureCost">-->
+        <!--<table tableName="tb_data_infrastructure_cost" domainObjectName="DataInfrastructureCost">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
         <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->

@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class InfrastructureCost {
+public class DataInfrastructureCost {
     private Integer id;
 
     private String name;

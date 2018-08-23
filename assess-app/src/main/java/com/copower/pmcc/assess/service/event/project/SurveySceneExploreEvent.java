@@ -32,6 +32,6 @@ public class SurveySceneExploreEvent extends ProjectTaskEvent {
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);
 
-
+        //批量更新数据到其它证书
     }
 }

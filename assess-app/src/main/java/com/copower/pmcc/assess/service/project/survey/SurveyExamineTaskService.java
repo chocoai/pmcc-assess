@@ -403,6 +403,7 @@ public class SurveyExamineTaskService {
                     taskPlanDetails.setProjectPhaseId(projectPhase.getId());
                     taskPlanDetails.setExecuteUserAccount(userAccount);
                     taskPlanDetails.setExecuteDepartmentId(sysUser.getDepartmentId());
+                    taskPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                     taskPlanDetails.setCreator(commonService.thisUserAccount());
                     taskPlanDetails.setProjectPhaseName(String.format("%s-%s", planDetails.getProjectPhaseName(), publicService.getUserNameByAccount(userAccount)));
                     projectPlanDetailsService.saveProjectPlanDetails(taskPlanDetails);

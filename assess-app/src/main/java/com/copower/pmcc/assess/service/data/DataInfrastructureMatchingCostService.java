@@ -24,35 +24,35 @@ public class DataInfrastructureMatchingCostService {
     @Autowired
     private DataInfrastructureMatchingCostDao infrastructureMatchingCostDao;
 
-    public BootstrapTableVo getInfrastructureCost(String name){
+    public BootstrapTableVo getDataInfrastructureCost(String name){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<InfrastructureMatchingCost> infrastructureCostList = infrastructureMatchingCostDao.getInfrastructureCostList(name);
+        List<InfrastructureMatchingCost> infrastructureCostList = infrastructureMatchingCostDao.getDataInfrastructureCostList(name);
         vo.setRows(CollectionUtils.isEmpty(infrastructureCostList) ? new ArrayList<InfrastructureMatchingCost>() : infrastructureCostList);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
     public List<InfrastructureMatchingCost> infrastructureMatchingCosts(){
-        return infrastructureMatchingCostDao.getInfrastructureCostList(null);
+        return infrastructureMatchingCostDao.getDataInfrastructureCostList(null);
     }
 
-    public boolean addInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost) throws BusinessException {
+    public boolean addDataInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost) throws BusinessException {
         boolean flag = false;
-        flag = infrastructureMatchingCostDao.addInfrastructureCost(infrastructureMatchingCost);
+        flag = infrastructureMatchingCostDao.addDataInfrastructureCost(infrastructureMatchingCost);
         return flag;
     }
 
-    public boolean editInfrastructureCost(InfrastructureMatchingCost infrastructureCost) throws BusinessException{
+    public boolean editDataInfrastructureCost(InfrastructureMatchingCost infrastructureCost) throws BusinessException{
         boolean flag = false;
-        flag = infrastructureMatchingCostDao.editInfrastructureCost(infrastructureCost);
+        flag = infrastructureMatchingCostDao.editDataInfrastructureCost(infrastructureCost);
         return  flag;
     }
 
     public boolean deleteInfrastructure(Integer id){
         boolean flag = false;
-        flag = infrastructureMatchingCostDao.deleteInfrastructureCost(id);
+        flag = infrastructureMatchingCostDao.deleteDataInfrastructureCost(id);
         return flag;
     }
 }

@@ -17,22 +17,22 @@ public class DataInfrastructureMatchingCostDao {
     @Autowired
     private InfrastructureMatchingCostMapper infrastructureMatchingCostMapper;
     //删除
-    public Boolean deleteInfrastructureCost(Integer id){
+    public Boolean deleteDataInfrastructureCost(Integer id){
         int result = infrastructureMatchingCostMapper.deleteByPrimaryKey(id);
         return result > 0;
     }
     //修改
-    public Boolean editInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost){
+    public Boolean editDataInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost){
         int result = infrastructureMatchingCostMapper.updateByPrimaryKeySelective(infrastructureMatchingCost);
         return result > 0;
     }
     //新增
-    public Boolean addInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost){
+    public Boolean addDataInfrastructureCost(InfrastructureMatchingCost infrastructureMatchingCost){
         int result = infrastructureMatchingCostMapper.insertSelective(infrastructureMatchingCost);
         return result > 0;
     }
     //查询
-    public List<InfrastructureMatchingCost> getInfrastructureCostList(String name){
+    public List<InfrastructureMatchingCost> getDataInfrastructureCostList(String name){
         InfrastructureMatchingCostExample example = new InfrastructureMatchingCostExample();
         InfrastructureMatchingCostExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotEmpty(name)) {

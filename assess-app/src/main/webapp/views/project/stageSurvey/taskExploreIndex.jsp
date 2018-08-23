@@ -113,7 +113,7 @@
             showFileList: false,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
@@ -130,7 +130,7 @@
         FileUtils.getFileShows({
             target: "apply_file",
             formData: {
-                tableName: "tb_project_plan_details",
+                tableName: AssessDBKey.ProjectPlanDetails,
                 tableId: ${projectPlanDetails.id},
                 fieldsName: "apply",
                 projectId: "${projectPlanDetails.projectId}"
@@ -155,7 +155,7 @@
 
     var taskExploreIndex = {};
 
-    //加载案例数据
+    //加载现场查勘数据
     taskExploreIndex.getExploreTaskList = function () {
         $("#explore_list").treegrid({
                 url: '${pageContext.request.contextPath}/surveyCaseStudy/getPlanTaskExamineList?planDetailsId=${projectPlanDetails.id}',
@@ -240,7 +240,7 @@
     taskExploreIndex.getOperationHtml = function (status, id) {
         //none 可编辑、删除、分派 runing 查看 分派 finish 查看
         var assignmentHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
-        var viewHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.assignment(" + id + ")'><i class='fa fa-search fa-white'></i></a>";
+        var viewHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick=''><i class='fa fa-search fa-white'></i></a>";
         var resultHtml = "";
         switch (status) {
             case "none":
@@ -258,13 +258,17 @@
 
     //打开提交任务链接
     taskExploreIndex.openTaskUrl = function (url) {
-        window.open(url);
+        openWin(url, function () {
+            taskExploreIndex.getExploreTaskList();
+        })
     }
 
     //任务分派
     taskExploreIndex.assignment = function (id) {
         var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + id;
-        window.open(url);
+        openWin(url, function () {
+            taskExploreIndex.getExploreTaskList();
+        })
     }
 
 </script>
