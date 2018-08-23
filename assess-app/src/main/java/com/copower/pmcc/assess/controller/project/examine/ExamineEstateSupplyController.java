@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class ExamineEstateSupplyController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateSupplyList",method = {RequestMethod.GET},name = "供应信息列表")
-    public BootstrapTableVo getExamineEstateSupplyList(String name, Integer examineType,String type,Integer declareId) {
+    public BootstrapTableVo getExamineEstateSupplyList(String name, Integer examineType,String type,Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineEstateSupply examineEstateSupply = new ExamineEstateSupply();
@@ -80,6 +79,9 @@ public class ExamineEstateSupplyController {
             }
             if (declareId!=null ){
                 examineEstateSupply.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineEstateSupply.setPlanDetailsId(planDetailsId);
             }
             vo = examineEstateSupplyService.getExamineEstateNetworkList(examineEstateSupply);
         } catch (Exception e1) {

@@ -64,8 +64,8 @@ public class ExamineBuildingService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
-        return examineBuildingDao.getByDeclareIdAndExamineType(declareId, examineType);
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer planDetailsId, Integer examineType) {
+        return examineBuildingDao.getByDeclareIdAndExamineType(declareId,planDetailsId, examineType);
     }
 
     /**

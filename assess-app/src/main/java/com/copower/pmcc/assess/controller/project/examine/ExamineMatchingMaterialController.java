@@ -52,7 +52,7 @@ public class ExamineMatchingMaterialController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingMaterialList",method = {RequestMethod.GET},name = "原料供应及销售条件列表")
-    public BootstrapTableVo getExamineMatchingMaterialList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineMatchingMaterialList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingMaterial examineMatchingMaterial = new ExamineMatchingMaterial();
@@ -61,6 +61,9 @@ public class ExamineMatchingMaterialController {
             }
             if (declareId!=null ){
                 examineMatchingMaterial.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineMatchingMaterial.setPlanDetailsId(planDetailsId);
             }
             vo = examineMatchingMaterialService.getExamineMatchingMaterialLists(examineMatchingMaterial);
         } catch (Exception e1) {

@@ -46,8 +46,8 @@ public class ExamineBlockService {
      * @param declareId
      * @return
      */
-    public ExamineBlock getBlockByDeclareId(Integer declareId, ExamineTypeEnum examineTypeEnum) {
-        return examineBlockDao.getBlockByDeclareId(declareId, examineTypeEnum.getId());
+    public ExamineBlock getBlockByDeclareId(Integer declareId,Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
+        return examineBlockDao.getBlockByDeclareId(declareId,planDetailsId, examineTypeEnum.getId());
     }
 
     public ExamineBlockVo getExamineBlockVo(ExamineBlock examineBlock) {

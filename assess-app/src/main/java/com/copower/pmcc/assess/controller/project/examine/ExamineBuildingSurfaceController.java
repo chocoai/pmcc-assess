@@ -50,7 +50,7 @@ public class ExamineBuildingSurfaceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingSurfaceList",method = {RequestMethod.GET},name = "层面结构列表")
-    public BootstrapTableVo getExamineBuildingSurfaceList(Integer examineType, Integer declareId,Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingSurfaceList(Integer examineType, Integer declareId,Integer planDetailsId,Integer buildingId) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
@@ -59,6 +59,9 @@ public class ExamineBuildingSurfaceController {
             }
             if (declareId!=null ){
                 examineBuildingSurface.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineBuildingSurface.setPlanDetailsId(planDetailsId);
             }
             if (buildingId!=null ){
                 examineBuildingSurface.setBuildingId(buildingId);

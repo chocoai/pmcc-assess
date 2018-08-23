@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class ExamineEstateParkingController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateParkingList",method = {RequestMethod.GET},name = "车位列表")
-    public BootstrapTableVo getExamineEstateParkingList(String location, Integer examineType,  Integer declareId) {
+    public BootstrapTableVo getExamineEstateParkingList(String location, Integer examineType,  Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineEstateParking examineEstateParking = new ExamineEstateParking();
@@ -72,6 +71,9 @@ public class ExamineEstateParkingController {
             }
             if (declareId!=null ){
                 examineEstateParking.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineEstateParking.setPlanDetailsId(planDetailsId);
             }
             if (!StringUtils.isEmpty(location)){
                 examineEstateParking.setLocation(location);

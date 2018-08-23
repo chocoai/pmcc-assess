@@ -13,10 +13,9 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-
             <!--填写表单-->
             <input type="hidden" id="declareId" name="declareId" value="${declareRecord.id}">
+            <input type="hidden" id="planDetailsId" name="planDetailsId" value="${projectPlanDetails.pid}">
             <input type="hidden" id="examineType" name="examineType" value="${examineType}">
             <div class="x_panel">
                 <div class="x_title collapse-link">

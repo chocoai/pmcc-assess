@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class ExamineMatchingMedicalController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingMedicalList",method = {RequestMethod.GET},name = "医养条件列表")
-    public BootstrapTableVo getExamineMatchingMedicalList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineMatchingMedicalList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingMedical examineMatchingMedical = new ExamineMatchingMedical();
@@ -71,6 +70,9 @@ public class ExamineMatchingMedicalController {
             }
             if (declareId!=null ){
                 examineMatchingMedical.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineMatchingMedical.setPlanDetailsId(planDetailsId);
             }
             vo = examineMatchingMedicalService.getExamineMatchingMedicalLists(examineMatchingMedical);
         } catch (Exception e1) {

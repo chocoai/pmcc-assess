@@ -161,7 +161,7 @@ public class SurveyCommonService {
         surveyExamineTask.setPlanDetailsId(planDetailsId);
         if (StringUtils.isNotBlank(userAccount))
             surveyExamineTask.setUserAccount(userAccount);
-        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId,userAccount);
+        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId, userAccount);
         List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList);
         if (CollectionUtils.isNotEmpty(examineTaskVos)) {
             for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
@@ -189,6 +189,7 @@ public class SurveyCommonService {
 
     /**
      * 获取该细任务的所有任务
+     *
      * @param planDetailsId
      * @return
      */
@@ -221,7 +222,7 @@ public class SurveyCommonService {
         where.setPlanDetailsId(planDetailsId);
         where.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
         List<SurveyExamineTask> list = surveyExamineTaskService.getSurveyExamineTaskList(where);
-        if(CollectionUtils.isEmpty(list)){
+        if (CollectionUtils.isEmpty(list)) {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetailsService.updateProjectPlanDetails(planDetails);
@@ -248,29 +249,29 @@ public class SurveyCommonService {
      * @param declareId
      * @return
      */
-    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId,ExamineTypeEnum examineTypeEnum) {
+    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId, Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
         SurveyExamineDataInfoVo surveyExamineDataInfoVo = new SurveyExamineDataInfoVo();
 
-        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, examineTypeEnum);
+        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlock));
 
-        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId,examineTypeEnum);
+        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId,planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(estateLandState));
 
-        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId,examineTypeEnum);
+        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId,planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstate));
 
-        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId,examineTypeEnum);
+        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId,planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnit));
 
-        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId,examineTypeEnum);
+        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId,planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouse));
 
-        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,examineTypeEnum);
+        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
 
-        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId,examineTypeEnum.getId());
-        if (!ObjectUtils.isEmpty(examineBuildings)){
+        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId,planDetailsId, examineTypeEnum.getId());
+        if (!ObjectUtils.isEmpty(examineBuildings)) {
             ExamineBuilding examineBuilding = examineBuildings.get(0);
             ExamineBuildingVo examineBuildingVo = examineBuildingService.getExamineBuildingVo(examineBuilding);
             surveyExamineDataInfoVo.setExamineBuildingVo(examineBuildingVo);
@@ -287,7 +288,7 @@ public class SurveyCommonService {
     public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
 
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId,true);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
         List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
         if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
             //获取当前人该阶段下待处理的任务
@@ -311,7 +312,7 @@ public class SurveyCommonService {
                 }
 
                 //设置查看url
-                if(StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount())&&projectPlanDetailsVo.getBisStart()){
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
                 }
             }

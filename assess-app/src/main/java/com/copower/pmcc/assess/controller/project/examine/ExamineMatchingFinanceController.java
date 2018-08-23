@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingFinance;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.examine.ExamineMatchingFinanceService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class ExamineMatchingFinanceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingFinanceList",method = {RequestMethod.GET},name = "金融服务列表")
-    public BootstrapTableVo getExamineMatchingFinanceList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineMatchingFinanceList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingFinance examineMatchingFinance = new ExamineMatchingFinance();
@@ -62,6 +60,9 @@ public class ExamineMatchingFinanceController {
             }
             if (declareId!=null){
                 examineMatchingFinance.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null){
+                examineMatchingFinance.setPlanDetailsId(planDetailsId);
             }
             vo = examineMatchingFinanceService.getExamineMatchingFinanceLists(examineMatchingFinance);
         } catch (Exception e1) {

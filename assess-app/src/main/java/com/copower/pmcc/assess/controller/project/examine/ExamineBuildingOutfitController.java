@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class ExamineBuildingOutfitController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitList",method = {RequestMethod.GET},name = "楼栋外装情况列表")
-    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId, Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
@@ -70,6 +69,9 @@ public class ExamineBuildingOutfitController {
             }
             if (declareId != null ) {
                 examineBuildingOutfit.setDeclareId(declareId);
+            }
+            if (planDetailsId != null ) {
+                examineBuildingOutfit.setPlanDetailsId(planDetailsId);
             }
             if (buildingId != null) {
                 examineBuildingOutfit.setBuildingId(buildingId);

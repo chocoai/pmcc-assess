@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class ExamineUnitDecorateController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineUnitDecorateList",method = {RequestMethod.GET},name = "室内公共装修列表")
-    public BootstrapTableVo getExamineUnitDecorateList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineUnitDecorateList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineUnitDecorate examineUnitDecorate = new ExamineUnitDecorate();
@@ -70,6 +69,9 @@ public class ExamineUnitDecorateController {
             }
             if (declareId!=null ){
                 examineUnitDecorate.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineUnitDecorate.setDeclareId(planDetailsId);
             }
             vo = examineUnitDecorateService.getExamineUnitDecorateLists(examineUnitDecorate);
         } catch (Exception e1) {

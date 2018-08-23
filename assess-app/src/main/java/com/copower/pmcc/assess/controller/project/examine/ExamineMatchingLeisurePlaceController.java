@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class ExamineMatchingLeisurePlaceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingLeisurePlaceList",method = {RequestMethod.GET},name = "休闲场所-包含-购物-娱乐-餐饮列表")
-    public BootstrapTableVo getExamineMatchingLeisurePlaceList(Integer examineType, Integer declareId,String type) {
+    public BootstrapTableVo getExamineMatchingLeisurePlaceList(Integer examineType, Integer declareId,Integer planDetailsId,String type) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingLeisurePlace examineMatchingLeisurePlace = new ExamineMatchingLeisurePlace();
@@ -76,6 +75,9 @@ public class ExamineMatchingLeisurePlaceController {
             }
             if (declareId!=null){
                 examineMatchingLeisurePlace.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null){
+                examineMatchingLeisurePlace.setPlanDetailsId(planDetailsId);
             }
             if (!StringUtils.isEmpty(type)){
                 examineMatchingLeisurePlace.setType(type);

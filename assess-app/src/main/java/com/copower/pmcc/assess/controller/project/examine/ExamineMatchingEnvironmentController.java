@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class ExamineMatchingEnvironmentController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingEnvironmentList",method = {RequestMethod.GET},name = "环境因素列表")
-    public BootstrapTableVo getExamineMatchingEnvironmentList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineMatchingEnvironmentList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingEnvironment examineMatchingEnvironment = new ExamineMatchingEnvironment();
@@ -70,6 +69,9 @@ public class ExamineMatchingEnvironmentController {
             }
             if (declareId!=null ){
                 examineMatchingEnvironment.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineMatchingEnvironment.setPlanDetailsId(planDetailsId);
             }
             vo = examineMatchingEnvironmentService.getExamineMatchingEnvironmentLists(examineMatchingEnvironment);
         } catch (Exception e1) {

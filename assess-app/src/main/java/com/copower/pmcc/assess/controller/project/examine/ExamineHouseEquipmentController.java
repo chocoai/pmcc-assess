@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class ExamineHouseEquipmentController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseEquipmentList",method = {RequestMethod.GET},name = "设备包含（空调、新风、供暖）列表")
-    public BootstrapTableVo getExamineHouseEquipmentList(Integer examineType, Integer declareId, String type) {
+    public BootstrapTableVo getExamineHouseEquipmentList(Integer examineType, Integer declareId,Integer planDetailsId, String type) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseEquipment examineHouseEquipment = new ExamineHouseEquipment();
@@ -74,6 +73,9 @@ public class ExamineHouseEquipmentController {
             }
             if (declareId!=null ){
                 examineHouseEquipment.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineHouseEquipment.setPlanDetailsId(planDetailsId);
             }
             if (!StringUtils.isEmpty(type)){
                 examineHouseEquipment.setType(type);

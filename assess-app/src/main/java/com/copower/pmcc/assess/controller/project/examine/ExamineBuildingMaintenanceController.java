@@ -52,7 +52,7 @@ public class ExamineBuildingMaintenanceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingMaintenanceList", method = {RequestMethod.GET}, name = "维护结构列表")
-    public BootstrapTableVo getExamineBuildingMaintenanceList(Integer examineType, Integer declareId, Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingMaintenanceList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
@@ -61,6 +61,9 @@ public class ExamineBuildingMaintenanceController {
             }
             if (declareId != null ) {
                 examineBuildingMaintenance.setDeclareId(declareId);
+            }
+            if (planDetailsId != null ) {
+                examineBuildingMaintenance.setPlanDetailsId(planDetailsId);
             }
             if (buildingId != null ) {
                 examineBuildingMaintenance.setBuildingId(buildingId);

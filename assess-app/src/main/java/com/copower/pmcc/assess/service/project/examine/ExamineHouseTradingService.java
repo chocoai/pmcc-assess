@@ -38,8 +38,8 @@ public class ExamineHouseTradingService {
      * @param declareId
      * @return
      */
-    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
-        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId,examineTypeEnum.getId());
+    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,Integer planDetailsId,ExamineTypeEnum examineTypeEnum) {
+        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId,planDetailsId,examineTypeEnum.getId());
     }
 
     public ExamineHouseTradingVo getExamineHouseTradingVo(ExamineHouseTrading examineHouseTrading) {

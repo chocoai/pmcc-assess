@@ -9,10 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Auther: zch
@@ -53,11 +52,12 @@ public class ExamineEstateNetworkController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineEstateNetworkList",method = {RequestMethod.GET},name = "获取通信网络列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer declareId ,Integer examineType) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer declareId,Integer planDetailsId ,Integer examineType) {
         BootstrapTableVo vo = null;
         try {
             ExamineEstateNetwork examineEstateNetwork = new ExamineEstateNetwork();
             examineEstateNetwork.setDeclareId(declareId);
+            examineEstateNetwork.setPlanDetailsId(planDetailsId);
             examineEstateNetwork.setExamineType(examineType);
             vo = examineEstateNetworkService.getExamineEstateNetworkList(examineEstateNetwork);
         } catch (Exception e1) {

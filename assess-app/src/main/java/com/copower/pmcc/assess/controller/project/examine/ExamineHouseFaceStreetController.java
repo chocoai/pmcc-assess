@@ -16,7 +16,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class ExamineHouseFaceStreetController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseFaceStreetList",method = {RequestMethod.GET},name = "临街（路）状况列表")
-    public BootstrapTableVo getExamineHouseFaceStreetList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineHouseFaceStreetList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseFaceStreet examineHouseFaceStreet = new ExamineHouseFaceStreet();
@@ -70,6 +69,9 @@ public class ExamineHouseFaceStreetController {
             }
             if (declareId!=null){
                 examineHouseFaceStreet.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null){
+                examineHouseFaceStreet.setPlanDetailsId(planDetailsId);
             }
             vo = examineHouseFaceStreetService.getExamineHouseFaceStreetLists(examineHouseFaceStreet);
         } catch (Exception e1) {

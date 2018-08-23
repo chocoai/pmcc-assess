@@ -38,8 +38,8 @@ public class ExamineHouseService {
      * @param declareId
      * @return
      */
-    public ExamineHouse getHouseByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
-        return examineHouseDao.getHouseByDeclareId(declareId,examineTypeEnum.getId());
+    public ExamineHouse getHouseByDeclareId(Integer declareId,Integer planDetailsId,ExamineTypeEnum examineTypeEnum) {
+        return examineHouseDao.getHouseByDeclareId(declareId,planDetailsId,examineTypeEnum.getId());
     }
 
     public ExamineHouseVo getExamineHouseVo(ExamineHouse examineHouse) {
