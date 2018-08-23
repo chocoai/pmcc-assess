@@ -34,11 +34,11 @@
             </span>
         </div>
         <div class="hypothesisDevelopment">
-            <jsp:include page="./developmentModule/hypothesisDevelopment.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/hypothesisDevelopment.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
         <div class="architecturalEngineering" style="display: none;">
-            <jsp:include page="./developmentModule/architecturalEngineering.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/architecturalEngineering.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
     </div>

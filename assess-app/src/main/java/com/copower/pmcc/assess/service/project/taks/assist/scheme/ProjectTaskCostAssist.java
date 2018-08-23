@@ -198,9 +198,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         mdCostAndDevelopmentOther = new MdCostAndDevelopmentOther();
         mdCostAndDevelopmentOther.setPid(0);
         List<MdCostAndDevelopmentOther> otherList = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOtherList(mdCostAndDevelopmentOther);
-        if (!ObjectUtils.isEmpty(otherList)){
+        if (!ObjectUtils.isEmpty(otherList)) {
             mdCostAndDevelopmentOther = otherList.get(0);
-        }else {
+        } else {
             mdCostAndDevelopmentOther = null;
         }
         int id = 0;
@@ -210,6 +210,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
+
         JSONObject jsonObject = JSON.parseObject(formData);
 
 
@@ -226,12 +227,22 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             } else {
                 mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
             }
-            if (mdCostAndDevelopmentOther != null){
+            if (mdCostAndDevelopmentOther != null) {
                 mdCostBuilding.setEngineeringId(mdCostAndDevelopmentOther.getId());
             }
-            int pid = mdMarketCostService.addMdCostBuilding(mdCostBuilding);
-            mdCostAndDevelopmentOther.setPid(pid);
-            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            int pid = 0;
+            try {
+                pid = mdMarketCostService.addMdCostBuilding(mdCostBuilding);
+                mdCostAndDevelopmentOther.setPid(pid);
+                mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            } catch (Exception e1) {
+                logger.error(e1.getMessage());
+                try {
+                    throw new Exception();
+                } catch (Exception e11) {
+
+                }
+            }
         }
 
         //save MdCostConstruction
@@ -246,16 +257,22 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             } else {
                 mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
             }
-            if (mdCostAndDevelopmentOther != null){
+            if (mdCostAndDevelopmentOther != null) {
                 mdCostConstruction.setEngineeringId(mdCostAndDevelopmentOther.getId());
             }
-            int pid = mdMarketCostService.addMdCostConstruction(mdCostConstruction);
-            mdCostAndDevelopmentOther.setPid(pid);
-            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            int pid = 0;
+            try {
+                pid = mdMarketCostService.addMdCostConstruction(mdCostConstruction);
+                mdCostAndDevelopmentOther.setPid(pid);
+                mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            } catch (Exception e1) {
+                logger.error(e1.getMessage());
+                try {
+                    throw  new Exception();
+                } catch (Exception e11) {
+                }
+            }
         }
-
-
-
 
 
         SchemeInfo schemeInfo = new SchemeInfo();

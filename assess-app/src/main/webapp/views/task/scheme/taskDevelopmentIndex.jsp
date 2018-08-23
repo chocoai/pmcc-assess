@@ -16,7 +16,7 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入假设开发法模块 -->
-            <jsp:include page="/views/method/module/developmentIndex.jsp"></jsp:include>
+            <jsp:include page="/views/method/marketDevelopmentIndex.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">
