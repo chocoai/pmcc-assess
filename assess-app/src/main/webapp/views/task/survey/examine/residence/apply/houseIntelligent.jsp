@@ -87,6 +87,7 @@
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/examineHouseIntelligent/getExamineHouseIntelligentList", cols, {
                     type: houseIntelligent.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
@@ -129,6 +130,9 @@
                 var data = formParams(houseIntelligent.prototype.config().frm);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();

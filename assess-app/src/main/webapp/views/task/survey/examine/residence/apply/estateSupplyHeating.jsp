@@ -87,6 +87,7 @@
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
                     type: estateSupplyHeating.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId:$("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
@@ -130,6 +131,9 @@
                 var data = formParams(estateSupplyHeating.prototype.config().frm);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();

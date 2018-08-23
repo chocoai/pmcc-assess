@@ -140,6 +140,7 @@
             getFormData: function () {
                 var data = formParams("frm_block");
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#frm_block").find('[data-name="fieldName"]').val();

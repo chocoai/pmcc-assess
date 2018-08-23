@@ -83,6 +83,7 @@
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingEnvironment/getExamineMatchingEnvironmentList", cols, {
                     type: matchingEnvironment.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

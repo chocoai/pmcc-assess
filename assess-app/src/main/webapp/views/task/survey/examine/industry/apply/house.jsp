@@ -289,6 +289,7 @@
             getFormData: function () {
                 var data = formParams(houseFun.prototype.config().frm);
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#" + houseFun.prototype.config().frm).find('[data-name="fieldName"]').val();

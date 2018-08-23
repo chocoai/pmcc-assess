@@ -85,6 +85,7 @@
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/examineUnitDecorate/getExamineUnitDecorateList", cols, {
                     type: unitDecorate.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

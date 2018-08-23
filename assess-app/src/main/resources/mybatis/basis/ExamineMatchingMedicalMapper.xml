@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingMedical" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
     <result column="organization_level" property="organizationLevel" jdbcType="VARCHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, organization_name, organization_level, bed_number, 
-    distance, creator, gmt_created, gmt_modified
+    id, declare_id, plan_details_id, examine_type, organization_name, organization_level, 
+    bed_number, distance, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingMedicalExample" >
     select
@@ -109,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_matching_medical (declare_id, examine_type, organization_name, 
-      organization_level, bed_number, distance, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{organizationName,jdbcType=VARCHAR}, 
-      #{organizationLevel,jdbcType=VARCHAR}, #{bedNumber,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_examine_matching_medical (declare_id, plan_details_id, examine_type, 
+      organization_name, organization_level, bed_number, 
+      distance, creator, gmt_created, 
+      gmt_modified)
+    values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
+      #{organizationName,jdbcType=VARCHAR}, #{organizationLevel,jdbcType=VARCHAR}, #{bedNumber,jdbcType=VARCHAR}, 
+      #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingMedical" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +127,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         declare_id,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="examineType != null" >
         examine_type,
@@ -155,6 +159,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
@@ -197,6 +204,9 @@
       <if test="record.declareId != null" >
         declare_id = #{record.declareId,jdbcType=INTEGER},
       </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
@@ -230,6 +240,7 @@
     update tb_examine_matching_medical
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
       organization_name = #{record.organizationName,jdbcType=VARCHAR},
       organization_level = #{record.organizationLevel,jdbcType=VARCHAR},
@@ -247,6 +258,9 @@
     <set >
       <if test="declareId != null" >
         declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
@@ -278,6 +292,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingMedical" >
     update tb_examine_matching_medical
     set declare_id = #{declareId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
       organization_name = #{organizationName,jdbcType=VARCHAR},
       organization_level = #{organizationLevel,jdbcType=VARCHAR},

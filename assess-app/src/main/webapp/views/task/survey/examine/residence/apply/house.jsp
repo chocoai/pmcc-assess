@@ -350,6 +350,7 @@
             getFormData: function () {
                 var data = formParams(houseFun.config().frm);
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#" + houseFun.config().frm).find('[data-name="fieldName"]').val();

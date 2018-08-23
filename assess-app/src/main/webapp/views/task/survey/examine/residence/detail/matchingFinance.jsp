@@ -86,6 +86,7 @@
                 TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingFinance/getExamineMatchingFinanceList", cols, {
                     type: matchingFinance.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

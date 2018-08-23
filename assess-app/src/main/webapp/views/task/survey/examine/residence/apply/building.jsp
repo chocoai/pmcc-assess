@@ -456,6 +456,9 @@
                 if ($("#declareId").size() > 0){
                     data.declareId = $("#declareId").val();
                 }
+                if ($("#planDetailsId").size() > 0){
+                    data.declareId = $("#planDetailsId").val();
+                }
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
@@ -744,6 +747,7 @@
                 $("#"+examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
                 TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val(),
                     buildingId:examineBuilding_.prototype.getBuildId()
                 }, {
@@ -814,6 +818,9 @@
                 var data = formParams(examineBuilding_.prototype.config().frm);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();

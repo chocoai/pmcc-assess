@@ -329,15 +329,12 @@
             getFormData: function () {
                 var data = formParams(estate.config().frm);
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#" + estate.config().frm).find('[data-name="fieldName"]').val();
                 keyValueDto.value = data;
                 return keyValueDto;
-            },
-            //文件上传处理
-            files: function () {
-                //已经移除
             }
         };
         window.Estate = estate;

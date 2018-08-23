@@ -86,6 +86,7 @@
                 TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingMaterial/getExamineMatchingMaterialList", cols, {
                     type: matchingMaterial.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

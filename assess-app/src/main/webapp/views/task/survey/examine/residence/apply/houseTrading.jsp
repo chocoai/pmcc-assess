@@ -358,6 +358,7 @@
             getFormData: function () {
                 var data = formParams(examineHouseTrading.prototype.config().frm);
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#" + examineHouseTrading.prototype.config().frm).find('[data-name="fieldName"]').val();

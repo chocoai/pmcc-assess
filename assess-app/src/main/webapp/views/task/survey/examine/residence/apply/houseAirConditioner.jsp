@@ -84,6 +84,7 @@
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/examineHouseEquipment/getExamineHouseEquipmentList", cols, {
                     type: houseAirConditioner.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId:$("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
@@ -126,6 +127,9 @@
                 data.type = houseAirConditioner.prototype.config().type;
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
