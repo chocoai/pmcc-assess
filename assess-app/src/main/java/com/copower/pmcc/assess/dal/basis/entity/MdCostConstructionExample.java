@@ -725,6 +725,66 @@ public class MdCostConstructionExample {
             addCriterion("cost_id not between", value1, value2, "costId");
             return (Criteria) this;
         }
+
+        public Criteria andEngineeringIdIsNull() {
+            addCriterion("engineering_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdIsNotNull() {
+            addCriterion("engineering_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdEqualTo(Integer value) {
+            addCriterion("engineering_id =", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotEqualTo(Integer value) {
+            addCriterion("engineering_id <>", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdGreaterThan(Integer value) {
+            addCriterion("engineering_id >", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("engineering_id >=", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdLessThan(Integer value) {
+            addCriterion("engineering_id <", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdLessThanOrEqualTo(Integer value) {
+            addCriterion("engineering_id <=", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdIn(List<Integer> values) {
+            addCriterion("engineering_id in", values, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotIn(List<Integer> values) {
+            addCriterion("engineering_id not in", values, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdBetween(Integer value1, Integer value2) {
+            addCriterion("engineering_id between", value1, value2, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("engineering_id not between", value1, value2, "engineeringId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -24,6 +24,8 @@ public class MdCostConstruction {
 
     private Integer costId;
 
+    private Integer engineeringId;
+
     public Integer getId() {
         return id;
     }
@@ -102,5 +104,13 @@ public class MdCostConstruction {
 
     public void setCostId(Integer costId) {
         this.costId = costId;
+    }
+
+    public Integer getEngineeringId() {
+        return engineeringId;
+    }
+
+    public void setEngineeringId(Integer engineeringId) {
+        this.engineeringId = engineeringId;
     }
 }

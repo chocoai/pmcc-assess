@@ -13,6 +13,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/method/marketDevelopmentDetail.jsp"></jsp:include>
             <!--填写表单-->
             <div class="x_panel">
                 <div class="x_title collapse-link">

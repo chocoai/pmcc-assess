@@ -7,10 +7,13 @@ public class InfrastructureVo extends Infrastructure {
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String temp;
     /**执行开始日期*/
     private String startDateName;
     /**执行结束日期*/
     private String endDateName;
+    private double priceCost;
+    private double priceMarch;
 
     public String getProvinceName() {
         return provinceName;
@@ -50,5 +53,30 @@ public class InfrastructureVo extends Infrastructure {
 
     public void setEndDateName(String endDateName) {
         this.endDateName = endDateName;
+    }
+
+    public String getTemp() {
+        String xx = String.format("%s-%s",getStartDateName(),getEndDateName());
+        return xx;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
+
+    public double getPriceCost() {
+        return priceCost;
+    }
+
+    public void setPriceCost(double priceCost) {
+        this.priceCost = priceCost;
+    }
+
+    public double getPriceMarch() {
+        return priceMarch;
+    }
+
+    public void setPriceMarch(double priceMarch) {
+        this.priceMarch = priceMarch;
     }
 }

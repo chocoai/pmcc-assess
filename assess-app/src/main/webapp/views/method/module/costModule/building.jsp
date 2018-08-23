@@ -9,6 +9,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form class="form-horizontal frmBuild" id="frmBuild">
     <div class="form-group">
+        <label class="col-sm-1 control-label">
+            委估对象面积
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" placeholder="委估对象面积"
+                       class="form-control mdCost area" name="area" readonly="readonly" value="${mdCost.area}">
+                <!-- 委估对象面积 -->
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            委估对象价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" placeholder="委估对象价格"
+                       class="form-control mdCost price" name="price" readonly="readonly" value="${mdCost.area}">
+                <!-- 委估对象价格 -->
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">
                 勘察设计和前期工程费率
@@ -49,7 +74,7 @@
     </div>
 
     <div class="constructionInstallationEngineeringFeeB" style="display: none;">
-        <jsp:include page="constructionInstallationEngineeringFeeB.jsp"></jsp:include>
+        <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
         <div class="form-group">
             <div class="col-sm-6">
             </div>
@@ -76,17 +101,17 @@
                 </div>
             </div>
         </div>
-       <div class="x-valid">
-           <label class="col-sm-1 control-label">
-               基础设施建设费
-           </label>
-           <div class="x-valid">
-               <div class="col-sm-3">
-                   <input type="text" readonly="readonly"
-                          placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
-               </div>
-           </div>
-       </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">
+                基础设施建设费
+            </label>
+            <div class="x-valid">
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly"
+                           placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
+                </div>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <div class="x-valid">
@@ -853,7 +878,10 @@
                     if (build.isNumber(percent)) {
                         try {
                             var funName = "build.inputFun." + build.config().inputConfig().addedValueAdditionalTaxRate.key + "Input(" + percent + ")";
-                            eval(funName);
+                            try {
+                                eval(funName);
+                            } catch (e) {
+                            }
                         } catch (e) {
                             console.log("函数不存在!");
                         }
@@ -878,7 +906,7 @@
         build.inputEvent();
         build.select2LoadData.init();
         //使数据校验生效
-        $("#"+build.config().frm).validate();
+        $("#" + build.config().frm).validate();
     }
 
     /**
@@ -907,27 +935,27 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
                 type: "get",
-                data: {},
+                data: {projectId: "${projectInfo.id}"},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        var cost = result.data.DataInfrastructureCost;
-                        var matchingCost = result.data.InfrastructureMatchingCost;
-                        var option = "<option value=''>请选择</option>";
-                        if (cost.length > 0) {
-                            for (var i = 0; i < cost.length; i++) {
-                                option += "<option value='" + cost[i].number + "'>" + cost[i].name + "</option>";
+                        var infrastructureVo = result.data.InfrastructureVo;
+                        var optionA = "<option value=''>请选择</option>";
+                        var optionB = "<option value=''>请选择</option>";
+                        if (infrastructureVo.length > 0) {
+                            var temp = null;
+                            for (var i = 0; i < infrastructureVo.length; i++) {
+                                temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
+                                optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
+                                temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
+                                optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                             }
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(optionA);
                             $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).select2();
-                        }
-                        if (matchingCost.length > 0) {
-                            for (var i = 0; i < matchingCost.length; i++) {
-                                option += "<option value='" + matchingCost[i].number + "'>" + matchingCost[i].name + "</option>";
-                            }
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                             $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).select2();
                         }
+
                     }
                 },
                 error: function (result) {
@@ -957,10 +985,26 @@
             var data = constructEngineeringObject.getCalculatedResults();
             build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().constructionInstallationEngineeringFee.key, data);
             build.inputFun.constructionInstallationEngineeringFeeInput(data);
+            build.constructionInstallationEngineeringFee.saveAndUpdate(constructEngineeringObject.loadData());
             $("." + build.config().engineeringFee).hide();
         },
         close: function () {
             $("." + build.config().engineeringFee).hide();
+        },
+        saveAndUpdate:function (data) {
+            var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {jsonContent:JSON.stringify(data),type:"MdCostBuilding",id:"${mdCostAndDevelopmentOther.id}"},
+                dataType: "json",
+                success: function (result) {
+                    toastr.success('成功');
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 
@@ -992,7 +1036,7 @@
                 var b = $("." + build.config().newRate + " " + "input[name='" + 'weightYear' + "']").val(); //年限法 权重
                 var c = $("." + build.config().newRate + " " + "input[name='" + 'newRateG' + "']").val();//观察法 成新率
                 var d = $("." + build.config().newRate + " " + "input[name='" + 'weightG' + "']").val();//观察法 权重
-                console.log("test a:"+a+" ;b:"+b +" ;c:"+c+" ;d:"+d);
+                console.log("test a:" + a + " ;b:" + b + " ;c:" + c + " ;d:" + d);
                 var k = 0;
                 //综合成新率 ==> (成新率*权重+残值率*权重)/2
                 var k1 = build.mul(build.newRateModel.algorithm.specialTreatment(a), build.newRateModel.algorithm.specialTreatment(b));
@@ -1025,11 +1069,12 @@
                                 b = build.toPoint(b);
                             }
                             c = build.newRateModel.algorithm.specialTreatment(c);
-                            console.log("test a:"+a+" ;b:"+b +" ;c:"+c);
+                            console.log("test a:" + a + " ;b:" + b + " ;c:" + c);
                             //成新率 = 1- (（1-残值率）*已使用年限/经济耐用年限 )
                             var d = 0;
-                            d = 1 - (1-b) * (c/a) ;
+                            d = 1 - (1 - b) * (c / a);
                             $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
+                            build.newRateModel.algorithm.integratednewRate(d);
                             build.newRateModel.select2Event.eventInit();
                         }
                     },
@@ -1048,7 +1093,7 @@
                 return false;
             },
             specialTreatment: function (obj) {
-                if (build.isNotNull(obj)){
+                if (build.isNotNull(obj)) {
                     return obj;
                 }
                 return 0;
@@ -1076,9 +1121,11 @@
                                 }
                                 if (build.isNotNull(data)) {
                                     build.newRateModel.select2Event.residualValue(data.residualValue);
+                                    build.newRateModel.select2Event.buildingStructure(data.buildingStructure);
                                     build.newRateModel.algorithm.newRateA(data);
                                 } else {
                                     build.newRateModel.select2Event.residualValue(0);
+                                    build.newRateModel.select2Event.buildingStructure(0);
                                     build.newRateModel.algorithm.newRateA(data);
                                 }
                             }
@@ -1092,6 +1139,10 @@
             //年限法 残值率
             residualValue: function (obj) {
                 $("." + build.config().newRate + " .residualValue").val(obj);
+            },
+            //年限法 建筑结构
+            buildingStructure: function (obj) {
+                $("." + build.config().newRate + " .buildingStructure").val(obj);
             },
             //年限法 已使用年限 事件
             inputUseYear: function () {
@@ -1263,7 +1314,8 @@
                                             已使用年限
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="useYear" data-rule-number='true' required="required"
+                                            <input type="text" class="form-control" name="useYear"
+                                                   data-rule-number='true' required="required"
                                                    placeholder="已使用年限">
                                         </div>
                                     </div>
@@ -1275,10 +1327,10 @@
                                             残值率
                                         </label>
                                         <div class="col-sm-5">
-                                                <input type="text" class="form-control residualValue"
-                                                       name="residualValue"
-                                                       readonly="readonly"
-                                                       placeholder="残值率">
+                                            <input type="text" class="form-control residualValue"
+                                                   name="residualValue"
+                                                   readonly="readonly"
+                                                   placeholder="残值率">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1295,10 +1347,21 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
+                                            建筑结构
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control buildingStructure"
+                                                   name="buildingStructure" readonly="readonly"
+                                                   placeholder="建筑结构" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
                                             权重
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightYear" data-rule-number='true' required="required"
+                                            <input type="text" class="form-control" name="weightYear"
+                                                   data-rule-number='true' required="required"
                                                    placeholder="权重">
                                         </div>
                                     </div>
@@ -1314,7 +1377,8 @@
                                             成新率
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="newRateG" data-rule-number='true' required="required"
+                                            <input type="text" class="form-control" name="newRateG"
+                                                   data-rule-number='true' required="required"
                                                    placeholder="成新率">
                                         </div>
                                     </div>
@@ -1323,7 +1387,8 @@
                                             权重
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightG" data-rule-number='true' required="required"
+                                            <input type="text" class="form-control" name="weightG"
+                                                   data-rule-number='true' required="required"
                                                    placeholder="权重">
                                         </div>
                                     </div>

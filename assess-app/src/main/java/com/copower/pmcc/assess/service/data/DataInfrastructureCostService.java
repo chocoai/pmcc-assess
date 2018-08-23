@@ -28,14 +28,20 @@ public class DataInfrastructureCostService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataInfrastructureCost> infrastructureCostList = infrastructureCostDao.getDataInfrastructureCostList(name);
+        DataInfrastructureCost dataInfrastructureCost = new DataInfrastructureCost();
+        dataInfrastructureCost.setName(name);
+        List<DataInfrastructureCost> infrastructureCostList = infrastructureCostDao.getDataInfrastructureCostList(dataInfrastructureCost);
         vo.setRows(CollectionUtils.isEmpty(infrastructureCostList) ? new ArrayList<DataInfrastructureCost>() : infrastructureCostList);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
     public List<DataInfrastructureCost> infrastructureCostList(){
-        return  infrastructureCostDao.getDataInfrastructureCostList(null);
+        return  infrastructureCostDao.getDataInfrastructureCostList(new DataInfrastructureCost());
+    }
+
+    public List<DataInfrastructureCost> getDataInfrastructureCostList(DataInfrastructureCost dataInfrastructureCost){
+        return  infrastructureCostDao.getDataInfrastructureCostList(dataInfrastructureCost);
     }
 
     public boolean addDataInfrastructureCost(DataInfrastructureCost infrastructureCost) throws BusinessException {

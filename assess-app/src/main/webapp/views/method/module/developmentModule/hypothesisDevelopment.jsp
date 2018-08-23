@@ -661,10 +661,24 @@
     hypothesisDevelopment.inputFun = {
         //建筑安装工程费
         constructionInstallationEngineeringFeeInput:function (data) {
-
-        }
+            hypothesisDevelopment.inputAlgorithmObject.reconnaissanceDesignFun();
+        },
+        //勘察设计和前期工程费率
+        reconnaissanceDesignRoteInput:function () {
+            console.log("sdsdg");
+            hypothesisDevelopment.inputAlgorithmObject.reconnaissanceDesignFun();
+        },
     }
     hypothesisDevelopment.inputAlgorithmObject = {
+        //f勘察设计和前期工程费 = 建筑安装工程费*勘察设计和前期工程费率
+        reconnaissanceDesignFun:function () {
+            var a, c, b;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().constructionInstallationEngineeringFee.key, null);//建筑安装工程费
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", construction.config().inputConfig().reconnaissanceDesignRote.key, null);//勘察设计和前期工程费率
+            c = hypothesisDevelopment.mul(b, a);
+            console.log("a:"+a+"; b:"+b+"; c:"+c);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().reconnaissanceDesign.key, c);
+        },
         //地下商业
         undergroundBusinessShopFun: function () {
             var a, b, c;
@@ -914,16 +928,14 @@
             var input = $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + key + "']");
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
-                if (hypothesisDevelopment.isNumber(value)) {
-                    try {
-                        var funName = "hypothesisDevelopment.inputFun." + key + "Input(" + input.val() + ")";
-                        eval(funName);
-                    } catch (e) {
-                        console.log("没有相关定义的函数或者是属于子表单");
-                        hypothesisDevelopment.inputForm(key, value);
-                    }
-                } else {
-                    Alert("请输入合法数字!")
+                try {
+                    console.log("key:"+key);
+                    var funName = "hypothesisDevelopment.inputFun." + key + "Input(" + input.val() + ")";
+                    console.log(funName);
+                    eval(funName);
+                } catch (e) {
+                    console.log("没有相关定义的函数或者是属于子表单");
+                    hypothesisDevelopment.inputForm(key, value);
                 }
             });
         })
@@ -974,6 +986,11 @@
 
     hypothesisDevelopment.selectEvent = {
         load: {
+            /**
+            * @author:  zch
+            * 描述:动态类型
+            * @date:
+            **/
             hypothesisDevelopmentSelect2: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.mdHypothesisDevelopment, "", function (html, data) {
                     var retHtml = '<option value="" selected>-请选择-</option>';
@@ -984,8 +1001,58 @@
                     $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).select2();
                 });
             },
+            /**
+            * @author:  zch
+            * 描述:增值及附加税率
+            * @date:
+            **/
+            loadAddedValueAdditionalTaxRate:function () {
+                AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
+                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
+                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                })
+            },
+            /**
+            * @author:  zch
+            * 描述:获取基础设施费用列表和公共配套设施费用
+            * @date:
+            **/
+            loadCostAndMatchingCost:function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
+                    type: "get",
+                    data: {projectId: "${projectInfo.id}"},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var infrastructureVo = result.data.InfrastructureVo;
+                            var optionA = "<option value=''>请选择</option>";
+                            var optionB = "<option value=''>请选择</option>";
+                            if (infrastructureVo.length > 0) {
+                                var temp = null;
+                                for (var i = 0; i < infrastructureVo.length; i++) {
+                                    temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
+                                    optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
+                                    temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
+                                    optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
+                                }
+                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureCost.select).html(optionA);
+                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureCost.select).select2();
+                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
+                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).select2();
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
             load: function () {
                 hypothesisDevelopment.selectEvent.load.hypothesisDevelopmentSelect2();
+                hypothesisDevelopment.selectEvent.load.loadAddedValueAdditionalTaxRate();
+                hypothesisDevelopment.selectEvent.load.loadCostAndMatchingCost();
             }
         },
         //监听 change 事件
@@ -1033,6 +1100,7 @@
         }
     };
     hypothesisDevelopment.eventInit = function () {
+        $("#"+hypothesisDevelopment.config().frm).validate();
         hypothesisDevelopment.selectEvent.load.load();
         hypothesisDevelopment.inputEvent();
     };
@@ -1084,8 +1152,4 @@
     </table>
 </div>
 
-<%--</div>--%>
-<%--<script id="architecturalEngineering" type="text/html" style="display: none">--%>
-<%--<jsp:include page="../architecturalEngineering/constructionInstallationEngineeringFeeA.jsp"></jsp:include>--%>
-<%--</script>--%>
 
