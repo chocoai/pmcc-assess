@@ -1199,12 +1199,11 @@
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
                 var funName = "construction.inputFun." + key + "Input(" + input.val() + ")";
-                eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
-                // if (construction.isNumber(value)) {
-                //
-                // } else {
-                //     Alert("请输入合法数字!")
-                // }
+                try {
+                    eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
+                } catch (e) {
+                }
+
             });
         });
         construction.selectEvent.init();

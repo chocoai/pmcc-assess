@@ -74,7 +74,7 @@
     </div>
 
     <div class="constructionInstallationEngineeringFeeB" style="display: none;">
-        <jsp:include page="../architecturalEngineering/buildingEngineering.jsp"></jsp:include>
+        <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
         <div class="form-group">
             <div class="col-sm-6">
             </div>
@@ -878,7 +878,10 @@
                     if (build.isNumber(percent)) {
                         try {
                             var funName = "build.inputFun." + build.config().inputConfig().addedValueAdditionalTaxRate.key + "Input(" + percent + ")";
-                            eval(funName);
+                            try {
+                                eval(funName);
+                            } catch (e) {
+                            }
                         } catch (e) {
                             console.log("函数不存在!");
                         }

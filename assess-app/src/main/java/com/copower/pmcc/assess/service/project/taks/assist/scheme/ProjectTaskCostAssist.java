@@ -133,6 +133,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         if (!ObjectUtils.isEmpty(schemeInfo.getMethodDataId())) {
             MdCost mdCost = mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId());
             String type = mdCost.getType();
+
+            //update MdCostBuilding
             if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostBuilding.class))) {
                 MdCostBuilding mdCostBuilding = new MdCostBuilding();
                 mdCostBuilding.setCostId(mdCost.getId());
@@ -148,6 +150,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                     }
                 }
             }
+            //update MdCostConstruction
             if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostConstruction.class))) {
                 MdCostConstruction mdCostConstruction = new MdCostConstruction();
                 mdCostConstruction.setCostId(mdCost.getId());
@@ -208,6 +211,9 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             }
         }
         JSONObject jsonObject = JSON.parseObject(formData);
+
+
+        //save MdCostBuilding
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostBuilding())) {//评估单价 (建筑物)
             mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
             id = mdMarketCostService.addMdCost(mdCost);
@@ -227,6 +233,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdCostAndDevelopmentOther.setPid(pid);
             mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         }
+
+        //save MdCostConstruction
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostConstruction())) {//在建工程
             mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
             id = mdMarketCostService.addMdCost(mdCost);
@@ -245,6 +253,11 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdCostAndDevelopmentOther.setPid(pid);
             mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         }
+
+
+
+
+
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());

@@ -231,6 +231,46 @@
     constructEngineeringObjectA.setServerData = function (data) {
         this.data = data;
     }
+    constructEngineeringObjectA.getColumns = function () {
+        var data = null;
+        data = [[
+            {field: 'number', title: '序号', width: 50},
+            {field: 'name', title: '工程名称', width: '20%'},
+            {
+                field: 'area',
+                title: '建筑面积',
+                width: 90,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+            {field: 'currency', title: ' 单方造价(元/㎡)', width: 100},
+            {field: 'totalCost', title: '总造价', width: 120},
+            {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
+            {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
+            {
+                field: 'valuationDateCurrency',
+                title: '估价时点单价(元/㎡)',
+                width: 110,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+            {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 110},
+            {
+                field: 'continuedConstructionInvestmentCurrency',
+                title: '续建投入单价(元/㎡)',
+                width: 110,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+        ]];
+        return data;
+    }
     constructEngineeringObjectA.treeGrIdInit = function (data) {
         $('#' + constructEngineeringObjectA.config().tableId).treegrid({
             iconCls: 'icon-edit',
@@ -244,42 +284,7 @@
             treeField: 'name',//treegrid 树形结构主键 text
             fitColumns: true,
             striped: true,//显示斑马线
-            columns: [[
-                {field: 'number', title: '序号', width: 50},
-                {field: 'name', title: '工程名称', width: '20%'},
-                {
-                    field: 'area',
-                    title: '建筑面积',
-                    width: 90,
-                    editor: {type: "numberbox", options: {precision: 7}},//精度为7
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-                {field: 'currency', title: ' 单方造价(元/㎡)', width: 100},
-                {field: 'totalCost', title: '总造价', width: 120},
-                {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
-                {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
-                {
-                    field: 'valuationDateCurrency',
-                    title: '估价时点单价(元/㎡)',
-                    width: 110,
-                    editor: {type: "numberbox", options: {precision: 7}},//精度为7
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-                {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 110},
-                {
-                    field: 'continuedConstructionInvestmentCurrency',
-                    title: '续建投入单价(元/㎡)',
-                    width: 110,
-                    editor: {type: "numberbox", options: {precision: 7}},//精度为7
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-            ]],
+            columns: constructEngineeringObjectA.getColumns(),
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
                 constructEngineeringObjectA.updateChildren($('#' + constructEngineeringObjectA.config().tableId).treegrid('find', row.id), changes);
@@ -306,17 +311,26 @@
             console.log("引用修改数据!");
             constructEngineeringObjectA.treeGrIdInit(data);
         } else {//说明非修改 需要手动从服务器上获取数据
-            $.ajax({
-                url: url,
-                type: "get",
-                data: {},
-                dataType: "json",
-                success: function (result) {
-                    console.log("服务器上获取数据!");
-                    constructEngineeringObjectA.treeGrIdInit(result);
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+            console.log("从服务器上获取数据!");
+            //说明 由于 easyui 如果是传入的data并且data中是没有初始化过的数据那么无法开启编辑
+            $('#' + constructEngineeringObjectA.config().tableId).treegrid({
+                iconCls: 'icon-edit',
+                nowrap: false,
+                // rownumbers: true,
+                width: 700,
+                height: 'auto',
+                collapsible: true,
+                title: "建安工程费用测算表",
+                url: "${pageContext.request.contextPath}/marketCost/getBaseDicTree",
+                method: "get",
+                idField: 'id',//数据表格要有主键
+                treeField: 'name',//treegrid 树形结构主键 text
+                fitColumns: true,
+                striped: true,//显示斑马线
+                columns: constructEngineeringObjectA.getColumns(),
+                onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
+                    //根据id获取值
+                    constructEngineeringObjectA.updateChildren($('#' + constructEngineeringObjectA.config().tableId).treegrid('find', row.id), changes);
                 }
             });
         }
