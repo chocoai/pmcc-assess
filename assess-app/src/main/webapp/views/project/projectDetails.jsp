@@ -114,7 +114,7 @@
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         计划编制
                                                     </button>
-                                                    <button class="btn btn-sm btn-default" type="button"
+                                                    <button class="btn btn-sm btn-warning" type="button"
                                                             data-placement="top"
                                                             data-toggle="tooltip" data-original-title="查看"
                                                             onclick="window.open('${plan.planDisplayUrl}')"><i
@@ -122,22 +122,17 @@
                                                 </c:if>
                                                 <c:if test="${not empty plan.planExecutUrl}">
                                                     <button class="btn btn-sm btn-primary" type="button">
-                                                        计划编制<i class="fa fa-ellipsis-h"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-default" type="button"
-                                                            data-placement="top" data-toggle="tooltip"
-                                                            onclick="window.open('${plan.planDisplayUrl}')"
-                                                            data-original-title="查看"><i class="fa fa-search"></i>
+                                                        计划编制
                                                     </button>
                                                     <button class="btn btn-sm btn-default" type="button"
                                                             data-placement="top" data-toggle="tooltip"
                                                             data-original-title="责任人">${plan.planExecutor}
                                                     </button>
                                                     <c:if test="${plan.planCanExecut eq true}">
-                                                        <button class="btn btn-sm btn-default" type="button"
+                                                        <button class="btn btn-sm btn-success" type="button"
                                                                 data-placement="top" data-toggle="tooltip"
                                                                 onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
-                                                                data-original-title="处理"><i class="fa fa-edit"></i>
+                                                                data-original-title="处理"><i class="fa fa-arrow-right"></i>
                                                         </button>
                                                     </c:if>
                                                 </c:if>

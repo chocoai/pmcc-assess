@@ -67,6 +67,7 @@ public class DeclareRecordService {
         List<SchemeAreaGroup> schemeAreaGroups = Lists.newArrayList();
         hashSet.forEach(p -> {
             SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
+            schemeAreaGroup.setDistrict("");
             String[] areaIds = p.split("_");
             if (areaIds.length > 2)
                 schemeAreaGroup.setDistrict(areaIds[2]);

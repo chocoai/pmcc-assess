@@ -508,7 +508,7 @@
     taskCaseIndex.assignment = function (id) {
         var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + id;
         openWin(url, function () {
-            taskExploreIndex.getExploreTaskList();
+            taskCaseIndex.getCaseTaskList();
         })
     }
 

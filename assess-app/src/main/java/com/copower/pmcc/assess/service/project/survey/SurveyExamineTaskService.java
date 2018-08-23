@@ -109,6 +109,16 @@ public class SurveyExamineTaskService {
         return surveyExamineTaskDao.getSurveyExamineTaskList(surveyExamineTask);
     }
 
+    /**
+     * 获取调查任务
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public int getRuningTaskCount(Integer planDetailsId) {
+        return surveyExamineTaskDao.getTaskCountByStatus(planDetailsId,ProjectStatusEnum.WAIT.getKey());
+    }
+
     public List<CustomSurveyExamineTask> getCustomeExamineTaskList(Integer planDetailsId, String userAccount) {
         return surveyExamineTaskDao.getCustomExamineTaskList(planDetailsId, userAccount);
     }

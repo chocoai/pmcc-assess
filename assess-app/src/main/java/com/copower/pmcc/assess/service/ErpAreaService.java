@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,17 +66,17 @@ public class ErpAreaService {
     public String getAreaFullName(String province, String city, String district) {
         String areaName = new String();
         SysAreaDto sysAreaDto = null;
-        if (province != null) {
+        if (StringUtils.isNotBlank(province)) {
             sysAreaDto = getSysAreaDto(province);
             if (sysAreaDto != null)
                 areaName += sysAreaDto.getName();
         }
-        if (city != null) {
+        if (StringUtils.isNotBlank(city)) {
             sysAreaDto = getSysAreaDto(city);
             if (sysAreaDto != null)
                 areaName += sysAreaDto.getName();
         }
-        if (district != null) {
+        if (StringUtils.isNotBlank(district)) {
             sysAreaDto = getSysAreaDto(district);
             if (sysAreaDto != null)
                 areaName += sysAreaDto.getName();

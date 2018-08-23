@@ -217,12 +217,7 @@ public class SurveyCommonService {
 
         surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
 
-        //检查是否所有待处理的表单任务都已完成，如果完成则将关联的计划任务状态更新为finish
-        where = new SurveyExamineTask();
-        where.setPlanDetailsId(planDetailsId);
-        where.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
-        List<SurveyExamineTask> list = surveyExamineTaskService.getSurveyExamineTaskList(where);
-        if (CollectionUtils.isEmpty(list)) {
+        if (surveyExamineTaskService.getRuningTaskCount(planDetailsId) <= 0) {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetailsService.updateProjectPlanDetails(planDetails);
@@ -255,22 +250,22 @@ public class SurveyCommonService {
         ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlock));
 
-        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId,planDetailsId, examineTypeEnum);
+        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(estateLandState));
 
-        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId,planDetailsId, examineTypeEnum);
+        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstate));
 
-        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId,planDetailsId, examineTypeEnum);
+        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnit));
 
-        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId,planDetailsId, examineTypeEnum);
+        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouse));
 
-        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,planDetailsId, examineTypeEnum);
+        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
 
-        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId,planDetailsId, examineTypeEnum.getId());
+        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId, planDetailsId, examineTypeEnum.getId());
         if (!ObjectUtils.isEmpty(examineBuildings)) {
             ExamineBuilding examineBuilding = examineBuildings.get(0);
             ExamineBuildingVo examineBuildingVo = examineBuildingService.getExamineBuildingVo(examineBuilding);
@@ -286,7 +281,6 @@ public class SurveyCommonService {
      * @return
      */
     public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
-
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
         List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
