@@ -936,7 +936,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        var cost = result.data.InfrastructureCost;
+                        var cost = result.data.DataInfrastructureCost;
                         var matchingCost = result.data.InfrastructureMatchingCost;
                         var option = "<option value=''>请选择</option>";
                         if (cost.length > 0) {

@@ -300,4 +300,13 @@ public class SurveyCommonService {
         }
         return planDetailsVoList;
     }
+
+    /**
+     * 判断该计划任务下的所有任务是否都已完成
+     * @param planDetailsId
+     * @return
+     */
+    public boolean isAllFinish(Integer planDetailsId){
+        return true;
+    }
 }

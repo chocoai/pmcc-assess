@@ -23,7 +23,7 @@ public class DataInfrastructureMatchingCostController {
     @ResponseBody
     @RequestMapping(value = "/list",name = "获取公共配套设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
     public BootstrapTableVo list(String name){
-        return dataInfrastructureMatchingCostService.getInfrastructureCost(name);
+        return dataInfrastructureMatchingCostService.getDataInfrastructureCost(name);
     }
 
     @ResponseBody
@@ -32,10 +32,10 @@ public class DataInfrastructureMatchingCostController {
 
         try {
             if (infrastructureMatchingCost.getId() != null && infrastructureMatchingCost.getId() > 0){
-                dataInfrastructureMatchingCostService.editInfrastructureCost(infrastructureMatchingCost);
+                dataInfrastructureMatchingCostService.editDataInfrastructureCost(infrastructureMatchingCost);
             }
             else {
-                dataInfrastructureMatchingCostService.addInfrastructureCost(infrastructureMatchingCost);
+                dataInfrastructureMatchingCostService.addDataInfrastructureCost(infrastructureMatchingCost);
             }
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

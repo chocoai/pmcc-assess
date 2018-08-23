@@ -80,10 +80,14 @@ public class ProjectPhaseDao {
         return projectPhaseMapper.selectByExample(example);
     }
 
-    public List<ProjectPhase> getProjectPhase(Integer workStageId){
-
+    /**
+     * 获取
+     * @param workStageId
+     * @return
+     */
+    public List<ProjectPhase> getProjectPhaseByWorkStageId(Integer workStageId){
         ProjectPhaseExample example = new ProjectPhaseExample();
-        example.createCriteria().andWorkStageIdEqualTo(workStageId);
+        example.createCriteria().andBisEnableEqualTo(true).andWorkStageIdEqualTo(workStageId);
         return projectPhaseMapper.selectByExample(example);
 
     }
